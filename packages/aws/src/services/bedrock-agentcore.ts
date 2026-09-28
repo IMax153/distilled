@@ -4971,7 +4971,7 @@ export const invokeAgentRuntime: API.OperationMethod<
       agentRuntimeArn: 0,
       qualifier: D.m({ query: "qualifier" }),
       accountId: D.m({ query: "accountId" }),
-      payload: D.m({ payload: true, shape: D.blob }),
+      payload: D.m({ payload: true, shape: D.stream }),
     },
     output: {
       runtimeSessionId: D.m({

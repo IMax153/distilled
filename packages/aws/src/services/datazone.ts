@@ -11390,7 +11390,7 @@ export const getLineageEvent: API.OperationMethod<
     output: {
       domainId: D.m({ header: "Domain-Id" }),
       id: D.m({ header: "Id" }),
-      event: D.m({ payload: true, shape: D.secretBlob }),
+      event: D.m({ payload: true, shape: D.stream }),
       createdBy: D.m({ header: "Created-By" }),
       processingStatus: D.m({ header: "Processing-Status" }),
       eventTime: D.m({ header: "Event-Time", shape: D.ts }),
@@ -13912,7 +13912,7 @@ export const postLineageEvent: API.OperationMethod<
     http: "POST /v2/domains/{domainIdentifier}/lineage/events",
     input: {
       domainIdentifier: 0,
-      event: D.m({ payload: true, shape: D.blob }),
+      event: D.m({ payload: true, shape: D.stream }),
       clientToken: D.m({ header: "Client-Token", idempotency: true }),
     },
   },

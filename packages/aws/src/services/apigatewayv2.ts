@@ -3789,7 +3789,7 @@ export const exportApi: API.OperationMethod<
       Specification: 0,
       StageName: D.m({ query: "stageName" }),
     },
-    output: { body: D.m({ payload: true, shape: D.blob }) },
+    output: { body: D.m({ payload: true, shape: D.stream }) },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,

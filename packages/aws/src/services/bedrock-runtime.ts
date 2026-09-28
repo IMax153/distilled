@@ -2410,7 +2410,7 @@ export const invokeModel: API.OperationMethod<
     service: svc,
     http: "POST /model/{modelId}/invoke",
     input: {
-      body: D.m({ payload: true, shape: D.blob }),
+      body: D.m({ payload: true, shape: D.stream }),
       contentType: D.m({ header: "Content-Type" }),
       accept: D.m({ header: "Accept" }),
       modelId: 0,
@@ -2426,7 +2426,7 @@ export const invokeModel: API.OperationMethod<
       requestMetadata: D.m({ header: "X-Amzn-Bedrock-Request-Metadata" }),
     },
     output: {
-      body: D.m({ payload: true, shape: D.secretBlob }),
+      body: D.m({ payload: true, shape: D.stream }),
       contentType: D.m({ header: "Content-Type" }),
       performanceConfigLatency: D.m({
         header: "X-Amzn-Bedrock-PerformanceConfig-Latency",
@@ -2553,7 +2553,7 @@ export const invokeModelWithResponseStream: API.OperationMethod<
     service: svc,
     http: "POST /model/{modelId}/invoke-with-response-stream",
     input: {
-      body: D.m({ payload: true, shape: D.blob }),
+      body: D.m({ payload: true, shape: D.stream }),
       contentType: D.m({ header: "Content-Type" }),
       accept: D.m({ header: "X-Amzn-Bedrock-Accept" }),
       modelId: 0,

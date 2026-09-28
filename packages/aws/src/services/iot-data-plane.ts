@@ -416,7 +416,7 @@ export const deleteThingShadow: API.OperationMethod<
     service: svc,
     http: "DELETE /things/{thingName}/shadow",
     input: { thingName: 0, shadowName: D.m({ query: "name" }) },
-    output: { payload: D.m({ payload: true, shape: D.blob }) },
+    output: { payload: D.m({ payload: true, shape: D.stream }) },
   },
   errors: [
     InternalFailureException,
@@ -550,7 +550,7 @@ export const getThingShadow: API.OperationMethod<
     service: svc,
     http: "GET /things/{thingName}/shadow",
     input: { thingName: 0, shadowName: D.m({ query: "name" }) },
-    output: { payload: D.m({ payload: true, shape: D.blob }) },
+    output: { payload: D.m({ payload: true, shape: D.stream }) },
   },
   errors: [
     InternalFailureException,
@@ -752,7 +752,7 @@ export const publish: API.OperationMethod<
       topic: 0,
       qos: D.m({ query: "qos" }),
       retain: D.m({ query: "retain" }),
-      payload: D.m({ payload: true, shape: D.blob }),
+      payload: D.m({ payload: true, shape: D.stream }),
       userProperties: D.m({ header: "x-amz-mqtt5-user-properties" }),
       payloadFormatIndicator: D.m({
         header: "x-amz-mqtt5-payload-format-indicator",
@@ -813,7 +813,7 @@ export const sendDirectMessage: API.OperationMethod<
       responseTopic: D.m({ query: "responseTopic" }),
       confirmation: D.m({ query: "confirmation" }),
       timeout: D.m({ query: "timeout" }),
-      payload: D.m({ payload: true, shape: D.blob }),
+      payload: D.m({ payload: true, shape: D.stream }),
       userProperties: D.m({ header: "x-amz-mqtt5-user-properties" }),
       payloadFormatIndicator: D.m({
         header: "x-amz-mqtt5-payload-format-indicator",
@@ -868,9 +868,9 @@ export const updateThingShadow: API.OperationMethod<
     input: {
       thingName: 0,
       shadowName: D.m({ query: "name" }),
-      payload: D.m({ payload: true, shape: D.blob }),
+      payload: D.m({ payload: true, shape: D.stream }),
     },
-    output: { payload: D.m({ payload: true, shape: D.blob }) },
+    output: { payload: D.m({ payload: true, shape: D.stream }) },
   },
   errors: [
     ConflictException,

@@ -6847,7 +6847,7 @@ export const getConnectionFunction: API.OperationMethod<
     http: "GET /2020-05-31/connection-function/{Identifier}",
     input: { Identifier: 0, Stage: D.m({ query: "Stage" }) },
     output: {
-      ConnectionFunctionCode: D.m({ payload: true, shape: D.secretBlob }),
+      ConnectionFunctionCode: D.m({ payload: true, shape: D.stream }),
       ETag: D.m({ header: "ETag" }),
       ContentType: D.m({ header: "Content-Type" }),
     },
@@ -7232,7 +7232,7 @@ export const getFunction: API.OperationMethod<
     http: "GET /2020-05-31/function/{Name}",
     input: { Name: 0, Stage: D.m({ query: "Stage" }) },
     output: {
-      FunctionCode: D.m({ payload: true, shape: D.secretBlob }),
+      FunctionCode: D.m({ payload: true, shape: D.stream }),
       ETag: D.m({ header: "ETag" }),
       ContentType: D.m({ header: "Content-Type" }),
     },

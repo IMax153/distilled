@@ -2799,7 +2799,7 @@ export const getIntrospectionSchema: API.OperationMethod<
       format: D.m({ query: "format" }),
       includeDirectives: D.m({ query: "includeDirectives" }),
     },
-    output: { schema: D.m({ payload: true, shape: D.blob }) },
+    output: { schema: D.m({ payload: true, shape: D.stream }) },
   },
   errors: [
     GraphQLSchemaException,

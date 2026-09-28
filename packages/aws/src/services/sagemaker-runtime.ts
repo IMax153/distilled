@@ -279,7 +279,7 @@ export const invokeEndpoint: API.OperationMethod<
     http: "POST /endpoints/{EndpointName}/invocations",
     input: {
       EndpointName: 0,
-      Body: D.m({ payload: true, shape: D.blob }),
+      Body: D.m({ payload: true, shape: D.stream }),
       ContentType: D.m({ header: "Content-Type" }),
       Accept: D.m({ header: "Accept" }),
       CustomAttributes: D.m({ header: "X-Amzn-SageMaker-Custom-Attributes" }),
@@ -299,7 +299,7 @@ export const invokeEndpoint: API.OperationMethod<
       PrefixAwareId: D.m({ header: "X-Amzn-SageMaker-Prefix-Aware-Id" }),
     },
     output: {
-      Body: D.m({ payload: true, shape: D.secretBlob }),
+      Body: D.m({ payload: true, shape: D.stream }),
       ContentType: D.m({ header: "Content-Type" }),
       InvokedProductionVariant: D.m({
         header: "x-Amzn-Invoked-Production-Variant",
@@ -371,7 +371,7 @@ export const invokeEndpointAsync: API.OperationMethod<
       InvocationTimeoutSeconds: D.m({
         header: "X-Amzn-SageMaker-InvocationTimeoutSeconds",
       }),
-      Body: D.m({ payload: true, shape: D.blob }),
+      Body: D.m({ payload: true, shape: D.stream }),
     },
     output: {
       OutputLocation: D.m({ header: "X-Amzn-SageMaker-OutputLocation" }),
@@ -429,7 +429,7 @@ export const invokeEndpointWithResponseStream: API.OperationMethod<
     http: "POST /endpoints/{EndpointName}/invocations-response-stream",
     input: {
       EndpointName: 0,
-      Body: D.m({ payload: true, shape: D.blob }),
+      Body: D.m({ payload: true, shape: D.stream }),
       ContentType: D.m({ header: "Content-Type" }),
       Accept: D.m({ header: "X-Amzn-SageMaker-Accept" }),
       CustomAttributes: D.m({ header: "X-Amzn-SageMaker-Custom-Attributes" }),

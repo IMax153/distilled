@@ -1014,7 +1014,7 @@ export const getCodeBindingSource: API.OperationMethod<
       SchemaName: 0,
       SchemaVersion: D.m({ query: "schemaVersion" }),
     },
-    output: { Body: D.m({ payload: true, shape: D.blob }) },
+    output: { Body: D.m({ payload: true, shape: D.stream }) },
   },
   errors: [
     BadRequestException,

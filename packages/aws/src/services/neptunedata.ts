@@ -1737,7 +1737,7 @@ export const executeGremlinExplainQuery: API.OperationMethod<
     service: svc,
     http: "POST /gremlin/explain",
     input: { gremlinQuery: D.m({ wire: "gremlin" }) },
-    output: { output: D.m({ payload: true, shape: D.blob }) },
+    output: { output: D.m({ payload: true, shape: D.stream }) },
     body: true,
   },
   errors: [
@@ -1812,7 +1812,7 @@ export const executeGremlinProfileQuery: API.OperationMethod<
       serializer: D.m({ wire: "profile.serializer" }),
       indexOps: D.m({ wire: "profile.indexOps" }),
     },
-    output: { output: D.m({ payload: true, shape: D.blob }) },
+    output: { output: D.m({ payload: true, shape: D.stream }) },
     body: true,
   },
   errors: [

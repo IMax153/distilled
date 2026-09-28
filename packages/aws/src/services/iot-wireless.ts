@@ -4318,7 +4318,7 @@ export const getPositionEstimate: API.OperationMethod<
       Timestamp: 0,
       AdvancedConfiguration: { WiFiCellular: { ConfidencePercent: 0 } },
     },
-    output: { GeoJsonPayload: D.m({ payload: true, shape: D.blob }) },
+    output: { GeoJsonPayload: D.m({ payload: true, shape: D.stream }) },
     body: true,
   },
   errors: [
@@ -4432,7 +4432,7 @@ export const getResourcePosition: API.OperationMethod<
       ResourceIdentifier: 0,
       ResourceType: D.m({ query: "resourceType" }),
     },
-    output: { GeoJsonPayload: D.m({ payload: true, shape: D.blob }) },
+    output: { GeoJsonPayload: D.m({ payload: true, shape: D.stream }) },
   },
   errors: [
     AccessDeniedException,
@@ -6550,7 +6550,7 @@ export const updateResourcePosition: API.OperationMethod<
     input: {
       ResourceIdentifier: 0,
       ResourceType: D.m({ query: "resourceType" }),
-      GeoJsonPayload: D.m({ payload: true, shape: D.blob }),
+      GeoJsonPayload: D.m({ payload: true, shape: D.stream }),
     },
   },
   errors: [

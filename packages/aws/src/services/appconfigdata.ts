@@ -196,7 +196,7 @@ export const getLatestConfiguration: API.OperationMethod<
         shape: D.num,
       }),
       ContentType: D.m({ header: "Content-Type" }),
-      Configuration: D.m({ payload: true, shape: D.secretBlob }),
+      Configuration: D.m({ payload: true, shape: D.stream }),
       VersionLabel: D.m({ header: "Version-Label" }),
     },
   },

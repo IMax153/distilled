@@ -1665,7 +1665,7 @@ export const putSolFunctionPackageContent: API.OperationMethod<
     input: {
       vnfPkgId: 0,
       contentType: D.m({ header: "Content-Type" }),
-      file: D.m({ payload: true, shape: D.blob }),
+      file: D.m({ payload: true, shape: D.stream }),
     },
   },
   errors: [
@@ -1704,7 +1704,7 @@ export const putSolNetworkPackageContent: API.OperationMethod<
     input: {
       nsdInfoId: 0,
       contentType: D.m({ header: "Content-Type" }),
-      file: D.m({ payload: true, shape: D.blob }),
+      file: D.m({ payload: true, shape: D.stream }),
     },
   },
   errors: [
@@ -1975,7 +1975,7 @@ export const validateSolFunctionPackageContent: API.OperationMethod<
     input: {
       vnfPkgId: 0,
       contentType: D.m({ header: "Content-Type" }),
-      file: D.m({ payload: true, shape: D.blob }),
+      file: D.m({ payload: true, shape: D.stream }),
     },
   },
   errors: [
@@ -2015,7 +2015,7 @@ export const validateSolNetworkPackageContent: API.OperationMethod<
     input: {
       nsdInfoId: 0,
       contentType: D.m({ header: "Content-Type" }),
-      file: D.m({ payload: true, shape: D.blob }),
+      file: D.m({ payload: true, shape: D.stream }),
     },
   },
   errors: [

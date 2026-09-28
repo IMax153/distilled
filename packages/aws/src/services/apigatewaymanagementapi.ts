@@ -205,7 +205,7 @@ export const postToConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /@connections/{ConnectionId}",
-    input: { Data: D.m({ payload: true, shape: D.blob }), ConnectionId: 0 },
+    input: { Data: D.m({ payload: true, shape: D.stream }), ConnectionId: 0 },
   },
   errors: [
     ForbiddenException,

@@ -870,7 +870,7 @@ export const getProfile: API.OperationMethod<
       accept: D.m({ header: "Accept" }),
     },
     output: {
-      profile: D.m({ payload: true, shape: D.blob }),
+      profile: D.m({ payload: true, shape: D.stream }),
       contentType: D.m({ header: "Content-Type" }),
       contentEncoding: D.m({ header: "Content-Encoding" }),
     },
@@ -1124,7 +1124,7 @@ export const postAgentProfile: API.OperationMethod<
     http: "POST /profilingGroups/{profilingGroupName}/agentProfile",
     input: {
       profilingGroupName: 0,
-      agentProfile: D.m({ payload: true, shape: D.blob }),
+      agentProfile: D.m({ payload: true, shape: D.stream }),
       profileToken: D.m({ query: "profileToken", idempotency: true }),
       contentType: D.m({ header: "Content-Type" }),
     },

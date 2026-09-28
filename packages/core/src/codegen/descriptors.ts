@@ -169,7 +169,15 @@ export const makeDescriptorCompiler = (
       case "timestamp":
         return timestampExpr(traits, dir, location);
       case "blob":
-        if (traits[`${S}streaming`] !== undefined) return `${D}.stream`;
+        // Payload blobs targeting a named shape travel as streams (the
+        // generated type is a stream); prelude `smithy.api#Blob` payloads
+        // are raw bytes (Uint8Array).
+        if (
+          traits[`${S}streaming`] !== undefined ||
+          (payload && !target.startsWith(S))
+        ) {
+          return `${D}.stream`;
+        }
         if (dir === "out") return sensitive ? `${D}.secretBlob` : `${D}.blob`;
         // A non-streaming payload blob is sent as raw bytes (not base64 JSON)
         return payload ? `${D}.blob` : undefined;

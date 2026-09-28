@@ -3715,7 +3715,7 @@ export const getExport: API.OperationMethod<
     output: {
       contentType: D.m({ header: "Content-Type" }),
       contentDisposition: D.m({ header: "Content-Disposition" }),
-      body: D.m({ payload: true, shape: D.blob }),
+      body: D.m({ payload: true, shape: D.stream }),
     },
   },
   errors: [
@@ -4269,7 +4269,7 @@ export const getSdk: API.OperationMethod<
     output: {
       contentType: D.m({ header: "Content-Type" }),
       contentDisposition: D.m({ header: "Content-Disposition" }),
-      body: D.m({ payload: true, shape: D.blob }),
+      body: D.m({ payload: true, shape: D.stream }),
     },
   },
   errors: [
@@ -4755,7 +4755,7 @@ export const importApiKeys: API.OperationMethod<
     service: svc,
     http: "POST /apikeys?mode=import",
     input: {
-      body: D.m({ payload: true, shape: D.blob }),
+      body: D.m({ payload: true, shape: D.stream }),
       format: D.m({ query: "format" }),
       failOnWarnings: D.m({ query: "failonwarnings" }),
     },
@@ -4797,7 +4797,7 @@ export const importDocumentationParts: API.OperationMethod<
       restApiId: 0,
       mode: D.m({ query: "mode" }),
       failOnWarnings: D.m({ query: "failonwarnings" }),
-      body: D.m({ payload: true, shape: D.blob }),
+      body: D.m({ payload: true, shape: D.stream }),
     },
   },
   errors: [
@@ -4836,7 +4836,7 @@ export const importRestApi: API.OperationMethod<
     input: {
       failOnWarnings: D.m({ query: "failonwarnings" }),
       parameters: D.m({ queryParams: true }),
-      body: D.m({ payload: true, shape: D.blob }),
+      body: D.m({ payload: true, shape: D.stream }),
     },
     output: { createdDate: D.ts },
   },
@@ -5113,7 +5113,7 @@ export const putRestApi: API.OperationMethod<
       mode: D.m({ query: "mode" }),
       failOnWarnings: D.m({ query: "failonwarnings" }),
       parameters: D.m({ queryParams: true }),
-      body: D.m({ payload: true, shape: D.blob }),
+      body: D.m({ payload: true, shape: D.stream }),
     },
     output: { createdDate: D.ts },
   },

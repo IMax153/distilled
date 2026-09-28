@@ -220,11 +220,11 @@ export const sample: API.OperationMethod<
     input: {
       JobArn: D.m({ header: "X-Amzn-SageMaker-Job-Arn" }),
       TrajectoryId: D.m({ header: "X-Amzn-SageMaker-Trajectory-Id" }),
-      Body: D.m({ payload: true, shape: D.blob }),
+      Body: D.m({ payload: true, shape: D.stream }),
     },
     output: {
       ContentType: D.m({ header: "Content-Type" }),
-      Body: D.m({ payload: true, shape: D.secretBlob }),
+      Body: D.m({ payload: true, shape: D.stream }),
     },
   },
   errors: [
@@ -265,7 +265,7 @@ export const sampleWithResponseStream: API.OperationMethod<
     input: {
       JobArn: D.m({ header: "X-Amzn-SageMaker-Job-Arn" }),
       TrajectoryId: D.m({ header: "X-Amzn-SageMaker-Trajectory-Id" }),
-      Body: D.m({ payload: true, shape: D.blob }),
+      Body: D.m({ payload: true, shape: D.stream }),
     },
     output: {
       ContentType: D.m({ header: "Content-Type" }),
