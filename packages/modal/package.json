@@ -1,6 +1,6 @@
 {
   "name": "@distilled.cloud/modal",
-  "version": "1.0.0-rc.10",
+  "version": "1.0.0-rc.12",
   "repository": {
     "type": "git",
     "url": "https://github.com/alchemy-run/distilled",
@@ -50,12 +50,6 @@
       "bun": "./src/traits.ts",
       "worker": "./src/traits.ts",
       "default": "./lib/traits.js"
-    },
-    "./Services": {
-      "types": "./lib/services/index.d.ts",
-      "bun": "./src/services/index.ts",
-      "worker": "./src/services/index.ts",
-      "default": "./lib/services/index.js"
     },
     "./*": {
       "types": "./lib/services/*.d.ts",

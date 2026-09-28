@@ -19,6 +19,74 @@ import * as Retry from "../retry.ts";
 
 export type { FlyIoOpError, FlyIoOpContext };
 
+export class MachineReplacing
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedError<MachineReplacing>()("MachineReplacing", {
+      message: S.String,
+    }),
+    [
+      {
+        status: 412,
+        message:
+          "failed_precondition: machine getting replaced, refusing to start",
+      },
+    ],
+  ) {}
+
+export class MachineStartFromCreatedState
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedError<MachineStartFromCreatedState>()(
+      "MachineStartFromCreatedState",
+      {
+        message: S.String,
+      },
+    ),
+    [
+      {
+        message:
+          "failed_precondition: unable to start machine from current state: 'created'",
+      },
+    ],
+  ) {}
+
+export class MachineWaitTimeout
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedError<MachineWaitTimeout>()("MachineWaitTimeout", {
+      message: S.String,
+    }),
+    [
+      {
+        message: {
+          matches:
+            "^deadline_exceeded: machine failed to reach desired state, [a-z_]+, currently [a-z_]+$",
+        },
+      },
+    ],
+  ) {}
+
+export class NetworkNotFound
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedError<NetworkNotFound>()("NetworkNotFound", {
+      message: S.String,
+    }),
+    [{ status: 400, message: { includes: "network not found" } }],
+  ) {}
+
+export class VolumeAttached
+  extends /*@__PURE__*/ T.applyErrorMatchers(
+    /*@__PURE__*/ S.TaggedError<VolumeAttached>()("VolumeAttached", {
+      message: S.String,
+    }),
+    [
+      {
+        message: {
+          includes:
+            "failed_precondition: volume is currently bound to machine:",
+        },
+      },
+    ],
+  ) {}
+
 export interface AuthenticateTokenRequest {
   header?: string;
 }
@@ -479,11 +547,13 @@ export interface CordonMachineRequest {
   app_name: string;
   /** Machine ID */
   machine_id: string;
+  lease_nonce?: string;
 }
 export const CordonMachineRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     app_name: S.String.pipe(T.Label()),
     machine_id: S.String.pipe(T.Label()),
+    lease_nonce: S.optional(S.String.pipe(T.Header("fly-machine-lease-nonce"))),
   }).pipe(
     T.Http({
       method: "POST",
@@ -691,6 +761,21 @@ export const IPPair = /*@__PURE__*/ S.suspend(() =>
   }),
 ).annotate({ identifier: "IPPair" }) as any as S.Schema<IPPair>;
 
+/** Private network a Flycast (private_v6) address is reachable from. Null for public addresses. */
+export interface IPAssignmentNetwork {
+  /** Private network name; empty for the organization's default network. */
+  name?: string;
+  org_slug?: string;
+}
+export const IPAssignmentNetwork = /*@__PURE__*/ S.suspend(() =>
+  S.Struct({
+    name: S.optional(S.String),
+    org_slug: S.optional(S.String),
+  }),
+).annotate({
+  identifier: "IPAssignmentNetwork",
+}) as any as S.Schema<IPAssignmentNetwork>;
+
 export interface AssignIPResponse {
   created_at?: string;
   egress?: boolean;
@@ -700,6 +785,7 @@ export interface AssignIPResponse {
   region?: string;
   service_name?: string;
   shared?: boolean;
+  network?: IPAssignmentNetwork | null;
 }
 export const AssignIPResponse = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
@@ -710,6 +796,7 @@ export const AssignIPResponse = /*@__PURE__*/ S.suspend(() =>
     region: S.optional(S.String),
     service_name: S.optional(S.String),
     shared: S.optional(S.Boolean),
+    network: S.optional(S.NullOr(IPAssignmentNetwork)),
   }),
 ).annotate({
   identifier: "AssignIPResponse",
@@ -1453,8 +1540,16 @@ export const FlyMachineRootfs = /*@__PURE__*/ S.suspend(() =>
 }) as any as S.Schema<FlyMachineRootfs>;
 
 /** Accepts a string (new format) or a boolean (old format). For backward compatibility with older clients, the API continues to use booleans for "off" and "stop" in responses. * "off" or false - Do not autostop the Machine. * "stop" or true - Automatically stop the Machine. * "suspend" - Automatically suspend the Machine, falling back to a full stop if this is not possible. */
-export type FlyMachineServiceAutostop = "off" | "stop" | "suspend";
-export const FlyMachineServiceAutostop = S.String;
+export type FlyMachineServiceAutostopMode = "off" | "stop" | "suspend";
+export const FlyMachineServiceAutostopMode = S.String;
+
+/** Accepts off, stop, or suspend. For backward compatibility, responses encode off as false and stop as true. */
+export type FlyMachineServiceAutostop =
+  | FlyMachineServiceAutostopMode
+  | (string & {})
+  | boolean;
+export const FlyMachineServiceAutostop: S.Codec<FlyMachineServiceAutostop> =
+  /*@__PURE__*/ S.Union([FlyMachineServiceAutostopMode, S.Boolean]);
 
 export type FlyMachineServiceCheckHeadersList = Array<FlyMachineHTTPHeader>;
 export const FlyMachineServiceCheckHeadersList = /*@__PURE__*/ S.Array(
@@ -1661,7 +1756,7 @@ export const FlyMachineServicePortsList = /*@__PURE__*/ S.Array(
 export interface FlyMachineService {
   autostart?: boolean;
   /** Accepts a string (new format) or a boolean (old format). For backward compatibility with older clients, the API continues to use booleans for "off" and "stop" in responses. * "off" or false - Do not autostop the Machine. * "stop" or true - Automatically stop the Machine. * "suspend" - Automatically suspend the Machine, falling back to a full stop if this is not possible. */
-  autostop?: FlyMachineServiceAutostop | (string & {});
+  autostop?: FlyMachineServiceAutostop;
   /** An optional list of service checks */
   checks?: FlyMachineServiceChecksList;
   concurrency?: FlyMachineServiceConcurrency;
@@ -1963,13 +2058,16 @@ export interface CreateMachineLeaseRequest {
   description?: string;
   /** seconds lease will be valid */
   ttl?: number;
+  /** Existing lease nonce when refreshing; omit to acquire a new lease. Keep the nonce private. */
+  lease_nonce?: string;
 }
 export const CreateMachineLeaseRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     app_name: S.String.pipe(T.Label()),
     machine_id: S.String.pipe(T.Label()),
     description: S.optional(S.String),
-    ttl: S.optional(S.Number),
+    ttl: S.optional(S.Number.pipe(T.Query())),
+    lease_nonce: S.optional(S.String.pipe(T.Header("fly-machine-lease-nonce"))),
   }).pipe(
     T.Http({
       method: "POST",
@@ -2002,6 +2100,17 @@ export const Lease = /*@__PURE__*/ S.suspend(() =>
     version: S.optional(S.String),
   }),
 ).annotate({ identifier: "Lease" }) as any as S.Schema<Lease>;
+
+export interface MachineLease {
+  status?: string;
+  data?: Lease;
+}
+export const MachineLease = /*@__PURE__*/ S.suspend(() =>
+  S.Struct({
+    status: S.optional(S.String),
+    data: S.optional(Lease),
+  }),
+).annotate({ identifier: "MachineLease" }) as any as S.Schema<MachineLease>;
 
 /** Postgres major version. */
 export type CreatePostgresRequestPgMajorVersion = "16" | "17";
@@ -2790,12 +2899,14 @@ export interface DeleteMachineRequest {
   machine_id: string;
   /** Force kill the machine if it's running */
   force?: boolean;
+  lease_nonce?: string;
 }
 export const DeleteMachineRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     app_name: S.String.pipe(T.Label()),
     machine_id: S.String.pipe(T.Label()),
     force: S.optional(S.Boolean.pipe(T.Query())),
+    lease_nonce: S.optional(S.String.pipe(T.Header("fly-machine-lease-nonce"))),
   }).pipe(
     T.Http({
       method: "DELETE",
@@ -3937,22 +4048,24 @@ export const ListAppIPAssignmentsRequest = /*@__PURE__*/ S.suspend(() =>
 
 export interface IPAssignment {
   created_at?: string;
-  egress?: boolean;
   ip?: string;
   region?: string;
   service_name?: string;
   shared?: boolean;
   type?: string;
+  egress?: boolean;
+  network?: IPAssignmentNetwork | null;
 }
 export const IPAssignment = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     created_at: S.optional(S.String),
-    egress: S.optional(S.Boolean),
     ip: S.optional(S.String),
     region: S.optional(S.String),
     service_name: S.optional(S.String),
     shared: S.optional(S.Boolean),
     type: S.optional(S.String),
+    egress: S.optional(S.Boolean),
+    network: S.optional(S.NullOr(IPAssignmentNetwork)),
   }),
 ).annotate({ identifier: "IPAssignment" }) as any as S.Schema<IPAssignment>;
 
@@ -4890,11 +5003,14 @@ export interface MachinesReleaseLeaseRequest {
   app_name: string;
   /** Machine ID */
   machine_id: string;
+  /** Nonce of the lease to release. Keep the nonce private. */
+  lease_nonce: string;
 }
 export const MachinesReleaseLeaseRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     app_name: S.String.pipe(T.Label()),
     machine_id: S.String.pipe(T.Label()),
+    lease_nonce: S.String.pipe(T.Header("fly-machine-lease-nonce")),
   }).pipe(
     T.Http({
       method: "DELETE",
@@ -5091,6 +5207,7 @@ export interface RestartMachineRequest {
   timeout?: string;
   /** Unix signal name */
   signal?: RestartMachineRequestSignal | (string & {});
+  lease_nonce?: string;
 }
 export const RestartMachineRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
@@ -5098,6 +5215,7 @@ export const RestartMachineRequest = /*@__PURE__*/ S.suspend(() =>
     machine_id: S.String.pipe(T.Label()),
     timeout: S.optional(S.String.pipe(T.Query())),
     signal: S.optional(RestartMachineRequestSignal.pipe(T.Query())),
+    lease_nonce: S.optional(S.String.pipe(T.Header("fly-machine-lease-nonce"))),
   }).pipe(
     T.Http({
       method: "POST",
@@ -5320,11 +5438,13 @@ export interface StartMachineRequest {
   app_name: string;
   /** Machine ID */
   machine_id: string;
+  lease_nonce?: string;
 }
 export const StartMachineRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     app_name: S.String.pipe(T.Label()),
     machine_id: S.String.pipe(T.Label()),
+    lease_nonce: S.optional(S.String.pipe(T.Header("fly-machine-lease-nonce"))),
   }).pipe(
     T.Http({
       method: "POST",
@@ -5360,6 +5480,7 @@ export interface StopMachineRequest {
   machine_id: string;
   signal?: StopMachineRequestSignal | (string & {});
   timeout?: string;
+  lease_nonce?: string;
 }
 export const StopMachineRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
@@ -5367,6 +5488,7 @@ export const StopMachineRequest = /*@__PURE__*/ S.suspend(() =>
     machine_id: S.String.pipe(T.Label()),
     signal: S.optional(StopMachineRequestSignal),
     timeout: S.optional(S.String),
+    lease_nonce: S.optional(S.String.pipe(T.Header("fly-machine-lease-nonce"))),
   }).pipe(
     T.Http({
       method: "POST",
@@ -5390,11 +5512,13 @@ export interface SuspendMachineRequest {
   app_name: string;
   /** Machine ID */
   machine_id: string;
+  lease_nonce?: string;
 }
 export const SuspendMachineRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     app_name: S.String.pipe(T.Label()),
     machine_id: S.String.pipe(T.Label()),
+    lease_nonce: S.optional(S.String.pipe(T.Header("fly-machine-lease-nonce"))),
   }).pipe(
     T.Http({
       method: "POST",
@@ -5418,11 +5542,13 @@ export interface UncordonMachineRequest {
   app_name: string;
   /** Machine ID */
   machine_id: string;
+  lease_nonce?: string;
 }
 export const UncordonMachineRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
     app_name: S.String.pipe(T.Label()),
     machine_id: S.String.pipe(T.Label()),
+    lease_nonce: S.optional(S.String.pipe(T.Header("fly-machine-lease-nonce"))),
   }).pipe(
     T.Http({
       method: "POST",
@@ -5458,6 +5584,7 @@ export interface UpdateMachineRequest {
   skip_launch?: boolean;
   skip_secrets?: boolean;
   skip_service_registration?: boolean;
+  lease_nonce?: string;
 }
 export const UpdateMachineRequest = /*@__PURE__*/ S.suspend(() =>
   S.Struct({
@@ -5472,6 +5599,7 @@ export const UpdateMachineRequest = /*@__PURE__*/ S.suspend(() =>
     skip_launch: S.optional(S.Boolean),
     skip_secrets: S.optional(S.Boolean),
     skip_service_registration: S.optional(S.Boolean),
+    lease_nonce: S.optional(S.String.pipe(T.Header("fly-machine-lease-nonce"))),
   }).pipe(
     T.Http({
       method: "POST",
@@ -5818,6 +5946,7 @@ export type CordonMachineError =
   | BadRequest
   | Forbidden
   | NotFound
+  | Conflict
   | FlyIoOpError;
 /** Cordon Machine “Cordoning” a Machine refers to disabling its services, so the Fly Proxy won’t route requests to it. In flyctl this is used by blue/green deployments; one set of Machines is started up with services disabled, and when they are all healthy, the services are enabled on the new Machines and disabled on the old ones. */
 export const cordonMachine: API.OperationMethod<
@@ -5828,7 +5957,7 @@ export const cordonMachine: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   input: CordonMachineRequest,
   output: CordonMachineResponse,
-  errors: [BadRequest, Forbidden, NotFound],
+  errors: [BadRequest, Forbidden, NotFound, Conflict],
   protocol: FlyIoProtocol,
   retry: Retry.Retry,
 }));
@@ -5920,6 +6049,7 @@ export type CreateAppIPAssignmentError =
   | Forbidden
   | NotFound
   | Conflict
+  | NetworkNotFound
   | FlyIoOpError;
 /** Assign new IP address to app */
 export const createAppIPAssignment: API.OperationMethod<
@@ -5930,7 +6060,7 @@ export const createAppIPAssignment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateAppIPAssignmentRequest,
   output: AssignIPResponse,
-  errors: [BadRequest, Forbidden, NotFound, Conflict],
+  errors: [BadRequest, Forbidden, NotFound, Conflict, NetworkNotFound],
   protocol: FlyIoProtocol,
   retry: Retry.Retry,
 }));
@@ -5959,17 +6089,18 @@ export type CreateMachineLeaseError =
   | BadRequest
   | Forbidden
   | NotFound
+  | Conflict
   | FlyIoOpError;
 /** Create Lease Create a lease for a specific Machine within an app using the details provided in the request body. Machine leases can be used to obtain an exclusive lock on modifying a Machine. */
 export const createMachineLease: API.OperationMethod<
   CreateMachineLeaseRequest,
-  Lease,
+  MachineLease,
   CreateMachineLeaseError,
   FlyIoOpContext
 > = /*@__PURE__*/ API.make(() => ({
   input: CreateMachineLeaseRequest,
-  output: Lease,
-  errors: [BadRequest, Forbidden, NotFound],
+  output: MachineLease,
+  errors: [BadRequest, Forbidden, NotFound, Conflict],
   protocol: FlyIoProtocol,
   retry: Retry.Retry,
 }));
@@ -6339,7 +6470,12 @@ export const deleteSecretKey: API.OperationMethod<
   retry: Retry.Retry,
 }));
 
-export type DeleteVolumeError = Forbidden | NotFound | Conflict | FlyIoOpError;
+export type DeleteVolumeError =
+  | Forbidden
+  | NotFound
+  | Conflict
+  | VolumeAttached
+  | FlyIoOpError;
 /** Destroy Volume Delete a specific volume within an app by volume ID. */
 export const deleteVolume: API.OperationMethod<
   DeleteVolumeRequest,
@@ -6349,7 +6485,7 @@ export const deleteVolume: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   input: DeleteVolumeRequest,
   output: Volume,
-  errors: [Forbidden, NotFound, Conflict],
+  errors: [Forbidden, NotFound, Conflict, VolumeAttached],
   protocol: FlyIoProtocol,
   retry: Retry.Retry,
 }));
@@ -6412,7 +6548,12 @@ export const encryptSecretKey: API.OperationMethod<
   retry: Retry.Retry,
 }));
 
-export type ExecMachineError = BadRequest | Forbidden | NotFound | FlyIoOpError;
+export type ExecMachineError =
+  | BadRequest
+  | Forbidden
+  | NotFound
+  | Conflict
+  | FlyIoOpError;
 /** Execute Command Execute a command on a specific Machine and return the raw command output bytes. */
 export const execMachine: API.OperationMethod<
   ExecMachineRequest,
@@ -6422,7 +6563,7 @@ export const execMachine: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   input: ExecMachineRequest,
   output: Flydv1ExecResponse,
-  errors: [BadRequest, Forbidden, NotFound],
+  errors: [BadRequest, Forbidden, NotFound, Conflict],
   protocol: FlyIoProtocol,
   retry: Retry.Retry,
 }));
@@ -6550,12 +6691,12 @@ export type GetMachineLeaseError = Forbidden | NotFound | FlyIoOpError;
 /** Get Lease Retrieve the current lease of a specific Machine within an app. Machine leases can be used to obtain an exclusive lock on modifying a Machine. */
 export const getMachineLease: API.OperationMethod<
   GetMachineLeaseRequest,
-  Lease,
+  MachineLease,
   GetMachineLeaseError,
   FlyIoOpContext
 > = /*@__PURE__*/ API.make(() => ({
   input: GetMachineLeaseRequest,
-  output: Lease,
+  output: MachineLease,
   errors: [Forbidden, NotFound],
   protocol: FlyIoProtocol,
   retry: Retry.Retry,
@@ -7079,6 +7220,7 @@ export type RestartMachineError =
   | BadRequest
   | Forbidden
   | NotFound
+  | Conflict
   | FlyIoOpError;
 /** Restart Machine Restart a specific Machine within an app, with an optional timeout parameter. */
 export const restartMachine: API.OperationMethod<
@@ -7089,7 +7231,7 @@ export const restartMachine: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   input: RestartMachineRequest,
   output: RestartMachineResponse,
-  errors: [BadRequest, Forbidden, NotFound],
+  errors: [BadRequest, Forbidden, NotFound, Conflict],
   protocol: FlyIoProtocol,
   retry: Retry.Retry,
 }));
@@ -7214,6 +7356,8 @@ export type StartMachineError =
   | Forbidden
   | NotFound
   | Conflict
+  | MachineStartFromCreatedState
+  | MachineReplacing
   | FlyIoOpError;
 /** Start Machine Start a specific Machine within an app. */
 export const startMachine: API.OperationMethod<
@@ -7224,12 +7368,24 @@ export const startMachine: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   input: StartMachineRequest,
   output: StartMachineResponse,
-  errors: [BadRequest, Forbidden, NotFound, Conflict],
+  errors: [
+    BadRequest,
+    Forbidden,
+    NotFound,
+    Conflict,
+    MachineStartFromCreatedState,
+    MachineReplacing,
+  ],
   protocol: FlyIoProtocol,
   retry: Retry.Retry,
 }));
 
-export type StopMachineError = BadRequest | Forbidden | NotFound | FlyIoOpError;
+export type StopMachineError =
+  | BadRequest
+  | Forbidden
+  | NotFound
+  | Conflict
+  | FlyIoOpError;
 /** Stop Machine Stop a specific Machine within an app, with an optional request body to specify signal and timeout. */
 export const stopMachine: API.OperationMethod<
   StopMachineRequest,
@@ -7239,7 +7395,7 @@ export const stopMachine: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   input: StopMachineRequest,
   output: StopMachineResponse,
-  errors: [BadRequest, Forbidden, NotFound],
+  errors: [BadRequest, Forbidden, NotFound, Conflict],
   protocol: FlyIoProtocol,
   retry: Retry.Retry,
 }));
@@ -7248,6 +7404,7 @@ export type SuspendMachineError =
   | BadRequest
   | Forbidden
   | NotFound
+  | Conflict
   | FlyIoOpError;
 /** Suspend Machine Suspend a specific Machine within an app. The next start operation will attempt (but is not guaranteed) to resume the Machine from a snapshot taken at suspension time, rather than performing a cold boot. */
 export const suspendMachine: API.OperationMethod<
@@ -7258,7 +7415,7 @@ export const suspendMachine: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   input: SuspendMachineRequest,
   output: SuspendMachineResponse,
-  errors: [BadRequest, Forbidden, NotFound],
+  errors: [BadRequest, Forbidden, NotFound, Conflict],
   protocol: FlyIoProtocol,
   retry: Retry.Retry,
 }));
@@ -7267,6 +7424,7 @@ export type UncordonMachineError =
   | BadRequest
   | Forbidden
   | NotFound
+  | Conflict
   | FlyIoOpError;
 /** Uncordon Machine “Cordoning” a Machine refers to disabling its services, so the Fly Proxy won’t route requests to it. In flyctl this is used by blue/green deployments; one set of Machines is started up with services disabled, and when they are all healthy, the services are enabled on the new Machines and disabled on the old ones. */
 export const uncordonMachine: API.OperationMethod<
@@ -7277,7 +7435,7 @@ export const uncordonMachine: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   input: UncordonMachineRequest,
   output: UncordonMachineResponse,
-  errors: [BadRequest, Forbidden, NotFound],
+  errors: [BadRequest, Forbidden, NotFound, Conflict],
   protocol: FlyIoProtocol,
   retry: Retry.Retry,
 }));
@@ -7422,6 +7580,7 @@ export type WaitMachineError =
   | Forbidden
   | NotFound
   | GatewayTimeout
+  | MachineWaitTimeout
   | FlyIoOpError;
 /** Wait for State Wait for a Machine to reach a specific state. Specify the desired state with the state parameter. See the [Machine states table](https://fly.io/docs/machines/working-with-machines/#machine-states) for a list of possible states. The default for this parameter is `started`. This request will block for up to 60 seconds. Set a shorter timeout with the timeout parameter. */
 export const waitMachine: API.OperationMethod<
@@ -7432,7 +7591,7 @@ export const waitMachine: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   input: WaitMachineRequest,
   output: WaitMachineResponse,
-  errors: [BadRequest, Forbidden, NotFound, GatewayTimeout],
+  errors: [BadRequest, Forbidden, NotFound, GatewayTimeout, MachineWaitTimeout],
   protocol: FlyIoProtocol,
   retry: Retry.Retry,
 }));

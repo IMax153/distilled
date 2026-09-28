@@ -1,6 +1,10 @@
 {
   "files": [],
   "references": [
+    { "path": "./packages/acme/tsconfig.json" },
+    { "path": "./packages/acme/tsconfig.scripts.json" },
+    { "path": "./packages/zerossl/tsconfig.json" },
+    { "path": "./packages/zerossl/tsconfig.scripts.json" },
     {
       "path": "./packages/core/tsconfig.json"
     },
@@ -492,6 +496,24 @@
     },
     {
       "path": "./packages/typesafe-ai/tsconfig.test.json"
+    },
+    {
+      "path": "./packages/stackit/tsconfig.json"
+    },
+    {
+      "path": "./packages/stackit/tsconfig.scripts.json"
+    },
+    {
+      "path": "./packages/daytona/tsconfig.json"
+    },
+    {
+      "path": "./packages/daytona/tsconfig.scripts.json"
+    },
+    {
+      "path": "./packages/boat-dev/tsconfig.json"
+    },
+    {
+      "path": "./packages/boat-dev/tsconfig.scripts.json"
     }
   ]
 }

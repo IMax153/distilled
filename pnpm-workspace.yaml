@@ -5,6 +5,9 @@ packages:
   - stacks/*
   # Benchmark suites. Not published, not part of `tsc -b`; run with bun.
   - benches/*
+  # Landing page + Alchemy deploy stack. Private, not in the SDK tsconfig
+  # graph; CI typechecks it with `pnpm --filter "./website" run typecheck`.
+  - website
 
 allowBuilds:
   msgpackr-extract: true
@@ -12,19 +15,15 @@ allowBuilds:
   workerd: true
 
 catalog:
-  "@aws-sdk/types": "^3.974.3"
-  "@effect/platform-bun": ">=4.0.0-rc.115 || >=4.0.0"
-  "@effect/platform-node": ">=4.0.0-rc.115 || >=4.0.0"
+  "@effect/platform-bun": ">=4.0.0-rc.117 || >=4.0.0"
+  "@effect/platform-node": ">=4.0.0-rc.117 || >=4.0.0"
   "@oxc-project/types": "^0.146.0"
-  "@smithy/shared-ini-file-loader": "^4.7.0"
   "@smithy/types": "^4.17.2"
-  "@smithy/util-base64": "^4.6.0"
   "@types/bun": "1.3.14"
   "@types/node": "26.2.0"
   changelogithub: "^13.16.1"
   dedent: "^1.7.2"
-  effect: ">=4.0.0-rc.115 || >=4.0.0"
-  fast-xml-parser: "^5.10.1"
+  effect: ">=4.0.0-rc.117 || >=4.0.0"
   graphql: "^16.14.2"
   husky: "^9.1.7"
   mitata: "^1.0.34"
@@ -46,13 +45,13 @@ catalogs:
     alchemy: "2.0.0-beta.77"
     effect: "4.0.0-rc.112"
 minimumReleaseAgeExclude:
-  - "@effect/atom-react@4.0.0-rc.115"
-  - "@effect/platform-bun@4.0.0-rc.115"
-  - "@effect/platform-node-shared@4.0.0-rc.115"
-  - "@effect/platform-node@4.0.0-rc.115"
-  - "@effect/sql-d1@4.0.0-rc.115"
-  - "@effect/sql-mysql2@4.0.0-rc.115"
-  - "@effect/sql-pg@4.0.0-rc.115"
-  - "@effect/sql-sqlite-do@4.0.0-rc.115"
-  - "@effect/vitest@4.0.0-rc.115"
-  - effect@4.0.0-rc.115
+  - "@effect/atom-react@4.0.0-rc.117"
+  - "@effect/platform-bun@4.0.0-rc.117"
+  - "@effect/platform-node-shared@4.0.0-rc.117"
+  - "@effect/platform-node@4.0.0-rc.117"
+  - "@effect/sql-d1@4.0.0-rc.117"
+  - "@effect/sql-mysql2@4.0.0-rc.117"
+  - "@effect/sql-pg@4.0.0-rc.117"
+  - "@effect/sql-sqlite-do@4.0.0-rc.117"
+  - "@effect/vitest@4.0.0-rc.117"
+  - effect@4.0.0-rc.117

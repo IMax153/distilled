@@ -196,6 +196,8 @@ export interface SdkSpec {
   readonly prelude?: Record<string, string>;
   /** Prelude scalar → TS type map. Default {@link TS_JSON_PRELUDE}. */
   readonly tsPrelude?: Record<string, string>;
+  /** Use Codec for service-free, same-type schemas; Schema leaves services unspecified. */
+  readonly schemaType?: "Schema" | "Codec";
   /** Wire member name → TS-facing name. Default: identity. */
   readonly memberName?: (name: string) => string;
   /** Operation shape name → exported const name. Default: lowerFirst. */
@@ -272,6 +274,11 @@ export interface SdkSpec {
   readonly memberExtraPipes?: (m: EmittedMember) => string[];
   /** Full override of member pipe emission (rarely needed). */
   readonly memberPipes?: (m: EmittedMember) => string[];
+  /** Override the value schema before nullability, bindings and optionality. */
+  readonly memberSchema?: (
+    m: EmittedMember,
+    ref: (target: string) => string,
+  ) => string | undefined;
   /** Function override for member TS types beyond the binding table. */
   readonly memberTsType?: (
     m: EmittedMember,
@@ -353,8 +360,9 @@ export interface SdkSpec {
    * and the schema is `S.Unknown.pipe(T.UnionCases([...case key sets]))` —
    * the protocol discriminates by key-set at decode time (for APIs that
    * return every case's keys with nulls, like Cloudflare's).
+   * `"primitive"`: emit unwrapped unions of primitive or enum values.
    */
-  readonly unionStyle?: "opaque-cases";
+  readonly unionStyle?: "opaque-cases" | "primitive";
   /** Full override of union emission. */
   readonly union?: (ctx: {
     readonly name: string;
@@ -414,6 +422,19 @@ export interface SdkSpec {
      * `operationName` and `endpointHostPrefix`).
      */
     readonly extraConfig?: (ctx: OperationEmit) => string[];
+    /**
+     * Per-operation `protocol` / `contextType` replacing the declared
+     * defaults, e.g. an unauthenticated login endpoint on a public protocol
+     * whose context has no credentials. Return `undefined` for the defaults.
+     * The header only imports the defaults; a spec that overrides must add
+     * the extra imports itself (see {@link SdkSpec.postProcess}).
+     */
+    readonly overrides?: (ctx: OperationEmit) =>
+      | {
+          readonly protocol?: string;
+          readonly contextType?: string;
+        }
+      | undefined;
   };
   /** Full override of operation const emission. */
   readonly operation?: (ctx: OperationEmit) => string;
@@ -733,7 +754,9 @@ export const generateService = (
     )?.tsType;
 
   const emitMember = (info: EmittedMember, selfIdx: number): string => {
-    let expr = ref(info.target, selfIdx);
+    let expr =
+      spec.memberSchema?.(info, (target) => ref(target, selfIdx)) ??
+      ref(info.target, selfIdx);
     if (info.nullable) expr = `S.NullOr(${expr})`;
     const pipes = memberPipes(info);
     if (pipes.length) expr = `${expr}.pipe(${pipes.join(", ")})`;
@@ -918,6 +941,7 @@ export const generateService = (
             pure,
             multiline: true,
             annotateIdentifier: true,
+            castTo: `S.${spec.schemaType ?? "Schema"}<${name}>`,
             expr: `${ref(m.target, i)}.pipe(${rootPipes.join(", ")})`,
           }),
         );
@@ -996,6 +1020,7 @@ export const generateService = (
             pure,
             multiline: true,
             annotateIdentifier: true,
+            castTo: `S.${spec.schemaType ?? "Schema"}<${name}>`,
             expr: `${struct}${tail}`,
           }),
         );
@@ -1009,7 +1034,7 @@ export const generateService = (
         `export type ${name} = Array<${tsRefAt(d.member.target, id)}${nullable ? " | null" : ""}>;`,
       );
       out.push(
-        `export const ${name} = ${pure}S.Array(${nullable ? `S.NullOr(${item})` : item}) as any as S.Schema<${name}>;\n`,
+        `export const ${name} = ${pure}S.Array(${nullable ? `S.NullOr(${item})` : item}) as any as S.${spec.schemaType ?? "Schema"}<${name}>;\n`,
       );
     } else if (d.type === "map") {
       const nullable =
@@ -1020,7 +1045,7 @@ export const generateService = (
         `export type ${name} = { [key: string]: ${tsRefAt(d.value.target, id)}${nullable ? " | null" : ""} | undefined };`,
       );
       out.push(
-        `export const ${name} = ${pure}S.Record(S.String, ${nullable ? `S.NullOr(${value})` : value}) as any as S.Schema<${name}>;\n`,
+        `export const ${name} = ${pure}S.Record(S.String, ${nullable ? `S.NullOr(${value})` : value}) as any as S.${spec.schemaType ?? "Schema"}<${name}>;\n`,
       );
     } else if (d.type === "union") {
       // A union arm targeting the union itself carries no information
@@ -1039,6 +1064,28 @@ export const generateService = (
       });
       if (spec.union) {
         out.push(...spec.union({ name, caseTargets, caseKeys, tsRef }));
+      } else if (
+        spec.unionStyle === "primitive" &&
+        caseTargets.length > 0 &&
+        caseTargets.every(
+          (target) =>
+            ["string", "number", "boolean"].includes(tsRef(target)) ||
+            shapes[target]?.type === "enum" ||
+            shapes[target]?.type === "intEnum",
+        )
+      ) {
+        // Primitive unions keep response enums open to match S.String/S.Number.
+        const primitiveType = (target: string) => {
+          const type = tsRef(target);
+          if (shapes[target]?.type === "enum") return `${type} | (string & {})`;
+          if (shapes[target]?.type === "intEnum")
+            return `${type} | (number & {})`;
+          return type;
+        };
+        out.push(
+          `export type ${name} = ${caseTargets.map(primitiveType).join(" | ")};`,
+          `export const ${name}: S.Codec<${name}> = ${pure}S.Union([${caseTargets.map((t) => ref(t, i)).join(", ")}]);\n`,
+        );
       } else if (spec.unionStyle === "opaque-cases") {
         const disc = unionDiscriminator(caseTargets);
         out.push(
@@ -1123,6 +1170,9 @@ export const generateService = (
         throw new Error("SdkSpec needs either operationDecl or operation");
       }
       const errList = [...ctx.errorNames, ...decl.commonErrorClasses];
+      const overrides = decl.overrides?.(ctx);
+      const contextType = overrides?.contextType ?? decl.contextType;
+      const protocol = overrides?.protocol ?? decl.protocol;
       const paginated = ctx.pagination !== undefined;
       const itemTsType = paginated
         ? paginatedItemTsType(
@@ -1135,7 +1185,7 @@ export const generateService = (
         `  ${ctx.inputName},\n` +
         `  ${ctx.outputTsType},\n` +
         `  ${ctx.opName}Error,\n` +
-        `  ${decl.contextType}` +
+        `  ${contextType}` +
         (itemTsType ? `,\n  ${itemTsType}\n` : `\n`) +
         `>`;
       const config =
@@ -1143,7 +1193,7 @@ export const generateService = (
         `  input: ${ctx.inputName},\n` +
         `  output: ${ctx.outputSchema},\n` +
         `  errors: [${errList.join(", ")}],\n` +
-        `  protocol: ${(paginated && opProfile.get(ctx.op.id)?.protocol) || decl.protocol},\n` +
+        `  protocol: ${(paginated && opProfile.get(ctx.op.id)?.protocol) || protocol},\n` +
         `  retry: ${decl.retry},\n` +
         (decl.extraConfig?.(ctx) ?? []).map((l) => `  ${l},\n`).join("") +
         (paginated

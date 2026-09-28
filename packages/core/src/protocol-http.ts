@@ -25,6 +25,7 @@ import {
   stringEncodedSymbol,
   unionCasesSymbol,
   type ErrorMatcher,
+  type ErrorTextMatcher,
   type HttpTrait,
   type KeyDictionaryEntries,
   type UnionDiscriminator,
@@ -149,6 +150,18 @@ export const mapKeysByDictionary = (
  * TS-cased content still reaches the wire in wire case. Content with no
  * dictionary in scope passes through verbatim.
  */
+/**
+ * Value form for a `StringEncoded()` member: the string spelling of the
+ * value, element-wise for lists. `null` stays `null` — an API that models a
+ * flag as `"true" | "false"` still means "unset" by null, not `"null"`.
+ */
+const stringEncode = (value: unknown): unknown =>
+  value === null
+    ? null
+    : Array.isArray(value)
+      ? value.map(stringEncode)
+      : String(value);
+
 export const mapKeys = (
   ast: AST.AST,
   value: unknown,
@@ -294,7 +307,13 @@ export const mapKeys = (
       consumed.add(from);
       const v = (value as Record<string, unknown>)[from];
       if (v === undefined) continue;
-      out[to] = mapKeys(p.type, v, direction, dict);
+      // A `StringEncoded()` member nested in a body struct (e.g. Azure's
+      // `hardwareProfile.dynamicMemoryEnabled`) stringifies here — the
+      // top-level pass in `buildRequest` only sees the outermost member.
+      out[to] =
+        direction === "encode" && hasPropAnn(p, stringEncodedSymbol)
+          ? stringEncode(v)
+          : mapKeys(p.type, v, direction, dict);
     }
     for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
       if (consumed.has(k) || v === undefined) continue;
@@ -334,18 +353,6 @@ const BODYLESS = new Set(["GET", "HEAD"]);
  * filter matching nothing — the call "succeeds" with zero results and the
  * bug is invisible to the caller.
  */
-/**
- * Value form for a `StringEncoded()` member: the string spelling of the
- * value, element-wise for lists. `null` stays `null` — an API that models a
- * flag as `"true" | "false"` still means "unset" by null, not `"null"`.
- */
-const stringEncode = (value: unknown): unknown =>
-  value === null
-    ? null
-    : Array.isArray(value)
-      ? value.map(stringEncode)
-      : String(value);
-
 const appendQuery = (
   query: URLSearchParams,
   name: string,
@@ -536,12 +543,7 @@ export const buildRequest = ({
   const qs = query.toString();
   const url = `${baseUrl}${uri}${qs ? `?${qs}` : ""}`;
   if (process.env.DISTILLED_DEBUG_HTTP) {
-    console.error(
-      `[distilled] ${http.method} ${url}` +
-        (Object.keys(body).length
-          ? ` body=${JSON.stringify(body).slice(0, 400)}`
-          : ""),
-    );
+    console.error(`[distilled] -> ${http.method} ${http.uri}`);
   }
 
   let request = HttpClientRequest.make(http.method)(url).pipe(
@@ -552,8 +554,7 @@ export const buildRequest = ({
     // JSON-encoded under their wire name), each file appends under its own
     // filename. A whole-body member (T.HttpBody) that is a record of files
     // becomes one part per entry (e.g. asset upload: { <hash>: File }).
-    // File/Blob → binary part (filename = File.name), array of files → each
-    // appended, object → JSON string, primitive → string.
+    // Files and byte buffers become binary parts; objects become JSON parts.
     const form = new FormData();
     const parts =
       rawBody !== undefined && typeof rawBody === "object"
@@ -565,6 +566,10 @@ export const buildRequest = ({
       if (value === undefined || value === null) continue;
       if (isFileOrBlob(value)) {
         form.append(key, value, value instanceof File ? value.name : key);
+      } else if (value instanceof Uint8Array || value instanceof ArrayBuffer) {
+        const bytes =
+          value instanceof Uint8Array ? new Uint8Array(value).buffer : value;
+        form.append(key, new Blob([bytes]), key);
       } else if (
         Array.isArray(value) &&
         value.length > 0 &&
@@ -666,59 +671,116 @@ export const buildRequest = ({
 
 //#region Typed error matching
 
-/**
- * Whether one matcher matches one wire error: every present field must
- * match; a matcher (or a message object) with no constraints matches
- * nothing.
- */
-export const matchesExpression = (
-  m: ErrorMatcher,
-  code: number | undefined,
-  status: number,
-  message: string,
-): boolean => {
-  if (m.code === undefined && m.status === undefined && m.message === undefined)
-    return false;
-  if (m.code !== undefined && m.code !== code) return false;
-  if (m.status !== undefined && m.status !== status) return false;
-  if (m.message !== undefined) {
-    if (typeof m.message === "string") {
-      if (m.message !== message) return false;
-    } else {
-      const { includes, matches } = m.message;
-      if (includes === undefined && matches === undefined) return false;
-      if (includes !== undefined && !message.includes(includes)) return false;
-      if (matches !== undefined && !new RegExp(matches).test(message))
-        return false;
-    }
+/** Parsed response metadata supplied by a protocol after it detects a failure. */
+export interface ErrorResponse {
+  readonly body?: unknown;
+  readonly headers?: Readonly<Record<string, string | undefined>>;
+}
+
+const matchesText = (matcher: ErrorTextMatcher, value: unknown): boolean => {
+  if (typeof value !== "string") return false;
+  if (typeof matcher === "string") return matcher === value;
+  const { includes, matches } = matcher;
+  return (
+    (includes !== undefined || matches !== undefined) &&
+    (includes === undefined || value.includes(includes)) &&
+    (matches === undefined || new RegExp(matches).test(value))
+  );
+};
+
+// Own properties only: inherited properties are not JSON response members.
+const atPointer = (body: unknown, pointer: string): unknown => {
+  if (pointer === "") return body;
+  if (!pointer.startsWith("/") || /~(?![01])/u.test(pointer)) return undefined;
+  let value = body;
+  for (const segment of pointer.slice(1).split("/")) {
+    const key = segment.replace(/~1/g, "/").replace(/~0/g, "~");
+    if (
+      value === null ||
+      typeof value !== "object" ||
+      !Object.hasOwn(value, key) ||
+      (Array.isArray(value) && !/^(0|[1-9][0-9]*)$/.test(key))
+    )
+      return undefined;
+    value = (value as Record<string, unknown>)[key];
   }
-  return true;
+  return value;
 };
 
 const matcherSpecificity = (m: ErrorMatcher): number =>
   (m.code !== undefined ? 1 : 0) +
   (m.status !== undefined ? 1 : 0) +
-  (m.message !== undefined ? 1 : 0);
+  (m.message !== undefined ? 1 : 0) +
+  (m.body === undefined ? 0 : Object.keys(m.body).length) +
+  (m.headers === undefined ? 0 : Object.keys(m.headers).length);
+
+/** Every supplied constraint must match; an unconstrained matcher matches nothing. */
+export const matchesExpression = (
+  m: ErrorMatcher,
+  code: number | undefined,
+  status: number,
+  message: string,
+  response: ErrorResponse = {},
+): boolean => {
+  if (
+    m.code === undefined &&
+    m.status === undefined &&
+    m.message === undefined &&
+    matcherSpecificity(m) === 0
+  )
+    return false;
+  if (m.code !== undefined && m.code !== code) return false;
+  if (m.status !== undefined && m.status !== status) return false;
+  if (m.message !== undefined && !matchesText(m.message, message)) return false;
+  if (m.body !== undefined) {
+    for (const [pointer, expected] of Object.entries(m.body)) {
+      const actual = atPointer(response.body, pointer);
+      if (
+        typeof expected === "string" ||
+        (expected !== null && typeof expected === "object")
+      ) {
+        if (!matchesText(expected, actual)) return false;
+      } else if (actual !== expected) return false;
+    }
+  }
+  if (m.headers !== undefined) {
+    for (const [name, expected] of Object.entries(m.headers)) {
+      if (response.headers === undefined) return false;
+      const actual = Object.entries(response.headers).find(
+        ([key]) => key.toLowerCase() === name.toLowerCase(),
+      )?.[1];
+      if (!matchesText(expected, actual)) return false;
+    }
+  }
+  return true;
+};
 
 /**
  * Pick the operation's typed error class for a failed response: among all
  * declared classes whose matchers (see `applyErrorMatchers`) match the wire
  * failure, the most specific matcher wins (ties break by declaration order).
+ * Empty error lists use an HTTP-status message so body/header-only failures can
+ * still match. The constructor receives the raw body and headers as well as
+ * code/message; error schemas can declare these fields to expose them to callers.
  */
 export const matchTypedError = (
   errorClasses: ReadonlyArray<unknown>,
   status: number,
   errors: ReadonlyArray<{ code?: number; message: string }>,
+  response: ErrorResponse = {},
 ): unknown | undefined => {
   let best:
     | { cls: unknown; specificity: number; code?: number; message: string }
     | undefined;
+  const wireErrors =
+    errors.length > 0 ? errors : [{ message: `HTTP ${status}` }];
   for (const cls of errorClasses) {
     const matchers = getErrorMatchers(cls);
     if (!matchers) continue;
     for (const m of matchers) {
-      for (const e of errors) {
-        if (!matchesExpression(m, e.code, status, e.message)) continue;
+      for (const e of wireErrors) {
+        if (!matchesExpression(m, e.code, status, e.message, response))
+          continue;
         const specificity = matcherSpecificity(m);
         if (!best || specificity > best.specificity) {
           best = { cls, specificity, code: e.code, message: e.message };
@@ -730,6 +792,8 @@ export const matchTypedError = (
   return new (best.cls as new (args: any) => unknown)({
     code: best.code ?? 0,
     message: best.message,
+    body: response.body,
+    headers: response.headers,
   });
 };
 //#endregion
