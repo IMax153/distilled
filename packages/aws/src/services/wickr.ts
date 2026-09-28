@@ -917,6 +917,16 @@ export const batchCreateUser: API.OperationMethod<
     service: svc,
     http: "POST /networks/{networkId}/users",
     input: {
+      networkId: 0,
+      users: D.list({
+        firstName: 0,
+        lastName: 0,
+        securityGroupIds: 0,
+        username: 0,
+        inviteCode: 0,
+        inviteCodeTtl: 0,
+        codeValidation: 0,
+      }),
       clientToken: D.m({ header: "X-Client-Token", idempotency: true }),
     },
     output: { successful: D.list(o_User) },
@@ -958,6 +968,8 @@ export const batchDeleteUser: API.OperationMethod<
     service: svc,
     http: "POST /networks/{networkId}/users/batch-delete",
     input: {
+      networkId: 0,
+      userIds: 0,
       clientToken: D.m({ header: "X-Client-Token", idempotency: true }),
     },
     body: true,
@@ -998,6 +1010,8 @@ export const batchLookupUserUname: API.OperationMethod<
     service: svc,
     http: "POST /networks/{networkId}/users/uname-lookup",
     input: {
+      networkId: 0,
+      unames: 0,
       clientToken: D.m({ header: "X-Client-Token", idempotency: true }),
     },
     body: true,
@@ -1038,6 +1052,8 @@ export const batchReinviteUser: API.OperationMethod<
     service: svc,
     http: "PATCH /networks/{networkId}/users/re-invite",
     input: {
+      networkId: 0,
+      userIds: 0,
       clientToken: D.m({ header: "X-Client-Token", idempotency: true }),
     },
     body: true,
@@ -1078,6 +1094,9 @@ export const batchResetDevicesForUser: API.OperationMethod<
     service: svc,
     http: "PATCH /networks/{networkId}/users/{userId}/devices",
     input: {
+      networkId: 0,
+      userId: 0,
+      appIds: 0,
       clientToken: D.m({ header: "X-Client-Token", idempotency: true }),
     },
     body: true,
@@ -1118,7 +1137,9 @@ export const batchToggleUserSuspendStatus: API.OperationMethod<
     service: svc,
     http: "PATCH /networks/{networkId}/users/toggleSuspend",
     input: {
+      networkId: 0,
       suspend: D.m({ query: "suspend" }),
+      userIds: 0,
       clientToken: D.m({ header: "X-Client-Token", idempotency: true }),
     },
     body: true,
@@ -1158,6 +1179,13 @@ export const createBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /networks/{networkId}/bots",
+    input: {
+      networkId: 0,
+      username: 0,
+      displayName: 0,
+      groupId: 0,
+      challenge: 0,
+    },
     body: true,
   },
   errors: [
@@ -1195,6 +1223,7 @@ export const createDataRetentionBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /networks/{networkId}/data-retention-bots",
+    input: { networkId: 0 },
   },
   errors: [
     BadRequestError,
@@ -1231,6 +1260,7 @@ export const createDataRetentionBotChallenge: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /networks/{networkId}/data-retention-bots/challenge",
+    input: { networkId: 0 },
     output: { challenge: D.secret },
   },
   errors: [
@@ -1265,7 +1295,17 @@ export const createNetwork: API.OperationMethod<
   CreateNetworkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /networks", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /networks",
+    input: {
+      networkName: 0,
+      accessLevel: 0,
+      enablePremiumFreeTrial: 0,
+      encryptionKeyArn: 0,
+    },
+    body: true,
+  },
   errors: [
     BadRequestError,
     ForbiddenError,
@@ -1302,6 +1342,20 @@ export const createSecurityGroup: API.OperationMethod<
     service: svc,
     http: "POST /networks/{networkId}/security-groups",
     input: {
+      networkId: 0,
+      name: 0,
+      securityGroupSettings: {
+        lockoutThreshold: 0,
+        permittedNetworks: 0,
+        enableGuestFederation: 0,
+        globalFederation: 0,
+        federationMode: 0,
+        enableRestrictedGlobalFederation: 0,
+        permittedWickrAwsNetworks: D.list(i_WickrAwsNetworks),
+        permittedWickrEnterpriseNetworks: D.list(
+          i_PermittedWickrEnterpriseNetwork,
+        ),
+      },
       clientToken: D.m({ header: "X-Client-Token", idempotency: true }),
     },
     body: true,
@@ -1341,6 +1395,7 @@ export const deleteBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /networks/{networkId}/bots/{botId}",
+    input: { networkId: 0, botId: 0 },
   },
   errors: [
     BadRequestError,
@@ -1377,6 +1432,7 @@ export const deleteDataRetentionBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /networks/{networkId}/data-retention-bots",
+    input: { networkId: 0 },
   },
   errors: [
     BadRequestError,
@@ -1414,6 +1470,7 @@ export const deleteNetwork: API.OperationMethod<
     service: svc,
     http: "DELETE /networks/{networkId}",
     input: {
+      networkId: 0,
       clientToken: D.m({ header: "X-Client-Token", idempotency: true }),
     },
   },
@@ -1452,6 +1509,7 @@ export const deleteSecurityGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /networks/{networkId}/security-groups/{groupId}",
+    input: { networkId: 0, groupId: 0 },
   },
   errors: [
     BadRequestError,
@@ -1485,7 +1543,11 @@ export const getBot: API.OperationMethod<
   GetBotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /networks/{networkId}/bots/{botId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /networks/{networkId}/bots/{botId}",
+    input: { networkId: 0, botId: 0 },
+  },
   errors: [
     BadRequestError,
     ForbiddenError,
@@ -1518,7 +1580,11 @@ export const getBotsCount: API.OperationMethod<
   GetBotsCountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /networks/{networkId}/bots/count" },
+  descriptor: {
+    service: svc,
+    http: "GET /networks/{networkId}/bots/count",
+    input: { networkId: 0 },
+  },
   errors: [
     BadRequestError,
     ForbiddenError,
@@ -1554,6 +1620,7 @@ export const getDataRetentionBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /networks/{networkId}/data-retention-bots",
+    input: { networkId: 0 },
   },
   errors: [
     BadRequestError,
@@ -1590,6 +1657,7 @@ export const getGuestUserHistoryCount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /networks/{networkId}/guest-users/count",
+    input: { networkId: 0 },
   },
   errors: [
     BadRequestError,
@@ -1623,7 +1691,11 @@ export const getNetwork: API.OperationMethod<
   GetNetworkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /networks/{networkId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /networks/{networkId}",
+    input: { networkId: 0 },
+  },
   errors: [
     BadRequestError,
     ForbiddenError,
@@ -1656,7 +1728,11 @@ export const getNetworkSettings: API.OperationMethod<
   GetNetworkSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /networks/{networkId}/settings" },
+  descriptor: {
+    service: svc,
+    http: "GET /networks/{networkId}/settings",
+    input: { networkId: 0 },
+  },
   errors: [
     BadRequestError,
     ForbiddenError,
@@ -1693,6 +1769,7 @@ export const getOidcInfo: API.OperationMethod<
     service: svc,
     http: "GET /networks/{networkId}/oidc",
     input: {
+      networkId: 0,
       clientId: D.m({ query: "clientId" }),
       code: D.m({ query: "code" }),
       grantType: D.m({ query: "grantType" }),
@@ -1739,6 +1816,7 @@ export const getOpentdfConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /networks/{networkId}/tdf",
+    input: { networkId: 0 },
     output: { clientSecret: D.secret },
   },
   errors: [
@@ -1776,6 +1854,7 @@ export const getSecurityGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /networks/{networkId}/security-groups/{groupId}",
+    input: { networkId: 0, groupId: 0 },
   },
   errors: [
     BadRequestError,
@@ -1813,6 +1892,8 @@ export const getUser: API.OperationMethod<
     service: svc,
     http: "GET /networks/{networkId}/users/{userId}",
     input: {
+      networkId: 0,
+      userId: 0,
       startTime: D.m({ query: "startTime", shape: D.tsAs("epoch-seconds") }),
       endTime: D.m({ query: "endTime", shape: D.tsAs("epoch-seconds") }),
     },
@@ -1850,7 +1931,11 @@ export const getUsersCount: API.OperationMethod<
   GetUsersCountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /networks/{networkId}/users/count" },
+  descriptor: {
+    service: svc,
+    http: "GET /networks/{networkId}/users/count",
+    input: { networkId: 0 },
+  },
   errors: [
     BadRequestError,
     ForbiddenError,
@@ -1888,6 +1973,7 @@ export const listBlockedGuestUsers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /networks/{networkId}/guest-users/blocklist",
     input: {
+      networkId: 0,
       maxResults: D.m({ query: "maxResults" }),
       sortDirection: D.m({ query: "sortDirection" }),
       sortFields: D.m({ query: "sortFields" }),
@@ -1939,6 +2025,7 @@ export const listBots: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /networks/{networkId}/bots",
     input: {
+      networkId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       sortFields: D.m({ query: "sortFields" }),
@@ -1992,6 +2079,8 @@ export const listDevicesForUser: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /networks/{networkId}/users/{userId}/devices",
     input: {
+      networkId: 0,
+      userId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       sortFields: D.m({ query: "sortFields" }),
@@ -2041,6 +2130,7 @@ export const listGuestUsers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /networks/{networkId}/guest-users",
     input: {
+      networkId: 0,
       maxResults: D.m({ query: "maxResults" }),
       sortDirection: D.m({ query: "sortDirection" }),
       sortFields: D.m({ query: "sortFields" }),
@@ -2139,6 +2229,7 @@ export const listSecurityGroups: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /networks/{networkId}/security-groups",
     input: {
+      networkId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       sortFields: D.m({ query: "sortFields" }),
@@ -2188,6 +2279,8 @@ export const listSecurityGroupUsers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /networks/{networkId}/security-groups/{groupId}/users",
     input: {
+      networkId: 0,
+      groupId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       sortFields: D.m({ query: "sortFields" }),
@@ -2238,6 +2331,7 @@ export const listUsers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /networks/{networkId}/users",
     input: {
+      networkId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       sortFields: D.m({ query: "sortFields" }),
@@ -2291,6 +2385,17 @@ export const registerOidcConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /networks/{networkId}/oidc/save",
+    input: {
+      networkId: 0,
+      companyId: 0,
+      customUsername: 0,
+      extraAuthParams: 0,
+      issuer: 0,
+      scopes: 0,
+      secret: 0,
+      ssoTokenBufferMinutes: 0,
+      userId: 0,
+    },
     output: { clientSecret: D.secret, secret: D.secret },
     body: true,
   },
@@ -2329,6 +2434,13 @@ export const registerOidcConfigTest: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /networks/{networkId}/oidc/test",
+    input: {
+      networkId: 0,
+      extraAuthParams: 0,
+      issuer: 0,
+      scopes: 0,
+      certificate: 0,
+    },
     body: true,
   },
   errors: [
@@ -2366,7 +2478,14 @@ export const registerOpentdfConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /networks/{networkId}/tdf",
-    input: { dryRun: D.m({ query: "dryRun" }) },
+    input: {
+      networkId: 0,
+      clientId: 0,
+      clientSecret: 0,
+      domain: 0,
+      provider: 0,
+      dryRun: D.m({ query: "dryRun" }),
+    },
     output: { clientSecret: D.secret },
     body: true,
   },
@@ -2405,6 +2524,14 @@ export const updateBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /networks/{networkId}/bots/{botId}",
+    input: {
+      networkId: 0,
+      botId: 0,
+      displayName: 0,
+      groupId: 0,
+      challenge: 0,
+      suspend: 0,
+    },
     body: true,
   },
   errors: [
@@ -2442,6 +2569,7 @@ export const updateDataRetention: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /networks/{networkId}/data-retention-bots",
+    input: { networkId: 0, actionType: 0 },
     body: true,
   },
   errors: [
@@ -2479,6 +2607,7 @@ export const updateGuestUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /networks/{networkId}/guest-users/{usernameHash}",
+    input: { networkId: 0, usernameHash: 0, block: 0 },
     body: true,
   },
   errors: [
@@ -2517,7 +2646,10 @@ export const updateNetwork: API.OperationMethod<
     service: svc,
     http: "PATCH /networks/{networkId}",
     input: {
+      networkId: 0,
+      networkName: 0,
       clientToken: D.m({ header: "X-Client-Token", idempotency: true }),
+      encryptionKeyArn: 0,
     },
     body: true,
   },
@@ -2556,6 +2688,21 @@ export const updateNetworkSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /networks/{networkId}/settings",
+    input: {
+      networkId: 0,
+      settings: {
+        enableClientMetrics: 0,
+        readReceiptConfig: { status: 0 },
+        dataRetention: 0,
+        enableTrustedDataFormat: 0,
+        consentPopup: {
+          enabled: 0,
+          header: 0,
+          content: 0,
+          closeButtonLabel: 0,
+        },
+      },
+    },
     body: true,
   },
   errors: [
@@ -2593,6 +2740,57 @@ export const updateSecurityGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /networks/{networkId}/security-groups/{groupId}",
+    input: {
+      networkId: 0,
+      groupId: 0,
+      name: 0,
+      securityGroupSettings: {
+        alwaysReauthenticate: 0,
+        atakPackageValues: 0,
+        calling: { canStart11Call: 0, canVideoCall: 0, forceTcpCall: 0 },
+        checkForUpdates: 0,
+        enableAtak: 0,
+        enableCrashReports: 0,
+        enableFileDownload: 0,
+        enableGuestFederation: 0,
+        enableNotificationPreview: 0,
+        enableOpenAccessOption: 0,
+        enableRestrictedGlobalFederation: 0,
+        filesEnabled: 0,
+        forceDeviceLockout: 0,
+        forceOpenAccess: 0,
+        forceReadReceipts: 0,
+        globalFederation: 0,
+        isAtoEnabled: 0,
+        isLinkPreviewEnabled: 0,
+        locationAllowMaps: 0,
+        locationEnabled: 0,
+        maxAutoDownloadSize: 0,
+        maxBor: 0,
+        maxTtl: 0,
+        messageForwardingEnabled: 0,
+        passwordRequirements: {
+          lowercase: 0,
+          minLength: 0,
+          numbers: 0,
+          symbols: 0,
+          uppercase: 0,
+        },
+        presenceEnabled: 0,
+        quickResponses: 0,
+        showMasterRecoveryKey: 0,
+        shredder: { canProcessManually: 0, intensity: 0 },
+        ssoMaxIdleMinutes: 0,
+        maxNonSsoSessionMinutes: 0,
+        federationMode: 0,
+        lockoutThreshold: 0,
+        permittedNetworks: 0,
+        permittedWickrAwsNetworks: D.list(i_WickrAwsNetworks),
+        permittedWickrEnterpriseNetworks: D.list(
+          i_PermittedWickrEnterpriseNetwork,
+        ),
+      },
+    },
     body: true,
   },
   errors: [
@@ -2632,6 +2830,19 @@ export const updateUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /networks/{networkId}/users",
+    input: {
+      networkId: 0,
+      userId: 0,
+      userDetails: {
+        firstName: 0,
+        lastName: 0,
+        username: 0,
+        securityGroupIds: 0,
+        inviteCode: 0,
+        inviteCodeTtl: 0,
+        codeValidation: 0,
+      },
+    },
     output: { firstName: D.secret, lastName: D.secret },
     body: true,
   },
@@ -2649,6 +2860,11 @@ export const updateUser: API.OperationMethod<
   operationName: "UpdateUser",
 })) as any;
 
+const i_PermittedWickrEnterpriseNetwork: D.LazyStruct = () => ({
+  domain: 0,
+  networkId: 0,
+});
+const i_WickrAwsNetworks: D.LazyStruct = () => ({ region: 0, networkId: 0 });
 const o_User: D.LazyStruct = () => ({
   firstName: D.secret,
   lastName: D.secret,

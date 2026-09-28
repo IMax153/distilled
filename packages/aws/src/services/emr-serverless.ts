@@ -724,6 +724,8 @@ export const cancelJobRun: API.OperationMethod<
     service: svc,
     http: "DELETE /applications/{applicationId}/jobruns/{jobRunId}",
     input: {
+      applicationId: 0,
+      jobRunId: 0,
       shutdownGracePeriodInSeconds: D.m({
         query: "shutdownGracePeriodInSeconds",
       }),
@@ -757,7 +759,29 @@ export const createApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      releaseLabel: 0,
+      type: 0,
+      clientToken: D.m({ idempotency: true }),
+      initialCapacity: D.map(i_InitialCapacityConfig),
+      maximumCapacity: i_MaximumAllowedResources,
+      tags: 0,
+      autoStartConfiguration: i_AutoStartConfig,
+      autoStopConfiguration: i_AutoStopConfig,
+      networkConfiguration: i_NetworkConfiguration,
+      architecture: 0,
+      imageConfiguration: i_ImageConfigurationInput,
+      workerTypeSpecifications: D.map(i_WorkerTypeSpecificationInput),
+      runtimeConfiguration: D.list(i_Configuration),
+      monitoringConfiguration: i_MonitoringConfiguration,
+      diskEncryptionConfiguration: i_DiskEncryptionConfiguration,
+      interactiveConfiguration: i_InteractiveConfiguration,
+      schedulerConfiguration: i_SchedulerConfiguration,
+      identityCenterConfiguration: i_IdentityCenterConfigurationInput,
+      jobLevelCostAllocationConfiguration:
+        i_JobLevelCostAllocationConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -785,7 +809,11 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /applications/{applicationId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /applications/{applicationId}",
+    input: { applicationId: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -813,6 +841,7 @@ export const getApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}",
+    input: { applicationId: 0 },
     output: { application: o_Application },
   },
   errors: [
@@ -847,6 +876,8 @@ export const getDashboardForJobRun: API.OperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/jobruns/{jobRunId}/dashboard",
     input: {
+      applicationId: 0,
+      jobRunId: 0,
       attempt: D.m({ query: "attempt" }),
       accessSystemProfileLogs: D.m({ query: "accessSystemProfileLogs" }),
     },
@@ -878,7 +909,11 @@ export const getJobRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/jobruns/{jobRunId}",
-    input: { attempt: D.m({ query: "attempt" }) },
+    input: {
+      applicationId: 0,
+      jobRunId: 0,
+      attempt: D.m({ query: "attempt" }),
+    },
     output: {
       jobRun: {
         createdAt: D.ts,
@@ -934,6 +969,7 @@ export const getResourceDashboard: API.OperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/dashboard",
     input: {
+      applicationId: 0,
       resourceId: D.m({ query: "resourceId" }),
       resourceType: D.m({ query: "resourceType" }),
     },
@@ -965,6 +1001,7 @@ export const getSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/sessions/{sessionId}",
+    input: { applicationId: 0, sessionId: 0 },
     output: {
       session: {
         createdAt: D.ts,
@@ -1002,6 +1039,7 @@ export const getSessionEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/sessions/{sessionId}/endpoint",
+    input: { applicationId: 0, sessionId: 0 },
     output: { authToken: D.secret, authTokenExpiresAt: D.ts },
   },
   errors: [
@@ -1069,6 +1107,8 @@ export const listJobRunAttempts: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/jobruns/{jobRunId}/attempts",
     input: {
+      applicationId: 0,
+      jobRunId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1114,10 +1154,17 @@ export const listJobRuns: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/jobruns",
     input: {
+      applicationId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
-      createdAtAfter: D.m({ query: "createdAtAfter" }),
-      createdAtBefore: D.m({ query: "createdAtBefore" }),
+      createdAtAfter: D.m({
+        query: "createdAtAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      createdAtBefore: D.m({
+        query: "createdAtBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       states: D.m({ query: "states" }),
       mode: D.m({ query: "mode" }),
     },
@@ -1161,11 +1208,18 @@ export const listSessions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/sessions",
     input: {
+      applicationId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       states: D.m({ query: "states" }),
-      createdAtAfter: D.m({ query: "createdAtAfter" }),
-      createdAtBefore: D.m({ query: "createdAtBefore" }),
+      createdAtAfter: D.m({
+        query: "createdAtAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      createdAtBefore: D.m({
+        query: "createdAtBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
     },
     output: { sessions: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
   },
@@ -1199,7 +1253,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1228,6 +1286,7 @@ export const startApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/start",
+    input: { applicationId: 0 },
   },
   errors: [
     InternalServerException,
@@ -1258,7 +1317,30 @@ export const startJobRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/jobruns",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      applicationId: 0,
+      clientToken: D.m({ idempotency: true }),
+      executionRoleArn: 0,
+      executionIamPolicy: { policy: 0, policyArns: 0 },
+      jobDriver: {
+        sparkSubmit: {
+          entryPoint: 0,
+          entryPointArguments: 0,
+          sparkSubmitParameters: 0,
+        },
+        hive: { query: 0, initQueryFile: 0, parameters: 0 },
+      },
+      configurationOverrides: {
+        applicationConfiguration: D.list(i_Configuration),
+        monitoringConfiguration: i_MonitoringConfiguration,
+        diskEncryptionConfiguration: i_DiskEncryptionConfiguration,
+      },
+      tags: 0,
+      executionTimeoutMinutes: 0,
+      name: 0,
+      mode: 0,
+      retryPolicy: { maxAttempts: 0, maxFailedAttemptsPerHour: 0 },
+    },
     body: true,
   },
   errors: [
@@ -1291,7 +1373,15 @@ export const startSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/sessions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      applicationId: 0,
+      clientToken: D.m({ idempotency: true }),
+      executionRoleArn: 0,
+      configurationOverrides: { runtimeConfiguration: D.list(i_Configuration) },
+      tags: 0,
+      idleTimeoutMinutes: 0,
+      name: 0,
+    },
     body: true,
   },
   errors: [
@@ -1320,7 +1410,11 @@ export const stopApplication: API.OperationMethod<
   StopApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /applications/{applicationId}/stop" },
+  descriptor: {
+    service: svc,
+    http: "POST /applications/{applicationId}/stop",
+    input: { applicationId: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1345,7 +1439,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1373,6 +1472,7 @@ export const terminateSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{applicationId}/sessions/{sessionId}",
+    input: { applicationId: 0, sessionId: 0 },
   },
   errors: [
     InternalServerException,
@@ -1401,7 +1501,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -1430,7 +1530,27 @@ export const updateApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /applications/{applicationId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      applicationId: 0,
+      clientToken: D.m({ idempotency: true }),
+      initialCapacity: D.map(i_InitialCapacityConfig),
+      maximumCapacity: i_MaximumAllowedResources,
+      autoStartConfiguration: i_AutoStartConfig,
+      autoStopConfiguration: i_AutoStopConfig,
+      networkConfiguration: i_NetworkConfiguration,
+      architecture: 0,
+      imageConfiguration: i_ImageConfigurationInput,
+      workerTypeSpecifications: D.map(i_WorkerTypeSpecificationInput),
+      interactiveConfiguration: i_InteractiveConfiguration,
+      releaseLabel: 0,
+      runtimeConfiguration: D.list(i_Configuration),
+      monitoringConfiguration: i_MonitoringConfiguration,
+      diskEncryptionConfiguration: i_DiskEncryptionConfiguration,
+      schedulerConfiguration: i_SchedulerConfiguration,
+      identityCenterConfiguration: i_IdentityCenterConfigurationInput,
+      jobLevelCostAllocationConfiguration:
+        i_JobLevelCostAllocationConfiguration,
+    },
     output: { application: o_Application },
     body: true,
   },
@@ -1444,6 +1564,71 @@ export const updateApplication: API.OperationMethod<
   operationName: "UpdateApplication",
 })) as any;
 
+const i_AutoStartConfig: D.LazyStruct = () => ({ enabled: 0 });
+const i_AutoStopConfig: D.LazyStruct = () => ({
+  enabled: 0,
+  idleTimeoutMinutes: 0,
+});
+const i_Configuration: D.LazyStruct = () => ({
+  classification: 0,
+  properties: 0,
+  configurations: D.list(i_Configuration),
+});
+const i_DiskEncryptionConfiguration: D.LazyStruct = () => ({
+  encryptionContext: 0,
+  encryptionKeyArn: 0,
+});
+const i_IdentityCenterConfigurationInput: D.LazyStruct = () => ({
+  identityCenterInstanceArn: 0,
+  userBackgroundSessionsEnabled: 0,
+});
+const i_ImageConfigurationInput: D.LazyStruct = () => ({
+  imageUri: 0,
+  applicationLevelDigestResolution: 0,
+});
+const i_InitialCapacityConfig: D.LazyStruct = () => ({
+  workerCount: 0,
+  workerConfiguration: { cpu: 0, memory: 0, disk: 0, diskType: 0 },
+});
+const i_InteractiveConfiguration: D.LazyStruct = () => ({
+  studioEnabled: 0,
+  livyEndpointEnabled: 0,
+  sessionEnabled: 0,
+});
+const i_JobLevelCostAllocationConfiguration: D.LazyStruct = () => ({
+  enabled: 0,
+});
+const i_MaximumAllowedResources: D.LazyStruct = () => ({
+  cpu: 0,
+  memory: 0,
+  disk: 0,
+});
+const i_MonitoringConfiguration: D.LazyStruct = () => ({
+  s3MonitoringConfiguration: { logUri: 0, encryptionKeyArn: 0 },
+  managedPersistenceMonitoringConfiguration: {
+    enabled: 0,
+    encryptionKeyArn: 0,
+  },
+  cloudWatchLoggingConfiguration: {
+    enabled: 0,
+    logGroupName: 0,
+    logStreamNamePrefix: 0,
+    encryptionKeyArn: 0,
+    logTypes: 0,
+  },
+  prometheusMonitoringConfiguration: { remoteWriteUrl: 0 },
+});
+const i_NetworkConfiguration: D.LazyStruct = () => ({
+  subnetIds: 0,
+  securityGroupIds: 0,
+});
+const i_SchedulerConfiguration: D.LazyStruct = () => ({
+  queueTimeoutMinutes: 0,
+  maxConcurrentRuns: 0,
+});
+const i_WorkerTypeSpecificationInput: D.LazyStruct = () => ({
+  imageConfiguration: i_ImageConfigurationInput,
+});
 const o_Application: D.LazyStruct = () => ({
   createdAt: D.ts,
   updatedAt: D.ts,

@@ -530,7 +530,11 @@ export const cancelJob: API.OperationMethod<
   CancelJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /job/{jobArn}/cancel" },
+  descriptor: {
+    service: svc,
+    http: "PUT /job/{jobArn}/cancel",
+    input: { jobArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -564,7 +568,7 @@ export const cancelQuantumTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /quantum-task/{quantumTaskArn}/cancel",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { quantumTaskArn: 0, clientToken: D.m({ idempotency: true }) },
     body: true,
   },
   errors: [
@@ -602,7 +606,28 @@ export const createJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /job",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      algorithmSpecification: {
+        scriptModeConfig: { entryPoint: 0, s3Uri: 0, compressionType: 0 },
+        containerImage: { uri: 0 },
+      },
+      inputDataConfig: D.list({
+        channelName: 0,
+        contentType: 0,
+        dataSource: { s3DataSource: { s3Uri: 0 } },
+      }),
+      outputDataConfig: { kmsKeyId: 0, s3Path: 0 },
+      checkpointConfig: { localPath: 0, s3Uri: 0 },
+      jobName: 0,
+      roleArn: 0,
+      stoppingCondition: { maxRuntimeInSeconds: 0 },
+      instanceConfig: { instanceType: 0, volumeSizeInGb: 0, instanceCount: 0 },
+      hyperParameters: 0,
+      deviceConfig: { device: 0 },
+      tags: 0,
+      associations: D.list(i_Association),
+    },
     body: true,
   },
   errors: [
@@ -641,7 +666,19 @@ export const createQuantumTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /quantum-task",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      deviceArn: 0,
+      deviceParameters: 0,
+      shots: 0,
+      outputS3Bucket: 0,
+      outputS3KeyPrefix: 0,
+      action: 0,
+      tags: 0,
+      jobToken: 0,
+      associations: D.list(i_Association),
+      experimentalCapabilities: { enabled: 0 },
+    },
     body: true,
   },
   errors: [
@@ -677,7 +714,13 @@ export const createSpendingLimit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /spending-limit",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      deviceArn: 0,
+      spendingLimit: 0,
+      timePeriod: i_TimePeriod,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -711,6 +754,7 @@ export const deleteSpendingLimit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /spending-limit/{spendingLimitArn}/delete",
+    input: { spendingLimitArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -742,7 +786,11 @@ export const getDevice: API.OperationMethod<
   GetDeviceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /device/{deviceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /device/{deviceArn}",
+    input: { deviceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -775,6 +823,7 @@ export const getJob: API.OperationMethod<
     service: svc,
     http: "GET /job/{jobArn}",
     input: {
+      jobArn: 0,
       additionalAttributeNames: D.m({ query: "additionalAttributeNames" }),
     },
     output: {
@@ -816,6 +865,7 @@ export const getQuantumTask: API.OperationMethod<
     service: svc,
     http: "GET /quantum-task/{quantumTaskArn}",
     input: {
+      quantumTaskArn: 0,
       additionalAttributeNames: D.m({ query: "additionalAttributeNames" }),
     },
     output: { createdAt: D.ts, endedAt: D.ts },
@@ -846,7 +896,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServiceException,
     ResourceNotFoundException,
@@ -873,7 +927,16 @@ export const searchDevices: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DeviceSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /devices", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /devices",
+    input: {
+      nextToken: 0,
+      maxResults: 0,
+      filters: D.list({ name: 0, values: 0 }),
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -910,6 +973,11 @@ export const searchJobs: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /jobs",
+    input: {
+      nextToken: 0,
+      maxResults: 0,
+      filters: D.list({ name: 0, values: 0, operator: 0 }),
+    },
     output: {
       jobs: D.list({ createdAt: D.ts, startedAt: D.ts, endedAt: D.ts }),
     },
@@ -951,6 +1019,11 @@ export const searchQuantumTasks: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /quantum-tasks",
+    input: {
+      nextToken: 0,
+      maxResults: 0,
+      filters: D.list({ name: 0, values: 0, operator: 0 }),
+    },
     output: { quantumTasks: D.list({ createdAt: D.ts, endedAt: D.ts }) },
     body: true,
   },
@@ -990,6 +1063,11 @@ export const searchSpendingLimits: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /spending-limits",
+    input: {
+      nextToken: 0,
+      maxResults: 0,
+      filters: D.list({ name: 0, values: 0, operator: 0 }),
+    },
     output: {
       spendingLimits: D.list({
         timePeriod: { startAt: D.ts, endAt: D.ts },
@@ -1030,7 +1108,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServiceException,
     ResourceNotFoundException,
@@ -1058,7 +1141,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServiceException,
@@ -1089,7 +1172,12 @@ export const updateSpendingLimit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /spending-limit/{spendingLimitArn}/update",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      spendingLimitArn: 0,
+      clientToken: D.m({ idempotency: true }),
+      spendingLimit: 0,
+      timePeriod: i_TimePeriod,
+    },
     body: true,
   },
   errors: [
@@ -1103,3 +1191,6 @@ export const updateSpendingLimit: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateSpendingLimit",
 })) as any;
+
+const i_Association: D.LazyStruct = () => ({ arn: 0, type: 0 });
+const i_TimePeriod: D.LazyStruct = () => ({ startAt: 0, endAt: 0 });

@@ -558,6 +558,20 @@ export const assumeRole: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      RoleArn: 0,
+      RoleSessionName: 0,
+      PolicyArns: D.list(i_PolicyDescriptorType),
+      Policy: 0,
+      DurationSeconds: 0,
+      Tags: D.list(i_Tag),
+      TransitiveTagKeys: 0,
+      ExternalId: 0,
+      SerialNumber: 0,
+      TokenCode: 0,
+      SourceIdentity: 0,
+      ProvidedContexts: D.list({ ProviderArn: 0, ContextAssertion: 0 }),
+    },
     output: {
       Credentials: o_Credentials,
       AssumedRoleUser: {},
@@ -717,6 +731,14 @@ export const assumeRoleWithSAML: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      RoleArn: 0,
+      PrincipalArn: 0,
+      SAMLAssertion: 0,
+      PolicyArns: D.list(i_PolicyDescriptorType),
+      Policy: 0,
+      DurationSeconds: 0,
+    },
     output: {
       Credentials: o_Credentials,
       AssumedRoleUser: {},
@@ -873,6 +895,15 @@ export const assumeRoleWithWebIdentity: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      RoleArn: 0,
+      RoleSessionName: 0,
+      WebIdentityToken: 0,
+      ProviderId: 0,
+      PolicyArns: D.list(i_PolicyDescriptorType),
+      Policy: 0,
+      DurationSeconds: 0,
+    },
     output: {
       Credentials: o_Credentials,
       AssumedRoleUser: {},
@@ -926,7 +957,15 @@ export const assumeRoot: API.OperationMethod<
   AssumeRootError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Credentials: o_Credentials } },
+  descriptor: {
+    service: svc,
+    input: {
+      TargetPrincipal: 0,
+      TaskPolicyArn: i_PolicyDescriptorType,
+      DurationSeconds: 0,
+    },
+    output: { Credentials: o_Credentials },
+  },
   errors: [ExpiredTokenException, RegionDisabledException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -975,7 +1014,7 @@ export const decodeAuthorizationMessage: API.OperationMethod<
   DecodeAuthorizationMessageError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EncodedMessage: 0 } },
   errors: [InvalidAuthorizationMessageException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1011,7 +1050,7 @@ export const getAccessKeyInfo: API.OperationMethod<
   GetAccessKeyInfoError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AccessKeyId: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1036,7 +1075,7 @@ export const getCallerIdentity: API.OperationMethod<
   GetCallerIdentityError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1062,6 +1101,7 @@ export const getDelegatedAccessToken: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TradeInToken: 0 },
     output: { Credentials: o_Credentials, PackedPolicySize: D.num },
   },
   errors: [
@@ -1180,6 +1220,13 @@ export const getFederationToken: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Name: 0,
+      Policy: 0,
+      PolicyArns: D.list(i_PolicyDescriptorType),
+      DurationSeconds: 0,
+      Tags: D.list(i_Tag),
+    },
     output: {
       Credentials: o_Credentials,
       FederatedUser: {},
@@ -1260,7 +1307,11 @@ export const getSessionToken: API.OperationMethod<
   GetSessionTokenError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Credentials: o_Credentials } },
+  descriptor: {
+    service: svc,
+    input: { DurationSeconds: 0, SerialNumber: 0, TokenCode: 0 },
+    output: { Credentials: o_Credentials },
+  },
   errors: [RegionDisabledException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1285,6 +1336,12 @@ export const getWebIdentityToken: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Audience: 0,
+      DurationSeconds: 0,
+      SigningAlgorithm: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { WebIdentityToken: D.secret, Expiration: D.ts },
   },
   errors: [
@@ -1297,6 +1354,8 @@ export const getWebIdentityToken: API.OperationMethod<
   operationName: "GetWebIdentityToken",
 })) as any;
 
+const i_PolicyDescriptorType: D.LazyStruct = () => ({ arn: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Credentials: D.LazyStruct = () => ({
   SecretAccessKey: D.secret,
   Expiration: D.ts,

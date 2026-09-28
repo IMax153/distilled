@@ -3793,6 +3793,12 @@ export const batchCreateCustomVocabularyItem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/customvocabulary/DEFAULT/batchcreate",
+    input: {
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      customVocabularyItemList: D.list({ phrase: 0, weight: 0, displayAs: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -3827,6 +3833,12 @@ export const batchDeleteCustomVocabularyItem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/customvocabulary/DEFAULT/batchdelete",
+    input: {
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      customVocabularyItemList: D.list({ itemId: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -3861,6 +3873,17 @@ export const batchUpdateCustomVocabularyItem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/customvocabulary/DEFAULT/batchupdate",
+    input: {
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      customVocabularyItemList: D.list({
+        itemId: 0,
+        phrase: 0,
+        weight: 0,
+        displayAs: 0,
+      }),
+    },
     body: true,
   },
   errors: [
@@ -3897,6 +3920,7 @@ export const buildBotLocale: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}",
+    input: { botId: 0, botVersion: 0, localeId: 0 },
     output: { lastBuildSubmittedDateTime: D.ts },
   },
   errors: [
@@ -3932,6 +3956,18 @@ export const createBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots",
+    input: {
+      botName: 0,
+      description: 0,
+      roleArn: 0,
+      dataPrivacy: i_DataPrivacy,
+      idleSessionTTLInSeconds: 0,
+      botTags: 0,
+      testBotAliasTags: 0,
+      botType: 0,
+      botMembers: D.list(i_BotMember),
+      errorLogSettings: i_ErrorLogSettings,
+    },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -3973,6 +4009,16 @@ export const createBotAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}/botaliases",
+    input: {
+      botAliasName: 0,
+      description: 0,
+      botVersion: 0,
+      botAliasLocaleSettings: D.map(i_BotAliasLocaleSettings),
+      conversationLogSettings: i_ConversationLogSettings,
+      sentimentAnalysisSettings: i_SentimentAnalysisSettings,
+      botId: 0,
+      tags: 0,
+    },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -4012,6 +4058,19 @@ export const createBotLocale: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}/botversions/{botVersion}/botlocales",
+    input: {
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      description: 0,
+      nluIntentConfidenceThreshold: 0,
+      voiceSettings: i_VoiceSettings,
+      unifiedSpeechSettings: i_UnifiedSpeechSettings,
+      audioFillerSettings: i_AudioFillerSettings,
+      speechRecognitionSettings: i_SpeechRecognitionSettings,
+      generativeAISettings: i_GenerativeAISettings,
+      speechDetectionSensitivity: 0,
+    },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -4048,6 +4107,7 @@ export const createBotReplica: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}/replicas",
+    input: { botId: 0, replicaRegion: 0 },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -4088,6 +4148,11 @@ export const createBotVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}/botversions",
+    input: {
+      botId: 0,
+      description: 0,
+      botVersionLocaleSpecification: D.map({ sourceBotVersion: 0 }),
+    },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -4134,6 +4199,20 @@ export const createExport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /exports",
+    input: {
+      resourceSpecification: {
+        botExportSpecification: { botId: 0, botVersion: 0 },
+        botLocaleExportSpecification: { botId: 0, botVersion: 0, localeId: 0 },
+        customVocabularyExportSpecification: {
+          botId: 0,
+          botVersion: 0,
+          localeId: 0,
+        },
+        testSetExportSpecification: { testSetId: 0 },
+      },
+      fileFormat: 0,
+      filePassword: 0,
+    },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -4201,6 +4280,26 @@ export const createIntent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/intents",
+    input: {
+      intentName: 0,
+      intentDisplayName: 0,
+      description: 0,
+      parentIntentSignature: 0,
+      sampleUtterances: D.list(i_SampleUtterance),
+      dialogCodeHook: i_DialogCodeHookSettings,
+      fulfillmentCodeHook: i_FulfillmentCodeHookSettings,
+      intentConfirmationSetting: i_IntentConfirmationSetting,
+      intentClosingSetting: i_IntentClosingSetting,
+      inputContexts: D.list(i_InputContext),
+      outputContexts: D.list(i_OutputContext),
+      kendraConfiguration: i_KendraConfiguration,
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      initialResponseSetting: i_InitialResponseSetting,
+      qnAIntentConfiguration: i_QnAIntentConfiguration,
+      qInConnectIntentConfiguration: i_QInConnectIntentConfiguration,
+    },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -4235,7 +4334,12 @@ export const createResourcePolicy: API.OperationMethod<
   CreateResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /policy/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /policy/{resourceArn}",
+    input: { resourceArn: 0, policy: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     PreconditionFailedException,
@@ -4278,7 +4382,15 @@ export const createResourcePolicyStatement: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /policy/{resourceArn}/statements",
-    input: { expectedRevisionId: D.m({ query: "expectedRevisionId" }) },
+    input: {
+      resourceArn: 0,
+      statementId: 0,
+      effect: 0,
+      principal: D.list({ service: 0, arn: 0 }),
+      action: 0,
+      condition: 0,
+      expectedRevisionId: D.m({ query: "expectedRevisionId" }),
+    },
     body: true,
   },
   errors: [
@@ -4319,6 +4431,19 @@ export const createSlot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/intents/{intentId}/slots",
+    input: {
+      slotName: 0,
+      description: 0,
+      slotTypeId: 0,
+      valueElicitationSetting: i_SlotValueElicitationSetting,
+      obfuscationSetting: i_ObfuscationSetting,
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      intentId: 0,
+      multipleValuesSetting: i_MultipleValuesSetting,
+      subSlotSetting: i_SubSlotSetting,
+    },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -4359,6 +4484,18 @@ export const createSlotType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/slottypes",
+    input: {
+      slotTypeName: 0,
+      description: 0,
+      slotTypeValues: D.list(i_SlotTypeValue),
+      valueSelectionSetting: i_SlotValueSelectionSetting,
+      parentSlotTypeSignature: 0,
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      externalSourceSetting: i_ExternalSourceSetting,
+      compositeSlotTypeSetting: i_CompositeSlotTypeSetting,
+    },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -4395,6 +4532,10 @@ export const createTestSetDiscrepancyReport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /testsets/{testSetId}/testsetdiscrepancy",
+    input: {
+      testSetId: 0,
+      target: { botAliasTarget: { botId: 0, botAliasId: 0, localeId: 0 } },
+    },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -4428,7 +4569,7 @@ export const createUploadUrl: API.OperationMethod<
   CreateUploadUrlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /createuploadurl" },
+  descriptor: { service: svc, http: "POST /createuploadurl", input: {} },
   errors: [
     ConflictException,
     InternalServerException,
@@ -4472,7 +4613,10 @@ export const deleteBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /bots/{botId}",
-    input: { skipResourceInUseCheck: D.m({ query: "skipResourceInUseCheck" }) },
+    input: {
+      botId: 0,
+      skipResourceInUseCheck: D.m({ query: "skipResourceInUseCheck" }),
+    },
   },
   errors: [
     ConflictException,
@@ -4507,7 +4651,11 @@ export const deleteBotAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /bots/{botId}/botaliases/{botAliasId}",
-    input: { skipResourceInUseCheck: D.m({ query: "skipResourceInUseCheck" }) },
+    input: {
+      botAliasId: 0,
+      botId: 0,
+      skipResourceInUseCheck: D.m({ query: "skipResourceInUseCheck" }),
+    },
   },
   errors: [
     ConflictException,
@@ -4542,6 +4690,7 @@ export const deleteBotAnalyzerRecommendation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /bots/{botId}/botanalyzer/{botAnalyzerRequestId}",
+    input: { botId: 0, botAnalyzerRequestId: 0 },
   },
   errors: [
     InternalServerException,
@@ -4577,6 +4726,7 @@ export const deleteBotLocale: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}",
+    input: { botId: 0, botVersion: 0, localeId: 0 },
   },
   errors: [
     ConflictException,
@@ -4611,6 +4761,7 @@ export const deleteBotReplica: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /bots/{botId}/replicas/{replicaRegion}",
+    input: { botId: 0, replicaRegion: 0 },
   },
   errors: [
     ConflictException,
@@ -4646,7 +4797,11 @@ export const deleteBotVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /bots/{botId}/botversions/{botVersion}",
-    input: { skipResourceInUseCheck: D.m({ query: "skipResourceInUseCheck" }) },
+    input: {
+      botId: 0,
+      botVersion: 0,
+      skipResourceInUseCheck: D.m({ query: "skipResourceInUseCheck" }),
+    },
   },
   errors: [
     ConflictException,
@@ -4682,6 +4837,7 @@ export const deleteCustomVocabulary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/customvocabulary",
+    input: { botId: 0, botVersion: 0, localeId: 0 },
   },
   errors: [
     ConflictException,
@@ -4713,7 +4869,11 @@ export const deleteExport: API.OperationMethod<
   DeleteExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /exports/{exportId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /exports/{exportId}",
+    input: { exportId: 0 },
+  },
   errors: [
     InternalServerException,
     PreconditionFailedException,
@@ -4743,7 +4903,11 @@ export const deleteImport: API.OperationMethod<
   DeleteImportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /imports/{importId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /imports/{importId}",
+    input: { importId: 0 },
+  },
   errors: [
     InternalServerException,
     PreconditionFailedException,
@@ -4779,6 +4943,7 @@ export const deleteIntent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/intents/{intentId}",
+    input: { intentId: 0, botId: 0, botVersion: 0, localeId: 0 },
   },
   errors: [
     ConflictException,
@@ -4812,7 +4977,10 @@ export const deleteResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /policy/{resourceArn}",
-    input: { expectedRevisionId: D.m({ query: "expectedRevisionId" }) },
+    input: {
+      resourceArn: 0,
+      expectedRevisionId: D.m({ query: "expectedRevisionId" }),
+    },
   },
   errors: [
     InternalServerException,
@@ -4850,7 +5018,11 @@ export const deleteResourcePolicyStatement: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /policy/{resourceArn}/statements/{statementId}",
-    input: { expectedRevisionId: D.m({ query: "expectedRevisionId" }) },
+    input: {
+      resourceArn: 0,
+      statementId: 0,
+      expectedRevisionId: D.m({ query: "expectedRevisionId" }),
+    },
   },
   errors: [
     InternalServerException,
@@ -4883,6 +5055,7 @@ export const deleteSlot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/intents/{intentId}/slots/{slotId}",
+    input: { slotId: 0, botId: 0, botVersion: 0, localeId: 0, intentId: 0 },
   },
   errors: [
     ConflictException,
@@ -4922,7 +5095,13 @@ export const deleteSlotType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/slottypes/{slotTypeId}",
-    input: { skipResourceInUseCheck: D.m({ query: "skipResourceInUseCheck" }) },
+    input: {
+      slotTypeId: 0,
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      skipResourceInUseCheck: D.m({ query: "skipResourceInUseCheck" }),
+    },
   },
   errors: [
     ConflictException,
@@ -4954,7 +5133,11 @@ export const deleteTestSet: API.OperationMethod<
   DeleteTestSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /testsets/{testSetId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /testsets/{testSetId}",
+    input: { testSetId: 0 },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -4999,6 +5182,7 @@ export const deleteUtterances: API.OperationMethod<
     service: svc,
     http: "DELETE /bots/{botId}/utterances",
     input: {
+      botId: 0,
       localeId: D.m({ query: "localeId" }),
       sessionId: D.m({ query: "sessionId" }),
     },
@@ -5028,6 +5212,7 @@ export const describeBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /bots/{botId}",
+    input: { botId: 0 },
     output: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
   },
   errors: [
@@ -5061,6 +5246,7 @@ export const describeBotAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /bots/{botId}/botaliases/{botAliasId}",
+    input: { botAliasId: 0, botId: 0 },
     output: {
       botAliasHistoryEvents: D.list({ startDate: D.ts, endDate: D.ts }),
       creationDateTime: D.ts,
@@ -5100,6 +5286,7 @@ export const describeBotAnalyzerRecommendation: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/botanalyzer/describe/{botAnalyzerRequestId}",
+    input: { botId: 0, botAnalyzerRequestId: 0, nextToken: 0, maxResults: 0 },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -5139,6 +5326,7 @@ export const describeBotLocale: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}",
+    input: { botId: 0, botVersion: 0, localeId: 0 },
     output: {
       creationDateTime: D.ts,
       lastUpdatedDateTime: D.ts,
@@ -5180,6 +5368,7 @@ export const describeBotRecommendation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/botrecommendations/{botRecommendationId}",
+    input: { botId: 0, botVersion: 0, localeId: 0, botRecommendationId: 0 },
     output: {
       creationDateTime: D.ts,
       lastUpdatedDateTime: D.ts,
@@ -5217,6 +5406,7 @@ export const describeBotReplica: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /bots/{botId}/replicas/{replicaRegion}",
+    input: { botId: 0, replicaRegion: 0 },
     output: { creationDateTime: D.ts },
   },
   errors: [
@@ -5252,6 +5442,7 @@ export const describeBotResourceGeneration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/generations/{generationId}",
+    input: { botId: 0, botVersion: 0, localeId: 0, generationId: 0 },
     output: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
   },
   errors: [
@@ -5284,6 +5475,7 @@ export const describeBotVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /bots/{botId}/botversions/{botVersion}",
+    input: { botId: 0, botVersion: 0 },
     output: { creationDateTime: D.ts },
   },
   errors: [
@@ -5317,6 +5509,7 @@ export const describeCustomVocabularyMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/customvocabulary/DEFAULT/metadata",
+    input: { botId: 0, botVersion: 0, localeId: 0 },
     output: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
   },
   errors: [
@@ -5349,6 +5542,7 @@ export const describeExport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /exports/{exportId}",
+    input: { exportId: 0 },
     output: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
   },
   errors: [
@@ -5380,6 +5574,7 @@ export const describeImport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /imports/{importId}",
+    input: { importId: 0 },
     output: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
   },
   errors: [
@@ -5412,6 +5607,7 @@ export const describeIntent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/intents/{intentId}",
+    input: { intentId: 0, botId: 0, botVersion: 0, localeId: 0 },
     output: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
   },
   errors: [
@@ -5441,7 +5637,11 @@ export const describeResourcePolicy: API.OperationMethod<
   DescribeResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /policy/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /policy/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -5471,6 +5671,7 @@ export const describeSlot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/intents/{intentId}/slots/{slotId}",
+    input: { slotId: 0, botId: 0, botVersion: 0, localeId: 0, intentId: 0 },
     output: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
   },
   errors: [
@@ -5504,6 +5705,7 @@ export const describeSlotType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/slottypes/{slotTypeId}",
+    input: { slotTypeId: 0, botId: 0, botVersion: 0, localeId: 0 },
     output: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
   },
   errors: [
@@ -5537,6 +5739,7 @@ export const describeTestExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /testexecutions/{testExecutionId}",
+    input: { testExecutionId: 0 },
     output: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
   },
   errors: [
@@ -5570,6 +5773,7 @@ export const describeTestSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /testsets/{testSetId}",
+    input: { testSetId: 0 },
     output: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
   },
   errors: [
@@ -5603,6 +5807,7 @@ export const describeTestSetDiscrepancyReport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /testsetdiscrepancy/{testSetDiscrepancyReportId}",
+    input: { testSetDiscrepancyReportId: 0 },
     output: { creationDateTime: D.ts, lastUpdatedDataTime: D.ts },
   },
   errors: [
@@ -5636,6 +5841,7 @@ export const describeTestSetGeneration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /testsetgenerations/{testSetGenerationId}",
+    input: { testSetGenerationId: 0 },
     output: {
       generationDataSource: o_TestSetGenerationDataSource,
       creationDateTime: D.ts,
@@ -5675,6 +5881,7 @@ export const generateBotElement: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/generate",
+    input: { intentId: 0, botId: 0, botVersion: 0, localeId: 0 },
     body: true,
   },
   errors: [
@@ -5710,6 +5917,7 @@ export const getTestExecutionArtifactsUrl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /testexecutions/{testExecutionId}/artifacturl",
+    input: { testExecutionId: 0 },
   },
   errors: [
     InternalServerException,
@@ -5765,6 +5973,19 @@ export const listAggregatedUtterances: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/aggregatedutterances",
+    input: {
+      botId: 0,
+      botAliasId: 0,
+      botVersion: 0,
+      localeId: 0,
+      aggregationDuration: {
+        relativeAggregationDuration: { timeDimension: 0, timeValue: 0 },
+      },
+      sortBy: { attribute: 0, order: 0 },
+      filters: D.list({ name: 0, values: 0, operator: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       aggregationWindowStartTime: D.ts,
       aggregationWindowEndTime: D.ts,
@@ -5812,6 +6033,7 @@ export const listBotAliases: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/botaliases",
+    input: { botId: 0, maxResults: 0, nextToken: 0 },
     output: {
       botAliasSummaries: D.list({
         creationDateTime: D.ts,
@@ -5856,6 +6078,7 @@ export const listBotAliasReplicas: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/replicas/{replicaRegion}/botaliases",
+    input: { botId: 0, replicaRegion: 0, maxResults: 0, nextToken: 0 },
     output: {
       botAliasReplicaSummaries: D.list({
         creationDateTime: D.ts,
@@ -5901,6 +6124,13 @@ export const listBotAnalyzerHistory: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/botanalyzer/history",
+    input: {
+      botId: 0,
+      localeId: 0,
+      botVersion: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { botAnalyzerHistoryList: D.list({ creationDateTime: D.ts }) },
     body: true,
   },
@@ -5940,6 +6170,14 @@ export const listBotLocales: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/botversions/{botVersion}/botlocales",
+    input: {
+      botId: 0,
+      botVersion: 0,
+      sortBy: { attribute: 0, order: 0 },
+      filters: D.list({ name: 0, values: 0, operator: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       botLocaleSummaries: D.list({
         lastUpdatedDateTime: D.ts,
@@ -5984,6 +6222,13 @@ export const listBotRecommendations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/botrecommendations",
+    input: {
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       botRecommendationSummaries: D.list({
         creationDateTime: D.ts,
@@ -6026,6 +6271,7 @@ export const listBotReplicas: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/replicas",
+    input: { botId: 0 },
     output: { botReplicaSummaries: D.list({ creationDateTime: D.ts }) },
   },
   errors: [
@@ -6058,6 +6304,14 @@ export const listBotResourceGenerations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/generations",
+    input: {
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      sortBy: { attribute: 0, order: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       generationSummaries: D.list({
         creationDateTime: D.ts,
@@ -6101,6 +6355,12 @@ export const listBots: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots",
+    input: {
+      sortBy: { attribute: 0, order: 0 },
+      filters: D.list({ name: 0, values: 0, operator: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { botSummaries: D.list({ lastUpdatedDateTime: D.ts }) },
     body: true,
   },
@@ -6139,6 +6399,13 @@ export const listBotVersionReplicas: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/replicas/{replicaRegion}/botversions",
+    input: {
+      botId: 0,
+      replicaRegion: 0,
+      maxResults: 0,
+      nextToken: 0,
+      sortBy: { attribute: 0, order: 0 },
+    },
     output: { botVersionReplicaSummaries: D.list({ creationDateTime: D.ts }) },
     body: true,
   },
@@ -6186,6 +6453,12 @@ export const listBotVersions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/botversions",
+    input: {
+      botId: 0,
+      sortBy: { attribute: 0, order: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { botVersionSummaries: D.list({ creationDateTime: D.ts }) },
     body: true,
   },
@@ -6230,6 +6503,12 @@ export const listBuiltInIntents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /builtins/locales/{localeId}/intents",
+    input: {
+      localeId: 0,
+      sortBy: { attribute: 0, order: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -6268,6 +6547,12 @@ export const listBuiltInSlotTypes: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /builtins/locales/{localeId}/slottypes",
+    input: {
+      localeId: 0,
+      sortBy: { attribute: 0, order: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -6307,6 +6592,13 @@ export const listCustomVocabularyItems: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/customvocabulary/DEFAULT/list",
+    input: {
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -6345,6 +6637,15 @@ export const listExports: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /exports",
+    input: {
+      botId: 0,
+      botVersion: 0,
+      sortBy: { attribute: 0, order: 0 },
+      filters: D.list({ name: 0, values: 0, operator: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+      localeId: 0,
+    },
     output: {
       exportSummaries: D.list({
         creationDateTime: D.ts,
@@ -6383,6 +6684,15 @@ export const listImports: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /imports",
+    input: {
+      botId: 0,
+      botVersion: 0,
+      sortBy: { attribute: 0, order: 0 },
+      filters: D.list({ name: 0, values: 0, operator: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+      localeId: 0,
+    },
     output: {
       importSummaries: D.list({
         creationDateTime: D.ts,
@@ -6434,6 +6744,17 @@ export const listIntentMetrics: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/analytics/intentmetrics",
+    input: {
+      botId: 0,
+      startDateTime: 0,
+      endDateTime: 0,
+      metrics: D.list({ name: 0, statistic: 0, order: 0 }),
+      binBy: D.list(i_AnalyticsBinBySpecification),
+      groupBy: D.list({ name: 0 }),
+      filters: D.list({ name: 0, operator: 0, values: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -6478,6 +6799,13 @@ export const listIntentPaths: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/analytics/intentpaths",
+    input: {
+      botId: 0,
+      startDateTime: 0,
+      endDateTime: 0,
+      intentPath: 0,
+      filters: D.list({ name: 0, operator: 0, values: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -6512,6 +6840,15 @@ export const listIntents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/intents",
+    input: {
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      sortBy: { attribute: 0, order: 0 },
+      filters: D.list({ name: 0, values: 0, operator: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { intentSummaries: D.list({ lastUpdatedDateTime: D.ts }) },
     body: true,
   },
@@ -6564,6 +6901,17 @@ export const listIntentStageMetrics: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/analytics/intentstagemetrics",
+    input: {
+      botId: 0,
+      startDateTime: 0,
+      endDateTime: 0,
+      metrics: D.list({ name: 0, statistic: 0, order: 0 }),
+      binBy: D.list(i_AnalyticsBinBySpecification),
+      groupBy: D.list({ name: 0 }),
+      filters: D.list({ name: 0, operator: 0, values: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -6605,6 +6953,14 @@ export const listRecommendedIntents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/botrecommendations/{botRecommendationId}/intents",
+    input: {
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      botRecommendationId: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -6648,6 +7004,15 @@ export const listSessionAnalyticsData: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/analytics/sessions",
+    input: {
+      botId: 0,
+      startDateTime: 0,
+      endDateTime: 0,
+      sortBy: { name: 0, order: 0 },
+      filters: D.list(i_AnalyticsSessionFilter),
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       sessions: D.list({
         conversationStartTime: D.ts,
@@ -6705,6 +7070,17 @@ export const listSessionMetrics: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/analytics/sessionmetrics",
+    input: {
+      botId: 0,
+      startDateTime: 0,
+      endDateTime: 0,
+      metrics: D.list({ name: 0, statistic: 0, order: 0 }),
+      binBy: D.list(i_AnalyticsBinBySpecification),
+      groupBy: D.list({ name: 0 }),
+      filters: D.list(i_AnalyticsSessionFilter),
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -6743,6 +7119,16 @@ export const listSlots: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/intents/{intentId}/slots",
+    input: {
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      intentId: 0,
+      sortBy: { attribute: 0, order: 0 },
+      filters: D.list({ name: 0, values: 0, operator: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { slotSummaries: D.list({ lastUpdatedDateTime: D.ts }) },
     body: true,
   },
@@ -6782,6 +7168,15 @@ export const listSlotTypes: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/slottypes",
+    input: {
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      sortBy: { attribute: 0, order: 0 },
+      filters: D.list({ name: 0, values: 0, operator: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { slotTypeSummaries: D.list({ lastUpdatedDateTime: D.ts }) },
     body: true,
   },
@@ -6818,7 +7213,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceARN}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceARN}",
+    input: { resourceARN: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -6850,6 +7249,15 @@ export const listTestExecutionResultItems: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /testexecutions/{testExecutionId}/results",
+    input: {
+      testExecutionId: 0,
+      resultFilterBy: {
+        resultTypeFilter: 0,
+        conversationLevelTestResultsFilterBy: { endToEndResult: 0 },
+      },
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -6888,6 +7296,7 @@ export const listTestExecutions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /testexecutions",
+    input: { sortBy: { attribute: 0, order: 0 }, maxResults: 0, nextToken: 0 },
     output: {
       testExecutions: D.list({
         creationDateTime: D.ts,
@@ -6932,6 +7341,7 @@ export const listTestSetRecords: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /testsets/{testSetId}/records",
+    input: { testSetId: 0, maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [
@@ -6970,6 +7380,7 @@ export const listTestSets: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /testsets",
+    input: { sortBy: { attribute: 0, order: 0 }, maxResults: 0, nextToken: 0 },
     output: {
       testSets: D.list({ creationDateTime: D.ts, lastUpdatedDateTime: D.ts }),
     },
@@ -7024,6 +7435,15 @@ export const listUtteranceAnalyticsData: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/analytics/utterances",
+    input: {
+      botId: 0,
+      startDateTime: 0,
+      endDateTime: 0,
+      sortBy: { name: 0, order: 0 },
+      filters: D.list(i_AnalyticsUtteranceFilter),
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       utterances: D.list({
         conversationStartTime: D.ts,
@@ -7087,6 +7507,18 @@ export const listUtteranceMetrics: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/analytics/utterancemetrics",
+    input: {
+      botId: 0,
+      startDateTime: 0,
+      endDateTime: 0,
+      metrics: D.list({ name: 0, statistic: 0, order: 0 }),
+      binBy: D.list(i_AnalyticsBinBySpecification),
+      groupBy: D.list({ name: 0 }),
+      attributes: D.list({ name: 0 }),
+      filters: D.list(i_AnalyticsUtteranceFilter),
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -7126,6 +7558,16 @@ export const searchAssociatedTranscripts: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/botrecommendations/{botRecommendationId}/associatedtranscripts",
+    input: {
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      botRecommendationId: 0,
+      searchOrder: 0,
+      filters: D.list({ name: 0, values: 0 }),
+      maxResults: 0,
+      nextIndex: 0,
+    },
     body: true,
   },
   errors: [
@@ -7161,6 +7603,7 @@ export const startBotAnalyzer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/botanalyzer",
+    input: { botId: 0, analysisScope: 0, localeId: 0, botVersion: 0 },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -7198,6 +7641,25 @@ export const startBotRecommendation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/botrecommendations",
+    input: {
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      transcriptSourceSetting: {
+        s3BucketTranscriptSource: {
+          s3BucketName: 0,
+          pathFormat: { objectPrefixes: 0 },
+          transcriptFormat: 0,
+          transcriptFilter: {
+            lexTranscriptFilter: {
+              dateRangeFilter: { startDateTime: 0, endDateTime: 0 },
+            },
+          },
+          kmsKeyArn: 0,
+        },
+      },
+      encryptionSetting: i_EncryptionSetting,
+    },
     output: {
       creationDateTime: D.ts,
       transcriptSourceSetting: o_TranscriptSourceSetting,
@@ -7243,6 +7705,7 @@ export const startBotResourceGeneration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/startgeneration",
+    input: { generationInputPrompt: 0, botId: 0, botVersion: 0, localeId: 0 },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -7280,6 +7743,47 @@ export const startImport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /imports",
+    input: {
+      importId: 0,
+      resourceSpecification: {
+        botImportSpecification: {
+          botName: 0,
+          roleArn: 0,
+          dataPrivacy: i_DataPrivacy,
+          errorLogSettings: i_ErrorLogSettings,
+          idleSessionTTLInSeconds: 0,
+          botTags: 0,
+          testBotAliasTags: 0,
+        },
+        botLocaleImportSpecification: {
+          botId: 0,
+          botVersion: 0,
+          localeId: 0,
+          nluIntentConfidenceThreshold: 0,
+          voiceSettings: i_VoiceSettings,
+          speechRecognitionSettings: i_SpeechRecognitionSettings,
+          speechDetectionSensitivity: 0,
+          unifiedSpeechSettings: i_UnifiedSpeechSettings,
+          audioFillerSettings: i_AudioFillerSettings,
+        },
+        customVocabularyImportSpecification: {
+          botId: 0,
+          botVersion: 0,
+          localeId: 0,
+        },
+        testSetImportResourceSpecification: {
+          testSetName: 0,
+          description: 0,
+          roleArn: 0,
+          storageLocation: i_TestSetStorageLocation,
+          importInputLocation: { s3BucketName: 0, s3Path: 0 },
+          modality: 0,
+          testSetTags: 0,
+        },
+      },
+      mergeStrategy: 0,
+      filePassword: 0,
+    },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -7316,6 +7820,12 @@ export const startTestExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /testsets/{testSetId}/testexecutions",
+    input: {
+      testSetId: 0,
+      target: { botAliasTarget: { botId: 0, botAliasId: 0, localeId: 0 } },
+      apiMode: 0,
+      testExecutionModality: 0,
+    },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -7352,6 +7862,21 @@ export const startTestSetGeneration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /testsetgenerations",
+    input: {
+      testSetName: 0,
+      description: 0,
+      storageLocation: i_TestSetStorageLocation,
+      generationDataSource: {
+        conversationLogsDataSource: {
+          botId: 0,
+          botAliasId: 0,
+          localeId: 0,
+          filter: { startTime: 0, endTime: 0, inputMode: 0 },
+        },
+      },
+      roleArn: 0,
+      testSetTags: 0,
+    },
     output: {
       creationDateTime: D.ts,
       generationDataSource: o_TestSetGenerationDataSource,
@@ -7389,6 +7914,7 @@ export const stopBotAnalyzer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}/botanalyzer/{botAnalyzerRequestId}/stop",
+    input: { botId: 0, botAnalyzerRequestId: 0 },
   },
   errors: [
     InternalServerException,
@@ -7422,6 +7948,7 @@ export const stopBotRecommendation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/botrecommendations/{botRecommendationId}/stopbotrecommendation",
+    input: { botId: 0, botVersion: 0, localeId: 0, botRecommendationId: 0 },
   },
   errors: [
     ConflictException,
@@ -7454,7 +7981,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceARN}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceARN}",
+    input: { resourceARN: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -7484,7 +8016,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceARN}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceARN: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -7517,6 +8049,17 @@ export const updateBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}",
+    input: {
+      botId: 0,
+      botName: 0,
+      description: 0,
+      roleArn: 0,
+      dataPrivacy: i_DataPrivacy,
+      idleSessionTTLInSeconds: 0,
+      botType: 0,
+      botMembers: D.list(i_BotMember),
+      errorLogSettings: i_ErrorLogSettings,
+    },
     output: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
     body: true,
   },
@@ -7553,6 +8096,16 @@ export const updateBotAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}/botaliases/{botAliasId}",
+    input: {
+      botAliasId: 0,
+      botAliasName: 0,
+      description: 0,
+      botVersion: 0,
+      botAliasLocaleSettings: D.map(i_BotAliasLocaleSettings),
+      conversationLogSettings: i_ConversationLogSettings,
+      sentimentAnalysisSettings: i_SentimentAnalysisSettings,
+      botId: 0,
+    },
     output: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
     body: true,
   },
@@ -7589,6 +8142,19 @@ export const updateBotLocale: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}",
+    input: {
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      description: 0,
+      nluIntentConfidenceThreshold: 0,
+      voiceSettings: i_VoiceSettings,
+      unifiedSpeechSettings: i_UnifiedSpeechSettings,
+      audioFillerSettings: i_AudioFillerSettings,
+      speechRecognitionSettings: i_SpeechRecognitionSettings,
+      generativeAISettings: i_GenerativeAISettings,
+      speechDetectionSensitivity: 0,
+    },
     output: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
     body: true,
   },
@@ -7626,6 +8192,13 @@ export const updateBotRecommendation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/botrecommendations/{botRecommendationId}",
+    input: {
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      botRecommendationId: 0,
+      encryptionSetting: i_EncryptionSetting,
+    },
     output: {
       creationDateTime: D.ts,
       lastUpdatedDateTime: D.ts,
@@ -7673,6 +8246,7 @@ export const updateExport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /exports/{exportId}",
+    input: { exportId: 0, filePassword: 0 },
     output: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
     body: true,
   },
@@ -7709,6 +8283,28 @@ export const updateIntent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/intents/{intentId}",
+    input: {
+      intentId: 0,
+      intentName: 0,
+      intentDisplayName: 0,
+      description: 0,
+      parentIntentSignature: 0,
+      sampleUtterances: D.list(i_SampleUtterance),
+      dialogCodeHook: i_DialogCodeHookSettings,
+      fulfillmentCodeHook: i_FulfillmentCodeHookSettings,
+      slotPriorities: D.list({ priority: 0, slotId: 0 }),
+      intentConfirmationSetting: i_IntentConfirmationSetting,
+      intentClosingSetting: i_IntentClosingSetting,
+      inputContexts: D.list(i_InputContext),
+      outputContexts: D.list(i_OutputContext),
+      kendraConfiguration: i_KendraConfiguration,
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      initialResponseSetting: i_InitialResponseSetting,
+      qnAIntentConfiguration: i_QnAIntentConfiguration,
+      qInConnectIntentConfiguration: i_QInConnectIntentConfiguration,
+    },
     output: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
     body: true,
   },
@@ -7747,7 +8343,11 @@ export const updateResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /policy/{resourceArn}",
-    input: { expectedRevisionId: D.m({ query: "expectedRevisionId" }) },
+    input: {
+      resourceArn: 0,
+      policy: 0,
+      expectedRevisionId: D.m({ query: "expectedRevisionId" }),
+    },
     body: true,
   },
   errors: [
@@ -7783,6 +8383,20 @@ export const updateSlot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/intents/{intentId}/slots/{slotId}",
+    input: {
+      slotId: 0,
+      slotName: 0,
+      description: 0,
+      slotTypeId: 0,
+      valueElicitationSetting: i_SlotValueElicitationSetting,
+      obfuscationSetting: i_ObfuscationSetting,
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      intentId: 0,
+      multipleValuesSetting: i_MultipleValuesSetting,
+      subSlotSetting: i_SubSlotSetting,
+    },
     output: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
     body: true,
   },
@@ -7819,6 +8433,19 @@ export const updateSlotType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botId}/botversions/{botVersion}/botlocales/{localeId}/slottypes/{slotTypeId}",
+    input: {
+      slotTypeId: 0,
+      slotTypeName: 0,
+      description: 0,
+      slotTypeValues: D.list(i_SlotTypeValue),
+      valueSelectionSetting: i_SlotValueSelectionSetting,
+      parentSlotTypeSignature: 0,
+      botId: 0,
+      botVersion: 0,
+      localeId: 0,
+      externalSourceSetting: i_ExternalSourceSetting,
+      compositeSlotTypeSetting: i_CompositeSlotTypeSetting,
+    },
     output: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
     body: true,
   },
@@ -7855,6 +8482,7 @@ export const updateTestSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /testsets/{testSetId}",
+    input: { testSetId: 0, testSetName: 0, description: 0 },
     output: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
     body: true,
   },
@@ -7871,6 +8499,251 @@ export const updateTestSet: API.OperationMethod<
   operationName: "UpdateTestSet",
 })) as any;
 
+const i_AnalyticsBinBySpecification: D.LazyStruct = () => ({
+  name: 0,
+  interval: 0,
+  order: 0,
+});
+const i_AnalyticsSessionFilter: D.LazyStruct = () => ({
+  name: 0,
+  operator: 0,
+  values: 0,
+});
+const i_AnalyticsUtteranceFilter: D.LazyStruct = () => ({
+  name: 0,
+  operator: 0,
+  values: 0,
+});
+const i_AudioFillerSettings: D.LazyStruct = () => ({
+  enabled: 0,
+  audioType: 0,
+  startDelayInMilliseconds: 0,
+  minimumPlayDurationInMilliseconds: 0,
+  responseDeliveryDelayInMilliseconds: 0,
+});
+const i_BotAliasLocaleSettings: D.LazyStruct = () => ({
+  enabled: 0,
+  codeHookSpecification: {
+    lambdaCodeHook: { lambdaARN: 0, codeHookInterfaceVersion: 0 },
+  },
+});
+const i_BotMember: D.LazyStruct = () => ({
+  botMemberId: 0,
+  botMemberName: 0,
+  botMemberAliasId: 0,
+  botMemberAliasName: 0,
+  botMemberVersion: 0,
+});
+const i_CompositeSlotTypeSetting: D.LazyStruct = () => ({
+  subSlots: D.list({ name: 0, slotTypeId: 0 }),
+});
+const i_ConversationLogSettings: D.LazyStruct = () => ({
+  textLogSettings: D.list({
+    enabled: 0,
+    destination: { cloudWatch: { cloudWatchLogGroupArn: 0, logPrefix: 0 } },
+    selectiveLoggingEnabled: 0,
+  }),
+  audioLogSettings: D.list({
+    enabled: 0,
+    destination: { s3Bucket: { kmsKeyArn: 0, s3BucketArn: 0, logPrefix: 0 } },
+    selectiveLoggingEnabled: 0,
+  }),
+});
+const i_DataPrivacy: D.LazyStruct = () => ({ childDirected: 0 });
+const i_DialogCodeHookSettings: D.LazyStruct = () => ({ enabled: 0 });
+const i_EncryptionSetting: D.LazyStruct = () => ({
+  kmsKeyArn: 0,
+  botLocaleExportPassword: 0,
+  associatedTranscriptsPassword: 0,
+});
+const i_ErrorLogSettings: D.LazyStruct = () => ({ enabled: 0 });
+const i_ExternalSourceSetting: D.LazyStruct = () => ({
+  grammarSlotTypeSetting: {
+    source: { s3BucketName: 0, s3ObjectKey: 0, kmsKeyArn: 0 },
+  },
+});
+const i_FulfillmentCodeHookSettings: D.LazyStruct = () => ({
+  enabled: 0,
+  postFulfillmentStatusSpecification: {
+    successResponse: i_ResponseSpecification,
+    failureResponse: i_ResponseSpecification,
+    timeoutResponse: i_ResponseSpecification,
+    successNextStep: i_DialogState,
+    successConditional: i_ConditionalSpecification,
+    failureNextStep: i_DialogState,
+    failureConditional: i_ConditionalSpecification,
+    timeoutNextStep: i_DialogState,
+    timeoutConditional: i_ConditionalSpecification,
+  },
+  fulfillmentUpdatesSpecification: {
+    active: 0,
+    startResponse: {
+      delayInSeconds: 0,
+      messageGroups: D.list(i_MessageGroup),
+      allowInterrupt: 0,
+    },
+    updateResponse: {
+      frequencyInSeconds: 0,
+      messageGroups: D.list(i_MessageGroup),
+      allowInterrupt: 0,
+    },
+    timeoutInSeconds: 0,
+  },
+  active: 0,
+});
+const i_GenerativeAISettings: D.LazyStruct = () => ({
+  runtimeSettings: {
+    slotResolutionImprovement: {
+      enabled: 0,
+      bedrockModelSpecification: i_BedrockModelSpecification,
+    },
+    nluImprovement: {
+      enabled: 0,
+      assistedNluMode: 0,
+      intentDisambiguationSettings: {
+        enabled: 0,
+        maxDisambiguationIntents: 0,
+        customDisambiguationMessage: 0,
+      },
+    },
+  },
+  buildtimeSettings: {
+    descriptiveBotBuilder: {
+      enabled: 0,
+      bedrockModelSpecification: i_BedrockModelSpecification,
+    },
+    sampleUtteranceGeneration: {
+      enabled: 0,
+      bedrockModelSpecification: i_BedrockModelSpecification,
+    },
+  },
+});
+const i_InitialResponseSetting: D.LazyStruct = () => ({
+  initialResponse: i_ResponseSpecification,
+  nextStep: i_DialogState,
+  conditional: i_ConditionalSpecification,
+  codeHook: i_DialogCodeHookInvocationSetting,
+});
+const i_InputContext: D.LazyStruct = () => ({ name: 0 });
+const i_IntentClosingSetting: D.LazyStruct = () => ({
+  closingResponse: i_ResponseSpecification,
+  active: 0,
+  nextStep: i_DialogState,
+  conditional: i_ConditionalSpecification,
+});
+const i_IntentConfirmationSetting: D.LazyStruct = () => ({
+  promptSpecification: i_PromptSpecification,
+  declinationResponse: i_ResponseSpecification,
+  active: 0,
+  confirmationResponse: i_ResponseSpecification,
+  confirmationNextStep: i_DialogState,
+  confirmationConditional: i_ConditionalSpecification,
+  declinationNextStep: i_DialogState,
+  declinationConditional: i_ConditionalSpecification,
+  failureResponse: i_ResponseSpecification,
+  failureNextStep: i_DialogState,
+  failureConditional: i_ConditionalSpecification,
+  codeHook: i_DialogCodeHookInvocationSetting,
+  elicitationCodeHook: i_ElicitationCodeHookInvocationSetting,
+});
+const i_KendraConfiguration: D.LazyStruct = () => ({
+  kendraIndex: 0,
+  queryFilterStringEnabled: 0,
+  queryFilterString: 0,
+});
+const i_MultipleValuesSetting: D.LazyStruct = () => ({
+  allowMultipleValues: 0,
+});
+const i_ObfuscationSetting: D.LazyStruct = () => ({
+  obfuscationSettingType: 0,
+});
+const i_OutputContext: D.LazyStruct = () => ({
+  name: 0,
+  timeToLiveInSeconds: 0,
+  turnsToLive: 0,
+});
+const i_QInConnectIntentConfiguration: D.LazyStruct = () => ({
+  qInConnectAssistantConfiguration: { assistantArn: 0 },
+});
+const i_QnAIntentConfiguration: D.LazyStruct = () => ({
+  dataSourceConfiguration: {
+    opensearchConfiguration: {
+      domainEndpoint: 0,
+      indexName: 0,
+      exactResponse: 0,
+      exactResponseFields: { questionField: 0, answerField: 0 },
+      includeFields: 0,
+    },
+    kendraConfiguration: {
+      kendraIndex: 0,
+      queryFilterStringEnabled: 0,
+      queryFilterString: 0,
+      exactResponse: 0,
+    },
+    bedrockKnowledgeStoreConfiguration: {
+      bedrockKnowledgeBaseArn: 0,
+      exactResponse: 0,
+      exactResponseFields: { answerField: 0 },
+    },
+  },
+  bedrockModelConfiguration: i_BedrockModelSpecification,
+});
+const i_SampleUtterance: D.LazyStruct = () => ({ utterance: 0 });
+const i_SentimentAnalysisSettings: D.LazyStruct = () => ({
+  detectSentiment: 0,
+});
+const i_SlotTypeValue: D.LazyStruct = () => ({
+  sampleValue: i_SampleValue,
+  synonyms: D.list(i_SampleValue),
+});
+const i_SlotValueElicitationSetting: D.LazyStruct = () => ({
+  defaultValueSpecification: i_SlotDefaultValueSpecification,
+  slotConstraint: 0,
+  promptSpecification: i_PromptSpecification,
+  sampleUtterances: D.list(i_SampleUtterance),
+  waitAndContinueSpecification: i_WaitAndContinueSpecification,
+  slotCaptureSetting: {
+    captureResponse: i_ResponseSpecification,
+    captureNextStep: i_DialogState,
+    captureConditional: i_ConditionalSpecification,
+    failureResponse: i_ResponseSpecification,
+    failureNextStep: i_DialogState,
+    failureConditional: i_ConditionalSpecification,
+    codeHook: i_DialogCodeHookInvocationSetting,
+    elicitationCodeHook: i_ElicitationCodeHookInvocationSetting,
+  },
+  slotResolutionSetting: { slotResolutionStrategy: 0 },
+});
+const i_SlotValueSelectionSetting: D.LazyStruct = () => ({
+  resolutionStrategy: 0,
+  regexFilter: { pattern: 0 },
+  advancedRecognitionSetting: { audioRecognitionStrategy: 0 },
+});
+const i_SpeechRecognitionSettings: D.LazyStruct = () => ({
+  speechModelPreference: 0,
+  speechModelConfig: { deepgramConfig: { apiTokenSecretArn: 0, modelId: 0 } },
+});
+const i_SubSlotSetting: D.LazyStruct = () => ({
+  expression: 0,
+  slotSpecifications: D.map({
+    slotTypeId: 0,
+    valueElicitationSetting: {
+      defaultValueSpecification: i_SlotDefaultValueSpecification,
+      promptSpecification: i_PromptSpecification,
+      sampleUtterances: D.list(i_SampleUtterance),
+      waitAndContinueSpecification: i_WaitAndContinueSpecification,
+    },
+  }),
+});
+const i_TestSetStorageLocation: D.LazyStruct = () => ({
+  s3BucketName: 0,
+  s3Path: 0,
+  kmsKeyArn: 0,
+});
+const i_UnifiedSpeechSettings: D.LazyStruct = () => ({
+  speechFoundationModel: { modelArn: 0, voiceId: 0 },
+});
+const i_VoiceSettings: D.LazyStruct = () => ({ engine: 0, voiceId: 0 });
 const o_EncryptionSetting: D.LazyStruct = () => ({
   botLocaleExportPassword: D.secret,
   associatedTranscriptsPassword: D.secret,
@@ -7886,4 +8759,105 @@ const o_TranscriptSourceSetting: D.LazyStruct = () => ({
       },
     },
   },
+});
+const i_BedrockModelSpecification: D.LazyStruct = () => ({
+  modelArn: 0,
+  guardrail: { identifier: 0, version: 0 },
+  traceStatus: 0,
+  customPrompt: 0,
+});
+const i_ConditionalSpecification: D.LazyStruct = () => ({
+  active: 0,
+  conditionalBranches: D.list({
+    name: 0,
+    condition: { expressionString: 0 },
+    nextStep: i_DialogState,
+    response: i_ResponseSpecification,
+  }),
+  defaultBranch: { nextStep: i_DialogState, response: i_ResponseSpecification },
+});
+const i_DialogCodeHookInvocationSetting: D.LazyStruct = () => ({
+  enableCodeHookInvocation: 0,
+  active: 0,
+  invocationLabel: 0,
+  postCodeHookSpecification: {
+    successResponse: i_ResponseSpecification,
+    successNextStep: i_DialogState,
+    successConditional: i_ConditionalSpecification,
+    failureResponse: i_ResponseSpecification,
+    failureNextStep: i_DialogState,
+    failureConditional: i_ConditionalSpecification,
+    timeoutResponse: i_ResponseSpecification,
+    timeoutNextStep: i_DialogState,
+    timeoutConditional: i_ConditionalSpecification,
+  },
+});
+const i_DialogState: D.LazyStruct = () => ({
+  dialogAction: { type: 0, slotToElicit: 0, suppressNextMessage: 0 },
+  intent: { name: 0, slots: D.map(i_SlotValueOverride) },
+  sessionAttributes: 0,
+});
+const i_ElicitationCodeHookInvocationSetting: D.LazyStruct = () => ({
+  enableCodeHookInvocation: 0,
+  invocationLabel: 0,
+});
+const i_MessageGroup: D.LazyStruct = () => ({
+  message: i_Message,
+  variations: D.list(i_Message),
+});
+const i_PromptSpecification: D.LazyStruct = () => ({
+  messageGroups: D.list(i_MessageGroup),
+  maxRetries: 0,
+  allowInterrupt: 0,
+  messageSelectionStrategy: 0,
+  promptAttemptsSpecification: D.map({
+    allowInterrupt: 0,
+    allowedInputTypes: { allowAudioInput: 0, allowDTMFInput: 0 },
+    audioAndDTMFInputSpecification: {
+      startTimeoutMs: 0,
+      audioSpecification: { maxLengthMs: 0, endTimeoutMs: 0 },
+      dtmfSpecification: {
+        maxLength: 0,
+        endTimeoutMs: 0,
+        deletionCharacter: 0,
+        endCharacter: 0,
+      },
+    },
+    textInputSpecification: { startTimeoutMs: 0 },
+  }),
+});
+const i_ResponseSpecification: D.LazyStruct = () => ({
+  messageGroups: D.list(i_MessageGroup),
+  allowInterrupt: 0,
+});
+const i_SampleValue: D.LazyStruct = () => ({ value: 0 });
+const i_SlotDefaultValueSpecification: D.LazyStruct = () => ({
+  defaultValueList: D.list({ defaultValue: 0 }),
+});
+const i_WaitAndContinueSpecification: D.LazyStruct = () => ({
+  waitingResponse: i_ResponseSpecification,
+  continueResponse: i_ResponseSpecification,
+  stillWaitingResponse: {
+    messageGroups: D.list(i_MessageGroup),
+    frequencyInSeconds: 0,
+    timeoutInSeconds: 0,
+    allowInterrupt: 0,
+  },
+  active: 0,
+});
+const i_Message: D.LazyStruct = () => ({
+  plainTextMessage: { value: 0 },
+  customPayload: { value: 0 },
+  ssmlMessage: { value: 0 },
+  imageResponseCard: {
+    title: 0,
+    subtitle: 0,
+    imageUrl: 0,
+    buttons: D.list({ text: 0, value: 0 }),
+  },
+});
+const i_SlotValueOverride: D.LazyStruct = () => ({
+  shape: 0,
+  value: { interpretedValue: 0 },
+  values: D.list(i_SlotValueOverride),
 });

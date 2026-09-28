@@ -1056,7 +1056,25 @@ export const createMediaCapturePipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sdk-media-capture-pipelines",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      SourceType: 0,
+      SourceArn: 0,
+      SinkType: 0,
+      SinkArn: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      ChimeSdkMeetingConfiguration: {
+        SourceConfiguration: i_SourceConfiguration,
+        ArtifactsConfiguration: {
+          Audio: { MuxType: 0 },
+          Video: { State: 0, MuxType: 0 },
+          Content: { State: 0, MuxType: 0 },
+          CompositedVideo: i_CompositedVideoArtifactsConfiguration,
+        },
+      },
+      SseAwsKeyManagementParams: { AwsKmsKeyId: 0, AwsKmsEncryptionContext: 0 },
+      SinkIamRoleArn: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { MediaCapturePipeline: o_MediaCapturePipeline },
     body: true,
   },
@@ -1095,7 +1113,28 @@ export const createMediaConcatenationPipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sdk-media-concatenation-pipelines",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Sources: D.list({
+        Type: 0,
+        MediaCapturePipelineSourceConfiguration: {
+          MediaPipelineArn: 0,
+          ChimeSdkMeetingConfiguration: {
+            ArtifactsConfiguration: {
+              Audio: { State: 0 },
+              Video: { State: 0 },
+              Content: { State: 0 },
+              DataChannel: { State: 0 },
+              TranscriptionMessages: { State: 0 },
+              MeetingEvents: { State: 0 },
+              CompositedVideo: { State: 0 },
+            },
+          },
+        },
+      }),
+      Sinks: D.list({ Type: 0, S3BucketSinkConfiguration: { Destination: 0 } }),
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
     output: { MediaConcatenationPipeline: o_MediaConcatenationPipeline },
     body: true,
   },
@@ -1135,7 +1174,35 @@ export const createMediaInsightsPipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /media-insights-pipelines",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      MediaInsightsPipelineConfigurationArn: 0,
+      KinesisVideoStreamSourceRuntimeConfiguration: {
+        Streams: D.list({
+          StreamArn: 0,
+          FragmentNumber: 0,
+          StreamChannelDefinition: {
+            NumberOfChannels: 0,
+            ChannelDefinitions: D.list({ ChannelId: 0, ParticipantRole: 0 }),
+          },
+        }),
+        MediaEncoding: 0,
+        MediaSampleRate: 0,
+      },
+      MediaInsightsRuntimeMetadata: 0,
+      KinesisVideoStreamRecordingSourceRuntimeConfiguration: {
+        Streams: D.list({ StreamArn: 0 }),
+        FragmentSelector: {
+          FragmentSelectorType: 0,
+          TimestampRange: { StartTimestamp: 0, EndTimestamp: 0 },
+        },
+      },
+      S3RecordingSinkRuntimeConfiguration: {
+        Destination: 0,
+        RecordingFileFormat: 0,
+      },
+      Tags: D.list(i_Tag),
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
     output: { MediaInsightsPipeline: o_MediaInsightsPipeline },
     body: true,
   },
@@ -1177,7 +1244,14 @@ export const createMediaInsightsPipelineConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /media-insights-pipeline-configurations",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      MediaInsightsPipelineConfigurationName: 0,
+      ResourceAccessRoleArn: 0,
+      RealTimeAlertConfiguration: i_RealTimeAlertConfiguration,
+      Elements: D.list(i_MediaInsightsPipelineConfigurationElement),
+      Tags: D.list(i_Tag),
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
     output: {
       MediaInsightsPipelineConfiguration: o_MediaInsightsPipelineConfiguration,
     },
@@ -1219,7 +1293,23 @@ export const createMediaLiveConnectorPipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sdk-media-live-connector-pipelines",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Sources: D.list({
+        SourceType: 0,
+        ChimeSdkMeetingLiveConnectorConfiguration: {
+          Arn: 0,
+          MuxType: 0,
+          CompositedVideo: i_CompositedVideoArtifactsConfiguration,
+          SourceConfiguration: i_SourceConfiguration,
+        },
+      }),
+      Sinks: D.list({
+        SinkType: 0,
+        RTMPConfiguration: { Url: 0, AudioChannels: 0, AudioSampleRate: 0 },
+      }),
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
     output: { MediaLiveConnectorPipeline: o_MediaLiveConnectorPipeline },
     body: true,
   },
@@ -1275,7 +1365,12 @@ export const createMediaPipelineKinesisVideoStreamPool: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /media-pipeline-kinesis-video-stream-pools",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      StreamConfiguration: { Region: 0, DataRetentionInHours: 0 },
+      PoolName: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
     output: {
       KinesisVideoStreamPoolConfiguration:
         o_KinesisVideoStreamPoolConfiguration,
@@ -1319,7 +1414,17 @@ export const createMediaStreamPipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sdk-media-stream-pipelines",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Sources: D.list({ SourceType: 0, SourceArn: 0 }),
+      Sinks: D.list({
+        SinkArn: 0,
+        SinkType: 0,
+        ReservedStreamCapacity: 0,
+        MediaStreamType: 0,
+      }),
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
     output: { MediaStreamPipeline: o_MediaStreamPipeline },
     body: true,
   },
@@ -1359,6 +1464,7 @@ export const deleteMediaCapturePipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /sdk-media-capture-pipelines/{MediaPipelineId}",
+    input: { MediaPipelineId: 0 },
   },
   errors: [
     BadRequestException,
@@ -1396,6 +1502,7 @@ export const deleteMediaInsightsPipelineConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /media-insights-pipeline-configurations/{Identifier}",
+    input: { Identifier: 0 },
   },
   errors: [
     BadRequestException,
@@ -1434,6 +1541,7 @@ export const deleteMediaPipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /sdk-media-pipelines/{MediaPipelineId}",
+    input: { MediaPipelineId: 0 },
   },
   errors: [
     BadRequestException,
@@ -1472,6 +1580,7 @@ export const deleteMediaPipelineKinesisVideoStreamPool: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /media-pipeline-kinesis-video-stream-pools/{Identifier}",
+    input: { Identifier: 0 },
   },
   errors: [
     BadRequestException,
@@ -1509,6 +1618,7 @@ export const getMediaCapturePipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sdk-media-capture-pipelines/{MediaPipelineId}",
+    input: { MediaPipelineId: 0 },
     output: { MediaCapturePipeline: o_MediaCapturePipeline },
   },
   errors: [
@@ -1546,6 +1656,7 @@ export const getMediaInsightsPipelineConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /media-insights-pipeline-configurations/{Identifier}",
+    input: { Identifier: 0 },
     output: {
       MediaInsightsPipelineConfiguration: o_MediaInsightsPipelineConfiguration,
     },
@@ -1585,6 +1696,7 @@ export const getMediaPipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sdk-media-pipelines/{MediaPipelineId}",
+    input: { MediaPipelineId: 0 },
     output: {
       MediaPipeline: {
         MediaCapturePipeline: o_MediaCapturePipeline,
@@ -1630,6 +1742,7 @@ export const getMediaPipelineKinesisVideoStreamPool: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /media-pipeline-kinesis-video-stream-pools/{Identifier}",
+    input: { Identifier: 0 },
     output: {
       KinesisVideoStreamPoolConfiguration:
         o_KinesisVideoStreamPoolConfiguration,
@@ -1670,6 +1783,7 @@ export const getSpeakerSearchTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /media-insights-pipelines/{Identifier}/speaker-search-tasks/{SpeakerSearchTaskId}",
+    input: { Identifier: 0, SpeakerSearchTaskId: 0 },
     output: { SpeakerSearchTask: o_SpeakerSearchTask },
   },
   errors: [
@@ -1707,6 +1821,7 @@ export const getVoiceToneAnalysisTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /media-insights-pipelines/{Identifier}/voice-tone-analysis-tasks/{VoiceToneAnalysisTaskId}",
+    input: { Identifier: 0, VoiceToneAnalysisTaskId: 0 },
     output: { VoiceToneAnalysisTask: o_VoiceToneAnalysisTask },
   },
   errors: [
@@ -1975,7 +2090,13 @@ export const startSpeakerSearchTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /media-insights-pipelines/{Identifier}/speaker-search-tasks?operation=start",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Identifier: 0,
+      VoiceProfileDomainArn: 0,
+      KinesisVideoStreamSourceTaskConfiguration:
+        i_KinesisVideoStreamSourceTaskConfiguration,
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
     output: { SpeakerSearchTask: o_SpeakerSearchTask },
     body: true,
   },
@@ -2021,7 +2142,13 @@ export const startVoiceToneAnalysisTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /media-insights-pipelines/{Identifier}/voice-tone-analysis-tasks?operation=start",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Identifier: 0,
+      LanguageCode: 0,
+      KinesisVideoStreamSourceTaskConfiguration:
+        i_KinesisVideoStreamSourceTaskConfiguration,
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
     output: { VoiceToneAnalysisTask: o_VoiceToneAnalysisTask },
     body: true,
   },
@@ -2062,6 +2189,7 @@ export const stopSpeakerSearchTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /media-insights-pipelines/{Identifier}/speaker-search-tasks/{SpeakerSearchTaskId}?operation=stop",
+    input: { Identifier: 0, SpeakerSearchTaskId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2100,6 +2228,7 @@ export const stopVoiceToneAnalysisTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /media-insights-pipelines/{Identifier}/voice-tone-analysis-tasks/{VoiceToneAnalysisTaskId}?operation=stop",
+    input: { Identifier: 0, VoiceToneAnalysisTaskId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2137,6 +2266,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags?operation=tag-resource",
+    input: { ResourceARN: 0, Tags: D.list(i_Tag) },
     body: true,
   },
   errors: [
@@ -2174,6 +2304,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags?operation=untag-resource",
+    input: { ResourceARN: 0, TagKeys: 0 },
     body: true,
   },
   errors: [
@@ -2212,6 +2343,12 @@ export const updateMediaInsightsPipelineConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /media-insights-pipeline-configurations/{Identifier}",
+    input: {
+      Identifier: 0,
+      ResourceAccessRoleArn: 0,
+      RealTimeAlertConfiguration: i_RealTimeAlertConfiguration,
+      Elements: D.list(i_MediaInsightsPipelineConfigurationElement),
+    },
     output: {
       MediaInsightsPipelineConfiguration: o_MediaInsightsPipelineConfiguration,
     },
@@ -2254,6 +2391,7 @@ export const updateMediaInsightsPipelineStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /media-insights-pipeline-status/{Identifier}",
+    input: { Identifier: 0, UpdateStatus: 0 },
     body: true,
   },
   errors: [
@@ -2293,6 +2431,7 @@ export const updateMediaPipelineKinesisVideoStreamPool: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /media-pipeline-kinesis-video-stream-pools/{Identifier}",
+    input: { Identifier: 0, StreamConfiguration: { DataRetentionInHours: 0 } },
     output: {
       KinesisVideoStreamPoolConfiguration:
         o_KinesisVideoStreamPoolConfiguration,
@@ -2314,6 +2453,105 @@ export const updateMediaPipelineKinesisVideoStreamPool: API.OperationMethod<
   operationName: "UpdateMediaPipelineKinesisVideoStreamPool",
 })) as any;
 
+const i_CompositedVideoArtifactsConfiguration: D.LazyStruct = () => ({
+  Layout: 0,
+  Resolution: 0,
+  GridViewConfiguration: {
+    ContentShareLayout: 0,
+    PresenterOnlyConfiguration: { PresenterPosition: 0 },
+    ActiveSpeakerOnlyConfiguration: { ActiveSpeakerPosition: 0 },
+    HorizontalLayoutConfiguration: {
+      TileOrder: 0,
+      TilePosition: 0,
+      TileCount: 0,
+      TileAspectRatio: 0,
+    },
+    VerticalLayoutConfiguration: {
+      TileOrder: 0,
+      TilePosition: 0,
+      TileCount: 0,
+      TileAspectRatio: 0,
+    },
+    VideoAttribute: {
+      CornerRadius: 0,
+      BorderColor: 0,
+      HighlightColor: 0,
+      BorderThickness: 0,
+    },
+    CanvasOrientation: 0,
+  },
+});
+const i_KinesisVideoStreamSourceTaskConfiguration: D.LazyStruct = () => ({
+  StreamArn: 0,
+  ChannelId: 0,
+  FragmentNumber: 0,
+});
+const i_MediaInsightsPipelineConfigurationElement: D.LazyStruct = () => ({
+  Type: 0,
+  AmazonTranscribeCallAnalyticsProcessorConfiguration: {
+    LanguageCode: 0,
+    VocabularyName: 0,
+    VocabularyFilterName: 0,
+    VocabularyFilterMethod: 0,
+    LanguageModelName: 0,
+    EnablePartialResultsStabilization: 0,
+    PartialResultsStability: 0,
+    ContentIdentificationType: 0,
+    ContentRedactionType: 0,
+    PiiEntityTypes: 0,
+    FilterPartialResults: 0,
+    PostCallAnalyticsSettings: {
+      OutputLocation: 0,
+      DataAccessRoleArn: 0,
+      ContentRedactionOutput: 0,
+      OutputEncryptionKMSKeyId: 0,
+    },
+    CallAnalyticsStreamCategories: 0,
+  },
+  AmazonTranscribeProcessorConfiguration: {
+    LanguageCode: 0,
+    VocabularyName: 0,
+    VocabularyFilterName: 0,
+    VocabularyFilterMethod: 0,
+    ShowSpeakerLabel: 0,
+    EnablePartialResultsStabilization: 0,
+    PartialResultsStability: 0,
+    ContentIdentificationType: 0,
+    ContentRedactionType: 0,
+    PiiEntityTypes: 0,
+    LanguageModelName: 0,
+    FilterPartialResults: 0,
+    IdentifyLanguage: 0,
+    IdentifyMultipleLanguages: 0,
+    LanguageOptions: 0,
+    PreferredLanguage: 0,
+    VocabularyNames: 0,
+    VocabularyFilterNames: 0,
+  },
+  KinesisDataStreamSinkConfiguration: { InsightsTarget: 0 },
+  S3RecordingSinkConfiguration: { Destination: 0, RecordingFileFormat: 0 },
+  VoiceAnalyticsProcessorConfiguration: {
+    SpeakerSearchStatus: 0,
+    VoiceToneAnalysisStatus: 0,
+  },
+  LambdaFunctionSinkConfiguration: { InsightsTarget: 0 },
+  SqsQueueSinkConfiguration: { InsightsTarget: 0 },
+  SnsTopicSinkConfiguration: { InsightsTarget: 0 },
+  VoiceEnhancementSinkConfiguration: { Disabled: 0 },
+});
+const i_RealTimeAlertConfiguration: D.LazyStruct = () => ({
+  Disabled: 0,
+  Rules: D.list({
+    Type: 0,
+    KeywordMatchConfiguration: { RuleName: 0, Keywords: 0, Negate: 0 },
+    SentimentConfiguration: { RuleName: 0, SentimentType: 0, TimePeriod: 0 },
+    IssueDetectionConfiguration: { RuleName: 0 },
+  }),
+});
+const i_SourceConfiguration: D.LazyStruct = () => ({
+  SelectedVideoStreams: { AttendeeIds: 0, ExternalUserIds: 0 },
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_KinesisVideoStreamPoolConfiguration: D.LazyStruct = () => ({
   PoolArn: D.secret,
   CreatedTimestamp: D.ts,

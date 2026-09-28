@@ -719,6 +719,7 @@ export const cancelSolNetworkOperation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sol/nslcm/v1/ns_lcm_op_occs/{nsLcmOpOccId}/cancel",
+    input: { nsLcmOpOccId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -758,6 +759,7 @@ export const createSolFunctionPackage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sol/vnfpkgm/v1/vnf_packages",
+    input: { tags: 0 },
     body: true,
   },
   errors: [
@@ -799,6 +801,7 @@ export const createSolNetworkInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sol/nslcm/v1/ns_instances",
+    input: { nsdInfoId: 0, nsName: 0, nsDescription: 0, tags: 0 },
     body: true,
   },
   errors: [
@@ -844,6 +847,7 @@ export const createSolNetworkPackage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sol/nsd/v1/ns_descriptors",
+    input: { tags: 0 },
     body: true,
   },
   errors: [
@@ -882,6 +886,7 @@ export const deleteSolFunctionPackage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /sol/vnfpkgm/v1/vnf_packages/{vnfPkgId}",
+    input: { vnfPkgId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -919,6 +924,7 @@ export const deleteSolNetworkInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /sol/nslcm/v1/ns_instances/{nsInstanceId}",
+    input: { nsInstanceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -956,6 +962,7 @@ export const deleteSolNetworkPackage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /sol/nsd/v1/ns_descriptors/{nsdInfoId}",
+    input: { nsdInfoId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -991,6 +998,7 @@ export const getSolFunctionInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sol/vnflcm/v1/vnf_instances/{vnfInstanceId}",
+    input: { vnfInstanceId: 0 },
     output: { metadata: { createdAt: D.ts, lastModified: D.ts } },
   },
   errors: [
@@ -1027,6 +1035,7 @@ export const getSolFunctionPackage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sol/vnfpkgm/v1/vnf_packages/{vnfPkgId}",
+    input: { vnfPkgId: 0 },
     output: { metadata: { createdAt: D.ts, lastModified: D.ts } },
   },
   errors: [
@@ -1062,10 +1071,10 @@ export const getSolFunctionPackageContent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sol/vnfpkgm/v1/vnf_packages/{vnfPkgId}/package_content",
-    input: { accept: D.m({ header: "Accept" }) },
+    input: { vnfPkgId: 0, accept: D.m({ header: "Accept" }) },
     output: {
       contentType: D.m({ header: "Content-Type" }),
-      packageContent: D.m({ payload: true, shape: D.stream }),
+      packageContent: D.m({ payload: true, shape: D.blob }),
     },
   },
   errors: [
@@ -1103,10 +1112,10 @@ export const getSolFunctionPackageDescriptor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sol/vnfpkgm/v1/vnf_packages/{vnfPkgId}/vnfd",
-    input: { accept: D.m({ header: "Accept" }) },
+    input: { vnfPkgId: 0, accept: D.m({ header: "Accept" }) },
     output: {
       contentType: D.m({ header: "Content-Type" }),
-      vnfd: D.m({ payload: true, shape: D.stream }),
+      vnfd: D.m({ payload: true, shape: D.blob }),
     },
   },
   errors: [
@@ -1142,6 +1151,7 @@ export const getSolNetworkInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sol/nslcm/v1/ns_instances/{nsInstanceId}",
+    input: { nsInstanceId: 0 },
     output: { metadata: { createdAt: D.ts, lastModified: D.ts } },
   },
   errors: [
@@ -1178,6 +1188,7 @@ export const getSolNetworkOperation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sol/nslcm/v1/ns_lcm_op_occs/{nsLcmOpOccId}",
+    input: { nsLcmOpOccId: 0 },
     output: {
       metadata: { createdAt: D.ts, lastModified: D.ts },
       tasks: D.list({ taskStartTime: D.ts, taskEndTime: D.ts }),
@@ -1216,6 +1227,7 @@ export const getSolNetworkPackage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sol/nsd/v1/ns_descriptors/{nsdInfoId}",
+    input: { nsdInfoId: 0 },
     output: { metadata: { createdAt: D.ts, lastModified: D.ts } },
   },
   errors: [
@@ -1251,10 +1263,10 @@ export const getSolNetworkPackageContent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sol/nsd/v1/ns_descriptors/{nsdInfoId}/nsd_content",
-    input: { accept: D.m({ header: "Accept" }) },
+    input: { nsdInfoId: 0, accept: D.m({ header: "Accept" }) },
     output: {
       contentType: D.m({ header: "Content-Type" }),
-      nsdContent: D.m({ payload: true, shape: D.stream }),
+      nsdContent: D.m({ payload: true, shape: D.blob }),
     },
   },
   errors: [
@@ -1290,9 +1302,10 @@ export const getSolNetworkPackageDescriptor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sol/nsd/v1/ns_descriptors/{nsdInfoId}/nsd",
+    input: { nsdInfoId: 0 },
     output: {
       contentType: D.m({ header: "Content-Type" }),
-      nsd: D.m({ payload: true, shape: D.stream }),
+      nsd: D.m({ payload: true, shape: D.blob }),
     },
   },
   errors: [
@@ -1332,7 +1345,12 @@ export const instantiateSolNetworkInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sol/nslcm/v1/ns_instances/{nsInstanceId}/instantiate",
-    input: { dryRun: D.m({ query: "dry_run" }) },
+    input: {
+      nsInstanceId: 0,
+      dryRun: D.m({ query: "dry_run" }),
+      additionalParamsForNs: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1606,7 +1624,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1641,8 +1663,9 @@ export const putSolFunctionPackageContent: API.OperationMethod<
     service: svc,
     http: "PUT /sol/vnfpkgm/v1/vnf_packages/{vnfPkgId}/package_content",
     input: {
+      vnfPkgId: 0,
       contentType: D.m({ header: "Content-Type" }),
-      file: D.m({ payload: true, shape: D.stream }),
+      file: D.m({ payload: true, shape: D.blob }),
     },
   },
   errors: [
@@ -1679,8 +1702,9 @@ export const putSolNetworkPackageContent: API.OperationMethod<
     service: svc,
     http: "PUT /sol/nsd/v1/ns_descriptors/{nsdInfoId}/nsd_content",
     input: {
+      nsdInfoId: 0,
       contentType: D.m({ header: "Content-Type" }),
-      file: D.m({ payload: true, shape: D.stream }),
+      file: D.m({ payload: true, shape: D.blob }),
     },
   },
   errors: [
@@ -1713,7 +1737,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1750,6 +1779,7 @@ export const terminateSolNetworkInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sol/nslcm/v1/ns_instances/{nsInstanceId}/terminate",
+    input: { nsInstanceId: 0, tags: 0 },
     body: true,
   },
   errors: [
@@ -1786,7 +1816,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1821,6 +1851,7 @@ export const updateSolFunctionPackage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /sol/vnfpkgm/v1/vnf_packages/{vnfPkgId}",
+    input: { vnfPkgId: 0, operationalState: 0 },
     body: true,
   },
   errors: [
@@ -1859,6 +1890,13 @@ export const updateSolNetworkInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sol/nslcm/v1/ns_instances/{nsInstanceId}/update",
+    input: {
+      nsInstanceId: 0,
+      updateType: 0,
+      modifyVnfInfoData: { vnfInstanceId: 0, vnfConfigurableProperties: 0 },
+      updateNs: { nsdInfoId: 0, additionalParamsForNs: 0 },
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1897,6 +1935,7 @@ export const updateSolNetworkPackage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /sol/nsd/v1/ns_descriptors/{nsdInfoId}",
+    input: { nsdInfoId: 0, nsdOperationalState: 0 },
     body: true,
   },
   errors: [
@@ -1934,8 +1973,9 @@ export const validateSolFunctionPackageContent: API.OperationMethod<
     service: svc,
     http: "PUT /sol/vnfpkgm/v1/vnf_packages/{vnfPkgId}/package_content/validate",
     input: {
+      vnfPkgId: 0,
       contentType: D.m({ header: "Content-Type" }),
-      file: D.m({ payload: true, shape: D.stream }),
+      file: D.m({ payload: true, shape: D.blob }),
     },
   },
   errors: [
@@ -1973,8 +2013,9 @@ export const validateSolNetworkPackageContent: API.OperationMethod<
     service: svc,
     http: "PUT /sol/nsd/v1/ns_descriptors/{nsdInfoId}/nsd_content/validate",
     input: {
+      nsdInfoId: 0,
       contentType: D.m({ header: "Content-Type" }),
-      file: D.m({ payload: true, shape: D.stream }),
+      file: D.m({ payload: true, shape: D.blob }),
     },
   },
   errors: [

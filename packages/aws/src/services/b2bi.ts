@@ -1152,7 +1152,14 @@ export const createCapability: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      type: 0,
+      configuration: i_CapabilityConfiguration,
+      instructionsDocuments: D.list(i_S3Location),
+      clientToken: D.m({ idempotency: true }),
+      tags: D.list(i_Tag),
+    },
     output: { createdAt: D.ts },
   },
   errors: [
@@ -1189,7 +1196,16 @@ export const createPartnership: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      profileId: 0,
+      name: 0,
+      email: 0,
+      phone: 0,
+      capabilities: 0,
+      capabilityOptions: i_CapabilityOptions,
+      clientToken: D.m({ idempotency: true }),
+      tags: D.list(i_Tag),
+    },
     output: { email: D.secret, phone: D.secret, createdAt: D.ts },
   },
   errors: [
@@ -1226,7 +1242,15 @@ export const createProfile: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      email: 0,
+      phone: 0,
+      businessName: 0,
+      logging: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: D.list(i_Tag),
+    },
     output: { phone: D.secret, email: D.secret, createdAt: D.ts },
   },
   errors: [
@@ -1264,7 +1288,14 @@ export const createStarterMappingTemplate: API.OperationMethod<
   CreateStarterMappingTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      outputSampleLocation: i_S3Location,
+      mappingType: 0,
+      templateDetails: { x12: i_X12Details },
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1308,7 +1339,19 @@ export const createTransformer: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: D.list(i_Tag),
+      fileFormat: 0,
+      mappingTemplate: 0,
+      ediType: i_EdiType,
+      sampleDocument: 0,
+      inputConversion: i_InputConversion,
+      mapping: i_Mapping,
+      outputConversion: i_OutputConversion,
+      sampleDocuments: i_SampleDocuments,
+    },
     output: { createdAt: D.ts },
   },
   errors: [
@@ -1342,7 +1385,7 @@ export const deleteCapability: API.OperationMethod<
   DeleteCapabilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { capabilityId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1373,7 +1416,7 @@ export const deletePartnership: API.OperationMethod<
   DeletePartnershipError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { partnershipId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1404,7 +1447,7 @@ export const deleteProfile: API.OperationMethod<
   DeleteProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { profileId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1435,7 +1478,7 @@ export const deleteTransformer: API.OperationMethod<
   DeleteTransformerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { transformerId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1474,7 +1517,10 @@ export const generateMapping: API.OperationMethod<
   GenerateMappingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { inputFileContent: 0, outputFileContent: 0, mappingType: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1502,7 +1548,11 @@ export const getCapability: API.OperationMethod<
   GetCapabilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createdAt: D.ts, modifiedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { capabilityId: 0 },
+    output: { createdAt: D.ts, modifiedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1533,6 +1583,7 @@ export const getPartnership: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { partnershipId: 0 },
     output: {
       email: D.secret,
       phone: D.secret,
@@ -1570,6 +1621,7 @@ export const getProfile: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { profileId: 0 },
     output: {
       email: D.secret,
       phone: D.secret,
@@ -1605,7 +1657,11 @@ export const getTransformer: API.OperationMethod<
   GetTransformerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createdAt: D.ts, modifiedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { transformerId: 0 },
+    output: { createdAt: D.ts, modifiedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1636,7 +1692,10 @@ export const getTransformerJob: API.OperationMethod<
   GetTransformerJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { transformerJobId: 0, transformerId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1667,6 +1726,7 @@ export const listCapabilities: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0 },
     output: { capabilities: D.list({ createdAt: D.ts, modifiedAt: D.ts }) },
   },
   errors: [
@@ -1705,6 +1765,7 @@ export const listPartnerships: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { profileId: 0, nextToken: 0, maxResults: 0 },
     output: { partnerships: D.list({ createdAt: D.ts, modifiedAt: D.ts }) },
   },
   errors: [
@@ -1743,6 +1804,7 @@ export const listProfiles: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0 },
     output: { profiles: D.list({ createdAt: D.ts, modifiedAt: D.ts }) },
   },
   errors: [
@@ -1776,7 +1838,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1805,6 +1867,7 @@ export const listTransformers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0 },
     output: { transformers: D.list({ createdAt: D.ts, modifiedAt: D.ts }) },
   },
   errors: [
@@ -1847,7 +1910,12 @@ export const startTransformerJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      inputFile: i_S3Location,
+      outputLocation: i_S3Location,
+      transformerId: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1879,7 +1947,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1907,7 +1975,18 @@ export const testConversion: API.OperationMethod<
   TestConversionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      source: { fileFormat: 0, inputFile: { fileContent: 0 } },
+      target: {
+        fileFormat: 0,
+        formatDetails: { x12: i_X12Details },
+        outputSampleFile: { fileLocation: i_S3Location },
+        advancedOptions: i_AdvancedOptions,
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1936,7 +2015,10 @@ export const testMapping: API.OperationMethod<
   TestMappingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { inputFileContent: 0, mappingTemplate: 0, fileFormat: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1965,7 +2047,15 @@ export const testParsing: API.OperationMethod<
   TestParsingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      inputFile: i_S3Location,
+      fileFormat: 0,
+      ediType: i_EdiType,
+      advancedOptions: i_AdvancedOptions,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1992,7 +2082,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -2021,7 +2111,16 @@ export const updateCapability: API.OperationMethod<
   UpdateCapabilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createdAt: D.ts, modifiedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      capabilityId: 0,
+      name: 0,
+      configuration: i_CapabilityConfiguration,
+      instructionsDocuments: D.list(i_S3Location),
+    },
+    output: { createdAt: D.ts, modifiedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2056,6 +2155,12 @@ export const updatePartnership: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      partnershipId: 0,
+      name: 0,
+      capabilities: 0,
+      capabilityOptions: i_CapabilityOptions,
+    },
     output: {
       email: D.secret,
       phone: D.secret,
@@ -2097,6 +2202,7 @@ export const updateProfile: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { profileId: 0, name: 0, email: 0, phone: 0, businessName: 0 },
     output: {
       email: D.secret,
       phone: D.secret,
@@ -2136,7 +2242,23 @@ export const updateTransformer: API.OperationMethod<
   UpdateTransformerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createdAt: D.ts, modifiedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      transformerId: 0,
+      name: 0,
+      status: 0,
+      fileFormat: 0,
+      mappingTemplate: 0,
+      ediType: i_EdiType,
+      sampleDocument: 0,
+      inputConversion: i_InputConversion,
+      mapping: i_Mapping,
+      outputConversion: i_OutputConversion,
+      sampleDocuments: i_SampleDocuments,
+    },
+    output: { createdAt: D.ts, modifiedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2150,3 +2272,99 @@ export const updateTransformer: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateTransformer",
 })) as any;
+
+const i_AdvancedOptions: D.LazyStruct = () => ({
+  x12: {
+    splitOptions: { splitBy: 0 },
+    validationOptions: {
+      validationRules: D.list({
+        codeListValidationRule: {
+          elementId: 0,
+          codesToAdd: 0,
+          codesToRemove: 0,
+        },
+        elementLengthValidationRule: {
+          elementId: 0,
+          maxLength: 0,
+          minLength: 0,
+        },
+        elementRequirementValidationRule: {
+          elementPosition: 0,
+          requirement: 0,
+        },
+      }),
+    },
+  },
+});
+const i_CapabilityConfiguration: D.LazyStruct = () => ({
+  edi: {
+    capabilityDirection: 0,
+    type: i_EdiType,
+    inputLocation: i_S3Location,
+    outputLocation: i_S3Location,
+    transformerId: 0,
+  },
+});
+const i_CapabilityOptions: D.LazyStruct = () => ({
+  outboundEdi: {
+    x12: {
+      common: {
+        interchangeControlHeaders: {
+          senderIdQualifier: 0,
+          senderId: 0,
+          receiverIdQualifier: 0,
+          receiverId: 0,
+          repetitionSeparator: 0,
+          acknowledgmentRequestedCode: 0,
+          usageIndicatorCode: 0,
+        },
+        functionalGroupHeaders: {
+          applicationSenderCode: 0,
+          applicationReceiverCode: 0,
+          responsibleAgencyCode: 0,
+        },
+        delimiters: {
+          componentSeparator: 0,
+          dataElementSeparator: 0,
+          segmentTerminator: 0,
+        },
+        validateEdi: 0,
+        controlNumbers: {
+          startingInterchangeControlNumber: 0,
+          startingFunctionalGroupControlNumber: 0,
+          startingTransactionSetControlNumber: 0,
+        },
+        gs05TimeFormat: 0,
+      },
+      wrapOptions: { wrapBy: 0, lineTerminator: 0, lineLength: 0 },
+    },
+  },
+  inboundEdi: {
+    x12: {
+      acknowledgmentOptions: {
+        functionalAcknowledgment: 0,
+        technicalAcknowledgment: 0,
+      },
+    },
+  },
+});
+const i_EdiType: D.LazyStruct = () => ({ x12Details: i_X12Details });
+const i_InputConversion: D.LazyStruct = () => ({
+  fromFormat: 0,
+  formatOptions: i_FormatOptions,
+  advancedOptions: i_AdvancedOptions,
+});
+const i_Mapping: D.LazyStruct = () => ({ templateLanguage: 0, template: 0 });
+const i_OutputConversion: D.LazyStruct = () => ({
+  toFormat: 0,
+  formatOptions: i_FormatOptions,
+  advancedOptions: i_AdvancedOptions,
+});
+const i_S3Location: D.LazyStruct = () => ({ bucketName: 0, key: 0 });
+const i_SampleDocuments: D.LazyStruct = () => ({
+  bucketName: 0,
+  keys: D.list({ input: 0, output: 0 }),
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_X12Details: D.LazyStruct = () => ({ transactionSet: 0, version: 0 });
+const i_FormatOptions: D.LazyStruct = () => ({ x12: i_X12Details });

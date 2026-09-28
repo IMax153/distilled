@@ -936,7 +936,11 @@ export const associateChannelFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /channels/{ChannelArn}/channel-flow",
-    input: { ChimeBearer: D.m({ header: "x-amz-chime-bearer" }) },
+    input: {
+      ChannelArn: 0,
+      ChannelFlowArn: 0,
+      ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+    },
     body: true,
   },
   errors: [
@@ -976,7 +980,13 @@ export const batchCreateChannelMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /channels/{ChannelArn}/memberships?operation=batch-create",
-    input: { ChimeBearer: D.m({ header: "x-amz-chime-bearer" }) },
+    input: {
+      ChannelArn: 0,
+      Type: 0,
+      MemberArns: 0,
+      ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+      SubChannelId: 0,
+    },
     output: {
       BatchChannelMemberships: {
         InvitedBy: o_Identity,
@@ -1029,7 +1039,20 @@ export const channelFlowCallback: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /channels/{ChannelArn}?operation=channel-flow-callback",
-    input: { CallbackId: D.m({ idempotency: true }) },
+    input: {
+      CallbackId: D.m({ idempotency: true }),
+      ChannelArn: 0,
+      DeleteResource: 0,
+      ChannelMessage: {
+        MessageId: 0,
+        Content: 0,
+        Metadata: 0,
+        PushNotification: i_PushNotificationConfiguration,
+        MessageAttributes: D.map(i_MessageAttributeValue),
+        SubChannelId: 0,
+        ContentType: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -1076,8 +1099,23 @@ export const createChannel: API.OperationMethod<
     service: svc,
     http: "POST /channels",
     input: {
+      AppInstanceArn: 0,
+      Name: 0,
+      Mode: 0,
+      Privacy: 0,
+      Metadata: 0,
       ClientRequestToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
       ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+      ChannelId: 0,
+      MemberArns: 0,
+      ModeratorArns: 0,
+      ElasticChannelConfiguration: {
+        MaximumSubChannels: 0,
+        TargetMembershipsPerSubChannel: 0,
+        MinimumMembershipPercentage: 0,
+      },
+      ExpirationSettings: i_ExpirationSettings,
     },
     body: true,
   },
@@ -1128,7 +1166,11 @@ export const createChannelBan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /channels/{ChannelArn}/bans",
-    input: { ChimeBearer: D.m({ header: "x-amz-chime-bearer" }) },
+    input: {
+      ChannelArn: 0,
+      MemberArn: 0,
+      ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+    },
     output: { Member: o_Identity },
     body: true,
   },
@@ -1183,7 +1225,13 @@ export const createChannelFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /channel-flows",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      AppInstanceArn: 0,
+      Processors: D.list(i_Processor),
+      Name: 0,
+      Tags: D.list(i_Tag),
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1246,7 +1294,13 @@ export const createChannelMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /channels/{ChannelArn}/memberships",
-    input: { ChimeBearer: D.m({ header: "x-amz-chime-bearer" }) },
+    input: {
+      ChannelArn: 0,
+      MemberArn: 0,
+      Type: 0,
+      ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+      SubChannelId: 0,
+    },
     output: { Member: o_Identity },
     body: true,
   },
@@ -1302,7 +1356,11 @@ export const createChannelModerator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /channels/{ChannelArn}/moderators",
-    input: { ChimeBearer: D.m({ header: "x-amz-chime-bearer" }) },
+    input: {
+      ChannelArn: 0,
+      ChannelModeratorArn: 0,
+      ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+    },
     output: { ChannelModerator: o_Identity },
     body: true,
   },
@@ -1347,7 +1405,10 @@ export const deleteChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /channels/{ChannelArn}",
-    input: { ChimeBearer: D.m({ header: "x-amz-chime-bearer" }) },
+    input: {
+      ChannelArn: 0,
+      ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+    },
   },
   errors: [
     BadRequestException,
@@ -1387,7 +1448,11 @@ export const deleteChannelBan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /channels/{ChannelArn}/bans/{MemberArn}",
-    input: { ChimeBearer: D.m({ header: "x-amz-chime-bearer" }) },
+    input: {
+      ChannelArn: 0,
+      MemberArn: 0,
+      ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+    },
   },
   errors: [
     BadRequestException,
@@ -1423,7 +1488,11 @@ export const deleteChannelFlow: API.OperationMethod<
   DeleteChannelFlowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /channel-flows/{ChannelFlowArn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /channel-flows/{ChannelFlowArn}",
+    input: { ChannelFlowArn: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -1464,6 +1533,8 @@ export const deleteChannelMembership: API.OperationMethod<
     service: svc,
     http: "DELETE /channels/{ChannelArn}/memberships/{MemberArn}",
     input: {
+      ChannelArn: 0,
+      MemberArn: 0,
       ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
       SubChannelId: D.m({ query: "sub-channel-id" }),
     },
@@ -1509,6 +1580,8 @@ export const deleteChannelMessage: API.OperationMethod<
     service: svc,
     http: "DELETE /channels/{ChannelArn}/messages/{MessageId}",
     input: {
+      ChannelArn: 0,
+      MessageId: 0,
       ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
       SubChannelId: D.m({ query: "sub-channel-id" }),
     },
@@ -1550,7 +1623,11 @@ export const deleteChannelModerator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /channels/{ChannelArn}/moderators/{ChannelModeratorArn}",
-    input: { ChimeBearer: D.m({ header: "x-amz-chime-bearer" }) },
+    input: {
+      ChannelArn: 0,
+      ChannelModeratorArn: 0,
+      ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+    },
   },
   errors: [
     BadRequestException,
@@ -1586,6 +1663,7 @@ export const deleteMessagingStreamingConfigurations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /app-instances/{AppInstanceArn}/streaming-configurations",
+    input: { AppInstanceArn: 0 },
   },
   errors: [
     BadRequestException,
@@ -1625,7 +1703,10 @@ export const describeChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /channels/{ChannelArn}",
-    input: { ChimeBearer: D.m({ header: "x-amz-chime-bearer" }) },
+    input: {
+      ChannelArn: 0,
+      ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+    },
     output: {
       Channel: {
         Name: D.secret,
@@ -1675,7 +1756,11 @@ export const describeChannelBan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /channels/{ChannelArn}/bans/{MemberArn}",
-    input: { ChimeBearer: D.m({ header: "x-amz-chime-bearer" }) },
+    input: {
+      ChannelArn: 0,
+      MemberArn: 0,
+      ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+    },
     output: {
       ChannelBan: {
         Member: o_Identity,
@@ -1718,6 +1803,7 @@ export const describeChannelFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /channel-flows/{ChannelFlowArn}",
+    input: { ChannelFlowArn: 0 },
     output: {
       ChannelFlow: {
         Processors: D.list(o_Processor),
@@ -1766,6 +1852,8 @@ export const describeChannelMembership: API.OperationMethod<
     service: svc,
     http: "GET /channels/{ChannelArn}/memberships/{MemberArn}",
     input: {
+      ChannelArn: 0,
+      MemberArn: 0,
       ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
       SubChannelId: D.m({ query: "sub-channel-id" }),
     },
@@ -1818,6 +1906,7 @@ export const describeChannelMembershipForAppInstanceUser: API.OperationMethod<
     service: svc,
     http: "GET /channels/{ChannelArn}?scope=app-instance-user-membership",
     input: {
+      ChannelArn: 0,
       AppInstanceUserArn: D.m({ query: "app-instance-user-arn" }),
       ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
     },
@@ -1862,6 +1951,7 @@ export const describeChannelModeratedByAppInstanceUser: API.OperationMethod<
     service: svc,
     http: "GET /channels/{ChannelArn}?scope=app-instance-user-moderated-channel",
     input: {
+      ChannelArn: 0,
       AppInstanceUserArn: D.m({ query: "app-instance-user-arn" }),
       ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
     },
@@ -1905,7 +1995,11 @@ export const describeChannelModerator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /channels/{ChannelArn}/moderators/{ChannelModeratorArn}",
-    input: { ChimeBearer: D.m({ header: "x-amz-chime-bearer" }) },
+    input: {
+      ChannelArn: 0,
+      ChannelModeratorArn: 0,
+      ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+    },
     output: {
       ChannelModerator: {
         Moderator: o_Identity,
@@ -1957,7 +2051,11 @@ export const disassociateChannelFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /channels/{ChannelArn}/channel-flow/{ChannelFlowArn}",
-    input: { ChimeBearer: D.m({ header: "x-amz-chime-bearer" }) },
+    input: {
+      ChannelArn: 0,
+      ChannelFlowArn: 0,
+      ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+    },
   },
   errors: [
     BadRequestException,
@@ -2002,7 +2100,11 @@ export const getChannelMembershipPreferences: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /channels/{ChannelArn}/memberships/{MemberArn}/preferences",
-    input: { ChimeBearer: D.m({ header: "x-amz-chime-bearer" }) },
+    input: {
+      ChannelArn: 0,
+      MemberArn: 0,
+      ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+    },
     output: { Member: o_Identity, Preferences: o_ChannelMembershipPreferences },
   },
   errors: [
@@ -2044,6 +2146,8 @@ export const getChannelMessage: API.OperationMethod<
     service: svc,
     http: "GET /channels/{ChannelArn}/messages/{MessageId}",
     input: {
+      ChannelArn: 0,
+      MessageId: 0,
       ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
       SubChannelId: D.m({ query: "sub-channel-id" }),
     },
@@ -2122,6 +2226,8 @@ export const getChannelMessageStatus: API.OperationMethod<
     service: svc,
     http: "GET /channels/{ChannelArn}/messages/{MessageId}?scope=message-status",
     input: {
+      ChannelArn: 0,
+      MessageId: 0,
       ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
       SubChannelId: D.m({ query: "sub-channel-id" }),
     },
@@ -2194,6 +2300,7 @@ export const getMessagingStreamingConfigurations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /app-instances/{AppInstanceArn}/streaming-configurations",
+    input: { AppInstanceArn: 0 },
   },
   errors: [
     BadRequestException,
@@ -2235,6 +2342,7 @@ export const listChannelBans: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /channels/{ChannelArn}/bans",
     input: {
+      ChannelArn: 0,
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
       ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
@@ -2340,6 +2448,7 @@ export const listChannelMemberships: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /channels/{ChannelArn}/memberships",
     input: {
+      ChannelArn: 0,
       Type: D.m({ query: "type" }),
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
@@ -2456,9 +2565,10 @@ export const listChannelMessages: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /channels/{ChannelArn}/messages",
     input: {
+      ChannelArn: 0,
       SortOrder: D.m({ query: "sort-order" }),
-      NotBefore: D.m({ query: "not-before" }),
-      NotAfter: D.m({ query: "not-after" }),
+      NotBefore: D.m({ query: "not-before", shape: D.tsAs("epoch-seconds") }),
+      NotAfter: D.m({ query: "not-after", shape: D.tsAs("epoch-seconds") }),
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
       ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
@@ -2522,6 +2632,7 @@ export const listChannelModerators: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /channels/{ChannelArn}/moderators",
     input: {
+      ChannelArn: 0,
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
       ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
@@ -2735,6 +2846,7 @@ export const listSubChannels: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /channels/{ChannelArn}/subchannels",
     input: {
+      ChannelArn: 0,
       ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
@@ -2826,7 +2938,11 @@ export const putChannelExpirationSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /channels/{ChannelArn}/expiration-settings",
-    input: { ChimeBearer: D.m({ header: "x-amz-chime-bearer" }) },
+    input: {
+      ChannelArn: 0,
+      ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+      ExpirationSettings: i_ExpirationSettings,
+    },
     body: true,
   },
   errors: [
@@ -2872,7 +2988,14 @@ export const putChannelMembershipPreferences: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /channels/{ChannelArn}/memberships/{MemberArn}/preferences",
-    input: { ChimeBearer: D.m({ header: "x-amz-chime-bearer" }) },
+    input: {
+      ChannelArn: 0,
+      MemberArn: 0,
+      ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+      Preferences: {
+        PushNotifications: { AllowNotifications: 0, FilterRule: 0 },
+      },
+    },
     output: { Member: o_Identity, Preferences: o_ChannelMembershipPreferences },
     body: true,
   },
@@ -2913,6 +3036,10 @@ export const putMessagingStreamingConfigurations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /app-instances/{AppInstanceArn}/streaming-configurations",
+    input: {
+      AppInstanceArn: 0,
+      StreamingConfigurations: D.list({ DataType: 0, ResourceArn: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -2956,7 +3083,12 @@ export const redactChannelMessage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /channels/{ChannelArn}/messages/{MessageId}?operation=redact",
-    input: { ChimeBearer: D.m({ header: "x-amz-chime-bearer" }) },
+    input: {
+      ChannelArn: 0,
+      MessageId: 0,
+      ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+      SubChannelId: 0,
+    },
     body: true,
   },
   errors: [
@@ -3004,6 +3136,7 @@ export const searchChannels: API.PaginatedOperationMethod<
     http: "POST /channels?operation=search",
     input: {
       ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+      Fields: D.list({ Key: 0, Values: 0, Operator: 0 }),
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
     },
@@ -3059,8 +3192,18 @@ export const sendChannelMessage: API.OperationMethod<
     service: svc,
     http: "POST /channels/{ChannelArn}/messages",
     input: {
+      ChannelArn: 0,
+      Content: 0,
+      Type: 0,
+      Persistence: 0,
+      Metadata: 0,
       ClientRequestToken: D.m({ idempotency: true }),
       ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+      PushNotification: i_PushNotificationConfiguration,
+      MessageAttributes: D.map(i_MessageAttributeValue),
+      SubChannelId: 0,
+      ContentType: 0,
+      Target: D.list({ MemberArn: 0 }),
     },
     body: true,
   },
@@ -3099,6 +3242,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags?operation=tag-resource",
+    input: { ResourceARN: 0, Tags: D.list(i_Tag) },
     body: true,
   },
   errors: [
@@ -3135,6 +3279,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags?operation=untag-resource",
+    input: { ResourceARN: 0, TagKeys: 0 },
     body: true,
   },
   errors: [
@@ -3177,7 +3322,13 @@ export const updateChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /channels/{ChannelArn}",
-    input: { ChimeBearer: D.m({ header: "x-amz-chime-bearer" }) },
+    input: {
+      ChannelArn: 0,
+      Name: 0,
+      Mode: 0,
+      Metadata: 0,
+      ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+    },
     body: true,
   },
   errors: [
@@ -3215,6 +3366,7 @@ export const updateChannelFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /channel-flows/{ChannelFlowArn}",
+    input: { ChannelFlowArn: 0, Processors: D.list(i_Processor), Name: 0 },
     body: true,
   },
   errors: [
@@ -3256,7 +3408,15 @@ export const updateChannelMessage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /channels/{ChannelArn}/messages/{MessageId}",
-    input: { ChimeBearer: D.m({ header: "x-amz-chime-bearer" }) },
+    input: {
+      ChannelArn: 0,
+      MessageId: 0,
+      Content: 0,
+      Metadata: 0,
+      ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+      SubChannelId: 0,
+      ContentType: 0,
+    },
     body: true,
   },
   errors: [
@@ -3298,7 +3458,10 @@ export const updateChannelReadMarker: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /channels/{ChannelArn}/readMarker",
-    input: { ChimeBearer: D.m({ header: "x-amz-chime-bearer" }) },
+    input: {
+      ChannelArn: 0,
+      ChimeBearer: D.m({ header: "x-amz-chime-bearer" }),
+    },
   },
   errors: [
     BadRequestException,
@@ -3314,6 +3477,23 @@ export const updateChannelReadMarker: API.OperationMethod<
   operationName: "UpdateChannelReadMarker",
 })) as any;
 
+const i_ExpirationSettings: D.LazyStruct = () => ({
+  ExpirationDays: 0,
+  ExpirationCriterion: 0,
+});
+const i_MessageAttributeValue: D.LazyStruct = () => ({ StringValues: 0 });
+const i_Processor: D.LazyStruct = () => ({
+  Name: 0,
+  Configuration: { Lambda: { ResourceArn: 0, InvocationType: 0 } },
+  ExecutionOrder: 0,
+  FallbackAction: 0,
+});
+const i_PushNotificationConfiguration: D.LazyStruct = () => ({
+  Title: 0,
+  Body: 0,
+  Type: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_ChannelMembershipForAppInstanceUserSummary: D.LazyStruct = () => ({
   ChannelSummary: o_ChannelSummary,
   AppInstanceUserMembershipSummary: { ReadMarkerTimestamp: D.ts },

@@ -516,6 +516,9 @@ export const batchUpdateRecommendationResourceExclusion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/batch-update-recommendation-resource-exclusion",
+    input: {
+      recommendationResourceExclusions: D.list({ arn: 0, isExcluded: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -549,6 +552,7 @@ export const getOrganizationRecommendation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/organization-recommendations/{organizationRecommendationIdentifier}",
+    input: { organizationRecommendationIdentifier: 0 },
     output: {
       organizationRecommendation: {
         createdAt: D.ts,
@@ -589,7 +593,10 @@ export const getRecommendation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/recommendations/{recommendationIdentifier}",
-    input: { language: D.m({ query: "language" }) },
+    input: {
+      recommendationIdentifier: 0,
+      language: D.m({ query: "language" }),
+    },
     output: {
       recommendation: {
         createdAt: D.ts,
@@ -679,6 +686,7 @@ export const listOrganizationRecommendationAccounts: API.PaginatedOperationMetho
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      organizationRecommendationIdentifier: 0,
       affectedAccountId: D.m({ query: "affectedAccountId" }),
     },
     output: {
@@ -732,6 +740,7 @@ export const listOrganizationRecommendationResources: API.PaginatedOperationMeth
       status: D.m({ query: "status" }),
       exclusionStatus: D.m({ query: "exclusionStatus" }),
       regionCode: D.m({ query: "regionCode" }),
+      organizationRecommendationIdentifier: 0,
       affectedAccountId: D.m({ query: "affectedAccountId" }),
     },
     output: {
@@ -786,8 +795,14 @@ export const listOrganizationRecommendations: API.PaginatedOperationMethod<
       awsService: D.m({ query: "awsService" }),
       source: D.m({ query: "source" }),
       checkIdentifier: D.m({ query: "checkIdentifier" }),
-      afterLastUpdatedAt: D.m({ query: "afterLastUpdatedAt" }),
-      beforeLastUpdatedAt: D.m({ query: "beforeLastUpdatedAt" }),
+      afterLastUpdatedAt: D.m({
+        query: "afterLastUpdatedAt",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      beforeLastUpdatedAt: D.m({
+        query: "beforeLastUpdatedAt",
+        shape: D.tsAs("epoch-seconds"),
+      }),
     },
     output: {
       organizationRecommendationSummaries: D.list({
@@ -839,6 +854,7 @@ export const listRecommendationResources: API.PaginatedOperationMethod<
       status: D.m({ query: "status" }),
       exclusionStatus: D.m({ query: "exclusionStatus" }),
       regionCode: D.m({ query: "regionCode" }),
+      recommendationIdentifier: 0,
       language: D.m({ query: "language" }),
     },
     output: {
@@ -891,8 +907,14 @@ export const listRecommendations: API.PaginatedOperationMethod<
       awsService: D.m({ query: "awsService" }),
       source: D.m({ query: "source" }),
       checkIdentifier: D.m({ query: "checkIdentifier" }),
-      afterLastUpdatedAt: D.m({ query: "afterLastUpdatedAt" }),
-      beforeLastUpdatedAt: D.m({ query: "beforeLastUpdatedAt" }),
+      afterLastUpdatedAt: D.m({
+        query: "afterLastUpdatedAt",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      beforeLastUpdatedAt: D.m({
+        query: "beforeLastUpdatedAt",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       language: D.m({ query: "language" }),
     },
     output: {
@@ -938,6 +960,7 @@ export const listRecommendationsForResource: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      awsResourceArn: 0,
       pillar: D.m({ query: "pillar" }),
       status: D.m({ query: "status" }),
       checkArn: D.m({ query: "checkArn" }),
@@ -984,6 +1007,12 @@ export const updateOrganizationRecommendationLifecycle: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/organization-recommendations/{organizationRecommendationIdentifier}/lifecycle",
+    input: {
+      lifecycleStage: 0,
+      updateReason: 0,
+      updateReasonCode: 0,
+      organizationRecommendationIdentifier: 0,
+    },
     body: true,
   },
   errors: [
@@ -1019,6 +1048,12 @@ export const updateRecommendationLifecycle: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/recommendations/{recommendationIdentifier}/lifecycle",
+    input: {
+      lifecycleStage: 0,
+      updateReason: 0,
+      updateReasonCode: 0,
+      recommendationIdentifier: 0,
+    },
     body: true,
   },
   errors: [

@@ -3122,7 +3122,11 @@ export const allocateStaticIp: API.OperationMethod<
   AllocateStaticIpError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { staticIpName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -3168,7 +3172,11 @@ export const attachCertificateToDistribution: API.OperationMethod<
   AttachCertificateToDistributionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operation: o_Operation } },
+  descriptor: {
+    service: svc,
+    input: { distributionName: 0, certificateName: 0 },
+    output: { operation: o_Operation },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -3206,7 +3214,11 @@ export const attachDisk: API.OperationMethod<
   AttachDiskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { diskName: 0, instanceName: 0, diskPath: 0, autoMounting: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -3248,7 +3260,11 @@ export const attachInstancesToLoadBalancer: API.OperationMethod<
   AttachInstancesToLoadBalancerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { loadBalancerName: 0, instanceNames: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -3293,7 +3309,11 @@ export const attachLoadBalancerTlsCertificate: API.OperationMethod<
   AttachLoadBalancerTlsCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { loadBalancerName: 0, certificateName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -3328,7 +3348,11 @@ export const attachStaticIp: API.OperationMethod<
   AttachStaticIpError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { staticIpName: 0, instanceName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -3367,7 +3391,11 @@ export const closeInstancePublicPorts: API.OperationMethod<
   CloseInstancePublicPortsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operation: o_Operation } },
+  descriptor: {
+    service: svc,
+    input: { portInfo: i_PortInfo, instanceName: 0 },
+    output: { operation: o_Operation },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -3413,7 +3441,18 @@ export const copySnapshot: API.OperationMethod<
   CopySnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: {
+      sourceSnapshotName: 0,
+      sourceResourceName: 0,
+      restoreDate: 0,
+      useLatestRestorableAutoSnapshot: 0,
+      targetSnapshotName: 0,
+      sourceRegion: 0,
+    },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -3452,6 +3491,12 @@ export const createBucket: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      bucketName: 0,
+      bundleId: 0,
+      tags: D.list(i_Tag),
+      enableObjectVersioning: 0,
+    },
     output: { bucket: o_Bucket, operations: D.list(o_Operation) },
   },
   errors: [
@@ -3496,6 +3541,7 @@ export const createBucketAccessKey: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { bucketName: 0 },
     output: { accessKey: o_AccessKey, operations: D.list(o_Operation) },
   },
   errors: [
@@ -3542,6 +3588,12 @@ export const createCertificate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      certificateName: 0,
+      domainName: 0,
+      subjectAlternativeNames: 0,
+      tags: D.list(i_Tag),
+    },
     output: {
       certificate: o_CertificateSummary,
       operations: D.list(o_Operation),
@@ -3585,7 +3637,19 @@ export const createCloudFormationStack: API.OperationMethod<
   CreateCloudFormationStackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: {
+      instances: D.list({
+        sourceName: 0,
+        instanceType: 0,
+        portInfoSource: 0,
+        userData: 0,
+        availabilityZone: 0,
+      }),
+    },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -3627,7 +3691,11 @@ export const createContactMethod: API.OperationMethod<
   CreateContactMethodError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { protocol: 0, contactEndpoint: 0, tags: D.list(i_Tag) },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -3665,6 +3733,18 @@ export const createContainerService: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      serviceName: 0,
+      power: 0,
+      scale: 0,
+      tags: D.list(i_Tag),
+      publicDomainNames: 0,
+      deployment: {
+        containers: D.map(i_Container),
+        publicEndpoint: i_EndpointRequest,
+      },
+      privateRegistryAccess: i_PrivateRegistryAccessRequest,
+    },
     output: { containerService: o_ContainerService },
   },
   errors: [
@@ -3710,6 +3790,11 @@ export const createContainerServiceDeployment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      serviceName: 0,
+      containers: D.map(i_Container),
+      publicEndpoint: i_EndpointRequest,
+    },
     output: { containerService: o_ContainerService },
   },
   errors: [
@@ -3760,7 +3845,11 @@ export const createContainerServiceRegistryLogin: API.OperationMethod<
   CreateContainerServiceRegistryLoginError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { registryLogin: { expiresAt: D.ts } } },
+  descriptor: {
+    service: svc,
+    input: {},
+    output: { registryLogin: { expiresAt: D.ts } },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -3797,7 +3886,17 @@ export const createDisk: API.OperationMethod<
   CreateDiskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: {
+      diskName: 0,
+      availabilityZone: 0,
+      sizeInGb: 0,
+      tags: D.list(i_Tag),
+      addOns: D.list(i_AddOnRequest),
+    },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -3838,7 +3937,21 @@ export const createDiskFromSnapshot: API.OperationMethod<
   CreateDiskFromSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: {
+      diskName: 0,
+      diskSnapshotName: 0,
+      availabilityZone: 0,
+      sizeInGb: 0,
+      tags: D.list(i_Tag),
+      addOns: D.list(i_AddOnRequest),
+      sourceDiskName: 0,
+      restoreDate: 0,
+      useLatestRestorableAutoSnapshot: 0,
+    },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -3894,7 +4007,16 @@ export const createDiskSnapshot: API.OperationMethod<
   CreateDiskSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: {
+      diskName: 0,
+      diskSnapshotName: 0,
+      instanceName: 0,
+      tags: D.list(i_Tag),
+    },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -3933,6 +4055,18 @@ export const createDistribution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      distributionName: 0,
+      origin: i_InputOrigin,
+      defaultCacheBehavior: i_CacheBehavior,
+      cacheBehaviorSettings: i_CacheSettings,
+      cacheBehaviors: D.list(i_CacheBehaviorPerPath),
+      bundleId: 0,
+      ipAddressType: 0,
+      tags: D.list(i_Tag),
+      certificateName: 0,
+      viewerMinimumTlsProtocolVersion: 0,
+    },
     output: { distribution: o_LightsailDistribution, operation: o_Operation },
   },
   errors: [
@@ -3970,7 +4104,11 @@ export const createDomain: API.OperationMethod<
   CreateDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operation: o_Operation } },
+  descriptor: {
+    service: svc,
+    input: { domainName: 0, tags: D.list(i_Tag) },
+    output: { operation: o_Operation },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -4011,7 +4149,11 @@ export const createDomainEntry: API.OperationMethod<
   CreateDomainEntryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operation: o_Operation } },
+  descriptor: {
+    service: svc,
+    input: { domainName: 0, domainEntry: i_DomainEntry },
+    output: { operation: o_Operation },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -4049,7 +4191,11 @@ export const createGUISessionAccessDetails: API.OperationMethod<
   CreateGUISessionAccessDetailsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { sessions: D.list({ url: D.secret }) } },
+  descriptor: {
+    service: svc,
+    input: { resourceName: 0 },
+    output: { sessions: D.list({ url: D.secret }) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -4085,7 +4231,22 @@ export const createInstances: API.OperationMethod<
   CreateInstancesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: {
+      instanceNames: 0,
+      availabilityZone: 0,
+      customImageName: 0,
+      blueprintId: 0,
+      bundleId: 0,
+      userData: 0,
+      keyPairName: 0,
+      tags: D.list(i_Tag),
+      addOns: D.list(i_AddOnRequest),
+      ipAddressType: 0,
+    },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -4125,7 +4286,27 @@ export const createInstancesFromSnapshot: API.OperationMethod<
   CreateInstancesFromSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: {
+      instanceNames: 0,
+      attachedDiskMapping: D.map(
+        D.list({ originalDiskPath: 0, newDiskName: 0 }),
+      ),
+      availabilityZone: 0,
+      instanceSnapshotName: 0,
+      bundleId: 0,
+      userData: 0,
+      keyPairName: 0,
+      tags: D.list(i_Tag),
+      addOns: D.list(i_AddOnRequest),
+      ipAddressType: 0,
+      sourceInstanceName: 0,
+      restoreDate: 0,
+      useLatestRestorableAutoSnapshot: 0,
+    },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -4164,7 +4345,11 @@ export const createInstanceSnapshot: API.OperationMethod<
   CreateInstanceSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { instanceSnapshotName: 0, instanceName: 0, tags: D.list(i_Tag) },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -4209,6 +4394,7 @@ export const createKeyPair: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { keyPairName: 0, tags: D.list(i_Tag) },
     output: { keyPair: o_KeyPair, operation: o_Operation },
   },
   errors: [
@@ -4254,7 +4440,21 @@ export const createLoadBalancer: API.OperationMethod<
   CreateLoadBalancerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: {
+      loadBalancerName: 0,
+      instancePort: 0,
+      healthCheckPath: 0,
+      certificateName: 0,
+      certificateDomainName: 0,
+      certificateAlternativeNames: 0,
+      tags: D.list(i_Tag),
+      ipAddressType: 0,
+      tlsPolicyName: 0,
+    },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -4295,7 +4495,17 @@ export const createLoadBalancerTlsCertificate: API.OperationMethod<
   CreateLoadBalancerTlsCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: {
+      loadBalancerName: 0,
+      certificateName: 0,
+      certificateDomainName: 0,
+      certificateAlternativeNames: 0,
+      tags: D.list(i_Tag),
+    },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -4333,7 +4543,23 @@ export const createRelationalDatabase: API.OperationMethod<
   CreateRelationalDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: {
+      relationalDatabaseName: 0,
+      availabilityZone: 0,
+      relationalDatabaseBlueprintId: 0,
+      relationalDatabaseBundleId: 0,
+      masterDatabaseName: 0,
+      masterUsername: 0,
+      masterUserPassword: 0,
+      preferredBackupWindow: 0,
+      preferredMaintenanceWindow: 0,
+      publiclyAccessible: 0,
+      tags: D.list(i_Tag),
+    },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -4376,7 +4602,21 @@ export const createRelationalDatabaseFromSnapshot: API.OperationMethod<
   CreateRelationalDatabaseFromSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: {
+      relationalDatabaseName: 0,
+      availabilityZone: 0,
+      publiclyAccessible: 0,
+      relationalDatabaseSnapshotName: 0,
+      relationalDatabaseBundleId: 0,
+      sourceRelationalDatabaseName: 0,
+      restoreTime: 0,
+      useLatestRestorableTime: 0,
+      tags: D.list(i_Tag),
+    },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -4415,7 +4655,15 @@ export const createRelationalDatabaseSnapshot: API.OperationMethod<
   CreateRelationalDatabaseSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: {
+      relationalDatabaseName: 0,
+      relationalDatabaseSnapshotName: 0,
+      tags: D.list(i_Tag),
+    },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -4454,7 +4702,11 @@ export const deleteAlarm: API.OperationMethod<
   DeleteAlarmError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { alarmName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -4487,7 +4739,11 @@ export const deleteAutoSnapshot: API.OperationMethod<
   DeleteAutoSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { resourceName: 0, date: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -4522,7 +4778,11 @@ export const deleteBucket: API.OperationMethod<
   DeleteBucketError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { bucketName: 0, forceDelete: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -4558,7 +4818,11 @@ export const deleteBucketAccessKey: API.OperationMethod<
   DeleteBucketAccessKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { bucketName: 0, accessKeyId: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -4594,7 +4858,11 @@ export const deleteCertificate: API.OperationMethod<
   DeleteCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { certificateName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -4631,7 +4899,11 @@ export const deleteContactMethod: API.OperationMethod<
   DeleteContactMethodError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { protocol: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -4664,7 +4936,7 @@ export const deleteContainerImage: API.OperationMethod<
   DeleteContainerImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { serviceName: 0, image: 0 } },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -4695,7 +4967,7 @@ export const deleteContainerService: API.OperationMethod<
   DeleteContainerServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { serviceName: 0 } },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -4735,7 +5007,11 @@ export const deleteDisk: API.OperationMethod<
   DeleteDiskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { diskName: 0, forceDeleteAddOns: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -4780,7 +5056,11 @@ export const deleteDiskSnapshot: API.OperationMethod<
   DeleteDiskSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { diskSnapshotName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -4813,7 +5093,11 @@ export const deleteDistribution: API.OperationMethod<
   DeleteDistributionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operation: o_Operation } },
+  descriptor: {
+    service: svc,
+    input: { distributionName: 0 },
+    output: { operation: o_Operation },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -4850,7 +5134,11 @@ export const deleteDomain: API.OperationMethod<
   DeleteDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operation: o_Operation } },
+  descriptor: {
+    service: svc,
+    input: { domainName: 0 },
+    output: { operation: o_Operation },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -4889,7 +5177,11 @@ export const deleteDomainEntry: API.OperationMethod<
   DeleteDomainEntryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operation: o_Operation } },
+  descriptor: {
+    service: svc,
+    input: { domainName: 0, domainEntry: i_DomainEntry },
+    output: { operation: o_Operation },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -4928,7 +5220,11 @@ export const deleteInstance: API.OperationMethod<
   DeleteInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { instanceName: 0, forceDeleteAddOns: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -4968,7 +5264,11 @@ export const deleteInstanceSnapshot: API.OperationMethod<
   DeleteInstanceSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { instanceSnapshotName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -5012,7 +5312,11 @@ export const deleteKeyPair: API.OperationMethod<
   DeleteKeyPairError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operation: o_Operation } },
+  descriptor: {
+    service: svc,
+    input: { keyPairName: 0, expectedFingerprint: 0 },
+    output: { operation: o_Operation },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -5054,7 +5358,11 @@ export const deleteKnownHostKeys: API.OperationMethod<
   DeleteKnownHostKeysError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { instanceName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -5095,7 +5403,11 @@ export const deleteLoadBalancer: API.OperationMethod<
   DeleteLoadBalancerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { loadBalancerName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -5134,7 +5446,11 @@ export const deleteLoadBalancerTlsCertificate: API.OperationMethod<
   DeleteLoadBalancerTlsCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { loadBalancerName: 0, certificateName: 0, force: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -5173,7 +5489,15 @@ export const deleteRelationalDatabase: API.OperationMethod<
   DeleteRelationalDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: {
+      relationalDatabaseName: 0,
+      skipFinalSnapshot: 0,
+      finalRelationalDatabaseSnapshotName: 0,
+    },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -5212,7 +5536,11 @@ export const deleteRelationalDatabaseSnapshot: API.OperationMethod<
   DeleteRelationalDatabaseSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { relationalDatabaseSnapshotName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -5249,7 +5577,11 @@ export const detachCertificateFromDistribution: API.OperationMethod<
   DetachCertificateFromDistributionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operation: o_Operation } },
+  descriptor: {
+    service: svc,
+    input: { distributionName: 0 },
+    output: { operation: o_Operation },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -5288,7 +5620,11 @@ export const detachDisk: API.OperationMethod<
   DetachDiskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { diskName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -5330,7 +5666,11 @@ export const detachInstancesFromLoadBalancer: API.OperationMethod<
   DetachInstancesFromLoadBalancerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { loadBalancerName: 0, instanceNames: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -5365,7 +5705,11 @@ export const detachStaticIp: API.OperationMethod<
   DetachStaticIpError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { staticIpName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -5399,7 +5743,11 @@ export const disableAddOn: API.OperationMethod<
   DisableAddOnError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { addOnType: 0, resourceName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -5436,7 +5784,7 @@ export const downloadDefaultKeyPair: API.OperationMethod<
   DownloadDefaultKeyPairError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createdAt: D.ts } },
+  descriptor: { service: svc, input: {}, output: { createdAt: D.ts } },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -5471,7 +5819,11 @@ export const enableAddOn: API.OperationMethod<
   EnableAddOnError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { resourceName: 0, addOnRequest: i_AddOnRequest },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -5519,7 +5871,11 @@ export const exportSnapshot: API.OperationMethod<
   ExportSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { sourceSnapshotName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -5554,7 +5910,7 @@ export const getActiveNames: API.OperationMethod<
   GetActiveNamesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { pageToken: 0 } },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -5595,7 +5951,11 @@ export const getAlarms: API.OperationMethod<
   GetAlarmsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { alarms: D.list({ createdAt: D.ts }) } },
+  descriptor: {
+    service: svc,
+    input: { alarmName: 0, pageToken: 0, monitoredResourceName: 0 },
+    output: { alarms: D.list({ createdAt: D.ts }) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -5631,6 +5991,7 @@ export const getAutoSnapshots: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { resourceName: 0 },
     output: { autoSnapshots: D.list({ createdAt: D.ts }) },
   },
   errors: [
@@ -5674,7 +6035,10 @@ export const getBlueprints: API.OperationMethod<
   GetBlueprintsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { includeInactive: 0, pageToken: 0, appCategory: 0 },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -5711,7 +6075,11 @@ export const getBucketAccessKeys: API.OperationMethod<
   GetBucketAccessKeysError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { accessKeys: D.list(o_AccessKey) } },
+  descriptor: {
+    service: svc,
+    input: { bucketName: 0 },
+    output: { accessKeys: D.list(o_AccessKey) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -5747,7 +6115,7 @@ export const getBucketBundles: API.OperationMethod<
   GetBucketBundlesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { includeInactive: 0 } },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -5783,6 +6151,15 @@ export const getBucketMetricData: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      bucketName: 0,
+      metricName: 0,
+      startTime: 0,
+      endTime: 0,
+      period: 0,
+      statistics: 0,
+      unit: 0,
+    },
     output: { metricData: D.list(o_MetricDatapoint) },
   },
   errors: [
@@ -5822,6 +6199,12 @@ export const getBuckets: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      bucketName: 0,
+      pageToken: 0,
+      includeConnectedResources: 0,
+      includeCors: 0,
+    },
     output: {
       buckets: D.list(o_Bucket),
       accountLevelBpaSync: { lastSyncedAt: D.ts },
@@ -5867,7 +6250,10 @@ export const getBundles: API.OperationMethod<
   GetBundlesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { includeInactive: 0, pageToken: 0, appCategory: 0 },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -5906,6 +6292,12 @@ export const getCertificates: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      certificateStatuses: 0,
+      includeCertificateDetails: 0,
+      certificateName: 0,
+      pageToken: 0,
+    },
     output: { certificates: D.list(o_CertificateSummary) },
   },
   errors: [
@@ -5946,6 +6338,7 @@ export const getCloudFormationStackRecords: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { pageToken: 0 },
     output: { cloudFormationStackRecords: D.list({ createdAt: D.ts }) },
   },
   errors: [
@@ -5989,6 +6382,7 @@ export const getContactMethods: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { protocols: 0 },
     output: { contactMethods: D.list({ createdAt: D.ts }) },
   },
   errors: [
@@ -6021,7 +6415,7 @@ export const getContainerAPIMetadata: API.OperationMethod<
   GetContainerAPIMetadataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     RegionSetupInProgressException,
@@ -6057,6 +6451,7 @@ export const getContainerImages: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { serviceName: 0 },
     output: { containerImages: D.list(o_ContainerImage) },
   },
   errors: [
@@ -6100,6 +6495,14 @@ export const getContainerLog: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      serviceName: 0,
+      containerName: 0,
+      startTime: 0,
+      endTime: 0,
+      filterPattern: 0,
+      pageToken: 0,
+    },
     output: { logEvents: D.list({ createdAt: D.ts }) },
   },
   errors: [
@@ -6145,6 +6548,7 @@ export const getContainerServiceDeployments: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { serviceName: 0 },
     output: { deployments: D.list(o_ContainerServiceDeployment) },
   },
   errors: [
@@ -6183,6 +6587,14 @@ export const getContainerServiceMetricData: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      serviceName: 0,
+      metricName: 0,
+      startTime: 0,
+      endTime: 0,
+      period: 0,
+      statistics: 0,
+    },
     output: { metricData: D.list(o_MetricDatapoint) },
   },
   errors: [
@@ -6219,7 +6631,7 @@ export const getContainerServicePowers: API.OperationMethod<
   GetContainerServicePowersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -6252,6 +6664,7 @@ export const getContainerServices: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { serviceName: 0 },
     output: { containerServices: D.list(o_ContainerService) },
   },
   errors: [
@@ -6287,6 +6700,7 @@ export const getCostEstimate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { resourceName: 0, startTime: 0, endTime: 0 },
     output: {
       resourcesBudgetEstimate: D.list({
         costEstimates: D.list({
@@ -6329,7 +6743,11 @@ export const getDisk: API.OperationMethod<
   GetDiskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { disk: o_Disk } },
+  descriptor: {
+    service: svc,
+    input: { diskName: 0 },
+    output: { disk: o_Disk },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -6364,7 +6782,11 @@ export const getDisks: API.OperationMethod<
   GetDisksError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { disks: D.list(o_Disk) } },
+  descriptor: {
+    service: svc,
+    input: { pageToken: 0 },
+    output: { disks: D.list(o_Disk) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -6399,7 +6821,11 @@ export const getDiskSnapshot: API.OperationMethod<
   GetDiskSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { diskSnapshot: o_DiskSnapshot } },
+  descriptor: {
+    service: svc,
+    input: { diskSnapshotName: 0 },
+    output: { diskSnapshot: o_DiskSnapshot },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -6437,6 +6863,7 @@ export const getDiskSnapshots: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { pageToken: 0 },
     output: { diskSnapshots: D.list(o_DiskSnapshot) },
   },
   errors: [
@@ -6475,7 +6902,7 @@ export const getDistributionBundles: API.OperationMethod<
   GetDistributionBundlesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -6507,7 +6934,11 @@ export const getDistributionLatestCacheReset: API.OperationMethod<
   GetDistributionLatestCacheResetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { distributionName: 0 },
+    output: { createTime: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -6545,6 +6976,15 @@ export const getDistributionMetricData: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      distributionName: 0,
+      metricName: 0,
+      startTime: 0,
+      endTime: 0,
+      period: 0,
+      unit: 0,
+      statistics: 0,
+    },
     output: { metricData: D.list(o_MetricDatapoint) },
   },
   errors: [
@@ -6580,6 +7020,7 @@ export const getDistributions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { distributionName: 0, pageToken: 0 },
     output: { distributions: D.list(o_LightsailDistribution) },
   },
   errors: [
@@ -6614,7 +7055,11 @@ export const getDomain: API.OperationMethod<
   GetDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { domain: o_Domain } },
+  descriptor: {
+    service: svc,
+    input: { domainName: 0 },
+    output: { domain: o_Domain },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -6649,7 +7094,11 @@ export const getDomains: API.OperationMethod<
   GetDomainsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { domains: D.list(o_Domain) } },
+  descriptor: {
+    service: svc,
+    input: { pageToken: 0 },
+    output: { domains: D.list(o_Domain) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -6691,6 +7140,7 @@ export const getExportSnapshotRecords: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { pageToken: 0 },
     output: {
       exportSnapshotRecords: D.list({
         createdAt: D.ts,
@@ -6733,7 +7183,11 @@ export const getInstance: API.OperationMethod<
   GetInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { instance: o_Instance } },
+  descriptor: {
+    service: svc,
+    input: { instanceName: 0 },
+    output: { instance: o_Instance },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -6775,6 +7229,7 @@ export const getInstanceAccessDetails: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { instanceName: 0, protocol: 0 },
     output: {
       accessDetails: {
         expiresAt: D.ts,
@@ -6827,6 +7282,15 @@ export const getInstanceMetricData: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      instanceName: 0,
+      metricName: 0,
+      period: 0,
+      startTime: 0,
+      endTime: 0,
+      unit: 0,
+      statistics: 0,
+    },
     output: { metricData: D.list(o_MetricDatapoint) },
   },
   errors: [
@@ -6864,7 +7328,7 @@ export const getInstancePortStates: API.OperationMethod<
   GetInstancePortStatesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { instanceName: 0 } },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -6900,7 +7364,11 @@ export const getInstances: API.OperationMethod<
   GetInstancesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { instances: D.list(o_Instance) } },
+  descriptor: {
+    service: svc,
+    input: { pageToken: 0 },
+    output: { instances: D.list(o_Instance) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -6937,6 +7405,7 @@ export const getInstanceSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { instanceSnapshotName: 0 },
     output: { instanceSnapshot: o_InstanceSnapshot },
   },
   errors: [
@@ -6975,6 +7444,7 @@ export const getInstanceSnapshots: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { pageToken: 0 },
     output: { instanceSnapshots: D.list(o_InstanceSnapshot) },
   },
   errors: [
@@ -7011,7 +7481,7 @@ export const getInstanceState: API.OperationMethod<
   GetInstanceStateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { instanceName: 0 } },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -7046,7 +7516,11 @@ export const getKeyPair: API.OperationMethod<
   GetKeyPairError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { keyPair: o_KeyPair } },
+  descriptor: {
+    service: svc,
+    input: { keyPairName: 0 },
+    output: { keyPair: o_KeyPair },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -7081,7 +7555,11 @@ export const getKeyPairs: API.OperationMethod<
   GetKeyPairsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { keyPairs: D.list(o_KeyPair) } },
+  descriptor: {
+    service: svc,
+    input: { pageToken: 0, includeDefaultKeyPair: 0 },
+    output: { keyPairs: D.list(o_KeyPair) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -7116,7 +7594,11 @@ export const getLoadBalancer: API.OperationMethod<
   GetLoadBalancerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { loadBalancer: o_LoadBalancer } },
+  descriptor: {
+    service: svc,
+    input: { loadBalancerName: 0 },
+    output: { loadBalancer: o_LoadBalancer },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -7157,6 +7639,15 @@ export const getLoadBalancerMetricData: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      loadBalancerName: 0,
+      metricName: 0,
+      period: 0,
+      startTime: 0,
+      endTime: 0,
+      unit: 0,
+      statistics: 0,
+    },
     output: { metricData: D.list(o_MetricDatapoint) },
   },
   errors: [
@@ -7195,6 +7686,7 @@ export const getLoadBalancers: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { pageToken: 0 },
     output: { loadBalancers: D.list(o_LoadBalancer) },
   },
   errors: [
@@ -7239,6 +7731,7 @@ export const getLoadBalancerTlsCertificates: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { loadBalancerName: 0 },
     output: {
       tlsCertificates: D.list({
         createdAt: D.ts,
@@ -7285,7 +7778,7 @@ export const getLoadBalancerTlsPolicies: API.OperationMethod<
   GetLoadBalancerTlsPoliciesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { pageToken: 0 } },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -7319,7 +7812,11 @@ export const getOperation: API.OperationMethod<
   GetOperationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operation: o_Operation } },
+  descriptor: {
+    service: svc,
+    input: { operationId: 0 },
+    output: { operation: o_Operation },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -7358,7 +7855,11 @@ export const getOperations: API.OperationMethod<
   GetOperationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { pageToken: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -7393,7 +7894,11 @@ export const getOperationsForResource: API.OperationMethod<
   GetOperationsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { resourceName: 0, pageToken: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -7430,7 +7935,13 @@ export const getRegions: API.OperationMethod<
   GetRegionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      includeAvailabilityZones: 0,
+      includeRelationalDatabaseAvailabilityZones: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -7467,6 +7978,7 @@ export const getRelationalDatabase: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { relationalDatabaseName: 0 },
     output: { relationalDatabase: o_RelationalDatabase },
   },
   errors: [
@@ -7507,7 +8019,7 @@ export const getRelationalDatabaseBlueprints: API.OperationMethod<
   GetRelationalDatabaseBlueprintsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { pageToken: 0 } },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -7546,7 +8058,7 @@ export const getRelationalDatabaseBundles: API.OperationMethod<
   GetRelationalDatabaseBundlesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { pageToken: 0, includeInactive: 0 } },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -7583,6 +8095,7 @@ export const getRelationalDatabaseEvents: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { relationalDatabaseName: 0, durationInMinutes: 0, pageToken: 0 },
     output: { relationalDatabaseEvents: D.list({ createdAt: D.ts }) },
   },
   errors: [
@@ -7621,6 +8134,14 @@ export const getRelationalDatabaseLogEvents: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      relationalDatabaseName: 0,
+      logStreamName: 0,
+      startTime: 0,
+      endTime: 0,
+      startFromHead: 0,
+      pageToken: 0,
+    },
     output: { resourceLogEvents: D.list({ createdAt: D.ts }) },
   },
   errors: [
@@ -7657,7 +8178,7 @@ export const getRelationalDatabaseLogStreams: API.OperationMethod<
   GetRelationalDatabaseLogStreamsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { relationalDatabaseName: 0 } },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -7699,6 +8220,7 @@ export const getRelationalDatabaseMasterUserPassword: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { relationalDatabaseName: 0, passwordVersion: 0 },
     output: { masterUserPassword: D.secret, createdAt: D.ts },
   },
   errors: [
@@ -7741,6 +8263,15 @@ export const getRelationalDatabaseMetricData: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      relationalDatabaseName: 0,
+      metricName: 0,
+      period: 0,
+      startTime: 0,
+      endTime: 0,
+      unit: 0,
+      statistics: 0,
+    },
     output: { metricData: D.list(o_MetricDatapoint) },
   },
   errors: [
@@ -7782,7 +8313,10 @@ export const getRelationalDatabaseParameters: API.OperationMethod<
   GetRelationalDatabaseParametersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { relationalDatabaseName: 0, pageToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -7819,6 +8353,7 @@ export const getRelationalDatabases: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { pageToken: 0 },
     output: { relationalDatabases: D.list(o_RelationalDatabase) },
   },
   errors: [
@@ -7857,6 +8392,7 @@ export const getRelationalDatabaseSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { relationalDatabaseSnapshotName: 0 },
     output: { relationalDatabaseSnapshot: o_RelationalDatabaseSnapshot },
   },
   errors: [
@@ -7895,6 +8431,7 @@ export const getRelationalDatabaseSnapshots: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { pageToken: 0 },
     output: {
       relationalDatabaseSnapshots: D.list(o_RelationalDatabaseSnapshot),
     },
@@ -7934,6 +8471,7 @@ export const getSetupHistory: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { resourceName: 0, pageToken: 0 },
     output: {
       setupHistory: D.list({
         resource: { createdAt: D.ts },
@@ -7973,7 +8511,11 @@ export const getStaticIp: API.OperationMethod<
   GetStaticIpError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { staticIp: o_StaticIp } },
+  descriptor: {
+    service: svc,
+    input: { staticIpName: 0 },
+    output: { staticIp: o_StaticIp },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -8008,7 +8550,11 @@ export const getStaticIps: API.OperationMethod<
   GetStaticIpsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { staticIps: D.list(o_StaticIp) } },
+  descriptor: {
+    service: svc,
+    input: { pageToken: 0 },
+    output: { staticIps: D.list(o_StaticIp) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -8043,7 +8589,11 @@ export const importKeyPair: API.OperationMethod<
   ImportKeyPairError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operation: o_Operation } },
+  descriptor: {
+    service: svc,
+    input: { keyPairName: 0, publicKeyBase64: 0 },
+    output: { operation: o_Operation },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -8078,7 +8628,7 @@ export const isVpcPeered: API.OperationMethod<
   IsVpcPeeredError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -8118,7 +8668,11 @@ export const openInstancePublicPorts: API.OperationMethod<
   OpenInstancePublicPortsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operation: o_Operation } },
+  descriptor: {
+    service: svc,
+    input: { portInfo: i_PortInfo, instanceName: 0 },
+    output: { operation: o_Operation },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -8153,7 +8707,7 @@ export const peerVpc: API.OperationMethod<
   PeerVpcError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operation: o_Operation } },
+  descriptor: { service: svc, input: {}, output: { operation: o_Operation } },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -8203,7 +8757,24 @@ export const putAlarm: API.OperationMethod<
   PutAlarmError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: {
+      alarmName: 0,
+      metricName: 0,
+      monitoredResourceName: 0,
+      comparisonOperator: 0,
+      threshold: 0,
+      evaluationPeriods: 0,
+      datapointsToAlarm: 0,
+      treatMissingData: 0,
+      contactProtocols: 0,
+      notificationTriggers: 0,
+      notificationEnabled: 0,
+      tags: D.list(i_Tag),
+    },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -8246,7 +8817,11 @@ export const putInstancePublicPorts: API.OperationMethod<
   PutInstancePublicPortsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operation: o_Operation } },
+  descriptor: {
+    service: svc,
+    input: { portInfos: D.list(i_PortInfo), instanceName: 0 },
+    output: { operation: o_Operation },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -8285,7 +8860,11 @@ export const rebootInstance: API.OperationMethod<
   RebootInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { instanceName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -8324,7 +8903,11 @@ export const rebootRelationalDatabase: API.OperationMethod<
   RebootRelationalDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { relationalDatabaseName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -8362,7 +8945,11 @@ export const registerContainerImage: API.OperationMethod<
   RegisterContainerImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { containerImage: o_ContainerImage } },
+  descriptor: {
+    service: svc,
+    input: { serviceName: 0, label: 0, digest: 0 },
+    output: { containerImage: o_ContainerImage },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -8395,7 +8982,11 @@ export const releaseStaticIp: API.OperationMethod<
   ReleaseStaticIpError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { staticIpName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -8434,6 +9025,7 @@ export const resetDistributionCache: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { distributionName: 0 },
     output: { createTime: D.ts, operation: o_Operation },
   },
   errors: [
@@ -8480,7 +9072,11 @@ export const sendContactMethodVerification: API.OperationMethod<
   SendContactMethodVerificationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { protocol: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -8518,7 +9114,16 @@ export const setIpAddressType: API.OperationMethod<
   SetIpAddressTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: {
+      resourceType: 0,
+      resourceName: 0,
+      ipAddressType: 0,
+      acceptBundleUpdate: 0,
+    },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -8555,7 +9160,11 @@ export const setResourceAccessForBucket: API.OperationMethod<
   SetResourceAccessForBucketError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { resourceName: 0, bucketName: 0, access: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -8590,7 +9199,16 @@ export const setupInstanceHttps: API.OperationMethod<
   SetupInstanceHttpsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: {
+      instanceName: 0,
+      emailAddress: 0,
+      domainNames: 0,
+      certificateProvider: 0,
+    },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -8623,7 +9241,11 @@ export const startGUISession: API.OperationMethod<
   StartGUISessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { resourceName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -8665,7 +9287,11 @@ export const startInstance: API.OperationMethod<
   StartInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { instanceName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -8705,7 +9331,11 @@ export const startRelationalDatabase: API.OperationMethod<
   StartRelationalDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { relationalDatabaseName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -8740,7 +9370,11 @@ export const stopGUISession: API.OperationMethod<
   StopGUISessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { resourceName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -8781,7 +9415,11 @@ export const stopInstance: API.OperationMethod<
   StopInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { instanceName: 0, force: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -8824,7 +9462,11 @@ export const stopRelationalDatabase: API.OperationMethod<
   StopRelationalDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { relationalDatabaseName: 0, relationalDatabaseSnapshotName: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -8865,7 +9507,11 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { resourceName: 0, resourceArn: 0, tags: D.list(i_Tag) },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -8907,7 +9553,11 @@ export const testAlarm: API.OperationMethod<
   TestAlarmError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { alarmName: 0, state: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -8941,7 +9591,7 @@ export const unpeerVpc: API.OperationMethod<
   UnpeerVpcError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operation: o_Operation } },
+  descriptor: { service: svc, input: {}, output: { operation: o_Operation } },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -8981,7 +9631,11 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { resourceName: 0, resourceArn: 0, tagKeys: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -9019,6 +9673,23 @@ export const updateBucket: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      bucketName: 0,
+      accessRules: { getObject: 0, allowPublicOverrides: 0 },
+      versioning: 0,
+      readonlyAccessAccounts: 0,
+      accessLogConfig: { enabled: 0, destination: 0, prefix: 0 },
+      cors: {
+        rules: D.list({
+          id: 0,
+          allowedMethods: 0,
+          allowedOrigins: 0,
+          allowedHeaders: 0,
+          exposeHeaders: 0,
+          maxAgeSeconds: 0,
+        }),
+      },
+    },
     output: { bucket: o_Bucket, operations: D.list(o_Operation) },
   },
   errors: [
@@ -9065,7 +9736,11 @@ export const updateBucketBundle: API.OperationMethod<
   UpdateBucketBundleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { bucketName: 0, bundleId: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -9099,6 +9774,14 @@ export const updateContainerService: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      serviceName: 0,
+      power: 0,
+      scale: 0,
+      isDisabled: 0,
+      publicDomainNames: 0,
+      privateRegistryAccess: i_PrivateRegistryAccessRequest,
+    },
     output: { containerService: o_ContainerService },
   },
   errors: [
@@ -9133,7 +9816,21 @@ export const updateDistribution: API.OperationMethod<
   UpdateDistributionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operation: o_Operation } },
+  descriptor: {
+    service: svc,
+    input: {
+      distributionName: 0,
+      origin: i_InputOrigin,
+      defaultCacheBehavior: i_CacheBehavior,
+      cacheBehaviorSettings: i_CacheSettings,
+      cacheBehaviors: D.list(i_CacheBehaviorPerPath),
+      isEnabled: 0,
+      viewerMinimumTlsProtocolVersion: 0,
+      certificateName: 0,
+      useDefaultCertificate: 0,
+    },
+    output: { operation: o_Operation },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -9175,7 +9872,11 @@ export const updateDistributionBundle: API.OperationMethod<
   UpdateDistributionBundleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operation: o_Operation } },
+  descriptor: {
+    service: svc,
+    input: { distributionName: 0, bundleId: 0 },
+    output: { operation: o_Operation },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -9212,7 +9913,11 @@ export const updateDomainEntry: API.OperationMethod<
   UpdateDomainEntryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { domainName: 0, domainEntry: i_DomainEntry },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -9252,7 +9957,17 @@ export const updateInstanceMetadataOptions: API.OperationMethod<
   UpdateInstanceMetadataOptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operation: o_Operation } },
+  descriptor: {
+    service: svc,
+    input: {
+      instanceName: 0,
+      httpTokens: 0,
+      httpEndpoint: 0,
+      httpPutResponseHopLimit: 0,
+      httpProtocolIpv6: 0,
+    },
+    output: { operation: o_Operation },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -9292,7 +10007,11 @@ export const updateLoadBalancerAttribute: API.OperationMethod<
   UpdateLoadBalancerAttributeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: { loadBalancerName: 0, attributeName: 0, attributeValue: 0 },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -9334,7 +10053,23 @@ export const updateRelationalDatabase: API.OperationMethod<
   UpdateRelationalDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: {
+      relationalDatabaseName: 0,
+      masterUserPassword: 0,
+      rotateMasterUserPassword: 0,
+      preferredBackupWindow: 0,
+      preferredMaintenanceWindow: 0,
+      enableBackupRetention: 0,
+      disableBackupRetention: 0,
+      publiclyAccessible: 0,
+      applyImmediately: 0,
+      caCertificateIdentifier: 0,
+      relationalDatabaseBlueprintId: 0,
+    },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -9380,7 +10115,23 @@ export const updateRelationalDatabaseParameters: API.OperationMethod<
   UpdateRelationalDatabaseParametersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { operations: D.list(o_Operation) } },
+  descriptor: {
+    service: svc,
+    input: {
+      relationalDatabaseName: 0,
+      parameters: D.list({
+        allowedValues: 0,
+        applyMethod: 0,
+        applyType: 0,
+        dataType: 0,
+        description: 0,
+        isModifiable: 0,
+        parameterName: 0,
+        parameterValue: 0,
+      }),
+    },
+    output: { operations: D.list(o_Operation) },
+  },
   errors: [
     AccessDeniedException,
     AccountSetupInProgressException,
@@ -9396,6 +10147,68 @@ export const updateRelationalDatabaseParameters: API.OperationMethod<
   operationName: "UpdateRelationalDatabaseParameters",
 })) as any;
 
+const i_AddOnRequest: D.LazyStruct = () => ({
+  addOnType: 0,
+  autoSnapshotAddOnRequest: { snapshotTimeOfDay: 0 },
+  stopInstanceOnIdleRequest: { threshold: 0, duration: 0 },
+});
+const i_CacheBehavior: D.LazyStruct = () => ({ behavior: 0 });
+const i_CacheBehaviorPerPath: D.LazyStruct = () => ({ path: 0, behavior: 0 });
+const i_CacheSettings: D.LazyStruct = () => ({
+  defaultTTL: 0,
+  minimumTTL: 0,
+  maximumTTL: 0,
+  allowedHTTPMethods: 0,
+  cachedHTTPMethods: 0,
+  forwardedCookies: { option: 0, cookiesAllowList: 0 },
+  forwardedHeaders: { option: 0, headersAllowList: 0 },
+  forwardedQueryStrings: { option: 0, queryStringsAllowList: 0 },
+});
+const i_Container: D.LazyStruct = () => ({
+  image: 0,
+  command: 0,
+  environment: 0,
+  ports: 0,
+});
+const i_DomainEntry: D.LazyStruct = () => ({
+  id: 0,
+  name: 0,
+  target: 0,
+  isAlias: 0,
+  type: 0,
+  options: 0,
+});
+const i_EndpointRequest: D.LazyStruct = () => ({
+  containerName: 0,
+  containerPort: 0,
+  healthCheck: {
+    healthyThreshold: 0,
+    unhealthyThreshold: 0,
+    timeoutSeconds: 0,
+    intervalSeconds: 0,
+    path: 0,
+    successCodes: 0,
+  },
+});
+const i_InputOrigin: D.LazyStruct = () => ({
+  name: 0,
+  regionName: 0,
+  protocolPolicy: 0,
+  responseTimeout: 0,
+  ipAddressType: 0,
+});
+const i_PortInfo: D.LazyStruct = () => ({
+  fromPort: 0,
+  toPort: 0,
+  protocol: 0,
+  cidrs: 0,
+  ipv6Cidrs: 0,
+  cidrListAliases: 0,
+});
+const i_PrivateRegistryAccessRequest: D.LazyStruct = () => ({
+  ecrImagePullerRole: { isActive: 0 },
+});
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
 const o_AccessKey: D.LazyStruct = () => ({
   accessKeyId: D.secret,
   createdAt: D.ts,

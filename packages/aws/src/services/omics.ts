@@ -2398,6 +2398,7 @@ export const abortMultipartReadSetUpload: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /sequencestore/{sequenceStoreId}/upload/{uploadId}/abort",
+    input: { sequenceStoreId: 0, uploadId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2433,7 +2434,11 @@ export const acceptShare: API.OperationMethod<
   AcceptShareError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /share/{shareId}" },
+  descriptor: {
+    service: svc,
+    http: "POST /share/{shareId}",
+    input: { shareId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2469,6 +2474,7 @@ export const batchDeleteReadSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sequencestore/{sequenceStoreId}/readset/batch/delete",
+    input: { ids: 0, sequenceStoreId: 0 },
     body: true,
   },
   errors: [
@@ -2503,7 +2509,11 @@ export const cancelAnnotationImportJob: API.OperationMethod<
   CancelAnnotationImportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /import/annotation/{jobId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /import/annotation/{jobId}",
+    input: { jobId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2536,7 +2546,7 @@ export const cancelRun: API.OperationMethod<
   CancelRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /run/{id}/cancel" },
+  descriptor: { service: svc, http: "POST /run/{id}/cancel", input: { id: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2574,7 +2584,12 @@ export const cancelRunBatch: API.OperationMethod<
   CancelRunBatchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /runBatch/cancel", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /runBatch/cancel",
+    input: { batchId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2609,7 +2624,11 @@ export const cancelVariantImportJob: API.OperationMethod<
   CancelVariantImportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /import/variant/{jobId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /import/variant/{jobId}",
+    input: { jobId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2647,6 +2666,11 @@ export const completeMultipartReadSetUpload: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sequencestore/{sequenceStoreId}/upload/{uploadId}/complete",
+    input: {
+      sequenceStoreId: 0,
+      uploadId: 0,
+      parts: D.list({ partNumber: 0, partSource: 0, checksum: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -2688,6 +2712,18 @@ export const createAnnotationStore: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /annotationStore",
+    input: {
+      reference: i_ReferenceItem,
+      name: 0,
+      description: 0,
+      tags: 0,
+      versionName: 0,
+      sseConfig: i_SseConfig,
+      storeFormat: 0,
+      storeOptions: {
+        tsvStoreOptions: { annotationType: 0, formatToHeader: 0, schema: 0 },
+      },
+    },
     output: { creationTime: D.ts },
     body: true,
   },
@@ -2727,6 +2763,15 @@ export const createAnnotationStoreVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /annotationStore/{name}/version",
+    input: {
+      name: 0,
+      versionName: 0,
+      description: 0,
+      versionOptions: {
+        tsvVersionOptions: { annotationType: 0, formatToHeader: 0, schema: 0 },
+      },
+      tags: 0,
+    },
     output: { creationTime: D.ts },
     body: true,
   },
@@ -2767,7 +2812,13 @@ export const createConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /configuration",
-    input: { requestId: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      runConfigurations: { vpcConfig: { securityGroupIds: 0, subnetIds: 0 } },
+      tags: 0,
+      requestId: D.m({ idempotency: true }),
+    },
     output: { creationTime: D.ts },
     body: true,
   },
@@ -2819,6 +2870,18 @@ export const createMultipartReadSetUpload: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sequencestore/{sequenceStoreId}/upload",
+    input: {
+      sequenceStoreId: 0,
+      clientToken: 0,
+      sourceFileType: 0,
+      subjectId: 0,
+      sampleId: 0,
+      generatedFrom: 0,
+      referenceArn: 0,
+      name: 0,
+      description: 0,
+      tags: 0,
+    },
     output: { creationTime: D.ts },
     body: true,
   },
@@ -2860,6 +2923,13 @@ export const createReferenceStore: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /referencestore",
+    input: {
+      name: 0,
+      description: 0,
+      sseConfig: i_SseConfig,
+      tags: 0,
+      clientToken: 0,
+    },
     output: { creationTime: D.ts },
     body: true,
   },
@@ -2901,7 +2971,15 @@ export const createRunCache: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /runCache",
-    input: { requestId: D.m({ idempotency: true }) },
+    input: {
+      cacheBehavior: 0,
+      cacheS3Location: 0,
+      description: 0,
+      name: 0,
+      requestId: D.m({ idempotency: true }),
+      tags: 0,
+      cacheBucketOwnerId: 0,
+    },
     body: true,
   },
   errors: [
@@ -2942,7 +3020,15 @@ export const createRunGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /runGroup",
-    input: { requestId: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      maxCpus: 0,
+      maxRuns: 0,
+      maxDuration: 0,
+      tags: 0,
+      requestId: D.m({ idempotency: true }),
+      maxGpus: 0,
+    },
     body: true,
   },
   errors: [
@@ -2995,7 +3081,17 @@ export const createSequenceStore: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sequencestore",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      sseConfig: i_SseConfig,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+      fallbackLocation: 0,
+      eTagAlgorithmFamily: 0,
+      propagatedSetLevelTags: 0,
+      s3AccessConfig: i_S3AccessConfig,
+    },
     output: { creationTime: D.ts },
     body: true,
   },
@@ -3039,7 +3135,12 @@ export const createShare: API.OperationMethod<
   CreateShareError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /share", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /share",
+    input: { resourceArn: 0, principalSubscriber: 0, shareName: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3078,6 +3179,13 @@ export const createVariantStore: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /variantStore",
+    input: {
+      reference: i_ReferenceItem,
+      name: 0,
+      description: 0,
+      tags: 0,
+      sseConfig: i_SseConfig,
+    },
     output: { creationTime: D.ts },
     body: true,
   },
@@ -3130,7 +3238,28 @@ export const createWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workflow",
-    input: { requestId: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      engine: 0,
+      definitionZip: 0,
+      definitionUri: 0,
+      main: 0,
+      parameterTemplate: D.map(i_WorkflowParameter),
+      storageCapacity: 0,
+      tags: 0,
+      requestId: D.m({ idempotency: true }),
+      accelerators: 0,
+      storageType: 0,
+      containerRegistryMap: i_ContainerRegistryMap,
+      containerRegistryMapUri: 0,
+      readmeMarkdown: 0,
+      parameterTemplatePath: 0,
+      readmePath: 0,
+      definitionRepository: i_DefinitionRepository,
+      workflowBucketOwnerId: 0,
+      readmeUri: 0,
+    },
     body: true,
   },
   errors: [
@@ -3179,7 +3308,29 @@ export const createWorkflowVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workflow/{workflowId}/version",
-    input: { requestId: D.m({ idempotency: true }) },
+    input: {
+      workflowId: 0,
+      versionName: 0,
+      definitionZip: 0,
+      definitionUri: 0,
+      accelerators: 0,
+      description: 0,
+      engine: 0,
+      main: 0,
+      parameterTemplate: D.map(i_WorkflowParameter),
+      requestId: D.m({ idempotency: true }),
+      storageType: 0,
+      storageCapacity: 0,
+      tags: 0,
+      workflowBucketOwnerId: 0,
+      containerRegistryMap: i_ContainerRegistryMap,
+      containerRegistryMapUri: 0,
+      readmeMarkdown: 0,
+      parameterTemplatePath: 0,
+      readmePath: 0,
+      definitionRepository: i_DefinitionRepository,
+      readmeUri: 0,
+    },
     body: true,
   },
   errors: [
@@ -3220,7 +3371,7 @@ export const deleteAnnotationStore: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /annotationStore/{name}",
-    input: { force: D.m({ query: "force" }) },
+    input: { name: 0, force: D.m({ query: "force" }) },
   },
   errors: [
     AccessDeniedException,
@@ -3256,7 +3407,7 @@ export const deleteAnnotationStoreVersions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /annotationStore/{name}/versions/delete",
-    input: { force: D.m({ query: "force" }) },
+    input: { name: 0, versions: 0, force: D.m({ query: "force" }) },
     body: true,
   },
   errors: [
@@ -3294,7 +3445,11 @@ export const deleteBatch: API.OperationMethod<
   DeleteBatchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /runBatch/{batchId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /runBatch/{batchId}",
+    input: { batchId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3330,7 +3485,11 @@ export const deleteConfiguration: API.OperationMethod<
   DeleteConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /configuration/{name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /configuration/{name}",
+    input: { name: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3370,6 +3529,7 @@ export const deleteReference: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /referencestore/{referenceStoreId}/reference/{id}",
+    input: { id: 0, referenceStoreId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3406,7 +3566,11 @@ export const deleteReferenceStore: API.OperationMethod<
   DeleteReferenceStoreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /referencestore/{id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /referencestore/{id}",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3447,7 +3611,7 @@ export const deleteRun: API.OperationMethod<
   DeleteRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /run/{id}" },
+  descriptor: { service: svc, http: "DELETE /run/{id}", input: { id: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3485,7 +3649,12 @@ export const deleteRunBatch: API.OperationMethod<
   DeleteRunBatchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /runBatch/delete", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /runBatch/delete",
+    input: { batchId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3523,7 +3692,7 @@ export const deleteRunCache: API.OperationMethod<
   DeleteRunCacheError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /runCache/{id}" },
+  descriptor: { service: svc, http: "DELETE /runCache/{id}", input: { id: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3565,7 +3734,7 @@ export const deleteRunGroup: API.OperationMethod<
   DeleteRunGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /runGroup/{id}" },
+  descriptor: { service: svc, http: "DELETE /runGroup/{id}", input: { id: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3603,6 +3772,7 @@ export const deleteS3AccessPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /s3accesspolicy/{s3AccessPointArn}",
+    input: { s3AccessPointArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3641,7 +3811,11 @@ export const deleteSequenceStore: API.OperationMethod<
   DeleteSequenceStoreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /sequencestore/{id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /sequencestore/{id}",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3675,7 +3849,11 @@ export const deleteShare: API.OperationMethod<
   DeleteShareError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /share/{shareId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /share/{shareId}",
+    input: { shareId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3713,7 +3891,7 @@ export const deleteVariantStore: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /variantStore/{name}",
-    input: { force: D.m({ query: "force" }) },
+    input: { name: 0, force: D.m({ query: "force" }) },
   },
   errors: [
     AccessDeniedException,
@@ -3754,7 +3932,7 @@ export const deleteWorkflow: API.OperationMethod<
   DeleteWorkflowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /workflow/{id}" },
+  descriptor: { service: svc, http: "DELETE /workflow/{id}", input: { id: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3795,6 +3973,7 @@ export const deleteWorkflowVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workflow/{workflowId}/version/{versionName}",
+    input: { workflowId: 0, versionName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3833,6 +4012,7 @@ export const getAnnotationImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /import/annotation/{jobId}",
+    input: { jobId: 0 },
     output: { creationTime: D.ts, updateTime: D.ts, completionTime: D.ts },
   },
   errors: [
@@ -3869,6 +4049,7 @@ export const getAnnotationStore: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /annotationStore/{name}",
+    input: { name: 0 },
     output: { creationTime: D.ts, updateTime: D.ts },
   },
   errors: [
@@ -3903,6 +4084,7 @@ export const getAnnotationStoreVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /annotationStore/{name}/version/{versionName}",
+    input: { name: 0, versionName: 0 },
     output: { creationTime: D.ts, updateTime: D.ts },
   },
   errors: [
@@ -3938,6 +4120,7 @@ export const getBatch: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /runBatch/{batchId}",
+    input: { batchId: 0 },
     output: {
       creationTime: D.ts,
       submittedTime: D.ts,
@@ -3981,6 +4164,7 @@ export const getConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /configuration/{name}",
+    input: { name: 0 },
     output: { creationTime: D.ts },
   },
   errors: [
@@ -4022,6 +4206,8 @@ export const getReadSet: API.OperationMethod<
     service: svc,
     http: "GET /sequencestore/{sequenceStoreId}/readset/{id}",
     input: {
+      id: 0,
+      sequenceStoreId: 0,
       file: D.m({ query: "file" }),
       partNumber: D.m({ query: "partNumber" }),
     },
@@ -4063,6 +4249,7 @@ export const getReadSetActivationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sequencestore/{sequenceStoreId}/activationjob/{id}",
+    input: { id: 0, sequenceStoreId: 0 },
     output: { creationTime: D.ts, completionTime: D.ts },
   },
   errors: [
@@ -4099,6 +4286,7 @@ export const getReadSetExportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sequencestore/{sequenceStoreId}/exportjob/{id}",
+    input: { sequenceStoreId: 0, id: 0 },
     output: { creationTime: D.ts, completionTime: D.ts },
   },
   errors: [
@@ -4135,6 +4323,7 @@ export const getReadSetImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sequencestore/{sequenceStoreId}/importjob/{id}",
+    input: { id: 0, sequenceStoreId: 0 },
     output: { creationTime: D.ts, completionTime: D.ts },
   },
   errors: [
@@ -4171,6 +4360,7 @@ export const getReadSetMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sequencestore/{sequenceStoreId}/readset/{id}/metadata",
+    input: { id: 0, sequenceStoreId: 0 },
     output: { creationTime: D.ts },
   },
   errors: [
@@ -4211,6 +4401,8 @@ export const getReference: API.OperationMethod<
     service: svc,
     http: "GET /referencestore/{referenceStoreId}/reference/{id}",
     input: {
+      id: 0,
+      referenceStoreId: 0,
       range: D.m({ header: "Range" }),
       partNumber: D.m({ query: "partNumber" }),
       file: D.m({ query: "file" }),
@@ -4252,6 +4444,7 @@ export const getReferenceImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /referencestore/{referenceStoreId}/importjob/{id}",
+    input: { id: 0, referenceStoreId: 0 },
     output: { creationTime: D.ts, completionTime: D.ts },
   },
   errors: [
@@ -4288,6 +4481,7 @@ export const getReferenceMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /referencestore/{referenceStoreId}/reference/{id}/metadata",
+    input: { id: 0, referenceStoreId: 0 },
     output: { creationTime: D.ts, updateTime: D.ts },
   },
   errors: [
@@ -4324,6 +4518,7 @@ export const getReferenceStore: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /referencestore/{id}",
+    input: { id: 0 },
     output: { creationTime: D.ts },
   },
   errors: [
@@ -4364,7 +4559,7 @@ export const getRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /run/{id}",
-    input: { export: D.m({ query: "export" }) },
+    input: { id: 0, export: D.m({ query: "export" }) },
     output: { creationTime: D.ts, startTime: D.ts, stopTime: D.ts },
   },
   errors: [
@@ -4407,6 +4602,7 @@ export const getRunCache: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /runCache/{id}",
+    input: { id: 0 },
     output: { creationTime: D.ts },
   },
   errors: [
@@ -4447,6 +4643,7 @@ export const getRunGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /runGroup/{id}",
+    input: { id: 0 },
     output: { creationTime: D.ts },
   },
   errors: [
@@ -4487,6 +4684,7 @@ export const getRunTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /run/{id}/task/{taskId}",
+    input: { id: 0, taskId: 0 },
     output: { creationTime: D.ts, startTime: D.ts, stopTime: D.ts },
   },
   errors: [
@@ -4527,6 +4725,7 @@ export const getS3AccessPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /s3accesspolicy/{s3AccessPointArn}",
+    input: { s3AccessPointArn: 0 },
     output: { updateTime: D.ts },
   },
   errors: [
@@ -4565,6 +4764,7 @@ export const getSequenceStore: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sequencestore/{id}",
+    input: { id: 0 },
     output: { creationTime: D.ts, updateTime: D.ts },
   },
   errors: [
@@ -4602,6 +4802,7 @@ export const getShare: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /share/{shareId}",
+    input: { shareId: 0 },
     output: { share: o_ShareDetails },
   },
   errors: [
@@ -4640,6 +4841,7 @@ export const getVariantImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /import/variant/{jobId}",
+    input: { jobId: 0 },
     output: { creationTime: D.ts, updateTime: D.ts, completionTime: D.ts },
   },
   errors: [
@@ -4677,6 +4879,7 @@ export const getVariantStore: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /variantStore/{name}",
+    input: { name: 0 },
     output: { creationTime: D.ts, updateTime: D.ts },
   },
   errors: [
@@ -4720,6 +4923,7 @@ export const getWorkflow: API.OperationMethod<
     service: svc,
     http: "GET /workflow/{id}",
     input: {
+      id: 0,
       type: D.m({ query: "type" }),
       export: D.m({ query: "export" }),
       workflowOwnerId: D.m({ query: "workflowOwnerId" }),
@@ -4765,6 +4969,8 @@ export const getWorkflowVersion: API.OperationMethod<
     service: svc,
     http: "GET /workflow/{workflowId}/version/{versionName}",
     input: {
+      workflowId: 0,
+      versionName: 0,
       type: D.m({ query: "type" }),
       export: D.m({ query: "export" }),
       workflowOwnerId: D.m({ query: "workflowOwnerId" }),
@@ -4811,7 +5017,9 @@ export const listAnnotationImportJobs: API.PaginatedOperationMethod<
     http: "POST /import/annotations",
     input: {
       maxResults: D.m({ query: "maxResults" }),
+      ids: 0,
       nextToken: D.m({ query: "nextToken" }),
+      filter: { status: 0, storeName: 0 },
     },
     output: {
       annotationImportJobs: D.list({
@@ -4864,8 +5072,10 @@ export const listAnnotationStores: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /annotationStores",
     input: {
+      ids: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      filter: { status: 0 },
     },
     output: {
       annotationStores: D.list({ creationTime: D.ts, updateTime: D.ts }),
@@ -4912,8 +5122,10 @@ export const listAnnotationStoreVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /annotationStore/{name}/versions",
     input: {
+      name: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      filter: { status: 0 },
     },
     output: {
       annotationStoreVersions: D.list({ creationTime: D.ts, updateTime: D.ts }),
@@ -5062,6 +5274,7 @@ export const listMultipartReadSetUploads: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /sequencestore/{sequenceStoreId}/uploads",
     input: {
+      sequenceStoreId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -5111,9 +5324,11 @@ export const listReadSetActivationJobs: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /sequencestore/{sequenceStoreId}/activationjobs",
     input: {
+      sequenceStoreId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
       filter: {
+        status: 0,
         createdAfter: D.tsAs("date-time"),
         createdBefore: D.tsAs("date-time"),
       },
@@ -5165,9 +5380,11 @@ export const listReadSetExportJobs: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /sequencestore/{sequenceStoreId}/exportjobs",
     input: {
+      sequenceStoreId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
       filter: {
+        status: 0,
         createdAfter: D.tsAs("date-time"),
         createdBefore: D.tsAs("date-time"),
       },
@@ -5221,7 +5438,9 @@ export const listReadSetImportJobs: API.PaginatedOperationMethod<
     input: {
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      sequenceStoreId: 0,
       filter: {
+        status: 0,
         createdAfter: D.tsAs("date-time"),
         createdBefore: D.tsAs("date-time"),
       },
@@ -5273,11 +5492,19 @@ export const listReadSets: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /sequencestore/{sequenceStoreId}/readsets",
     input: {
+      sequenceStoreId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
       filter: {
+        name: 0,
+        status: 0,
+        referenceArn: 0,
         createdAfter: D.tsAs("date-time"),
         createdBefore: D.tsAs("date-time"),
+        sampleId: 0,
+        subjectId: 0,
+        generatedFrom: 0,
+        creationType: 0,
       },
     },
     output: { readSets: D.list({ creationTime: D.ts }) },
@@ -5327,6 +5554,9 @@ export const listReadSetUploadParts: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /sequencestore/{sequenceStoreId}/upload/{uploadId}/parts",
     input: {
+      sequenceStoreId: 0,
+      uploadId: 0,
+      partSource: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
       filter: {
@@ -5383,7 +5613,9 @@ export const listReferenceImportJobs: API.PaginatedOperationMethod<
     input: {
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      referenceStoreId: 0,
       filter: {
+        status: 0,
         createdAfter: D.tsAs("date-time"),
         createdBefore: D.tsAs("date-time"),
       },
@@ -5437,9 +5669,12 @@ export const listReferences: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /referencestore/{referenceStoreId}/references",
     input: {
+      referenceStoreId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
       filter: {
+        name: 0,
+        md5: 0,
         createdAfter: D.tsAs("date-time"),
         createdBefore: D.tsAs("date-time"),
       },
@@ -5493,6 +5728,7 @@ export const listReferenceStores: API.PaginatedOperationMethod<
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
       filter: {
+        name: 0,
         createdAfter: D.tsAs("date-time"),
         createdBefore: D.tsAs("date-time"),
       },
@@ -5705,6 +5941,7 @@ export const listRunsInBatch: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /runBatch/{batchId}/run",
     input: {
+      batchId: 0,
       maxItems: D.m({ query: "maxItems" }),
       startingToken: D.m({ query: "startingToken" }),
       submissionStatus: D.m({ query: "submissionStatus" }),
@@ -5758,6 +5995,7 @@ export const listRunTasks: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /run/{id}/task",
     input: {
+      id: 0,
       status: D.m({ query: "status" }),
       startingToken: D.m({ query: "startingToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -5814,8 +6052,10 @@ export const listSequenceStores: API.PaginatedOperationMethod<
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
       filter: {
+        name: 0,
         createdAfter: D.tsAs("date-time"),
         createdBefore: D.tsAs("date-time"),
+        status: 0,
         updatedAfter: D.tsAs("date-time"),
         updatedBefore: D.tsAs("date-time"),
       },
@@ -5867,6 +6107,8 @@ export const listShares: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /shares",
     input: {
+      resourceOwner: 0,
+      filter: { resourceArns: 0, status: 0, type: 0 },
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -5913,7 +6155,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5954,7 +6200,9 @@ export const listVariantImportJobs: API.PaginatedOperationMethod<
     http: "POST /import/variants",
     input: {
       maxResults: D.m({ query: "maxResults" }),
+      ids: 0,
       nextToken: D.m({ query: "nextToken" }),
+      filter: { status: 0, storeName: 0 },
     },
     output: {
       variantImportJobs: D.list({
@@ -6008,7 +6256,9 @@ export const listVariantStores: API.PaginatedOperationMethod<
     http: "POST /variantStores",
     input: {
       maxResults: D.m({ query: "maxResults" }),
+      ids: 0,
       nextToken: D.m({ query: "nextToken" }),
+      filter: { status: 0 },
     },
     output: { variantStores: D.list({ creationTime: D.ts, updateTime: D.ts }) },
     body: true,
@@ -6109,6 +6359,7 @@ export const listWorkflowVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /workflow/{workflowId}/version",
     input: {
+      workflowId: 0,
       type: D.m({ query: "type" }),
       workflowOwnerId: D.m({ query: "workflowOwnerId" }),
       startingToken: D.m({ query: "startingToken" }),
@@ -6159,6 +6410,7 @@ export const putS3AccessPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /s3accesspolicy/{s3AccessPointArn}",
+    input: { s3AccessPointArn: 0, s3AccessPolicy: 0 },
     body: true,
   },
   errors: [
@@ -6195,7 +6447,35 @@ export const startAnnotationImportJob: API.OperationMethod<
   StartAnnotationImportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /import/annotation", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /import/annotation",
+    input: {
+      destinationName: 0,
+      roleArn: 0,
+      items: D.list({ source: 0 }),
+      versionName: 0,
+      formatOptions: {
+        tsvOptions: {
+          readOptions: {
+            sep: 0,
+            encoding: 0,
+            quote: 0,
+            quoteAll: 0,
+            escape: 0,
+            escapeQuotes: 0,
+            comment: 0,
+            header: 0,
+            lineSep: 0,
+          },
+        },
+        vcfOptions: { ignoreQualField: 0, ignoreFilterField: 0 },
+      },
+      runLeftNormalization: 0,
+      annotationFields: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -6233,6 +6513,11 @@ export const startReadSetActivationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sequencestore/{sequenceStoreId}/activationjob",
+    input: {
+      sequenceStoreId: 0,
+      clientToken: 0,
+      sources: D.list({ readSetId: 0 }),
+    },
     output: { creationTime: D.ts },
     body: true,
   },
@@ -6274,6 +6559,13 @@ export const startReadSetExportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sequencestore/{sequenceStoreId}/exportjob",
+    input: {
+      sequenceStoreId: 0,
+      destination: 0,
+      roleArn: 0,
+      clientToken: 0,
+      sources: D.list({ readSetId: 0 }),
+    },
     output: { creationTime: D.ts },
     body: true,
   },
@@ -6313,6 +6605,22 @@ export const startReadSetImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sequencestore/{sequenceStoreId}/importjob",
+    input: {
+      sequenceStoreId: 0,
+      roleArn: 0,
+      clientToken: 0,
+      sources: D.list({
+        sourceFiles: { source1: 0, source2: 0 },
+        sourceFileType: 0,
+        subjectId: 0,
+        sampleId: 0,
+        generatedFrom: 0,
+        referenceArn: 0,
+        name: 0,
+        description: 0,
+        tags: 0,
+      }),
+    },
     output: { creationTime: D.ts },
     body: true,
   },
@@ -6352,6 +6660,12 @@ export const startReferenceImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /referencestore/{referenceStoreId}/importjob",
+    input: {
+      referenceStoreId: 0,
+      roleArn: 0,
+      clientToken: 0,
+      sources: D.list({ sourceFile: 0, name: 0, description: 0, tags: 0 }),
+    },
     output: { creationTime: D.ts },
     body: true,
   },
@@ -6424,7 +6738,31 @@ export const startRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /run",
-    input: { requestId: D.m({ idempotency: true }) },
+    input: {
+      workflowId: 0,
+      workflowType: 0,
+      runId: 0,
+      roleArn: 0,
+      name: 0,
+      cacheId: 0,
+      cacheBehavior: 0,
+      runGroupId: 0,
+      priority: 0,
+      parameters: 0,
+      storageCapacity: 0,
+      outputUri: 0,
+      logLevel: 0,
+      tags: 0,
+      requestId: D.m({ idempotency: true }),
+      retentionMode: 0,
+      storageType: 0,
+      workflowOwnerId: 0,
+      workflowVersionName: 0,
+      networkingMode: 0,
+      scratchStorageMode: 0,
+      configurationName: 0,
+      engineSettings: 0,
+    },
     body: true,
   },
   errors: [
@@ -6467,7 +6805,48 @@ export const startRunBatch: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /runBatch",
-    input: { requestId: D.m({ idempotency: true }) },
+    input: {
+      batchName: 0,
+      requestId: D.m({ idempotency: true }),
+      tags: 0,
+      defaultRunSetting: {
+        workflowId: 0,
+        workflowType: 0,
+        roleArn: 0,
+        name: 0,
+        cacheId: 0,
+        cacheBehavior: 0,
+        runGroupId: 0,
+        priority: 0,
+        parameters: 0,
+        storageCapacity: 0,
+        outputUri: 0,
+        logLevel: 0,
+        runTags: 0,
+        retentionMode: 0,
+        storageType: 0,
+        workflowOwnerId: 0,
+        outputBucketOwnerId: 0,
+        workflowVersionName: 0,
+        networkingMode: 0,
+        configurationName: 0,
+        engineSettings: 0,
+        scratchStorageMode: 0,
+      },
+      batchRunSettings: {
+        inlineSettings: D.list({
+          runSettingId: 0,
+          name: 0,
+          outputUri: 0,
+          priority: 0,
+          parameters: 0,
+          outputBucketOwnerId: 0,
+          runTags: 0,
+          engineSettings: 0,
+        }),
+        s3UriSettings: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -6505,7 +6884,18 @@ export const startVariantImportJob: API.OperationMethod<
   StartVariantImportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /import/variant", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /import/variant",
+    input: {
+      destinationName: 0,
+      roleArn: 0,
+      items: D.list({ source: 0 }),
+      runLeftNormalization: 0,
+      annotationFields: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -6539,7 +6929,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -6578,7 +6973,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -6617,6 +7012,7 @@ export const updateAnnotationStore: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /annotationStore/{name}",
+    input: { name: 0, description: 0 },
     output: { creationTime: D.ts, updateTime: D.ts },
     body: true,
   },
@@ -6652,6 +7048,7 @@ export const updateAnnotationStoreVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /annotationStore/{name}/version/{versionName}",
+    input: { name: 0, versionName: 0, description: 0 },
     output: { creationTime: D.ts, updateTime: D.ts },
     body: true,
   },
@@ -6689,7 +7086,12 @@ export const updateRunCache: API.OperationMethod<
   UpdateRunCacheError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /runCache/{id}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /runCache/{id}",
+    input: { cacheBehavior: 0, description: 0, id: 0, name: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -6739,7 +7141,19 @@ export const updateRunGroup: API.OperationMethod<
   UpdateRunGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /runGroup/{id}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /runGroup/{id}",
+    input: {
+      id: 0,
+      name: 0,
+      maxCpus: 0,
+      maxRuns: 0,
+      maxDuration: 0,
+      maxGpus: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -6777,7 +7191,15 @@ export const updateSequenceStore: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /sequencestore/{id}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      id: 0,
+      name: 0,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+      fallbackLocation: 0,
+      propagatedSetLevelTags: 0,
+      s3AccessConfig: i_S3AccessConfig,
+    },
     output: { creationTime: D.ts, updateTime: D.ts },
     body: true,
   },
@@ -6817,6 +7239,7 @@ export const updateVariantStore: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /variantStore/{name}",
+    input: { name: 0, description: 0 },
     output: { creationTime: D.ts, updateTime: D.ts },
     body: true,
   },
@@ -6866,7 +7289,19 @@ export const updateWorkflow: API.OperationMethod<
   UpdateWorkflowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /workflow/{id}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /workflow/{id}",
+    input: {
+      id: 0,
+      name: 0,
+      description: 0,
+      storageType: 0,
+      storageCapacity: 0,
+      readmeMarkdown: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -6905,6 +7340,14 @@ export const updateWorkflowVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workflow/{workflowId}/version/{versionName}",
+    input: {
+      workflowId: 0,
+      versionName: 0,
+      description: 0,
+      storageType: 0,
+      storageCapacity: 0,
+      readmeMarkdown: 0,
+    },
     body: true,
   },
   errors: [
@@ -6948,6 +7391,8 @@ export const uploadReadSetPart: API.OperationMethod<
     service: svc,
     http: "PUT /sequencestore/{sequenceStoreId}/upload/{uploadId}/part",
     input: {
+      sequenceStoreId: 0,
+      uploadId: 0,
       partSource: D.m({ query: "partSource" }),
       partNumber: D.m({ query: "partNumber" }),
       payload: D.m({ payload: true, requiresLength: true, shape: D.stream }),
@@ -6969,6 +7414,28 @@ export const uploadReadSetPart: API.OperationMethod<
   endpointHostPrefix: "storage-",
 })) as any;
 
+const i_ContainerRegistryMap: D.LazyStruct = () => ({
+  registryMappings: D.list({
+    upstreamRegistryUrl: 0,
+    ecrRepositoryPrefix: 0,
+    upstreamRepositoryPrefix: 0,
+    ecrAccountId: 0,
+  }),
+  imageMappings: D.list({ sourceImage: 0, destinationImage: 0 }),
+});
+const i_DefinitionRepository: D.LazyStruct = () => ({
+  connectionArn: 0,
+  fullRepositoryId: 0,
+  sourceReference: { type: 0, value: 0 },
+  excludeFilePatterns: 0,
+});
+const i_ReferenceItem: D.LazyStruct = () => ({ referenceArn: 0 });
+const i_S3AccessConfig: D.LazyStruct = () => ({ accessLogLocation: 0 });
+const i_SseConfig: D.LazyStruct = () => ({ type: 0, keyArn: 0 });
+const i_WorkflowParameter: D.LazyStruct = () => ({
+  description: 0,
+  optional: 0,
+});
 const o_ShareDetails: D.LazyStruct = () => ({
   creationTime: D.ts,
   updateTime: D.ts,

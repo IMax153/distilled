@@ -337,7 +337,11 @@ export const createChallenge: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /challenges",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ConnectorArn: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: 0,
+    },
     output: {
       Challenge: { CreatedAt: D.ts, UpdatedAt: D.ts, Password: D.secret },
     },
@@ -379,7 +383,13 @@ export const createConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /connectors",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      CertificateAuthorityArn: 0,
+      MobileDeviceManagement: { Intune: { AzureApplicationId: 0, Domain: 0 } },
+      VpcEndpointId: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -413,7 +423,11 @@ export const deleteChallenge: API.OperationMethod<
   DeleteChallengeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /challenges/{ChallengeArn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /challenges/{ChallengeArn}",
+    input: { ChallengeArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -444,7 +458,11 @@ export const deleteConnector: API.OperationMethod<
   DeleteConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /connectors/{ConnectorArn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /connectors/{ConnectorArn}",
+    input: { ConnectorArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -477,6 +495,7 @@ export const getChallengeMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /challengeMetadata/{ChallengeArn}",
+    input: { ChallengeArn: 0 },
     output: { ChallengeMetadata: { CreatedAt: D.ts, UpdatedAt: D.ts } },
   },
   errors: [
@@ -510,6 +529,7 @@ export const getChallengePassword: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /challengePasswords/{ChallengeArn}",
+    input: { ChallengeArn: 0 },
     output: { Password: D.secret },
   },
   errors: [
@@ -543,6 +563,7 @@ export const getConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /connectors/{ConnectorArn}",
+    input: { ConnectorArn: 0 },
     output: { Connector: { CreatedAt: D.ts, UpdatedAt: D.ts } },
   },
   errors: [
@@ -660,7 +681,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -689,7 +714,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -721,7 +751,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,

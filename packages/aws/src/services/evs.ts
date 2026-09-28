@@ -651,7 +651,12 @@ export const associateEipToVlan: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      environmentId: 0,
+      vlanName: 0,
+      allocationId: 0,
+    },
     output: { vlan: o_Vlan },
   },
   errors: [ResourceNotFoundException, ThrottlingException, ValidationException],
@@ -676,7 +681,13 @@ export const createEntitlement: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      environmentId: 0,
+      connectorId: 0,
+      entitlementType: 0,
+      vmIds: 0,
+    },
     output: { entitlements: D.list(o_VmEntitlement) },
   },
   errors: [ResourceNotFoundException, ThrottlingException, ValidationException],
@@ -705,7 +716,46 @@ export const createEnvironment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      environmentName: 0,
+      kmsKeyId: 0,
+      tags: 0,
+      serviceAccessSecurityGroups: { securityGroups: 0 },
+      vpcId: 0,
+      serviceAccessSubnetId: 0,
+      vcfVersion: 0,
+      termsAccepted: 0,
+      initialVlans: {
+        vmkManagement: i_InitialVlanInfo,
+        vmManagement: i_InitialVlanInfo,
+        vMotion: i_InitialVlanInfo,
+        vSan: i_InitialVlanInfo,
+        vTep: i_InitialVlanInfo,
+        edgeVTep: i_InitialVlanInfo,
+        nsxUplink: i_InitialVlanInfo,
+        hcx: i_InitialVlanInfo,
+        expansionVlan1: i_InitialVlanInfo,
+        expansionVlan2: i_InitialVlanInfo,
+        isHcxPublic: 0,
+        hcxNetworkAclId: 0,
+      },
+      connectivityInfo: { privateRouteServerPeerings: 0 },
+      licenseInfo: D.list({ solutionKey: 0, vsanKey: 0 }),
+      hosts: D.list(i_HostInfoForCreate),
+      vcfHostnames: {
+        vCenter: 0,
+        nsx: 0,
+        nsxManager1: 0,
+        nsxManager2: 0,
+        nsxManager3: 0,
+        nsxEdge1: 0,
+        nsxEdge2: 0,
+        sddcManager: 0,
+        cloudBuilder: 0,
+      },
+      siteId: 0,
+    },
     output: { environment: o_Environment },
   },
   errors: [ValidationException],
@@ -734,7 +784,13 @@ export const createEnvironmentConnector: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      environmentId: 0,
+      type: 0,
+      applianceFqdn: 0,
+      secretIdentifier: 0,
+    },
     output: { connector: o_Connector },
   },
   errors: [ResourceNotFoundException, ThrottlingException, ValidationException],
@@ -768,7 +824,12 @@ export const createEnvironmentHost: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      environmentId: 0,
+      host: i_HostInfoForCreate,
+      esxVersion: 0,
+    },
     output: { environmentSummary: o_EnvironmentSummary, host: o_Host },
   },
   errors: [ThrottlingException, ValidationException],
@@ -793,7 +854,13 @@ export const deleteEntitlement: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      environmentId: 0,
+      connectorId: 0,
+      entitlementType: 0,
+      vmIds: 0,
+    },
     output: { entitlements: D.list(o_VmEntitlement) },
   },
   errors: [ResourceNotFoundException, ThrottlingException, ValidationException],
@@ -821,7 +888,7 @@ export const deleteEnvironment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { clientToken: D.m({ idempotency: true }), environmentId: 0 },
     output: { environment: o_Environment },
   },
   errors: [ResourceNotFoundException, ValidationException],
@@ -848,7 +915,11 @@ export const deleteEnvironmentConnector: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      environmentId: 0,
+      connectorId: 0,
+    },
     output: {
       connector: o_Connector,
       environmentSummary: o_EnvironmentSummary,
@@ -877,7 +948,11 @@ export const deleteEnvironmentHost: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      environmentId: 0,
+      hostName: 0,
+    },
     output: { environmentSummary: o_EnvironmentSummary, host: o_Host },
   },
   errors: [ResourceNotFoundException, ValidationException],
@@ -902,7 +977,12 @@ export const disassociateEipFromVlan: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      environmentId: 0,
+      vlanName: 0,
+      associationId: 0,
+    },
     output: { vlan: o_Vlan },
   },
   errors: [ResourceNotFoundException, ThrottlingException, ValidationException],
@@ -927,7 +1007,7 @@ export const getDepotUrl: API.OperationMethod<
   GetDepotUrlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { environmentId: 0, rotate: 0 } },
   errors: [ResourceNotFoundException, ThrottlingException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -947,7 +1027,11 @@ export const getEnvironment: API.OperationMethod<
   GetEnvironmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { environment: o_Environment } },
+  descriptor: {
+    service: svc,
+    input: { environmentId: 0 },
+    output: { environment: o_Environment },
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -967,7 +1051,7 @@ export const getVersions: API.OperationMethod<
   GetVersionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [InternalServerException, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -988,7 +1072,11 @@ export const listEnvironmentConnectors: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Connector
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { connectors: D.list(o_Connector) } },
+  descriptor: {
+    service: svc,
+    input: { nextToken: 0, maxResults: 0, environmentId: 0 },
+    output: { connectors: D.list(o_Connector) },
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1015,7 +1103,11 @@ export const listEnvironmentHosts: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Host
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { environmentHosts: D.list(o_Host) } },
+  descriptor: {
+    service: svc,
+    input: { nextToken: 0, maxResults: 0, environmentId: 0 },
+    output: { environmentHosts: D.list(o_Host) },
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1041,6 +1133,7 @@ export const listEnvironments: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0, state: 0 },
     output: { environmentSummaries: D.list(o_EnvironmentSummary) },
   },
   errors: [ValidationException],
@@ -1069,7 +1162,11 @@ export const listEnvironmentVlans: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Vlan
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { environmentVlans: D.list(o_Vlan) } },
+  descriptor: {
+    service: svc,
+    input: { nextToken: 0, maxResults: 0, environmentId: 0 },
+    output: { environmentVlans: D.list(o_Vlan) },
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1092,7 +1189,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1115,6 +1212,13 @@ export const listVmEntitlements: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      nextToken: 0,
+      maxResults: 0,
+      environmentId: 0,
+      connectorId: 0,
+      entitlementType: 0,
+    },
     output: { entitlements: D.list(o_VmEntitlement) },
   },
   errors: [ResourceNotFoundException, ValidationException],
@@ -1144,7 +1248,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: 0 } },
   errors: [
     ResourceNotFoundException,
     ServiceQuotaExceededException,
@@ -1169,7 +1273,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [ResourceNotFoundException, TagPolicyException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1194,7 +1298,13 @@ export const updateEnvironmentConnector: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      environmentId: 0,
+      connectorId: 0,
+      applianceFqdn: 0,
+      secretIdentifier: 0,
+    },
     output: { connector: o_Connector },
   },
   errors: [ResourceNotFoundException, ThrottlingException, ValidationException],
@@ -1203,6 +1313,14 @@ export const updateEnvironmentConnector: API.OperationMethod<
   operationName: "UpdateEnvironmentConnector",
 })) as any;
 
+const i_HostInfoForCreate: D.LazyStruct = () => ({
+  hostName: 0,
+  keyName: 0,
+  instanceType: 0,
+  placementGroupId: 0,
+  dedicatedHostId: 0,
+});
+const i_InitialVlanInfo: D.LazyStruct = () => ({ cidr: 0 });
 const o_Connector: D.LazyStruct = () => ({
   checks: D.list({ lastCheckAttempt: D.ts, impairedSince: D.ts }),
   createdAt: D.ts,

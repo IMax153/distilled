@@ -715,7 +715,7 @@ export const createBillOfMaterialsImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /api/configuration/instances/{instanceId}/bill-of-materials-import-jobs",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { instanceId: 0, s3uri: 0, clientToken: D.m({ idempotency: true }) },
     body: true,
   },
   errors: [
@@ -751,6 +751,14 @@ export const createDataIntegrationFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /api/data-integration/instance/{instanceId}/data-integration-flows/{name}",
+    input: {
+      instanceId: 0,
+      name: 0,
+      sources: D.list(i_DataIntegrationFlowSource),
+      transformation: i_DataIntegrationFlowTransformation,
+      target: i_DataIntegrationFlowTarget,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -787,6 +795,19 @@ export const createDataLakeDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /api/datalake/instance/{instanceId}/namespaces/{namespace}/datasets/{name}",
+    input: {
+      instanceId: 0,
+      namespace: 0,
+      name: 0,
+      schema: {
+        name: 0,
+        fields: D.list({ name: 0, type: 0, isRequired: 0 }),
+        primaryKeys: D.list({ name: 0 }),
+      },
+      description: 0,
+      partitionSpec: { fields: D.list({ name: 0, transform: { type: 0 } }) },
+      tags: 0,
+    },
     output: { dataset: o_DataLakeDataset },
     body: true,
   },
@@ -824,6 +845,7 @@ export const createDataLakeNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /api/datalake/instance/{instanceId}/namespaces/{name}",
+    input: { instanceId: 0, name: 0, description: 0, tags: 0 },
     output: { namespace: o_DataLakeNamespace },
     body: true,
   },
@@ -862,7 +884,14 @@ export const createInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /api/instance",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      instanceName: 0,
+      instanceDescription: 0,
+      kmsKeyArn: 0,
+      webAppDnsDomain: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { instance: o_Instance },
     body: true,
   },
@@ -897,6 +926,7 @@ export const deleteDataIntegrationFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /api/data-integration/instance/{instanceId}/data-integration-flows/{name}",
+    input: { instanceId: 0, name: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -928,6 +958,7 @@ export const deleteDataLakeDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /api/datalake/instance/{instanceId}/namespaces/{namespace}/datasets/{name}",
+    input: { instanceId: 0, namespace: 0, name: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -960,6 +991,7 @@ export const deleteDataLakeNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /api/datalake/instance/{instanceId}/namespaces/{name}",
+    input: { instanceId: 0, name: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -994,6 +1026,7 @@ export const deleteInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /api/instance/{instanceId}",
+    input: { instanceId: 0 },
     output: { instance: o_Instance },
   },
   errors: [
@@ -1027,6 +1060,7 @@ export const getBillOfMaterialsImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /api/configuration/instances/{instanceId}/bill-of-materials-import-jobs/{jobId}",
+    input: { instanceId: 0, jobId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1059,6 +1093,7 @@ export const getDataIntegrationEvent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /api-data/data-integration/instance/{instanceId}/data-integration-events/{eventId}",
+    input: { instanceId: 0, eventId: 0 },
     output: { event: o_DataIntegrationEvent },
   },
   errors: [
@@ -1092,6 +1127,7 @@ export const getDataIntegrationFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /api/data-integration/instance/{instanceId}/data-integration-flows/{name}",
+    input: { instanceId: 0, name: 0 },
     output: { flow: o_DataIntegrationFlow },
   },
   errors: [
@@ -1125,6 +1161,7 @@ export const getDataIntegrationFlowExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /api-data/data-integration/instance/{instanceId}/data-integration-flows/{flowName}/executions/{executionId}",
+    input: { instanceId: 0, flowName: 0, executionId: 0 },
     output: { flowExecution: o_DataIntegrationFlowExecution },
   },
   errors: [
@@ -1158,6 +1195,7 @@ export const getDataLakeDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /api/datalake/instance/{instanceId}/namespaces/{namespace}/datasets/{name}",
+    input: { instanceId: 0, namespace: 0, name: 0 },
     output: { dataset: o_DataLakeDataset },
   },
   errors: [
@@ -1191,6 +1229,7 @@ export const getDataLakeNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /api/datalake/instance/{instanceId}/namespaces/{name}",
+    input: { instanceId: 0, name: 0 },
     output: { namespace: o_DataLakeNamespace },
   },
   errors: [
@@ -1224,6 +1263,7 @@ export const getInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /api/instance/{instanceId}",
+    input: { instanceId: 0 },
     output: { instance: o_Instance },
   },
   errors: [
@@ -1258,6 +1298,7 @@ export const listDataIntegrationEvents: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /api-data/data-integration/instance/{instanceId}/data-integration-events",
     input: {
+      instanceId: 0,
       eventType: D.m({ query: "eventType" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -1302,6 +1343,8 @@ export const listDataIntegrationFlowExecutions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /api-data/data-integration/instance/{instanceId}/data-integration-flows/{flowName}/executions",
     input: {
+      instanceId: 0,
+      flowName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1345,6 +1388,7 @@ export const listDataIntegrationFlows: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /api/data-integration/instance/{instanceId}/data-integration-flows",
     input: {
+      instanceId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1388,6 +1432,8 @@ export const listDataLakeDatasets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /api/datalake/instance/{instanceId}/namespaces/{namespace}/datasets",
     input: {
+      instanceId: 0,
+      namespace: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1431,6 +1477,7 @@ export const listDataLakeNamespaces: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /api/datalake/instance/{instanceId}/namespaces",
     input: {
+      instanceId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1513,7 +1560,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /api/tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /api/tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1547,7 +1598,15 @@ export const sendDataIntegrationEvent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /api-data/data-integration/instance/{instanceId}/data-integration-events",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      instanceId: 0,
+      eventType: 0,
+      data: 0,
+      eventGroupId: 0,
+      eventTimestamp: 0,
+      clientToken: D.m({ idempotency: true }),
+      datasetTarget: { datasetIdentifier: 0, operationType: 0 },
+    },
     body: true,
   },
   errors: [
@@ -1583,6 +1642,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /api/tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
     body: true,
   },
   errors: [
@@ -1616,7 +1676,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /api/tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1649,6 +1709,13 @@ export const updateDataIntegrationFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /api/data-integration/instance/{instanceId}/data-integration-flows/{name}",
+    input: {
+      instanceId: 0,
+      name: 0,
+      sources: D.list(i_DataIntegrationFlowSource),
+      transformation: i_DataIntegrationFlowTransformation,
+      target: i_DataIntegrationFlowTarget,
+    },
     output: { flow: o_DataIntegrationFlow },
     body: true,
   },
@@ -1683,6 +1750,7 @@ export const updateDataLakeDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /api/datalake/instance/{instanceId}/namespaces/{namespace}/datasets/{name}",
+    input: { instanceId: 0, namespace: 0, name: 0, description: 0 },
     output: { dataset: o_DataLakeDataset },
     body: true,
   },
@@ -1717,6 +1785,7 @@ export const updateDataLakeNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /api/datalake/instance/{instanceId}/namespaces/{name}",
+    input: { instanceId: 0, name: 0, description: 0 },
     output: { namespace: o_DataLakeNamespace },
     body: true,
   },
@@ -1751,6 +1820,7 @@ export const updateInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /api/instance/{instanceId}",
+    input: { instanceId: 0, instanceName: 0, instanceDescription: 0 },
     output: { instance: o_Instance },
     body: true,
   },
@@ -1766,6 +1836,35 @@ export const updateInstance: API.OperationMethod<
   operationName: "UpdateInstance",
 })) as any;
 
+const i_DataIntegrationFlowSource: D.LazyStruct = () => ({
+  sourceType: 0,
+  sourceName: 0,
+  s3Source: {
+    bucketName: 0,
+    prefix: 0,
+    options: i_DataIntegrationFlowS3Options,
+  },
+  datasetSource: {
+    datasetIdentifier: 0,
+    options: i_DataIntegrationFlowDatasetOptions,
+  },
+});
+const i_DataIntegrationFlowTarget: D.LazyStruct = () => ({
+  targetType: 0,
+  s3Target: {
+    bucketName: 0,
+    prefix: 0,
+    options: i_DataIntegrationFlowS3Options,
+  },
+  datasetTarget: {
+    datasetIdentifier: 0,
+    options: i_DataIntegrationFlowDatasetOptions,
+  },
+});
+const i_DataIntegrationFlowTransformation: D.LazyStruct = () => ({
+  transformationType: 0,
+  sqlTransformation: { query: 0 },
+});
 const o_DataIntegrationEvent: D.LazyStruct = () => ({ eventTimestamp: D.ts });
 const o_DataIntegrationFlow: D.LazyStruct = () => ({
   transformation: { sqlTransformation: { query: D.secret } },
@@ -1788,3 +1887,12 @@ const o_Instance: D.LazyStruct = () => ({
   createdTime: D.ts,
   lastModifiedTime: D.ts,
 });
+const i_DataIntegrationFlowDatasetOptions: D.LazyStruct = () => ({
+  loadType: 0,
+  dedupeRecords: 0,
+  dedupeStrategy: {
+    type: 0,
+    fieldPriority: { fields: D.list({ name: 0, sortOrder: 0 }) },
+  },
+});
+const i_DataIntegrationFlowS3Options: D.LazyStruct = () => ({ fileType: 0 });

@@ -276,7 +276,12 @@ export const createApplication: API.OperationMethod<
   CreateApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /applications", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /applications",
+    input: { identitySource: { identityCenter: { instanceArn: 0 } }, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     AlreadyCreatedException,
@@ -308,7 +313,20 @@ export const createEntitlement: API.OperationMethod<
   CreateEntitlementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /entitlements", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /entitlements",
+    input: {
+      applicationArn: 0,
+      entitlement: {
+        principalRole: {
+          principal: { identityCenter: { userId: 0, groupId: 0 } },
+          roleArn: 0,
+        },
+      },
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -340,7 +358,11 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /applications/{applicationArn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /applications/{applicationArn}",
+    input: { applicationArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -374,7 +396,10 @@ export const deleteEntitlement: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /entitlements/{entitlementId}",
-    input: { applicationArn: D.m({ query: "applicationArn" }) },
+    input: {
+      applicationArn: D.m({ query: "applicationArn" }),
+      entitlementId: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -408,6 +433,7 @@ export const getApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationArn}",
+    input: { applicationArn: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -441,7 +467,10 @@ export const getEntitlement: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /entitlements/{entitlementId}",
-    input: { applicationArn: D.m({ query: "applicationArn" }) },
+    input: {
+      applicationArn: D.m({ query: "applicationArn" }),
+      entitlementId: 0,
+    },
     output: { createdAt: D.ts },
   },
   errors: [
@@ -475,6 +504,7 @@ export const listApplications: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications-list",
+    input: { maxResults: 0, nextToken: 0 },
     output: { applications: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
     body: true,
   },
@@ -514,6 +544,18 @@ export const listEntitlements: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /entitlements-list",
+    input: {
+      applicationArn: 0,
+      filter: {
+        principalRole: {
+          principal: { identityCenter: { userId: 0, groupId: 0 } },
+          roleArn: 0,
+          account: 0,
+        },
+      },
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { entitlements: D.list({ createdAt: D.ts }) },
     body: true,
   },
@@ -549,7 +591,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -576,7 +622,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -606,7 +657,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,

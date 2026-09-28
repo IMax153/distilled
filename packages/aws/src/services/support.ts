@@ -562,7 +562,13 @@ export const addAttachmentsToSet: API.OperationMethod<
   AddAttachmentsToSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      attachmentSetId: 0,
+      attachments: D.list({ fileName: 0, data: 0 }),
+    },
+  },
   errors: [
     AttachmentLimitExceeded,
     AttachmentSetExpired,
@@ -602,7 +608,15 @@ export const addCommunicationToCase: API.OperationMethod<
   AddCommunicationToCaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      caseId: 0,
+      communicationBody: 0,
+      ccEmailAddresses: 0,
+      attachmentSetId: 0,
+    },
+  },
   errors: [
     AttachmentSetExpired,
     AttachmentSetIdNotFound,
@@ -654,7 +668,20 @@ export const createCase: API.OperationMethod<
   CreateCaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      subject: 0,
+      serviceCode: 0,
+      severityCode: 0,
+      categoryCode: 0,
+      communicationBody: 0,
+      ccEmailAddresses: 0,
+      language: 0,
+      issueType: 0,
+      attachmentSetId: 0,
+    },
+  },
   errors: [
     AttachmentSetExpired,
     AttachmentSetIdNotFound,
@@ -692,7 +719,11 @@ export const describeAttachment: API.OperationMethod<
   DescribeAttachmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { attachment: { data: D.blob } } },
+  descriptor: {
+    service: svc,
+    input: { attachmentId: 0 },
+    output: { attachment: { data: D.blob } },
+  },
   errors: [
     AttachmentIdNotFound,
     DescribeAttachmentLimitExceeded,
@@ -739,7 +770,20 @@ export const describeCases: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   CaseDetails
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      caseIdList: 0,
+      displayId: 0,
+      afterTime: 0,
+      beforeTime: 0,
+      includeResolvedCases: 0,
+      nextToken: 0,
+      maxResults: 0,
+      language: 0,
+      includeCommunications: 0,
+    },
+  },
   errors: [CaseIdNotFound, InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -785,7 +829,16 @@ export const describeCommunications: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Communication
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      caseId: 0,
+      beforeTime: 0,
+      afterTime: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
+  },
   errors: [CaseIdNotFound, InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -822,7 +875,10 @@ export const describeCreateCaseOptions: API.OperationMethod<
   DescribeCreateCaseOptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { issueType: 0, serviceCode: 0, language: 0, categoryCode: 0 },
+  },
   errors: [InternalServerError, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -856,7 +912,7 @@ export const describeServices: API.OperationMethod<
   DescribeServicesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { serviceCodeList: 0, language: 0 } },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -883,7 +939,7 @@ export const describeSeverityLevels: API.OperationMethod<
   DescribeSeverityLevelsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { language: 0 } },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -913,7 +969,10 @@ export const describeSupportedLanguages: API.OperationMethod<
   DescribeSupportedLanguagesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { issueType: 0, serviceCode: 0, categoryCode: 0 },
+  },
   errors: [InternalServerError, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -952,7 +1011,7 @@ export const describeTrustedAdvisorCheckRefreshStatuses: API.OperationMethod<
   DescribeTrustedAdvisorCheckRefreshStatusesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { checkIds: 0 } },
   errors: [InternalServerError, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1008,7 +1067,7 @@ export const describeTrustedAdvisorCheckResult: API.OperationMethod<
   DescribeTrustedAdvisorCheckResultError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { checkId: 0, language: 0 } },
   errors: [InternalServerError, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1048,7 +1107,7 @@ export const describeTrustedAdvisorChecks: API.OperationMethod<
   DescribeTrustedAdvisorChecksError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { language: 0 } },
   errors: [InternalServerError, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1085,7 +1144,7 @@ export const describeTrustedAdvisorCheckSummaries: API.OperationMethod<
   DescribeTrustedAdvisorCheckSummariesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { checkIds: 0 } },
   errors: [InternalServerError, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1126,7 +1185,7 @@ export const refreshTrustedAdvisorCheck: API.OperationMethod<
   RefreshTrustedAdvisorCheckError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { checkId: 0 } },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1155,7 +1214,7 @@ export const resolveCase: API.OperationMethod<
   ResolveCaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { caseId: 0 } },
   errors: [CaseIdNotFound, InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,

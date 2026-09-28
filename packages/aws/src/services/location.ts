@@ -1343,6 +1343,7 @@ export const associateTrackerConsumer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tracking/v0/trackers/{TrackerName}/consumers",
+    input: { TrackerName: 0, ConsumerArn: 0 },
     body: true,
   },
   errors: [
@@ -1379,6 +1380,7 @@ export const batchDeleteDevicePositionHistory: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tracking/v0/trackers/{TrackerName}/delete-positions",
+    input: { TrackerName: 0, DeviceIds: 0 },
     body: true,
   },
   errors: [
@@ -1415,6 +1417,7 @@ export const batchDeleteGeofence: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /geofencing/v0/collections/{CollectionName}/delete-geofences",
+    input: { CollectionName: 0, GeofenceIds: 0 },
     body: true,
   },
   errors: [
@@ -1461,7 +1464,10 @@ export const batchEvaluateGeofences: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /geofencing/v0/collections/{CollectionName}/positions",
-    input: { DevicePositionUpdates: D.list(i_DevicePositionUpdate) },
+    input: {
+      CollectionName: 0,
+      DevicePositionUpdates: D.list(i_DevicePositionUpdate),
+    },
     output: { Errors: D.list({ SampleTime: D.ts }) },
     body: true,
   },
@@ -1497,6 +1503,7 @@ export const batchGetDevicePosition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tracking/v0/trackers/{TrackerName}/get-positions",
+    input: { TrackerName: 0, DeviceIds: 0 },
     output: { DevicePositions: D.list(o_DevicePosition) },
     body: true,
   },
@@ -1532,6 +1539,14 @@ export const batchPutGeofence: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /geofencing/v0/collections/{CollectionName}/put-geofences",
+    input: {
+      CollectionName: 0,
+      Entries: D.list({
+        GeofenceId: 0,
+        Geometry: i_GeofenceGeometry,
+        GeofenceProperties: 0,
+      }),
+    },
     output: { Successes: D.list({ CreateTime: D.ts, UpdateTime: D.ts }) },
     body: true,
   },
@@ -1573,7 +1588,7 @@ export const batchUpdateDevicePosition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tracking/v0/trackers/{TrackerName}/positions",
-    input: { Updates: D.list(i_DevicePositionUpdate) },
+    input: { TrackerName: 0, Updates: D.list(i_DevicePositionUpdate) },
     output: { Errors: D.list({ SampleTime: D.ts }) },
     body: true,
   },
@@ -1632,8 +1647,19 @@ export const calculateRoute: API.OperationMethod<
     service: svc,
     http: "POST /routes/v0/calculators/{CalculatorName}/calculate/route",
     input: {
+      CalculatorName: 0,
+      DeparturePosition: 0,
+      DestinationPosition: 0,
+      WaypointPositions: 0,
+      TravelMode: 0,
       DepartureTime: D.tsAs("date-time"),
+      DepartNow: 0,
+      DistanceUnit: 0,
+      IncludeLegGeometry: 0,
+      CarModeOptions: i_CalculateRouteCarModeOptions,
+      TruckModeOptions: i_CalculateRouteTruckModeOptions,
       ArrivalTime: D.tsAs("date-time"),
+      OptimizeFor: 0,
       Key: D.m({ query: "key" }),
     },
     body: true,
@@ -1696,7 +1722,18 @@ export const calculateRouteMatrix: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /routes/v0/calculators/{CalculatorName}/calculate/route-matrix",
-    input: { DepartureTime: D.tsAs("date-time"), Key: D.m({ query: "key" }) },
+    input: {
+      CalculatorName: 0,
+      DeparturePositions: 0,
+      DestinationPositions: 0,
+      TravelMode: 0,
+      DepartureTime: D.tsAs("date-time"),
+      DepartNow: 0,
+      DistanceUnit: 0,
+      CarModeOptions: i_CalculateRouteCarModeOptions,
+      TruckModeOptions: i_CalculateRouteTruckModeOptions,
+      Key: D.m({ query: "key" }),
+    },
     body: true,
   },
   errors: [
@@ -1733,6 +1770,7 @@ export const cancelJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /metadata/v0/jobs/cancel-job",
+    input: { JobId: 0 },
     body: true,
   },
   errors: [
@@ -1768,6 +1806,14 @@ export const createGeofenceCollection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /geofencing/v0/collections",
+    input: {
+      CollectionName: 0,
+      PricingPlan: 0,
+      PricingPlanDataSource: 0,
+      Description: 0,
+      Tags: 0,
+      KmsKeyId: 0,
+    },
     output: { CreateTime: D.ts },
     body: true,
   },
@@ -1807,7 +1853,14 @@ export const createKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /metadata/v0/keys",
-    input: { ExpireTime: D.tsAs("date-time") },
+    input: {
+      KeyName: 0,
+      Restrictions: i_ApiKeyRestrictions,
+      Description: 0,
+      ExpireTime: D.tsAs("date-time"),
+      NoExpiry: 0,
+      Tags: 0,
+    },
     output: { Key: D.secret, CreateTime: D.ts },
     body: true,
   },
@@ -1859,6 +1912,13 @@ export const createMap: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /maps/v0/maps",
+    input: {
+      MapName: 0,
+      Configuration: { Style: 0, PoliticalView: 0, CustomLayers: 0 },
+      PricingPlan: 0,
+      Description: 0,
+      Tags: 0,
+    },
     output: { CreateTime: D.ts },
     body: true,
   },
@@ -1910,6 +1970,14 @@ export const createPlaceIndex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /places/v0/indexes",
+    input: {
+      IndexName: 0,
+      DataSource: 0,
+      PricingPlan: 0,
+      Description: 0,
+      DataSourceConfiguration: i_DataSourceConfiguration,
+      Tags: 0,
+    },
     output: { CreateTime: D.ts },
     body: true,
   },
@@ -1963,6 +2031,13 @@ export const createRouteCalculator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /routes/v0/calculators",
+    input: {
+      CalculatorName: 0,
+      DataSource: 0,
+      PricingPlan: 0,
+      Description: 0,
+      Tags: 0,
+    },
     output: { CreateTime: D.ts },
     body: true,
   },
@@ -2000,6 +2075,17 @@ export const createTracker: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tracking/v0/trackers",
+    input: {
+      TrackerName: 0,
+      PricingPlan: 0,
+      KmsKeyId: 0,
+      PricingPlanDataSource: 0,
+      Description: 0,
+      Tags: 0,
+      PositionFiltering: 0,
+      EventBridgeEnabled: 0,
+      KmsKeyEnableGeospatialQueries: 0,
+    },
     output: { CreateTime: D.ts },
     body: true,
   },
@@ -2038,6 +2124,7 @@ export const deleteGeofenceCollection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /geofencing/v0/collections/{CollectionName}",
+    input: { CollectionName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2073,7 +2160,7 @@ export const deleteKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /metadata/v0/keys/{KeyName}",
-    input: { ForceDelete: D.m({ query: "forceDelete" }) },
+    input: { KeyName: 0, ForceDelete: D.m({ query: "forceDelete" }) },
   },
   errors: [
     AccessDeniedException,
@@ -2118,7 +2205,11 @@ export const deleteMap: API.OperationMethod<
   DeleteMapError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /maps/v0/maps/{MapName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /maps/v0/maps/{MapName}",
+    input: { MapName: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2162,7 +2253,11 @@ export const deletePlaceIndex: API.OperationMethod<
   DeletePlaceIndexError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /places/v0/indexes/{IndexName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /places/v0/indexes/{IndexName}",
+    input: { IndexName: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2209,6 +2304,7 @@ export const deleteRouteCalculator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /routes/v0/calculators/{CalculatorName}",
+    input: { CalculatorName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2244,6 +2340,7 @@ export const deleteTracker: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tracking/v0/trackers/{TrackerName}",
+    input: { TrackerName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2277,6 +2374,7 @@ export const describeGeofenceCollection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /geofencing/v0/collections/{CollectionName}",
+    input: { CollectionName: 0 },
     output: { CreateTime: D.ts, UpdateTime: D.ts },
   },
   errors: [
@@ -2313,6 +2411,7 @@ export const describeKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /metadata/v0/keys/{KeyName}",
+    input: { KeyName: 0 },
     output: {
       Key: D.secret,
       Restrictions: o_ApiKeyRestrictions,
@@ -2365,6 +2464,7 @@ export const describeMap: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /maps/v0/maps/{MapName}",
+    input: { MapName: 0 },
     output: {
       Configuration: { PoliticalView: D.secret },
       CreateTime: D.ts,
@@ -2415,6 +2515,7 @@ export const describePlaceIndex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /places/v0/indexes/{IndexName}",
+    input: { IndexName: 0 },
     output: { CreateTime: D.ts, UpdateTime: D.ts },
   },
   errors: [
@@ -2461,6 +2562,7 @@ export const describeRouteCalculator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /routes/v0/calculators/{CalculatorName}",
+    input: { CalculatorName: 0 },
     output: { CreateTime: D.ts, UpdateTime: D.ts },
   },
   errors: [
@@ -2495,6 +2597,7 @@ export const describeTracker: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tracking/v0/trackers/{TrackerName}",
+    input: { TrackerName: 0 },
     output: { CreateTime: D.ts, UpdateTime: D.ts },
   },
   errors: [
@@ -2531,6 +2634,7 @@ export const disassociateTrackerConsumer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tracking/v0/trackers/{TrackerName}/consumers/{ConsumerArn}",
+    input: { TrackerName: 0, ConsumerArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2573,6 +2677,15 @@ export const forecastGeofenceEvents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /geofencing/v0/collections/{CollectionName}/forecast-geofence-events",
+    input: {
+      CollectionName: 0,
+      DeviceState: { Position: 0, Speed: 0 },
+      TimeHorizonMinutes: 0,
+      DistanceUnit: 0,
+      SpeedUnit: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { ForecastedEvents: D.list({ ForecastedBreachTime: D.ts }) },
     body: true,
   },
@@ -2616,6 +2729,7 @@ export const getDevicePosition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tracking/v0/trackers/{TrackerName}/devices/{DeviceId}/positions/latest",
+    input: { TrackerName: 0, DeviceId: 0 },
     output: { SampleTime: D.ts, ReceivedTime: D.ts },
   },
   errors: [
@@ -2654,8 +2768,12 @@ export const getDevicePositionHistory: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /tracking/v0/trackers/{TrackerName}/devices/{DeviceId}/list-positions",
     input: {
+      TrackerName: 0,
+      DeviceId: 0,
+      NextToken: 0,
       StartTimeInclusive: D.tsAs("date-time"),
       EndTimeExclusive: D.tsAs("date-time"),
+      MaxResults: 0,
     },
     output: { DevicePositions: D.list(o_DevicePosition) },
     body: true,
@@ -2700,6 +2818,7 @@ export const getGeofence: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /geofencing/v0/collections/{CollectionName}/geofences/{GeofenceId}",
+    input: { CollectionName: 0, GeofenceId: 0 },
     output: {
       Geometry: o_GeofenceGeometry,
       CreateTime: D.ts,
@@ -2740,6 +2859,7 @@ export const getJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /metadata/v0/jobs/{JobId}",
+    input: { JobId: 0 },
     output: { CreatedAt: D.ts, EndedAt: D.ts, UpdatedAt: D.ts },
   },
   errors: [
@@ -2786,9 +2906,14 @@ export const getMapGlyphs: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /maps/v0/maps/{MapName}/glyphs/{FontStack}/{FontUnicodeRange}",
-    input: { Key: D.m({ query: "key" }) },
+    input: {
+      MapName: 0,
+      FontStack: 0,
+      FontUnicodeRange: 0,
+      Key: D.m({ query: "key" }),
+    },
     output: {
-      Blob: D.m({ payload: true, shape: D.stream }),
+      Blob: D.m({ payload: true, shape: D.blob }),
       ContentType: D.m({ header: "Content-Type" }),
       CacheControl: D.m({ header: "Cache-Control" }),
     },
@@ -2837,9 +2962,9 @@ export const getMapSprites: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /maps/v0/maps/{MapName}/sprites/{FileName}",
-    input: { Key: D.m({ query: "key" }) },
+    input: { MapName: 0, FileName: 0, Key: D.m({ query: "key" }) },
     output: {
-      Blob: D.m({ payload: true, shape: D.stream }),
+      Blob: D.m({ payload: true, shape: D.blob }),
       ContentType: D.m({ header: "Content-Type" }),
       CacheControl: D.m({ header: "Cache-Control" }),
     },
@@ -2890,9 +3015,9 @@ export const getMapStyleDescriptor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /maps/v0/maps/{MapName}/style-descriptor",
-    input: { Key: D.m({ query: "key" }) },
+    input: { MapName: 0, Key: D.m({ query: "key" }) },
     output: {
-      Blob: D.m({ payload: true, shape: D.stream }),
+      Blob: D.m({ payload: true, shape: D.blob }),
       ContentType: D.m({ header: "Content-Type" }),
       CacheControl: D.m({ header: "Cache-Control" }),
     },
@@ -2943,9 +3068,9 @@ export const getMapTile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /maps/v0/maps/{MapName}/tiles/{Z}/{X}/{Y}",
-    input: { Key: D.m({ query: "key" }) },
+    input: { MapName: 0, Z: 0, X: 0, Y: 0, Key: D.m({ query: "key" }) },
     output: {
-      Blob: D.m({ payload: true, shape: D.stream }),
+      Blob: D.m({ payload: true, shape: D.blob }),
       ContentType: D.m({ header: "Content-Type" }),
       CacheControl: D.m({ header: "Cache-Control" }),
     },
@@ -3004,7 +3129,12 @@ export const getPlace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /places/v0/indexes/{IndexName}/places/{PlaceId}",
-    input: { Language: D.m({ query: "language" }), Key: D.m({ query: "key" }) },
+    input: {
+      IndexName: 0,
+      PlaceId: 0,
+      Language: D.m({ query: "language" }),
+      Key: D.m({ query: "key" }),
+    },
     output: { Place: o_Place },
   },
   errors: [
@@ -3039,6 +3169,12 @@ export const listDevicePositions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tracking/v0/trackers/{TrackerName}/list-positions",
+    input: {
+      TrackerName: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      FilterGeometry: { Polygon: 0 },
+    },
     output: { Entries: D.list({ SampleTime: D.ts }) },
     body: true,
   },
@@ -3079,6 +3215,7 @@ export const listGeofenceCollections: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /geofencing/v0/list-collections",
+    input: { MaxResults: 0, NextToken: 0 },
     output: { Entries: D.list({ CreateTime: D.ts, UpdateTime: D.ts }) },
     body: true,
   },
@@ -3120,6 +3257,7 @@ export const listGeofences: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /geofencing/v0/collections/{CollectionName}/list-geofences",
+    input: { CollectionName: 0, NextToken: 0, MaxResults: 0 },
     output: {
       Entries: D.list({
         Geometry: o_GeofenceGeometry,
@@ -3169,6 +3307,7 @@ export const listJobs: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /metadata/v0/jobs/list-jobs",
+    input: { Filter: { JobStatus: 0 }, MaxResults: 0, NextToken: 0 },
     output: {
       Entries: D.list({ CreatedAt: D.ts, EndedAt: D.ts, UpdatedAt: D.ts }),
     },
@@ -3213,6 +3352,7 @@ export const listKeys: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /metadata/v0/list-keys",
+    input: { MaxResults: 0, NextToken: 0, Filter: { KeyStatus: 0 } },
     output: {
       Entries: D.list({
         ExpireTime: D.ts,
@@ -3272,6 +3412,7 @@ export const listMaps: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /maps/v0/list-maps",
+    input: { MaxResults: 0, NextToken: 0 },
     output: { Entries: D.list({ CreateTime: D.ts, UpdateTime: D.ts }) },
     body: true,
   },
@@ -3324,6 +3465,7 @@ export const listPlaceIndexes: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /places/v0/list-indexes",
+    input: { MaxResults: 0, NextToken: 0 },
     output: { Entries: D.list({ CreateTime: D.ts, UpdateTime: D.ts }) },
     body: true,
   },
@@ -3376,6 +3518,7 @@ export const listRouteCalculators: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /routes/v0/list-calculators",
+    input: { MaxResults: 0, NextToken: 0 },
     output: { Entries: D.list({ CreateTime: D.ts, UpdateTime: D.ts }) },
     body: true,
   },
@@ -3413,7 +3556,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3447,6 +3594,7 @@ export const listTrackerConsumers: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tracking/v0/trackers/{TrackerName}/list-consumers",
+    input: { TrackerName: 0, MaxResults: 0, NextToken: 0 },
     body: true,
   },
   errors: [
@@ -3487,6 +3635,7 @@ export const listTrackers: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tracking/v0/list-trackers",
+    input: { MaxResults: 0, NextToken: 0 },
     output: { Entries: D.list({ CreateTime: D.ts, UpdateTime: D.ts }) },
     body: true,
   },
@@ -3528,6 +3677,12 @@ export const putGeofence: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /geofencing/v0/collections/{CollectionName}/geofences/{GeofenceId}",
+    input: {
+      CollectionName: 0,
+      GeofenceId: 0,
+      Geometry: i_GeofenceGeometry,
+      GeofenceProperties: 0,
+    },
     output: { CreateTime: D.ts, UpdateTime: D.ts },
     body: true,
   },
@@ -3574,7 +3729,13 @@ export const searchPlaceIndexForPosition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /places/v0/indexes/{IndexName}/search/position",
-    input: { Key: D.m({ query: "key" }) },
+    input: {
+      IndexName: 0,
+      Position: 0,
+      MaxResults: 0,
+      Language: 0,
+      Key: D.m({ query: "key" }),
+    },
     output: { Results: D.list({ Place: o_Place, PlaceId: D.secret }) },
     body: true,
   },
@@ -3624,7 +3785,17 @@ export const searchPlaceIndexForSuggestions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /places/v0/indexes/{IndexName}/search/suggestions",
-    input: { Key: D.m({ query: "key" }) },
+    input: {
+      IndexName: 0,
+      Text: 0,
+      BiasPosition: 0,
+      FilterBBox: 0,
+      FilterCountries: 0,
+      MaxResults: 0,
+      Language: 0,
+      FilterCategories: 0,
+      Key: D.m({ query: "key" }),
+    },
     output: {
       Summary: {
         Text: D.secret,
@@ -3688,7 +3859,17 @@ export const searchPlaceIndexForText: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /places/v0/indexes/{IndexName}/search/text",
-    input: { Key: D.m({ query: "key" }) },
+    input: {
+      IndexName: 0,
+      Text: 0,
+      BiasPosition: 0,
+      FilterBBox: 0,
+      FilterCountries: 0,
+      MaxResults: 0,
+      Language: 0,
+      FilterCategories: 0,
+      Key: D.m({ query: "key" }),
+    },
     output: {
       Summary: {
         Text: D.secret,
@@ -3732,7 +3913,16 @@ export const startJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /metadata/v0/jobs",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      Action: 0,
+      ActionOptions: { ValidateAddress: { AdditionalFeatures: 0 } },
+      ExecutionRoleArn: 0,
+      InputOptions: { Location: 0, Format: 0 },
+      Name: 0,
+      OutputOptions: { Format: 0, Location: 0 },
+      Tags: 0,
+    },
     output: { CreatedAt: D.ts },
     body: true,
   },
@@ -3770,7 +3960,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3803,7 +3998,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -3837,6 +4032,12 @@ export const updateGeofenceCollection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /geofencing/v0/collections/{CollectionName}",
+    input: {
+      CollectionName: 0,
+      PricingPlan: 0,
+      PricingPlanDataSource: 0,
+      Description: 0,
+    },
     output: { UpdateTime: D.ts },
     body: true,
   },
@@ -3872,7 +4073,14 @@ export const updateKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /metadata/v0/keys/{KeyName}",
-    input: { ExpireTime: D.tsAs("date-time") },
+    input: {
+      KeyName: 0,
+      Description: 0,
+      ExpireTime: D.tsAs("date-time"),
+      NoExpiry: 0,
+      ForceUpdate: 0,
+      Restrictions: i_ApiKeyRestrictions,
+    },
     output: { UpdateTime: D.ts },
     body: true,
   },
@@ -3920,6 +4128,12 @@ export const updateMap: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /maps/v0/maps/{MapName}",
+    input: {
+      MapName: 0,
+      PricingPlan: 0,
+      Description: 0,
+      ConfigurationUpdate: { PoliticalView: 0, CustomLayers: 0 },
+    },
     output: { UpdateTime: D.ts },
     body: true,
   },
@@ -3967,6 +4181,12 @@ export const updatePlaceIndex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /places/v0/indexes/{IndexName}",
+    input: {
+      IndexName: 0,
+      PricingPlan: 0,
+      Description: 0,
+      DataSourceConfiguration: i_DataSourceConfiguration,
+    },
     output: { UpdateTime: D.ts },
     body: true,
   },
@@ -4014,6 +4234,7 @@ export const updateRouteCalculator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /routes/v0/calculators/{CalculatorName}",
+    input: { CalculatorName: 0, PricingPlan: 0, Description: 0 },
     output: { UpdateTime: D.ts },
     body: true,
   },
@@ -4049,6 +4270,15 @@ export const updateTracker: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /tracking/v0/trackers/{TrackerName}",
+    input: {
+      TrackerName: 0,
+      PricingPlan: 0,
+      PricingPlanDataSource: 0,
+      Description: 0,
+      PositionFiltering: 0,
+      EventBridgeEnabled: 0,
+      KmsKeyEnableGeospatialQueries: 0,
+    },
     output: { UpdateTime: D.ts },
     body: true,
   },
@@ -4086,7 +4316,38 @@ export const verifyDevicePosition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tracking/v0/trackers/{TrackerName}/positions/verify",
-    input: { DeviceState: { SampleTime: D.tsAs("date-time") } },
+    input: {
+      TrackerName: 0,
+      DeviceState: {
+        DeviceId: 0,
+        SampleTime: D.tsAs("date-time"),
+        Position: 0,
+        Accuracy: i_PositionalAccuracy,
+        Ipv4Address: 0,
+        WiFiAccessPoints: D.list({ MacAddress: 0, Rss: 0 }),
+        CellSignals: {
+          LteCellDetails: D.list({
+            CellId: 0,
+            Mcc: 0,
+            Mnc: 0,
+            LocalId: { Earfcn: 0, Pci: 0 },
+            NetworkMeasurements: D.list({
+              Earfcn: 0,
+              CellId: 0,
+              Pci: 0,
+              Rsrp: 0,
+              Rsrq: 0,
+            }),
+            TimingAdvance: 0,
+            NrCapable: 0,
+            Rsrp: 0,
+            Rsrq: 0,
+            Tac: 0,
+          }),
+        },
+      },
+      DistanceUnit: 0,
+    },
     output: { SampleTime: D.ts, ReceivedTime: D.ts },
     body: true,
   },
@@ -4103,9 +4364,38 @@ export const verifyDevicePosition: API.OperationMethod<
   endpointHostPrefix: "tracking.",
 })) as any;
 
-const i_DevicePositionUpdate: D.LazyStruct = () => ({
-  SampleTime: D.tsAs("date-time"),
+const i_ApiKeyRestrictions: D.LazyStruct = () => ({
+  AllowActions: 0,
+  AllowResources: 0,
+  AllowReferers: 0,
+  AllowAndroidApps: D.list({ Package: 0, CertificateFingerprint: 0 }),
+  AllowAppleApps: D.list({ BundleId: 0 }),
 });
+const i_CalculateRouteCarModeOptions: D.LazyStruct = () => ({
+  AvoidFerries: 0,
+  AvoidTolls: 0,
+});
+const i_CalculateRouteTruckModeOptions: D.LazyStruct = () => ({
+  AvoidFerries: 0,
+  AvoidTolls: 0,
+  Dimensions: { Length: 0, Height: 0, Width: 0, Unit: 0 },
+  Weight: { Total: 0, Unit: 0 },
+});
+const i_DataSourceConfiguration: D.LazyStruct = () => ({ IntendedUse: 0 });
+const i_DevicePositionUpdate: D.LazyStruct = () => ({
+  DeviceId: 0,
+  SampleTime: D.tsAs("date-time"),
+  Position: 0,
+  Accuracy: i_PositionalAccuracy,
+  PositionProperties: 0,
+});
+const i_GeofenceGeometry: D.LazyStruct = () => ({
+  Polygon: 0,
+  Circle: { Center: 0, Radius: 0 },
+  Geobuf: 0,
+  MultiPolygon: 0,
+});
+const i_PositionalAccuracy: D.LazyStruct = () => ({ Horizontal: 0 });
 const o_ApiKeyRestrictions: D.LazyStruct = () => ({
   AllowReferers: D.list(D.secret),
 });

@@ -889,7 +889,20 @@ export const analyzeDocument: API.OperationMethod<
   AnalyzeDocumentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Document: i_Document,
+      FeatureTypes: 0,
+      HumanLoopConfig: {
+        HumanLoopName: 0,
+        FlowDefinitionArn: 0,
+        DataAttributes: { ContentClassifiers: 0 },
+      },
+      QueriesConfig: i_QueriesConfig,
+      AdaptersConfig: i_AdaptersConfig,
+    },
+  },
   errors: [
     AccessDeniedException,
     BadDocumentException,
@@ -938,7 +951,7 @@ export const analyzeExpense: API.OperationMethod<
   AnalyzeExpenseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Document: i_Document } },
   errors: [
     AccessDeniedException,
     BadDocumentException,
@@ -978,7 +991,7 @@ export const analyzeID: API.OperationMethod<
   AnalyzeIDError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DocumentPages: D.list(i_Document) } },
   errors: [
     AccessDeniedException,
     BadDocumentException,
@@ -1022,7 +1035,14 @@ export const createAdapter: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      AdapterName: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      Description: 0,
+      FeatureTypes: 0,
+      AutoUpdate: 0,
+      Tags: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1070,7 +1090,14 @@ export const createAdapterVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      AdapterId: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      DatasetConfig: { ManifestS3Object: i_S3Object },
+      KMSKeyId: 0,
+      OutputConfig: i_OutputConfig,
+      Tags: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1111,7 +1138,7 @@ export const deleteAdapter: API.OperationMethod<
   DeleteAdapterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AdapterId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1147,7 +1174,7 @@ export const deleteAdapterVersion: API.OperationMethod<
   DeleteAdapterVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AdapterId: 0, AdapterVersion: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1195,7 +1222,7 @@ export const detectDocumentText: API.OperationMethod<
   DetectDocumentTextError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Document: i_Document } },
   errors: [
     AccessDeniedException,
     BadDocumentException,
@@ -1231,7 +1258,11 @@ export const getAdapter: API.OperationMethod<
   GetAdapterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { AdapterId: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -1266,7 +1297,11 @@ export const getAdapterVersion: API.OperationMethod<
   GetAdapterVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { AdapterId: 0, AdapterVersion: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -1356,7 +1391,10 @@ export const getDocumentAnalysis: API.OperationMethod<
   GetDocumentAnalysisError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { JobId: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -1418,7 +1456,10 @@ export const getDocumentTextDetection: API.OperationMethod<
   GetDocumentTextDetectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { JobId: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -1472,7 +1513,10 @@ export const getExpenseAnalysis: API.OperationMethod<
   GetExpenseAnalysisError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { JobId: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -1519,7 +1563,10 @@ export const getLendingAnalysis: API.OperationMethod<
   GetLendingAnalysisError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { JobId: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -1567,7 +1614,7 @@ export const getLendingAnalysisSummary: API.OperationMethod<
   GetLendingAnalysisSummaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -1603,6 +1650,12 @@ export const listAdapters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AfterCreationTime: 0,
+      BeforeCreationTime: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { Adapters: D.list({ CreationTime: D.ts }) },
   },
   errors: [
@@ -1645,6 +1698,13 @@ export const listAdapterVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AdapterId: 0,
+      AfterCreationTime: 0,
+      BeforeCreationTime: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { AdapterVersions: D.list({ CreationTime: D.ts }) },
   },
   errors: [
@@ -1685,7 +1745,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -1739,7 +1799,20 @@ export const startDocumentAnalysis: API.OperationMethod<
   StartDocumentAnalysisError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DocumentLocation: i_DocumentLocation,
+      FeatureTypes: 0,
+      ClientRequestToken: 0,
+      JobTag: 0,
+      NotificationChannel: i_NotificationChannel,
+      OutputConfig: i_OutputConfig,
+      KMSKeyId: 0,
+      QueriesConfig: i_QueriesConfig,
+      AdaptersConfig: i_AdaptersConfig,
+    },
+  },
   errors: [
     AccessDeniedException,
     BadDocumentException,
@@ -1798,7 +1871,17 @@ export const startDocumentTextDetection: API.OperationMethod<
   StartDocumentTextDetectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DocumentLocation: i_DocumentLocation,
+      ClientRequestToken: 0,
+      JobTag: 0,
+      NotificationChannel: i_NotificationChannel,
+      OutputConfig: i_OutputConfig,
+      KMSKeyId: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     BadDocumentException,
@@ -1856,7 +1939,17 @@ export const startExpenseAnalysis: API.OperationMethod<
   StartExpenseAnalysisError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DocumentLocation: i_DocumentLocation,
+      ClientRequestToken: 0,
+      JobTag: 0,
+      NotificationChannel: i_NotificationChannel,
+      OutputConfig: i_OutputConfig,
+      KMSKeyId: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     BadDocumentException,
@@ -1925,7 +2018,17 @@ export const startLendingAnalysis: API.OperationMethod<
   StartLendingAnalysisError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DocumentLocation: i_DocumentLocation,
+      ClientRequestToken: 0,
+      JobTag: 0,
+      NotificationChannel: i_NotificationChannel,
+      OutputConfig: i_OutputConfig,
+      KMSKeyId: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     BadDocumentException,
@@ -1964,7 +2067,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -1998,7 +2101,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -2033,7 +2136,11 @@ export const updateAdapter: API.OperationMethod<
   UpdateAdapterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { AdapterId: 0, Description: 0, AdapterName: 0, AutoUpdate: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2048,3 +2155,18 @@ export const updateAdapter: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateAdapter",
 })) as any;
+
+const i_AdaptersConfig: D.LazyStruct = () => ({
+  Adapters: D.list({ AdapterId: 0, Pages: 0, Version: 0 }),
+});
+const i_Document: D.LazyStruct = () => ({ Bytes: 0, S3Object: i_S3Object });
+const i_DocumentLocation: D.LazyStruct = () => ({ S3Object: i_S3Object });
+const i_NotificationChannel: D.LazyStruct = () => ({
+  SNSTopicArn: 0,
+  RoleArn: 0,
+});
+const i_OutputConfig: D.LazyStruct = () => ({ S3Bucket: 0, S3Prefix: 0 });
+const i_QueriesConfig: D.LazyStruct = () => ({
+  Queries: D.list({ Text: 0, Alias: 0, Pages: 0 }),
+});
+const i_S3Object: D.LazyStruct = () => ({ Bucket: 0, Name: 0, Version: 0 });

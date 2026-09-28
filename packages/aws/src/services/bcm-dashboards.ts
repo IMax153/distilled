@@ -522,7 +522,15 @@ export const createDashboard: API.OperationMethod<
   CreateDashboardError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      widgets: D.list(i_Widget),
+      resourceTags: D.list(i_ResourceTag),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -554,7 +562,19 @@ export const createScheduledReport: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      scheduledReport: {
+        name: 0,
+        dashboardArn: 0,
+        scheduledReportExecutionRoleArn: 0,
+        scheduleConfig: i_ScheduleConfig,
+        description: 0,
+        widgetIds: 0,
+        widgetDateRangeOverride: i_DateTimeRange,
+      },
+      resourceTags: D.list(i_ResourceTag),
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -584,7 +604,7 @@ export const deleteDashboard: API.OperationMethod<
   DeleteDashboardError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -612,7 +632,7 @@ export const deleteScheduledReport: API.OperationMethod<
   DeleteScheduledReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -646,7 +666,7 @@ export const executeScheduledReport: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { arn: 0, clientToken: D.m({ idempotency: true }), dryRun: 0 },
     output: { healthStatus: o_HealthStatus },
   },
   errors: [
@@ -678,7 +698,11 @@ export const getDashboard: API.OperationMethod<
   GetDashboardError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createdAt: D.ts, updatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { arn: 0 },
+    output: { createdAt: D.ts, updatedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -707,7 +731,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -738,6 +762,7 @@ export const getScheduledReport: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { arn: 0 },
     output: {
       scheduledReport: {
         scheduleConfig: { schedulePeriod: { startTime: D.ts, endTime: D.ts } },
@@ -778,6 +803,7 @@ export const listDashboards: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { maxResults: 0, nextToken: 0 },
     output: { dashboards: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
   },
   errors: [
@@ -815,6 +841,7 @@ export const listScheduledReports: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0 },
     output: { scheduledReports: D.list({ healthStatus: o_HealthStatus }) },
   },
   errors: [
@@ -849,7 +876,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -876,7 +903,10 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { resourceArn: 0, resourceTags: D.list(i_ResourceTag) },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -903,7 +933,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, resourceTagKeys: 0 } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -931,7 +961,10 @@ export const updateDashboard: API.OperationMethod<
   UpdateDashboardError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { arn: 0, name: 0, description: 0, widgets: D.list(i_Widget) },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -961,7 +994,21 @@ export const updateScheduledReport: API.OperationMethod<
   UpdateScheduledReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      arn: 0,
+      name: 0,
+      description: 0,
+      dashboardArn: 0,
+      scheduledReportExecutionRoleArn: 0,
+      scheduleConfig: i_ScheduleConfig,
+      widgetIds: 0,
+      widgetDateRangeOverride: i_DateTimeRange,
+      clearWidgetIds: 0,
+      clearWidgetDateRangeOverride: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -975,4 +1022,70 @@ export const updateScheduledReport: API.OperationMethod<
   operationName: "UpdateScheduledReport",
 })) as any;
 
+const i_DateTimeRange: D.LazyStruct = () => ({
+  startTime: i_DateTimeValue,
+  endTime: i_DateTimeValue,
+});
+const i_ResourceTag: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_ScheduleConfig: D.LazyStruct = () => ({
+  scheduleExpression: 0,
+  scheduleExpressionTimeZone: 0,
+  schedulePeriod: { startTime: 0, endTime: 0 },
+  state: 0,
+});
+const i_Widget: D.LazyStruct = () => ({
+  id: 0,
+  title: 0,
+  description: 0,
+  width: 0,
+  height: 0,
+  horizontalOffset: 0,
+  configs: D.list({
+    queryParameters: {
+      costAndUsage: {
+        metrics: 0,
+        timeRange: i_DateTimeRange,
+        granularity: 0,
+        groupBy: D.list(i_GroupDefinition),
+        filter: i_Expression,
+      },
+      savingsPlansCoverage: {
+        timeRange: i_DateTimeRange,
+        metrics: 0,
+        granularity: 0,
+        groupBy: D.list(i_GroupDefinition),
+        filter: i_Expression,
+      },
+      savingsPlansUtilization: {
+        timeRange: i_DateTimeRange,
+        granularity: 0,
+        filter: i_Expression,
+      },
+      reservationCoverage: {
+        timeRange: i_DateTimeRange,
+        groupBy: D.list(i_GroupDefinition),
+        granularity: 0,
+        filter: i_Expression,
+        metrics: 0,
+      },
+      reservationUtilization: {
+        timeRange: i_DateTimeRange,
+        groupBy: D.list(i_GroupDefinition),
+        granularity: 0,
+        filter: i_Expression,
+      },
+    },
+    displayConfig: { graph: D.map({ visualType: 0 }), table: {} },
+  }),
+});
 const o_HealthStatus: D.LazyStruct = () => ({ lastRefreshedAt: D.ts });
+const i_DateTimeValue: D.LazyStruct = () => ({ type: 0, value: 0 });
+const i_Expression: D.LazyStruct = () => ({
+  or: D.list(i_Expression),
+  and: D.list(i_Expression),
+  not: i_Expression,
+  dimensions: { key: 0, values: 0, matchOptions: 0 },
+  tags: { key: 0, values: 0, matchOptions: 0 },
+  costCategories: { key: 0, values: 0, matchOptions: 0 },
+});
+const i_GroupDefinition: D.LazyStruct = () => ({ key: 0, type: 0 });

@@ -111,7 +111,10 @@ export const getRevocationStatus: API.OperationMethod<
     service: svc,
     http: "GET /revocations",
     input: {
-      signatureTimestamp: D.m({ query: "signatureTimestamp" }),
+      signatureTimestamp: D.m({
+        query: "signatureTimestamp",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       platformId: D.m({ query: "platformId" }),
       profileVersionArn: D.m({ query: "profileVersionArn" }),
       jobArn: D.m({ query: "jobArn" }),

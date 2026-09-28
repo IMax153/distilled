@@ -1,6 +1,7 @@
 import type * as HttpClient from "effect/unstable/http/HttpClient";
 import type * as redacted from "effect/Redacted";
 import * as API from "@distilled.cloud/core/api";
+import * as D from "@distilled.cloud/core/shape";
 import * as TE from "@distilled.cloud/core/error-class";
 import { AwsProtocol } from "../protocol.ts";
 import { restJson1Protocol } from "../protocols/rest-json.ts";
@@ -214,6 +215,13 @@ export const getActionRecommendations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /action-recommendations",
+    input: {
+      campaignArn: 0,
+      userId: 0,
+      numResults: 0,
+      filterArn: 0,
+      filterValues: 0,
+    },
     body: true,
   },
   errors: [InvalidInputException, ResourceNotFoundException],
@@ -239,7 +247,20 @@ export const getPersonalizedRanking: API.OperationMethod<
   GetPersonalizedRankingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /personalize-ranking", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /personalize-ranking",
+    input: {
+      campaignArn: 0,
+      inputList: 0,
+      userId: 0,
+      context: 0,
+      filterArn: 0,
+      filterValues: 0,
+      metadataColumns: 0,
+    },
+    body: true,
+  },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -270,7 +291,28 @@ export const getRecommendations: API.OperationMethod<
   GetRecommendationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /recommendations", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /recommendations",
+    input: {
+      campaignArn: 0,
+      itemId: 0,
+      userId: 0,
+      numResults: 0,
+      context: 0,
+      filterArn: 0,
+      filterValues: 0,
+      recommenderArn: 0,
+      promotions: D.list({
+        name: 0,
+        percentPromotedItems: 0,
+        filterArn: 0,
+        filterValues: 0,
+      }),
+      metadataColumns: 0,
+    },
+    body: true,
+  },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,

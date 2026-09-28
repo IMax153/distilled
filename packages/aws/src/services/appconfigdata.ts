@@ -196,7 +196,7 @@ export const getLatestConfiguration: API.OperationMethod<
         shape: D.num,
       }),
       ContentType: D.m({ header: "Content-Type" }),
-      Configuration: D.m({ payload: true, shape: D.stream }),
+      Configuration: D.m({ payload: true, shape: D.secretBlob }),
       VersionLabel: D.m({ header: "Version-Label" }),
     },
   },
@@ -229,7 +229,17 @@ export const startConfigurationSession: API.OperationMethod<
   StartConfigurationSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /configurationsessions", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /configurationsessions",
+    input: {
+      ApplicationIdentifier: 0,
+      EnvironmentIdentifier: 0,
+      ConfigurationProfileIdentifier: 0,
+      RequiredMinimumPollIntervalInSeconds: 0,
+    },
+    body: true,
+  },
   errors: [
     BadRequestException,
     InternalServerException,

@@ -691,7 +691,22 @@ export const createCluster: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clusterName: 0,
+      scheduler: { type: 0, version: 0 },
+      size: 0,
+      networking: { subnetIds: 0, securityGroupIds: 0, networkType: 0 },
+      slurmConfiguration: {
+        scaleDownIdleTimeInSeconds: 0,
+        slurmCustomSettings: D.list(i_SlurmCustomSetting),
+        slurmdbdCustomSettings: D.list(i_SlurmdbdCustomSetting),
+        cgroupCustomSettings: D.list(i_CgroupCustomSetting),
+        accounting: { defaultPurgeTimeInDays: 0, mode: 0 },
+        slurmRest: { mode: 0 },
+      },
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { cluster: o_Cluster },
   },
   errors: [
@@ -727,7 +742,28 @@ export const createComputeNodeGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clusterIdentifier: 0,
+      computeNodeGroupName: 0,
+      amiId: 0,
+      subnetIds: 0,
+      purchaseOption: 0,
+      customLaunchTemplate: i_CustomLaunchTemplate,
+      iamInstanceProfileArn: 0,
+      scalingConfiguration: i_ScalingConfigurationRequest,
+      instanceConfigs: D.list({ instanceType: 0 }),
+      spotOptions: i_SpotOptions,
+      slurmConfiguration: {
+        scaleDownIdleTimeInSeconds: 0,
+        slurmCustomSettings: D.list(i_SlurmCustomSetting),
+      },
+      nodeLifecycleActions: {
+        stages: i_NodeLifecycleStages,
+        scriptCachingPolicy: 0,
+      },
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { computeNodeGroup: o_ComputeNodeGroup },
   },
   errors: [
@@ -764,7 +800,14 @@ export const createQueue: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clusterIdentifier: 0,
+      queueName: 0,
+      computeNodeGroupConfigurations: D.list(i_ComputeNodeGroupConfiguration),
+      slurmConfiguration: { slurmCustomSettings: D.list(i_SlurmCustomSetting) },
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { queue: o_Queue },
   },
   errors: [
@@ -800,7 +843,7 @@ export const deleteCluster: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { clusterIdentifier: 0, clientToken: D.m({ idempotency: true }) },
   },
   errors: [
     AccessDeniedException,
@@ -834,7 +877,11 @@ export const deleteComputeNodeGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clusterIdentifier: 0,
+      computeNodeGroupIdentifier: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -868,7 +915,11 @@ export const deleteQueue: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clusterIdentifier: 0,
+      queueIdentifier: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -900,7 +951,11 @@ export const getCluster: API.OperationMethod<
   GetClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: { clusterIdentifier: 0 },
+    output: { cluster: o_Cluster },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -933,6 +988,7 @@ export const getComputeNodeGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { clusterIdentifier: 0, computeNodeGroupIdentifier: 0 },
     output: { computeNodeGroup: o_ComputeNodeGroup },
   },
   errors: [
@@ -965,7 +1021,11 @@ export const getQueue: API.OperationMethod<
   GetQueueError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { queue: o_Queue } },
+  descriptor: {
+    service: svc,
+    input: { clusterIdentifier: 0, queueIdentifier: 0 },
+    output: { queue: o_Queue },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -999,6 +1059,7 @@ export const listClusters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0 },
     output: { clusters: D.list({ createdAt: D.ts, modifiedAt: D.ts }) },
   },
   errors: [
@@ -1040,6 +1101,7 @@ export const listComputeNodeGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { clusterIdentifier: 0, nextToken: 0, maxResults: 0 },
     output: {
       computeNodeGroups: D.list({ createdAt: D.ts, modifiedAt: D.ts }),
     },
@@ -1083,6 +1145,7 @@ export const listQueues: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { clusterIdentifier: 0, nextToken: 0, maxResults: 0 },
     output: { queues: D.list({ createdAt: D.ts, modifiedAt: D.ts }) },
   },
   errors: [
@@ -1114,7 +1177,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1136,7 +1199,11 @@ export const registerComputeNodeGroupInstance: API.OperationMethod<
   RegisterComputeNodeGroupInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { sharedSecret: D.secret } },
+  descriptor: {
+    service: svc,
+    input: { clusterIdentifier: 0, bootstrapId: 0 },
+    output: { sharedSecret: D.secret },
+  },
   errors: [AccessDeniedException, InternalServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1156,7 +1223,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: 0 } },
   errors: [ResourceNotFoundException, ServiceQuotaExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1173,7 +1240,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1201,7 +1268,19 @@ export const updateCluster: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clusterIdentifier: 0,
+      clientToken: D.m({ idempotency: true }),
+      slurmConfiguration: {
+        scaleDownIdleTimeInSeconds: 0,
+        slurmCustomSettings: D.list(i_SlurmCustomSetting),
+        slurmdbdCustomSettings: D.list(i_SlurmdbdCustomSetting),
+        cgroupCustomSettings: D.list(i_CgroupCustomSetting),
+        accounting: { defaultPurgeTimeInDays: 0, mode: 0 },
+        slurmRest: { mode: 0 },
+      },
+      scheduler: { version: 0 },
+    },
     output: { cluster: o_Cluster },
   },
   errors: [
@@ -1237,7 +1316,26 @@ export const updateComputeNodeGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clusterIdentifier: 0,
+      computeNodeGroupIdentifier: 0,
+      amiId: 0,
+      subnetIds: 0,
+      customLaunchTemplate: i_CustomLaunchTemplate,
+      purchaseOption: 0,
+      spotOptions: i_SpotOptions,
+      scalingConfiguration: i_ScalingConfigurationRequest,
+      iamInstanceProfileArn: 0,
+      slurmConfiguration: {
+        scaleDownIdleTimeInSeconds: 0,
+        slurmCustomSettings: D.list(i_SlurmCustomSetting),
+      },
+      nodeLifecycleActions: {
+        stages: i_NodeLifecycleStages,
+        scriptCachingPolicy: 0,
+      },
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { computeNodeGroup: o_ComputeNodeGroup },
   },
   errors: [
@@ -1274,7 +1372,13 @@ export const updateQueue: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clusterIdentifier: 0,
+      queueIdentifier: 0,
+      computeNodeGroupConfigurations: D.list(i_ComputeNodeGroupConfiguration),
+      slurmConfiguration: { slurmCustomSettings: D.list(i_SlurmCustomSetting) },
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { queue: o_Queue },
   },
   errors: [
@@ -1291,9 +1395,41 @@ export const updateQueue: API.OperationMethod<
   operationName: "UpdateQueue",
 })) as any;
 
+const i_CgroupCustomSetting: D.LazyStruct = () => ({
+  parameterName: 0,
+  parameterValue: 0,
+});
+const i_ComputeNodeGroupConfiguration: D.LazyStruct = () => ({
+  computeNodeGroupId: 0,
+});
+const i_CustomLaunchTemplate: D.LazyStruct = () => ({ id: 0, version: 0 });
+const i_NodeLifecycleStages: D.LazyStruct = () => ({
+  nodeBootstrapped: D.list(i_NodeLifecycleScript),
+  nodeReady: D.list(i_NodeLifecycleScript),
+});
+const i_ScalingConfigurationRequest: D.LazyStruct = () => ({
+  minInstanceCount: 0,
+  maxInstanceCount: 0,
+});
+const i_SlurmCustomSetting: D.LazyStruct = () => ({
+  parameterName: 0,
+  parameterValue: 0,
+});
+const i_SlurmdbdCustomSetting: D.LazyStruct = () => ({
+  parameterName: 0,
+  parameterValue: 0,
+});
+const i_SpotOptions: D.LazyStruct = () => ({ allocationStrategy: 0 });
 const o_Cluster: D.LazyStruct = () => ({ createdAt: D.ts, modifiedAt: D.ts });
 const o_ComputeNodeGroup: D.LazyStruct = () => ({
   createdAt: D.ts,
   modifiedAt: D.ts,
 });
 const o_Queue: D.LazyStruct = () => ({ createdAt: D.ts, modifiedAt: D.ts });
+const i_NodeLifecycleScript: D.LazyStruct = () => ({
+  name: 0,
+  scriptSource: { scriptLocation: 0, s3VersionId: 0, checksum: 0 },
+  arguments: 0,
+  onError: 0,
+  executionPolicy: 0,
+});

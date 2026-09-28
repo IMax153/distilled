@@ -1160,7 +1160,12 @@ export const getListing: API.OperationMethod<
   GetListingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /2026-02-05/getListing", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /2026-02-05/getListing",
+    input: { listingId: 0 },
+    body: true,
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1180,6 +1185,7 @@ export const getOffer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2026-02-05/getOffer",
+    input: { offerId: 0 },
     output: { expirationTime: D.ts, availableFromTime: D.ts },
     body: true,
   },
@@ -1202,6 +1208,7 @@ export const getOfferSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2026-02-05/getOfferSet",
+    input: { offerSetId: 0 },
     output: { availableFromTime: D.ts, expirationTime: D.ts },
     body: true,
   },
@@ -1225,6 +1232,7 @@ export const getOfferTerms: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2026-02-05/getOfferTerms",
+    input: { offerId: 0, maxResults: 0, nextToken: 0 },
     output: {
       offerTerms: D.list({
         paymentScheduleTerm: { schedule: D.list({ chargeDate: D.ts }) },
@@ -1255,7 +1263,12 @@ export const getProduct: API.OperationMethod<
   GetProductError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /2026-02-05/getProduct", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /2026-02-05/getProduct",
+    input: { productId: 0 },
+    body: true,
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1278,6 +1291,7 @@ export const listFulfillmentOptions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2026-02-05/listFulfillmentOptions",
+    input: { productId: 0, maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [ResourceNotFoundException],
@@ -1308,6 +1322,11 @@ export const listPurchaseOptions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2026-02-05/listPurchaseOptions",
+    input: {
+      filters: D.list({ filterType: 0, filterValues: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       purchaseOptions: D.list({
         availableFromTime: D.ts,
@@ -1341,6 +1360,12 @@ export const searchFacets: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2026-02-05/searchFacets",
+    input: {
+      searchText: 0,
+      filters: D.list(i_SearchFilter),
+      facetTypes: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [],
@@ -1368,6 +1393,14 @@ export const searchListings: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2026-02-05/searchListings",
+    input: {
+      searchText: 0,
+      filters: D.list(i_SearchFilter),
+      maxResults: 0,
+      sortBy: 0,
+      sortOrder: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [],
@@ -1381,3 +1414,5 @@ export const searchListings: API.PaginatedOperationMethod<
     pageSize: "maxResults",
   } as const,
 })) as any;
+
+const i_SearchFilter: D.LazyStruct = () => ({ filterType: 0, filterValues: 0 });

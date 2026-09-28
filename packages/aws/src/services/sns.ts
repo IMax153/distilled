@@ -723,7 +723,10 @@ export const addPermission: API.OperationMethod<
   AddPermissionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TopicArn: 0, Label: 0, AWSAccountId: 0, ActionName: 0 },
+  },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -757,7 +760,11 @@ export const checkIfPhoneNumberIsOptedOut: API.OperationMethod<
   CheckIfPhoneNumberIsOptedOutError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { isOptedOut: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { phoneNumber: 0 },
+    output: { isOptedOut: D.bool },
+  },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -791,7 +798,10 @@ export const confirmSubscription: API.OperationMethod<
   ConfirmSubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TopicArn: 0, Token: 0, AuthenticateOnUnsubscribe: 0 },
+  },
   errors: [
     AuthorizationErrorException,
     FilterPolicyLimitExceededException,
@@ -857,7 +867,10 @@ export const createPlatformApplication: API.OperationMethod<
   CreatePlatformApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, input: { Attributes: D.map() } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, Platform: 0, Attributes: D.map() },
+  },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -899,7 +912,15 @@ export const createPlatformEndpoint: API.OperationMethod<
   CreatePlatformEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, input: { Attributes: D.map() } },
+  descriptor: {
+    service: svc,
+    input: {
+      PlatformApplicationArn: 0,
+      Token: 0,
+      CustomUserData: 0,
+      Attributes: D.map(),
+    },
+  },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -940,7 +961,7 @@ export const createSMSSandboxPhoneNumber: API.OperationMethod<
   CreateSMSSandboxPhoneNumberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PhoneNumber: 0, LanguageCode: 0 } },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -978,7 +999,15 @@ export const createTopic: API.OperationMethod<
   CreateTopicError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, input: { Attributes: D.map() } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Attributes: D.map(),
+      Tags: D.list(i_Tag),
+      DataProtectionPolicy: 0,
+    },
+  },
   errors: [
     AuthorizationErrorException,
     ConcurrentAccessException,
@@ -1016,7 +1045,7 @@ export const deleteEndpoint: API.OperationMethod<
   DeleteEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EndpointArn: 0 } },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -1048,7 +1077,7 @@ export const deletePlatformApplication: API.OperationMethod<
   DeletePlatformApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PlatformApplicationArn: 0 } },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -1088,7 +1117,7 @@ export const deleteSMSSandboxPhoneNumber: API.OperationMethod<
   DeleteSMSSandboxPhoneNumberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PhoneNumber: 0 } },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -1126,7 +1155,7 @@ export const deleteTopic: API.OperationMethod<
   DeleteTopicError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TopicArn: 0 } },
   errors: [
     AuthorizationErrorException,
     ConcurrentAccessException,
@@ -1163,7 +1192,7 @@ export const getDataProtectionPolicy: API.OperationMethod<
   GetDataProtectionPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -1197,7 +1226,11 @@ export const getEndpointAttributes: API.OperationMethod<
   GetEndpointAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Attributes: D.map() } },
+  descriptor: {
+    service: svc,
+    input: { EndpointArn: 0 },
+    output: { Attributes: D.map() },
+  },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -1230,7 +1263,11 @@ export const getPlatformApplicationAttributes: API.OperationMethod<
   GetPlatformApplicationAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Attributes: D.map() } },
+  descriptor: {
+    service: svc,
+    input: { PlatformApplicationArn: 0 },
+    output: { Attributes: D.map() },
+  },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -1261,7 +1298,11 @@ export const getSMSAttributes: API.OperationMethod<
   GetSMSAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { attributes: D.map() } },
+  descriptor: {
+    service: svc,
+    input: { attributes: 0 },
+    output: { attributes: D.map() },
+  },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -1297,7 +1338,7 @@ export const getSMSSandboxAccountStatus: API.OperationMethod<
   GetSMSSandboxAccountStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { IsInSandbox: D.bool } },
+  descriptor: { service: svc, input: {}, output: { IsInSandbox: D.bool } },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -1323,7 +1364,11 @@ export const getSubscriptionAttributes: API.OperationMethod<
   GetSubscriptionAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Attributes: D.map() } },
+  descriptor: {
+    service: svc,
+    input: { SubscriptionArn: 0 },
+    output: { Attributes: D.map() },
+  },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -1354,7 +1399,11 @@ export const getTopicAttributes: API.OperationMethod<
   GetTopicAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Attributes: D.map() } },
+  descriptor: {
+    service: svc,
+    input: { TopicArn: 0 },
+    output: { Attributes: D.map() },
+  },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -1399,6 +1448,7 @@ export const listEndpointsByPlatformApplication: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { PlatformApplicationArn: 0, NextToken: 0 },
     output: { Endpoints: D.list({ Attributes: D.map() }) },
   },
   errors: [
@@ -1440,6 +1490,7 @@ export const listOriginationNumbers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: {
       PhoneNumbers: D.list({
         CreatedAt: D.ts,
@@ -1490,7 +1541,11 @@ export const listPhoneNumbersOptedOut: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   PhoneNumber
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { phoneNumbers: D.list(D.secret) } },
+  descriptor: {
+    service: svc,
+    input: { nextToken: 0 },
+    output: { phoneNumbers: D.list(D.secret) },
+  },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -1534,6 +1589,7 @@ export const listPlatformApplications: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0 },
     output: { PlatformApplications: D.list({ Attributes: D.map() }) },
   },
   errors: [
@@ -1580,6 +1636,7 @@ export const listSMSSandboxPhoneNumbers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: { PhoneNumbers: D.list({ PhoneNumber: D.secret }) },
   },
   errors: [
@@ -1620,7 +1677,11 @@ export const listSubscriptions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Subscription
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Subscriptions: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0 },
+    output: { Subscriptions: D.list({}) },
+  },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -1659,7 +1720,11 @@ export const listSubscriptionsByTopic: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Subscription
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Subscriptions: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { TopicArn: 0, NextToken: 0 },
+    output: { Subscriptions: D.list({}) },
+  },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -1697,7 +1762,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Tags: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0 },
+    output: { Tags: D.list({}) },
+  },
   errors: [
     AuthorizationErrorException,
     ConcurrentAccessException,
@@ -1732,7 +1801,11 @@ export const listTopics: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Topic
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Topics: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0 },
+    output: { Topics: D.list({}) },
+  },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -1766,7 +1839,7 @@ export const optInPhoneNumber: API.OperationMethod<
   OptInPhoneNumberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { phoneNumber: 0 } },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -1828,7 +1901,20 @@ export const publish: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { MessageAttributes: D.map(0, { key: "Name", value: "Value" }) },
+    input: {
+      TopicArn: 0,
+      TargetArn: 0,
+      PhoneNumber: 0,
+      Message: 0,
+      Subject: 0,
+      MessageStructure: 0,
+      MessageAttributes: D.map(i_MessageAttributeValue, {
+        key: "Name",
+        value: "Value",
+      }),
+      MessageDeduplicationId: 0,
+      MessageGroupId: 0,
+    },
   },
   errors: [
     AuthorizationErrorException,
@@ -1925,8 +2011,18 @@ export const publishBatch: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      TopicArn: 0,
       PublishBatchRequestEntries: D.list({
-        MessageAttributes: D.map(0, { key: "Name", value: "Value" }),
+        Id: 0,
+        Message: 0,
+        Subject: 0,
+        MessageStructure: 0,
+        MessageAttributes: D.map(i_MessageAttributeValue, {
+          key: "Name",
+          value: "Value",
+        }),
+        MessageDeduplicationId: 0,
+        MessageGroupId: 0,
       }),
     },
     output: { Successful: D.list({}), Failed: D.list({ SenderFault: D.bool }) },
@@ -1977,7 +2073,10 @@ export const putDataProtectionPolicy: API.OperationMethod<
   PutDataProtectionPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, DataProtectionPolicy: 0 },
+  },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -2013,7 +2112,7 @@ export const removePermission: API.OperationMethod<
   RemovePermissionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TopicArn: 0, Label: 0 } },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -2046,7 +2145,7 @@ export const setEndpointAttributes: API.OperationMethod<
   SetEndpointAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, input: { Attributes: D.map() } },
+  descriptor: { service: svc, input: { EndpointArn: 0, Attributes: D.map() } },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -2081,7 +2180,10 @@ export const setPlatformApplicationAttributes: API.OperationMethod<
   SetPlatformApplicationAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, input: { Attributes: D.map() } },
+  descriptor: {
+    service: svc,
+    input: { PlatformApplicationArn: 0, Attributes: D.map() },
+  },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -2150,7 +2252,10 @@ export const setSubscriptionAttributes: API.OperationMethod<
   SetSubscriptionAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SubscriptionArn: 0, AttributeName: 0, AttributeValue: 0 },
+  },
   errors: [
     AuthorizationErrorException,
     FilterPolicyLimitExceededException,
@@ -2186,7 +2291,10 @@ export const setTopicAttributes: API.OperationMethod<
   SetTopicAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TopicArn: 0, AttributeName: 0, AttributeValue: 0 },
+  },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -2229,7 +2337,16 @@ export const subscribe: API.OperationMethod<
   SubscribeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, input: { Attributes: D.map() } },
+  descriptor: {
+    service: svc,
+    input: {
+      TopicArn: 0,
+      Protocol: 0,
+      Endpoint: 0,
+      Attributes: D.map(),
+      ReturnSubscriptionArn: 0,
+    },
+  },
   errors: [
     AuthorizationErrorException,
     FilterPolicyLimitExceededException,
@@ -2283,7 +2400,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     AuthorizationErrorException,
     ConcurrentAccessException,
@@ -2323,7 +2440,7 @@ export const unsubscribe: API.OperationMethod<
   UnsubscribeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SubscriptionArn: 0 } },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -2357,7 +2474,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     AuthorizationErrorException,
     ConcurrentAccessException,
@@ -2401,7 +2518,7 @@ export const verifySMSSandboxPhoneNumber: API.OperationMethod<
   VerifySMSSandboxPhoneNumberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PhoneNumber: 0, OneTimePassword: 0 } },
   errors: [
     AuthorizationErrorException,
     InternalErrorException,
@@ -2414,3 +2531,10 @@ export const verifySMSSandboxPhoneNumber: API.OperationMethod<
   retry: Retry,
   operationName: "VerifySMSSandboxPhoneNumber",
 })) as any;
+
+const i_MessageAttributeValue: D.LazyStruct = () => ({
+  DataType: 0,
+  StringValue: 0,
+  BinaryValue: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });

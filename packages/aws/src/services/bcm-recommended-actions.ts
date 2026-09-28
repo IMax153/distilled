@@ -1,5 +1,6 @@
 import type * as HttpClient from "effect/unstable/http/HttpClient";
 import * as API from "@distilled.cloud/core/api";
+import * as D from "@distilled.cloud/core/shape";
 import * as TE from "@distilled.cloud/core/error-class";
 import { AwsProtocol } from "../protocol.ts";
 import { awsJson1_0Protocol } from "../protocols/aws-json.ts";
@@ -190,7 +191,14 @@ export const listRecommendedActions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RecommendedAction
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      filter: { actions: D.list({ key: 0, matchOption: 0, values: 0 }) },
+      maxResults: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,

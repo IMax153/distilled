@@ -1,5 +1,6 @@
 import type * as HttpClient from "effect/unstable/http/HttpClient";
 import * as API from "@distilled.cloud/core/api";
+import * as D from "@distilled.cloud/core/shape";
 import * as TE from "@distilled.cloud/core/error-class";
 import { AwsProtocol } from "../protocol.ts";
 import { awsJson1_1Protocol } from "../protocols/aws-json.ts";
@@ -292,7 +293,7 @@ export const describeReportCreation: API.OperationMethod<
   DescribeReportCreationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     ConstraintViolationException,
     InternalServiceException,
@@ -334,7 +335,18 @@ export const getComplianceSummary: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Summary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TargetIdFilters: 0,
+      RegionFilters: 0,
+      ResourceTypeFilters: 0,
+      TagKeyFilters: 0,
+      GroupBy: 0,
+      MaxResults: 0,
+      PaginationToken: 0,
+    },
+  },
   errors: [
     ConstraintViolationException,
     InternalServiceException,
@@ -392,7 +404,19 @@ export const getResources: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ResourceTagMapping
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      PaginationToken: 0,
+      TagFilters: D.list({ Key: 0, Values: 0 }),
+      ResourcesPerPage: 0,
+      TagsPerPage: 0,
+      ResourceTypeFilters: 0,
+      IncludeComplianceDetails: 0,
+      ExcludeCompliantResources: 0,
+      ResourceARNList: 0,
+    },
+  },
   errors: [
     InternalServiceException,
     InvalidParameterException,
@@ -434,7 +458,7 @@ export const getTagKeys: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TagKey
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PaginationToken: 0 } },
   errors: [
     InternalServiceException,
     InvalidParameterException,
@@ -475,7 +499,7 @@ export const getTagValues: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TagValue
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PaginationToken: 0, Key: 0 } },
   errors: [
     InternalServiceException,
     InvalidParameterException,
@@ -508,7 +532,7 @@ export const listRequiredTags: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RequiredTag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [
     InternalServiceException,
     InvalidParameterException,
@@ -562,7 +586,7 @@ export const startReportCreation: API.OperationMethod<
   StartReportCreationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { S3Bucket: 0 } },
   errors: [
     ConcurrentModificationException,
     ConstraintViolationException,
@@ -638,7 +662,7 @@ export const tagResources: API.OperationMethod<
   TagResourcesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARNList: 0, Tags: 0 } },
   errors: [
     InternalServiceException,
     InvalidParameterException,
@@ -692,7 +716,7 @@ export const untagResources: API.OperationMethod<
   UntagResourcesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARNList: 0, TagKeys: 0 } },
   errors: [
     InternalServiceException,
     InvalidParameterException,

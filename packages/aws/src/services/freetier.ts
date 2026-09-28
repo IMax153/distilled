@@ -302,6 +302,7 @@ export const getAccountActivity: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { activityId: 0, languageCode: 0 },
     output: { expiresAt: D.ts, startedAt: D.ts, completedAt: D.ts },
   },
   errors: [
@@ -331,7 +332,11 @@ export const getAccountPlanState: API.OperationMethod<
   GetAccountPlanStateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { accountPlanExpirationDate: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {},
+    output: { accountPlanExpirationDate: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -359,7 +364,10 @@ export const getFreeTierUsage: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   FreeTierUsage
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { filter: i_Expression, maxResults: 0, nextToken: 0 },
+  },
   errors: [InternalServerException, ThrottlingException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -387,7 +395,15 @@ export const listAccountActivities: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ActivitySummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      filterActivityStatuses: 0,
+      nextToken: 0,
+      maxResults: 0,
+      languageCode: 0,
+    },
+  },
   errors: [InternalServerException, ThrottlingException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -416,7 +432,7 @@ export const upgradeAccountPlan: API.OperationMethod<
   UpgradeAccountPlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { accountPlanType: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -428,3 +444,10 @@ export const upgradeAccountPlan: API.OperationMethod<
   retry: Retry,
   operationName: "UpgradeAccountPlan",
 })) as any;
+
+const i_Expression: D.LazyStruct = () => ({
+  Or: D.list(i_Expression),
+  And: D.list(i_Expression),
+  Not: i_Expression,
+  Dimensions: { Key: 0, Values: 0, MatchOptions: 0 },
+});

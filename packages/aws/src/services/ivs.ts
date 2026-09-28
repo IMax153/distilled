@@ -1058,6 +1058,7 @@ export const batchGetChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchGetChannel",
+    input: { arns: 0 },
     output: {
       accessControlAllowOrigin: D.m({ header: "Access-Control-Allow-Origin" }),
       accessControlExposeHeaders: D.m({
@@ -1095,6 +1096,7 @@ export const batchGetStreamKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchGetStreamKey",
+    input: { arns: 0 },
     output: {
       accessControlAllowOrigin: D.m({ header: "Access-Control-Allow-Origin" }),
       accessControlExposeHeaders: D.m({
@@ -1133,6 +1135,13 @@ export const batchStartViewerSessionRevocation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchStartViewerSessionRevocation",
+    input: {
+      viewerSessions: D.list({
+        channelArn: 0,
+        viewerId: 0,
+        viewerSessionVersionsLessThanOrEqualTo: 0,
+      }),
+    },
     output: {
       accessControlAllowOrigin: D.m({ header: "Access-Control-Allow-Origin" }),
       accessControlExposeHeaders: D.m({
@@ -1176,7 +1185,19 @@ export const createAdConfiguration: API.OperationMethod<
   CreateAdConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CreateAdConfiguration", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CreateAdConfiguration",
+    input: {
+      name: 0,
+      mediaTailorPlaybackConfigurations: D.list(
+        i_MediaTailorPlaybackConfiguration,
+      ),
+      postRollConfiguration: i_PostRollConfiguration,
+      tags: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1212,6 +1233,20 @@ export const createChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateChannel",
+    input: {
+      name: 0,
+      latencyMode: 0,
+      type: 0,
+      authorized: 0,
+      recordingConfigurationArn: 0,
+      tags: 0,
+      insecureIngest: 0,
+      preset: 0,
+      playbackRestrictionPolicyArn: 0,
+      multitrackInputConfiguration: i_MultitrackInputConfiguration,
+      containerFormat: 0,
+      adConfigurationArn: 0,
+    },
     output: { channel: o_Channel, streamKey: o_StreamKey },
     body: true,
   },
@@ -1247,6 +1282,13 @@ export const createPlaybackRestrictionPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreatePlaybackRestrictionPolicy",
+    input: {
+      allowedCountries: 0,
+      allowedOrigins: 0,
+      enableStrictOriginEnforcement: 0,
+      name: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1286,6 +1328,19 @@ export const createRecordingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateRecordingConfiguration",
+    input: {
+      name: 0,
+      destinationConfiguration: { s3: { bucketName: 0 } },
+      tags: 0,
+      thumbnailConfiguration: {
+        recordingMode: 0,
+        targetIntervalSeconds: 0,
+        resolution: 0,
+        storage: 0,
+      },
+      recordingReconnectWindowSeconds: 0,
+      renditionConfiguration: { renditionSelection: 0, renditions: 0 },
+    },
     body: true,
   },
   errors: [
@@ -1324,6 +1379,7 @@ export const createStreamKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateStreamKey",
+    input: { channelArn: 0, tags: 0 },
     output: { streamKey: o_StreamKey },
     body: true,
   },
@@ -1357,7 +1413,12 @@ export const deleteAdConfiguration: API.OperationMethod<
   DeleteAdConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteAdConfiguration", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteAdConfiguration",
+    input: { arn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1390,7 +1451,12 @@ export const deleteChannel: API.OperationMethod<
   DeleteChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteChannel", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteChannel",
+    input: { arn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1421,7 +1487,12 @@ export const deletePlaybackKeyPair: API.OperationMethod<
   DeletePlaybackKeyPairError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeletePlaybackKeyPair", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeletePlaybackKeyPair",
+    input: { arn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     PendingVerification,
@@ -1455,6 +1526,7 @@ export const deletePlaybackRestrictionPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeletePlaybackRestrictionPolicy",
+    input: { arn: 0 },
     body: true,
   },
   errors: [
@@ -1492,6 +1564,7 @@ export const deleteRecordingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteRecordingConfiguration",
+    input: { arn: 0 },
     body: true,
   },
   errors: [
@@ -1523,7 +1596,12 @@ export const deleteStreamKey: API.OperationMethod<
   DeleteStreamKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteStreamKey", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteStreamKey",
+    input: { arn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     PendingVerification,
@@ -1552,7 +1630,12 @@ export const getAdConfiguration: API.OperationMethod<
   GetAdConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetAdConfiguration", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetAdConfiguration",
+    input: { arn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1583,6 +1666,7 @@ export const getChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetChannel",
+    input: { arn: 0 },
     output: { channel: o_Channel },
     body: true,
   },
@@ -1612,7 +1696,12 @@ export const getPlaybackKeyPair: API.OperationMethod<
   GetPlaybackKeyPairError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetPlaybackKeyPair", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetPlaybackKeyPair",
+    input: { arn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -1643,6 +1732,7 @@ export const getPlaybackRestrictionPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetPlaybackRestrictionPolicy",
+    input: { arn: 0 },
     body: true,
   },
   errors: [
@@ -1676,6 +1766,7 @@ export const getRecordingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetRecordingConfiguration",
+    input: { arn: 0 },
     body: true,
   },
   errors: [
@@ -1709,6 +1800,7 @@ export const getStream: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetStream",
+    input: { channelArn: 0 },
     output: { stream: { startTime: D.ts } },
     body: true,
   },
@@ -1742,6 +1834,7 @@ export const getStreamKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetStreamKey",
+    input: { arn: 0 },
     output: { streamKey: o_StreamKey },
     body: true,
   },
@@ -1774,6 +1867,7 @@ export const getStreamSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetStreamSession",
+    input: { channelArn: 0, streamId: 0 },
     output: {
       streamSession: {
         startTime: D.ts,
@@ -1812,7 +1906,12 @@ export const importPlaybackKeyPair: API.OperationMethod<
   ImportPlaybackKeyPairError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /ImportPlaybackKeyPair", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ImportPlaybackKeyPair",
+    input: { publicKeyMaterial: 0, name: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1846,7 +1945,12 @@ export const insertAdBreak: API.OperationMethod<
   InsertAdBreakError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /InsertAdBreak", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /InsertAdBreak",
+    input: { channelArn: 0, durationSeconds: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ChannelNotBroadcasting,
@@ -1877,7 +1981,12 @@ export const listAdConfigurations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AdConfigurationSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListAdConfigurations", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListAdConfigurations",
+    input: { nextToken: 0, maxResults: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1911,7 +2020,19 @@ export const listChannels: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListChannels", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListChannels",
+    input: {
+      filterByName: 0,
+      filterByRecordingConfigurationArn: 0,
+      filterByPlaybackRestrictionPolicyArn: 0,
+      filterByAdConfigurationArn: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1943,7 +2064,12 @@ export const listPlaybackKeyPairs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListPlaybackKeyPairs", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListPlaybackKeyPairs",
+    input: { nextToken: 0, maxResults: 0 },
+    body: true,
+  },
   errors: [AccessDeniedException, ValidationException, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1975,6 +2101,7 @@ export const listPlaybackRestrictionPolicies: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListPlaybackRestrictionPolicies",
+    input: { nextToken: 0, maxResults: 0 },
     body: true,
   },
   errors: [
@@ -2013,6 +2140,7 @@ export const listRecordingConfigurations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListRecordingConfigurations",
+    input: { nextToken: 0, maxResults: 0 },
     body: true,
   },
   errors: [
@@ -2047,7 +2175,12 @@ export const listStreamKeys: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListStreamKeys", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListStreamKeys",
+    input: { channelArn: 0, nextToken: 0, maxResults: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -2082,6 +2215,7 @@ export const listStreams: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListStreams",
+    input: { filterBy: { health: 0 }, nextToken: 0, maxResults: 0 },
     output: { streams: D.list({ startTime: D.ts }) },
     body: true,
   },
@@ -2115,6 +2249,7 @@ export const listStreamSessions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListStreamSessions",
+    input: { channelArn: 0, nextToken: 0, maxResults: 0 },
     output: { streamSessions: D.list({ startTime: D.ts, endTime: D.ts }) },
     body: true,
   },
@@ -2149,7 +2284,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -2177,7 +2316,12 @@ export const putMetadata: API.OperationMethod<
   PutMetadataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /PutMetadata", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /PutMetadata",
+    input: { channelArn: 0, metadata: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ChannelNotBroadcasting,
@@ -2210,6 +2354,11 @@ export const startViewerSessionRevocation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /StartViewerSessionRevocation",
+    input: {
+      channelArn: 0,
+      viewerId: 0,
+      viewerSessionVersionsLessThanOrEqualTo: 0,
+    },
     body: true,
   },
   errors: [
@@ -2244,7 +2393,12 @@ export const stopStream: API.OperationMethod<
   StopStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /StopStream", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /StopStream",
+    input: { channelArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ChannelNotBroadcasting,
@@ -2273,7 +2427,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -2303,7 +2462,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -2335,7 +2494,19 @@ export const updateAdConfiguration: API.OperationMethod<
   UpdateAdConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UpdateAdConfiguration", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UpdateAdConfiguration",
+    input: {
+      arn: 0,
+      name: 0,
+      mediaTailorPlaybackConfigurations: D.list(
+        i_MediaTailorPlaybackConfiguration,
+      ),
+      postRollConfiguration: i_PostRollConfiguration,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2371,6 +2542,20 @@ export const updateChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateChannel",
+    input: {
+      arn: 0,
+      name: 0,
+      latencyMode: 0,
+      type: 0,
+      authorized: 0,
+      recordingConfigurationArn: 0,
+      insecureIngest: 0,
+      preset: 0,
+      playbackRestrictionPolicyArn: 0,
+      multitrackInputConfiguration: i_MultitrackInputConfiguration,
+      containerFormat: 0,
+      adConfigurationArn: 0,
+    },
     output: { channel: o_Channel },
     body: true,
   },
@@ -2406,6 +2591,13 @@ export const updatePlaybackRestrictionPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdatePlaybackRestrictionPolicy",
+    input: {
+      arn: 0,
+      allowedCountries: 0,
+      allowedOrigins: 0,
+      enableStrictOriginEnforcement: 0,
+      name: 0,
+    },
     body: true,
   },
   errors: [
@@ -2420,5 +2612,17 @@ export const updatePlaybackRestrictionPolicy: API.OperationMethod<
   operationName: "UpdatePlaybackRestrictionPolicy",
 })) as any;
 
+const i_MediaTailorPlaybackConfiguration: D.LazyStruct = () => ({
+  playbackConfigurationArn: 0,
+});
+const i_MultitrackInputConfiguration: D.LazyStruct = () => ({
+  enabled: 0,
+  policy: 0,
+  maximumResolution: 0,
+});
+const i_PostRollConfiguration: D.LazyStruct = () => ({
+  durationSeconds: 0,
+  enabled: 0,
+});
 const o_Channel: D.LazyStruct = () => ({ srt: { passphrase: D.secret } });
 const o_StreamKey: D.LazyStruct = () => ({ value: D.secret });

@@ -2365,7 +2365,10 @@ export const associateEntitiesToExperience: API.OperationMethod<
   AssociateEntitiesToExperienceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Id: 0, IndexId: 0, EntityList: D.list(i_EntityConfiguration) },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2400,7 +2403,10 @@ export const associatePersonasToEntities: API.OperationMethod<
   AssociatePersonasToEntitiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Id: 0, IndexId: 0, Personas: D.list({ EntityId: 0, Persona: 0 }) },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2442,7 +2448,17 @@ export const batchDeleteDocument: API.OperationMethod<
   BatchDeleteDocumentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IndexId: 0,
+      DocumentIdList: 0,
+      DataSourceSyncJobMetricTarget: {
+        DataSourceId: 0,
+        DataSourceSyncJobId: 0,
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2474,7 +2490,7 @@ export const batchDeleteFeaturedResultsSet: API.OperationMethod<
   BatchDeleteFeaturedResultsSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { IndexId: 0, FeaturedResultsSetIds: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2514,7 +2530,16 @@ export const batchGetDocumentStatus: API.OperationMethod<
   BatchGetDocumentStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IndexId: 0,
+      DocumentInfoList: D.list({
+        DocumentId: 0,
+        Attributes: D.list(i_DocumentAttribute),
+      }),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2561,7 +2586,26 @@ export const batchPutDocument: API.OperationMethod<
   BatchPutDocumentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IndexId: 0,
+      RoleArn: 0,
+      Documents: D.list({
+        Id: 0,
+        Title: 0,
+        Blob: 0,
+        S3Path: i_S3Path,
+        Attributes: D.list(i_DocumentAttribute),
+        AccessControlList: D.list(i_Principal),
+        HierarchicalAccessControlList: D.list(i_HierarchicalPrincipal),
+        ContentType: 0,
+        AccessControlConfigurationId: 0,
+      }),
+      CustomDocumentEnrichmentConfiguration:
+        i_CustomDocumentEnrichmentConfiguration,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2603,7 +2647,7 @@ export const clearQuerySuggestions: API.OperationMethod<
   ClearQuerySuggestionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { IndexId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2662,7 +2706,14 @@ export const createAccessControlConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      IndexId: 0,
+      Name: 0,
+      Description: 0,
+      AccessControlList: D.list(i_Principal),
+      HierarchicalAccessControlList: D.list(i_HierarchicalPrincipal),
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2711,7 +2762,21 @@ export const createDataSource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      IndexId: 0,
+      Type: 0,
+      Configuration: i_DataSourceConfiguration,
+      VpcConfiguration: i_DataSourceVpcConfiguration,
+      Description: 0,
+      Schedule: 0,
+      RoleArn: 0,
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+      LanguageCode: 0,
+      CustomDocumentEnrichmentConfiguration:
+        i_CustomDocumentEnrichmentConfiguration,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2751,7 +2816,14 @@ export const createExperience: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      IndexId: 0,
+      RoleArn: 0,
+      Configuration: i_ExperienceConfiguration,
+      Description: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2792,7 +2864,17 @@ export const createFaq: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      IndexId: 0,
+      Name: 0,
+      Description: 0,
+      S3Path: i_S3Path,
+      RoleArn: 0,
+      Tags: D.list(i_Tag),
+      FileFormat: 0,
+      ClientToken: D.m({ idempotency: true }),
+      LanguageCode: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2833,7 +2915,19 @@ export const createFeaturedResultsSet: API.OperationMethod<
   CreateFeaturedResultsSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IndexId: 0,
+      FeaturedResultsSetName: 0,
+      Description: 0,
+      ClientToken: 0,
+      Status: 0,
+      QueryTexts: 0,
+      FeaturedDocuments: D.list(i_FeaturedDocument),
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2879,7 +2973,18 @@ export const createIndex: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Edition: 0,
+      RoleArn: 0,
+      ServerSideEncryptionConfiguration: { KmsKeyId: 0 },
+      Description: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+      UserTokenConfigurations: D.list(i_UserTokenConfiguration),
+      UserContextPolicy: 0,
+      UserGroupResolutionConfiguration: i_UserGroupResolutionConfiguration,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2933,7 +3038,15 @@ export const createQuerySuggestionsBlockList: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      IndexId: 0,
+      Name: 0,
+      Description: 0,
+      SourceS3Path: i_S3Path,
+      ClientToken: D.m({ idempotency: true }),
+      RoleArn: 0,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2974,7 +3087,15 @@ export const createThesaurus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      IndexId: 0,
+      Name: 0,
+      Description: 0,
+      RoleArn: 0,
+      Tags: D.list(i_Tag),
+      SourceS3Path: i_S3Path,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -3010,7 +3131,7 @@ export const deleteAccessControlConfiguration: API.OperationMethod<
   DeleteAccessControlConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { IndexId: 0, Id: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3048,7 +3169,7 @@ export const deleteDataSource: API.OperationMethod<
   DeleteDataSourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0, IndexId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3081,7 +3202,7 @@ export const deleteExperience: API.OperationMethod<
   DeleteExperienceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0, IndexId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3112,7 +3233,7 @@ export const deleteFaq: API.OperationMethod<
   DeleteFaqError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0, IndexId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3145,7 +3266,7 @@ export const deleteIndex: API.OperationMethod<
   DeleteIndexError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3190,7 +3311,10 @@ export const deletePrincipalMapping: API.OperationMethod<
   DeletePrincipalMappingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { IndexId: 0, DataSourceId: 0, GroupId: 0, OrderingId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3228,7 +3352,7 @@ export const deleteQuerySuggestionsBlockList: API.OperationMethod<
   DeleteQuerySuggestionsBlockListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { IndexId: 0, Id: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3259,7 +3383,7 @@ export const deleteThesaurus: API.OperationMethod<
   DeleteThesaurusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0, IndexId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3292,7 +3416,7 @@ export const describeAccessControlConfiguration: API.OperationMethod<
   DescribeAccessControlConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { IndexId: 0, Id: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3323,6 +3447,7 @@ export const describeDataSource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Id: 0, IndexId: 0 },
     output: {
       CreatedAt: D.ts,
       UpdatedAt: D.ts,
@@ -3367,7 +3492,11 @@ export const describeExperience: API.OperationMethod<
   DescribeExperienceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedAt: D.ts, UpdatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { Id: 0, IndexId: 0 },
+    output: { CreatedAt: D.ts, UpdatedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3396,7 +3525,11 @@ export const describeFaq: API.OperationMethod<
   DescribeFaqError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedAt: D.ts, UpdatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { Id: 0, IndexId: 0 },
+    output: { CreatedAt: D.ts, UpdatedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3427,7 +3560,7 @@ export const describeFeaturedResultsSet: API.OperationMethod<
   DescribeFeaturedResultsSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { IndexId: 0, FeaturedResultsSetId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3458,6 +3591,7 @@ export const describeIndex: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Id: 0 },
     output: {
       ServerSideEncryptionConfiguration: { KmsKeyId: D.secret },
       CreatedAt: D.ts,
@@ -3501,6 +3635,7 @@ export const describePrincipalMapping: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { IndexId: 0, DataSourceId: 0, GroupId: 0 },
     output: {
       GroupOrderingIdSummaries: D.list({
         LastUpdatedAt: D.ts,
@@ -3543,7 +3678,11 @@ export const describeQuerySuggestionsBlockList: API.OperationMethod<
   DescribeQuerySuggestionsBlockListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedAt: D.ts, UpdatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { IndexId: 0, Id: 0 },
+    output: { CreatedAt: D.ts, UpdatedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3580,6 +3719,7 @@ export const describeQuerySuggestionsConfig: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { IndexId: 0 },
     output: { LastSuggestionsBuildTime: D.ts, LastClearTime: D.ts },
   },
   errors: [
@@ -3610,7 +3750,11 @@ export const describeThesaurus: API.OperationMethod<
   DescribeThesaurusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedAt: D.ts, UpdatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { Id: 0, IndexId: 0 },
+    output: { CreatedAt: D.ts, UpdatedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3643,7 +3787,10 @@ export const disassociateEntitiesFromExperience: API.OperationMethod<
   DisassociateEntitiesFromExperienceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Id: 0, IndexId: 0, EntityList: D.list(i_EntityConfiguration) },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3676,7 +3823,7 @@ export const disassociatePersonasFromEntities: API.OperationMethod<
   DisassociatePersonasFromEntitiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0, IndexId: 0, EntityIds: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3712,6 +3859,18 @@ export const getQuerySuggestions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      IndexId: 0,
+      QueryText: 0,
+      MaxSuggestionsCount: 0,
+      SuggestionTypes: 0,
+      AttributeSuggestionsConfig: {
+        SuggestionAttributes: 0,
+        AdditionalResponseAttributes: 0,
+        AttributeFilter: i_AttributeFilter,
+        UserContext: i_UserContext,
+      },
+    },
     output: {
       Suggestions: D.list({
         SourceDocuments: D.list({
@@ -3753,6 +3912,13 @@ export const getSnapshots: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      IndexId: 0,
+      Interval: 0,
+      MetricType: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { SnapShotTimeFilter: { StartTime: D.ts, EndTime: D.ts } },
   },
   errors: [
@@ -3791,7 +3957,10 @@ export const listAccessControlConfigurations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { IndexId: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3828,6 +3997,7 @@ export const listDataSources: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { IndexId: 0, NextToken: 0, MaxResults: 0 },
     output: { SummaryItems: D.list({ CreatedAt: D.ts, UpdatedAt: D.ts }) },
   },
   errors: [
@@ -3867,6 +4037,14 @@ export const listDataSourceSyncJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Id: 0,
+      IndexId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      StartTimeFilter: { StartTime: 0, EndTime: 0 },
+      StatusFilter: 0,
+    },
     output: { History: D.list({ StartTime: D.ts, EndTime: D.ts }) },
   },
   errors: [
@@ -3907,6 +4085,7 @@ export const listEntityPersonas: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Id: 0, IndexId: 0, NextToken: 0, MaxResults: 0 },
     output: { SummaryItems: D.list({ CreatedAt: D.ts, UpdatedAt: D.ts }) },
   },
   errors: [
@@ -3949,6 +4128,7 @@ export const listExperienceEntities: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Id: 0, IndexId: 0, NextToken: 0 },
     output: {
       SummaryItems: D.list({
         DisplayData: {
@@ -3996,6 +4176,7 @@ export const listExperiences: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { IndexId: 0, NextToken: 0, MaxResults: 0 },
     output: { SummaryItems: D.list({ CreatedAt: D.ts }) },
   },
   errors: [
@@ -4034,6 +4215,7 @@ export const listFaqs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { IndexId: 0, NextToken: 0, MaxResults: 0 },
     output: { FaqSummaryItems: D.list({ CreatedAt: D.ts, UpdatedAt: D.ts }) },
   },
   errors: [
@@ -4071,7 +4253,10 @@ export const listFeaturedResultsSets: API.OperationMethod<
   ListFeaturedResultsSetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { IndexId: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4105,7 +4290,16 @@ export const listGroupsOlderThanOrderingId: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IndexId: 0,
+      DataSourceId: 0,
+      OrderingId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4142,6 +4336,7 @@ export const listIndices: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: {
       IndexConfigurationSummaryItems: D.list({
         CreatedAt: D.ts,
@@ -4191,6 +4386,7 @@ export const listQuerySuggestionsBlockLists: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { IndexId: 0, NextToken: 0, MaxResults: 0 },
     output: {
       BlockListSummaryItems: D.list({ CreatedAt: D.ts, UpdatedAt: D.ts }),
     },
@@ -4230,7 +4426,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4263,6 +4459,7 @@ export const listThesauri: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { IndexId: 0, NextToken: 0, MaxResults: 0 },
     output: {
       ThesaurusSummaryItems: D.list({ CreatedAt: D.ts, UpdatedAt: D.ts }),
     },
@@ -4316,7 +4513,21 @@ export const putPrincipalMapping: API.OperationMethod<
   PutPrincipalMappingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IndexId: 0,
+      DataSourceId: 0,
+      GroupId: 0,
+      GroupMembers: {
+        MemberGroups: D.list({ GroupId: 0, DataSourceId: 0 }),
+        MemberUsers: D.list({ UserId: 0 }),
+        S3PathforGroupMembers: i_S3Path,
+      },
+      OrderingId: 0,
+      RoleArn: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4383,6 +4594,34 @@ export const query: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      IndexId: 0,
+      QueryText: 0,
+      AttributeFilter: i_AttributeFilter,
+      Facets: D.list(i_Facet),
+      RequestedDocumentAttributes: 0,
+      QueryResultTypeFilter: 0,
+      DocumentRelevanceOverrideConfigurations: D.list(
+        i_DocumentRelevanceConfiguration,
+      ),
+      PageNumber: 0,
+      PageSize: 0,
+      SortingConfiguration: i_SortingConfiguration,
+      SortingConfigurations: D.list(i_SortingConfiguration),
+      UserContext: i_UserContext,
+      VisitorId: 0,
+      SpellCorrectionConfiguration: { IncludeQuerySpellCheckSuggestions: 0 },
+      CollapseConfiguration: {
+        DocumentAttributeKey: 0,
+        SortingConfigurations: D.list(i_SortingConfiguration),
+        MissingAttributeKeyStrategy: 0,
+        Expand: 0,
+        ExpandConfiguration: {
+          MaxResultItemsToExpand: 0,
+          MaxExpandedResultsPerItem: 0,
+        },
+      },
+    },
     output: {
       ResultItems: D.list({
         DocumentAttributes: D.list(o_DocumentAttribute),
@@ -4471,6 +4710,18 @@ export const retrieve: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      IndexId: 0,
+      QueryText: 0,
+      AttributeFilter: i_AttributeFilter,
+      RequestedDocumentAttributes: 0,
+      DocumentRelevanceOverrideConfigurations: D.list(
+        i_DocumentRelevanceConfiguration,
+      ),
+      PageNumber: 0,
+      PageSize: 0,
+      UserContext: i_UserContext,
+    },
     output: {
       ResultItems: D.list({ DocumentAttributes: D.list(o_DocumentAttribute) }),
     },
@@ -4513,7 +4764,7 @@ export const startDataSourceSyncJob: API.OperationMethod<
   StartDataSourceSyncJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0, IndexId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4545,7 +4796,7 @@ export const stopDataSourceSyncJob: API.OperationMethod<
   StopDataSourceSyncJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0, IndexId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4579,7 +4830,15 @@ export const submitFeedback: API.OperationMethod<
   SubmitFeedbackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IndexId: 0,
+      QueryId: 0,
+      ClickFeedbackItems: D.list({ ResultId: 0, ClickTime: 0 }),
+      RelevanceFeedbackItems: D.list({ ResultId: 0, RelevanceValue: 0 }),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4610,7 +4869,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4639,7 +4898,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4695,7 +4954,17 @@ export const updateAccessControlConfiguration: API.OperationMethod<
   UpdateAccessControlConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IndexId: 0,
+      Id: 0,
+      Name: 0,
+      Description: 0,
+      AccessControlList: D.list(i_Principal),
+      HierarchicalAccessControlList: D.list(i_HierarchicalPrincipal),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4727,7 +4996,22 @@ export const updateDataSource: API.OperationMethod<
   UpdateDataSourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Id: 0,
+      Name: 0,
+      IndexId: 0,
+      Configuration: i_DataSourceConfiguration,
+      VpcConfiguration: i_DataSourceVpcConfiguration,
+      Description: 0,
+      Schedule: 0,
+      RoleArn: 0,
+      LanguageCode: 0,
+      CustomDocumentEnrichmentConfiguration:
+        i_CustomDocumentEnrichmentConfiguration,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4760,7 +5044,17 @@ export const updateExperience: API.OperationMethod<
   UpdateExperienceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Id: 0,
+      Name: 0,
+      IndexId: 0,
+      RoleArn: 0,
+      Configuration: i_ExperienceConfiguration,
+      Description: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4795,7 +5089,18 @@ export const updateFeaturedResultsSet: API.OperationMethod<
   UpdateFeaturedResultsSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IndexId: 0,
+      FeaturedResultsSetId: 0,
+      FeaturedResultsSetName: 0,
+      Description: 0,
+      Status: 0,
+      QueryTexts: 0,
+      FeaturedDocuments: D.list(i_FeaturedDocument),
+    },
+  },
   errors: [
     AccessDeniedException,
     FeaturedResultsConflictException,
@@ -4827,7 +5132,25 @@ export const updateIndex: API.OperationMethod<
   UpdateIndexError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Id: 0,
+      Name: 0,
+      RoleArn: 0,
+      Description: 0,
+      DocumentMetadataConfigurationUpdates: D.list({
+        Name: 0,
+        Type: 0,
+        Relevance: i_Relevance,
+        Search: { Facetable: 0, Searchable: 0, Displayable: 0, Sortable: 0 },
+      }),
+      CapacityUnits: { StorageCapacityUnits: 0, QueryCapacityUnits: 0 },
+      UserTokenConfigurations: D.list(i_UserTokenConfiguration),
+      UserContextPolicy: 0,
+      UserGroupResolutionConfiguration: i_UserGroupResolutionConfiguration,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4872,7 +5195,17 @@ export const updateQuerySuggestionsBlockList: API.OperationMethod<
   UpdateQuerySuggestionsBlockListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IndexId: 0,
+      Id: 0,
+      Name: 0,
+      Description: 0,
+      SourceS3Path: i_S3Path,
+      RoleArn: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4918,7 +5251,21 @@ export const updateQuerySuggestionsConfig: API.OperationMethod<
   UpdateQuerySuggestionsConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IndexId: 0,
+      Mode: 0,
+      QueryLogLookBackWindowInDays: 0,
+      IncludeQueriesWithoutUserInformation: 0,
+      MinimumNumberOfQueryingUsers: 0,
+      MinimumQueryCount: 0,
+      AttributeSuggestionsConfig: {
+        SuggestableConfigList: D.list({ AttributeName: 0, Suggestable: 0 }),
+        AttributeSuggestionsMode: 0,
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4949,7 +5296,17 @@ export const updateThesaurus: API.OperationMethod<
   UpdateThesaurusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Id: 0,
+      Name: 0,
+      IndexId: 0,
+      Description: 0,
+      RoleArn: 0,
+      SourceS3Path: i_S3Path,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4963,6 +5320,438 @@ export const updateThesaurus: API.OperationMethod<
   operationName: "UpdateThesaurus",
 })) as any;
 
+const i_AttributeFilter: D.LazyStruct = () => ({
+  AndAllFilters: D.list(i_AttributeFilter),
+  OrAllFilters: D.list(i_AttributeFilter),
+  NotFilter: i_AttributeFilter,
+  EqualsTo: i_DocumentAttribute,
+  ContainsAll: i_DocumentAttribute,
+  ContainsAny: i_DocumentAttribute,
+  GreaterThan: i_DocumentAttribute,
+  GreaterThanOrEquals: i_DocumentAttribute,
+  LessThan: i_DocumentAttribute,
+  LessThanOrEquals: i_DocumentAttribute,
+});
+const i_CustomDocumentEnrichmentConfiguration: D.LazyStruct = () => ({
+  InlineConfigurations: D.list({
+    Condition: i_DocumentAttributeCondition,
+    Target: {
+      TargetDocumentAttributeKey: 0,
+      TargetDocumentAttributeValueDeletion: 0,
+      TargetDocumentAttributeValue: i_DocumentAttributeValue,
+    },
+    DocumentContentDeletion: 0,
+  }),
+  PreExtractionHookConfiguration: i_HookConfiguration,
+  PostExtractionHookConfiguration: i_HookConfiguration,
+  RoleArn: 0,
+});
+const i_DataSourceConfiguration: D.LazyStruct = () => ({
+  S3Configuration: {
+    BucketName: 0,
+    InclusionPrefixes: 0,
+    InclusionPatterns: 0,
+    ExclusionPatterns: 0,
+    DocumentsMetadataConfiguration: { S3Prefix: 0 },
+    AccessControlListConfiguration: { KeyPath: 0 },
+  },
+  SharePointConfiguration: {
+    SharePointVersion: 0,
+    Urls: 0,
+    SecretArn: 0,
+    CrawlAttachments: 0,
+    UseChangeLog: 0,
+    InclusionPatterns: 0,
+    ExclusionPatterns: 0,
+    VpcConfiguration: i_DataSourceVpcConfiguration,
+    FieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    DocumentTitleFieldName: 0,
+    DisableLocalGroups: 0,
+    SslCertificateS3Path: i_S3Path,
+    AuthenticationType: 0,
+    ProxyConfiguration: i_ProxyConfiguration,
+  },
+  DatabaseConfiguration: {
+    DatabaseEngineType: 0,
+    ConnectionConfiguration: {
+      DatabaseHost: 0,
+      DatabasePort: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      SecretArn: 0,
+    },
+    VpcConfiguration: i_DataSourceVpcConfiguration,
+    ColumnConfiguration: {
+      DocumentIdColumnName: 0,
+      DocumentDataColumnName: 0,
+      DocumentTitleColumnName: 0,
+      FieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+      ChangeDetectingColumns: 0,
+    },
+    AclConfiguration: { AllowedGroupsColumnName: 0 },
+    SqlConfiguration: { QueryIdentifiersEnclosingOption: 0 },
+  },
+  SalesforceConfiguration: {
+    ServerUrl: 0,
+    SecretArn: 0,
+    StandardObjectConfigurations: D.list({
+      Name: 0,
+      DocumentDataFieldName: 0,
+      DocumentTitleFieldName: 0,
+      FieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    }),
+    KnowledgeArticleConfiguration: {
+      IncludedStates: 0,
+      StandardKnowledgeArticleTypeConfiguration: {
+        DocumentDataFieldName: 0,
+        DocumentTitleFieldName: 0,
+        FieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+      },
+      CustomKnowledgeArticleTypeConfigurations: D.list({
+        Name: 0,
+        DocumentDataFieldName: 0,
+        DocumentTitleFieldName: 0,
+        FieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+      }),
+    },
+    ChatterFeedConfiguration: {
+      DocumentDataFieldName: 0,
+      DocumentTitleFieldName: 0,
+      FieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+      IncludeFilterTypes: 0,
+    },
+    CrawlAttachments: 0,
+    StandardObjectAttachmentConfiguration: {
+      DocumentTitleFieldName: 0,
+      FieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    },
+    IncludeAttachmentFilePatterns: 0,
+    ExcludeAttachmentFilePatterns: 0,
+  },
+  OneDriveConfiguration: {
+    TenantDomain: 0,
+    SecretArn: 0,
+    OneDriveUsers: { OneDriveUserList: 0, OneDriveUserS3Path: i_S3Path },
+    InclusionPatterns: 0,
+    ExclusionPatterns: 0,
+    FieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    DisableLocalGroups: 0,
+  },
+  ServiceNowConfiguration: {
+    HostUrl: 0,
+    SecretArn: 0,
+    ServiceNowBuildVersion: 0,
+    KnowledgeArticleConfiguration: {
+      CrawlAttachments: 0,
+      IncludeAttachmentFilePatterns: 0,
+      ExcludeAttachmentFilePatterns: 0,
+      DocumentDataFieldName: 0,
+      DocumentTitleFieldName: 0,
+      FieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+      FilterQuery: 0,
+    },
+    ServiceCatalogConfiguration: {
+      CrawlAttachments: 0,
+      IncludeAttachmentFilePatterns: 0,
+      ExcludeAttachmentFilePatterns: 0,
+      DocumentDataFieldName: 0,
+      DocumentTitleFieldName: 0,
+      FieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    },
+    AuthenticationType: 0,
+  },
+  ConfluenceConfiguration: {
+    ServerUrl: 0,
+    SecretArn: 0,
+    Version: 0,
+    SpaceConfiguration: {
+      CrawlPersonalSpaces: 0,
+      CrawlArchivedSpaces: 0,
+      IncludeSpaces: 0,
+      ExcludeSpaces: 0,
+      SpaceFieldMappings: D.list({
+        DataSourceFieldName: 0,
+        DateFieldFormat: 0,
+        IndexFieldName: 0,
+      }),
+    },
+    PageConfiguration: {
+      PageFieldMappings: D.list({
+        DataSourceFieldName: 0,
+        DateFieldFormat: 0,
+        IndexFieldName: 0,
+      }),
+    },
+    BlogConfiguration: {
+      BlogFieldMappings: D.list({
+        DataSourceFieldName: 0,
+        DateFieldFormat: 0,
+        IndexFieldName: 0,
+      }),
+    },
+    AttachmentConfiguration: {
+      CrawlAttachments: 0,
+      AttachmentFieldMappings: D.list({
+        DataSourceFieldName: 0,
+        DateFieldFormat: 0,
+        IndexFieldName: 0,
+      }),
+    },
+    VpcConfiguration: i_DataSourceVpcConfiguration,
+    InclusionPatterns: 0,
+    ExclusionPatterns: 0,
+    ProxyConfiguration: i_ProxyConfiguration,
+    AuthenticationType: 0,
+  },
+  GoogleDriveConfiguration: {
+    SecretArn: 0,
+    InclusionPatterns: 0,
+    ExclusionPatterns: 0,
+    FieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    ExcludeMimeTypes: 0,
+    ExcludeUserAccounts: 0,
+    ExcludeSharedDrives: 0,
+  },
+  WebCrawlerConfiguration: {
+    Urls: {
+      SeedUrlConfiguration: { SeedUrls: 0, WebCrawlerMode: 0 },
+      SiteMapsConfiguration: { SiteMaps: 0 },
+    },
+    CrawlDepth: 0,
+    MaxLinksPerPage: 0,
+    MaxContentSizePerPageInMegaBytes: 0,
+    MaxUrlsPerMinuteCrawlRate: 0,
+    UrlInclusionPatterns: 0,
+    UrlExclusionPatterns: 0,
+    ProxyConfiguration: i_ProxyConfiguration,
+    AuthenticationConfiguration: {
+      BasicAuthentication: D.list({ Host: 0, Port: 0, Credentials: 0 }),
+    },
+  },
+  WorkDocsConfiguration: {
+    OrganizationId: 0,
+    CrawlComments: 0,
+    UseChangeLog: 0,
+    InclusionPatterns: 0,
+    ExclusionPatterns: 0,
+    FieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+  },
+  FsxConfiguration: {
+    FileSystemId: 0,
+    FileSystemType: 0,
+    VpcConfiguration: i_DataSourceVpcConfiguration,
+    SecretArn: 0,
+    InclusionPatterns: 0,
+    ExclusionPatterns: 0,
+    FieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+  },
+  SlackConfiguration: {
+    TeamId: 0,
+    SecretArn: 0,
+    VpcConfiguration: i_DataSourceVpcConfiguration,
+    SlackEntityList: 0,
+    UseChangeLog: 0,
+    CrawlBotMessage: 0,
+    ExcludeArchived: 0,
+    SinceCrawlDate: 0,
+    LookBackPeriod: 0,
+    PrivateChannelFilter: 0,
+    PublicChannelFilter: 0,
+    InclusionPatterns: 0,
+    ExclusionPatterns: 0,
+    FieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+  },
+  BoxConfiguration: {
+    EnterpriseId: 0,
+    SecretArn: 0,
+    UseChangeLog: 0,
+    CrawlComments: 0,
+    CrawlTasks: 0,
+    CrawlWebLinks: 0,
+    FileFieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    TaskFieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    CommentFieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    WebLinkFieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    InclusionPatterns: 0,
+    ExclusionPatterns: 0,
+    VpcConfiguration: i_DataSourceVpcConfiguration,
+  },
+  QuipConfiguration: {
+    Domain: 0,
+    SecretArn: 0,
+    CrawlFileComments: 0,
+    CrawlChatRooms: 0,
+    CrawlAttachments: 0,
+    FolderIds: 0,
+    ThreadFieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    MessageFieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    AttachmentFieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    InclusionPatterns: 0,
+    ExclusionPatterns: 0,
+    VpcConfiguration: i_DataSourceVpcConfiguration,
+  },
+  JiraConfiguration: {
+    JiraAccountUrl: 0,
+    SecretArn: 0,
+    UseChangeLog: 0,
+    Project: 0,
+    IssueType: 0,
+    Status: 0,
+    IssueSubEntityFilter: 0,
+    AttachmentFieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    CommentFieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    IssueFieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    ProjectFieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    WorkLogFieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    InclusionPatterns: 0,
+    ExclusionPatterns: 0,
+    VpcConfiguration: i_DataSourceVpcConfiguration,
+  },
+  GitHubConfiguration: {
+    SaaSConfiguration: { OrganizationName: 0, HostUrl: 0 },
+    OnPremiseConfiguration: {
+      HostUrl: 0,
+      OrganizationName: 0,
+      SslCertificateS3Path: i_S3Path,
+    },
+    Type: 0,
+    SecretArn: 0,
+    UseChangeLog: 0,
+    GitHubDocumentCrawlProperties: {
+      CrawlRepositoryDocuments: 0,
+      CrawlIssue: 0,
+      CrawlIssueComment: 0,
+      CrawlIssueCommentAttachment: 0,
+      CrawlPullRequest: 0,
+      CrawlPullRequestComment: 0,
+      CrawlPullRequestCommentAttachment: 0,
+    },
+    RepositoryFilter: 0,
+    InclusionFolderNamePatterns: 0,
+    InclusionFileTypePatterns: 0,
+    InclusionFileNamePatterns: 0,
+    ExclusionFolderNamePatterns: 0,
+    ExclusionFileTypePatterns: 0,
+    ExclusionFileNamePatterns: 0,
+    VpcConfiguration: i_DataSourceVpcConfiguration,
+    GitHubRepositoryConfigurationFieldMappings: D.list(
+      i_DataSourceToIndexFieldMapping,
+    ),
+    GitHubCommitConfigurationFieldMappings: D.list(
+      i_DataSourceToIndexFieldMapping,
+    ),
+    GitHubIssueDocumentConfigurationFieldMappings: D.list(
+      i_DataSourceToIndexFieldMapping,
+    ),
+    GitHubIssueCommentConfigurationFieldMappings: D.list(
+      i_DataSourceToIndexFieldMapping,
+    ),
+    GitHubIssueAttachmentConfigurationFieldMappings: D.list(
+      i_DataSourceToIndexFieldMapping,
+    ),
+    GitHubPullRequestCommentConfigurationFieldMappings: D.list(
+      i_DataSourceToIndexFieldMapping,
+    ),
+    GitHubPullRequestDocumentConfigurationFieldMappings: D.list(
+      i_DataSourceToIndexFieldMapping,
+    ),
+    GitHubPullRequestDocumentAttachmentConfigurationFieldMappings: D.list(
+      i_DataSourceToIndexFieldMapping,
+    ),
+  },
+  AlfrescoConfiguration: {
+    SiteUrl: 0,
+    SiteId: 0,
+    SecretArn: 0,
+    SslCertificateS3Path: i_S3Path,
+    CrawlSystemFolders: 0,
+    CrawlComments: 0,
+    EntityFilter: 0,
+    DocumentLibraryFieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    BlogFieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    WikiFieldMappings: D.list(i_DataSourceToIndexFieldMapping),
+    InclusionPatterns: 0,
+    ExclusionPatterns: 0,
+    VpcConfiguration: i_DataSourceVpcConfiguration,
+  },
+  TemplateConfiguration: { Template: 0 },
+});
+const i_DataSourceVpcConfiguration: D.LazyStruct = () => ({
+  SubnetIds: 0,
+  SecurityGroupIds: 0,
+});
+const i_DocumentAttribute: D.LazyStruct = () => ({
+  Key: 0,
+  Value: i_DocumentAttributeValue,
+});
+const i_DocumentRelevanceConfiguration: D.LazyStruct = () => ({
+  Name: 0,
+  Relevance: i_Relevance,
+});
+const i_EntityConfiguration: D.LazyStruct = () => ({
+  EntityId: 0,
+  EntityType: 0,
+});
+const i_ExperienceConfiguration: D.LazyStruct = () => ({
+  ContentSourceConfiguration: {
+    DataSourceIds: 0,
+    FaqIds: 0,
+    DirectPutContent: 0,
+  },
+  UserIdentityConfiguration: { IdentityAttributeName: 0 },
+});
+const i_Facet: D.LazyStruct = () => ({
+  DocumentAttributeKey: 0,
+  Facets: D.list(i_Facet),
+  MaxResults: 0,
+});
+const i_FeaturedDocument: D.LazyStruct = () => ({ Id: 0 });
+const i_HierarchicalPrincipal: D.LazyStruct = () => ({
+  PrincipalList: D.list(i_Principal),
+});
+const i_Principal: D.LazyStruct = () => ({
+  Name: 0,
+  Type: 0,
+  Access: 0,
+  DataSourceId: 0,
+});
+const i_Relevance: D.LazyStruct = () => ({
+  Freshness: 0,
+  Importance: 0,
+  Duration: 0,
+  RankOrder: 0,
+  ValueImportanceMap: 0,
+});
+const i_S3Path: D.LazyStruct = () => ({ Bucket: 0, Key: 0 });
+const i_SortingConfiguration: D.LazyStruct = () => ({
+  DocumentAttributeKey: 0,
+  SortOrder: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_UserContext: D.LazyStruct = () => ({
+  Token: 0,
+  UserId: 0,
+  Groups: 0,
+  DataSourceGroups: D.list({ GroupId: 0, DataSourceId: 0 }),
+});
+const i_UserGroupResolutionConfiguration: D.LazyStruct = () => ({
+  UserGroupResolutionMode: 0,
+});
+const i_UserTokenConfiguration: D.LazyStruct = () => ({
+  JwtTokenTypeConfiguration: {
+    KeyLocation: 0,
+    URL: 0,
+    SecretManagerArn: 0,
+    UserNameAttributeField: 0,
+    GroupAttributeField: 0,
+    Issuer: 0,
+    ClaimRegex: 0,
+  },
+  JsonTokenTypeConfiguration: {
+    UserNameAttributeField: 0,
+    GroupAttributeField: 0,
+  },
+});
 const o_DocumentAttribute: D.LazyStruct = () => ({
   Value: o_DocumentAttributeValue,
 });
@@ -4978,4 +5767,30 @@ const o_FacetResult: D.LazyStruct = () => ({
 });
 const o_HookConfiguration: D.LazyStruct = () => ({
   InvocationCondition: o_DocumentAttributeCondition,
+});
+const i_DataSourceToIndexFieldMapping: D.LazyStruct = () => ({
+  DataSourceFieldName: 0,
+  DateFieldFormat: 0,
+  IndexFieldName: 0,
+});
+const i_DocumentAttributeCondition: D.LazyStruct = () => ({
+  ConditionDocumentAttributeKey: 0,
+  Operator: 0,
+  ConditionOnValue: i_DocumentAttributeValue,
+});
+const i_DocumentAttributeValue: D.LazyStruct = () => ({
+  StringValue: 0,
+  StringListValue: 0,
+  LongValue: 0,
+  DateValue: 0,
+});
+const i_HookConfiguration: D.LazyStruct = () => ({
+  InvocationCondition: i_DocumentAttributeCondition,
+  LambdaArn: 0,
+  S3Bucket: 0,
+});
+const i_ProxyConfiguration: D.LazyStruct = () => ({
+  Host: 0,
+  Port: 0,
+  Credentials: 0,
 });

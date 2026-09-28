@@ -1390,6 +1390,11 @@ export const createGatewayRoute: API.OperationMethod<
     service: svc,
     http: "PUT /v20190125/meshes/{meshName}/virtualGateway/{virtualGatewayName}/gatewayRoutes",
     input: {
+      gatewayRouteName: 0,
+      meshName: 0,
+      virtualGatewayName: 0,
+      spec: i_GatewayRouteSpec,
+      tags: D.list(i_TagRef),
       clientToken: D.m({ idempotency: true }),
       meshOwner: D.m({ query: "meshOwner" }),
     },
@@ -1440,7 +1445,12 @@ export const createMesh: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v20190125/meshes",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      meshName: 0,
+      spec: i_MeshSpec,
+      tags: D.list(i_TagRef),
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { mesh: D.m({ payload: true, shape: o_MeshData }) },
     body: true,
   },
@@ -1487,6 +1497,11 @@ export const createRoute: API.OperationMethod<
     service: svc,
     http: "PUT /v20190125/meshes/{meshName}/virtualRouter/{virtualRouterName}/routes",
     input: {
+      routeName: 0,
+      meshName: 0,
+      virtualRouterName: 0,
+      spec: i_RouteSpec,
+      tags: D.list(i_TagRef),
       clientToken: D.m({ idempotency: true }),
       meshOwner: D.m({ query: "meshOwner" }),
     },
@@ -1538,6 +1553,10 @@ export const createVirtualGateway: API.OperationMethod<
     service: svc,
     http: "PUT /v20190125/meshes/{meshName}/virtualGateways",
     input: {
+      virtualGatewayName: 0,
+      meshName: 0,
+      spec: i_VirtualGatewaySpec,
+      tags: D.list(i_TagRef),
       clientToken: D.m({ idempotency: true }),
       meshOwner: D.m({ query: "meshOwner" }),
     },
@@ -1610,6 +1629,10 @@ export const createVirtualNode: API.OperationMethod<
     service: svc,
     http: "PUT /v20190125/meshes/{meshName}/virtualNodes",
     input: {
+      virtualNodeName: 0,
+      meshName: 0,
+      spec: i_VirtualNodeSpec,
+      tags: D.list(i_TagRef),
       clientToken: D.m({ idempotency: true }),
       meshOwner: D.m({ query: "meshOwner" }),
     },
@@ -1662,6 +1685,10 @@ export const createVirtualRouter: API.OperationMethod<
     service: svc,
     http: "PUT /v20190125/meshes/{meshName}/virtualRouters",
     input: {
+      virtualRouterName: 0,
+      meshName: 0,
+      spec: i_VirtualRouterSpec,
+      tags: D.list(i_TagRef),
       clientToken: D.m({ idempotency: true }),
       meshOwner: D.m({ query: "meshOwner" }),
     },
@@ -1716,6 +1743,10 @@ export const createVirtualService: API.OperationMethod<
     service: svc,
     http: "PUT /v20190125/meshes/{meshName}/virtualServices",
     input: {
+      virtualServiceName: 0,
+      meshName: 0,
+      spec: i_VirtualServiceSpec,
+      tags: D.list(i_TagRef),
       clientToken: D.m({ idempotency: true }),
       meshOwner: D.m({ query: "meshOwner" }),
     },
@@ -1760,7 +1791,12 @@ export const deleteGatewayRoute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v20190125/meshes/{meshName}/virtualGateway/{virtualGatewayName}/gatewayRoutes/{gatewayRouteName}",
-    input: { meshOwner: D.m({ query: "meshOwner" }) },
+    input: {
+      gatewayRouteName: 0,
+      meshName: 0,
+      virtualGatewayName: 0,
+      meshOwner: D.m({ query: "meshOwner" }),
+    },
     output: { gatewayRoute: D.m({ payload: true, shape: o_GatewayRouteData }) },
   },
   errors: [
@@ -1801,6 +1837,7 @@ export const deleteMesh: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v20190125/meshes/{meshName}",
+    input: { meshName: 0 },
     output: { mesh: D.m({ payload: true, shape: o_MeshData }) },
   },
   errors: [
@@ -1838,7 +1875,12 @@ export const deleteRoute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v20190125/meshes/{meshName}/virtualRouter/{virtualRouterName}/routes/{routeName}",
-    input: { meshOwner: D.m({ query: "meshOwner" }) },
+    input: {
+      routeName: 0,
+      meshName: 0,
+      virtualRouterName: 0,
+      meshOwner: D.m({ query: "meshOwner" }),
+    },
     output: { route: D.m({ payload: true, shape: o_RouteData }) },
   },
   errors: [
@@ -1877,7 +1919,11 @@ export const deleteVirtualGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v20190125/meshes/{meshName}/virtualGateways/{virtualGatewayName}",
-    input: { meshOwner: D.m({ query: "meshOwner" }) },
+    input: {
+      virtualGatewayName: 0,
+      meshName: 0,
+      meshOwner: D.m({ query: "meshOwner" }),
+    },
     output: {
       virtualGateway: D.m({ payload: true, shape: o_VirtualGatewayData }),
     },
@@ -1920,7 +1966,11 @@ export const deleteVirtualNode: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v20190125/meshes/{meshName}/virtualNodes/{virtualNodeName}",
-    input: { meshOwner: D.m({ query: "meshOwner" }) },
+    input: {
+      virtualNodeName: 0,
+      meshName: 0,
+      meshOwner: D.m({ query: "meshOwner" }),
+    },
     output: { virtualNode: D.m({ payload: true, shape: o_VirtualNodeData }) },
   },
   errors: [
@@ -1961,7 +2011,11 @@ export const deleteVirtualRouter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v20190125/meshes/{meshName}/virtualRouters/{virtualRouterName}",
-    input: { meshOwner: D.m({ query: "meshOwner" }) },
+    input: {
+      virtualRouterName: 0,
+      meshName: 0,
+      meshOwner: D.m({ query: "meshOwner" }),
+    },
     output: {
       virtualRouter: D.m({ payload: true, shape: o_VirtualRouterData }),
     },
@@ -2001,7 +2055,11 @@ export const deleteVirtualService: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v20190125/meshes/{meshName}/virtualServices/{virtualServiceName}",
-    input: { meshOwner: D.m({ query: "meshOwner" }) },
+    input: {
+      virtualServiceName: 0,
+      meshName: 0,
+      meshOwner: D.m({ query: "meshOwner" }),
+    },
     output: {
       virtualService: D.m({ payload: true, shape: o_VirtualServiceData }),
     },
@@ -2040,7 +2098,12 @@ export const describeGatewayRoute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v20190125/meshes/{meshName}/virtualGateway/{virtualGatewayName}/gatewayRoutes/{gatewayRouteName}",
-    input: { meshOwner: D.m({ query: "meshOwner" }) },
+    input: {
+      gatewayRouteName: 0,
+      meshName: 0,
+      virtualGatewayName: 0,
+      meshOwner: D.m({ query: "meshOwner" }),
+    },
     output: { gatewayRoute: D.m({ payload: true, shape: o_GatewayRouteData }) },
   },
   errors: [
@@ -2076,7 +2139,7 @@ export const describeMesh: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v20190125/meshes/{meshName}",
-    input: { meshOwner: D.m({ query: "meshOwner" }) },
+    input: { meshName: 0, meshOwner: D.m({ query: "meshOwner" }) },
     output: { mesh: D.m({ payload: true, shape: o_MeshData }) },
   },
   errors: [
@@ -2112,7 +2175,12 @@ export const describeRoute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v20190125/meshes/{meshName}/virtualRouter/{virtualRouterName}/routes/{routeName}",
-    input: { meshOwner: D.m({ query: "meshOwner" }) },
+    input: {
+      routeName: 0,
+      meshName: 0,
+      meshOwner: D.m({ query: "meshOwner" }),
+      virtualRouterName: 0,
+    },
     output: { route: D.m({ payload: true, shape: o_RouteData }) },
   },
   errors: [
@@ -2148,7 +2216,11 @@ export const describeVirtualGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v20190125/meshes/{meshName}/virtualGateways/{virtualGatewayName}",
-    input: { meshOwner: D.m({ query: "meshOwner" }) },
+    input: {
+      virtualGatewayName: 0,
+      meshName: 0,
+      meshOwner: D.m({ query: "meshOwner" }),
+    },
     output: {
       virtualGateway: D.m({ payload: true, shape: o_VirtualGatewayData }),
     },
@@ -2186,7 +2258,11 @@ export const describeVirtualNode: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v20190125/meshes/{meshName}/virtualNodes/{virtualNodeName}",
-    input: { meshOwner: D.m({ query: "meshOwner" }) },
+    input: {
+      virtualNodeName: 0,
+      meshName: 0,
+      meshOwner: D.m({ query: "meshOwner" }),
+    },
     output: { virtualNode: D.m({ payload: true, shape: o_VirtualNodeData }) },
   },
   errors: [
@@ -2222,7 +2298,11 @@ export const describeVirtualRouter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v20190125/meshes/{meshName}/virtualRouters/{virtualRouterName}",
-    input: { meshOwner: D.m({ query: "meshOwner" }) },
+    input: {
+      virtualRouterName: 0,
+      meshName: 0,
+      meshOwner: D.m({ query: "meshOwner" }),
+    },
     output: {
       virtualRouter: D.m({ payload: true, shape: o_VirtualRouterData }),
     },
@@ -2260,7 +2340,11 @@ export const describeVirtualService: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v20190125/meshes/{meshName}/virtualServices/{virtualServiceName}",
-    input: { meshOwner: D.m({ query: "meshOwner" }) },
+    input: {
+      virtualServiceName: 0,
+      meshName: 0,
+      meshOwner: D.m({ query: "meshOwner" }),
+    },
     output: {
       virtualService: D.m({ payload: true, shape: o_VirtualServiceData }),
     },
@@ -2301,6 +2385,8 @@ export const listGatewayRoutes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v20190125/meshes/{meshName}/virtualGateway/{virtualGatewayName}/gatewayRoutes",
     input: {
+      meshName: 0,
+      virtualGatewayName: 0,
       nextToken: D.m({ query: "nextToken" }),
       limit: D.m({ query: "limit" }),
       meshOwner: D.m({ query: "meshOwner" }),
@@ -2394,6 +2480,8 @@ export const listRoutes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v20190125/meshes/{meshName}/virtualRouter/{virtualRouterName}/routes",
     input: {
+      meshName: 0,
+      virtualRouterName: 0,
       nextToken: D.m({ query: "nextToken" }),
       limit: D.m({ query: "limit" }),
       meshOwner: D.m({ query: "meshOwner" }),
@@ -2487,6 +2575,7 @@ export const listVirtualGateways: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v20190125/meshes/{meshName}/virtualGateways",
     input: {
+      meshName: 0,
       nextToken: D.m({ query: "nextToken" }),
       limit: D.m({ query: "limit" }),
       meshOwner: D.m({ query: "meshOwner" }),
@@ -2536,6 +2625,7 @@ export const listVirtualNodes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v20190125/meshes/{meshName}/virtualNodes",
     input: {
+      meshName: 0,
       nextToken: D.m({ query: "nextToken" }),
       limit: D.m({ query: "limit" }),
       meshOwner: D.m({ query: "meshOwner" }),
@@ -2583,6 +2673,7 @@ export const listVirtualRouters: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v20190125/meshes/{meshName}/virtualRouters",
     input: {
+      meshName: 0,
       nextToken: D.m({ query: "nextToken" }),
       limit: D.m({ query: "limit" }),
       meshOwner: D.m({ query: "meshOwner" }),
@@ -2632,6 +2723,7 @@ export const listVirtualServices: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v20190125/meshes/{meshName}/virtualServices",
     input: {
+      meshName: 0,
       nextToken: D.m({ query: "nextToken" }),
       limit: D.m({ query: "limit" }),
       meshOwner: D.m({ query: "meshOwner" }),
@@ -2683,7 +2775,10 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v20190125/tag",
-    input: { resourceArn: D.m({ query: "resourceArn" }) },
+    input: {
+      resourceArn: D.m({ query: "resourceArn" }),
+      tags: D.list(i_TagRef),
+    },
     body: true,
   },
   errors: [
@@ -2720,7 +2815,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v20190125/untag",
-    input: { resourceArn: D.m({ query: "resourceArn" }) },
+    input: { resourceArn: D.m({ query: "resourceArn" }), tagKeys: 0 },
     body: true,
   },
   errors: [
@@ -2760,6 +2855,10 @@ export const updateGatewayRoute: API.OperationMethod<
     service: svc,
     http: "PUT /v20190125/meshes/{meshName}/virtualGateway/{virtualGatewayName}/gatewayRoutes/{gatewayRouteName}",
     input: {
+      gatewayRouteName: 0,
+      meshName: 0,
+      virtualGatewayName: 0,
+      spec: i_GatewayRouteSpec,
       clientToken: D.m({ idempotency: true }),
       meshOwner: D.m({ query: "meshOwner" }),
     },
@@ -2802,7 +2901,11 @@ export const updateMesh: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v20190125/meshes/{meshName}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      meshName: 0,
+      spec: i_MeshSpec,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { mesh: D.m({ payload: true, shape: o_MeshData }) },
     body: true,
   },
@@ -2843,6 +2946,10 @@ export const updateRoute: API.OperationMethod<
     service: svc,
     http: "PUT /v20190125/meshes/{meshName}/virtualRouter/{virtualRouterName}/routes/{routeName}",
     input: {
+      routeName: 0,
+      meshName: 0,
+      virtualRouterName: 0,
+      spec: i_RouteSpec,
       clientToken: D.m({ idempotency: true }),
       meshOwner: D.m({ query: "meshOwner" }),
     },
@@ -2887,6 +2994,9 @@ export const updateVirtualGateway: API.OperationMethod<
     service: svc,
     http: "PUT /v20190125/meshes/{meshName}/virtualGateways/{virtualGatewayName}",
     input: {
+      virtualGatewayName: 0,
+      meshName: 0,
+      spec: i_VirtualGatewaySpec,
       clientToken: D.m({ idempotency: true }),
       meshOwner: D.m({ query: "meshOwner" }),
     },
@@ -2933,6 +3043,9 @@ export const updateVirtualNode: API.OperationMethod<
     service: svc,
     http: "PUT /v20190125/meshes/{meshName}/virtualNodes/{virtualNodeName}",
     input: {
+      virtualNodeName: 0,
+      meshName: 0,
+      spec: i_VirtualNodeSpec,
       clientToken: D.m({ idempotency: true }),
       meshOwner: D.m({ query: "meshOwner" }),
     },
@@ -2977,6 +3090,9 @@ export const updateVirtualRouter: API.OperationMethod<
     service: svc,
     http: "PUT /v20190125/meshes/{meshName}/virtualRouters/{virtualRouterName}",
     input: {
+      virtualRouterName: 0,
+      meshName: 0,
+      spec: i_VirtualRouterSpec,
       clientToken: D.m({ idempotency: true }),
       meshOwner: D.m({ query: "meshOwner" }),
     },
@@ -3023,6 +3139,9 @@ export const updateVirtualService: API.OperationMethod<
     service: svc,
     http: "PUT /v20190125/meshes/{meshName}/virtualServices/{virtualServiceName}",
     input: {
+      virtualServiceName: 0,
+      meshName: 0,
+      spec: i_VirtualServiceSpec,
       clientToken: D.m({ idempotency: true }),
       meshOwner: D.m({ query: "meshOwner" }),
     },
@@ -3046,6 +3165,200 @@ export const updateVirtualService: API.OperationMethod<
   operationName: "UpdateVirtualService",
 })) as any;
 
+const i_GatewayRouteSpec: D.LazyStruct = () => ({
+  priority: 0,
+  httpRoute: i_HttpGatewayRoute,
+  http2Route: i_HttpGatewayRoute,
+  grpcRoute: {
+    match: {
+      serviceName: 0,
+      hostname: i_GatewayRouteHostnameMatch,
+      metadata: D.list({
+        name: 0,
+        invert: 0,
+        match: {
+          exact: 0,
+          regex: 0,
+          range: i_MatchRange,
+          prefix: 0,
+          suffix: 0,
+        },
+      }),
+      port: 0,
+    },
+    action: {
+      target: i_GatewayRouteTarget,
+      rewrite: { hostname: i_GatewayRouteHostnameRewrite },
+    },
+  },
+});
+const i_MeshSpec: D.LazyStruct = () => ({
+  egressFilter: { type: 0 },
+  serviceDiscovery: { ipPreference: 0 },
+});
+const i_RouteSpec: D.LazyStruct = () => ({
+  priority: 0,
+  httpRoute: i_HttpRoute,
+  tcpRoute: {
+    action: { weightedTargets: D.list(i_WeightedTarget) },
+    timeout: i_TcpTimeout,
+    match: { port: 0 },
+  },
+  http2Route: i_HttpRoute,
+  grpcRoute: {
+    action: { weightedTargets: D.list(i_WeightedTarget) },
+    match: {
+      serviceName: 0,
+      methodName: 0,
+      metadata: D.list({
+        name: 0,
+        invert: 0,
+        match: {
+          exact: 0,
+          regex: 0,
+          range: i_MatchRange,
+          prefix: 0,
+          suffix: 0,
+        },
+      }),
+      port: 0,
+    },
+    retryPolicy: {
+      perRetryTimeout: i_Duration,
+      maxRetries: 0,
+      httpRetryEvents: 0,
+      tcpRetryEvents: 0,
+      grpcRetryEvents: 0,
+    },
+    timeout: i_GrpcTimeout,
+  },
+});
+const i_TagRef: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_VirtualGatewaySpec: D.LazyStruct = () => ({
+  backendDefaults: {
+    clientPolicy: {
+      tls: {
+        enforce: 0,
+        ports: 0,
+        certificate: {
+          file: i_VirtualGatewayListenerTlsFileCertificate,
+          sds: i_VirtualGatewayListenerTlsSdsCertificate,
+        },
+        validation: {
+          trust: {
+            acm: { certificateAuthorityArns: 0 },
+            file: i_VirtualGatewayTlsValidationContextFileTrust,
+            sds: i_VirtualGatewayTlsValidationContextSdsTrust,
+          },
+          subjectAlternativeNames: i_SubjectAlternativeNames,
+        },
+      },
+    },
+  },
+  listeners: D.list({
+    healthCheck: {
+      timeoutMillis: 0,
+      intervalMillis: 0,
+      protocol: 0,
+      port: 0,
+      path: 0,
+      healthyThreshold: 0,
+      unhealthyThreshold: 0,
+    },
+    portMapping: { port: 0, protocol: 0 },
+    tls: {
+      mode: 0,
+      validation: {
+        trust: {
+          file: i_VirtualGatewayTlsValidationContextFileTrust,
+          sds: i_VirtualGatewayTlsValidationContextSdsTrust,
+        },
+        subjectAlternativeNames: i_SubjectAlternativeNames,
+      },
+      certificate: {
+        acm: { certificateArn: 0 },
+        file: i_VirtualGatewayListenerTlsFileCertificate,
+        sds: i_VirtualGatewayListenerTlsSdsCertificate,
+      },
+    },
+    connectionPool: {
+      http: { maxConnections: 0, maxPendingRequests: 0 },
+      http2: { maxRequests: 0 },
+      grpc: { maxRequests: 0 },
+    },
+  }),
+  logging: { accessLog: { file: { path: 0, format: i_LoggingFormat } } },
+});
+const i_VirtualNodeSpec: D.LazyStruct = () => ({
+  serviceDiscovery: {
+    dns: { hostname: 0, responseType: 0, ipPreference: 0 },
+    awsCloudMap: {
+      namespaceName: 0,
+      serviceName: 0,
+      attributes: D.list({ key: 0, value: 0 }),
+      ipPreference: 0,
+    },
+  },
+  listeners: D.list({
+    portMapping: i_PortMapping,
+    tls: {
+      mode: 0,
+      certificate: {
+        acm: { certificateArn: 0 },
+        file: i_ListenerTlsFileCertificate,
+        sds: i_ListenerTlsSdsCertificate,
+      },
+      validation: {
+        trust: {
+          file: i_TlsValidationContextFileTrust,
+          sds: i_TlsValidationContextSdsTrust,
+        },
+        subjectAlternativeNames: i_SubjectAlternativeNames,
+      },
+    },
+    healthCheck: {
+      timeoutMillis: 0,
+      intervalMillis: 0,
+      protocol: 0,
+      port: 0,
+      path: 0,
+      healthyThreshold: 0,
+      unhealthyThreshold: 0,
+    },
+    timeout: {
+      tcp: i_TcpTimeout,
+      http: i_HttpTimeout,
+      http2: i_HttpTimeout,
+      grpc: i_GrpcTimeout,
+    },
+    outlierDetection: {
+      maxServerErrors: 0,
+      interval: i_Duration,
+      baseEjectionDuration: i_Duration,
+      maxEjectionPercent: 0,
+    },
+    connectionPool: {
+      tcp: { maxConnections: 0 },
+      http: { maxConnections: 0, maxPendingRequests: 0 },
+      http2: { maxRequests: 0 },
+      grpc: { maxRequests: 0 },
+    },
+  }),
+  backends: D.list({
+    virtualService: { virtualServiceName: 0, clientPolicy: i_ClientPolicy },
+  }),
+  backendDefaults: { clientPolicy: i_ClientPolicy },
+  logging: { accessLog: { file: { path: 0, format: i_LoggingFormat } } },
+});
+const i_VirtualRouterSpec: D.LazyStruct = () => ({
+  listeners: D.list({ portMapping: i_PortMapping }),
+});
+const i_VirtualServiceSpec: D.LazyStruct = () => ({
+  provider: {
+    virtualNode: { virtualNodeName: 0 },
+    virtualRouter: { virtualRouterName: 0 },
+  },
+});
 const o_GatewayRouteData: D.LazyStruct = () => ({
   metadata: o_ResourceMetadata,
 });
@@ -3063,7 +3376,130 @@ const o_VirtualRouterData: D.LazyStruct = () => ({
 const o_VirtualServiceData: D.LazyStruct = () => ({
   metadata: o_ResourceMetadata,
 });
+const i_ClientPolicy: D.LazyStruct = () => ({
+  tls: {
+    enforce: 0,
+    ports: 0,
+    certificate: {
+      file: i_ListenerTlsFileCertificate,
+      sds: i_ListenerTlsSdsCertificate,
+    },
+    validation: {
+      trust: {
+        acm: { certificateAuthorityArns: 0 },
+        file: i_TlsValidationContextFileTrust,
+        sds: i_TlsValidationContextSdsTrust,
+      },
+      subjectAlternativeNames: i_SubjectAlternativeNames,
+    },
+  },
+});
+const i_Duration: D.LazyStruct = () => ({ value: 0, unit: 0 });
+const i_GatewayRouteHostnameMatch: D.LazyStruct = () => ({
+  exact: 0,
+  suffix: 0,
+});
+const i_GatewayRouteHostnameRewrite: D.LazyStruct = () => ({
+  defaultTargetHostname: 0,
+});
+const i_GatewayRouteTarget: D.LazyStruct = () => ({
+  virtualService: { virtualServiceName: 0 },
+  port: 0,
+});
+const i_GrpcTimeout: D.LazyStruct = () => ({
+  perRequest: i_Duration,
+  idle: i_Duration,
+});
+const i_HttpGatewayRoute: D.LazyStruct = () => ({
+  match: {
+    prefix: 0,
+    path: i_HttpPathMatch,
+    queryParameters: D.list(i_HttpQueryParameter),
+    method: 0,
+    hostname: i_GatewayRouteHostnameMatch,
+    headers: D.list({ name: 0, invert: 0, match: i_HeaderMatchMethod }),
+    port: 0,
+  },
+  action: {
+    target: i_GatewayRouteTarget,
+    rewrite: {
+      prefix: { defaultPrefix: 0, value: 0 },
+      path: { exact: 0 },
+      hostname: i_GatewayRouteHostnameRewrite,
+    },
+  },
+});
+const i_HttpRoute: D.LazyStruct = () => ({
+  match: {
+    prefix: 0,
+    path: i_HttpPathMatch,
+    queryParameters: D.list(i_HttpQueryParameter),
+    method: 0,
+    scheme: 0,
+    headers: D.list({ name: 0, invert: 0, match: i_HeaderMatchMethod }),
+    port: 0,
+  },
+  action: { weightedTargets: D.list(i_WeightedTarget) },
+  retryPolicy: {
+    perRetryTimeout: i_Duration,
+    maxRetries: 0,
+    httpRetryEvents: 0,
+    tcpRetryEvents: 0,
+  },
+  timeout: i_HttpTimeout,
+});
+const i_HttpTimeout: D.LazyStruct = () => ({
+  perRequest: i_Duration,
+  idle: i_Duration,
+});
+const i_ListenerTlsFileCertificate: D.LazyStruct = () => ({
+  certificateChain: 0,
+  privateKey: 0,
+});
+const i_ListenerTlsSdsCertificate: D.LazyStruct = () => ({ secretName: 0 });
+const i_LoggingFormat: D.LazyStruct = () => ({
+  text: 0,
+  json: D.list({ key: 0, value: 0 }),
+});
+const i_MatchRange: D.LazyStruct = () => ({ start: 0, end: 0 });
+const i_PortMapping: D.LazyStruct = () => ({ port: 0, protocol: 0 });
+const i_SubjectAlternativeNames: D.LazyStruct = () => ({ match: { exact: 0 } });
+const i_TcpTimeout: D.LazyStruct = () => ({ idle: i_Duration });
+const i_TlsValidationContextFileTrust: D.LazyStruct = () => ({
+  certificateChain: 0,
+});
+const i_TlsValidationContextSdsTrust: D.LazyStruct = () => ({ secretName: 0 });
+const i_VirtualGatewayListenerTlsFileCertificate: D.LazyStruct = () => ({
+  certificateChain: 0,
+  privateKey: 0,
+});
+const i_VirtualGatewayListenerTlsSdsCertificate: D.LazyStruct = () => ({
+  secretName: 0,
+});
+const i_VirtualGatewayTlsValidationContextFileTrust: D.LazyStruct = () => ({
+  certificateChain: 0,
+});
+const i_VirtualGatewayTlsValidationContextSdsTrust: D.LazyStruct = () => ({
+  secretName: 0,
+});
+const i_WeightedTarget: D.LazyStruct = () => ({
+  virtualNode: 0,
+  weight: 0,
+  port: 0,
+});
 const o_ResourceMetadata: D.LazyStruct = () => ({
   createdAt: D.ts,
   lastUpdatedAt: D.ts,
+});
+const i_HeaderMatchMethod: D.LazyStruct = () => ({
+  exact: 0,
+  regex: 0,
+  range: i_MatchRange,
+  prefix: 0,
+  suffix: 0,
+});
+const i_HttpPathMatch: D.LazyStruct = () => ({ exact: 0, regex: 0 });
+const i_HttpQueryParameter: D.LazyStruct = () => ({
+  name: 0,
+  match: { exact: 0 },
 });

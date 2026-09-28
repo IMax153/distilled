@@ -464,6 +464,7 @@ export const batchAddChannelRoleToAccessors: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /spaces/{spaceId}/channels/{channelId}/roles",
+    input: { spaceId: 0, channelId: 0, accessorIds: 0, channelRole: 0 },
     body: true,
   },
   errors: [
@@ -497,6 +498,7 @@ export const batchAddRole: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /spaces/{spaceId}/roles",
+    input: { spaceId: 0, accessorIds: 0, role: 0 },
     body: true,
   },
   errors: [
@@ -530,6 +532,7 @@ export const batchRemoveChannelRoleFromAccessors: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /spaces/{spaceId}/channels/{channelId}/roles",
+    input: { spaceId: 0, channelId: 0, accessorIds: 0, channelRole: 0 },
     body: true,
   },
   errors: [
@@ -563,6 +566,7 @@ export const batchRemoveRole: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /spaces/{spaceId}/roles",
+    input: { spaceId: 0, accessorIds: 0, role: 0 },
     body: true,
   },
   errors: [
@@ -598,6 +602,7 @@ export const createChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /spaces/{spaceId}/channels",
+    input: { spaceId: 0, channelName: 0, channelDescription: 0 },
     body: true,
   },
   errors: [
@@ -632,7 +637,21 @@ export const createSpace: API.OperationMethod<
   CreateSpaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /spaces", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /spaces",
+    input: {
+      name: 0,
+      subdomain: 0,
+      tier: 0,
+      description: 0,
+      userKMSKey: 0,
+      tags: 0,
+      roleArn: 0,
+      supportedEmailDomains: i_SupportedEmailDomainsParameters,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -663,7 +682,11 @@ export const deleteSpace: API.OperationMethod<
   DeleteSpaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /spaces/{spaceId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /spaces/{spaceId}",
+    input: { spaceId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -695,6 +718,7 @@ export const deregisterAdmin: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /spaces/{spaceId}/admins/{adminId}",
+    input: { spaceId: 0, adminId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -727,6 +751,7 @@ export const getChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /spaces/{spaceId}/channels/{channelId}",
+    input: { spaceId: 0, channelId: 0 },
     output: {
       channelName: D.secret,
       channelDescription: D.secret,
@@ -765,6 +790,7 @@ export const getSpace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /spaces/{spaceId}",
+    input: { spaceId: 0 },
     output: {
       name: D.secret,
       description: D.secret,
@@ -806,6 +832,7 @@ export const listChannels: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /spaces/{spaceId}/channels",
     input: {
+      spaceId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -902,7 +929,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -931,7 +962,11 @@ export const registerAdmin: API.OperationMethod<
   RegisterAdminError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /spaces/{spaceId}/admins/{adminId}" },
+  descriptor: {
+    service: svc,
+    http: "POST /spaces/{spaceId}/admins/{adminId}",
+    input: { spaceId: 0, adminId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -963,6 +998,7 @@ export const sendInvites: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /spaces/{spaceId}/invite",
+    input: { spaceId: 0, accessorIds: 0, title: 0, body: 0 },
     body: true,
   },
   errors: [
@@ -993,7 +1029,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1025,7 +1066,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1059,6 +1100,7 @@ export const updateChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /spaces/{spaceId}/channels/{channelId}",
+    input: { spaceId: 0, channelId: 0, channelName: 0, channelDescription: 0 },
     body: true,
   },
   errors: [
@@ -1091,7 +1133,18 @@ export const updateSpace: API.OperationMethod<
   UpdateSpaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /spaces/{spaceId}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /spaces/{spaceId}",
+    input: {
+      spaceId: 0,
+      description: 0,
+      tier: 0,
+      roleArn: 0,
+      supportedEmailDomains: i_SupportedEmailDomainsParameters,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1105,6 +1158,10 @@ export const updateSpace: API.OperationMethod<
   operationName: "UpdateSpace",
 })) as any;
 
+const i_SupportedEmailDomainsParameters: D.LazyStruct = () => ({
+  enabled: 0,
+  allowedDomains: 0,
+});
 const o_SupportedEmailDomainsStatus: D.LazyStruct = () => ({
   allowedDomains: D.list(D.secret),
 });

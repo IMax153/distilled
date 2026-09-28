@@ -527,6 +527,12 @@ export const batchCreateRumMetricDefinitions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /rummetrics/{AppMonitorName}/metrics",
+    input: {
+      AppMonitorName: 0,
+      Destination: 0,
+      DestinationArn: 0,
+      MetricDefinitions: D.list(i_MetricDefinitionRequest),
+    },
     body: true,
   },
   errors: [
@@ -568,6 +574,7 @@ export const batchDeleteRumMetricDefinitions: API.OperationMethod<
     service: svc,
     http: "DELETE /rummetrics/{AppMonitorName}/metrics",
     input: {
+      AppMonitorName: 0,
       Destination: D.m({ query: "destination" }),
       DestinationArn: D.m({ query: "destinationArn" }),
       MetricDefinitionIds: D.m({ query: "metricDefinitionIds" }),
@@ -606,6 +613,7 @@ export const batchGetRumMetricDefinitions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /rummetrics/{AppMonitorName}/metrics",
     input: {
+      AppMonitorName: 0,
       Destination: D.m({ query: "destination" }),
       DestinationArn: D.m({ query: "destinationArn" }),
       MaxResults: D.m({ query: "maxResults" }),
@@ -651,7 +659,22 @@ export const createAppMonitor: API.OperationMethod<
   CreateAppMonitorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /appmonitor", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /appmonitor",
+    input: {
+      Name: 0,
+      Domain: 0,
+      DomainList: 0,
+      Tags: 0,
+      AppMonitorConfiguration: i_AppMonitorConfiguration,
+      CwLogEnabled: 0,
+      CustomEvents: i_CustomEvents,
+      DeobfuscationConfiguration: i_DeobfuscationConfiguration,
+      Platform: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -683,7 +706,11 @@ export const deleteAppMonitor: API.OperationMethod<
   DeleteAppMonitorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /appmonitor/{Name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /appmonitor/{Name}",
+    input: { Name: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -719,7 +746,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /appmonitor/{Name}/policy",
-    input: { PolicyRevisionId: D.m({ query: "policyRevisionId" }) },
+    input: { Name: 0, PolicyRevisionId: D.m({ query: "policyRevisionId" }) },
   },
   errors: [
     AccessDeniedException,
@@ -757,6 +784,7 @@ export const deleteRumMetricsDestination: API.OperationMethod<
     service: svc,
     http: "DELETE /rummetrics/{AppMonitorName}/metricsdestination",
     input: {
+      AppMonitorName: 0,
       Destination: D.m({ query: "destination" }),
       DestinationArn: D.m({ query: "destinationArn" }),
     },
@@ -790,7 +818,11 @@ export const getAppMonitor: API.OperationMethod<
   GetAppMonitorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /appmonitor/{Name}" },
+  descriptor: {
+    service: svc,
+    http: "GET /appmonitor/{Name}",
+    input: { Name: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -823,6 +855,13 @@ export const getAppMonitorData: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /appmonitor/{Name}/data",
+    input: {
+      Name: 0,
+      TimeRange: { After: 0, Before: 0 },
+      Filters: D.list({ Name: 0, Values: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -861,7 +900,11 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /appmonitor/{Name}/policy" },
+  descriptor: {
+    service: svc,
+    http: "GET /appmonitor/{Name}/policy",
+    input: { Name: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -939,6 +982,7 @@ export const listRumMetricsDestinations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /rummetrics/{AppMonitorName}/metricsdestination",
     input: {
+      AppMonitorName: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -974,7 +1018,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1008,6 +1056,7 @@ export const putResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /appmonitor/{Name}/policy",
+    input: { Name: 0, PolicyDocument: 0, PolicyRevisionId: 0 },
     body: true,
   },
   errors: [
@@ -1044,7 +1093,25 @@ export const putRumEvents: API.OperationMethod<
   PutRumEventsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /appmonitors/{Id}/", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /appmonitors/{Id}/",
+    input: {
+      Id: 0,
+      BatchId: 0,
+      AppMonitorDetails: { name: 0, id: 0, version: 0 },
+      UserDetails: { userId: 0, sessionId: 0 },
+      RumEvents: D.list({
+        id: 0,
+        timestamp: 0,
+        type: 0,
+        metadata: 0,
+        details: 0,
+      }),
+      Alias: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1080,6 +1147,12 @@ export const putRumMetricsDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /rummetrics/{AppMonitorName}/metricsdestination",
+    input: {
+      AppMonitorName: 0,
+      Destination: 0,
+      DestinationArn: 0,
+      IamRoleArn: 0,
+    },
     body: true,
   },
   errors: [
@@ -1119,7 +1192,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1147,7 +1225,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -1182,7 +1260,20 @@ export const updateAppMonitor: API.OperationMethod<
   UpdateAppMonitorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /appmonitor/{Name}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /appmonitor/{Name}",
+    input: {
+      Name: 0,
+      Domain: 0,
+      DomainList: 0,
+      AppMonitorConfiguration: i_AppMonitorConfiguration,
+      CwLogEnabled: 0,
+      CustomEvents: i_CustomEvents,
+      DeobfuscationConfiguration: i_DeobfuscationConfiguration,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1217,6 +1308,13 @@ export const updateRumMetricDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /rummetrics/{AppMonitorName}/metrics",
+    input: {
+      AppMonitorName: 0,
+      Destination: 0,
+      DestinationArn: 0,
+      MetricDefinition: i_MetricDefinitionRequest,
+      MetricDefinitionId: 0,
+    },
     body: true,
   },
   errors: [
@@ -1232,3 +1330,27 @@ export const updateRumMetricDefinition: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateRumMetricDefinition",
 })) as any;
+
+const i_AppMonitorConfiguration: D.LazyStruct = () => ({
+  IdentityPoolId: 0,
+  ExcludedPages: 0,
+  IncludedPages: 0,
+  FavoritePages: 0,
+  SessionSampleRate: 0,
+  GuestRoleArn: 0,
+  AllowCookies: 0,
+  Telemetries: 0,
+  EnableXRay: 0,
+});
+const i_CustomEvents: D.LazyStruct = () => ({ Status: 0 });
+const i_DeobfuscationConfiguration: D.LazyStruct = () => ({
+  JavaScriptSourceMaps: { Status: 0, S3Uri: 0 },
+});
+const i_MetricDefinitionRequest: D.LazyStruct = () => ({
+  Name: 0,
+  ValueKey: 0,
+  UnitLabel: 0,
+  DimensionKeys: 0,
+  EventPattern: 0,
+  Namespace: 0,
+});

@@ -426,6 +426,7 @@ export const batchGetFindings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /batchGetFindings",
+    input: { findingIdentifiers: D.list({ scanName: 0, findingId: 0 }) },
     output: { findings: D.list(o_Finding) },
     body: true,
   },
@@ -460,7 +461,14 @@ export const createScan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /scans",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      resourceId: { codeArtifactId: 0 },
+      scanName: 0,
+      scanType: 0,
+      analysisType: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -496,6 +504,7 @@ export const createUploadUrl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /uploadUrl",
+    input: { scanName: 0 },
     output: { s3Url: D.secret },
     body: true,
   },
@@ -525,7 +534,11 @@ export const getAccountConfiguration: API.OperationMethod<
   GetAccountConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /accountConfiguration/get" },
+  descriptor: {
+    service: svc,
+    http: "GET /accountConfiguration/get",
+    input: {},
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -559,6 +572,7 @@ export const getFindings: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /findings/{scanName}",
     input: {
+      scanName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       status: D.m({ query: "status" }),
@@ -602,7 +616,7 @@ export const getMetricsSummary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /metrics/summary",
-    input: { date: D.m({ query: "date" }) },
+    input: { date: D.m({ query: "date", shape: D.tsAs("epoch-seconds") }) },
     output: { metricsSummary: { date: D.ts } },
   },
   errors: [
@@ -635,7 +649,7 @@ export const getScan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /scans/{scanName}",
-    input: { runId: D.m({ query: "runId" }) },
+    input: { scanName: 0, runId: D.m({ query: "runId" }) },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -672,8 +686,8 @@ export const listFindingsMetrics: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
-      startDate: D.m({ query: "startDate" }),
-      endDate: D.m({ query: "endDate" }),
+      startDate: D.m({ query: "startDate", shape: D.tsAs("epoch-seconds") }),
+      endDate: D.m({ query: "endDate", shape: D.tsAs("epoch-seconds") }),
     },
     output: { findingsMetrics: D.list({ date: D.ts }) },
   },
@@ -753,7 +767,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -784,7 +802,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -818,7 +841,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -852,6 +875,7 @@ export const updateAccountConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /updateAccountConfiguration",
+    input: { encryptionConfig: { kmsKeyArn: 0 } },
     body: true,
   },
   errors: [

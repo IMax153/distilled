@@ -2248,7 +2248,7 @@ export const acceptEngagementInvitation: API.OperationMethod<
   AcceptEngagementInvitationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Catalog: 0, Identifier: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2280,7 +2280,20 @@ export const assignOpportunity: API.OperationMethod<
   AssignOpportunityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Catalog: 0,
+      Identifier: 0,
+      Assignee: {
+        Email: 0,
+        FirstName: 0,
+        LastName: 0,
+        Phone: 0,
+        BusinessTitle: 0,
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2323,7 +2336,15 @@ export const associateOpportunity: API.OperationMethod<
   AssociateOpportunityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Catalog: 0,
+      OpportunityIdentifier: 0,
+      RelatedEntityType: 0,
+      RelatedEntityIdentifier: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2357,8 +2378,11 @@ export const createEngagement: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Catalog: 0,
       ClientToken: D.m({ idempotency: true }),
-      Contexts: D.list({ Payload: i_EngagementContextPayload }),
+      Title: 0,
+      Description: 0,
+      Contexts: D.list({ Id: 0, Type: 0, Payload: i_EngagementContextPayload }),
     },
     output: { ModifiedAt: D.ts },
   },
@@ -2397,7 +2421,10 @@ export const createEngagementContext: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Catalog: 0,
+      EngagementIdentifier: 0,
       ClientToken: D.m({ idempotency: true }),
+      Type: 0,
       Payload: i_EngagementContextPayload,
     },
     output: { EngagementLastModifiedAt: D.ts },
@@ -2436,7 +2463,51 @@ export const createEngagementInvitation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      ClientToken: D.m({ idempotency: true }),
+      EngagementIdentifier: 0,
+      Invitation: {
+        Message: 0,
+        Receiver: { Account: { Alias: 0, AwsAccountId: 0 } },
+        Payload: {
+          OpportunityInvitation: {
+            SenderContacts: D.list({
+              Email: 0,
+              FirstName: 0,
+              LastName: 0,
+              BusinessTitle: 0,
+              Phone: 0,
+            }),
+            ReceiverResponsibilities: 0,
+            Customer: i_EngagementCustomer,
+            Project: {
+              BusinessProblem: 0,
+              Title: 0,
+              TargetCompletionDate: 0,
+              ExpectedCustomerSpend: D.list(i_ExpectedCustomerSpend),
+            },
+          },
+          LeadInvitation: {
+            Customer: {
+              Industry: 0,
+              CompanyName: 0,
+              WebsiteUrl: 0,
+              CountryCode: 0,
+              AwsMaturity: 0,
+              MarketSegment: 0,
+            },
+            Interaction: {
+              SourceType: 0,
+              SourceId: 0,
+              SourceName: 0,
+              Usecase: 0,
+              ContactBusinessTitle: 0,
+            },
+          },
+        },
+      },
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2483,7 +2554,22 @@ export const createOpportunity: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }), LifeCycle: i_LifeCycle },
+    input: {
+      Catalog: 0,
+      PrimaryNeedsFromAws: 0,
+      NationalSecurity: 0,
+      PartnerOpportunityIdentifier: 0,
+      Customer: i_Customer,
+      Project: i_Project,
+      OpportunityType: 0,
+      Marketing: i_Marketing,
+      SoftwareRevenue: i_SoftwareRevenue,
+      ClientToken: D.m({ idempotency: true }),
+      LifeCycle: i_LifeCycle,
+      Origin: 0,
+      OpportunityTeam: D.list(i_Contact),
+      Tags: D.list(i_Tag),
+    },
     output: { LastModifiedDate: D.ts },
   },
   errors: [
@@ -2519,7 +2605,14 @@ export const createResourceSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      EngagementIdentifier: 0,
+      ResourceType: 0,
+      ResourceIdentifier: 0,
+      ResourceSnapshotTemplateIdentifier: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2555,7 +2648,15 @@ export const createResourceSnapshotJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      ClientToken: D.m({ idempotency: true }),
+      EngagementIdentifier: 0,
+      ResourceType: 0,
+      ResourceIdentifier: 0,
+      ResourceSnapshotTemplateIdentifier: 0,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2588,7 +2689,10 @@ export const deleteResourceSnapshotJob: API.OperationMethod<
   DeleteResourceSnapshotJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Catalog: 0, ResourceSnapshotJobIdentifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2620,7 +2724,15 @@ export const disassociateOpportunity: API.OperationMethod<
   DisassociateOpportunityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Catalog: 0,
+      OpportunityIdentifier: 0,
+      RelatedEntityType: 0,
+      RelatedEntityIdentifier: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2651,6 +2763,7 @@ export const getAwsOpportunitySummary: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Catalog: 0, RelatedOpportunityIdentifier: 0 },
     output: {
       LifeCycle: o_AwsOpportunityLifeCycle,
       OpportunityTeam: D.list(o_AwsTeamMember),
@@ -2690,6 +2803,7 @@ export const getEngagement: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Catalog: 0, Identifier: 0 },
     output: {
       CreatedAt: D.ts,
       CreatedBy: D.secret,
@@ -2760,6 +2874,7 @@ export const getEngagementInvitation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Catalog: 0, Identifier: 0 },
     output: {
       InvitationDate: D.ts,
       ExpirationDate: D.ts,
@@ -2828,6 +2943,7 @@ export const getOpportunity: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Catalog: 0, Identifier: 0 },
     output: {
       Customer: o_Customer,
       Project: {
@@ -2874,7 +2990,11 @@ export const getProspectingFromEngagementTask: API.OperationMethod<
   GetProspectingFromEngagementTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { StartTime: D.ts, EndTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { Catalog: 0, TaskIdentifier: 0 },
+    output: { StartTime: D.ts, EndTime: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2905,6 +3025,14 @@ export const getResourceSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Catalog: 0,
+      EngagementIdentifier: 0,
+      ResourceType: 0,
+      ResourceIdentifier: 0,
+      ResourceSnapshotTemplateIdentifier: 0,
+      Revision: 0,
+    },
     output: {
       CreatedBy: D.secret,
       CreatedAt: D.ts,
@@ -2960,6 +3088,7 @@ export const getResourceSnapshotJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Catalog: 0, ResourceSnapshotJobIdentifier: 0 },
     output: { CreatedAt: D.ts, LastSuccessfulExecutionDate: D.ts },
   },
   errors: [
@@ -2990,7 +3119,7 @@ export const getSellingSystemSettings: API.OperationMethod<
   GetSellingSystemSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Catalog: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3022,6 +3151,16 @@ export const listEngagementByAcceptingInvitationTasks: API.PaginatedOperationMet
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      Sort: i_ListTasksSortBase,
+      Catalog: 0,
+      TaskStatus: 0,
+      OpportunityIdentifier: 0,
+      EngagementInvitationIdentifier: 0,
+      TaskIdentifier: 0,
+    },
     output: { TaskSummaries: D.list({ StartTime: D.ts }) },
   },
   errors: [
@@ -3061,6 +3200,16 @@ export const listEngagementFromOpportunityTasks: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      Sort: i_ListTasksSortBase,
+      Catalog: 0,
+      TaskStatus: 0,
+      TaskIdentifier: 0,
+      OpportunityIdentifier: 0,
+      EngagementIdentifier: 0,
+    },
     output: { TaskSummaries: D.list({ StartTime: D.ts }) },
   },
   errors: [
@@ -3100,6 +3249,17 @@ export const listEngagementInvitations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Catalog: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Sort: { SortOrder: 0, SortBy: 0 },
+      PayloadType: 0,
+      ParticipantType: 0,
+      Status: 0,
+      EngagementIdentifier: 0,
+      SenderAwsAccountId: 0,
+    },
     output: {
       EngagementInvitationSummaries: D.list({
         InvitationDate: D.ts,
@@ -3146,6 +3306,7 @@ export const listEngagementMembers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Catalog: 0, Identifier: 0, MaxResults: 0, NextToken: 0 },
     output: {
       EngagementMemberList: D.list({
         CompanyName: D.secret,
@@ -3190,6 +3351,15 @@ export const listEngagementResourceAssociations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Catalog: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      EngagementIdentifier: 0,
+      ResourceType: 0,
+      ResourceIdentifier: 0,
+      CreatedBy: 0,
+    },
     output: {
       EngagementResourceAssociationSummaries: D.list({ CreatedBy: D.secret }),
     },
@@ -3231,6 +3401,17 @@ export const listEngagements: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Catalog: 0,
+      CreatedBy: 0,
+      ExcludeCreatedBy: 0,
+      ContextTypes: 0,
+      ExcludeContextTypes: 0,
+      Sort: { SortOrder: 0, SortBy: 0 },
+      MaxResults: 0,
+      NextToken: 0,
+      EngagementIdentifier: 0,
+    },
     output: {
       EngagementSummaryList: D.list({
         CreatedAt: D.ts,
@@ -3288,14 +3469,23 @@ export const listOpportunities: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Catalog: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Sort: { SortOrder: 0, SortBy: 0 },
       LastModifiedDate: {
         AfterLastModifiedDate: D.tsAs("date-time"),
         BeforeLastModifiedDate: D.tsAs("date-time"),
       },
+      Identifier: 0,
+      LifeCycleStage: 0,
+      LifeCycleReviewStatus: 0,
+      CustomerCompanyName: 0,
       CreatedDate: {
         AfterCreatedDate: D.tsAs("date-time"),
         BeforeCreatedDate: D.tsAs("date-time"),
       },
+      TargetCloseDate: { AfterTargetCloseDate: 0, BeforeTargetCloseDate: 0 },
     },
     output: {
       OpportunitySummaries: D.list({
@@ -3355,6 +3545,17 @@ export const listOpportunityFromEngagementTasks: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      Sort: i_ListTasksSortBase,
+      Catalog: 0,
+      TaskStatus: 0,
+      TaskIdentifier: 0,
+      OpportunityIdentifier: 0,
+      EngagementIdentifier: 0,
+      ContextIdentifier: 0,
+    },
     output: { TaskSummaries: D.list({ StartTime: D.ts }) },
   },
   errors: [
@@ -3394,8 +3595,14 @@ export const listProspectingFromEngagementTasks: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Catalog: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      TaskIdentifier: 0,
+      TaskName: 0,
       StartAfter: D.tsAs("date-time"),
       StartBefore: D.tsAs("date-time"),
+      Sort: { SortOrder: 0, SortBy: 0 },
     },
     output: { TaskSummaries: D.list({ StartTime: D.ts, EndTime: D.ts }) },
   },
@@ -3433,7 +3640,17 @@ export const listResourceSnapshotJobs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ResourceSnapshotJobSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Catalog: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      EngagementIdentifier: 0,
+      Status: 0,
+      Sort: { SortBy: 0, SortOrder: 0 },
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3481,6 +3698,16 @@ export const listResourceSnapshots: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Catalog: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      EngagementIdentifier: 0,
+      ResourceType: 0,
+      ResourceIdentifier: 0,
+      ResourceSnapshotTemplateIdentifier: 0,
+      CreatedBy: 0,
+    },
     output: { ResourceSnapshotSummaries: D.list({ CreatedBy: D.secret }) },
   },
   errors: [
@@ -3520,6 +3747,16 @@ export const listSolutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Catalog: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Sort: { SortOrder: 0, SortBy: 0 },
+      Status: 0,
+      Identifier: 0,
+      Category: 0,
+      AwsMarketplaceSolutionArn: 0,
+    },
     output: { SolutionSummaries: D.list({ CreatedDate: D.ts }) },
   },
   errors: [
@@ -3556,7 +3793,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3585,7 +3822,10 @@ export const putSellingSystemSettings: API.OperationMethod<
   PutSellingSystemSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Catalog: 0, ResourceSnapshotJobRoleIdentifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3615,7 +3855,10 @@ export const rejectEngagementInvitation: API.OperationMethod<
   RejectEngagementInvitationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Catalog: 0, Identifier: 0, RejectionReason: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3649,7 +3892,12 @@ export const startEngagementByAcceptingInvitationTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Identifier: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { StartTime: D.ts },
   },
   errors: [
@@ -3686,7 +3934,13 @@ export const startEngagementFromOpportunityTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Identifier: 0,
+      AwsSubmission: { InvolvementType: 0, Visibility: 0 },
+      Tags: D.list(i_Tag),
+    },
     output: { StartTime: D.ts },
   },
   errors: [
@@ -3723,7 +3977,13 @@ export const startOpportunityFromEngagementTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Identifier: 0,
+      ContextIdentifier: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { StartTime: D.ts },
   },
   errors: [
@@ -3759,7 +4019,12 @@ export const startProspectingFromEngagementTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      Identifiers: 0,
+      TaskName: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { StartTime: D.ts },
   },
   errors: [
@@ -3791,7 +4056,10 @@ export const startResourceSnapshotJob: API.OperationMethod<
   StartResourceSnapshotJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Catalog: 0, ResourceSnapshotJobIdentifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3820,7 +4088,10 @@ export const stopResourceSnapshotJob: API.OperationMethod<
   StopResourceSnapshotJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Catalog: 0, ResourceSnapshotJobIdentifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3849,7 +4120,10 @@ export const submitOpportunity: API.OperationMethod<
   SubmitOpportunityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Catalog: 0, Identifier: 0, InvolvementType: 0, Visibility: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3879,7 +4153,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3910,7 +4184,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3945,9 +4219,19 @@ export const updateEngagementContext: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Catalog: 0,
+      EngagementIdentifier: 0,
+      ContextIdentifier: 0,
       EngagementLastModifiedAt: D.tsAs("date-time"),
+      Type: 0,
       Payload: {
-        Lead: { Interaction: i_LeadInteraction },
+        Lead: {
+          QualificationStatus: 0,
+          Customer: i_LeadCustomer,
+          Interaction: i_LeadInteraction,
+          Insights: i_LeadInsights,
+        },
+        CustomerProject: i_CustomerProjectsContext,
         ProspectingResult: i_ProspectingResult,
       },
     },
@@ -3988,7 +4272,20 @@ export const updateOpportunity: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { LastModifiedDate: D.tsAs("date-time"), LifeCycle: i_LifeCycle },
+    input: {
+      Catalog: 0,
+      PrimaryNeedsFromAws: 0,
+      NationalSecurity: 0,
+      PartnerOpportunityIdentifier: 0,
+      Customer: i_Customer,
+      Project: i_Project,
+      OpportunityType: 0,
+      Marketing: i_Marketing,
+      SoftwareRevenue: i_SoftwareRevenue,
+      LastModifiedDate: D.tsAs("date-time"),
+      Identifier: 0,
+      LifeCycle: i_LifeCycle,
+    },
     output: { LastModifiedDate: D.ts },
   },
   errors: [
@@ -4004,19 +4301,146 @@ export const updateOpportunity: API.OperationMethod<
   operationName: "UpdateOpportunity",
 })) as any;
 
+const i_Contact: D.LazyStruct = () => ({
+  Email: 0,
+  FirstName: 0,
+  LastName: 0,
+  BusinessTitle: 0,
+  Phone: 0,
+});
+const i_Customer: D.LazyStruct = () => ({
+  Account: {
+    Industry: 0,
+    OtherIndustry: 0,
+    CompanyName: 0,
+    WebsiteUrl: 0,
+    AwsAccountId: 0,
+    Address: {
+      City: 0,
+      PostalCode: 0,
+      StateOrRegion: 0,
+      CountryCode: 0,
+      StreetAddress: 0,
+    },
+    Duns: 0,
+  },
+  Contacts: D.list(i_Contact),
+});
+const i_CustomerProjectsContext: D.LazyStruct = () => ({
+  Customer: i_EngagementCustomer,
+  Project: { Title: 0, BusinessProblem: 0, TargetCompletionDate: 0 },
+});
 const i_EngagementContextPayload: D.LazyStruct = () => ({
-  Lead: { Interactions: D.list(i_LeadInteraction) },
+  CustomerProject: i_CustomerProjectsContext,
+  Lead: {
+    Insights: i_LeadInsights,
+    QualificationStatus: 0,
+    Customer: i_LeadCustomer,
+    Interactions: D.list(i_LeadInteraction),
+  },
   ProspectingResult: i_ProspectingResult,
 });
+const i_EngagementCustomer: D.LazyStruct = () => ({
+  Industry: 0,
+  CompanyName: 0,
+  WebsiteUrl: 0,
+  CountryCode: 0,
+});
+const i_ExpectedCustomerSpend: D.LazyStruct = () => ({
+  Amount: 0,
+  CurrencyCode: 0,
+  Frequency: 0,
+  TargetCompany: 0,
+  EstimationUrl: 0,
+});
+const i_LeadCustomer: D.LazyStruct = () => ({
+  Industry: 0,
+  CompanyName: 0,
+  WebsiteUrl: 0,
+  Address: { City: 0, PostalCode: 0, StateOrRegion: 0, CountryCode: 0 },
+  AwsMaturity: 0,
+  MarketSegment: 0,
+});
+const i_LeadInsights: D.LazyStruct = () => ({ LeadReadinessScore: 0 });
 const i_LeadInteraction: D.LazyStruct = () => ({
+  SourceType: 0,
+  SourceId: 0,
+  SourceName: 0,
+  Usecase: 0,
   InteractionDate: D.tsAs("date-time"),
+  CustomerAction: 0,
+  BusinessProblem: 0,
+  Contact: { BusinessTitle: 0, Email: 0, FirstName: 0, LastName: 0, Phone: 0 },
 });
 const i_LifeCycle: D.LazyStruct = () => ({
-  NextStepsHistory: D.list({ Time: D.tsAs("date-time") }),
+  Stage: 0,
+  ClosedLostReason: 0,
+  NextSteps: 0,
+  TargetCloseDate: 0,
+  ReviewStatus: 0,
+  ReviewComments: 0,
+  ReviewStatusReason: 0,
+  NextStepsHistory: D.list({ Value: 0, Time: D.tsAs("date-time") }),
+});
+const i_ListTasksSortBase: D.LazyStruct = () => ({ SortOrder: 0, SortBy: 0 });
+const i_Marketing: D.LazyStruct = () => ({
+  CampaignName: 0,
+  Source: 0,
+  UseCases: 0,
+  Channels: 0,
+  AwsFundingUsed: 0,
+});
+const i_Project: D.LazyStruct = () => ({
+  DeliveryModels: 0,
+  ExpectedCustomerSpend: D.list(i_ExpectedCustomerSpend),
+  ExpectedContractDuration: { Term: 0, Value: 0 },
+  Title: 0,
+  ApnPrograms: 0,
+  CustomerBusinessProblem: 0,
+  CustomerUseCase: 0,
+  RelatedOpportunityIdentifier: 0,
+  SalesActivities: 0,
+  CompetitorName: 0,
+  OtherCompetitorNames: 0,
+  OtherSolutionDescription: 0,
+  AdditionalComments: 0,
+  AwsPartition: 0,
 });
 const i_ProspectingResult: D.LazyStruct = () => ({
-  Aws: { StartTime: D.tsAs("date-time"), EndTime: D.tsAs("date-time") },
+  Aws: {
+    Customer: {
+      AccountName: 0,
+      Geo: 0,
+      Region: 0,
+      SubRegion: 0,
+      Country: 0,
+      Industry: 0,
+      SubIndustry: 0,
+      Segment: 0,
+      CompanySize: 0,
+      EligiblePrograms: 0,
+      PublicProfileSummary: 0,
+    },
+    Insights: {
+      MarketplaceEngagementScore: 0,
+      SolutionScore: 0,
+      SolutionCategory: 0,
+      SolutionSubCategory: 0,
+    },
+    StartTime: D.tsAs("date-time"),
+    EndTime: D.tsAs("date-time"),
+    TaskId: 0,
+    TaskArn: 0,
+    TaskName: 0,
+  },
 });
+const i_SoftwareRevenue: D.LazyStruct = () => ({
+  DeliveryModel: 0,
+  Value: { Amount: 0, CurrencyCode: 0 },
+  EffectiveDate: 0,
+  ExpirationDate: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_AwsOpportunityCustomer: D.LazyStruct = () => ({
   Contacts: D.list(o_Contact),
 });

@@ -1230,7 +1230,17 @@ export const addNotificationChannel: API.OperationMethod<
   AddNotificationChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /channels", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /channels",
+    input: {
+      Config: {
+        Sns: { TopicArn: 0 },
+        Filters: { Severities: 0, MessageTypes: 0 },
+      },
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1262,7 +1272,7 @@ export const deleteInsight: API.OperationMethod<
   DeleteInsightError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /insights/{Id}" },
+  descriptor: { service: svc, http: "DELETE /insights/{Id}", input: { Id: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1293,7 +1303,7 @@ export const describeAccountHealth: API.OperationMethod<
   DescribeAccountHealthError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /accounts/health" },
+  descriptor: { service: svc, http: "GET /accounts/health", input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1322,7 +1332,12 @@ export const describeAccountOverview: API.OperationMethod<
   DescribeAccountOverviewError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /accounts/overview", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /accounts/overview",
+    input: { FromTime: 0, ToTime: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1353,7 +1368,7 @@ export const describeAnomaly: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /anomalies/{Id}",
-    input: { AccountId: D.m({ query: "AccountId" }) },
+    input: { Id: 0, AccountId: D.m({ query: "AccountId" }) },
     output: {
       ProactiveAnomaly: {
         UpdateTime: D.ts,
@@ -1399,7 +1414,7 @@ export const describeEventSourcesConfig: API.OperationMethod<
   DescribeEventSourcesConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /event-sources" },
+  descriptor: { service: svc, http: "POST /event-sources", input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1427,7 +1442,12 @@ export const describeFeedback: API.OperationMethod<
   DescribeFeedbackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /feedback", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /feedback",
+    input: { InsightId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1459,7 +1479,7 @@ export const describeInsight: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /insights/{Id}",
-    input: { AccountId: D.m({ query: "AccountId" }) },
+    input: { Id: 0, AccountId: D.m({ query: "AccountId" }) },
     output: {
       ProactiveInsight: {
         InsightTimeRange: o_InsightTimeRange,
@@ -1496,7 +1516,12 @@ export const describeOrganizationHealth: API.OperationMethod<
   DescribeOrganizationHealthError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /organization/health", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /organization/health",
+    input: { AccountIds: 0, OrganizationalUnitIds: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1524,7 +1549,12 @@ export const describeOrganizationOverview: API.OperationMethod<
   DescribeOrganizationOverviewError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /organization/overview", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /organization/overview",
+    input: { FromTime: 0, ToTime: 0, AccountIds: 0, OrganizationalUnitIds: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1557,6 +1587,13 @@ export const describeOrganizationResourceCollectionHealth: API.PaginatedOperatio
   descriptor: {
     service: svc,
     http: "POST /organization/health/resource-collection",
+    input: {
+      OrganizationResourceCollectionType: 0,
+      AccountIds: 0,
+      OrganizationalUnitIds: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -1594,7 +1631,10 @@ export const describeResourceCollectionHealth: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/health/resource-collection/{ResourceCollectionType}",
-    input: { NextToken: D.m({ query: "NextToken" }) },
+    input: {
+      ResourceCollectionType: 0,
+      NextToken: D.m({ query: "NextToken" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1626,7 +1666,7 @@ export const describeServiceIntegration: API.OperationMethod<
   DescribeServiceIntegrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /service-integrations" },
+  descriptor: { service: svc, http: "GET /service-integrations", input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1702,7 +1742,10 @@ export const getResourceCollection: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "GET /resource-collections/{ResourceCollectionType}",
-    input: { NextToken: D.m({ query: "NextToken" }) },
+    input: {
+      ResourceCollectionType: 0,
+      NextToken: D.m({ query: "NextToken" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1738,6 +1781,14 @@ export const listAnomaliesForInsight: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /anomalies/insight/{InsightId}",
+    input: {
+      InsightId: 0,
+      StartTimeRange: i_StartTimeRange,
+      MaxResults: 0,
+      NextToken: 0,
+      AccountId: 0,
+      Filters: { ServiceCollection: i_ServiceCollection },
+    },
     output: {
       ProactiveAnomalies: D.list({
         UpdateTime: D.ts,
@@ -1791,6 +1842,7 @@ export const listAnomalousLogGroups: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-log-anomalies",
+    input: { InsightId: 0, MaxResults: 0, NextToken: 0 },
     output: {
       AnomalousLogGroups: D.list({
         ImpactStartTime: D.ts,
@@ -1840,6 +1892,19 @@ export const listEvents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /events",
+    input: {
+      Filters: {
+        InsightId: 0,
+        EventTimeRange: { FromTime: 0, ToTime: 0 },
+        EventClass: 0,
+        EventSource: 0,
+        DataSource: 0,
+        ResourceCollection: i_ResourceCollection,
+      },
+      MaxResults: 0,
+      NextToken: 0,
+      AccountId: 0,
+    },
     output: { Events: D.list({ Time: D.ts }) },
     body: true,
   },
@@ -1882,6 +1947,11 @@ export const listInsights: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /insights",
+    input: {
+      StatusFilter: i_ListInsightsStatusFilter,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       ProactiveInsights: D.list(o_ProactiveInsightSummary),
       ReactiveInsights: D.list(o_ReactiveInsightSummary),
@@ -1923,6 +1993,11 @@ export const listMonitoredResources: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /monitoredResources",
+    input: {
+      Filters: { ResourcePermission: 0, ResourceTypeFilters: 0 },
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { MonitoredResourceIdentifiers: D.list({ LastUpdated: D.ts }) },
     body: true,
   },
@@ -1961,7 +2036,12 @@ export const listNotificationChannels: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   NotificationChannel
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /channels", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /channels",
+    input: { NextToken: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1997,6 +2077,13 @@ export const listOrganizationInsights: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /organization/insights",
+    input: {
+      StatusFilter: i_ListInsightsStatusFilter,
+      MaxResults: 0,
+      AccountIds: 0,
+      OrganizationalUnitIds: 0,
+      NextToken: 0,
+    },
     output: {
       ProactiveInsights: D.list({
         InsightTimeRange: o_InsightTimeRange,
@@ -2040,7 +2127,12 @@ export const listRecommendations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Recommendation
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /recommendations", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /recommendations",
+    input: { InsightId: 0, NextToken: 0, Locale: 0, AccountId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2075,7 +2167,12 @@ export const putFeedback: API.OperationMethod<
   PutFeedbackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /feedback", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /feedback",
+    input: { InsightFeedback: { Id: 0, Feedback: 0 } },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2108,7 +2205,7 @@ export const removeNotificationChannel: API.OperationMethod<
   RemoveNotificationChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /channels/{Id}" },
+  descriptor: { service: svc, http: "DELETE /channels/{Id}", input: { Id: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2148,6 +2245,18 @@ export const searchInsights: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /insights/search",
+    input: {
+      StartTimeRange: i_StartTimeRange,
+      Filters: {
+        Severities: 0,
+        Statuses: 0,
+        ResourceCollection: i_ResourceCollection,
+        ServiceCollection: i_ServiceCollection,
+      },
+      MaxResults: 0,
+      NextToken: 0,
+      Type: 0,
+    },
     output: {
       ProactiveInsights: D.list(o_ProactiveInsightSummary),
       ReactiveInsights: D.list(o_ReactiveInsightSummary),
@@ -2197,6 +2306,19 @@ export const searchOrganizationInsights: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /organization/insights/search",
+    input: {
+      AccountIds: 0,
+      StartTimeRange: i_StartTimeRange,
+      Filters: {
+        Severities: 0,
+        Statuses: 0,
+        ResourceCollection: i_ResourceCollection,
+        ServiceCollection: i_ServiceCollection,
+      },
+      MaxResults: 0,
+      NextToken: 0,
+      Type: 0,
+    },
     output: {
       ProactiveInsights: D.list(o_ProactiveInsightSummary),
       ReactiveInsights: D.list(o_ReactiveInsightSummary),
@@ -2240,7 +2362,13 @@ export const startCostEstimation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /cost-estimation",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ResourceCollection: {
+        CloudFormation: { StackNames: 0 },
+        Tags: D.list({ AppBoundaryKey: 0, TagValues: 0 }),
+      },
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2273,7 +2401,12 @@ export const updateEventSourcesConfig: API.OperationMethod<
   UpdateEventSourcesConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /event-sources", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /event-sources",
+    input: { EventSources: { AmazonCodeGuruProfiler: { Status: 0 } } },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2305,7 +2438,18 @@ export const updateResourceCollection: API.OperationMethod<
   UpdateResourceCollectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /resource-collections", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /resource-collections",
+    input: {
+      Action: 0,
+      ResourceCollection: {
+        CloudFormation: { StackNames: 0 },
+        Tags: D.list({ AppBoundaryKey: 0, TagValues: 0 }),
+      },
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2336,7 +2480,18 @@ export const updateServiceIntegration: API.OperationMethod<
   UpdateServiceIntegrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /service-integrations", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /service-integrations",
+    input: {
+      ServiceIntegration: {
+        OpsCenter: { OptInStatus: 0 },
+        LogsAnomalyDetection: { OptInStatus: 0 },
+        KMSServerSideEncryption: { KMSKeyId: 0, OptInStatus: 0, Type: 0 },
+      },
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2349,6 +2504,17 @@ export const updateServiceIntegration: API.OperationMethod<
   operationName: "UpdateServiceIntegration",
 })) as any;
 
+const i_ListInsightsStatusFilter: D.LazyStruct = () => ({
+  Ongoing: { Type: 0 },
+  Closed: { Type: 0, EndTimeRange: { FromTime: 0, ToTime: 0 } },
+  Any: { Type: 0, StartTimeRange: i_StartTimeRange },
+});
+const i_ResourceCollection: D.LazyStruct = () => ({
+  CloudFormation: { StackNames: 0 },
+  Tags: D.list({ AppBoundaryKey: 0, TagValues: 0 }),
+});
+const i_ServiceCollection: D.LazyStruct = () => ({ ServiceNames: 0 });
+const i_StartTimeRange: D.LazyStruct = () => ({ FromTime: 0, ToTime: 0 });
 const o_AnomalyReportedTimeRange: D.LazyStruct = () => ({
   OpenTime: D.ts,
   CloseTime: D.ts,

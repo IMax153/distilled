@@ -820,7 +820,10 @@ export const associateCustomDomain: API.OperationMethod<
   AssociateCustomDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServiceArn: 0, DomainName: 0, EnableWWWSubdomain: 0 },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -858,6 +861,13 @@ export const createAutoScalingConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AutoScalingConfigurationName: 0,
+      MaxConcurrency: 0,
+      MinSize: 0,
+      MaxSize: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { AutoScalingConfiguration: o_AutoScalingConfiguration },
   },
   errors: [
@@ -889,7 +899,11 @@ export const createConnection: API.OperationMethod<
   CreateConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Connection: o_Connection } },
+  descriptor: {
+    service: svc,
+    input: { ConnectionName: 0, ProviderType: 0, Tags: D.list(i_Tag) },
+    output: { Connection: o_Connection },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -926,6 +940,11 @@ export const createObservabilityConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ObservabilityConfigurationName: 0,
+      TraceConfiguration: { Vendor: 0 },
+      Tags: D.list(i_Tag),
+    },
     output: { ObservabilityConfiguration: o_ObservabilityConfiguration },
   },
   errors: [
@@ -954,7 +973,21 @@ export const createService: API.OperationMethod<
   CreateServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Service: o_Service } },
+  descriptor: {
+    service: svc,
+    input: {
+      ServiceName: 0,
+      SourceConfiguration: i_SourceConfiguration,
+      InstanceConfiguration: i_InstanceConfiguration,
+      Tags: D.list(i_Tag),
+      EncryptionConfiguration: { KmsKey: 0 },
+      HealthCheckConfiguration: i_HealthCheckConfiguration,
+      AutoScalingConfigurationArn: 0,
+      NetworkConfiguration: i_NetworkConfiguration,
+      ObservabilityConfiguration: i_ServiceObservabilityConfiguration,
+    },
+    output: { Service: o_Service },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -980,7 +1013,16 @@ export const createVpcConnector: API.OperationMethod<
   CreateVpcConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { VpcConnector: o_VpcConnector } },
+  descriptor: {
+    service: svc,
+    input: {
+      VpcConnectorName: 0,
+      Subnets: 0,
+      SecurityGroups: 0,
+      Tags: D.list(i_Tag),
+    },
+    output: { VpcConnector: o_VpcConnector },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -1008,6 +1050,12 @@ export const createVpcIngressConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ServiceArn: 0,
+      VpcIngressConnectionName: 0,
+      IngressVpcConfiguration: i_IngressVpcConfiguration,
+      Tags: D.list(i_Tag),
+    },
     output: { VpcIngressConnection: o_VpcIngressConnection },
   },
   errors: [
@@ -1039,6 +1087,7 @@ export const deleteAutoScalingConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AutoScalingConfigurationArn: 0, DeleteAllRevisions: 0 },
     output: { AutoScalingConfiguration: o_AutoScalingConfiguration },
   },
   errors: [
@@ -1066,7 +1115,11 @@ export const deleteConnection: API.OperationMethod<
   DeleteConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Connection: o_Connection } },
+  descriptor: {
+    service: svc,
+    input: { ConnectionArn: 0 },
+    output: { Connection: o_Connection },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -1094,6 +1147,7 @@ export const deleteObservabilityConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ObservabilityConfigurationArn: 0 },
     output: { ObservabilityConfiguration: o_ObservabilityConfiguration },
   },
   errors: [
@@ -1126,7 +1180,11 @@ export const deleteService: API.OperationMethod<
   DeleteServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Service: o_Service } },
+  descriptor: {
+    service: svc,
+    input: { ServiceArn: 0 },
+    output: { Service: o_Service },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -1153,7 +1211,11 @@ export const deleteVpcConnector: API.OperationMethod<
   DeleteVpcConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { VpcConnector: o_VpcConnector } },
+  descriptor: {
+    service: svc,
+    input: { VpcConnectorArn: 0 },
+    output: { VpcConnector: o_VpcConnector },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -1189,6 +1251,7 @@ export const deleteVpcIngressConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { VpcIngressConnectionArn: 0 },
     output: { VpcIngressConnection: o_VpcIngressConnection },
   },
   errors: [
@@ -1218,6 +1281,7 @@ export const describeAutoScalingConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AutoScalingConfigurationArn: 0 },
     output: { AutoScalingConfiguration: o_AutoScalingConfiguration },
   },
   errors: [
@@ -1245,7 +1309,10 @@ export const describeCustomDomains: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServiceArn: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -1277,6 +1344,7 @@ export const describeObservabilityConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ObservabilityConfigurationArn: 0 },
     output: { ObservabilityConfiguration: o_ObservabilityConfiguration },
   },
   errors: [
@@ -1303,7 +1371,11 @@ export const describeService: API.OperationMethod<
   DescribeServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Service: o_Service } },
+  descriptor: {
+    service: svc,
+    input: { ServiceArn: 0 },
+    output: { Service: o_Service },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -1328,7 +1400,11 @@ export const describeVpcConnector: API.OperationMethod<
   DescribeVpcConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { VpcConnector: o_VpcConnector } },
+  descriptor: {
+    service: svc,
+    input: { VpcConnectorArn: 0 },
+    output: { VpcConnector: o_VpcConnector },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -1355,6 +1431,7 @@ export const describeVpcIngressConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { VpcIngressConnectionArn: 0 },
     output: { VpcIngressConnection: o_VpcIngressConnection },
   },
   errors: [
@@ -1386,7 +1463,7 @@ export const disassociateCustomDomain: API.OperationMethod<
   DisassociateCustomDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServiceArn: 0, DomainName: 0 } },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -1419,6 +1496,12 @@ export const listAutoScalingConfigurations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AutoScalingConfigurationName: 0,
+      LatestOnly: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       AutoScalingConfigurationSummaryList: D.list(
         o_AutoScalingConfigurationSummary,
@@ -1452,6 +1535,7 @@ export const listConnections: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ConnectionName: 0, MaxResults: 0, NextToken: 0 },
     output: { ConnectionSummaryList: D.list({ CreatedAt: D.ts }) },
   },
   errors: [InternalServiceErrorException, InvalidRequestException],
@@ -1484,7 +1568,15 @@ export const listObservabilityConfigurations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ObservabilityConfigurationName: 0,
+      LatestOnly: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [InternalServiceErrorException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1516,6 +1608,7 @@ export const listOperations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ServiceArn: 0, NextToken: 0, MaxResults: 0 },
     output: {
       OperationSummaryList: D.list({
         StartedAt: D.ts,
@@ -1555,6 +1648,7 @@ export const listServices: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: {
       ServiceSummaryList: D.list({ CreatedAt: D.ts, UpdatedAt: D.ts }),
     },
@@ -1585,7 +1679,10 @@ export const listServicesForAutoScalingConfiguration: API.PaginatedOperationMeth
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AutoScalingConfigurationArn: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -1616,7 +1713,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -1644,6 +1741,7 @@ export const listVpcConnectors: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
     output: { VpcConnectors: D.list(o_VpcConnector) },
   },
   errors: [InternalServiceErrorException, InvalidRequestException],
@@ -1671,7 +1769,14 @@ export const listVpcIngressConnections: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Filter: { ServiceArn: 0, VpcEndpointId: 0 },
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [InternalServiceErrorException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1702,7 +1807,11 @@ export const pauseService: API.OperationMethod<
   PauseServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Service: o_Service } },
+  descriptor: {
+    service: svc,
+    input: { ServiceArn: 0 },
+    output: { Service: o_Service },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -1732,7 +1841,11 @@ export const resumeService: API.OperationMethod<
   ResumeServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Service: o_Service } },
+  descriptor: {
+    service: svc,
+    input: { ServiceArn: 0 },
+    output: { Service: o_Service },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -1765,7 +1878,7 @@ export const startDeployment: API.OperationMethod<
   StartDeploymentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServiceArn: 0 } },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -1791,7 +1904,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -1818,7 +1931,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -1847,6 +1960,7 @@ export const updateDefaultAutoScalingConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AutoScalingConfigurationArn: 0 },
     output: { AutoScalingConfiguration: o_AutoScalingConfiguration },
   },
   errors: [
@@ -1881,7 +1995,19 @@ export const updateService: API.OperationMethod<
   UpdateServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Service: o_Service } },
+  descriptor: {
+    service: svc,
+    input: {
+      ServiceArn: 0,
+      SourceConfiguration: i_SourceConfiguration,
+      InstanceConfiguration: i_InstanceConfiguration,
+      AutoScalingConfigurationArn: 0,
+      HealthCheckConfiguration: i_HealthCheckConfiguration,
+      NetworkConfiguration: i_NetworkConfiguration,
+      ObservabilityConfiguration: i_ServiceObservabilityConfiguration,
+    },
+    output: { Service: o_Service },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -1916,6 +2042,10 @@ export const updateVpcIngressConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      VpcIngressConnectionArn: 0,
+      IngressVpcConfiguration: i_IngressVpcConfiguration,
+    },
     output: { VpcIngressConnection: o_VpcIngressConnection },
   },
   errors: [
@@ -1929,6 +2059,63 @@ export const updateVpcIngressConnection: API.OperationMethod<
   operationName: "UpdateVpcIngressConnection",
 })) as any;
 
+const i_HealthCheckConfiguration: D.LazyStruct = () => ({
+  Protocol: 0,
+  Path: 0,
+  Interval: 0,
+  Timeout: 0,
+  HealthyThreshold: 0,
+  UnhealthyThreshold: 0,
+});
+const i_IngressVpcConfiguration: D.LazyStruct = () => ({
+  VpcId: 0,
+  VpcEndpointId: 0,
+});
+const i_InstanceConfiguration: D.LazyStruct = () => ({
+  Cpu: 0,
+  Memory: 0,
+  InstanceRoleArn: 0,
+});
+const i_NetworkConfiguration: D.LazyStruct = () => ({
+  EgressConfiguration: { EgressType: 0, VpcConnectorArn: 0 },
+  IngressConfiguration: { IsPubliclyAccessible: 0 },
+  IpAddressType: 0,
+});
+const i_ServiceObservabilityConfiguration: D.LazyStruct = () => ({
+  ObservabilityEnabled: 0,
+  ObservabilityConfigurationArn: 0,
+});
+const i_SourceConfiguration: D.LazyStruct = () => ({
+  CodeRepository: {
+    RepositoryUrl: 0,
+    SourceCodeVersion: { Type: 0, Value: 0 },
+    CodeConfiguration: {
+      ConfigurationSource: 0,
+      CodeConfigurationValues: {
+        Runtime: 0,
+        BuildCommand: 0,
+        StartCommand: 0,
+        Port: 0,
+        RuntimeEnvironmentVariables: 0,
+        RuntimeEnvironmentSecrets: 0,
+      },
+    },
+    SourceDirectory: 0,
+  },
+  ImageRepository: {
+    ImageIdentifier: 0,
+    ImageConfiguration: {
+      RuntimeEnvironmentVariables: 0,
+      StartCommand: 0,
+      Port: 0,
+      RuntimeEnvironmentSecrets: 0,
+    },
+    ImageRepositoryType: 0,
+  },
+  AutoDeploymentsEnabled: 0,
+  AuthenticationConfiguration: { ConnectionArn: 0, AccessRoleArn: 0 },
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_AutoScalingConfiguration: D.LazyStruct = () => ({
   CreatedAt: D.ts,
   DeletedAt: D.ts,

@@ -141,6 +141,7 @@ export const getRawMessageContent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /messages/{messageId}",
+    input: { messageId: 0 },
     output: { messageContent: D.m({ payload: true, shape: D.stream }) },
   },
   errors: [ResourceNotFoundException],
@@ -174,7 +175,15 @@ export const putRawMessageContent: API.OperationMethod<
   PutRawMessageContentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /messages/{messageId}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /messages/{messageId}",
+    input: {
+      messageId: 0,
+      content: { s3Reference: { bucket: 0, key: 0, objectVersion: 0 } },
+    },
+    body: true,
+  },
   errors: [
     InvalidContentLocation,
     MessageFrozen,

@@ -733,7 +733,13 @@ export const createTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /template",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      templateName: 0,
+      templateDescription: 0,
+      templateSource: { workflowId: 0 },
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -766,6 +772,15 @@ export const createWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /migrationworkflow/",
+    input: {
+      name: 0,
+      description: 0,
+      templateId: 0,
+      applicationConfigurationId: 0,
+      inputParameters: D.map(i_StepInput),
+      stepTargets: 0,
+      tags: 0,
+    },
     output: { creationTime: D.ts },
     body: true,
   },
@@ -795,7 +810,24 @@ export const createWorkflowStep: API.OperationMethod<
   CreateWorkflowStepError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /workflowstep", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /workflowstep",
+    input: {
+      name: 0,
+      stepGroupId: 0,
+      workflowId: 0,
+      stepActionType: 0,
+      description: 0,
+      workflowStepAutomationConfiguration:
+        i_WorkflowStepAutomationConfiguration,
+      stepTarget: 0,
+      outputs: D.list(i_WorkflowStepOutput),
+      previous: 0,
+      next: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -825,6 +857,7 @@ export const createWorkflowStepGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workflowstepgroups",
+    input: { workflowId: 0, name: 0, description: 0, next: 0, previous: 0 },
     output: { creationTime: D.ts },
     body: true,
   },
@@ -855,7 +888,7 @@ export const deleteTemplate: API.OperationMethod<
   DeleteTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /template/{id}" },
+  descriptor: { service: svc, http: "DELETE /template/{id}", input: { id: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -885,7 +918,11 @@ export const deleteWorkflow: API.OperationMethod<
   DeleteWorkflowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /migrationworkflow/{id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /migrationworkflow/{id}",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -919,6 +956,7 @@ export const deleteWorkflowStep: API.OperationMethod<
     service: svc,
     http: "DELETE /workflowstep/{id}",
     input: {
+      id: 0,
       stepGroupId: D.m({ query: "stepGroupId" }),
       workflowId: D.m({ query: "workflowId" }),
     },
@@ -954,7 +992,7 @@ export const deleteWorkflowStepGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workflowstepgroup/{id}",
-    input: { workflowId: D.m({ query: "workflowId" }) },
+    input: { workflowId: D.m({ query: "workflowId" }), id: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -986,6 +1024,7 @@ export const getTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /migrationworkflowtemplate/{id}",
+    input: { id: 0 },
     output: { creationTime: D.ts },
   },
   errors: [
@@ -1019,6 +1058,7 @@ export const getTemplateStep: API.OperationMethod<
     service: svc,
     http: "GET /templatestep/{id}",
     input: {
+      id: 0,
       templateId: D.m({ query: "templateId" }),
       stepGroupId: D.m({ query: "stepGroupId" }),
     },
@@ -1054,6 +1094,7 @@ export const getTemplateStepGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /templates/{templateId}/stepgroups/{id}",
+    input: { templateId: 0, id: 0 },
     output: { creationTime: D.ts, lastModifiedTime: D.ts },
   },
   errors: [
@@ -1087,6 +1128,7 @@ export const getWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /migrationworkflow/{id}",
+    input: { id: 0 },
     output: {
       creationTime: D.ts,
       lastStartTime: D.ts,
@@ -1128,6 +1170,7 @@ export const getWorkflowStep: API.OperationMethod<
     input: {
       workflowId: D.m({ query: "workflowId" }),
       stepGroupId: D.m({ query: "stepGroupId" }),
+      id: 0,
     },
     output: { creationTime: D.ts, lastStartTime: D.ts, endTime: D.ts },
   },
@@ -1161,7 +1204,7 @@ export const getWorkflowStepGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workflowstepgroup/{id}",
-    input: { workflowId: D.m({ query: "workflowId" }) },
+    input: { id: 0, workflowId: D.m({ query: "workflowId" }) },
     output: { creationTime: D.ts, lastModifiedTime: D.ts, endTime: D.ts },
   },
   errors: [
@@ -1224,7 +1267,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1289,6 +1336,7 @@ export const listTemplateStepGroups: API.PaginatedOperationMethod<
     input: {
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      templateId: 0,
     },
   },
   errors: [
@@ -1471,6 +1519,8 @@ export const listWorkflowSteps: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      workflowId: 0,
+      stepGroupId: 0,
     },
   },
   errors: [
@@ -1511,6 +1561,7 @@ export const retryWorkflowStep: API.OperationMethod<
     input: {
       workflowId: D.m({ query: "workflowId" }),
       stepGroupId: D.m({ query: "stepGroupId" }),
+      id: 0,
     },
   },
   errors: [
@@ -1543,6 +1594,7 @@ export const startWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /migrationworkflow/{id}/start",
+    input: { id: 0 },
     output: { lastStartTime: D.ts },
   },
   errors: [
@@ -1576,6 +1628,7 @@ export const stopWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /migrationworkflow/{id}/stop",
+    input: { id: 0 },
     output: { lastStopTime: D.ts },
   },
   errors: [
@@ -1603,7 +1656,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1626,7 +1684,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
@@ -1653,7 +1711,12 @@ export const updateTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /template/{id}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      id: 0,
+      templateName: 0,
+      templateDescription: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1687,6 +1750,13 @@ export const updateWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /migrationworkflow/{id}",
+    input: {
+      id: 0,
+      name: 0,
+      description: 0,
+      inputParameters: D.map(i_StepInput),
+      stepTargets: 0,
+    },
     output: { creationTime: D.ts, lastModifiedTime: D.ts },
     body: true,
   },
@@ -1717,7 +1787,26 @@ export const updateWorkflowStep: API.OperationMethod<
   UpdateWorkflowStepError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /workflowstep/{id}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /workflowstep/{id}",
+    input: {
+      id: 0,
+      stepGroupId: 0,
+      workflowId: 0,
+      name: 0,
+      description: 0,
+      stepActionType: 0,
+      workflowStepAutomationConfiguration:
+        i_WorkflowStepAutomationConfiguration,
+      stepTarget: 0,
+      outputs: D.list(i_WorkflowStepOutput),
+      previous: 0,
+      next: 0,
+      status: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1748,7 +1837,14 @@ export const updateWorkflowStepGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workflowstepgroup/{id}",
-    input: { workflowId: D.m({ query: "workflowId" }) },
+    input: {
+      workflowId: D.m({ query: "workflowId" }),
+      id: 0,
+      name: 0,
+      description: 0,
+      next: 0,
+      previous: 0,
+    },
     output: { lastModifiedTime: D.ts },
     body: true,
   },
@@ -1763,3 +1859,23 @@ export const updateWorkflowStepGroup: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateWorkflowStepGroup",
 })) as any;
+
+const i_StepInput: D.LazyStruct = () => ({
+  integerValue: 0,
+  stringValue: 0,
+  listOfStringsValue: 0,
+  mapOfStringValue: 0,
+});
+const i_WorkflowStepAutomationConfiguration: D.LazyStruct = () => ({
+  scriptLocationS3Bucket: 0,
+  scriptLocationS3Key: { linux: 0, windows: 0 },
+  command: { linux: 0, windows: 0 },
+  runEnvironment: 0,
+  targetType: 0,
+});
+const i_WorkflowStepOutput: D.LazyStruct = () => ({
+  name: 0,
+  dataType: 0,
+  required: 0,
+  value: { integerValue: 0, stringValue: 0, listOfStringValue: 0 },
+});

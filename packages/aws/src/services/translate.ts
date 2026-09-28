@@ -567,7 +567,14 @@ export const createParallelData: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Description: 0,
+      ParallelDataConfig: i_ParallelDataConfig,
+      EncryptionKey: i_EncryptionKey,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     ConcurrentModificationException,
@@ -599,7 +606,7 @@ export const deleteParallelData: API.OperationMethod<
   DeleteParallelDataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     ConcurrentModificationException,
     InternalServerException,
@@ -626,7 +633,7 @@ export const deleteTerminology: API.OperationMethod<
   DeleteTerminologyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     InternalServerException,
     InvalidParameterValueException,
@@ -655,6 +662,7 @@ export const describeTextTranslationJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: { TextTranslationJobProperties: o_TextTranslationJobProperties },
   },
   errors: [
@@ -684,6 +692,7 @@ export const getParallelData: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0 },
     output: { ParallelDataProperties: o_ParallelDataProperties },
   },
   errors: [
@@ -714,6 +723,7 @@ export const getTerminology: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0, TerminologyDataFormat: 0 },
     output: { TerminologyProperties: o_TerminologyProperties },
   },
   errors: [
@@ -754,6 +764,14 @@ export const importTerminology: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Name: 0,
+      MergeStrategy: 0,
+      Description: 0,
+      TerminologyData: { File: 0, Format: 0, Directionality: 0 },
+      EncryptionKey: i_EncryptionKey,
+      Tags: D.list(i_Tag),
+    },
     output: { TerminologyProperties: o_TerminologyProperties },
   },
   errors: [
@@ -785,7 +803,10 @@ export const listLanguages: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DisplayLanguageCode: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     InternalServerException,
     InvalidParameterValueException,
@@ -819,6 +840,7 @@ export const listParallelData: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: { ParallelDataPropertiesList: D.list(o_ParallelDataProperties) },
   },
   errors: [
@@ -852,7 +874,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     InternalServerException,
     InvalidParameterValueException,
@@ -880,6 +902,7 @@ export const listTerminologies: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: { TerminologyPropertiesList: D.list(o_TerminologyProperties) },
   },
   errors: [
@@ -915,6 +938,16 @@ export const listTextTranslationJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: {
+        JobName: 0,
+        JobStatus: 0,
+        SubmittedBeforeTime: 0,
+        SubmittedAfterTime: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       TextTranslationJobPropertiesList: D.list(o_TextTranslationJobProperties),
     },
@@ -962,7 +995,18 @@ export const startTextTranslationJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      JobName: 0,
+      InputDataConfig: { S3Uri: 0, ContentType: 0 },
+      OutputDataConfig: { S3Uri: 0, EncryptionKey: i_EncryptionKey },
+      DataAccessRoleArn: 0,
+      SourceLanguageCode: 0,
+      TargetLanguageCodes: 0,
+      TerminologyNames: 0,
+      ParallelDataNames: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Settings: i_TranslationSettings,
+    },
   },
   errors: [
     InternalServerException,
@@ -999,7 +1043,7 @@ export const stopTextTranslationJob: API.OperationMethod<
   StopTextTranslationJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1029,7 +1073,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     ConcurrentModificationException,
     InternalServerException,
@@ -1071,6 +1115,13 @@ export const translateDocument: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Document: { Content: 0, ContentType: 0 },
+      TerminologyNames: 0,
+      SourceLanguageCode: 0,
+      TargetLanguageCode: 0,
+      Settings: i_TranslationSettings,
+    },
     output: { TranslatedDocument: { Content: D.secretBlob } },
   },
   errors: [
@@ -1107,7 +1158,16 @@ export const translateText: API.OperationMethod<
   TranslateTextError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Text: 0,
+      TerminologyNames: 0,
+      SourceLanguageCode: 0,
+      TargetLanguageCode: 0,
+      Settings: i_TranslationSettings,
+    },
+  },
   errors: [
     DetectedLanguageLowConfidenceException,
     InternalServerException,
@@ -1140,7 +1200,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     ConcurrentModificationException,
     InternalServerException,
@@ -1174,7 +1234,12 @@ export const updateParallelData: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Description: 0,
+      ParallelDataConfig: i_ParallelDataConfig,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { LatestUpdateAttemptAt: D.ts },
   },
   errors: [
@@ -1192,6 +1257,14 @@ export const updateParallelData: API.OperationMethod<
   operationName: "UpdateParallelData",
 })) as any;
 
+const i_EncryptionKey: D.LazyStruct = () => ({ Type: 0, Id: 0 });
+const i_ParallelDataConfig: D.LazyStruct = () => ({ S3Uri: 0, Format: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_TranslationSettings: D.LazyStruct = () => ({
+  Formality: 0,
+  Profanity: 0,
+  Brevity: 0,
+});
 const o_ParallelDataProperties: D.LazyStruct = () => ({
   CreatedAt: D.ts,
   LastUpdatedAt: D.ts,

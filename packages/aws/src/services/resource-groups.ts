@@ -571,7 +571,12 @@ export const cancelTagSyncTask: API.OperationMethod<
   CancelTagSyncTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /cancel-tag-sync-task", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /cancel-tag-sync-task",
+    input: { TaskArn: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -612,7 +617,21 @@ export const createGroup: API.OperationMethod<
   CreateGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /groups", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /groups",
+    input: {
+      Name: 0,
+      Description: 0,
+      ResourceQuery: i_ResourceQuery,
+      Tags: 0,
+      Configuration: D.list(i_GroupConfigurationItem),
+      Criticality: 0,
+      Owner: 0,
+      DisplayName: 0,
+    },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -650,7 +669,12 @@ export const deleteGroup: API.OperationMethod<
   DeleteGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /delete-group", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /delete-group",
+    input: { GroupName: 0, Group: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -716,7 +740,12 @@ export const getGroup: API.OperationMethod<
   GetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /get-group", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /get-group",
+    input: { GroupName: 0, Group: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -757,6 +786,7 @@ export const getGroupConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /get-group-configuration",
+    input: { Group: 0 },
     body: true,
   },
   errors: [
@@ -797,7 +827,12 @@ export const getGroupQuery: API.OperationMethod<
   GetGroupQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /get-group-query", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /get-group-query",
+    input: { GroupName: 0, Group: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -835,7 +870,11 @@ export const getTags: API.OperationMethod<
   GetTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /resources/{Arn}/tags" },
+  descriptor: {
+    service: svc,
+    http: "GET /resources/{Arn}/tags",
+    input: { Arn: 0 },
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -876,6 +915,7 @@ export const getTagSyncTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /get-tag-sync-task",
+    input: { TaskArn: 0 },
     output: { CreatedAt: D.ts },
     body: true,
   },
@@ -927,7 +967,12 @@ export const groupResources: API.OperationMethod<
   GroupResourcesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /group-resources", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /group-resources",
+    input: { Group: 0, ResourceArns: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -963,6 +1008,12 @@ export const listGroupingStatuses: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-grouping-statuses",
+    input: {
+      Group: 0,
+      MaxResults: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      NextToken: 0,
+    },
     output: { GroupingStatuses: D.list({ UpdatedAt: D.ts }) },
     body: true,
   },
@@ -1017,7 +1068,18 @@ export const listGroupResources: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ResourceIdentifier
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /list-group-resources", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /list-group-resources",
+    input: {
+      GroupName: 0,
+      Group: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -1065,6 +1127,7 @@ export const listGroups: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /groups-list",
     input: {
+      Filters: D.list({ Name: 0, Values: 0 }),
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -1116,6 +1179,11 @@ export const listTagSyncTasks: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-tag-sync-tasks",
+    input: {
+      Filters: D.list({ GroupArn: 0, GroupName: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { TagSyncTasks: D.list({ CreatedAt: D.ts }) },
     body: true,
   },
@@ -1166,6 +1234,7 @@ export const putGroupConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /put-group-configuration",
+    input: { Group: 0, Configuration: D.list(i_GroupConfigurationItem) },
     body: true,
   },
   errors: [
@@ -1213,7 +1282,12 @@ export const searchResources: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ResourceIdentifier
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /resources/search", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /resources/search",
+    input: { ResourceQuery: i_ResourceQuery, MaxResults: 0, NextToken: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -1267,7 +1341,18 @@ export const startTagSyncTask: API.OperationMethod<
   StartTagSyncTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /start-tag-sync-task", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /start-tag-sync-task",
+    input: {
+      Group: 0,
+      TagKey: 0,
+      TagValue: 0,
+      ResourceQuery: i_ResourceQuery,
+      RoleArn: 0,
+    },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -1311,7 +1396,12 @@ export const tag: API.OperationMethod<
   TagError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /resources/{Arn}/tags", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /resources/{Arn}/tags",
+    input: { Arn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -1351,7 +1441,12 @@ export const ungroupResources: API.OperationMethod<
   UngroupResourcesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /ungroup-resources", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ungroup-resources",
+    input: { Group: 0, ResourceArns: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -1388,7 +1483,12 @@ export const untag: API.OperationMethod<
   UntagError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /resources/{Arn}/tags", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /resources/{Arn}/tags",
+    input: { Arn: 0, Keys: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -1426,6 +1526,7 @@ export const updateAccountSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /update-account-settings",
+    input: { GroupLifecycleEventsDesiredStatus: 0 },
     body: true,
   },
   errors: [
@@ -1464,7 +1565,19 @@ export const updateGroup: API.OperationMethod<
   UpdateGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /update-group", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /update-group",
+    input: {
+      GroupName: 0,
+      Group: 0,
+      Description: 0,
+      Criticality: 0,
+      Owner: 0,
+      DisplayName: 0,
+    },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -1502,7 +1615,12 @@ export const updateGroupQuery: API.OperationMethod<
   UpdateGroupQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /update-group-query", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /update-group-query",
+    input: { GroupName: 0, Group: 0, ResourceQuery: i_ResourceQuery },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -1515,3 +1633,9 @@ export const updateGroupQuery: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateGroupQuery",
 })) as any;
+
+const i_GroupConfigurationItem: D.LazyStruct = () => ({
+  Type: 0,
+  Parameters: D.list({ Name: 0, Values: 0 }),
+});
+const i_ResourceQuery: D.LazyStruct = () => ({ Type: 0, Query: 0 });

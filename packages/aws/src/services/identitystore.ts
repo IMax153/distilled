@@ -509,7 +509,10 @@ export const createGroup: API.OperationMethod<
   CreateGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { IdentityStoreId: 0, DisplayName: 0, Description: 0 },
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -536,7 +539,10 @@ export const createGroupMembership: API.OperationMethod<
   CreateGroupMembershipError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { IdentityStoreId: 0, GroupId: 0, MemberId: i_MemberId },
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -563,7 +569,46 @@ export const createUser: API.OperationMethod<
   CreateUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IdentityStoreId: 0,
+      UserName: 0,
+      Name: {
+        Formatted: 0,
+        FamilyName: 0,
+        GivenName: 0,
+        MiddleName: 0,
+        HonorificPrefix: 0,
+        HonorificSuffix: 0,
+      },
+      DisplayName: 0,
+      NickName: 0,
+      ProfileUrl: 0,
+      Emails: D.list({ Value: 0, Type: 0, Primary: 0 }),
+      Addresses: D.list({
+        StreetAddress: 0,
+        Locality: 0,
+        Region: 0,
+        PostalCode: 0,
+        Country: 0,
+        Formatted: 0,
+        Type: 0,
+        Primary: 0,
+      }),
+      PhoneNumbers: D.list({ Value: 0, Type: 0, Primary: 0 }),
+      UserType: 0,
+      Title: 0,
+      PreferredLanguage: 0,
+      Locale: 0,
+      Timezone: 0,
+      Photos: D.list({ Value: 0, Type: 0, Display: 0, Primary: 0 }),
+      Website: 0,
+      Birthdate: 0,
+      Roles: D.list({ Value: 0, Type: 0, Primary: 0 }),
+      Extensions: 0,
+    },
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -589,7 +634,7 @@ export const deleteGroup: API.OperationMethod<
   DeleteGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { IdentityStoreId: 0, GroupId: 0 } },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -610,7 +655,7 @@ export const deleteGroupMembership: API.OperationMethod<
   DeleteGroupMembershipError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { IdentityStoreId: 0, MembershipId: 0 } },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -631,7 +676,7 @@ export const deleteUser: API.OperationMethod<
   DeleteUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { IdentityStoreId: 0, UserId: 0 } },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -655,6 +700,7 @@ export const describeGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { IdentityStoreId: 0, GroupId: 0 },
     output: {
       DisplayName: D.secret,
       ExternalIds: D.list(o_ExternalId),
@@ -684,7 +730,11 @@ export const describeGroupMembership: API.OperationMethod<
   DescribeGroupMembershipError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedAt: D.ts, UpdatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { IdentityStoreId: 0, MembershipId: 0 },
+    output: { CreatedAt: D.ts, UpdatedAt: D.ts },
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -708,6 +758,7 @@ export const describeUser: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { IdentityStoreId: 0, UserId: 0, Extensions: 0 },
     output: {
       UserName: D.secret,
       ExternalIds: D.list(o_ExternalId),
@@ -752,7 +803,10 @@ export const getGroupId: API.OperationMethod<
   GetGroupIdError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { IdentityStoreId: 0, AlternateIdentifier: i_AlternateIdentifier },
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -774,7 +828,10 @@ export const getGroupMembershipId: API.OperationMethod<
   GetGroupMembershipIdError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { IdentityStoreId: 0, GroupId: 0, MemberId: i_MemberId },
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -796,7 +853,10 @@ export const getUserId: API.OperationMethod<
   GetUserIdError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { IdentityStoreId: 0, AlternateIdentifier: i_AlternateIdentifier },
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -818,7 +878,10 @@ export const isMemberInGroups: API.OperationMethod<
   IsMemberInGroupsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { IdentityStoreId: 0, MemberId: i_MemberId, GroupIds: 0 },
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -843,6 +906,7 @@ export const listGroupMemberships: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { IdentityStoreId: 0, GroupId: 0, MaxResults: 0, NextToken: 0 },
     output: { GroupMemberships: D.list(o_GroupMembership) },
   },
   errors: [ResourceNotFoundException, ValidationException],
@@ -875,6 +939,12 @@ export const listGroupMembershipsForMember: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      IdentityStoreId: 0,
+      MemberId: i_MemberId,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { GroupMemberships: D.list(o_GroupMembership) },
   },
   errors: [ResourceNotFoundException, ValidationException],
@@ -907,6 +977,12 @@ export const listGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      IdentityStoreId: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list(i_Filter),
+    },
     output: {
       Groups: D.list({
         DisplayName: D.secret,
@@ -947,6 +1023,13 @@ export const listUsers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      IdentityStoreId: 0,
+      Extensions: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list(i_Filter),
+    },
     output: {
       Users: D.list({
         UserName: D.secret,
@@ -999,7 +1082,14 @@ export const updateGroup: API.OperationMethod<
   UpdateGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IdentityStoreId: 0,
+      GroupId: 0,
+      Operations: D.list(i_AttributeOperation),
+    },
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -1026,7 +1116,14 @@ export const updateUser: API.OperationMethod<
   UpdateUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IdentityStoreId: 0,
+      UserId: 0,
+      Operations: D.list(i_AttributeOperation),
+    },
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -1038,6 +1135,16 @@ export const updateUser: API.OperationMethod<
   operationName: "UpdateUser",
 })) as any;
 
+const i_AlternateIdentifier: D.LazyStruct = () => ({
+  ExternalId: { Issuer: 0, Id: 0 },
+  UniqueAttribute: { AttributePath: 0, AttributeValue: 0 },
+});
+const i_AttributeOperation: D.LazyStruct = () => ({
+  AttributePath: 0,
+  AttributeValue: 0,
+});
+const i_Filter: D.LazyStruct = () => ({ AttributePath: 0, AttributeValue: 0 });
+const i_MemberId: D.LazyStruct = () => ({ UserId: 0 });
 const o_Address: D.LazyStruct = () => ({
   StreetAddress: D.secret,
   Locality: D.secret,

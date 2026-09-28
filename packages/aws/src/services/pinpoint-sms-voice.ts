@@ -245,6 +245,7 @@ export const createConfigurationSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/sms-voice/configuration-sets",
+    input: { ConfigurationSetName: 0 },
     body: true,
   },
   errors: [
@@ -279,6 +280,11 @@ export const createConfigurationSetEventDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/sms-voice/configuration-sets/{ConfigurationSetName}/event-destinations",
+    input: {
+      ConfigurationSetName: 0,
+      EventDestination: i_EventDestinationDefinition,
+      EventDestinationName: 0,
+    },
     body: true,
   },
   errors: [
@@ -312,6 +318,7 @@ export const deleteConfigurationSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/sms-voice/configuration-sets/{ConfigurationSetName}",
+    input: { ConfigurationSetName: 0 },
   },
   errors: [
     BadRequestException,
@@ -342,6 +349,7 @@ export const deleteConfigurationSetEventDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/sms-voice/configuration-sets/{ConfigurationSetName}/event-destinations/{EventDestinationName}",
+    input: { ConfigurationSetName: 0, EventDestinationName: 0 },
   },
   errors: [
     BadRequestException,
@@ -372,6 +380,7 @@ export const getConfigurationSetEventDestinations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/sms-voice/configuration-sets/{ConfigurationSetName}/event-destinations",
+    input: { ConfigurationSetName: 0 },
   },
   errors: [
     BadRequestException,
@@ -433,6 +442,17 @@ export const sendVoiceMessage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/sms-voice/voice/message",
+    input: {
+      CallerId: 0,
+      ConfigurationSetName: 0,
+      Content: {
+        CallInstructionsMessage: { Text: 0 },
+        PlainTextMessage: { LanguageCode: 0, Text: 0, VoiceId: 0 },
+        SSMLMessage: { LanguageCode: 0, Text: 0, VoiceId: 0 },
+      },
+      DestinationPhoneNumber: 0,
+      OriginationPhoneNumber: 0,
+    },
     body: true,
   },
   errors: [
@@ -463,6 +483,11 @@ export const updateConfigurationSetEventDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/sms-voice/configuration-sets/{ConfigurationSetName}/event-destinations/{EventDestinationName}",
+    input: {
+      ConfigurationSetName: 0,
+      EventDestination: i_EventDestinationDefinition,
+      EventDestinationName: 0,
+    },
     body: true,
   },
   errors: [
@@ -475,3 +500,11 @@ export const updateConfigurationSetEventDestination: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateConfigurationSetEventDestination",
 })) as any;
+
+const i_EventDestinationDefinition: D.LazyStruct = () => ({
+  CloudWatchLogsDestination: { IamRoleArn: 0, LogGroupArn: 0 },
+  Enabled: 0,
+  KinesisFirehoseDestination: { DeliveryStreamArn: 0, IamRoleArn: 0 },
+  MatchingEventTypes: 0,
+  SnsDestination: { TopicArn: 0 },
+});

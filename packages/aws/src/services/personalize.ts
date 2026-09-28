@@ -1368,7 +1368,25 @@ export const createBatchInferenceJob: API.OperationMethod<
   CreateBatchInferenceJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      jobName: 0,
+      solutionVersionArn: 0,
+      filterArn: 0,
+      numResults: 0,
+      jobInput: { s3DataSource: i_S3DataConfig },
+      jobOutput: { s3DataDestination: i_S3DataConfig },
+      roleArn: 0,
+      batchInferenceJobConfig: {
+        itemExplorationConfig: 0,
+        rankingInfluence: 0,
+      },
+      tags: D.list(i_Tag),
+      batchInferenceJobMode: 0,
+      themeGenerationConfig: { fieldsForThemeGeneration: { itemName: 0 } },
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1401,7 +1419,19 @@ export const createBatchSegmentJob: API.OperationMethod<
   CreateBatchSegmentJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      jobName: 0,
+      solutionVersionArn: 0,
+      filterArn: 0,
+      numResults: 0,
+      jobInput: { s3DataSource: i_S3DataConfig },
+      jobOutput: { s3DataDestination: i_S3DataConfig },
+      roleArn: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1486,7 +1516,16 @@ export const createCampaign: API.OperationMethod<
   CreateCampaignError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      solutionVersionArn: 0,
+      minProvisionedTPS: 0,
+      campaignConfig: i_CampaignConfig,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1551,7 +1590,16 @@ export const createDataDeletionJob: API.OperationMethod<
   CreateDataDeletionJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      jobName: 0,
+      datasetGroupArn: 0,
+      dataSource: i_DataSource,
+      roleArn: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1619,7 +1667,16 @@ export const createDataset: API.OperationMethod<
   CreateDatasetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      schemaArn: 0,
+      datasetGroupArn: 0,
+      datasetType: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1666,7 +1723,17 @@ export const createDatasetExportJob: API.OperationMethod<
   CreateDatasetExportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      jobName: 0,
+      datasetArn: 0,
+      ingestionMode: 0,
+      roleArn: 0,
+      jobOutput: { s3DataDestination: i_S3DataConfig },
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1749,7 +1816,16 @@ export const createDatasetGroup: API.OperationMethod<
   CreateDatasetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      roleArn: 0,
+      kmsKeyArn: 0,
+      domain: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1815,7 +1891,18 @@ export const createDatasetImportJob: API.OperationMethod<
   CreateDatasetImportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      jobName: 0,
+      datasetArn: 0,
+      dataSource: i_DataSource,
+      roleArn: 0,
+      tags: D.list(i_Tag),
+      importMode: 0,
+      publishAttributionMetricsToS3: 0,
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1875,7 +1962,10 @@ export const createEventTracker: API.OperationMethod<
   CreateEventTrackerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { name: 0, datasetGroupArn: 0, tags: D.list(i_Tag) },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1905,7 +1995,15 @@ export const createFilter: API.OperationMethod<
   CreateFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      datasetGroupArn: 0,
+      filterExpression: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1936,7 +2034,15 @@ export const createMetricAttribution: API.OperationMethod<
   CreateMetricAttributionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      datasetGroupArn: 0,
+      metrics: D.list(i_MetricAttribute),
+      metricsOutputConfig: i_MetricAttributionOutput,
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -2019,7 +2125,16 @@ export const createRecommender: API.OperationMethod<
   CreateRecommenderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      datasetGroupArn: 0,
+      recipeArn: 0,
+      recommenderConfig: i_RecommenderConfig,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -2061,7 +2176,7 @@ export const createSchema: API.OperationMethod<
   CreateSchemaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0, schema: 0, domain: 0 } },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -2145,7 +2260,50 @@ export const createSolution: API.OperationMethod<
   CreateSolutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      performHPO: 0,
+      performAutoML: 0,
+      performAutoTraining: 0,
+      performIncrementalUpdate: 0,
+      recipeArn: 0,
+      datasetGroupArn: 0,
+      eventType: 0,
+      solutionConfig: {
+        eventValueThreshold: 0,
+        hpoConfig: {
+          hpoObjective: { type: 0, metricName: 0, metricRegex: 0 },
+          hpoResourceConfig: {
+            maxNumberOfTrainingJobs: 0,
+            maxParallelTrainingJobs: 0,
+          },
+          algorithmHyperParameterRanges: {
+            integerHyperParameterRanges: D.list({
+              name: 0,
+              minValue: 0,
+              maxValue: 0,
+            }),
+            continuousHyperParameterRanges: D.list({
+              name: 0,
+              minValue: 0,
+              maxValue: 0,
+            }),
+            categoricalHyperParameterRanges: D.list({ name: 0, values: 0 }),
+          },
+        },
+        algorithmHyperParameters: 0,
+        featureTransformationParameters: 0,
+        autoMLConfig: { metricName: 0, recipeList: 0 },
+        eventsConfig: i_EventsConfig,
+        optimizationObjective: { itemAttribute: 0, objectiveSensitivity: 0 },
+        trainingDataConfig: i_TrainingDataConfig,
+        autoTrainingConfig: i_AutoTrainingConfig,
+      },
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -2215,7 +2373,10 @@ export const createSolutionVersion: API.OperationMethod<
   CreateSolutionVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { name: 0, solutionArn: 0, trainingMode: 0, tags: D.list(i_Tag) },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -2248,7 +2409,7 @@ export const deleteCampaign: API.OperationMethod<
   DeleteCampaignError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { campaignArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2276,7 +2437,7 @@ export const deleteDataset: API.OperationMethod<
   DeleteDatasetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { datasetArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2308,7 +2469,7 @@ export const deleteDatasetGroup: API.OperationMethod<
   DeleteDatasetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { datasetGroupArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2335,7 +2496,7 @@ export const deleteEventTracker: API.OperationMethod<
   DeleteEventTrackerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { eventTrackerArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2360,7 +2521,7 @@ export const deleteFilter: API.OperationMethod<
   DeleteFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { filterArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2385,7 +2546,7 @@ export const deleteMetricAttribution: API.OperationMethod<
   DeleteMetricAttributionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { metricAttributionArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2411,7 +2572,7 @@ export const deleteRecommender: API.OperationMethod<
   DeleteRecommenderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { recommenderArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2438,7 +2599,7 @@ export const deleteSchema: API.OperationMethod<
   DeleteSchemaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { schemaArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2469,7 +2630,7 @@ export const deleteSolution: API.OperationMethod<
   DeleteSolutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { solutionArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2495,6 +2656,7 @@ export const describeAlgorithm: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { algorithmArn: 0 },
     output: {
       algorithm: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
     },
@@ -2522,6 +2684,7 @@ export const describeBatchInferenceJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { batchInferenceJobArn: 0 },
     output: {
       batchInferenceJob: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
     },
@@ -2549,6 +2712,7 @@ export const describeBatchSegmentJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { batchSegmentJobArn: 0 },
     output: {
       batchSegmentJob: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
     },
@@ -2585,6 +2749,7 @@ export const describeCampaign: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { campaignArn: 0 },
     output: {
       campaign: {
         creationDateTime: D.ts,
@@ -2617,6 +2782,7 @@ export const describeDataDeletionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { dataDeletionJobArn: 0 },
     output: {
       dataDeletionJob: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
     },
@@ -2643,6 +2809,7 @@ export const describeDataset: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { datasetArn: 0 },
     output: {
       dataset: {
         creationDateTime: D.ts,
@@ -2675,6 +2842,7 @@ export const describeDatasetExportJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { datasetExportJobArn: 0 },
     output: {
       datasetExportJob: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
     },
@@ -2701,6 +2869,7 @@ export const describeDatasetGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { datasetGroupArn: 0 },
     output: {
       datasetGroup: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
     },
@@ -2726,6 +2895,7 @@ export const describeDatasetImportJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { datasetImportJobArn: 0 },
     output: {
       datasetImportJob: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
     },
@@ -2753,6 +2923,7 @@ export const describeEventTracker: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { eventTrackerArn: 0 },
     output: {
       eventTracker: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
     },
@@ -2778,6 +2949,7 @@ export const describeFeatureTransformation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { featureTransformationArn: 0 },
     output: {
       featureTransformation: {
         creationDateTime: D.ts,
@@ -2806,6 +2978,7 @@ export const describeFilter: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { filterArn: 0 },
     output: {
       filter: {
         creationDateTime: D.ts,
@@ -2835,6 +3008,7 @@ export const describeMetricAttribution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { metricAttributionArn: 0 },
     output: {
       metricAttribution: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
     },
@@ -2875,6 +3049,7 @@ export const describeRecipe: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { recipeArn: 0 },
     output: { recipe: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts } },
   },
   errors: [InvalidInputException, ResourceNotFoundException],
@@ -2914,6 +3089,7 @@ export const describeRecommender: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { recommenderArn: 0 },
     output: {
       recommender: {
         creationDateTime: D.ts,
@@ -2947,6 +3123,7 @@ export const describeSchema: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { schemaArn: 0 },
     output: { schema: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts } },
   },
   errors: [InvalidInputException, ResourceNotFoundException],
@@ -2971,6 +3148,7 @@ export const describeSolution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { solutionArn: 0 },
     output: {
       solution: {
         creationDateTime: D.ts,
@@ -3004,6 +3182,7 @@ export const describeSolutionVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { solutionVersionArn: 0 },
     output: {
       solutionVersion: { creationDateTime: D.ts, lastUpdatedDateTime: D.ts },
     },
@@ -3028,7 +3207,7 @@ export const getSolutionMetrics: API.OperationMethod<
   GetSolutionMetricsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { solutionVersionArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -3056,6 +3235,7 @@ export const listBatchInferenceJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { solutionVersionArn: 0, nextToken: 0, maxResults: 0 },
     output: {
       batchInferenceJobs: D.list({
         creationDateTime: D.ts,
@@ -3092,6 +3272,7 @@ export const listBatchSegmentJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { solutionVersionArn: 0, nextToken: 0, maxResults: 0 },
     output: {
       batchSegmentJobs: D.list({
         creationDateTime: D.ts,
@@ -3130,6 +3311,7 @@ export const listCampaigns: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { solutionArn: 0, nextToken: 0, maxResults: 0 },
     output: {
       campaigns: D.list({ creationDateTime: D.ts, lastUpdatedDateTime: D.ts }),
     },
@@ -3167,6 +3349,7 @@ export const listDataDeletionJobs: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { datasetGroupArn: 0, nextToken: 0, maxResults: 0 },
     output: {
       dataDeletionJobs: D.list({
         creationDateTime: D.ts,
@@ -3201,6 +3384,7 @@ export const listDatasetExportJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { datasetArn: 0, nextToken: 0, maxResults: 0 },
     output: {
       datasetExportJobs: D.list({
         creationDateTime: D.ts,
@@ -3235,6 +3419,7 @@ export const listDatasetGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0 },
     output: {
       datasetGroups: D.list({
         creationDateTime: D.ts,
@@ -3275,6 +3460,7 @@ export const listDatasetImportJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { datasetArn: 0, nextToken: 0, maxResults: 0 },
     output: {
       datasetImportJobs: D.list({
         creationDateTime: D.ts,
@@ -3312,6 +3498,7 @@ export const listDatasets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { datasetGroupArn: 0, nextToken: 0, maxResults: 0 },
     output: {
       datasets: D.list({ creationDateTime: D.ts, lastUpdatedDateTime: D.ts }),
     },
@@ -3347,6 +3534,7 @@ export const listEventTrackers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { datasetGroupArn: 0, nextToken: 0, maxResults: 0 },
     output: {
       eventTrackers: D.list({
         creationDateTime: D.ts,
@@ -3382,6 +3570,7 @@ export const listFilters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { datasetGroupArn: 0, nextToken: 0, maxResults: 0 },
     output: {
       Filters: D.list({ creationDateTime: D.ts, lastUpdatedDateTime: D.ts }),
     },
@@ -3412,7 +3601,10 @@ export const listMetricAttributionMetrics: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   MetricAttribute
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { metricAttributionArn: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [InvalidInputException, InvalidNextTokenException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3441,6 +3633,7 @@ export const listMetricAttributions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { datasetGroupArn: 0, nextToken: 0, maxResults: 0 },
     output: {
       metricAttributions: D.list({
         creationDateTime: D.ts,
@@ -3477,6 +3670,7 @@ export const listRecipes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { recipeProvider: 0, nextToken: 0, maxResults: 0, domain: 0 },
     output: {
       recipes: D.list({ creationDateTime: D.ts, lastUpdatedDateTime: D.ts }),
     },
@@ -3512,6 +3706,7 @@ export const listRecommenders: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { datasetGroupArn: 0, nextToken: 0, maxResults: 0 },
     output: {
       recommenders: D.list({
         creationDateTime: D.ts,
@@ -3546,6 +3741,7 @@ export const listSchemas: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0 },
     output: {
       schemas: D.list({ creationDateTime: D.ts, lastUpdatedDateTime: D.ts }),
     },
@@ -3581,6 +3777,7 @@ export const listSolutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { datasetGroupArn: 0, nextToken: 0, maxResults: 0 },
     output: {
       solutions: D.list({ creationDateTime: D.ts, lastUpdatedDateTime: D.ts }),
     },
@@ -3616,6 +3813,7 @@ export const listSolutionVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { solutionArn: 0, nextToken: 0, maxResults: 0 },
     output: { solutionVersions: D.list(o_SolutionVersionSummary) },
   },
   errors: [
@@ -3650,6 +3848,7 @@ export const listTagsForResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { resourceArn: 0 },
     output: { tags: D.list({ tagKey: D.secret, tagValue: D.secret }) },
   },
   errors: [
@@ -3677,7 +3876,7 @@ export const startRecommender: API.OperationMethod<
   StartRecommenderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { recommenderArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -3702,7 +3901,7 @@ export const stopRecommender: API.OperationMethod<
   StopRecommenderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { recommenderArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -3738,7 +3937,7 @@ export const stopSolutionVersionCreation: API.OperationMethod<
   StopSolutionVersionCreationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { solutionVersionArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -3765,7 +3964,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: D.list(i_Tag) } },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -3793,7 +3992,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -3836,7 +4035,15 @@ export const updateCampaign: API.OperationMethod<
   UpdateCampaignError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      campaignArn: 0,
+      solutionVersionArn: 0,
+      minProvisionedTPS: 0,
+      campaignConfig: i_CampaignConfig,
+    },
+  },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -3861,7 +4068,7 @@ export const updateDataset: API.OperationMethod<
   UpdateDatasetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { datasetArn: 0, schemaArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -3887,7 +4094,15 @@ export const updateMetricAttribution: API.OperationMethod<
   UpdateMetricAttributionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      addMetrics: D.list(i_MetricAttribute),
+      removeMetrics: 0,
+      metricsOutputConfig: i_MetricAttributionOutput,
+      metricAttributionArn: 0,
+    },
+  },
   errors: [
     InvalidInputException,
     ResourceAlreadyExistsException,
@@ -3919,7 +4134,10 @@ export const updateRecommender: API.OperationMethod<
   UpdateRecommenderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { recommenderArn: 0, recommenderConfig: i_RecommenderConfig },
+  },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -3957,7 +4175,18 @@ export const updateSolution: API.OperationMethod<
   UpdateSolutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      solutionArn: 0,
+      performAutoTraining: 0,
+      performIncrementalUpdate: 0,
+      solutionUpdateConfig: {
+        autoTrainingConfig: i_AutoTrainingConfig,
+        eventsConfig: i_EventsConfig,
+      },
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -3969,6 +4198,42 @@ export const updateSolution: API.OperationMethod<
   operationName: "UpdateSolution",
 })) as any;
 
+const i_AutoTrainingConfig: D.LazyStruct = () => ({ schedulingExpression: 0 });
+const i_CampaignConfig: D.LazyStruct = () => ({
+  itemExplorationConfig: 0,
+  enableMetadataWithRecommendations: 0,
+  syncWithLatestSolutionVersion: 0,
+  rankingInfluence: 0,
+});
+const i_DataSource: D.LazyStruct = () => ({ dataLocation: 0 });
+const i_EventsConfig: D.LazyStruct = () => ({
+  eventParametersList: D.list({
+    eventType: 0,
+    eventValueThreshold: 0,
+    weight: 0,
+  }),
+});
+const i_MetricAttribute: D.LazyStruct = () => ({
+  eventType: 0,
+  metricName: 0,
+  expression: 0,
+});
+const i_MetricAttributionOutput: D.LazyStruct = () => ({
+  s3DataDestination: i_S3DataConfig,
+  roleArn: 0,
+});
+const i_RecommenderConfig: D.LazyStruct = () => ({
+  itemExplorationConfig: 0,
+  minRecommendationRequestsPerSecond: 0,
+  trainingDataConfig: i_TrainingDataConfig,
+  enableMetadataWithRecommendations: 0,
+});
+const i_S3DataConfig: D.LazyStruct = () => ({ path: 0, kmsKeyArn: 0 });
+const i_Tag: D.LazyStruct = () => ({ tagKey: 0, tagValue: 0 });
+const i_TrainingDataConfig: D.LazyStruct = () => ({
+  excludedDatasetColumns: 0,
+  includedDatasetColumns: 0,
+});
 const o_SolutionVersionSummary: D.LazyStruct = () => ({
   creationDateTime: D.ts,
   lastUpdatedDateTime: D.ts,

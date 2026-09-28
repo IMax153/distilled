@@ -649,7 +649,48 @@ export const createConnector: API.OperationMethod<
   CreateConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/connectors", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/connectors",
+    input: {
+      capacity: {
+        autoScaling: {
+          maxWorkerCount: 0,
+          mcuCount: 0,
+          minWorkerCount: 0,
+          scaleInPolicy: { cpuUtilizationPercentage: 0 },
+          scaleOutPolicy: { cpuUtilizationPercentage: 0 },
+          maxAutoscalingTaskCount: 0,
+        },
+        provisionedCapacity: { mcuCount: 0, workerCount: 0 },
+      },
+      connectorConfiguration: 0,
+      connectorDescription: 0,
+      connectorName: 0,
+      kafkaCluster: {
+        apacheKafkaCluster: {
+          bootstrapServers: 0,
+          vpc: { securityGroups: 0, subnets: 0 },
+        },
+      },
+      kafkaClusterClientAuthentication: { authenticationType: 0 },
+      kafkaClusterEncryptionInTransit: { encryptionType: 0 },
+      kafkaConnectVersion: 0,
+      logDelivery: {
+        workerLogDelivery: {
+          cloudWatchLogs: { enabled: 0, logGroup: 0 },
+          firehose: { deliveryStream: 0, enabled: 0 },
+          s3: { bucket: 0, enabled: 0, prefix: 0 },
+        },
+      },
+      networkType: 0,
+      plugins: D.list({ customPlugin: { customPluginArn: 0, revision: 0 } }),
+      serviceExecutionRoleArn: 0,
+      workerConfiguration: { revision: 0, workerConfigurationArn: 0 },
+      tags: 0,
+    },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -684,7 +725,18 @@ export const createCustomPlugin: API.OperationMethod<
   CreateCustomPluginError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/custom-plugins", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/custom-plugins",
+    input: {
+      contentType: 0,
+      description: 0,
+      location: { s3Location: { bucketArn: 0, fileKey: 0, objectVersion: 0 } },
+      name: 0,
+      tags: 0,
+    },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -722,6 +774,7 @@ export const createWorkerConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/worker-configurations",
+    input: { description: 0, name: 0, propertiesFileContent: 0, tags: 0 },
     output: {
       creationTime: D.ts,
       latestRevision: o_WorkerConfigurationRevisionSummary,
@@ -764,7 +817,10 @@ export const deleteConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/connectors/{connectorArn}",
-    input: { currentVersion: D.m({ query: "currentVersion" }) },
+    input: {
+      connectorArn: 0,
+      currentVersion: D.m({ query: "currentVersion" }),
+    },
   },
   errors: [
     BadRequestException,
@@ -801,6 +857,7 @@ export const deleteCustomPlugin: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/custom-plugins/{customPluginArn}",
+    input: { customPluginArn: 0 },
   },
   errors: [
     BadRequestException,
@@ -837,6 +894,7 @@ export const deleteWorkerConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/worker-configurations/{workerConfigurationArn}",
+    input: { workerConfigurationArn: 0 },
   },
   errors: [
     BadRequestException,
@@ -873,6 +931,7 @@ export const describeConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/connectors/{connectorArn}",
+    input: { connectorArn: 0 },
     output: { creationTime: D.ts },
   },
   errors: [
@@ -910,6 +969,7 @@ export const describeConnectorOperation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/connectorOperations/{connectorOperationArn}",
+    input: { connectorOperationArn: 0 },
     output: { creationTime: D.ts, endTime: D.ts },
   },
   errors: [
@@ -947,6 +1007,7 @@ export const describeCustomPlugin: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/custom-plugins/{customPluginArn}",
+    input: { customPluginArn: 0 },
     output: {
       creationTime: D.ts,
       latestRevision: o_CustomPluginRevisionSummary,
@@ -987,6 +1048,7 @@ export const describeWorkerConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/worker-configurations/{workerConfigurationArn}",
+    input: { workerConfigurationArn: 0 },
     output: {
       creationTime: D.ts,
       latestRevision: { creationTime: D.ts, propertiesFileContent: D.secret },
@@ -1029,6 +1091,7 @@ export const listConnectorOperations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/connectors/{connectorArn}/operations",
     input: {
+      connectorArn: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -1177,7 +1240,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /v1/tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -1265,7 +1332,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -1302,7 +1374,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     BadRequestException,
@@ -1339,7 +1411,22 @@ export const updateConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/connectors/{connectorArn}",
-    input: { currentVersion: D.m({ query: "currentVersion" }) },
+    input: {
+      capacity: {
+        autoScaling: {
+          maxWorkerCount: 0,
+          mcuCount: 0,
+          minWorkerCount: 0,
+          scaleInPolicy: { cpuUtilizationPercentage: 0 },
+          scaleOutPolicy: { cpuUtilizationPercentage: 0 },
+          maxAutoscalingTaskCount: 0,
+        },
+        provisionedCapacity: { mcuCount: 0, workerCount: 0 },
+      },
+      connectorConfiguration: 0,
+      connectorArn: 0,
+      currentVersion: D.m({ query: "currentVersion" }),
+    },
     body: true,
   },
   errors: [

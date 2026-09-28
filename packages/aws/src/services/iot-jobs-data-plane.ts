@@ -302,6 +302,8 @@ export const describeJobExecution: API.OperationMethod<
     service: svc,
     http: "GET /things/{thingName}/jobs/{jobId}",
     input: {
+      jobId: 0,
+      thingName: 0,
       includeJobDocument: D.m({ query: "includeJobDocument" }),
       executionNumber: D.m({ query: "executionNumber" }),
     },
@@ -337,7 +339,11 @@ export const getPendingJobExecutions: API.OperationMethod<
   GetPendingJobExecutionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /things/{thingName}/jobs" },
+  descriptor: {
+    service: svc,
+    http: "GET /things/{thingName}/jobs",
+    input: { thingName: 0 },
+  },
   errors: [
     CertificateValidationException,
     InvalidRequestException,
@@ -371,7 +377,13 @@ export const startCommandExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /command-executions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      targetArn: 0,
+      commandArn: 0,
+      parameters: D.map({ S: 0, B: 0, I: 0, L: 0, D: 0, BIN: 0, UL: 0 }),
+      executionTimeoutSeconds: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -409,6 +421,7 @@ export const startNextPendingJobExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /things/{thingName}/jobs/$next",
+    input: { thingName: 0, statusDetails: 0, stepTimeoutInMinutes: 0 },
     body: true,
   },
   errors: [
@@ -445,6 +458,17 @@ export const updateJobExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /things/{thingName}/jobs/{jobId}",
+    input: {
+      jobId: 0,
+      thingName: 0,
+      status: 0,
+      statusDetails: 0,
+      stepTimeoutInMinutes: 0,
+      expectedVersion: 0,
+      includeJobExecutionState: 0,
+      includeJobDocument: 0,
+      executionNumber: 0,
+    },
     body: true,
   },
   errors: [

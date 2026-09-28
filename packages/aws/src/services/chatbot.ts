@@ -738,6 +738,7 @@ export const associateToConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /associate-to-configuration",
+    input: { Resource: 0, ChatConfiguration: 0 },
     body: true,
   },
   errors: [
@@ -770,6 +771,15 @@ export const createChimeWebhookConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /create-chime-webhook-configuration",
+    input: {
+      WebhookDescription: 0,
+      WebhookUrl: 0,
+      SnsTopicArns: 0,
+      IamRoleArn: 0,
+      ConfigurationName: 0,
+      LoggingLevel: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { WebhookConfiguration: o_ChimeWebhookConfiguration },
     body: true,
   },
@@ -804,7 +814,14 @@ export const createCustomAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /create-custom-action",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Definition: i_CustomActionDefinition,
+      AliasName: 0,
+      Attachments: D.list(i_CustomActionAttachment),
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+      ActionName: 0,
+    },
     body: true,
   },
   errors: [
@@ -839,6 +856,20 @@ export const createMicrosoftTeamsChannelConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /create-ms-teams-channel-configuration",
+    input: {
+      ChannelId: 0,
+      ChannelName: 0,
+      TeamId: 0,
+      TeamName: 0,
+      TenantId: 0,
+      SnsTopicArns: 0,
+      IamRoleArn: 0,
+      ConfigurationName: 0,
+      LoggingLevel: 0,
+      GuardrailPolicyArns: 0,
+      UserAuthorizationRequired: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { ChannelConfiguration: o_TeamsChannelConfiguration },
     body: true,
   },
@@ -875,6 +906,18 @@ export const createSlackChannelConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /create-slack-channel-configuration",
+    input: {
+      SlackTeamId: 0,
+      SlackChannelId: 0,
+      SlackChannelName: 0,
+      SnsTopicArns: 0,
+      IamRoleArn: 0,
+      ConfigurationName: 0,
+      LoggingLevel: 0,
+      GuardrailPolicyArns: 0,
+      UserAuthorizationRequired: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { ChannelConfiguration: o_SlackChannelConfiguration },
     body: true,
   },
@@ -909,6 +952,7 @@ export const deleteChimeWebhookConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-chime-webhook-configuration",
+    input: { ChatConfigurationArn: 0 },
     body: true,
   },
   errors: [
@@ -937,7 +981,12 @@ export const deleteCustomAction: API.OperationMethod<
   DeleteCustomActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /delete-custom-action", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /delete-custom-action",
+    input: { CustomActionArn: 0 },
+    body: true,
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -967,6 +1016,7 @@ export const deleteMicrosoftTeamsChannelConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-ms-teams-channel-configuration",
+    input: { ChatConfigurationArn: 0 },
     body: true,
   },
   errors: [
@@ -997,6 +1047,7 @@ export const deleteMicrosoftTeamsConfiguredTeam: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-ms-teams-configured-teams",
+    input: { TeamId: 0 },
     body: true,
   },
   errors: [
@@ -1026,6 +1077,7 @@ export const deleteMicrosoftTeamsUserIdentity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-ms-teams-user-identity",
+    input: { ChatConfigurationArn: 0, UserId: 0 },
     body: true,
   },
   errors: [
@@ -1056,6 +1108,7 @@ export const deleteSlackChannelConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-slack-channel-configuration",
+    input: { ChatConfigurationArn: 0 },
     body: true,
   },
   errors: [
@@ -1086,6 +1139,7 @@ export const deleteSlackUserIdentity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-slack-user-identity",
+    input: { ChatConfigurationArn: 0, SlackTeamId: 0, SlackUserId: 0 },
     body: true,
   },
   errors: [
@@ -1114,6 +1168,7 @@ export const deleteSlackWorkspaceAuthorization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-slack-workspace-authorization",
+    input: { SlackTeamId: 0 },
     body: true,
   },
   errors: [DeleteSlackWorkspaceAuthorizationFault, InvalidParameterException],
@@ -1140,6 +1195,7 @@ export const describeChimeWebhookConfigurations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-chime-webhook-configurations",
+    input: { MaxResults: 0, NextToken: 0, ChatConfigurationArn: 0 },
     output: { WebhookConfigurations: D.list(o_ChimeWebhookConfiguration) },
     body: true,
   },
@@ -1177,6 +1233,7 @@ export const describeSlackChannelConfigurations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-slack-channel-configurations",
+    input: { MaxResults: 0, NextToken: 0, ChatConfigurationArn: 0 },
     output: { SlackChannelConfigurations: D.list(o_SlackChannelConfiguration) },
     body: true,
   },
@@ -1214,6 +1271,7 @@ export const describeSlackUserIdentities: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-slack-user-identities",
+    input: { ChatConfigurationArn: 0, NextToken: 0, MaxResults: 0 },
     body: true,
   },
   errors: [
@@ -1250,6 +1308,7 @@ export const describeSlackWorkspaces: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-slack-workspaces",
+    input: { MaxResults: 0, NextToken: 0 },
     body: true,
   },
   errors: [
@@ -1286,6 +1345,7 @@ export const disassociateFromConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /disassociate-from-configuration",
+    input: { Resource: 0, ChatConfiguration: 0 },
     body: true,
   },
   errors: [
@@ -1312,7 +1372,11 @@ export const getAccountPreferences: API.OperationMethod<
   GetAccountPreferencesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /get-account-preferences" },
+  descriptor: {
+    service: svc,
+    http: "POST /get-account-preferences",
+    input: {},
+  },
   errors: [GetAccountPreferencesException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1334,7 +1398,12 @@ export const getCustomAction: API.OperationMethod<
   GetCustomActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /get-custom-action", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /get-custom-action",
+    input: { CustomActionArn: 0 },
+    body: true,
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1364,6 +1433,7 @@ export const getMicrosoftTeamsChannelConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /get-ms-teams-channel-configuration",
+    input: { ChatConfigurationArn: 0 },
     output: { ChannelConfiguration: o_TeamsChannelConfiguration },
     body: true,
   },
@@ -1389,7 +1459,12 @@ export const listAssociations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AssociationListing
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /list-associations", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /list-associations",
+    input: { ChatConfiguration: 0, MaxResults: 0, NextToken: 0 },
+    body: true,
+  },
   errors: [InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1417,7 +1492,12 @@ export const listCustomActions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   CustomActionArn
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /list-custom-actions", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /list-custom-actions",
+    input: { MaxResults: 0, NextToken: 0 },
+    body: true,
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1452,6 +1532,7 @@ export const listMicrosoftTeamsChannelConfigurations: API.PaginatedOperationMeth
   descriptor: {
     service: svc,
     http: "POST /list-ms-teams-channel-configurations",
+    input: { MaxResults: 0, NextToken: 0, TeamId: 0 },
     output: { TeamChannelConfigurations: D.list(o_TeamsChannelConfiguration) },
     body: true,
   },
@@ -1489,6 +1570,7 @@ export const listMicrosoftTeamsConfiguredTeams: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-ms-teams-configured-teams",
+    input: { MaxResults: 0, NextToken: 0 },
     body: true,
   },
   errors: [
@@ -1525,6 +1607,7 @@ export const listMicrosoftTeamsUserIdentities: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-ms-teams-user-identities",
+    input: { ChatConfigurationArn: 0, NextToken: 0, MaxResults: 0 },
     body: true,
   },
   errors: [
@@ -1560,6 +1643,7 @@ export const listTagsForResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-tags-for-resource",
+    input: { ResourceARN: 0 },
     body: true,
   },
   errors: [
@@ -1587,7 +1671,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tag-resource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tag-resource",
+    input: { ResourceARN: 0, Tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     InternalServiceError,
     ResourceNotFoundException,
@@ -1613,7 +1702,12 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /untag-resource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /untag-resource",
+    input: { ResourceARN: 0, TagKeys: 0 },
+    body: true,
+  },
   errors: [
     InternalServiceError,
     ResourceNotFoundException,
@@ -1641,6 +1735,7 @@ export const updateAccountPreferences: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /update-account-preferences",
+    input: { UserAuthorizationRequired: 0, TrainingDataCollectionEnabled: 0 },
     body: true,
   },
   errors: [
@@ -1671,6 +1766,14 @@ export const updateChimeWebhookConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /update-chime-webhook-configuration",
+    input: {
+      ChatConfigurationArn: 0,
+      WebhookDescription: 0,
+      WebhookUrl: 0,
+      SnsTopicArns: 0,
+      IamRoleArn: 0,
+      LoggingLevel: 0,
+    },
     output: { WebhookConfiguration: o_ChimeWebhookConfiguration },
     body: true,
   },
@@ -1700,7 +1803,17 @@ export const updateCustomAction: API.OperationMethod<
   UpdateCustomActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /update-custom-action", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /update-custom-action",
+    input: {
+      CustomActionArn: 0,
+      Definition: i_CustomActionDefinition,
+      AliasName: 0,
+      Attachments: D.list(i_CustomActionAttachment),
+    },
+    body: true,
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1730,6 +1843,16 @@ export const updateMicrosoftTeamsChannelConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /update-ms-teams-channel-configuration",
+    input: {
+      ChatConfigurationArn: 0,
+      ChannelId: 0,
+      ChannelName: 0,
+      SnsTopicArns: 0,
+      IamRoleArn: 0,
+      LoggingLevel: 0,
+      GuardrailPolicyArns: 0,
+      UserAuthorizationRequired: 0,
+    },
     output: { ChannelConfiguration: o_TeamsChannelConfiguration },
     body: true,
   },
@@ -1762,6 +1885,16 @@ export const updateSlackChannelConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /update-slack-channel-configuration",
+    input: {
+      ChatConfigurationArn: 0,
+      SlackChannelId: 0,
+      SlackChannelName: 0,
+      SnsTopicArns: 0,
+      IamRoleArn: 0,
+      LoggingLevel: 0,
+      GuardrailPolicyArns: 0,
+      UserAuthorizationRequired: 0,
+    },
     output: { ChannelConfiguration: o_SlackChannelConfiguration },
     body: true,
   },
@@ -1776,6 +1909,14 @@ export const updateSlackChannelConfiguration: API.OperationMethod<
   operationName: "UpdateSlackChannelConfiguration",
 })) as any;
 
+const i_CustomActionAttachment: D.LazyStruct = () => ({
+  NotificationType: 0,
+  ButtonText: 0,
+  Criteria: D.list({ Operator: 0, VariableName: 0, Value: 0 }),
+  Variables: 0,
+});
+const i_CustomActionDefinition: D.LazyStruct = () => ({ CommandText: 0 });
+const i_Tag: D.LazyStruct = () => ({ TagKey: 0, TagValue: 0 });
 const o_ChimeWebhookConfiguration: D.LazyStruct = () => ({
   WebhookDescription: D.secret,
 });

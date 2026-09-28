@@ -583,7 +583,19 @@ export const createOAuth2Token: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/token",
-    input: { tokenInput: D.m({ payload: true }) },
+    input: {
+      tokenInput: D.m({
+        payload: true,
+        shape: {
+          clientId: 0,
+          grantType: 0,
+          code: 0,
+          redirectUri: 0,
+          codeVerifier: 0,
+          refreshToken: 0,
+        },
+      }),
+    },
     output: {
       tokenOutput: D.m({ payload: true, shape: { refreshToken: D.secret } }),
     },
@@ -619,7 +631,7 @@ export const createOAuth2TokenWithIAM: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/token?x-amz-client-auth-method=iam",
-    input: { grantType: D.m({ wire: "grant_type" }) },
+    input: { grantType: D.m({ wire: "grant_type" }), resource: 0 },
     output: {
       accessToken: D.m({ wire: "access_token", shape: D.secret }),
       tokenType: D.m({ wire: "token_type" }),
@@ -658,6 +670,7 @@ export const deleteConsoleAuthorizationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-console-authorization-configuration",
+    input: { targetId: 0 },
     staticContext: { IsControlPlane: { value: true } },
     body: true,
   },
@@ -692,7 +705,7 @@ export const deleteResourcePermissionStatement: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-resource-permission-statement",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { statementId: 0, clientToken: D.m({ idempotency: true }) },
     staticContext: { IsControlPlane: { value: true } },
     body: true,
   },
@@ -727,6 +740,7 @@ export const getConsoleAuthorizationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /get-console-authorization-configuration",
+    input: { targetId: 0 },
     staticContext: { IsControlPlane: { value: true } },
     body: true,
   },
@@ -760,6 +774,7 @@ export const getResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /get-resource-policy",
+    input: {},
     output: {
       signinResourceBasedPolicy: {
         version: D.m({ wire: "Version" }),
@@ -816,7 +831,7 @@ export const introspectOAuth2TokenWithIAM: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/introspect?x-amz-client-auth-method=iam",
-    input: { tokenTypeHint: D.m({ wire: "token_type_hint" }) },
+    input: { token: 0, tokenTypeHint: D.m({ wire: "token_type_hint" }) },
     output: {
       clientId: D.m({ wire: "client_id" }),
       userId: D.m({ wire: "user_id" }),
@@ -858,6 +873,7 @@ export const listResourcePermissionStatements: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-resource-permission-statements",
+    input: { maxResults: 0, nextToken: 0 },
     staticContext: { IsControlPlane: { value: true } },
     body: true,
   },
@@ -899,6 +915,7 @@ export const putConsoleAuthorizationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /put-console-authorization-configuration",
+    input: { targetId: 0 },
     staticContext: { IsControlPlane: { value: true } },
     body: true,
   },
@@ -935,7 +952,16 @@ export const putResourcePermissionStatement: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /put-resource-permission-statement",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      sourceVpc: 0,
+      signinSourceVpce: 0,
+      consoleSourceVpce: 0,
+      vpcSourceIp: 0,
+      sourceIp: 0,
+      requestedRegion: 0,
+      excludedPrincipal: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     staticContext: { IsControlPlane: { value: true } },
     body: true,
   },
@@ -976,6 +1002,7 @@ export const revokeOAuth2TokenWithIAM: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/revoke?x-amz-client-auth-method=iam",
+    input: { token: 0 },
     staticContext: { IsOAuthEndpoint: { value: true } },
     body: true,
   },

@@ -1219,7 +1219,7 @@ export const abortEnvironmentUpdate: API.OperationMethod<
   AbortEnvironmentUpdateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EnvironmentId: 0, EnvironmentName: 0 } },
   errors: [InsufficientPrivilegesException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1241,7 +1241,10 @@ export const applyEnvironmentManagedAction: API.OperationMethod<
   ApplyEnvironmentManagedActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { EnvironmentName: 0, EnvironmentId: 0, ActionId: 0 },
+  },
   errors: [
     ElasticBeanstalkServiceException,
     ManagedActionInvalidStateException,
@@ -1266,7 +1269,10 @@ export const associateEnvironmentOperationsRole: API.OperationMethod<
   AssociateEnvironmentOperationsRoleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { EnvironmentName: 0, OperationsRole: 0 },
+  },
   errors: [InsufficientPrivilegesException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1283,7 +1289,11 @@ export const checkDNSAvailability: API.OperationMethod<
   CheckDNSAvailabilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Available: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { CNAMEPrefix: 0 },
+    output: { Available: D.bool },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1310,6 +1320,7 @@ export const composeEnvironments: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ApplicationName: 0, GroupName: 0, VersionLabels: 0 },
     output: { Environments: D.list(o_EnvironmentDescription) },
   },
   errors: [InsufficientPrivilegesException, TooManyEnvironmentsException],
@@ -1333,6 +1344,12 @@ export const createApplication: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ApplicationName: 0,
+      Description: 0,
+      ResourceLifecycleConfig: i_ApplicationResourceLifecycleConfig,
+      Tags: D.list(i_Tag),
+    },
     output: { Application: o_ApplicationDescription },
   },
   errors: [TooManyApplicationsException],
@@ -1377,6 +1394,27 @@ export const createApplicationVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ApplicationName: 0,
+      VersionLabel: 0,
+      Description: 0,
+      SourceBuildInformation: {
+        SourceType: 0,
+        SourceRepository: 0,
+        SourceLocation: 0,
+      },
+      SourceBundle: i_S3Location,
+      BuildConfiguration: {
+        ArtifactName: 0,
+        CodeBuildServiceRole: 0,
+        ComputeType: 0,
+        Image: 0,
+        TimeoutInMinutes: 0,
+      },
+      AutoCreateApplication: 0,
+      Process: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { ApplicationVersion: o_ApplicationVersionDescription },
   },
   errors: [
@@ -1421,6 +1459,17 @@ export const createConfigurationTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ApplicationName: 0,
+      TemplateName: 0,
+      SolutionStackName: 0,
+      PlatformArn: 0,
+      SourceConfiguration: { ApplicationName: 0, TemplateName: 0 },
+      EnvironmentId: 0,
+      Description: 0,
+      OptionSettings: D.list(i_ConfigurationOptionSetting),
+      Tags: D.list(i_Tag),
+    },
     output: {
       DateCreated: D.ts,
       DateUpdated: D.ts,
@@ -1453,6 +1502,22 @@ export const createEnvironment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ApplicationName: 0,
+      EnvironmentName: 0,
+      GroupName: 0,
+      Description: 0,
+      CNAMEPrefix: 0,
+      Tier: i_EnvironmentTier,
+      Tags: D.list(i_Tag),
+      VersionLabel: 0,
+      TemplateName: 0,
+      SolutionStackName: 0,
+      PlatformArn: 0,
+      OptionSettings: D.list(i_ConfigurationOptionSetting),
+      OptionsToRemove: D.list(i_OptionSpecification),
+      OperationsRole: 0,
+    },
     output: {
       DateCreated: D.ts,
       DateUpdated: D.ts,
@@ -1484,6 +1549,14 @@ export const createPlatformVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      PlatformName: 0,
+      PlatformVersion: 0,
+      PlatformDefinitionBundle: i_S3Location,
+      EnvironmentName: 0,
+      OptionSettings: D.list(i_ConfigurationOptionSetting),
+      Tags: D.list(i_Tag),
+    },
     output: { PlatformSummary: o_PlatformSummary, Builder: {} },
   },
   errors: [
@@ -1541,7 +1614,10 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ApplicationName: 0, TerminateEnvByForce: 0 },
+  },
   errors: [OperationInProgressException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1566,7 +1642,10 @@ export const deleteApplicationVersion: API.OperationMethod<
   DeleteApplicationVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ApplicationName: 0, VersionLabel: 0, DeleteSourceBundle: 0 },
+  },
   errors: [
     InsufficientPrivilegesException,
     OperationInProgressException,
@@ -1594,7 +1673,7 @@ export const deleteConfigurationTemplate: API.OperationMethod<
   DeleteConfigurationTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ApplicationName: 0, TemplateName: 0 } },
   errors: [OperationInProgressException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1617,7 +1696,10 @@ export const deleteEnvironmentConfiguration: API.OperationMethod<
   DeleteEnvironmentConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ApplicationName: 0, EnvironmentName: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1639,7 +1721,11 @@ export const deletePlatformVersion: API.OperationMethod<
   DeletePlatformVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { PlatformSummary: o_PlatformSummary } },
+  descriptor: {
+    service: svc,
+    input: { PlatformArn: 0 },
+    output: { PlatformSummary: o_PlatformSummary },
+  },
   errors: [
     ElasticBeanstalkServiceException,
     InsufficientPrivilegesException,
@@ -1696,6 +1782,7 @@ export const describeApplications: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ApplicationNames: 0 },
     output: { Applications: D.list(o_ApplicationDescription) },
   },
   errors: [],
@@ -1716,6 +1803,12 @@ export const describeApplicationVersions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ApplicationName: 0,
+      VersionLabels: 0,
+      MaxRecords: 0,
+      NextToken: 0,
+    },
     output: { ApplicationVersions: D.list(o_ApplicationVersionDescription) },
   },
   errors: [],
@@ -1741,6 +1834,14 @@ export const describeConfigurationOptions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ApplicationName: 0,
+      TemplateName: 0,
+      EnvironmentName: 0,
+      SolutionStackName: 0,
+      PlatformArn: 0,
+      Options: D.list(i_OptionSpecification),
+    },
     output: {
       Options: D.list({
         UserDefined: D.bool,
@@ -1783,6 +1884,7 @@ export const describeConfigurationSettings: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ApplicationName: 0, TemplateName: 0, EnvironmentName: 0 },
     output: {
       ConfigurationSettings: D.list({
         DateCreated: D.ts,
@@ -1814,6 +1916,7 @@ export const describeEnvironmentHealth: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { EnvironmentName: 0, EnvironmentId: 0, AttributeNames: 0 },
     output: {
       Causes: D.list(),
       ApplicationMetrics: o_ApplicationMetrics,
@@ -1851,6 +1954,7 @@ export const describeEnvironmentManagedActionHistory: API.PaginatedOperationMeth
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { EnvironmentId: 0, EnvironmentName: 0, NextToken: 0, MaxItems: 0 },
     output: {
       ManagedActionHistoryItems: D.list({
         ExecutedTime: D.ts,
@@ -1884,6 +1988,7 @@ export const describeEnvironmentManagedActions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { EnvironmentName: 0, EnvironmentId: 0, Status: 0 },
     output: { ManagedActions: D.list({ WindowStartTime: D.ts }) },
   },
   errors: [ElasticBeanstalkServiceException],
@@ -1906,6 +2011,7 @@ export const describeEnvironmentResources: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { EnvironmentId: 0, EnvironmentName: 0 },
     output: {
       EnvironmentResources: {
         AutoScalingGroups: D.list({}),
@@ -1936,6 +2042,16 @@ export const describeEnvironments: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ApplicationName: 0,
+      VersionLabel: 0,
+      EnvironmentIds: 0,
+      EnvironmentNames: 0,
+      IncludeDeleted: 0,
+      IncludedDeletedBackTo: 0,
+      MaxRecords: 0,
+      NextToken: 0,
+    },
     output: { Environments: D.list(o_EnvironmentDescription) },
   },
   errors: [],
@@ -1958,7 +2074,24 @@ export const describeEvents: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   EventDescription
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Events: D.list({ EventDate: D.ts }) } },
+  descriptor: {
+    service: svc,
+    input: {
+      ApplicationName: 0,
+      VersionLabel: 0,
+      TemplateName: 0,
+      EnvironmentId: 0,
+      EnvironmentName: 0,
+      PlatformArn: 0,
+      RequestId: 0,
+      Severity: 0,
+      StartTime: 0,
+      EndTime: 0,
+      MaxRecords: 0,
+      NextToken: 0,
+    },
+    output: { Events: D.list({ EventDate: D.ts }) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1988,6 +2121,12 @@ export const describeInstancesHealth: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      EnvironmentName: 0,
+      EnvironmentId: 0,
+      AttributeNames: 0,
+      NextToken: 0,
+    },
     output: {
       InstanceHealthList: D.list({
         Causes: D.list(),
@@ -2036,6 +2175,7 @@ export const describePlatformVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { PlatformArn: 0 },
     output: {
       PlatformDescription: {
         DateCreated: D.ts,
@@ -2069,7 +2209,7 @@ export const disassociateEnvironmentOperationsRole: API.OperationMethod<
   DisassociateEnvironmentOperationsRoleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EnvironmentName: 0 } },
   errors: [InsufficientPrivilegesException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2117,6 +2257,11 @@ export const listPlatformBranches: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filters: D.list({ Attribute: 0, Operator: 0, Values: 0 }),
+      MaxRecords: 0,
+      NextToken: 0,
+    },
     output: {
       PlatformBranchSummaryList: D.list({
         BranchOrder: D.num,
@@ -2156,6 +2301,11 @@ export const listPlatformVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filters: D.list({ Type: 0, Operator: 0, Values: 0 }),
+      MaxRecords: 0,
+      NextToken: 0,
+    },
     output: { PlatformSummaryList: D.list(o_PlatformSummary) },
   },
   errors: [ElasticBeanstalkServiceException, InsufficientPrivilegesException],
@@ -2188,7 +2338,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ResourceTags: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0 },
+    output: { ResourceTags: D.list({}) },
+  },
   errors: [
     InsufficientPrivilegesException,
     ResourceNotFoundException,
@@ -2212,7 +2366,7 @@ export const rebuildEnvironment: API.OperationMethod<
   RebuildEnvironmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EnvironmentId: 0, EnvironmentName: 0 } },
   errors: [InsufficientPrivilegesException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2247,7 +2401,10 @@ export const requestEnvironmentInfo: API.OperationMethod<
   RequestEnvironmentInfoError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { EnvironmentId: 0, EnvironmentName: 0, InfoType: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2265,7 +2422,7 @@ export const restartAppServer: API.OperationMethod<
   RestartAppServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EnvironmentId: 0, EnvironmentName: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2289,6 +2446,7 @@ export const retrieveEnvironmentInfo: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { EnvironmentId: 0, EnvironmentName: 0, InfoType: 0 },
     output: { EnvironmentInfo: D.list({ SampleTimestamp: D.ts }) },
   },
   errors: [],
@@ -2307,7 +2465,15 @@ export const swapEnvironmentCNAMEs: API.OperationMethod<
   SwapEnvironmentCNAMEsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SourceEnvironmentId: 0,
+      SourceEnvironmentName: 0,
+      DestinationEnvironmentId: 0,
+      DestinationEnvironmentName: 0,
+    },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2328,6 +2494,12 @@ export const terminateEnvironment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      EnvironmentId: 0,
+      EnvironmentName: 0,
+      TerminateResources: 0,
+      ForceTerminate: 0,
+    },
     output: {
       DateCreated: D.ts,
       DateUpdated: D.ts,
@@ -2358,6 +2530,7 @@ export const updateApplication: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ApplicationName: 0, Description: 0 },
     output: { Application: o_ApplicationDescription },
   },
   errors: [],
@@ -2380,6 +2553,10 @@ export const updateApplicationResourceLifecycle: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ApplicationName: 0,
+      ResourceLifecycleConfig: i_ApplicationResourceLifecycleConfig,
+    },
     output: { ResourceLifecycleConfig: o_ApplicationResourceLifecycleConfig },
   },
   errors: [InsufficientPrivilegesException],
@@ -2403,6 +2580,7 @@ export const updateApplicationVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ApplicationName: 0, VersionLabel: 0, Description: 0 },
     output: { ApplicationVersion: o_ApplicationVersionDescription },
   },
   errors: [],
@@ -2434,6 +2612,13 @@ export const updateConfigurationTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ApplicationName: 0,
+      TemplateName: 0,
+      Description: 0,
+      OptionSettings: D.list(i_ConfigurationOptionSetting),
+      OptionsToRemove: D.list(i_OptionSpecification),
+    },
     output: {
       DateCreated: D.ts,
       DateUpdated: D.ts,
@@ -2471,6 +2656,20 @@ export const updateEnvironment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ApplicationName: 0,
+      EnvironmentId: 0,
+      EnvironmentName: 0,
+      GroupName: 0,
+      Description: 0,
+      Tier: i_EnvironmentTier,
+      VersionLabel: 0,
+      TemplateName: 0,
+      SolutionStackName: 0,
+      PlatformArn: 0,
+      OptionSettings: D.list(i_ConfigurationOptionSetting),
+      OptionsToRemove: D.list(i_OptionSpecification),
+    },
     output: {
       DateCreated: D.ts,
       DateUpdated: D.ts,
@@ -2522,7 +2721,10 @@ export const updateTagsForResource: API.OperationMethod<
   UpdateTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, TagsToAdd: D.list(i_Tag), TagsToRemove: 0 },
+  },
   errors: [
     InsufficientPrivilegesException,
     OperationInProgressException,
@@ -2552,13 +2754,47 @@ export const validateConfigurationSettings: API.OperationMethod<
   ValidateConfigurationSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Messages: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: {
+      ApplicationName: 0,
+      TemplateName: 0,
+      EnvironmentName: 0,
+      OptionSettings: D.list(i_ConfigurationOptionSetting),
+    },
+    output: { Messages: D.list({}) },
+  },
   errors: [InsufficientPrivilegesException, TooManyBucketsException],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "ValidateConfigurationSettings",
 })) as any;
 
+const i_ApplicationResourceLifecycleConfig: D.LazyStruct = () => ({
+  ServiceRole: 0,
+  VersionLifecycleConfig: {
+    MaxCountRule: { Enabled: 0, MaxCount: 0, DeleteSourceFromS3: 0 },
+    MaxAgeRule: { Enabled: 0, MaxAgeInDays: 0, DeleteSourceFromS3: 0 },
+  },
+});
+const i_ConfigurationOptionSetting: D.LazyStruct = () => ({
+  ResourceName: 0,
+  Namespace: 0,
+  OptionName: 0,
+  Value: 0,
+});
+const i_EnvironmentTier: D.LazyStruct = () => ({
+  Name: 0,
+  Type: 0,
+  Version: 0,
+});
+const i_OptionSpecification: D.LazyStruct = () => ({
+  ResourceName: 0,
+  Namespace: 0,
+  OptionName: 0,
+});
+const i_S3Location: D.LazyStruct = () => ({ S3Bucket: 0, S3Key: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_ApplicationDescription: D.LazyStruct = () => ({
   DateCreated: D.ts,
   DateUpdated: D.ts,

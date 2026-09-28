@@ -267,6 +267,7 @@ export const deregisterSubscriptionProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /subscription/DeregisterSubscriptionProvider",
+    input: { SubscriptionProviderArn: 0 },
     body: true,
   },
   errors: [
@@ -298,6 +299,7 @@ export const getRegisteredSubscriptionProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /subscription/GetRegisteredSubscriptionProvider",
+    input: { SubscriptionProviderArn: 0 },
     body: true,
   },
   errors: [
@@ -325,7 +327,11 @@ export const getServiceSettings: API.OperationMethod<
   GetServiceSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /subscription/GetServiceSettings" },
+  descriptor: {
+    service: svc,
+    http: "POST /subscription/GetServiceSettings",
+    input: {},
+  },
   errors: [InternalServerException, ThrottlingException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -351,6 +357,7 @@ export const listLinuxSubscriptionInstances: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /subscription/ListLinuxSubscriptionInstances",
+    input: { Filters: D.list(i_Filter), MaxResults: 0, NextToken: 0 },
     body: true,
   },
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -385,6 +392,7 @@ export const listLinuxSubscriptions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /subscription/ListLinuxSubscriptions",
+    input: { Filters: D.list(i_Filter), MaxResults: 0, NextToken: 0 },
     body: true,
   },
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -417,6 +425,7 @@ export const listRegisteredSubscriptionProviders: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /subscription/ListRegisteredSubscriptionProviders",
+    input: { SubscriptionProviderSources: 0, MaxResults: 0, NextToken: 0 },
     body: true,
   },
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -446,7 +455,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -474,6 +487,7 @@ export const registerSubscriptionProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /subscription/RegisterSubscriptionProvider",
+    input: { SubscriptionProviderSource: 0, SecretArn: 0, Tags: 0 },
     body: true,
   },
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -496,7 +510,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -523,7 +542,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [InternalServerException, ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -548,6 +567,14 @@ export const updateServiceSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /subscription/UpdateServiceSettings",
+    input: {
+      LinuxSubscriptionsDiscovery: 0,
+      LinuxSubscriptionsDiscoverySettings: {
+        SourceRegions: 0,
+        OrganizationIntegration: 0,
+      },
+      AllowUpdate: 0,
+    },
     body: true,
   },
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -555,3 +582,5 @@ export const updateServiceSettings: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateServiceSettings",
 })) as any;
+
+const i_Filter: D.LazyStruct = () => ({ Name: 0, Values: 0, Operator: 0 });

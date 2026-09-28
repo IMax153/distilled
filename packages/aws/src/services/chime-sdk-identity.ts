@@ -560,7 +560,12 @@ export const createAppInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /app-instances",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Metadata: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -610,6 +615,7 @@ export const createAppInstanceAdmin: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /app-instances/{AppInstanceArn}/admins",
+    input: { AppInstanceAdminArn: 0, AppInstanceArn: 0 },
     output: { AppInstanceAdmin: o_Identity },
     body: true,
   },
@@ -651,7 +657,14 @@ export const createAppInstanceBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /app-instance-bots",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      AppInstanceArn: 0,
+      Name: 0,
+      Metadata: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+      Configuration: i_Configuration,
+    },
     body: true,
   },
   errors: [
@@ -692,7 +705,15 @@ export const createAppInstanceUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /app-instance-users",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      AppInstanceArn: 0,
+      AppInstanceUserId: 0,
+      Name: 0,
+      Metadata: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+      ExpirationSettings: i_ExpirationSettings,
+    },
     body: true,
   },
   errors: [
@@ -728,7 +749,11 @@ export const deleteAppInstance: API.OperationMethod<
   DeleteAppInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /app-instances/{AppInstanceArn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /app-instances/{AppInstanceArn}",
+    input: { AppInstanceArn: 0 },
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -767,6 +792,7 @@ export const deleteAppInstanceAdmin: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /app-instances/{AppInstanceArn}/admins/{AppInstanceAdminArn}",
+    input: { AppInstanceAdminArn: 0, AppInstanceArn: 0 },
   },
   errors: [
     BadRequestException,
@@ -805,6 +831,7 @@ export const deleteAppInstanceBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /app-instance-bots/{AppInstanceBotArn}",
+    input: { AppInstanceBotArn: 0 },
   },
   errors: [
     BadRequestException,
@@ -843,6 +870,7 @@ export const deleteAppInstanceUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /app-instance-users/{AppInstanceUserArn}",
+    input: { AppInstanceUserArn: 0 },
   },
   errors: [
     BadRequestException,
@@ -879,6 +907,7 @@ export const deregisterAppInstanceUserEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /app-instance-users/{AppInstanceUserArn}/endpoints/{EndpointId}",
+    input: { AppInstanceUserArn: 0, EndpointId: 0 },
   },
   errors: [
     BadRequestException,
@@ -913,6 +942,7 @@ export const describeAppInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /app-instances/{AppInstanceArn}",
+    input: { AppInstanceArn: 0 },
     output: {
       AppInstance: {
         Name: D.secret,
@@ -955,6 +985,7 @@ export const describeAppInstanceAdmin: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /app-instances/{AppInstanceArn}/admins/{AppInstanceAdminArn}",
+    input: { AppInstanceAdminArn: 0, AppInstanceArn: 0 },
     output: { AppInstanceAdmin: { Admin: o_Identity, CreatedTimestamp: D.ts } },
   },
   errors: [
@@ -991,6 +1022,7 @@ export const describeAppInstanceBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /app-instance-bots/{AppInstanceBotArn}",
+    input: { AppInstanceBotArn: 0 },
     output: {
       AppInstanceBot: {
         Name: D.secret,
@@ -1034,6 +1066,7 @@ export const describeAppInstanceUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /app-instance-users/{AppInstanceUserArn}",
+    input: { AppInstanceUserArn: 0 },
     output: {
       AppInstanceUser: {
         Name: D.secret,
@@ -1076,6 +1109,7 @@ export const describeAppInstanceUserEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /app-instance-users/{AppInstanceUserArn}/endpoints/{EndpointId}",
+    input: { AppInstanceUserArn: 0, EndpointId: 0 },
     output: {
       AppInstanceUserEndpoint: {
         Name: D.secret,
@@ -1121,6 +1155,7 @@ export const getAppInstanceRetentionSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /app-instances/{AppInstanceArn}/retention-settings",
+    input: { AppInstanceArn: 0 },
     output: { InitiateDeletionTimestamp: D.ts },
   },
   errors: [
@@ -1159,6 +1194,7 @@ export const listAppInstanceAdmins: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /app-instances/{AppInstanceArn}/admins",
     input: {
+      AppInstanceArn: 0,
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
     },
@@ -1308,6 +1344,7 @@ export const listAppInstanceUserEndpoints: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /app-instance-users/{AppInstanceUserArn}/endpoints",
     input: {
+      AppInstanceUserArn: 0,
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
     },
@@ -1441,6 +1478,12 @@ export const putAppInstanceRetentionSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /app-instances/{AppInstanceArn}/retention-settings",
+    input: {
+      AppInstanceArn: 0,
+      AppInstanceRetentionSettings: {
+        ChannelRetentionSettings: { RetentionDays: 0 },
+      },
+    },
     output: { InitiateDeletionTimestamp: D.ts },
     body: true,
   },
@@ -1484,6 +1527,7 @@ export const putAppInstanceUserExpirationSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /app-instance-users/{AppInstanceUserArn}/expiration-settings",
+    input: { AppInstanceUserArn: 0, ExpirationSettings: i_ExpirationSettings },
     body: true,
   },
   errors: [
@@ -1522,7 +1566,15 @@ export const registerAppInstanceUserEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /app-instance-users/{AppInstanceUserArn}/endpoints",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      AppInstanceUserArn: 0,
+      Name: 0,
+      Type: 0,
+      ResourceArn: 0,
+      EndpointAttributes: { DeviceToken: 0, VoipDeviceToken: 0 },
+      ClientRequestToken: D.m({ idempotency: true }),
+      AllowMessages: 0,
+    },
     body: true,
   },
   errors: [
@@ -1561,6 +1613,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags?operation=tag-resource",
+    input: { ResourceARN: 0, Tags: D.list(i_Tag) },
     body: true,
   },
   errors: [
@@ -1597,6 +1650,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags?operation=untag-resource",
+    input: { ResourceARN: 0, TagKeys: 0 },
     body: true,
   },
   errors: [
@@ -1633,6 +1687,7 @@ export const updateAppInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /app-instances/{AppInstanceArn}",
+    input: { AppInstanceArn: 0, Name: 0, Metadata: 0 },
     body: true,
   },
   errors: [
@@ -1671,6 +1726,12 @@ export const updateAppInstanceBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /app-instance-bots/{AppInstanceBotArn}",
+    input: {
+      AppInstanceBotArn: 0,
+      Name: 0,
+      Metadata: 0,
+      Configuration: i_Configuration,
+    },
     body: true,
   },
   errors: [
@@ -1711,6 +1772,7 @@ export const updateAppInstanceUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /app-instance-users/{AppInstanceUserArn}",
+    input: { AppInstanceUserArn: 0, Name: 0, Metadata: 0 },
     body: true,
   },
   errors: [
@@ -1749,6 +1811,7 @@ export const updateAppInstanceUserEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /app-instance-users/{AppInstanceUserArn}/endpoints/{EndpointId}",
+    input: { AppInstanceUserArn: 0, EndpointId: 0, Name: 0, AllowMessages: 0 },
     body: true,
   },
   errors: [
@@ -1765,4 +1828,18 @@ export const updateAppInstanceUserEndpoint: API.OperationMethod<
   operationName: "UpdateAppInstanceUserEndpoint",
 })) as any;
 
+const i_Configuration: D.LazyStruct = () => ({
+  Lex: {
+    RespondsTo: 0,
+    InvokedBy: { StandardMessages: 0, TargetedMessages: 0 },
+    LexBotAliasArn: 0,
+    LocaleId: 0,
+    WelcomeIntent: 0,
+  },
+});
+const i_ExpirationSettings: D.LazyStruct = () => ({
+  ExpirationDays: 0,
+  ExpirationCriterion: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Identity: D.LazyStruct = () => ({ Name: D.secret });

@@ -1399,7 +1399,7 @@ export const getPreferences: API.OperationMethod<
   GetPreferencesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1429,7 +1429,11 @@ export const getRecommendation: API.OperationMethod<
   GetRecommendationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { lastRefreshTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { recommendationId: 0 },
+    output: { lastRefreshTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1460,7 +1464,17 @@ export const listEfficiencyMetrics: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   EfficiencyMetricsByGroup
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      groupBy: 0,
+      granularity: 0,
+      timePeriod: { start: 0, end: 0 },
+      maxResults: 0,
+      orderBy: i_OrderBy,
+      nextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1496,6 +1510,12 @@ export const listEnrollmentStatuses: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      includeOrganizationInfo: 0,
+      accountId: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       items: D.list({ lastUpdatedTimestamp: D.ts, createdTimestamp: D.ts }),
     },
@@ -1535,6 +1555,13 @@ export const listRecommendations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      filter: i_Filter,
+      orderBy: i_OrderBy,
+      includeAllRecommendations: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { items: D.list({ lastRefreshTimestamp: D.ts }) },
   },
   errors: [
@@ -1572,7 +1599,16 @@ export const listRecommendationSummaries: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RecommendationSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      filter: i_Filter,
+      groupBy: 0,
+      maxResults: 0,
+      metrics: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1609,7 +1645,7 @@ export const updateEnrollmentStatus: API.OperationMethod<
   UpdateEnrollmentStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { status: 0, includeMemberAccounts: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1636,7 +1672,14 @@ export const updatePreferences: API.OperationMethod<
   UpdatePreferencesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      savingsEstimationMode: 0,
+      memberAccountDiscountVisibility: 0,
+      preferredCommitment: { term: 0, paymentOption: 0 },
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1647,3 +1690,18 @@ export const updatePreferences: API.OperationMethod<
   retry: Retry,
   operationName: "UpdatePreferences",
 })) as any;
+
+const i_Filter: D.LazyStruct = () => ({
+  restartNeeded: 0,
+  rollbackPossible: 0,
+  implementationEfforts: 0,
+  accountIds: 0,
+  regions: 0,
+  resourceTypes: 0,
+  actionTypes: 0,
+  tags: D.list({ key: 0, value: 0 }),
+  resourceIds: 0,
+  resourceArns: 0,
+  recommendationIds: 0,
+});
+const i_OrderBy: D.LazyStruct = () => ({ dimension: 0, order: 0 });

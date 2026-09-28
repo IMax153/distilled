@@ -800,6 +800,10 @@ export const addStreamGroupLocations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /streamgroups/{Identifier}/locations",
+    input: {
+      Identifier: 0,
+      LocationConfigurations: D.list(i_LocationConfiguration),
+    },
     body: true,
   },
   errors: [
@@ -837,6 +841,7 @@ export const associateApplications: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /streamgroups/{Identifier}/associations",
+    input: { Identifier: 0, ApplicationIdentifiers: 0 },
     body: true,
   },
   errors: [
@@ -880,7 +885,16 @@ export const createApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Description: 0,
+      RuntimeEnvironment: { Type: 0, Version: 0 },
+      ExecutablePath: 0,
+      ApplicationSourceUri: 0,
+      ApplicationLogPaths: 0,
+      ApplicationLogOutputUri: 0,
+      Tags: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { CreatedAt: D.ts, LastUpdatedAt: D.ts },
     body: true,
   },
@@ -934,7 +948,14 @@ export const createStreamGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /streamgroups",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Description: 0,
+      StreamClass: 0,
+      DefaultApplicationIdentifier: 0,
+      LocationConfigurations: D.list(i_LocationConfiguration),
+      Tags: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { LastUpdatedAt: D.ts, CreatedAt: D.ts, ExpiresAt: D.ts },
     body: true,
   },
@@ -978,6 +999,7 @@ export const createStreamSessionAdminShell: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /streamgroups/{Identifier}/streamsessions/{StreamSessionIdentifier}/access",
+    input: { Identifier: 0, StreamSessionIdentifier: 0 },
     output: { TokenValue: D.secret },
   },
   errors: [
@@ -1039,7 +1061,12 @@ export const createStreamSessionConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /streamgroups/{Identifier}/streamsessions/{StreamSessionIdentifier}/connections",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      Identifier: 0,
+      StreamSessionIdentifier: 0,
+      SignalRequest: 0,
+    },
     output: { SignalResponse: D.secret },
     body: true,
   },
@@ -1081,7 +1108,21 @@ export const createStreamUrl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /streamgroups/{Identifier}/streamurls",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Identifier: 0,
+      ApplicationIdentifier: 0,
+      Protocol: 0,
+      UrlExpiresAfterMinutes: 0,
+      UsageLimit: 0,
+      Description: 0,
+      Locations: 0,
+      SessionLengthSeconds: 0,
+      AdditionalLaunchArgs: 0,
+      AdditionalEnvironmentVariables: 0,
+      RoleArn: 0,
+      DisplayConfiguration: i_DisplayConfiguration,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: {
       StreamUrl: D.secret,
       ExpiresAt: D.ts,
@@ -1133,7 +1174,11 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /applications/{Identifier}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /applications/{Identifier}",
+    input: { Identifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1164,7 +1209,11 @@ export const deleteStreamGroup: API.OperationMethod<
   DeleteStreamGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /streamgroups/{Identifier}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /streamgroups/{Identifier}",
+    input: { Identifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1199,6 +1248,7 @@ export const disassociateApplications: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /streamgroups/{Identifier}/disassociations",
+    input: { Identifier: 0, ApplicationIdentifiers: 0 },
     body: true,
   },
   errors: [
@@ -1246,6 +1296,7 @@ export const exportStreamSessionFiles: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /streamgroups/{Identifier}/streamsessions/{StreamSessionIdentifier}/exportfiles",
+    input: { Identifier: 0, StreamSessionIdentifier: 0, OutputUri: 0 },
     body: true,
   },
   errors: [
@@ -1279,6 +1330,7 @@ export const getApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{Identifier}",
+    input: { Identifier: 0 },
     output: { CreatedAt: D.ts, LastUpdatedAt: D.ts },
   },
   errors: [
@@ -1312,6 +1364,7 @@ export const getStreamGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /streamgroups/{Identifier}",
+    input: { Identifier: 0 },
     output: { LastUpdatedAt: D.ts, CreatedAt: D.ts, ExpiresAt: D.ts },
   },
   errors: [
@@ -1345,6 +1398,7 @@ export const getStreamSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /streamgroups/{Identifier}/streamsessions/{StreamSessionIdentifier}",
+    input: { Identifier: 0, StreamSessionIdentifier: 0 },
     output: {
       SignalRequest: D.secret,
       SignalResponse: D.secret,
@@ -1386,6 +1440,7 @@ export const getStreamUrl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /streamgroups/{Identifier}/streamurls/{StreamUrlIdentifier}",
+    input: { Identifier: 0, StreamUrlIdentifier: 0 },
     output: {
       StreamUrl: D.secret,
       ExpiresAt: D.ts,
@@ -1469,6 +1524,7 @@ export const listApplicationShaderCaches: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{Identifier}/shadercaches",
+    input: { Identifier: 0 },
     output: { Items: D.list({ LastUpdatedAt: D.ts }) },
   },
   errors: [
@@ -1556,6 +1612,7 @@ export const listStreamSessions: API.PaginatedOperationMethod<
       ExportFilesStatus: D.m({ query: "ExportFilesStatus" }),
       NextToken: D.m({ query: "NextToken" }),
       MaxResults: D.m({ query: "MaxResults" }),
+      Identifier: 0,
     },
     output: { Items: D.list(o_StreamSessionSummary) },
   },
@@ -1692,7 +1749,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1725,7 +1786,7 @@ export const removeStreamGroupLocations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /streamgroups/{Identifier}/locations",
-    input: { Locations: D.m({ query: "locations" }) },
+    input: { Identifier: 0, Locations: D.m({ query: "locations" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1760,6 +1821,7 @@ export const revokeStreamUrl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /streamgroups/{Identifier}/streamurls/{StreamUrlIdentifier}/revoke",
+    input: { Identifier: 0, StreamUrlIdentifier: 0, RevocationMode: 0 },
     body: true,
   },
   errors: [
@@ -1848,7 +1910,23 @@ export const startStreamSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /streamgroups/{Identifier}/streamsessions",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      Description: 0,
+      Identifier: 0,
+      Protocol: 0,
+      SignalRequest: 0,
+      ApplicationIdentifier: 0,
+      UserId: 0,
+      Locations: 0,
+      ConnectionTimeoutSeconds: 0,
+      SessionLengthSeconds: 0,
+      AdditionalLaunchArgs: 0,
+      AdditionalEnvironmentVariables: 0,
+      PerformanceStatsConfiguration: { SharedWithClient: 0 },
+      RoleArn: 0,
+      DisplayConfiguration: i_DisplayConfiguration,
+    },
     output: {
       SignalRequest: D.secret,
       SignalResponse: D.secret,
@@ -1896,7 +1974,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1927,6 +2010,7 @@ export const terminateStreamSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /streamgroups/{Identifier}/streamsessions/{StreamSessionIdentifier}",
+    input: { Identifier: 0, StreamSessionIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1958,7 +2042,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1992,6 +2076,12 @@ export const updateApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /applications/{Identifier}",
+    input: {
+      Identifier: 0,
+      Description: 0,
+      ApplicationLogPaths: 0,
+      ApplicationLogOutputUri: 0,
+    },
     output: { CreatedAt: D.ts, LastUpdatedAt: D.ts },
     body: true,
   },
@@ -2040,6 +2130,12 @@ export const updateStreamGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /streamgroups/{Identifier}",
+    input: {
+      Identifier: 0,
+      LocationConfigurations: D.list(i_LocationConfiguration),
+      Description: 0,
+      DefaultApplicationIdentifier: 0,
+    },
     output: { LastUpdatedAt: D.ts, CreatedAt: D.ts, ExpiresAt: D.ts },
     body: true,
   },
@@ -2057,6 +2153,17 @@ export const updateStreamGroup: API.OperationMethod<
   operationName: "UpdateStreamGroup",
 })) as any;
 
+const i_DisplayConfiguration: D.LazyStruct = () => ({
+  Resolution: { Width: 0, Height: 0 },
+});
+const i_LocationConfiguration: D.LazyStruct = () => ({
+  LocationName: 0,
+  AlwaysOnCapacity: 0,
+  OnDemandCapacity: 0,
+  TargetIdleCapacity: 0,
+  MaximumCapacity: 0,
+  VpcTransitConfiguration: { VpcId: 0, Ipv4CidrBlocks: 0 },
+});
 const o_StreamSessionSummary: D.LazyStruct = () => ({
   LastUpdatedAt: D.ts,
   CreatedAt: D.ts,

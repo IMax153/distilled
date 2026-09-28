@@ -532,7 +532,23 @@ export const batchExecuteStatement: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Sqls: 0,
+      ClusterIdentifier: 0,
+      SecretArn: 0,
+      DbUser: 0,
+      Database: 0,
+      WithEvent: 0,
+      StatementName: 0,
+      Parameters: D.list(i_SqlParameter),
+      WorkgroupName: 0,
+      ClientToken: D.m({ idempotency: true }),
+      ResultFormat: 0,
+      SessionKeepAliveSeconds: 0,
+      SessionId: 0,
+      ExecutionMode: 0,
+      WaitTimeSeconds: 0,
+    },
     output: { CreatedAt: D.ts },
   },
   errors: [
@@ -566,7 +582,7 @@ export const cancelStatement: API.OperationMethod<
   CancelStatementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0 } },
   errors: [
     DatabaseConnectionException,
     InternalServerException,
@@ -598,6 +614,7 @@ export const describeStatement: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Id: 0, WaitTimeSeconds: 0 },
     output: {
       CreatedAt: D.ts,
       UpdatedAt: D.ts,
@@ -644,7 +661,21 @@ export const describeTable: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ColumnMetadata
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterIdentifier: 0,
+      SecretArn: 0,
+      DbUser: 0,
+      Database: 0,
+      ConnectedDatabase: 0,
+      Schema: 0,
+      Table: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      WorkgroupName: 0,
+    },
+  },
   errors: [
     DatabaseConnectionException,
     InternalServerException,
@@ -694,7 +725,22 @@ export const executeStatement: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Sql: 0,
+      ClusterIdentifier: 0,
+      SecretArn: 0,
+      DbUser: 0,
+      Database: 0,
+      WithEvent: 0,
+      StatementName: 0,
+      Parameters: D.list(i_SqlParameter),
+      WorkgroupName: 0,
+      ClientToken: D.m({ idempotency: true }),
+      ResultFormat: 0,
+      SessionKeepAliveSeconds: 0,
+      SessionId: 0,
+      WaitTimeSeconds: 0,
+    },
     output: { CreatedAt: D.ts },
   },
   errors: [
@@ -730,6 +776,7 @@ export const getStatementResult: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Id: 0, NextToken: 0, WaitTimeSeconds: 0 },
     output: { Records: D.list(D.list({ blobValue: D.blob })) },
   },
   errors: [
@@ -766,7 +813,10 @@ export const getStatementResultV2: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   QueryRecords
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Id: 0, NextToken: 0, WaitTimeSeconds: 0 },
+  },
   errors: [
     ActiveWaitingRequestsExceededException,
     InternalServerException,
@@ -812,7 +862,18 @@ export const listDatabases: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   string
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterIdentifier: 0,
+      Database: 0,
+      SecretArn: 0,
+      DbUser: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      WorkgroupName: 0,
+    },
+  },
   errors: [
     DatabaseConnectionException,
     InternalServerException,
@@ -860,7 +921,20 @@ export const listSchemas: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   string
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterIdentifier: 0,
+      SecretArn: 0,
+      DbUser: 0,
+      Database: 0,
+      ConnectedDatabase: 0,
+      SchemaPattern: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      WorkgroupName: 0,
+    },
+  },
   errors: [
     DatabaseConnectionException,
     InternalServerException,
@@ -898,6 +972,16 @@ export const listSessions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      SessionId: 0,
+      Status: 0,
+      RoleLevel: 0,
+      ClusterIdentifier: 0,
+      WorkgroupName: 0,
+      Database: 0,
+    },
     output: {
       Sessions: D.list({ CreatedAt: D.ts, UpdatedAt: D.ts, SessionTtl: D.ts }),
     },
@@ -939,6 +1023,16 @@ export const listStatements: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      StatementName: 0,
+      Status: 0,
+      RoleLevel: 0,
+      Database: 0,
+      ClusterIdentifier: 0,
+      WorkgroupName: 0,
+    },
     output: { Statements: D.list({ CreatedAt: D.ts, UpdatedAt: D.ts }) },
   },
   errors: [
@@ -986,7 +1080,21 @@ export const listTables: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TableMember
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterIdentifier: 0,
+      SecretArn: 0,
+      DbUser: 0,
+      Database: 0,
+      ConnectedDatabase: 0,
+      SchemaPattern: 0,
+      TablePattern: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      WorkgroupName: 0,
+    },
+  },
   errors: [
     DatabaseConnectionException,
     InternalServerException,
@@ -1004,3 +1112,5 @@ export const listTables: API.PaginatedOperationMethod<
     pageSize: "MaxResults",
   } as const,
 })) as any;
+
+const i_SqlParameter: D.LazyStruct = () => ({ name: 0, value: 0 });

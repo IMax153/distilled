@@ -2465,7 +2465,15 @@ export const addLayerVersionPermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2018-10-31/layers/{LayerName}/versions/{VersionNumber}/policy",
-    input: { RevisionId: D.m({ query: "RevisionId" }) },
+    input: {
+      LayerName: 0,
+      VersionNumber: 0,
+      StatementId: 0,
+      Action: 0,
+      Principal: 0,
+      OrganizationId: 0,
+      RevisionId: D.m({ query: "RevisionId" }),
+    },
     body: true,
   },
   errors: [
@@ -2512,7 +2520,20 @@ export const addPermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2015-03-31/functions/{FunctionName}/policy",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: {
+      FunctionName: 0,
+      StatementId: 0,
+      Action: 0,
+      Principal: 0,
+      SourceArn: 0,
+      FunctionUrlAuthType: 0,
+      InvokedViaFunctionUrl: 0,
+      SourceAccount: 0,
+      EventSourceToken: 0,
+      Qualifier: D.m({ query: "Qualifier" }),
+      RevisionId: 0,
+      PrincipalOrgID: 0,
+    },
     body: true,
   },
   errors: [
@@ -2555,7 +2576,26 @@ export const checkpointDurableExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2025-12-01/durable-executions/{DurableExecutionArn}/checkpoint",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      DurableExecutionArn: 0,
+      CheckpointToken: 0,
+      Updates: D.list({
+        Id: 0,
+        ParentId: 0,
+        Name: 0,
+        Type: 0,
+        SubType: 0,
+        Action: 0,
+        Payload: 0,
+        Error: i_ErrorObject,
+        ContextOptions: { ReplayChildren: 0 },
+        StepOptions: { NextAttemptDelaySeconds: 0 },
+        WaitOptions: { WaitSeconds: 0 },
+        CallbackOptions: { TimeoutSeconds: 0, HeartbeatTimeoutSeconds: 0 },
+        ChainedInvokeOptions: { FunctionName: 0, TenantId: 0 },
+      }),
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { NewExecutionState: { Operations: D.list(o_Operation) } },
     body: true,
   },
@@ -2597,6 +2637,13 @@ export const createAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2015-03-31/functions/{FunctionName}/aliases",
+    input: {
+      FunctionName: 0,
+      Name: 0,
+      FunctionVersion: 0,
+      Description: 0,
+      RoutingConfig: i_AliasRoutingConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -2633,6 +2680,21 @@ export const createCapacityProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2025-11-30/capacity-providers",
+    input: {
+      CapacityProviderName: 0,
+      VpcConfig: { SubnetIds: 0, SecurityGroupIds: 0 },
+      PermissionsConfig: { CapacityProviderOperatorRoleArn: 0 },
+      InstanceRequirements: {
+        Architectures: 0,
+        AllowedInstanceTypes: 0,
+        ExcludedInstanceTypes: 0,
+      },
+      CapacityProviderScalingConfig: i_CapacityProviderScalingConfig,
+      KmsKeyArn: 0,
+      Tags: 0,
+      PropagateTags: i_PropagateTags,
+      TelemetryConfig: i_CapacityProviderTelemetryConfig,
+    },
     body: true,
   },
   errors: [
@@ -2663,6 +2725,12 @@ export const createCodeSigningConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2020-04-22/code-signing-configs",
+    input: {
+      Description: 0,
+      AllowedPublishers: i_AllowedPublishers,
+      CodeSigningPolicies: i_CodeSigningPolicies,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [InvalidParameterValueException, ServiceException],
@@ -2738,6 +2806,37 @@ export const createEventSourceMapping: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2015-03-31/event-source-mappings",
+    input: {
+      EventSourceArn: 0,
+      FunctionName: 0,
+      Enabled: 0,
+      BatchSize: 0,
+      FilterCriteria: i_FilterCriteria,
+      KMSKeyArn: 0,
+      MetricsConfig: i_EventSourceMappingMetricsConfig,
+      LoggingConfig: i_EventSourceMappingLoggingConfig,
+      ScalingConfig: i_ScalingConfig,
+      MaximumBatchingWindowInSeconds: 0,
+      ParallelizationFactor: 0,
+      StartingPosition: 0,
+      StartingPositionTimestamp: 0,
+      DestinationConfig: i_DestinationConfig,
+      MaximumRecordAgeInSeconds: 0,
+      BisectBatchOnFunctionError: 0,
+      MaximumRetryAttempts: 0,
+      Tags: 0,
+      TumblingWindowInSeconds: 0,
+      Topics: 0,
+      Queues: 0,
+      SourceAccessConfigurations: D.list(i_SourceAccessConfiguration),
+      SelfManagedEventSource: { Endpoints: 0 },
+      FunctionResponseTypes: 0,
+      AmazonManagedKafkaEventSourceConfig:
+        i_AmazonManagedKafkaEventSourceConfig,
+      SelfManagedKafkaEventSourceConfig: i_SelfManagedKafkaEventSourceConfig,
+      DocumentDBEventSourceConfig: i_DocumentDBEventSourceConfig,
+      ProvisionedPollerConfig: i_ProvisionedPollerConfig,
+    },
     output: { StartingPositionTimestamp: D.ts, LastModified: D.ts },
     body: true,
   },
@@ -2796,6 +2895,44 @@ export const createFunction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2015-03-31/functions",
+    input: {
+      FunctionName: 0,
+      Runtime: 0,
+      Role: 0,
+      Handler: 0,
+      Code: {
+        ZipFile: 0,
+        S3Bucket: 0,
+        S3Key: 0,
+        S3ObjectVersion: 0,
+        S3ObjectStorageMode: 0,
+        ImageUri: 0,
+        SourceKMSKeyArn: 0,
+      },
+      Description: 0,
+      Timeout: 0,
+      MemorySize: 0,
+      Publish: 0,
+      PublishTo: 0,
+      VpcConfig: i_VpcConfig,
+      PackageType: 0,
+      DeadLetterConfig: i_DeadLetterConfig,
+      Environment: i_Environment,
+      KMSKeyArn: 0,
+      TracingConfig: i_TracingConfig,
+      Tags: 0,
+      Layers: 0,
+      FileSystemConfigs: D.list(i_FileSystemConfig),
+      CodeSigningConfigArn: 0,
+      ImageConfig: i_ImageConfig,
+      Architectures: 0,
+      EphemeralStorage: i_EphemeralStorage,
+      SnapStart: i_SnapStart,
+      LoggingConfig: i_LoggingConfig,
+      TenancyConfig: { TenantIsolationMode: 0 },
+      CapacityProviderConfig: i_CapacityProviderConfig,
+      DurableConfig: i_DurableConfig,
+    },
     output: {
       Environment: o_EnvironmentResponse,
       ImageConfigResponse: o_ImageConfigResponse,
@@ -2842,7 +2979,13 @@ export const createFunctionUrlConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-10-31/functions/{FunctionName}/url",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: {
+      FunctionName: 0,
+      Qualifier: D.m({ query: "Qualifier" }),
+      AuthType: 0,
+      Cors: i_Cors,
+      InvokeMode: 0,
+    },
     body: true,
   },
   errors: [
@@ -2879,6 +3022,7 @@ export const deleteAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2015-03-31/functions/{FunctionName}/aliases/{Name}",
+    input: { FunctionName: 0, Name: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -2912,6 +3056,7 @@ export const deleteCapacityProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2025-11-30/capacity-providers/{CapacityProviderName}",
+    input: { CapacityProviderName: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -2945,6 +3090,7 @@ export const deleteCodeSigningConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2020-04-22/code-signing-configs/{CodeSigningConfigArn}",
+    input: { CodeSigningConfigArn: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -2981,6 +3127,7 @@ export const deleteEventSourceMapping: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2015-03-31/event-source-mappings/{UUID}",
+    input: { UUID: 0 },
     output: { StartingPositionTimestamp: D.ts, LastModified: D.ts },
   },
   errors: [
@@ -3019,7 +3166,7 @@ export const deleteFunction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2015-03-31/functions/{FunctionName}",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: { FunctionName: 0, Qualifier: D.m({ query: "Qualifier" }) },
     output: { StatusCode: D.m({ status: true }) },
   },
   errors: [
@@ -3054,6 +3201,7 @@ export const deleteFunctionCodeSigningConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2020-06-30/functions/{FunctionName}/code-signing-config",
+    input: { FunctionName: 0 },
   },
   errors: [
     CodeSigningConfigNotFoundException,
@@ -3089,6 +3237,7 @@ export const deleteFunctionConcurrency: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2017-10-31/functions/{FunctionName}/concurrency",
+    input: { FunctionName: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -3127,7 +3276,7 @@ export const deleteFunctionEventInvokeConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2019-09-25/functions/{FunctionName}/event-invoke-config",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: { FunctionName: 0, Qualifier: D.m({ query: "Qualifier" }) },
   },
   errors: [
     InvalidParameterValueException,
@@ -3164,7 +3313,7 @@ export const deleteFunctionUrlConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2021-10-31/functions/{FunctionName}/url",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: { FunctionName: 0, Qualifier: D.m({ query: "Qualifier" }) },
   },
   errors: [
     InvalidParameterValueException,
@@ -3200,6 +3349,7 @@ export const deleteLayerVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2018-10-31/layers/{LayerName}/versions/{VersionNumber}",
+    input: { LayerName: 0, VersionNumber: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -3235,7 +3385,7 @@ export const deleteProvisionedConcurrencyConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2019-09-30/functions/{FunctionName}/provisioned-concurrency",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: { FunctionName: 0, Qualifier: D.m({ query: "Qualifier" }) },
   },
   errors: [
     InvalidParameterValueException,
@@ -3271,7 +3421,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2026-07-09/resource-policy/{ResourceArn}",
-    input: { RevisionId: D.m({ query: "RevisionId" }) },
+    input: { ResourceArn: 0, RevisionId: D.m({ query: "RevisionId" }) },
   },
   errors: [
     InvalidParameterValueException,
@@ -3299,7 +3449,11 @@ export const getAccountSettings: API.OperationMethod<
   GetAccountSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /2016-08-19/account-settings" },
+  descriptor: {
+    service: svc,
+    http: "GET /2016-08-19/account-settings",
+    input: {},
+  },
   errors: [ServiceException, TooManyRequestsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3324,6 +3478,7 @@ export const getAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2015-03-31/functions/{FunctionName}/aliases/{Name}",
+    input: { FunctionName: 0, Name: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -3354,6 +3509,7 @@ export const getCapacityProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2025-11-30/capacity-providers/{CapacityProviderName}",
+    input: { CapacityProviderName: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -3385,6 +3541,7 @@ export const getCodeSigningConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2020-04-22/code-signing-configs/{CodeSigningConfigArn}",
+    input: { CodeSigningConfigArn: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -3420,7 +3577,10 @@ export const getDurableExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2025-12-01/durable-executions/{DurableExecutionArn}",
-    input: { IncludeExecutionData: D.m({ query: "IncludeExecutionData" }) },
+    input: {
+      DurableExecutionArn: 0,
+      IncludeExecutionData: D.m({ query: "IncludeExecutionData" }),
+    },
     output: {
       InputPayload: D.secret,
       Result: D.secret,
@@ -3470,6 +3630,7 @@ export const getDurableExecutionHistory: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2025-12-01/durable-executions/{DurableExecutionArn}/history",
     input: {
+      DurableExecutionArn: 0,
       IncludeExecutionData: D.m({ query: "IncludeExecutionData" }),
       MaxItems: D.m({ query: "MaxItems" }),
       Marker: D.m({ query: "Marker" }),
@@ -3551,6 +3712,7 @@ export const getDurableExecutionState: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2025-12-01/durable-executions/{DurableExecutionArn}/state",
     input: {
+      DurableExecutionArn: 0,
       CheckpointToken: D.m({ query: "CheckpointToken" }),
       Marker: D.m({ query: "Marker" }),
       MaxItems: D.m({ query: "MaxItems" }),
@@ -3595,6 +3757,7 @@ export const getEventSourceMapping: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2015-03-31/event-source-mappings/{UUID}",
+    input: { UUID: 0 },
     output: { StartingPositionTimestamp: D.ts, LastModified: D.ts },
   },
   errors: [
@@ -3626,7 +3789,7 @@ export const getFunction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2015-03-31/functions/{FunctionName}",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: { FunctionName: 0, Qualifier: D.m({ query: "Qualifier" }) },
     output: {
       Configuration: o_FunctionConfiguration,
       Code: { Error: { Message: D.secret } },
@@ -3662,6 +3825,7 @@ export const getFunctionCodeSigningConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2020-06-30/functions/{FunctionName}/code-signing-config",
+    input: { FunctionName: 0 },
   },
   errors: [
     CodeSigningConfigNotFoundException,
@@ -3695,6 +3859,7 @@ export const getFunctionConcurrency: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2019-09-30/functions/{FunctionName}/concurrency",
+    input: { FunctionName: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -3729,7 +3894,7 @@ export const getFunctionConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2015-03-31/functions/{FunctionName}/configuration",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: { FunctionName: 0, Qualifier: D.m({ query: "Qualifier" }) },
     output: {
       Environment: o_EnvironmentResponse,
       ImageConfigResponse: o_ImageConfigResponse,
@@ -3769,7 +3934,7 @@ export const getFunctionEventInvokeConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2019-09-25/functions/{FunctionName}/event-invoke-config",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: { FunctionName: 0, Qualifier: D.m({ query: "Qualifier" }) },
     output: { LastModified: D.ts },
   },
   errors: [
@@ -3805,6 +3970,7 @@ export const getFunctionRecursionConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2024-08-31/functions/{FunctionName}/recursion-config",
+    input: { FunctionName: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -3837,7 +4003,7 @@ export const getFunctionScalingConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2025-11-30/functions/{FunctionName}/function-scaling-config",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: { FunctionName: 0, Qualifier: D.m({ query: "Qualifier" }) },
   },
   errors: [
     InvalidParameterValueException,
@@ -3868,7 +4034,7 @@ export const getFunctionUrlConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-10-31/functions/{FunctionName}/url",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: { FunctionName: 0, Qualifier: D.m({ query: "Qualifier" }) },
   },
   errors: [
     InvalidParameterValueException,
@@ -3901,6 +4067,7 @@ export const getLayerVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2018-10-31/layers/{LayerName}/versions/{VersionNumber}",
+    input: { LayerName: 0, VersionNumber: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -3966,6 +4133,7 @@ export const getLayerVersionPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2018-10-31/layers/{LayerName}/versions/{VersionNumber}/policy",
+    input: { LayerName: 0, VersionNumber: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -3998,7 +4166,7 @@ export const getPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2015-03-31/functions/{FunctionName}/policy",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: { FunctionName: 0, Qualifier: D.m({ query: "Qualifier" }) },
   },
   errors: [
     InvalidParameterValueException,
@@ -4032,7 +4200,7 @@ export const getProvisionedConcurrencyConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2019-09-30/functions/{FunctionName}/provisioned-concurrency",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: { FunctionName: 0, Qualifier: D.m({ query: "Qualifier" }) },
   },
   errors: [
     InvalidParameterValueException,
@@ -4066,6 +4234,7 @@ export const getResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2026-07-09/resource-policy/{ResourceArn}",
+    input: { ResourceArn: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -4096,7 +4265,7 @@ export const getRuntimeManagementConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-07-20/functions/{FunctionName}/runtime-management-config",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: { FunctionName: 0, Qualifier: D.m({ query: "Qualifier" }) },
   },
   errors: [
     InvalidParameterValueException,
@@ -4183,11 +4352,12 @@ export const invoke: API.OperationMethod<
     service: svc,
     http: "POST /2015-03-31/functions/{FunctionName}/invocations",
     input: {
+      FunctionName: 0,
       InvocationType: D.m({ header: "X-Amz-Invocation-Type" }),
       LogType: D.m({ header: "X-Amz-Log-Type" }),
       ClientContext: D.m({ header: "X-Amz-Client-Context" }),
       DurableExecutionName: D.m({ header: "X-Amz-Durable-Execution-Name" }),
-      Payload: D.m({ payload: true, shape: D.stream }),
+      Payload: D.m({ payload: true, shape: D.blob }),
       Qualifier: D.m({ query: "Qualifier" }),
       TenantId: D.m({ header: "X-Amz-Tenant-Id" }),
     },
@@ -4195,7 +4365,7 @@ export const invoke: API.OperationMethod<
       StatusCode: D.m({ status: true }),
       FunctionError: D.m({ header: "X-Amz-Function-Error" }),
       LogResult: D.m({ header: "X-Amz-Log-Result" }),
-      Payload: D.m({ payload: true, shape: D.stream }),
+      Payload: D.m({ payload: true, shape: D.secretBlob }),
       ExecutedVersion: D.m({ header: "X-Amz-Executed-Version" }),
       DurableExecutionArn: D.m({ header: "X-Amz-Durable-Execution-Arn" }),
     },
@@ -4301,7 +4471,10 @@ export const invokeAsync: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2014-11-13/functions/{FunctionName}/invoke-async",
-    input: { InvokeArgs: D.m({ payload: true, shape: D.stream }) },
+    input: {
+      FunctionName: 0,
+      InvokeArgs: D.m({ payload: true, shape: D.stream }),
+    },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -4394,10 +4567,11 @@ export const invokeWithResponseStream: API.OperationMethod<
     service: svc,
     http: "POST /2021-11-15/functions/{FunctionName}/response-streaming-invocations",
     input: {
+      FunctionName: 0,
       LogType: D.m({ header: "X-Amz-Log-Type" }),
       ClientContext: D.m({ header: "X-Amz-Client-Context" }),
       Qualifier: D.m({ query: "Qualifier" }),
-      Payload: D.m({ payload: true, shape: D.stream }),
+      Payload: D.m({ payload: true, shape: D.blob }),
       TenantId: D.m({ header: "X-Amz-Tenant-Id" }),
       InvocationType: D.m({ header: "X-Amz-Invocation-Type" }),
     },
@@ -4478,6 +4652,7 @@ export const listAliases: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2015-03-31/functions/{FunctionName}/aliases",
     input: {
+      FunctionName: 0,
       FunctionVersion: D.m({ query: "FunctionVersion" }),
       Marker: D.m({ query: "Marker" }),
       MaxItems: D.m({ query: "MaxItems" }),
@@ -4594,11 +4769,18 @@ export const listDurableExecutionsByFunction: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2025-12-01/functions/{FunctionName}/durable-executions",
     input: {
+      FunctionName: 0,
       Qualifier: D.m({ query: "Qualifier" }),
       DurableExecutionName: D.m({ query: "DurableExecutionName" }),
       Statuses: D.m({ query: "Statuses" }),
-      StartedAfter: D.m({ query: "StartedAfter" }),
-      StartedBefore: D.m({ query: "StartedBefore" }),
+      StartedAfter: D.m({
+        query: "StartedAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      StartedBefore: D.m({
+        query: "StartedBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       ReverseOrder: D.m({ query: "ReverseOrder" }),
       Marker: D.m({ query: "Marker" }),
       MaxItems: D.m({ query: "MaxItems" }),
@@ -4697,6 +4879,7 @@ export const listFunctionEventInvokeConfigs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2019-09-25/functions/{FunctionName}/event-invoke-config/list",
     input: {
+      FunctionName: 0,
       Marker: D.m({ query: "Marker" }),
       MaxItems: D.m({ query: "MaxItems" }),
     },
@@ -4786,6 +4969,7 @@ export const listFunctionsByCodeSigningConfig: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2020-04-22/code-signing-configs/{CodeSigningConfigArn}/functions",
     input: {
+      CodeSigningConfigArn: 0,
       Marker: D.m({ query: "Marker" }),
       MaxItems: D.m({ query: "MaxItems" }),
     },
@@ -4826,6 +5010,7 @@ export const listFunctionUrlConfigs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2021-10-31/functions/{FunctionName}/urls",
     input: {
+      FunctionName: 0,
       Marker: D.m({ query: "Marker" }),
       MaxItems: D.m({ query: "MaxItems" }),
     },
@@ -4867,6 +5052,7 @@ export const listFunctionVersionsByCapacityProvider: API.PaginatedOperationMetho
     service: svc,
     http: "GET /2025-11-30/capacity-providers/{CapacityProviderName}/function-versions",
     input: {
+      CapacityProviderName: 0,
       Marker: D.m({ query: "Marker" }),
       MaxItems: D.m({ query: "MaxItems" }),
     },
@@ -4953,6 +5139,7 @@ export const listLayerVersions: API.PaginatedOperationMethod<
     input: {
       CompatibleArchitecture: D.m({ query: "CompatibleArchitecture" }),
       CompatibleRuntime: D.m({ query: "CompatibleRuntime" }),
+      LayerName: 0,
       Marker: D.m({ query: "Marker" }),
       MaxItems: D.m({ query: "MaxItems" }),
     },
@@ -4998,6 +5185,7 @@ export const listProvisionedConcurrencyConfigs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2019-09-30/functions/{FunctionName}/provisioned-concurrency?List=ALL",
     input: {
+      FunctionName: 0,
       Marker: D.m({ query: "Marker" }),
       MaxItems: D.m({ query: "MaxItems" }),
     },
@@ -5038,7 +5226,11 @@ export const listTags: API.OperationMethod<
   ListTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /2017-03-31/tags/{Resource}" },
+  descriptor: {
+    service: svc,
+    http: "GET /2017-03-31/tags/{Resource}",
+    input: { Resource: 0 },
+  },
   errors: [
     InvalidParameterValueException,
     ResourceNotFoundException,
@@ -5072,6 +5264,7 @@ export const listVersionsByFunction: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2015-03-31/functions/{FunctionName}/versions",
     input: {
+      FunctionName: 0,
       Marker: D.m({ query: "Marker" }),
       MaxItems: D.m({ query: "MaxItems" }),
     },
@@ -5117,6 +5310,20 @@ export const publishLayerVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2018-10-31/layers/{LayerName}/versions",
+    input: {
+      LayerName: 0,
+      Description: 0,
+      Content: {
+        S3Bucket: 0,
+        S3Key: 0,
+        S3ObjectVersion: 0,
+        S3ObjectStorageMode: 0,
+        ZipFile: 0,
+      },
+      CompatibleArchitectures: 0,
+      CompatibleRuntimes: 0,
+      LicenseInfo: 0,
+    },
     body: true,
   },
   errors: [
@@ -5161,6 +5368,13 @@ export const publishVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2015-03-31/functions/{FunctionName}/versions",
+    input: {
+      FunctionName: 0,
+      CodeSha256: 0,
+      Description: 0,
+      RevisionId: 0,
+      PublishTo: 0,
+    },
     output: {
       Environment: o_EnvironmentResponse,
       ImageConfigResponse: o_ImageConfigResponse,
@@ -5207,6 +5421,7 @@ export const putFunctionCodeSigningConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2020-06-30/functions/{FunctionName}/code-signing-config",
+    input: { CodeSigningConfigArn: 0, FunctionName: 0 },
     body: true,
   },
   errors: [
@@ -5249,6 +5464,7 @@ export const putFunctionConcurrency: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2017-10-31/functions/{FunctionName}/concurrency",
+    input: { FunctionName: 0, ReservedConcurrentExecutions: 0 },
     body: true,
   },
   errors: [
@@ -5292,7 +5508,13 @@ export const putFunctionEventInvokeConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2019-09-25/functions/{FunctionName}/event-invoke-config",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: {
+      FunctionName: 0,
+      Qualifier: D.m({ query: "Qualifier" }),
+      MaximumRetryAttempts: 0,
+      MaximumEventAgeInSeconds: 0,
+      DestinationConfig: i_DestinationConfig,
+    },
     output: { LastModified: D.ts },
     body: true,
   },
@@ -5335,6 +5557,7 @@ export const putFunctionRecursionConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2024-08-31/functions/{FunctionName}/recursion-config",
+    input: { FunctionName: 0, RecursiveLoop: 0 },
     body: true,
   },
   errors: [
@@ -5370,7 +5593,14 @@ export const putFunctionScalingConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2025-11-30/functions/{FunctionName}/function-scaling-config",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: {
+      FunctionName: 0,
+      Qualifier: D.m({ query: "Qualifier" }),
+      FunctionScalingConfig: {
+        MinExecutionEnvironments: 0,
+        MaxExecutionEnvironments: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -5406,7 +5636,11 @@ export const putProvisionedConcurrencyConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2019-09-30/functions/{FunctionName}/provisioned-concurrency",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: {
+      FunctionName: 0,
+      Qualifier: D.m({ query: "Qualifier" }),
+      ProvisionedConcurrentExecutions: 0,
+    },
     body: true,
   },
   errors: [
@@ -5447,6 +5681,7 @@ export const putResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2026-07-09/resource-policy/{ResourceArn}",
+    input: { ResourceArn: 0, Policy: 0, RevisionId: 0 },
     body: true,
   },
   errors: [
@@ -5483,7 +5718,12 @@ export const putRuntimeManagementConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2021-07-20/functions/{FunctionName}/runtime-management-config",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: {
+      FunctionName: 0,
+      Qualifier: D.m({ query: "Qualifier" }),
+      UpdateRuntimeOn: 0,
+      RuntimeVersionArn: 0,
+    },
     body: true,
   },
   errors: [
@@ -5519,7 +5759,12 @@ export const removeLayerVersionPermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2018-10-31/layers/{LayerName}/versions/{VersionNumber}/policy/{StatementId}",
-    input: { RevisionId: D.m({ query: "RevisionId" }) },
+    input: {
+      LayerName: 0,
+      VersionNumber: 0,
+      StatementId: 0,
+      RevisionId: D.m({ query: "RevisionId" }),
+    },
   },
   errors: [
     InvalidParameterValueException,
@@ -5556,6 +5801,8 @@ export const removePermission: API.OperationMethod<
     service: svc,
     http: "DELETE /2015-03-31/functions/{FunctionName}/policy/{StatementId}",
     input: {
+      FunctionName: 0,
+      StatementId: 0,
       Qualifier: D.m({ query: "Qualifier" }),
       RevisionId: D.m({ query: "RevisionId" }),
     },
@@ -5596,7 +5843,10 @@ export const sendDurableExecutionCallbackFailure: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2025-12-01/durable-execution-callbacks/{CallbackId}/fail",
-    input: { Error: D.m({ payload: true }) },
+    input: {
+      CallbackId: 0,
+      Error: D.m({ payload: true, shape: i_ErrorObject }),
+    },
   },
   errors: [
     CallbackTimeoutException,
@@ -5633,6 +5883,7 @@ export const sendDurableExecutionCallbackHeartbeat: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2025-12-01/durable-execution-callbacks/{CallbackId}/heartbeat",
+    input: { CallbackId: 0 },
   },
   errors: [
     CallbackTimeoutException,
@@ -5669,7 +5920,7 @@ export const sendDurableExecutionCallbackSuccess: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2025-12-01/durable-execution-callbacks/{CallbackId}/succeed",
-    input: { Result: D.m({ payload: true, shape: D.stream }) },
+    input: { CallbackId: 0, Result: D.m({ payload: true, shape: D.blob }) },
   },
   errors: [
     CallbackTimeoutException,
@@ -5709,7 +5960,10 @@ export const stopDurableExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2025-12-01/durable-executions/{DurableExecutionArn}/stop",
-    input: { Error: D.m({ payload: true }) },
+    input: {
+      DurableExecutionArn: 0,
+      Error: D.m({ payload: true, shape: i_ErrorObject }),
+    },
     output: { StopTimestamp: D.ts },
   },
   errors: [
@@ -5748,6 +6002,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2017-03-31/tags/{Resource}",
+    input: { Resource: 0, Tags: 0 },
     body: true,
   },
   errors: [
@@ -5785,7 +6040,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2017-03-31/tags/{Resource}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { Resource: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InvalidParameterValueException,
@@ -5823,6 +6078,14 @@ export const updateAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2015-03-31/functions/{FunctionName}/aliases/{Name}",
+    input: {
+      FunctionName: 0,
+      Name: 0,
+      FunctionVersion: 0,
+      Description: 0,
+      RoutingConfig: i_AliasRoutingConfiguration,
+      RevisionId: 0,
+    },
     body: true,
   },
   errors: [
@@ -5859,6 +6122,12 @@ export const updateCapacityProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2025-11-30/capacity-providers/{CapacityProviderName}",
+    input: {
+      CapacityProviderName: 0,
+      CapacityProviderScalingConfig: i_CapacityProviderScalingConfig,
+      PropagateTags: i_PropagateTags,
+      TelemetryConfig: i_CapacityProviderTelemetryConfig,
+    },
     body: true,
   },
   errors: [
@@ -5890,6 +6159,12 @@ export const updateCodeSigningConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2020-04-22/code-signing-configs/{CodeSigningConfigArn}",
+    input: {
+      CodeSigningConfigArn: 0,
+      Description: 0,
+      AllowedPublishers: i_AllowedPublishers,
+      CodeSigningPolicies: i_CodeSigningPolicies,
+    },
     body: true,
   },
   errors: [
@@ -5970,6 +6245,31 @@ export const updateEventSourceMapping: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2015-03-31/event-source-mappings/{UUID}",
+    input: {
+      UUID: 0,
+      FunctionName: 0,
+      Enabled: 0,
+      BatchSize: 0,
+      FilterCriteria: i_FilterCriteria,
+      KMSKeyArn: 0,
+      MetricsConfig: i_EventSourceMappingMetricsConfig,
+      LoggingConfig: i_EventSourceMappingLoggingConfig,
+      ScalingConfig: i_ScalingConfig,
+      MaximumBatchingWindowInSeconds: 0,
+      ParallelizationFactor: 0,
+      DestinationConfig: i_DestinationConfig,
+      MaximumRecordAgeInSeconds: 0,
+      BisectBatchOnFunctionError: 0,
+      MaximumRetryAttempts: 0,
+      TumblingWindowInSeconds: 0,
+      SourceAccessConfigurations: D.list(i_SourceAccessConfiguration),
+      FunctionResponseTypes: 0,
+      AmazonManagedKafkaEventSourceConfig:
+        i_AmazonManagedKafkaEventSourceConfig,
+      SelfManagedKafkaEventSourceConfig: i_SelfManagedKafkaEventSourceConfig,
+      DocumentDBEventSourceConfig: i_DocumentDBEventSourceConfig,
+      ProvisionedPollerConfig: i_ProvisionedPollerConfig,
+    },
     output: { StartingPositionTimestamp: D.ts, LastModified: D.ts },
     body: true,
   },
@@ -6024,6 +6324,21 @@ export const updateFunctionCode: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2015-03-31/functions/{FunctionName}/code",
+    input: {
+      FunctionName: 0,
+      ZipFile: 0,
+      S3Bucket: 0,
+      S3Key: 0,
+      S3ObjectVersion: 0,
+      S3ObjectStorageMode: 0,
+      ImageUri: 0,
+      Architectures: 0,
+      Publish: 0,
+      PublishTo: 0,
+      DryRun: 0,
+      RevisionId: 0,
+      SourceKMSKeyArn: 0,
+    },
     output: {
       Environment: o_EnvironmentResponse,
       ImageConfigResponse: o_ImageConfigResponse,
@@ -6081,6 +6396,29 @@ export const updateFunctionConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2015-03-31/functions/{FunctionName}/configuration",
+    input: {
+      FunctionName: 0,
+      Role: 0,
+      Handler: 0,
+      Description: 0,
+      Timeout: 0,
+      MemorySize: 0,
+      VpcConfig: i_VpcConfig,
+      Environment: i_Environment,
+      Runtime: 0,
+      DeadLetterConfig: i_DeadLetterConfig,
+      KMSKeyArn: 0,
+      TracingConfig: i_TracingConfig,
+      RevisionId: 0,
+      Layers: 0,
+      FileSystemConfigs: D.list(i_FileSystemConfig),
+      ImageConfig: i_ImageConfig,
+      EphemeralStorage: i_EphemeralStorage,
+      SnapStart: i_SnapStart,
+      LoggingConfig: i_LoggingConfig,
+      CapacityProviderConfig: i_CapacityProviderConfig,
+      DurableConfig: i_DurableConfig,
+    },
     output: {
       Environment: o_EnvironmentResponse,
       ImageConfigResponse: o_ImageConfigResponse,
@@ -6127,7 +6465,13 @@ export const updateFunctionEventInvokeConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2019-09-25/functions/{FunctionName}/event-invoke-config",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: {
+      FunctionName: 0,
+      Qualifier: D.m({ query: "Qualifier" }),
+      MaximumRetryAttempts: 0,
+      MaximumEventAgeInSeconds: 0,
+      DestinationConfig: i_DestinationConfig,
+    },
     output: { LastModified: D.ts },
     body: true,
   },
@@ -6164,7 +6508,13 @@ export const updateFunctionUrlConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2021-10-31/functions/{FunctionName}/url",
-    input: { Qualifier: D.m({ query: "Qualifier" }) },
+    input: {
+      FunctionName: 0,
+      Qualifier: D.m({ query: "Qualifier" }),
+      AuthType: 0,
+      Cors: i_Cors,
+      InvokeMode: 0,
+    },
     body: true,
   },
   errors: [
@@ -6181,6 +6531,103 @@ export const updateFunctionUrlConfig: API.OperationMethod<
   operationName: "UpdateFunctionUrlConfig",
 })) as any;
 
+const i_AliasRoutingConfiguration: D.LazyStruct = () => ({
+  AdditionalVersionWeights: 0,
+});
+const i_AllowedPublishers: D.LazyStruct = () => ({
+  SigningProfileVersionArns: 0,
+});
+const i_AmazonManagedKafkaEventSourceConfig: D.LazyStruct = () => ({
+  ConsumerGroupId: 0,
+  SchemaRegistryConfig: i_KafkaSchemaRegistryConfig,
+});
+const i_CapacityProviderConfig: D.LazyStruct = () => ({
+  LambdaManagedInstancesCapacityProviderConfig: {
+    CapacityProviderArn: 0,
+    PerExecutionEnvironmentMaxConcurrency: 0,
+    ExecutionEnvironmentMemoryGiBPerVCpu: 0,
+  },
+});
+const i_CapacityProviderScalingConfig: D.LazyStruct = () => ({
+  MaxVCpuCount: 0,
+  ScalingMode: 0,
+  ScalingPolicies: D.list({ PredefinedMetricType: 0, TargetValue: 0 }),
+});
+const i_CapacityProviderTelemetryConfig: D.LazyStruct = () => ({
+  LoggingConfig: { SystemLogLevel: 0, LogGroup: 0 },
+});
+const i_CodeSigningPolicies: D.LazyStruct = () => ({
+  UntrustedArtifactOnDeployment: 0,
+});
+const i_Cors: D.LazyStruct = () => ({
+  AllowCredentials: 0,
+  AllowHeaders: 0,
+  AllowMethods: 0,
+  AllowOrigins: 0,
+  ExposeHeaders: 0,
+  MaxAge: 0,
+});
+const i_DeadLetterConfig: D.LazyStruct = () => ({ TargetArn: 0 });
+const i_DestinationConfig: D.LazyStruct = () => ({
+  OnSuccess: { Destination: 0 },
+  OnFailure: { Destination: 0 },
+});
+const i_DocumentDBEventSourceConfig: D.LazyStruct = () => ({
+  DatabaseName: 0,
+  CollectionName: 0,
+  FullDocument: 0,
+});
+const i_DurableConfig: D.LazyStruct = () => ({
+  KMSKeyArn: 0,
+  RetentionPeriodInDays: 0,
+  ExecutionTimeout: 0,
+});
+const i_Environment: D.LazyStruct = () => ({ Variables: 0 });
+const i_EphemeralStorage: D.LazyStruct = () => ({ Size: 0 });
+const i_ErrorObject: D.LazyStruct = () => ({
+  ErrorMessage: 0,
+  ErrorType: 0,
+  ErrorData: 0,
+  StackTrace: 0,
+});
+const i_EventSourceMappingLoggingConfig: D.LazyStruct = () => ({
+  SystemLogLevel: 0,
+});
+const i_EventSourceMappingMetricsConfig: D.LazyStruct = () => ({ Metrics: 0 });
+const i_FileSystemConfig: D.LazyStruct = () => ({ Arn: 0, LocalMountPath: 0 });
+const i_FilterCriteria: D.LazyStruct = () => ({
+  Filters: D.list({ Pattern: 0 }),
+});
+const i_ImageConfig: D.LazyStruct = () => ({
+  EntryPoint: 0,
+  Command: 0,
+  WorkingDirectory: 0,
+});
+const i_LoggingConfig: D.LazyStruct = () => ({
+  LogFormat: 0,
+  ApplicationLogLevel: 0,
+  SystemLogLevel: 0,
+  LogGroup: 0,
+});
+const i_PropagateTags: D.LazyStruct = () => ({ Mode: 0, ExplicitTags: 0 });
+const i_ProvisionedPollerConfig: D.LazyStruct = () => ({
+  MinimumPollers: 0,
+  MaximumPollers: 0,
+  PollerGroupName: 0,
+});
+const i_ScalingConfig: D.LazyStruct = () => ({ MaximumConcurrency: 0 });
+const i_SelfManagedKafkaEventSourceConfig: D.LazyStruct = () => ({
+  ConsumerGroupId: 0,
+  SchemaRegistryConfig: i_KafkaSchemaRegistryConfig,
+});
+const i_SnapStart: D.LazyStruct = () => ({ ApplyOn: 0 });
+const i_SourceAccessConfiguration: D.LazyStruct = () => ({ Type: 0, URI: 0 });
+const i_TracingConfig: D.LazyStruct = () => ({ Mode: 0 });
+const i_VpcConfig: D.LazyStruct = () => ({
+  SubnetIds: 0,
+  SecurityGroupIds: 0,
+  Ipv6AllowedForDualStack: 0,
+});
 const o_EnvironmentResponse: D.LazyStruct = () => ({
   Variables: D.map(D.secret),
   Error: { Message: D.secret },
@@ -6218,4 +6665,10 @@ const o_Operation: D.LazyStruct = () => ({
 });
 const o_RuntimeVersionConfig: D.LazyStruct = () => ({
   Error: { Message: D.secret },
+});
+const i_KafkaSchemaRegistryConfig: D.LazyStruct = () => ({
+  SchemaRegistryURI: 0,
+  EventRecordFormat: 0,
+  AccessConfigs: D.list({ Type: 0, URI: 0 }),
+  SchemaValidationConfigs: D.list({ Attribute: 0 }),
 });

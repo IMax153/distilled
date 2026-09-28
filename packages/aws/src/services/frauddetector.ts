@@ -1324,7 +1324,20 @@ export const batchCreateVariable: API.OperationMethod<
   BatchCreateVariableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      variableEntries: D.list({
+        name: 0,
+        dataType: 0,
+        dataSource: 0,
+        defaultValue: 0,
+        description: 0,
+        variableType: 0,
+      }),
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1351,7 +1364,7 @@ export const batchGetVariable: API.OperationMethod<
   BatchGetVariableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { names: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1379,7 +1392,7 @@ export const cancelBatchImportJob: API.OperationMethod<
   CancelBatchImportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { jobId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1408,7 +1421,7 @@ export const cancelBatchPredictionJob: API.OperationMethod<
   CancelBatchPredictionJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { jobId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1437,7 +1450,17 @@ export const createBatchImportJob: API.OperationMethod<
   CreateBatchImportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      jobId: 0,
+      inputPath: 0,
+      outputPath: 0,
+      eventTypeName: 0,
+      iamRoleArn: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1466,7 +1489,19 @@ export const createBatchPredictionJob: API.OperationMethod<
   CreateBatchPredictionJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      jobId: 0,
+      inputPath: 0,
+      outputPath: 0,
+      eventTypeName: 0,
+      detectorName: 0,
+      detectorVersion: 0,
+      iamRoleArn: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1495,7 +1530,18 @@ export const createDetectorVersion: API.OperationMethod<
   CreateDetectorVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      detectorId: 0,
+      description: 0,
+      externalModelEndpoints: 0,
+      rules: D.list(i_Rule),
+      modelVersions: D.list(i_ModelVersion),
+      ruleExecutionMode: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1526,7 +1572,16 @@ export const createList: API.OperationMethod<
   CreateListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      elements: 0,
+      variableType: 0,
+      description: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1553,7 +1608,16 @@ export const createModel: API.OperationMethod<
   CreateModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      modelId: 0,
+      modelType: 0,
+      description: 0,
+      eventTypeName: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1581,7 +1645,21 @@ export const createModelVersion: API.OperationMethod<
   CreateModelVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      modelId: 0,
+      modelType: 0,
+      trainingDataSource: 0,
+      trainingDataSchema: {
+        modelVariables: 0,
+        labelSchema: { labelMapper: 0, unlabeledEventsTreatment: 0 },
+      },
+      externalEventsDetail: i_ExternalEventsDetail,
+      ingestedEventsDetail: i_IngestedEventsDetail,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1609,7 +1687,18 @@ export const createRule: API.OperationMethod<
   CreateRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ruleId: 0,
+      detectorId: 0,
+      description: 0,
+      expression: 0,
+      language: 0,
+      outcomes: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1636,7 +1725,18 @@ export const createVariable: API.OperationMethod<
   CreateVariableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      dataType: 0,
+      dataSource: 0,
+      defaultValue: 0,
+      description: 0,
+      variableType: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1663,7 +1763,7 @@ export const deleteBatchImportJob: API.OperationMethod<
   DeleteBatchImportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { jobId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1690,7 +1790,7 @@ export const deleteBatchPredictionJob: API.OperationMethod<
   DeleteBatchPredictionJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { jobId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1720,7 +1820,7 @@ export const deleteDetector: API.OperationMethod<
   DeleteDetectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { detectorId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1752,7 +1852,7 @@ export const deleteDetectorVersion: API.OperationMethod<
   DeleteDetectorVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { detectorId: 0, detectorVersionId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1786,7 +1886,7 @@ export const deleteEntityType: API.OperationMethod<
   DeleteEntityTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1817,7 +1917,10 @@ export const deleteEvent: API.OperationMethod<
   DeleteEventError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { eventId: 0, eventTypeName: 0, deleteAuditHistory: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1846,7 +1949,7 @@ export const deleteEventsByEventType: API.OperationMethod<
   DeleteEventsByEventTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { eventTypeName: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1880,7 +1983,7 @@ export const deleteEventType: API.OperationMethod<
   DeleteEventTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1911,7 +2014,7 @@ export const deleteExternalModel: API.OperationMethod<
   DeleteExternalModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { modelEndpoint: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1945,7 +2048,7 @@ export const deleteLabel: API.OperationMethod<
   DeleteLabelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1975,7 +2078,7 @@ export const deleteList: API.OperationMethod<
   DeleteListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2008,7 +2111,7 @@ export const deleteModel: API.OperationMethod<
   DeleteModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { modelId: 0, modelType: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2041,7 +2144,10 @@ export const deleteModelVersion: API.OperationMethod<
   DeleteModelVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { modelId: 0, modelType: 0, modelVersionNumber: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2074,7 +2180,7 @@ export const deleteOutcome: API.OperationMethod<
   DeleteOutcomeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2105,7 +2211,7 @@ export const deleteRule: API.OperationMethod<
   DeleteRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { rule: i_Rule } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2140,7 +2246,7 @@ export const deleteVariable: API.OperationMethod<
   DeleteVariableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2169,7 +2275,10 @@ export const describeDetector: API.OperationMethod<
   DescribeDetectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { detectorId: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2199,7 +2308,16 @@ export const describeModelVersions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      modelId: 0,
+      modelVersionNumber: 0,
+      modelType: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2237,7 +2355,10 @@ export const getBatchImportJobs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { jobId: 0, maxResults: 0, nextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2272,7 +2393,10 @@ export const getBatchPredictionJobs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { jobId: 0, maxResults: 0, nextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2306,7 +2430,7 @@ export const getDeleteEventsByEventTypeStatus: API.OperationMethod<
   GetDeleteEventsByEventTypeStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { eventTypeName: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2341,7 +2465,10 @@ export const getDetectors: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { detectorId: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2375,7 +2502,7 @@ export const getDetectorVersion: API.OperationMethod<
   GetDetectorVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { detectorId: 0, detectorVersionId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2410,7 +2537,7 @@ export const getEntityTypes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0, nextToken: 0, maxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2446,6 +2573,7 @@ export const getEvent: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { eventId: 0, eventTypeName: 0 },
     output: { event: { eventVariables: D.map(D.secret) } },
   },
   errors: [
@@ -2478,7 +2606,19 @@ export const getEventPrediction: API.OperationMethod<
   GetEventPredictionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      detectorId: 0,
+      detectorVersionId: 0,
+      eventId: 0,
+      eventTypeName: 0,
+      entities: D.list(i_Entity),
+      eventTimestamp: 0,
+      eventVariables: 0,
+      externalModelEndpointDataBlobs: D.map({ byteBuffer: 0, contentType: 0 }),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2511,6 +2651,13 @@ export const getEventPredictionMetadata: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      eventId: 0,
+      eventTypeName: 0,
+      detectorId: 0,
+      detectorVersionId: 0,
+      predictionTimestamp: 0,
+    },
     output: {
       eventVariables: D.list({
         name: D.secret,
@@ -2554,7 +2701,7 @@ export const getEventTypes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0, nextToken: 0, maxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2594,7 +2741,10 @@ export const getExternalModels: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { modelEndpoint: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2661,7 +2811,7 @@ export const getLabels: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0, nextToken: 0, maxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2696,7 +2846,11 @@ export const getListElements: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { elements: D.list(D.secret) } },
+  descriptor: {
+    service: svc,
+    input: { name: 0, nextToken: 0, maxResults: 0 },
+    output: { elements: D.list(D.secret) },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2731,7 +2885,7 @@ export const getListsMetadata: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0, nextToken: 0, maxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2773,7 +2927,10 @@ export const getModels: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { modelId: 0, modelType: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2807,7 +2964,10 @@ export const getModelVersion: API.OperationMethod<
   GetModelVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { modelId: 0, modelType: 0, modelVersionNumber: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2842,7 +3002,7 @@ export const getOutcomes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0, nextToken: 0, maxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2881,6 +3041,13 @@ export const getRules: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ruleId: 0,
+      detectorId: 0,
+      ruleVersion: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { ruleDetails: D.list({ expression: D.secret }) },
   },
   errors: [
@@ -2922,7 +3089,7 @@ export const getVariables: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0, nextToken: 0, maxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2967,7 +3134,18 @@ export const listEventPredictions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      eventId: i_FilterCondition,
+      eventType: i_FilterCondition,
+      detectorId: i_FilterCondition,
+      detectorVersionId: i_FilterCondition,
+      predictionTimeRange: { startTime: 0, endTime: 0 },
+      nextToken: 0,
+      maxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3002,7 +3180,10 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { resourceARN: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -3035,7 +3216,15 @@ export const putDetector: API.OperationMethod<
   PutDetectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      detectorId: 0,
+      description: 0,
+      eventTypeName: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3064,7 +3253,10 @@ export const putEntityType: API.OperationMethod<
   PutEntityTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { name: 0, description: 0, tags: D.list(i_Tag) },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3093,7 +3285,19 @@ export const putEventType: API.OperationMethod<
   PutEventTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      eventVariables: 0,
+      labels: 0,
+      entityTypes: 0,
+      eventIngestion: 0,
+      tags: D.list(i_Tag),
+      eventOrchestration: { eventBridgeEnabled: 0 },
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3122,7 +3326,28 @@ export const putExternalModel: API.OperationMethod<
   PutExternalModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      modelEndpoint: 0,
+      modelSource: 0,
+      invokeModelEndpointRoleArn: 0,
+      inputConfiguration: {
+        eventTypeName: 0,
+        format: 0,
+        useEventVariables: 0,
+        jsonInputTemplate: 0,
+        csvInputTemplate: 0,
+      },
+      outputConfiguration: {
+        format: 0,
+        jsonKeyToVariableMap: 0,
+        csvIndexToVariableMap: 0,
+      },
+      modelEndpointStatus: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3152,7 +3377,7 @@ export const putKMSEncryptionKey: API.OperationMethod<
   PutKMSEncryptionKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { kmsEncryptionKeyArn: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3182,7 +3407,10 @@ export const putLabel: API.OperationMethod<
   PutLabelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { name: 0, description: 0, tags: D.list(i_Tag) },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3211,7 +3439,10 @@ export const putOutcome: API.OperationMethod<
   PutOutcomeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { name: 0, description: 0, tags: D.list(i_Tag) },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3241,7 +3472,18 @@ export const sendEvent: API.OperationMethod<
   SendEventError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      eventId: 0,
+      eventTypeName: 0,
+      eventTimestamp: 0,
+      eventVariables: 0,
+      assignedLabel: 0,
+      labelTimestamp: 0,
+      entities: D.list(i_Entity),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3270,7 +3512,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceARN: 0, tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -3297,7 +3539,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceARN: 0, tagKeys: 0 } },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -3326,7 +3568,18 @@ export const updateDetectorVersion: API.OperationMethod<
   UpdateDetectorVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      detectorId: 0,
+      detectorVersionId: 0,
+      externalModelEndpoints: 0,
+      rules: D.list(i_Rule),
+      description: 0,
+      modelVersions: D.list(i_ModelVersion),
+      ruleExecutionMode: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3357,7 +3610,10 @@ export const updateDetectorVersionMetadata: API.OperationMethod<
   UpdateDetectorVersionMetadataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { detectorId: 0, detectorVersionId: 0, description: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3388,7 +3644,10 @@ export const updateDetectorVersionStatus: API.OperationMethod<
   UpdateDetectorVersionStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { detectorId: 0, detectorVersionId: 0, status: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3419,7 +3678,15 @@ export const updateEventLabel: API.OperationMethod<
   UpdateEventLabelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      eventId: 0,
+      eventTypeName: 0,
+      assignedLabel: 0,
+      labelTimestamp: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3450,7 +3717,16 @@ export const updateList: API.OperationMethod<
   UpdateListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      elements: 0,
+      description: 0,
+      updateMode: 0,
+      variableType: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3481,7 +3757,10 @@ export const updateModel: API.OperationMethod<
   UpdateModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { modelId: 0, modelType: 0, description: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3512,7 +3791,17 @@ export const updateModelVersion: API.OperationMethod<
   UpdateModelVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      modelId: 0,
+      modelType: 0,
+      majorVersionNumber: 0,
+      externalEventsDetail: i_ExternalEventsDetail,
+      ingestedEventsDetail: i_IngestedEventsDetail,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3551,7 +3840,10 @@ export const updateModelVersionStatus: API.OperationMethod<
   UpdateModelVersionStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { modelId: 0, modelType: 0, modelVersionNumber: 0, status: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3582,7 +3874,7 @@ export const updateRuleMetadata: API.OperationMethod<
   UpdateRuleMetadataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { rule: i_Rule, description: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3613,7 +3905,17 @@ export const updateRuleVersion: API.OperationMethod<
   UpdateRuleVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      rule: i_Rule,
+      description: 0,
+      expression: 0,
+      language: 0,
+      outcomes: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3644,7 +3946,10 @@ export const updateVariable: API.OperationMethod<
   UpdateVariableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { name: 0, defaultValue: 0, description: 0, variableType: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3657,3 +3962,25 @@ export const updateVariable: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateVariable",
 })) as any;
+
+const i_Entity: D.LazyStruct = () => ({ entityType: 0, entityId: 0 });
+const i_ExternalEventsDetail: D.LazyStruct = () => ({
+  dataLocation: 0,
+  dataAccessRoleArn: 0,
+});
+const i_FilterCondition: D.LazyStruct = () => ({ value: 0 });
+const i_IngestedEventsDetail: D.LazyStruct = () => ({
+  ingestedEventsTimeWindow: { startTime: 0, endTime: 0 },
+});
+const i_ModelVersion: D.LazyStruct = () => ({
+  modelId: 0,
+  modelType: 0,
+  modelVersionNumber: 0,
+  arn: 0,
+});
+const i_Rule: D.LazyStruct = () => ({
+  detectorId: 0,
+  ruleId: 0,
+  ruleVersion: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });

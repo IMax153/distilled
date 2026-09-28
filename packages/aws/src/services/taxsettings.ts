@@ -737,6 +737,7 @@ export const batchDeleteTaxRegistration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchDeleteTaxRegistration",
+    input: { accountIds: 0 },
     output: { errors: D.list({ message: D.secret }) },
     body: true,
   },
@@ -763,6 +764,7 @@ export const batchGetTaxExemptions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchGetTaxExemptions",
+    input: { accountIds: 0 },
     output: { taxExemptionDetailsMap: D.map(o_TaxExemptionDetails) },
     body: true,
   },
@@ -927,6 +929,7 @@ export const batchPutTaxRegistration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchPutTaxRegistration",
+    input: { accountIds: 0, taxRegistrationEntry: i_TaxRegistrationEntry },
     output: { errors: D.list({ message: D.secret }) },
     body: true,
   },
@@ -954,6 +957,7 @@ export const deleteSupplementalTaxRegistration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteSupplementalTaxRegistration",
+    input: { authorityId: 0 },
     body: true,
   },
   errors: [
@@ -984,7 +988,12 @@ export const deleteTaxRegistration: API.OperationMethod<
   DeleteTaxRegistrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteTaxRegistration", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteTaxRegistration",
+    input: { accountId: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1010,7 +1019,7 @@ export const getTaxExemptionTypes: API.OperationMethod<
   GetTaxExemptionTypesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetTaxExemptionTypes" },
+  descriptor: { service: svc, http: "POST /GetTaxExemptionTypes", input: {} },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1035,7 +1044,7 @@ export const getTaxInheritance: API.OperationMethod<
   GetTaxInheritanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetTaxInheritance" },
+  descriptor: { service: svc, http: "POST /GetTaxInheritance", input: {} },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1060,7 +1069,12 @@ export const getTaxRegistration: API.OperationMethod<
   GetTaxRegistrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetTaxRegistration", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetTaxRegistration",
+    input: { accountId: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1087,6 +1101,10 @@ export const getTaxRegistrationDocument: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetTaxRegistrationDocument",
+    input: {
+      destinationS3Location: { bucket: 0, prefix: 0 },
+      taxDocumentMetadata: { taxDocumentAccessToken: 0, taxDocumentName: 0 },
+    },
     body: true,
   },
   errors: [InternalServerException, ValidationException],
@@ -1113,6 +1131,7 @@ export const listSupplementalTaxRegistrations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListSupplementalTaxRegistrations",
+    input: { maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [
@@ -1149,6 +1168,7 @@ export const listTaxExemptions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListTaxExemptions",
+    input: { maxResults: 0, nextToken: 0 },
     output: { taxExemptionDetailsMap: D.map(o_TaxExemptionDetails) },
     body: true,
   },
@@ -1183,7 +1203,12 @@ export const listTaxRegistrations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AccountDetails
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListTaxRegistrations", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListTaxRegistrations",
+    input: { maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1217,6 +1242,14 @@ export const putSupplementalTaxRegistration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /PutSupplementalTaxRegistration",
+    input: {
+      taxRegistrationEntry: {
+        registrationId: 0,
+        registrationType: 0,
+        legalName: 0,
+        address: i_Address,
+      },
+    },
     body: true,
   },
   errors: [ConflictException, InternalServerException, ValidationException],
@@ -1242,7 +1275,17 @@ export const putTaxExemption: API.OperationMethod<
   PutTaxExemptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /PutTaxExemption", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /PutTaxExemption",
+    input: {
+      accountIds: 0,
+      authority: { country: 0, state: 0 },
+      exemptionType: 0,
+      exemptionCertificate: { documentName: 0, documentFile: 0 },
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     AttachmentUploadException,
@@ -1271,7 +1314,12 @@ export const putTaxInheritance: API.OperationMethod<
   PutTaxInheritanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /PutTaxInheritance", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /PutTaxInheritance",
+    input: { heritageStatus: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1431,13 +1479,111 @@ export const putTaxRegistration: API.OperationMethod<
   PutTaxRegistrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /PutTaxRegistration", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /PutTaxRegistration",
+    input: { accountId: 0, taxRegistrationEntry: i_TaxRegistrationEntry },
+    body: true,
+  },
   errors: [ConflictException, InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "PutTaxRegistration",
 })) as any;
 
+const i_Address: D.LazyStruct = () => ({
+  addressLine1: 0,
+  addressLine2: 0,
+  addressLine3: 0,
+  districtOrCounty: 0,
+  city: 0,
+  stateOrRegion: 0,
+  postalCode: 0,
+  countryCode: 0,
+});
+const i_TaxRegistrationEntry: D.LazyStruct = () => ({
+  registrationId: 0,
+  registrationType: 0,
+  legalName: 0,
+  legalAddress: i_Address,
+  sector: 0,
+  additionalTaxInformation: {
+    malaysiaAdditionalInfo: {
+      serviceTaxCodes: 0,
+      taxInformationNumber: 0,
+      businessRegistrationNumber: 0,
+    },
+    israelAdditionalInfo: { dealerType: 0, customerType: 0 },
+    estoniaAdditionalInfo: { registryCommercialCode: 0 },
+    canadaAdditionalInfo: {
+      provincialSalesTaxId: 0,
+      canadaQuebecSalesTaxNumber: 0,
+      canadaRetailSalesTaxNumber: 0,
+      isResellerAccount: 0,
+    },
+    spainAdditionalInfo: { registrationType: 0 },
+    kenyaAdditionalInfo: { personType: 0 },
+    southKoreaAdditionalInfo: {
+      businessRepresentativeName: 0,
+      lineOfBusiness: 0,
+      itemOfBusiness: 0,
+    },
+    turkeyAdditionalInfo: {
+      taxOffice: 0,
+      kepEmailId: 0,
+      secondaryTaxId: 0,
+      industries: 0,
+    },
+    georgiaAdditionalInfo: { personType: 0 },
+    italyAdditionalInfo: {
+      sdiAccountId: 0,
+      cigNumber: 0,
+      cupNumber: 0,
+      taxCode: 0,
+      customerType: 0,
+    },
+    romaniaAdditionalInfo: { taxRegistrationNumberType: 0 },
+    ukraineAdditionalInfo: { ukraineTrnType: 0 },
+    polandAdditionalInfo: {
+      individualRegistrationNumber: 0,
+      isGroupVatEnabled: 0,
+      taxRegistrationNumberType: 0,
+    },
+    saudiArabiaAdditionalInfo: { taxRegistrationNumberType: 0 },
+    indonesiaAdditionalInfo: {
+      taxRegistrationNumberType: 0,
+      ppnExceptionDesignationCode: 0,
+      decisionNumber: 0,
+    },
+    vietnamAdditionalInfo: {
+      enterpriseIdentificationNumber: 0,
+      electronicTransactionCodeNumber: 0,
+      paymentVoucherNumber: 0,
+      paymentVoucherNumberDate: 0,
+    },
+    egyptAdditionalInfo: {
+      uniqueIdentificationNumber: 0,
+      uniqueIdentificationNumberExpirationDate: 0,
+    },
+    greeceAdditionalInfo: { contractingAuthorityCode: 0 },
+    uzbekistanAdditionalInfo: {
+      taxRegistrationNumberType: 0,
+      vatRegistrationNumber: 0,
+    },
+    philippinesAdditionalInfo: { isVatRegistered: 0 },
+    belgiumAdditionalInfo: { peppolId: 0, isMercuriusBoxEnabled: 0 },
+    chileAdditionalInfo: { documentType: 0, businessActivity: 0 },
+    franceAdditionalInfo: { sirenNumber: 0 },
+  },
+  verificationDetails: {
+    dateOfBirth: 0,
+    taxRegistrationDocuments: D.list({
+      s3Location: { bucket: 0, key: 0 },
+      file: { fileName: 0, fileContent: 0 },
+    }),
+  },
+  certifiedEmailId: 0,
+});
 const o_TaxExemptionDetails: D.LazyStruct = () => ({
   taxExemptions: D.list({
     effectiveDate: D.ts,

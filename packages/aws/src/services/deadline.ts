@@ -3423,6 +3423,14 @@ export const associateMemberToFarm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2023-10-12/farms/{farmId}/members/{principalId}",
+    input: {
+      farmId: 0,
+      principalType: 0,
+      identityStoreId: 0,
+      membershipLevel: 0,
+      principalId: 0,
+      identityCenterRegion: 0,
+    },
     body: true,
   },
   errors: [
@@ -3459,6 +3467,15 @@ export const associateMemberToFleet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2023-10-12/farms/{farmId}/fleets/{fleetId}/members/{principalId}",
+    input: {
+      farmId: 0,
+      fleetId: 0,
+      principalType: 0,
+      identityStoreId: 0,
+      membershipLevel: 0,
+      principalId: 0,
+      identityCenterRegion: 0,
+    },
     body: true,
   },
   errors: [
@@ -3495,6 +3512,16 @@ export const associateMemberToJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}/members/{principalId}",
+    input: {
+      farmId: 0,
+      queueId: 0,
+      jobId: 0,
+      principalType: 0,
+      identityStoreId: 0,
+      membershipLevel: 0,
+      principalId: 0,
+      identityCenterRegion: 0,
+    },
     body: true,
   },
   errors: [
@@ -3531,6 +3558,15 @@ export const associateMemberToQueue: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2023-10-12/farms/{farmId}/queues/{queueId}/members/{principalId}",
+    input: {
+      farmId: 0,
+      queueId: 0,
+      principalType: 0,
+      identityStoreId: 0,
+      membershipLevel: 0,
+      principalId: 0,
+      identityCenterRegion: 0,
+    },
     body: true,
   },
   errors: [
@@ -3566,6 +3602,7 @@ export const assumeFleetRoleForRead: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/fleets/{fleetId}/read-roles",
+    input: { farmId: 0, fleetId: 0 },
     output: { credentials: o_AwsCredentials },
   },
   errors: [
@@ -3601,6 +3638,7 @@ export const assumeFleetRoleForWorker: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/fleets/{fleetId}/workers/{workerId}/fleet-roles",
+    input: { farmId: 0, fleetId: 0, workerId: 0 },
     output: { credentials: o_AwsCredentials },
   },
   errors: [
@@ -3636,6 +3674,7 @@ export const assumeQueueRoleForRead: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/read-roles",
+    input: { farmId: 0, queueId: 0 },
     output: { credentials: o_AwsCredentials },
   },
   errors: [
@@ -3670,6 +3709,7 @@ export const assumeQueueRoleForUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/user-roles",
+    input: { farmId: 0, queueId: 0 },
     output: { credentials: o_AwsCredentials },
   },
   errors: [
@@ -3705,7 +3745,12 @@ export const assumeQueueRoleForWorker: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/fleets/{fleetId}/workers/{workerId}/queue-roles",
-    input: { queueId: D.m({ query: "queueId" }) },
+    input: {
+      farmId: 0,
+      fleetId: 0,
+      workerId: 0,
+      queueId: D.m({ query: "queueId" }),
+    },
     output: { credentials: o_AwsCredentials },
   },
   errors: [
@@ -3742,6 +3787,7 @@ export const batchGetJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2023-10-12/batch-get-job",
+    input: { identifiers: D.list({ farmId: 0, queueId: 0, jobId: 0 }) },
     output: {
       jobs: D.list({
         createdAt: D.ts,
@@ -3784,6 +3830,17 @@ export const batchGetJobEntity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2023-10-12/farms/{farmId}/fleets/{fleetId}/workers/{workerId}/batchGetJobEntity",
+    input: {
+      farmId: 0,
+      fleetId: 0,
+      workerId: 0,
+      identifiers: D.list({
+        jobDetails: { jobId: 0 },
+        jobAttachmentDetails: { jobId: 0 },
+        stepDetails: { jobId: 0, stepId: 0 },
+        environmentDetails: { jobId: 0, environmentId: 0 },
+      }),
+    },
     body: true,
   },
   errors: [
@@ -3819,6 +3876,9 @@ export const batchGetSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2023-10-12/batch-get-session",
+    input: {
+      identifiers: D.list({ farmId: 0, queueId: 0, jobId: 0, sessionId: 0 }),
+    },
     output: {
       sessions: D.list({ startedAt: D.ts, endedAt: D.ts, updatedAt: D.ts }),
     },
@@ -3856,6 +3916,14 @@ export const batchGetSessionAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2023-10-12/batch-get-session-action",
+    input: {
+      identifiers: D.list({
+        farmId: 0,
+        queueId: 0,
+        jobId: 0,
+        sessionActionId: 0,
+      }),
+    },
     output: {
       sessionActions: D.list({
         startedAt: D.ts,
@@ -3898,6 +3966,9 @@ export const batchGetStep: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2023-10-12/batch-get-step",
+    input: {
+      identifiers: D.list({ farmId: 0, queueId: 0, jobId: 0, stepId: 0 }),
+    },
     output: {
       steps: D.list({
         createdAt: D.ts,
@@ -3941,6 +4012,15 @@ export const batchGetTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2023-10-12/batch-get-task",
+    input: {
+      identifiers: D.list({
+        farmId: 0,
+        queueId: 0,
+        jobId: 0,
+        stepId: 0,
+        taskId: 0,
+      }),
+    },
     output: {
       tasks: D.list({
         createdAt: D.ts,
@@ -3983,6 +4063,7 @@ export const batchGetWorker: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2023-10-12/batch-get-worker",
+    input: { identifiers: D.list({ farmId: 0, fleetId: 0, workerId: 0 }) },
     output: { workers: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
     body: true,
   },
@@ -4024,6 +4105,19 @@ export const batchUpdateJob: API.OperationMethod<
     http: "PATCH /2023-10-12/batch-update-job",
     input: {
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      jobs: D.list({
+        farmId: 0,
+        queueId: 0,
+        jobId: 0,
+        targetTaskRunStatus: 0,
+        priority: 0,
+        maxFailedTasksCount: 0,
+        maxRetriesPerTask: 0,
+        lifecycleStatus: 0,
+        maxWorkerCount: 0,
+        name: 0,
+        description: 0,
+      }),
     },
     body: true,
   },
@@ -4061,6 +4155,14 @@ export const batchUpdateTask: API.OperationMethod<
     http: "PATCH /2023-10-12/batch-update-task",
     input: {
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      tasks: D.list({
+        farmId: 0,
+        queueId: 0,
+        jobId: 0,
+        stepId: 0,
+        taskId: 0,
+        targetRunStatus: 0,
+      }),
     },
     body: true,
   },
@@ -4095,6 +4197,12 @@ export const copyJobTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}/template",
+    input: {
+      farmId: 0,
+      queueId: 0,
+      jobId: 0,
+      targetS3Location: { bucketName: 0, key: 0 },
+    },
     body: true,
   },
   errors: [
@@ -4132,8 +4240,15 @@ export const createBudget: API.OperationMethod<
     service: svc,
     http: "POST /2023-10-12/farms/{farmId}/budgets",
     input: {
+      farmId: 0,
+      displayName: 0,
+      description: 0,
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      usageTrackingResource: { queueId: 0 },
+      approximateDollarLimit: 0,
+      actions: D.list(i_BudgetActionToAdd),
       schedule: i_BudgetSchedule,
+      tags: 0,
     },
     body: true,
   },
@@ -4174,6 +4289,11 @@ export const createFarm: API.OperationMethod<
     http: "POST /2023-10-12/farms",
     input: {
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      displayName: 0,
+      description: 0,
+      kmsKeyArn: 0,
+      costScaleFactor: 0,
+      tags: 0,
     },
     body: true,
   },
@@ -4213,7 +4333,16 @@ export const createFleet: API.OperationMethod<
     service: svc,
     http: "POST /2023-10-12/farms/{farmId}/fleets",
     input: {
+      farmId: 0,
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      displayName: 0,
+      description: 0,
+      roleArn: 0,
+      minWorkerCount: 0,
+      maxWorkerCount: 0,
+      configuration: i_FleetConfiguration,
+      tags: 0,
+      hostConfiguration: i_HostConfiguration,
     },
     body: true,
   },
@@ -4253,7 +4382,33 @@ export const createJob: API.OperationMethod<
     service: svc,
     http: "POST /2023-10-12/farms/{farmId}/queues/{queueId}/jobs",
     input: {
+      farmId: 0,
+      queueId: 0,
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      template: 0,
+      templateType: 0,
+      priority: 0,
+      parameters: D.map({ int: 0, float: 0, string: 0, path: 0 }),
+      attachments: {
+        manifests: D.list({
+          fileSystemLocationName: 0,
+          rootPath: 0,
+          rootPathFormat: 0,
+          outputRelativeDirectories: 0,
+          inputManifestPath: 0,
+          inputManifestHash: 0,
+        }),
+        fileSystem: 0,
+      },
+      storageProfileId: 0,
+      targetTaskRunStatus: 0,
+      maxFailedTasksCount: 0,
+      maxRetriesPerTask: 0,
+      maxWorkerCount: 0,
+      sourceJobId: 0,
+      nameOverride: 0,
+      descriptionOverride: 0,
+      tags: 0,
     },
     body: true,
   },
@@ -4293,6 +4448,10 @@ export const createLicenseEndpoint: API.OperationMethod<
     http: "POST /2023-10-12/license-endpoints",
     input: {
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      vpcId: 0,
+      subnetIds: 0,
+      securityGroupIds: 0,
+      tags: 0,
     },
     body: true,
   },
@@ -4333,7 +4492,12 @@ export const createLimit: API.OperationMethod<
     service: svc,
     http: "POST /2023-10-12/farms/{farmId}/limits",
     input: {
+      farmId: 0,
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      displayName: 0,
+      amountRequirementName: 0,
+      maxCount: 0,
+      description: 0,
     },
     body: true,
   },
@@ -4373,6 +4537,12 @@ export const createMonitor: API.OperationMethod<
     http: "POST /2023-10-12/monitors",
     input: {
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      displayName: 0,
+      identityCenterInstanceArn: 0,
+      identityCenterRegion: 0,
+      subdomain: 0,
+      roleArn: 0,
+      tags: 0,
     },
     body: true,
   },
@@ -4412,7 +4582,18 @@ export const createQueue: API.OperationMethod<
     service: svc,
     http: "POST /2023-10-12/farms/{farmId}/queues",
     input: {
+      farmId: 0,
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      displayName: 0,
+      description: 0,
+      defaultBudgetAction: 0,
+      jobAttachmentSettings: i_JobAttachmentSettings,
+      roleArn: 0,
+      jobRunAsUser: i_JobRunAsUser,
+      requiredFileSystemLocationNames: 0,
+      allowedStorageProfileIds: 0,
+      tags: 0,
+      schedulingConfiguration: i_SchedulingConfiguration,
     },
     body: true,
   },
@@ -4452,7 +4633,12 @@ export const createQueueEnvironment: API.OperationMethod<
     service: svc,
     http: "POST /2023-10-12/farms/{farmId}/queues/{queueId}/environments",
     input: {
+      farmId: 0,
+      queueId: 0,
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      priority: 0,
+      templateType: 0,
+      template: 0,
     },
     body: true,
   },
@@ -4489,6 +4675,7 @@ export const createQueueFleetAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2023-10-12/farms/{farmId}/queue-fleet-associations",
+    input: { farmId: 0, queueId: 0, fleetId: 0 },
     body: true,
   },
   errors: [
@@ -4523,6 +4710,7 @@ export const createQueueLimitAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2023-10-12/farms/{farmId}/queue-limit-associations",
+    input: { farmId: 0, queueId: 0, limitId: 0 },
     body: true,
   },
   errors: [
@@ -4560,7 +4748,11 @@ export const createStorageProfile: API.OperationMethod<
     service: svc,
     http: "POST /2023-10-12/farms/{farmId}/storage-profiles",
     input: {
+      farmId: 0,
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      displayName: 0,
+      osFamily: 0,
+      fileSystemLocations: D.list(i_FileSystemLocation),
     },
     body: true,
   },
@@ -4602,7 +4794,11 @@ export const createWorker: API.OperationMethod<
     service: svc,
     http: "POST /2023-10-12/farms/{farmId}/fleets/{fleetId}/workers",
     input: {
+      farmId: 0,
+      fleetId: 0,
+      hostProperties: i_HostPropertiesRequest,
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      tags: 0,
     },
     body: true,
   },
@@ -4640,6 +4836,7 @@ export const deleteBudget: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2023-10-12/farms/{farmId}/budgets/{budgetId}",
+    input: { farmId: 0, budgetId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4672,7 +4869,11 @@ export const deleteFarm: API.OperationMethod<
   DeleteFarmError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /2023-10-12/farms/{farmId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /2023-10-12/farms/{farmId}",
+    input: { farmId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerErrorException,
@@ -4708,6 +4909,8 @@ export const deleteFleet: API.OperationMethod<
     service: svc,
     http: "DELETE /2023-10-12/farms/{farmId}/fleets/{fleetId}",
     input: {
+      farmId: 0,
+      fleetId: 0,
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
     },
   },
@@ -4745,6 +4948,7 @@ export const deleteLicenseEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2023-10-12/license-endpoints/{licenseEndpointId}",
+    input: { licenseEndpointId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4778,6 +4982,7 @@ export const deleteLimit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2023-10-12/farms/{farmId}/limits/{limitId}",
+    input: { farmId: 0, limitId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4810,6 +5015,7 @@ export const deleteMeteredProduct: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2023-10-12/license-endpoints/{licenseEndpointId}/metered-products/{productId}",
+    input: { licenseEndpointId: 0, productId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4841,7 +5047,11 @@ export const deleteMonitor: API.OperationMethod<
   DeleteMonitorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /2023-10-12/monitors/{monitorId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /2023-10-12/monitors/{monitorId}",
+    input: { monitorId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerErrorException,
@@ -4878,6 +5088,7 @@ export const deleteQueue: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2023-10-12/farms/{farmId}/queues/{queueId}",
+    input: { farmId: 0, queueId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4911,6 +5122,7 @@ export const deleteQueueEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2023-10-12/farms/{farmId}/queues/{queueId}/environments/{queueEnvironmentId}",
+    input: { farmId: 0, queueId: 0, queueEnvironmentId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4944,6 +5156,7 @@ export const deleteQueueFleetAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2023-10-12/farms/{farmId}/queue-fleet-associations/{queueId}/{fleetId}",
+    input: { farmId: 0, queueId: 0, fleetId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4979,6 +5192,7 @@ export const deleteQueueLimitAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2023-10-12/farms/{farmId}/queue-limit-associations/{queueId}/{limitId}",
+    input: { farmId: 0, queueId: 0, limitId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5014,6 +5228,7 @@ export const deleteStorageProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2023-10-12/farms/{farmId}/storage-profiles/{storageProfileId}",
+    input: { farmId: 0, storageProfileId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5049,6 +5264,7 @@ export const deleteVolume: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2023-10-12/farms/{farmId}/fleets/{fleetId}/volumes/{volumeId}",
+    input: { farmId: 0, fleetId: 0, volumeId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5084,6 +5300,7 @@ export const deleteWorker: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2023-10-12/farms/{farmId}/fleets/{fleetId}/workers/{workerId}",
+    input: { farmId: 0, fleetId: 0, workerId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5118,6 +5335,7 @@ export const disassociateMemberFromFarm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2023-10-12/farms/{farmId}/members/{principalId}",
+    input: { farmId: 0, principalId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5152,6 +5370,7 @@ export const disassociateMemberFromFleet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2023-10-12/farms/{farmId}/fleets/{fleetId}/members/{principalId}",
+    input: { farmId: 0, fleetId: 0, principalId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5186,6 +5405,7 @@ export const disassociateMemberFromJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}/members/{principalId}",
+    input: { farmId: 0, queueId: 0, jobId: 0, principalId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5220,6 +5440,7 @@ export const disassociateMemberFromQueue: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2023-10-12/farms/{farmId}/queues/{queueId}/members/{principalId}",
+    input: { farmId: 0, queueId: 0, principalId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5254,6 +5475,7 @@ export const getBudget: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/budgets/{budgetId}",
+    input: { farmId: 0, budgetId: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -5295,6 +5517,7 @@ export const getFarm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}",
+    input: { farmId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts, description: D.secret },
   },
   errors: [
@@ -5329,6 +5552,7 @@ export const getFleet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/fleets/{fleetId}",
+    input: { farmId: 0, fleetId: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -5368,6 +5592,7 @@ export const getJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}",
+    input: { farmId: 0, queueId: 0, jobId: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -5408,6 +5633,7 @@ export const getLicenseEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/license-endpoints/{licenseEndpointId}",
+    input: { licenseEndpointId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5441,6 +5667,7 @@ export const getLimit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/limits/{limitId}",
+    input: { farmId: 0, limitId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts, description: D.secret },
   },
   errors: [
@@ -5475,6 +5702,7 @@ export const getMonitor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/monitors/{monitorId}",
+    input: { monitorId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -5509,6 +5737,7 @@ export const getMonitorSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/monitors/{monitorId}/settings",
+    input: { monitorId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5542,6 +5771,7 @@ export const getQueue: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}",
+    input: { farmId: 0, queueId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts, description: D.secret },
   },
   errors: [
@@ -5576,6 +5806,7 @@ export const getQueueEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/environments/{queueEnvironmentId}",
+    input: { farmId: 0, queueId: 0, queueEnvironmentId: 0 },
     output: { template: D.secret, createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -5610,6 +5841,7 @@ export const getQueueFleetAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queue-fleet-associations/{queueId}/{fleetId}",
+    input: { farmId: 0, queueId: 0, fleetId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -5644,6 +5876,7 @@ export const getQueueLimitAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queue-limit-associations/{queueId}/{limitId}",
+    input: { farmId: 0, queueId: 0, limitId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -5678,6 +5911,7 @@ export const getSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}/sessions/{sessionId}",
+    input: { farmId: 0, queueId: 0, jobId: 0, sessionId: 0 },
     output: { startedAt: D.ts, endedAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -5712,6 +5946,7 @@ export const getSessionAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}/session-actions/{sessionActionId}",
+    input: { farmId: 0, queueId: 0, jobId: 0, sessionActionId: 0 },
     output: {
       startedAt: D.ts,
       endedAt: D.ts,
@@ -5753,6 +5988,7 @@ export const getSessionsStatisticsAggregation: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/sessions-statistics-aggregation",
     input: {
+      farmId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       aggregationId: D.m({ query: "aggregationId" }),
@@ -5802,6 +6038,7 @@ export const getStep: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}/steps/{stepId}",
+    input: { farmId: 0, queueId: 0, jobId: 0, stepId: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -5842,6 +6079,7 @@ export const getStorageProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/storage-profiles/{storageProfileId}",
+    input: { farmId: 0, storageProfileId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -5876,6 +6114,7 @@ export const getStorageProfileForQueue: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/storage-profiles/{storageProfileId}",
+    input: { farmId: 0, queueId: 0, storageProfileId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5909,6 +6148,7 @@ export const getTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}/steps/{stepId}/tasks/{taskId}",
+    input: { farmId: 0, queueId: 0, jobId: 0, stepId: 0, taskId: 0 },
     output: {
       createdAt: D.ts,
       startedAt: D.ts,
@@ -5948,6 +6188,7 @@ export const getVolume: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/fleets/{fleetId}/volumes/{volumeId}",
+    input: { farmId: 0, fleetId: 0, volumeId: 0 },
     output: {
       createdAt: D.ts,
       lastAssignedAt: D.ts,
@@ -5987,6 +6228,7 @@ export const getWorker: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/fleets/{fleetId}/workers/{workerId}",
+    input: { farmId: 0, fleetId: 0, workerId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -6058,6 +6300,7 @@ export const listBudgets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/budgets",
     input: {
+      farmId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       status: D.m({ query: "status" }),
@@ -6110,6 +6353,7 @@ export const listFarmMembers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/members",
     input: {
+      farmId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -6198,6 +6442,8 @@ export const listFleetMembers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/fleets/{fleetId}/members",
     input: {
+      farmId: 0,
+      fleetId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -6242,6 +6488,7 @@ export const listFleets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/fleets",
     input: {
+      farmId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       principalId: D.m({ query: "principalId" }),
@@ -6290,6 +6537,9 @@ export const listJobMembers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}/members",
     input: {
+      farmId: 0,
+      queueId: 0,
+      jobId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -6334,6 +6584,9 @@ export const listJobParameterDefinitions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}/parameter-definitions",
     input: {
+      farmId: 0,
+      queueId: 0,
+      jobId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -6378,6 +6631,8 @@ export const listJobs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/jobs",
     input: {
+      farmId: 0,
+      queueId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       principalId: D.m({ query: "principalId" }),
@@ -6475,6 +6730,7 @@ export const listLimits: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/limits",
     input: {
+      farmId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -6520,6 +6776,7 @@ export const listMeteredProducts: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/license-endpoints/{licenseEndpointId}/metered-products",
     input: {
+      licenseEndpointId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -6607,6 +6864,8 @@ export const listQueueEnvironments: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/environments",
     input: {
+      farmId: 0,
+      queueId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -6650,6 +6909,7 @@ export const listQueueFleetAssociations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queue-fleet-associations",
     input: {
+      farmId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       queueId: D.m({ query: "queueId" }),
@@ -6697,6 +6957,7 @@ export const listQueueLimitAssociations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queue-limit-associations",
     input: {
+      farmId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       queueId: D.m({ query: "queueId" }),
@@ -6745,6 +7006,8 @@ export const listQueueMembers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/members",
     input: {
+      farmId: 0,
+      queueId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -6789,6 +7052,7 @@ export const listQueues: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues",
     input: {
+      farmId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       principalId: D.m({ query: "principalId" }),
@@ -6836,6 +7100,9 @@ export const listSessionActions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}/session-actions",
     input: {
+      farmId: 0,
+      queueId: 0,
+      jobId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       sessionId: D.m({ query: "sessionId" }),
@@ -6889,6 +7156,9 @@ export const listSessions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}/sessions",
     input: {
+      farmId: 0,
+      queueId: 0,
+      jobId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -6936,6 +7206,9 @@ export const listSessionsForWorker: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/fleets/{fleetId}/workers/{workerId}/sessions",
     input: {
+      farmId: 0,
+      fleetId: 0,
+      workerId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -6981,6 +7254,10 @@ export const listStepConsumers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}/steps/{stepId}/consumers",
     input: {
+      farmId: 0,
+      queueId: 0,
+      jobId: 0,
+      stepId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -7025,6 +7302,10 @@ export const listStepDependencies: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}/steps/{stepId}/dependencies",
     input: {
+      farmId: 0,
+      queueId: 0,
+      jobId: 0,
+      stepId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -7069,6 +7350,9 @@ export const listSteps: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}/steps",
     input: {
+      farmId: 0,
+      queueId: 0,
+      jobId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -7121,6 +7405,7 @@ export const listStorageProfiles: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/storage-profiles",
     input: {
+      farmId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -7165,6 +7450,8 @@ export const listStorageProfilesForQueue: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/storage-profiles",
     input: {
+      farmId: 0,
+      queueId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -7204,7 +7491,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /2023-10-12/tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /2023-10-12/tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerErrorException,
@@ -7239,6 +7530,10 @@ export const listTasks: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}/steps/{stepId}/tasks",
     input: {
+      farmId: 0,
+      queueId: 0,
+      jobId: 0,
+      stepId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -7291,6 +7586,8 @@ export const listVolumes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/fleets/{fleetId}/volumes",
     input: {
+      farmId: 0,
+      fleetId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -7335,6 +7632,8 @@ export const listWorkers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2023-10-12/farms/{farmId}/fleets/{fleetId}/workers",
     input: {
+      farmId: 0,
+      fleetId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -7378,6 +7677,7 @@ export const putMeteredProduct: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2023-10-12/license-endpoints/{licenseEndpointId}/metered-products/{productId}",
+    input: { licenseEndpointId: 0, productId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -7411,7 +7711,14 @@ export const searchJobs: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2023-10-12/farms/{farmId}/search/jobs",
-    input: { filterExpressions: i_SearchGroupedFilterExpressions },
+    input: {
+      farmId: 0,
+      filterExpressions: i_SearchGroupedFilterExpressions,
+      sortExpressions: D.list(i_SearchSortExpression),
+      itemOffset: 0,
+      pageSize: 0,
+      queueIds: 0,
+    },
     output: {
       jobs: D.list({
         createdAt: D.ts,
@@ -7454,7 +7761,15 @@ export const searchSteps: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2023-10-12/farms/{farmId}/search/steps",
-    input: { filterExpressions: i_SearchGroupedFilterExpressions },
+    input: {
+      farmId: 0,
+      filterExpressions: i_SearchGroupedFilterExpressions,
+      sortExpressions: D.list(i_SearchSortExpression),
+      itemOffset: 0,
+      pageSize: 0,
+      queueIds: 0,
+      jobId: 0,
+    },
     output: {
       steps: D.list({
         createdAt: D.ts,
@@ -7497,7 +7812,15 @@ export const searchTasks: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2023-10-12/farms/{farmId}/search/tasks",
-    input: { filterExpressions: i_SearchGroupedFilterExpressions },
+    input: {
+      farmId: 0,
+      filterExpressions: i_SearchGroupedFilterExpressions,
+      sortExpressions: D.list(i_SearchSortExpression),
+      itemOffset: 0,
+      pageSize: 0,
+      queueIds: 0,
+      jobId: 0,
+    },
     output: {
       tasks: D.list({ startedAt: D.ts, endedAt: D.ts, updatedAt: D.ts }),
     },
@@ -7535,7 +7858,14 @@ export const searchWorkers: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2023-10-12/farms/{farmId}/search/workers",
-    input: { filterExpressions: i_SearchGroupedFilterExpressions },
+    input: {
+      farmId: 0,
+      filterExpressions: i_SearchGroupedFilterExpressions,
+      sortExpressions: D.list(i_SearchSortExpression),
+      itemOffset: 0,
+      pageSize: 0,
+      fleetIds: 0,
+    },
     output: { workers: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
     body: true,
   },
@@ -7571,7 +7901,16 @@ export const startSessionsStatisticsAggregation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2023-10-12/farms/{farmId}/sessions-statistics-aggregation",
-    input: { startTime: D.tsAs("date-time"), endTime: D.tsAs("date-time") },
+    input: {
+      farmId: 0,
+      resourceIds: { queueIds: 0, fleetIds: 0 },
+      startTime: D.tsAs("date-time"),
+      endTime: D.tsAs("date-time"),
+      timezone: 0,
+      period: 0,
+      groupBy: 0,
+      statistics: 0,
+    },
     body: true,
   },
   errors: [
@@ -7607,6 +7946,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2023-10-12/tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
     body: true,
   },
   errors: [
@@ -7643,7 +7983,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2023-10-12/tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -7681,7 +8021,15 @@ export const updateBudget: API.OperationMethod<
     service: svc,
     http: "PATCH /2023-10-12/farms/{farmId}/budgets/{budgetId}",
     input: {
+      farmId: 0,
+      budgetId: 0,
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      displayName: 0,
+      description: 0,
+      status: 0,
+      approximateDollarLimit: 0,
+      actionsToAdd: D.list(i_BudgetActionToAdd),
+      actionsToRemove: D.list({ type: 0, thresholdPercentage: 0 }),
       schedule: i_BudgetSchedule,
     },
     body: true,
@@ -7721,6 +8069,7 @@ export const updateFarm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /2023-10-12/farms/{farmId}",
+    input: { farmId: 0, displayName: 0, description: 0, costScaleFactor: 0 },
     body: true,
   },
   errors: [
@@ -7758,7 +8107,16 @@ export const updateFleet: API.OperationMethod<
     service: svc,
     http: "PATCH /2023-10-12/farms/{farmId}/fleets/{fleetId}",
     input: {
+      farmId: 0,
+      fleetId: 0,
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      displayName: 0,
+      description: 0,
+      roleArn: 0,
+      minWorkerCount: 0,
+      maxWorkerCount: 0,
+      configuration: i_FleetConfiguration,
+      hostConfiguration: i_HostConfiguration,
     },
     body: true,
   },
@@ -7801,7 +8159,18 @@ export const updateJob: API.OperationMethod<
     service: svc,
     http: "PATCH /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}",
     input: {
+      farmId: 0,
+      queueId: 0,
+      jobId: 0,
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      targetTaskRunStatus: 0,
+      priority: 0,
+      maxFailedTasksCount: 0,
+      maxRetriesPerTask: 0,
+      lifecycleStatus: 0,
+      maxWorkerCount: 0,
+      name: 0,
+      description: 0,
     },
     body: true,
   },
@@ -7838,6 +8207,13 @@ export const updateLimit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /2023-10-12/farms/{farmId}/limits/{limitId}",
+    input: {
+      farmId: 0,
+      limitId: 0,
+      displayName: 0,
+      description: 0,
+      maxCount: 0,
+    },
     body: true,
   },
   errors: [
@@ -7873,6 +8249,7 @@ export const updateMonitor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /2023-10-12/monitors/{monitorId}",
+    input: { monitorId: 0, subdomain: 0, displayName: 0, roleArn: 0 },
     body: true,
   },
   errors: [
@@ -7908,6 +8285,7 @@ export const updateMonitorSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /2023-10-12/monitors/{monitorId}/settings",
+    input: { monitorId: 0, settings: 0 },
     body: true,
   },
   errors: [
@@ -7943,7 +8321,20 @@ export const updateQueue: API.OperationMethod<
     service: svc,
     http: "PATCH /2023-10-12/farms/{farmId}/queues/{queueId}",
     input: {
+      farmId: 0,
+      queueId: 0,
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      displayName: 0,
+      description: 0,
+      defaultBudgetAction: 0,
+      jobAttachmentSettings: i_JobAttachmentSettings,
+      roleArn: 0,
+      jobRunAsUser: i_JobRunAsUser,
+      requiredFileSystemLocationNamesToAdd: 0,
+      requiredFileSystemLocationNamesToRemove: 0,
+      allowedStorageProfileIdsToAdd: 0,
+      allowedStorageProfileIdsToRemove: 0,
+      schedulingConfiguration: i_SchedulingConfiguration,
     },
     body: true,
   },
@@ -7980,7 +8371,13 @@ export const updateQueueEnvironment: API.OperationMethod<
     service: svc,
     http: "PATCH /2023-10-12/farms/{farmId}/queues/{queueId}/environments/{queueEnvironmentId}",
     input: {
+      farmId: 0,
+      queueId: 0,
+      queueEnvironmentId: 0,
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      priority: 0,
+      templateType: 0,
+      template: 0,
     },
     body: true,
   },
@@ -8016,6 +8413,7 @@ export const updateQueueFleetAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /2023-10-12/farms/{farmId}/queue-fleet-associations/{queueId}/{fleetId}",
+    input: { farmId: 0, queueId: 0, fleetId: 0, status: 0 },
     body: true,
   },
   errors: [
@@ -8050,6 +8448,7 @@ export const updateQueueLimitAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /2023-10-12/farms/{farmId}/queue-limit-associations/{queueId}/{limitId}",
+    input: { farmId: 0, queueId: 0, limitId: 0, status: 0 },
     body: true,
   },
   errors: [
@@ -8086,7 +8485,12 @@ export const updateSession: API.OperationMethod<
     service: svc,
     http: "PATCH /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}/sessions/{sessionId}",
     input: {
+      farmId: 0,
+      queueId: 0,
+      jobId: 0,
+      sessionId: 0,
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      targetLifecycleStatus: 0,
     },
     body: true,
   },
@@ -8125,7 +8529,12 @@ export const updateStep: API.OperationMethod<
     service: svc,
     http: "PATCH /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}/steps/{stepId}",
     input: {
+      farmId: 0,
+      queueId: 0,
+      jobId: 0,
+      stepId: 0,
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      targetTaskRunStatus: 0,
     },
     body: true,
   },
@@ -8164,7 +8573,13 @@ export const updateStorageProfile: API.OperationMethod<
     service: svc,
     http: "PATCH /2023-10-12/farms/{farmId}/storage-profiles/{storageProfileId}",
     input: {
+      farmId: 0,
+      storageProfileId: 0,
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      displayName: 0,
+      osFamily: 0,
+      fileSystemLocationsToAdd: D.list(i_FileSystemLocation),
+      fileSystemLocationsToRemove: D.list(i_FileSystemLocation),
     },
     body: true,
   },
@@ -8203,7 +8618,13 @@ export const updateTask: API.OperationMethod<
     service: svc,
     http: "PATCH /2023-10-12/farms/{farmId}/queues/{queueId}/jobs/{jobId}/steps/{stepId}/tasks/{taskId}",
     input: {
+      farmId: 0,
+      queueId: 0,
+      jobId: 0,
+      stepId: 0,
+      taskId: 0,
       clientToken: D.m({ header: "X-Amz-Client-Token", idempotency: true }),
+      targetRunStatus: 0,
     },
     body: true,
   },
@@ -8241,6 +8662,17 @@ export const updateWorker: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /2023-10-12/farms/{farmId}/fleets/{fleetId}/workers/{workerId}",
+    input: {
+      farmId: 0,
+      fleetId: 0,
+      workerId: 0,
+      status: 0,
+      capabilities: {
+        amounts: D.list({ name: 0, value: 0 }),
+        attributes: D.list({ name: 0, values: 0 }),
+      },
+      hostProperties: i_HostPropertiesRequest,
+    },
     output: { hostConfiguration: o_HostConfiguration },
     body: true,
   },
@@ -8279,10 +8711,18 @@ export const updateWorkerSchedule: API.OperationMethod<
     service: svc,
     http: "PATCH /2023-10-12/farms/{farmId}/fleets/{fleetId}/workers/{workerId}/schedule",
     input: {
+      farmId: 0,
+      fleetId: 0,
+      workerId: 0,
       updatedSessionActions: D.map({
+        completedStatus: 0,
+        processExitCode: 0,
+        progressMessage: 0,
         startedAt: D.tsAs("date-time"),
         endedAt: D.tsAs("date-time"),
         updatedAt: D.tsAs("date-time"),
+        progressPercent: 0,
+        manifests: D.list({ outputManifestPath: 0, outputManifestHash: 0 }),
       }),
     },
     body: true,
@@ -8301,14 +8741,119 @@ export const updateWorkerSchedule: API.OperationMethod<
   endpointHostPrefix: "scheduling.",
 })) as any;
 
+const i_BudgetActionToAdd: D.LazyStruct = () => ({
+  type: 0,
+  thresholdPercentage: 0,
+  description: 0,
+});
 const i_BudgetSchedule: D.LazyStruct = () => ({
   fixed: { startTime: D.tsAs("date-time"), endTime: D.tsAs("date-time") },
 });
+const i_FileSystemLocation: D.LazyStruct = () => ({
+  name: 0,
+  path: 0,
+  type: 0,
+});
+const i_FleetConfiguration: D.LazyStruct = () => ({
+  customerManaged: {
+    mode: 0,
+    autoScalingConfiguration: {
+      standbyWorkerCount: 0,
+      workerIdleDurationSeconds: 0,
+      scaleOutWorkersPerMinute: 0,
+    },
+    workerCapabilities: {
+      vCpuCount: i_VCpuCountRange,
+      memoryMiB: i_MemoryMiBRange,
+      acceleratorTypes: 0,
+      acceleratorCount: i_AcceleratorCountRange,
+      acceleratorTotalMemoryMiB: { min: 0, max: 0 },
+      osFamily: 0,
+      cpuArchitectureType: 0,
+      customAmounts: D.list(i_FleetAmountCapability),
+      customAttributes: D.list(i_FleetAttributeCapability),
+    },
+    storageProfileId: 0,
+    tagPropagationMode: 0,
+  },
+  serviceManagedEc2: {
+    instanceCapabilities: {
+      vCpuCount: i_VCpuCountRange,
+      memoryMiB: i_MemoryMiBRange,
+      osFamily: 0,
+      cpuArchitectureType: 0,
+      rootEbsVolume: { sizeGiB: 0, iops: 0, throughputMiB: 0 },
+      acceleratorCapabilities: {
+        selections: D.list({ name: 0, runtime: 0 }),
+        count: i_AcceleratorCountRange,
+      },
+      allowedInstanceTypes: 0,
+      excludedInstanceTypes: 0,
+      customAmounts: D.list(i_FleetAmountCapability),
+      customAttributes: D.list(i_FleetAttributeCapability),
+    },
+    instanceMarketOptions: { type: 0 },
+    vpcConfiguration: { resourceConfigurationArns: 0 },
+    storageProfileId: 0,
+    persistentVolumeConfiguration: {
+      sizeGiB: 0,
+      iops: 0,
+      throughputMiB: 0,
+      mountPath: 0,
+      lastUsedTtlHours: 0,
+    },
+    autoScalingConfiguration: {
+      standbyWorkerCount: 0,
+      workerIdleDurationSeconds: 0,
+      scaleOutWorkersPerMinute: 0,
+    },
+  },
+});
+const i_HostConfiguration: D.LazyStruct = () => ({
+  scriptBody: 0,
+  scriptTimeoutSeconds: 0,
+});
+const i_HostPropertiesRequest: D.LazyStruct = () => ({
+  ipAddresses: { ipV4Addresses: 0, ipV6Addresses: 0 },
+  hostName: 0,
+});
+const i_JobAttachmentSettings: D.LazyStruct = () => ({
+  s3BucketName: 0,
+  rootPrefix: 0,
+});
+const i_JobRunAsUser: D.LazyStruct = () => ({
+  posix: { user: 0, group: 0 },
+  windows: { user: 0, passwordArn: 0 },
+  runAs: 0,
+});
+const i_SchedulingConfiguration: D.LazyStruct = () => ({
+  priorityFifo: {},
+  priorityBalanced: { renderingTaskBuffer: 0 },
+  weightedBalanced: {
+    priorityWeight: 0,
+    errorWeight: 0,
+    submissionTimeWeight: 0,
+    renderingTaskWeight: 0,
+    renderingTaskBuffer: 0,
+    maxPriorityOverride: { alwaysScheduleFirst: {} },
+    minPriorityOverride: { alwaysScheduleLast: {} },
+  },
+});
 const i_SearchGroupedFilterExpressions: D.LazyStruct = () => ({
   filters: D.list({
-    dateTimeFilter: { dateTime: D.tsAs("date-time") },
+    dateTimeFilter: { name: 0, operator: 0, dateTime: D.tsAs("date-time") },
+    parameterFilter: { name: 0, operator: 0, value: 0 },
+    searchTermFilter: { searchTerm: 0, matchType: 0 },
+    stringFilter: { name: 0, operator: 0, value: 0 },
+    stringListFilter: { name: 0, operator: 0, values: 0 },
     groupFilter: i_SearchGroupedFilterExpressions,
   }),
+  operator: 0,
+});
+const i_SearchSortExpression: D.LazyStruct = () => ({
+  userJobsFirst: { userIdentityId: 0 },
+  fieldSort: { sortOrder: 0, name: 0 },
+  parameterSort: { sortOrder: 0, name: 0 },
 });
 const o_AwsCredentials: D.LazyStruct = () => ({
   accessKeyId: D.secret,
@@ -8317,3 +8862,12 @@ const o_AwsCredentials: D.LazyStruct = () => ({
   expiration: D.ts,
 });
 const o_HostConfiguration: D.LazyStruct = () => ({ scriptBody: D.secret });
+const i_AcceleratorCountRange: D.LazyStruct = () => ({ min: 0, max: 0 });
+const i_FleetAmountCapability: D.LazyStruct = () => ({
+  name: 0,
+  min: 0,
+  max: 0,
+});
+const i_FleetAttributeCapability: D.LazyStruct = () => ({ name: 0, values: 0 });
+const i_MemoryMiBRange: D.LazyStruct = () => ({ min: 0, max: 0 });
+const i_VCpuCountRange: D.LazyStruct = () => ({ min: 0, max: 0 });

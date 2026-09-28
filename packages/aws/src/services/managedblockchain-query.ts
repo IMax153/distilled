@@ -423,6 +423,13 @@ export const batchGetTokenBalance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /batch-get-token-balance",
+    input: {
+      getTokenBalanceInputs: D.list({
+        tokenIdentifier: i_TokenIdentifier,
+        ownerIdentifier: i_OwnerIdentifier,
+        atBlockchainInstant: i_BlockchainInstant,
+      }),
+    },
     output: {
       tokenBalances: D.list({
         atBlockchainInstant: o_BlockchainInstant,
@@ -468,7 +475,12 @@ export const getAssetContract: API.OperationMethod<
   GetAssetContractError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /get-asset-contract", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /get-asset-contract",
+    input: { contractIdentifier: { network: 0, contractAddress: 0 } },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -505,6 +517,11 @@ export const getTokenBalance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /get-token-balance",
+    input: {
+      tokenIdentifier: i_TokenIdentifier,
+      ownerIdentifier: i_OwnerIdentifier,
+      atBlockchainInstant: i_BlockchainInstant,
+    },
     output: {
       atBlockchainInstant: o_BlockchainInstant,
       lastUpdatedTime: o_BlockchainInstant,
@@ -548,6 +565,7 @@ export const getTransaction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /get-transaction",
+    input: { transactionHash: 0, transactionId: 0, network: 0 },
     output: { transaction: { transactionTimestamp: D.ts } },
     body: true,
   },
@@ -585,7 +603,16 @@ export const listAssetContracts: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AssetContract
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /list-asset-contracts", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /list-asset-contracts",
+    input: {
+      contractFilter: { network: 0, tokenStandard: 0, deployerAddress: 0 },
+      nextToken: 0,
+      maxResults: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -626,6 +653,16 @@ export const listFilteredTransactionEvents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-filtered-transaction-events",
+    input: {
+      network: 0,
+      addressIdentifierFilter: { transactionEventToAddress: 0 },
+      timeFilter: { from: i_BlockchainInstant, to: i_BlockchainInstant },
+      voutFilter: { voutSpent: 0 },
+      confirmationStatusFilter: i_ConfirmationStatusFilter,
+      sort: { sortBy: 0, sortOrder: 0 },
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { events: D.list(o_TransactionEvent) },
     body: true,
   },
@@ -677,6 +714,12 @@ export const listTokenBalances: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-token-balances",
+    input: {
+      ownerFilter: { address: 0 },
+      tokenFilter: { network: 0, contractAddress: 0, tokenId: 0 },
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       tokenBalances: D.list({
         atBlockchainInstant: o_BlockchainInstant,
@@ -727,6 +770,13 @@ export const listTransactionEvents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-transaction-events",
+    input: {
+      transactionHash: 0,
+      transactionId: 0,
+      network: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { events: D.list(o_TransactionEvent) },
     body: true,
   },
@@ -768,6 +818,16 @@ export const listTransactions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-transactions",
+    input: {
+      address: 0,
+      network: 0,
+      fromBlockchainInstant: i_BlockchainInstant,
+      toBlockchainInstant: i_BlockchainInstant,
+      sort: { sortBy: 0, sortOrder: 0 },
+      nextToken: 0,
+      maxResults: 0,
+      confirmationStatusFilter: i_ConfirmationStatusFilter,
+    },
     output: { transactions: D.list({ transactionTimestamp: D.ts }) },
     body: true,
   },
@@ -789,6 +849,14 @@ export const listTransactions: API.PaginatedOperationMethod<
   } as const,
 })) as any;
 
+const i_BlockchainInstant: D.LazyStruct = () => ({ time: 0 });
+const i_ConfirmationStatusFilter: D.LazyStruct = () => ({ include: 0 });
+const i_OwnerIdentifier: D.LazyStruct = () => ({ address: 0 });
+const i_TokenIdentifier: D.LazyStruct = () => ({
+  network: 0,
+  contractAddress: 0,
+  tokenId: 0,
+});
 const o_BlockchainInstant: D.LazyStruct = () => ({ time: D.ts });
 const o_TransactionEvent: D.LazyStruct = () => ({
   blockchainInstant: o_BlockchainInstant,

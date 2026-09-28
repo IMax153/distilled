@@ -1757,7 +1757,10 @@ export const batchCheckLayerAvailability: API.OperationMethod<
   BatchCheckLayerAvailabilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { registryId: 0, repositoryName: 0, layerDigests: 0 },
+  },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -1789,7 +1792,14 @@ export const batchDeleteImage: API.OperationMethod<
   BatchDeleteImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      registryId: 0,
+      repositoryName: 0,
+      imageIds: D.list(i_ImageIdentifier),
+    },
+  },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -1820,7 +1830,15 @@ export const batchGetImage: API.OperationMethod<
   BatchGetImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      registryId: 0,
+      repositoryName: 0,
+      imageIds: D.list(i_ImageIdentifier),
+      acceptedMediaTypes: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     LimitExceededException,
@@ -1848,7 +1866,7 @@ export const batchGetRepositoryScanningConfiguration: API.OperationMethod<
   BatchGetRepositoryScanningConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { repositoryNames: 0 } },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -1888,7 +1906,10 @@ export const completeLayerUpload: API.OperationMethod<
   CompleteLayerUploadError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { registryId: 0, repositoryName: 0, uploadId: 0, layerDigests: 0 },
+  },
   errors: [
     EmptyUploadException,
     InvalidLayerException,
@@ -1928,7 +1949,19 @@ export const createPullThroughCacheRule: API.OperationMethod<
   CreatePullThroughCacheRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createdAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      ecrRepositoryPrefix: 0,
+      upstreamRegistryUrl: 0,
+      registryId: 0,
+      upstreamRegistry: 0,
+      credentialArn: 0,
+      customRoleArn: 0,
+      upstreamRepositoryPrefix: 0,
+    },
+    output: { createdAt: D.ts },
+  },
   errors: [
     InvalidParameterException,
     LimitExceededException,
@@ -1964,7 +1997,21 @@ export const createRepository: API.OperationMethod<
   CreateRepositoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { repository: o_Repository } },
+  descriptor: {
+    service: svc,
+    input: {
+      registryId: 0,
+      repositoryName: 0,
+      tags: D.list(i_Tag),
+      imageTagMutability: 0,
+      imageTagMutabilityExclusionFilters: D.list(
+        i_ImageTagMutabilityExclusionFilter,
+      ),
+      imageScanningConfiguration: i_ImageScanningConfiguration,
+      encryptionConfiguration: { encryptionType: 0, kmsKey: 0 },
+    },
+    output: { repository: o_Repository },
+  },
   errors: [
     InvalidParameterException,
     InvalidTagParameterException,
@@ -2001,6 +2048,21 @@ export const createRepositoryCreationTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      prefix: 0,
+      description: 0,
+      encryptionConfiguration:
+        i_EncryptionConfigurationForRepositoryCreationTemplate,
+      resourceTags: D.list(i_Tag),
+      imageTagMutability: 0,
+      imageTagMutabilityExclusionFilters: D.list(
+        i_ImageTagMutabilityExclusionFilter,
+      ),
+      repositoryPolicy: 0,
+      lifecyclePolicy: 0,
+      appliedFor: 0,
+      customRoleArn: 0,
+    },
     output: { repositoryCreationTemplate: o_RepositoryCreationTemplate },
   },
   errors: [
@@ -2031,7 +2093,11 @@ export const deleteLifecyclePolicy: API.OperationMethod<
   DeleteLifecyclePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { lastEvaluatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { registryId: 0, repositoryName: 0 },
+    output: { lastEvaluatedAt: D.ts },
+  },
   errors: [
     InvalidParameterException,
     LifecyclePolicyNotFoundException,
@@ -2059,7 +2125,11 @@ export const deletePullThroughCacheRule: API.OperationMethod<
   DeletePullThroughCacheRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createdAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ecrRepositoryPrefix: 0, registryId: 0 },
+    output: { createdAt: D.ts },
+  },
   errors: [
     InvalidParameterException,
     PullThroughCacheRuleNotFoundException,
@@ -2086,7 +2156,7 @@ export const deleteRegistryPolicy: API.OperationMethod<
   DeleteRegistryPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     InvalidParameterException,
     RegistryPolicyNotFoundException,
@@ -2116,7 +2186,11 @@ export const deleteRepository: API.OperationMethod<
   DeleteRepositoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { repository: o_Repository } },
+  descriptor: {
+    service: svc,
+    input: { registryId: 0, repositoryName: 0, force: 0 },
+    output: { repository: o_Repository },
+  },
   errors: [
     InvalidParameterException,
     KmsException,
@@ -2146,6 +2220,7 @@ export const deleteRepositoryCreationTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { prefix: 0 },
     output: { repositoryCreationTemplate: o_RepositoryCreationTemplate },
   },
   errors: [
@@ -2174,7 +2249,7 @@ export const deleteRepositoryPolicy: API.OperationMethod<
   DeleteRepositoryPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { registryId: 0, repositoryName: 0 } },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -2206,7 +2281,7 @@ export const deleteSigningConfiguration: API.OperationMethod<
   DeleteSigningConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     ServerException,
     SigningConfigurationNotFoundException,
@@ -2233,7 +2308,7 @@ export const deregisterPullTimeUpdateExclusion: API.OperationMethod<
   DeregisterPullTimeUpdateExclusionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { principalArn: 0 } },
   errors: [
     ExclusionNotFoundException,
     InvalidParameterException,
@@ -2262,7 +2337,10 @@ export const describeImageReplicationStatus: API.OperationMethod<
   DescribeImageReplicationStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { repositoryName: 0, imageId: i_ImageIdentifier, registryId: 0 },
+  },
   errors: [
     ImageNotFoundException,
     InvalidParameterException,
@@ -2304,6 +2382,14 @@ export const describeImages: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      registryId: 0,
+      repositoryName: 0,
+      imageIds: D.list(i_ImageIdentifier),
+      nextToken: 0,
+      maxResults: 0,
+      filter: { tagStatus: 0, imageStatus: 0 },
+    },
     output: {
       imageDetails: D.list({
         imagePushedAt: D.ts,
@@ -2354,6 +2440,13 @@ export const describeImageScanFindings: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      registryId: 0,
+      repositoryName: 0,
+      imageId: i_ImageIdentifier,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       imageScanFindings: {
         imageScanCompletedAt: D.ts,
@@ -2414,7 +2507,10 @@ export const describeImageSigningStatus: API.OperationMethod<
   DescribeImageSigningStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { repositoryName: 0, imageId: i_ImageIdentifier, registryId: 0 },
+  },
   errors: [
     ImageNotFoundException,
     InvalidParameterException,
@@ -2445,6 +2541,12 @@ export const describePullThroughCacheRules: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      registryId: 0,
+      ecrRepositoryPrefixes: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       pullThroughCacheRules: D.list({ createdAt: D.ts, updatedAt: D.ts }),
     },
@@ -2482,7 +2584,7 @@ export const describeRegistry: API.OperationMethod<
   DescribeRegistryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [InvalidParameterException, ServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2504,7 +2606,11 @@ export const describeRepositories: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Repository
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { repositories: D.list(o_Repository) } },
+  descriptor: {
+    service: svc,
+    input: { registryId: 0, repositoryNames: 0, nextToken: 0, maxResults: 0 },
+    output: { repositories: D.list(o_Repository) },
+  },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -2540,6 +2646,7 @@ export const describeRepositoryCreationTemplates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { prefixes: 0, nextToken: 0, maxResults: 0 },
     output: {
       repositoryCreationTemplates: D.list(o_RepositoryCreationTemplate),
     },
@@ -2570,7 +2677,7 @@ export const getAccountSetting: API.OperationMethod<
   GetAccountSettingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [InvalidParameterException, ServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2600,6 +2707,7 @@ export const getAuthorizationToken: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { registryIds: 0 },
     output: {
       authorizationData: D.list({
         authorizationToken: D.secret,
@@ -2637,7 +2745,10 @@ export const getDownloadUrlForLayer: API.OperationMethod<
   GetDownloadUrlForLayerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { registryId: 0, repositoryName: 0, layerDigest: 0 },
+  },
   errors: [
     InvalidParameterException,
     LayerInaccessibleException,
@@ -2667,7 +2778,11 @@ export const getLifecyclePolicy: API.OperationMethod<
   GetLifecyclePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { lastEvaluatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { registryId: 0, repositoryName: 0 },
+    output: { lastEvaluatedAt: D.ts },
+  },
   errors: [
     InvalidParameterException,
     LifecyclePolicyNotFoundException,
@@ -2700,6 +2815,14 @@ export const getLifecyclePolicyPreview: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      registryId: 0,
+      repositoryName: 0,
+      imageIds: D.list(i_ImageIdentifier),
+      nextToken: 0,
+      maxResults: 0,
+      filter: { tagStatus: 0 },
+    },
     output: { previewResults: D.list({ imagePushedAt: D.ts }) },
   },
   errors: [
@@ -2735,7 +2858,7 @@ export const getRegistryPolicy: API.OperationMethod<
   GetRegistryPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     InvalidParameterException,
     RegistryPolicyNotFoundException,
@@ -2761,7 +2884,7 @@ export const getRegistryScanningConfiguration: API.OperationMethod<
   GetRegistryScanningConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [InvalidParameterException, ServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2783,7 +2906,7 @@ export const getRepositoryPolicy: API.OperationMethod<
   GetRepositoryPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { registryId: 0, repositoryName: 0 } },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -2814,7 +2937,7 @@ export const getSigningConfiguration: API.OperationMethod<
   GetSigningConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     InvalidParameterException,
     ServerException,
@@ -2848,7 +2971,7 @@ export const initiateLayerUpload: API.OperationMethod<
   InitiateLayerUploadError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { registryId: 0, repositoryName: 0 } },
   errors: [
     InvalidParameterException,
     KmsException,
@@ -2878,7 +3001,17 @@ export const listImageReferrers: API.OperationMethod<
   ListImageReferrersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      registryId: 0,
+      repositoryName: 0,
+      subjectId: { imageDigest: 0 },
+      filter: { artifactTypes: 0, artifactStatus: 0 },
+      nextToken: 0,
+      maxResults: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -2913,7 +3046,16 @@ export const listImages: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ImageIdentifier
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      registryId: 0,
+      repositoryName: 0,
+      nextToken: 0,
+      maxResults: 0,
+      filter: { tagStatus: 0, imageStatus: 0 },
+    },
+  },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -2945,7 +3087,7 @@ export const listPullTimeUpdateExclusions: API.OperationMethod<
   ListPullTimeUpdateExclusionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { maxResults: 0, nextToken: 0 } },
   errors: [
     InvalidParameterException,
     LimitExceededException,
@@ -2971,7 +3113,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -2997,7 +3139,7 @@ export const putAccountSetting: API.OperationMethod<
   PutAccountSettingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0, value: 0 } },
   errors: [
     InvalidParameterException,
     LimitExceededException,
@@ -3037,7 +3179,17 @@ export const putImage: API.OperationMethod<
   PutImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      registryId: 0,
+      repositoryName: 0,
+      imageManifest: 0,
+      imageManifestMediaType: 0,
+      imageTag: 0,
+      imageDigest: 0,
+    },
+  },
   errors: [
     ImageAlreadyExistsException,
     ImageDigestDoesNotMatchException,
@@ -3074,7 +3226,14 @@ export const putImageScanningConfiguration: API.OperationMethod<
   PutImageScanningConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      registryId: 0,
+      repositoryName: 0,
+      imageScanningConfiguration: i_ImageScanningConfiguration,
+    },
+  },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -3102,7 +3261,17 @@ export const putImageTagMutability: API.OperationMethod<
   PutImageTagMutabilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      registryId: 0,
+      repositoryName: 0,
+      imageTagMutability: 0,
+      imageTagMutabilityExclusionFilters: D.list(
+        i_ImageTagMutabilityExclusionFilter,
+      ),
+    },
+  },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -3130,7 +3299,10 @@ export const putLifecyclePolicy: API.OperationMethod<
   PutLifecyclePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { registryId: 0, repositoryName: 0, lifecyclePolicyText: 0 },
+  },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -3159,7 +3331,7 @@ export const putRegistryPolicy: API.OperationMethod<
   PutRegistryPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { policyText: 0 } },
   errors: [InvalidParameterException, ServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3181,7 +3353,16 @@ export const putRegistryScanningConfiguration: API.OperationMethod<
   PutRegistryScanningConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      scanType: 0,
+      rules: D.list({
+        scanFrequency: 0,
+        repositoryFilters: D.list({ filter: 0, filterType: 0 }),
+      }),
+    },
+  },
   errors: [
     BlockedByOrganizationPolicyException,
     InvalidParameterException,
@@ -3216,7 +3397,17 @@ export const putReplicationConfiguration: API.OperationMethod<
   PutReplicationConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      replicationConfiguration: {
+        rules: D.list({
+          destinations: D.list({ region: 0, registryId: 0 }),
+          repositoryFilters: D.list({ filter: 0, filterType: 0 }),
+        }),
+      },
+    },
+  },
   errors: [InvalidParameterException, ServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3245,7 +3436,17 @@ export const putSigningConfiguration: API.OperationMethod<
   PutSigningConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      signingConfiguration: {
+        rules: D.list({
+          signingProfileArn: 0,
+          repositoryFilters: D.list({ filter: 0, filterType: 0 }),
+        }),
+      },
+    },
+  },
   errors: [InvalidParameterException, ServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3268,7 +3469,11 @@ export const registerPullTimeUpdateExclusion: API.OperationMethod<
   RegisterPullTimeUpdateExclusionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createdAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { principalArn: 0 },
+    output: { createdAt: D.ts },
+  },
   errors: [
     ExclusionAlreadyExistsException,
     InvalidParameterException,
@@ -3297,7 +3502,10 @@ export const setRepositoryPolicy: API.OperationMethod<
   SetRepositoryPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { registryId: 0, repositoryName: 0, policyText: 0, force: 0 },
+  },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -3332,7 +3540,10 @@ export const startImageScan: API.OperationMethod<
   StartImageScanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { registryId: 0, repositoryName: 0, imageId: i_ImageIdentifier },
+  },
   errors: [
     ImageArchivedException,
     ImageNotFoundException,
@@ -3366,7 +3577,10 @@ export const startLifecyclePolicyPreview: API.OperationMethod<
   StartLifecyclePolicyPreviewError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { registryId: 0, repositoryName: 0, lifecyclePolicyText: 0 },
+  },
   errors: [
     InvalidParameterException,
     LifecyclePolicyNotFoundException,
@@ -3397,7 +3611,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: D.list(i_Tag) } },
   errors: [
     InvalidParameterException,
     InvalidTagParameterException,
@@ -3426,7 +3640,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [
     InvalidParameterException,
     InvalidTagParameterException,
@@ -3456,7 +3670,15 @@ export const updateImageStorageClass: API.OperationMethod<
   UpdateImageStorageClassError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      registryId: 0,
+      repositoryName: 0,
+      imageId: i_ImageIdentifier,
+      targetStorageClass: 0,
+    },
+  },
   errors: [
     ImageNotFoundException,
     ImageStorageClassUpdateNotSupportedException,
@@ -3488,7 +3710,16 @@ export const updatePullThroughCacheRule: API.OperationMethod<
   UpdatePullThroughCacheRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { updatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      registryId: 0,
+      ecrRepositoryPrefix: 0,
+      credentialArn: 0,
+      customRoleArn: 0,
+    },
+    output: { updatedAt: D.ts },
+  },
   errors: [
     InvalidParameterException,
     PullThroughCacheRuleNotFoundException,
@@ -3520,6 +3751,21 @@ export const updateRepositoryCreationTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      prefix: 0,
+      description: 0,
+      encryptionConfiguration:
+        i_EncryptionConfigurationForRepositoryCreationTemplate,
+      resourceTags: D.list(i_Tag),
+      imageTagMutability: 0,
+      imageTagMutabilityExclusionFilters: D.list(
+        i_ImageTagMutabilityExclusionFilter,
+      ),
+      repositoryPolicy: 0,
+      lifecyclePolicy: 0,
+      appliedFor: 0,
+      customRoleArn: 0,
+    },
     output: { repositoryCreationTemplate: o_RepositoryCreationTemplate },
   },
   errors: [
@@ -3558,7 +3804,17 @@ export const uploadLayerPart: API.OperationMethod<
   UploadLayerPartError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      registryId: 0,
+      repositoryName: 0,
+      uploadId: 0,
+      partFirstByte: 0,
+      partLastByte: 0,
+      layerPartBlob: 0,
+    },
+  },
   errors: [
     InvalidLayerPartException,
     InvalidParameterException,
@@ -3591,7 +3847,10 @@ export const validatePullThroughCacheRule: API.OperationMethod<
   ValidatePullThroughCacheRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ecrRepositoryPrefix: 0, registryId: 0 },
+  },
   errors: [
     InvalidParameterException,
     PullThroughCacheRuleNotFoundException,
@@ -3603,6 +3862,15 @@ export const validatePullThroughCacheRule: API.OperationMethod<
   operationName: "ValidatePullThroughCacheRule",
 })) as any;
 
+const i_EncryptionConfigurationForRepositoryCreationTemplate: D.LazyStruct =
+  () => ({ encryptionType: 0, kmsKey: 0 });
+const i_ImageIdentifier: D.LazyStruct = () => ({ imageDigest: 0, imageTag: 0 });
+const i_ImageScanningConfiguration: D.LazyStruct = () => ({ scanOnPush: 0 });
+const i_ImageTagMutabilityExclusionFilter: D.LazyStruct = () => ({
+  filterType: 0,
+  filter: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Repository: D.LazyStruct = () => ({ createdAt: D.ts });
 const o_RepositoryCreationTemplate: D.LazyStruct = () => ({
   createdAt: D.ts,

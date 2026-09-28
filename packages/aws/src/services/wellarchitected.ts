@@ -2244,6 +2244,7 @@ export const associateLenses: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /workloads/{WorkloadId}/associateLenses",
+    input: { WorkloadId: 0, LensAliases: 0 },
     body: true,
   },
   errors: [
@@ -2279,6 +2280,7 @@ export const associateProfiles: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /workloads/{WorkloadId}/associateProfiles",
+    input: { WorkloadId: 0, ProfileArns: 0 },
     body: true,
   },
   errors: [
@@ -2315,7 +2317,13 @@ export const createAgentContext: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /api/v1/agent-profiles/{profileArn}/contexts",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      profileArn: 0,
+      title: 0,
+      contextType: 0,
+      content: i_ContextContent,
+    },
     output: { context: o_ContextSummary },
     body: true,
   },
@@ -2354,7 +2362,13 @@ export const createAgentGoal: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /api/v1/agent-profiles/{profileArn}/goals",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      profileArn: 0,
+      pillars: 0,
+      title: 0,
+      description: 0,
+    },
     output: { goal: o_GoalSummary },
     body: true,
   },
@@ -2392,7 +2406,18 @@ export const createAgentProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /api/v1/agent-profiles",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      displayName: 0,
+      description: 0,
+      businessOverview: 0,
+      pillars: 0,
+      deletionProtection: 0,
+      executionRoleArn: 0,
+      aggregationConfiguration: D.list(i_AggregationConfiguration),
+      clientToken: D.m({ idempotency: true }),
+      tags: D.list({ key: 0, value: 0 }),
+    },
     output: {
       displayName: D.secret,
       description: D.secret,
@@ -2448,7 +2473,11 @@ export const createLensShare: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /lenses/{LensAlias}/shares",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      LensAlias: 0,
+      SharedWith: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2490,7 +2519,12 @@ export const createLensVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /lenses/{LensAlias}/versions",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      LensAlias: 0,
+      LensVersion: 0,
+      IsMajorVersion: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2528,7 +2562,11 @@ export const createMilestone: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workloads/{WorkloadId}/milestones",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      WorkloadId: 0,
+      MilestoneName: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2565,7 +2603,13 @@ export const createProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /profiles",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ProfileName: 0,
+      ProfileDescription: 0,
+      ProfileQuestions: D.list(i_ProfileQuestionUpdate),
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -2602,7 +2646,11 @@ export const createProfileShare: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /profiles/{ProfileArn}/shares",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ProfileArn: 0,
+      SharedWith: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2644,7 +2692,14 @@ export const createReviewTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /reviewTemplates",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      TemplateName: 0,
+      Description: 0,
+      Lenses: 0,
+      Notes: 0,
+      Tags: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2692,7 +2747,11 @@ export const createTemplateShare: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /templates/shares/{TemplateArn}",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      TemplateArn: 0,
+      SharedWith: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2748,7 +2807,28 @@ export const createWorkload: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workloads",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      WorkloadName: 0,
+      Description: 0,
+      Environment: 0,
+      AccountIds: 0,
+      AwsRegions: 0,
+      NonAwsRegions: 0,
+      PillarPriorities: 0,
+      ArchitecturalDesign: 0,
+      ReviewOwner: 0,
+      IndustryType: 0,
+      Industry: 0,
+      Lenses: 0,
+      Notes: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: 0,
+      DiscoveryConfig: i_WorkloadDiscoveryConfig,
+      Applications: 0,
+      ProfileArns: 0,
+      ReviewTemplateArns: 0,
+      JiraConfiguration: i_WorkloadJiraConfigurationInput,
+    },
     body: true,
   },
   errors: [
@@ -2792,7 +2872,12 @@ export const createWorkloadShare: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workloads/{WorkloadId}/shares",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      WorkloadId: 0,
+      SharedWith: 0,
+      PermissionType: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2828,6 +2913,7 @@ export const deleteAgentContext: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /api/v1/agent-profiles/{profileArn}/contexts/{id}",
+    input: { profileArn: 0, id: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2860,6 +2946,7 @@ export const deleteAgentGoal: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /api/v1/agent-profiles/{profileArn}/goals/{id}",
+    input: { profileArn: 0, id: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2893,6 +2980,7 @@ export const deleteAgentProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /api/v1/agent-profiles/{profileArn}",
+    input: { profileArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2934,6 +3022,7 @@ export const deleteLens: API.OperationMethod<
     service: svc,
     http: "DELETE /lenses/{LensAlias}",
     input: {
+      LensAlias: 0,
       ClientRequestToken: D.m({
         query: "ClientRequestToken",
         idempotency: true,
@@ -2981,6 +3070,8 @@ export const deleteLensShare: API.OperationMethod<
     service: svc,
     http: "DELETE /lenses/{LensAlias}/shares/{ShareId}",
     input: {
+      ShareId: 0,
+      LensAlias: 0,
       ClientRequestToken: D.m({
         query: "ClientRequestToken",
         idempotency: true,
@@ -3025,6 +3116,7 @@ export const deleteProfile: API.OperationMethod<
     service: svc,
     http: "DELETE /profiles/{ProfileArn}",
     input: {
+      ProfileArn: 0,
       ClientRequestToken: D.m({
         query: "ClientRequestToken",
         idempotency: true,
@@ -3065,6 +3157,8 @@ export const deleteProfileShare: API.OperationMethod<
     service: svc,
     http: "DELETE /profiles/{ProfileArn}/shares/{ShareId}",
     input: {
+      ShareId: 0,
+      ProfileArn: 0,
       ClientRequestToken: D.m({
         query: "ClientRequestToken",
         idempotency: true,
@@ -3109,6 +3203,7 @@ export const deleteReviewTemplate: API.OperationMethod<
     service: svc,
     http: "DELETE /reviewTemplates/{TemplateArn}",
     input: {
+      TemplateArn: 0,
       ClientRequestToken: D.m({
         query: "ClientRequestToken",
         idempotency: true,
@@ -3151,6 +3246,8 @@ export const deleteTemplateShare: API.OperationMethod<
     service: svc,
     http: "DELETE /templates/shares/{TemplateArn}/{ShareId}",
     input: {
+      ShareId: 0,
+      TemplateArn: 0,
       ClientRequestToken: D.m({
         query: "ClientRequestToken",
         idempotency: true,
@@ -3191,6 +3288,7 @@ export const deleteWorkload: API.OperationMethod<
     service: svc,
     http: "DELETE /workloads/{WorkloadId}",
     input: {
+      WorkloadId: 0,
       ClientRequestToken: D.m({
         query: "ClientRequestToken",
         idempotency: true,
@@ -3231,6 +3329,8 @@ export const deleteWorkloadShare: API.OperationMethod<
     service: svc,
     http: "DELETE /workloads/{WorkloadId}/shares/{ShareId}",
     input: {
+      ShareId: 0,
+      WorkloadId: 0,
       ClientRequestToken: D.m({
         query: "ClientRequestToken",
         idempotency: true,
@@ -3274,6 +3374,7 @@ export const disassociateLenses: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /workloads/{WorkloadId}/disassociateLenses",
+    input: { WorkloadId: 0, LensAliases: 0 },
     body: true,
   },
   errors: [
@@ -3309,6 +3410,7 @@ export const disassociateProfiles: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /workloads/{WorkloadId}/disassociateProfiles",
+    input: { WorkloadId: 0, ProfileArns: 0 },
     body: true,
   },
   errors: [
@@ -3351,7 +3453,7 @@ export const exportLens: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /lenses/{LensAlias}/export",
-    input: { LensVersion: D.m({ query: "LensVersion" }) },
+    input: { LensAlias: 0, LensVersion: D.m({ query: "LensVersion" }) },
   },
   errors: [
     AccessDeniedException,
@@ -3384,6 +3486,7 @@ export const getAgentContext: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /api/v1/agent-profiles/{profileArn}/contexts/{id}",
+    input: { profileArn: 0, id: 0 },
     output: { context: o_ContextSummary },
   },
   errors: [
@@ -3417,6 +3520,7 @@ export const getAgentGoal: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /api/v1/agent-profiles/{profileArn}/goals/{id}",
+    input: { profileArn: 0, id: 0 },
     output: { goal: o_GoalSummary },
   },
   errors: [
@@ -3450,6 +3554,7 @@ export const getAgentProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /api/v1/agent-profiles/{profileArn}",
+    input: { profileArn: 0 },
     output: {
       displayName: D.secret,
       description: D.secret,
@@ -3489,7 +3594,10 @@ export const getAgentRecommendation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /api/v1/agent-recommendations/{recommendationArn}",
-    input: { remediationType: D.m({ query: "remediationType" }) },
+    input: {
+      recommendationArn: 0,
+      remediationType: D.m({ query: "remediationType" }),
+    },
     output: {
       title: D.secret,
       description: D.secret,
@@ -3534,6 +3642,7 @@ export const getAgentRecommendationGeneration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /api/v1/agent-profiles/{profileArn}/generations/{generationId}",
+    input: { profileArn: 0, generationId: 0 },
     output: {
       estimatedCompletionTime: D.ts,
       createdAt: D.ts,
@@ -3573,7 +3682,12 @@ export const getAnswer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workloads/{WorkloadId}/lensReviews/{LensAlias}/answers/{QuestionId}",
-    input: { MilestoneNumber: D.m({ query: "MilestoneNumber" }) },
+    input: {
+      WorkloadId: 0,
+      LensAlias: 0,
+      QuestionId: 0,
+      MilestoneNumber: D.m({ query: "MilestoneNumber" }),
+    },
     output: { Answer: o_Answer },
   },
   errors: [
@@ -3681,7 +3795,7 @@ export const getLens: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /lenses/{LensAlias}",
-    input: { LensVersion: D.m({ query: "LensVersion" }) },
+    input: { LensAlias: 0, LensVersion: D.m({ query: "LensVersion" }) },
   },
   errors: [
     AccessDeniedException,
@@ -3714,7 +3828,11 @@ export const getLensReview: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workloads/{WorkloadId}/lensReviews/{LensAlias}",
-    input: { MilestoneNumber: D.m({ query: "MilestoneNumber" }) },
+    input: {
+      WorkloadId: 0,
+      LensAlias: 0,
+      MilestoneNumber: D.m({ query: "MilestoneNumber" }),
+    },
     output: { LensReview: o_LensReview },
   },
   errors: [
@@ -3748,7 +3866,11 @@ export const getLensReviewReport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workloads/{WorkloadId}/lensReviews/{LensAlias}/report",
-    input: { MilestoneNumber: D.m({ query: "MilestoneNumber" }) },
+    input: {
+      WorkloadId: 0,
+      LensAlias: 0,
+      MilestoneNumber: D.m({ query: "MilestoneNumber" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -3782,6 +3904,7 @@ export const getLensVersionDifference: API.OperationMethod<
     service: svc,
     http: "GET /lenses/{LensAlias}/versionDifference",
     input: {
+      LensAlias: 0,
       BaseLensVersion: D.m({ query: "BaseLensVersion" }),
       TargetLensVersion: D.m({ query: "TargetLensVersion" }),
     },
@@ -3817,6 +3940,7 @@ export const getMilestone: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workloads/{WorkloadId}/milestones/{MilestoneNumber}",
+    input: { WorkloadId: 0, MilestoneNumber: 0 },
     output: { Milestone: { RecordedAt: D.ts, Workload: o_Workload } },
   },
   errors: [
@@ -3850,7 +3974,7 @@ export const getProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /profiles/{ProfileArn}",
-    input: { ProfileVersion: D.m({ query: "ProfileVersion" }) },
+    input: { ProfileArn: 0, ProfileVersion: D.m({ query: "ProfileVersion" }) },
     output: { Profile: o_Profile },
   },
   errors: [
@@ -3884,6 +4008,7 @@ export const getProfileTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /profileTemplate",
+    input: {},
     output: { ProfileTemplate: { CreatedAt: D.ts, UpdatedAt: D.ts } },
   },
   errors: [
@@ -3917,6 +4042,7 @@ export const getReviewTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /reviewTemplates/{TemplateArn}",
+    input: { TemplateArn: 0 },
     output: { ReviewTemplate: o_ReviewTemplate },
   },
   errors: [
@@ -3950,6 +4076,7 @@ export const getReviewTemplateAnswer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /reviewTemplates/{TemplateArn}/lensReviews/{LensAlias}/answers/{QuestionId}",
+    input: { TemplateArn: 0, LensAlias: 0, QuestionId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3982,6 +4109,7 @@ export const getReviewTemplateLensReview: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /reviewTemplates/{TemplateArn}/lensReviews/{LensAlias}",
+    input: { TemplateArn: 0, LensAlias: 0 },
     output: { LensReview: o_ReviewTemplateLensReview },
   },
   errors: [
@@ -4015,6 +4143,7 @@ export const getWorkload: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workloads/{WorkloadId}",
+    input: { WorkloadId: 0 },
     output: { Workload: o_Workload },
   },
   errors: [
@@ -4062,7 +4191,12 @@ export const importLens: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /importLens",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      LensAlias: 0,
+      JSONString: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -4099,6 +4233,7 @@ export const listAgentContexts: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /api/v1/agent-profiles/{profileArn}/contexts",
     input: {
+      profileArn: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -4141,6 +4276,7 @@ export const listAgentGoals: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /api/v1/agent-profiles/{profileArn}/goals",
     input: {
+      profileArn: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -4234,6 +4370,7 @@ export const listAgentRecommendationGenerations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /api/v1/agent-profiles/{profileArn}/generations",
     input: {
+      profileArn: 0,
       recommendationType: D.m({ query: "RecommendationType" }),
       maxResults: D.m({ query: "MaxResults" }),
       nextToken: D.m({ query: "NextToken" }),
@@ -4285,6 +4422,7 @@ export const listAgentRecommendationItems: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /api/v1/agent-recommendations/{recommendationArn}/items",
     input: {
+      recommendationArn: 0,
       type: D.m({ query: "type" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -4330,6 +4468,7 @@ export const listAgentRecommendations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /api/v1/agent-profiles/{profileArn}/recommendations",
     input: {
+      profileArn: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
       state: D.m({ query: "state" }),
@@ -4384,6 +4523,8 @@ export const listAnswers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /workloads/{WorkloadId}/lensReviews/{LensAlias}/answers",
     input: {
+      WorkloadId: 0,
+      LensAlias: 0,
       PillarId: D.m({ query: "PillarId" }),
       MilestoneNumber: D.m({ query: "MilestoneNumber" }),
       NextToken: D.m({ query: "NextToken" }),
@@ -4431,6 +4572,15 @@ export const listCheckDetails: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workloads/{WorkloadId}/checks",
+    input: {
+      WorkloadId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      LensArn: 0,
+      PillarId: 0,
+      QuestionId: 0,
+      ChoiceId: 0,
+    },
     output: { CheckDetails: D.list({ UpdatedAt: D.ts }) },
     body: true,
   },
@@ -4471,6 +4621,15 @@ export const listCheckSummaries: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workloads/{WorkloadId}/checkSummaries",
+    input: {
+      WorkloadId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      LensArn: 0,
+      PillarId: 0,
+      QuestionId: 0,
+      ChoiceId: 0,
+    },
     output: { CheckSummaries: D.list({ UpdatedAt: D.ts }) },
     body: true,
   },
@@ -4556,6 +4715,8 @@ export const listLensReviewImprovements: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /workloads/{WorkloadId}/lensReviews/{LensAlias}/improvements",
     input: {
+      WorkloadId: 0,
+      LensAlias: 0,
       PillarId: D.m({ query: "PillarId" }),
       MilestoneNumber: D.m({ query: "MilestoneNumber" }),
       NextToken: D.m({ query: "NextToken" }),
@@ -4604,6 +4765,7 @@ export const listLensReviews: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /workloads/{WorkloadId}/lensReviews",
     input: {
+      WorkloadId: 0,
       MilestoneNumber: D.m({ query: "MilestoneNumber" }),
       NextToken: D.m({ query: "NextToken" }),
       MaxResults: D.m({ query: "MaxResults" }),
@@ -4648,6 +4810,7 @@ export const listLensShares: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /lenses/{LensAlias}/shares",
     input: {
+      LensAlias: 0,
       SharedWithPrefix: D.m({ query: "SharedWithPrefix" }),
       NextToken: D.m({ query: "NextToken" }),
       MaxResults: D.m({ query: "MaxResults" }),
@@ -4691,6 +4854,7 @@ export const listMilestones: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workloads/{WorkloadId}/milestonesSummaries",
+    input: { WorkloadId: 0, NextToken: 0, MaxResults: 0 },
     output: {
       MilestoneSummaries: D.list({
         RecordedAt: D.ts,
@@ -4732,7 +4896,12 @@ export const listNotifications: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /notifications", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /notifications",
+    input: { WorkloadId: 0, NextToken: 0, MaxResults: 0, ResourceArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4854,6 +5023,7 @@ export const listProfileShares: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /profiles/{ProfileArn}/shares",
     input: {
+      ProfileArn: 0,
       SharedWithPrefix: D.m({ query: "SharedWithPrefix" }),
       NextToken: D.m({ query: "NextToken" }),
       MaxResults: D.m({ query: "MaxResults" }),
@@ -4898,6 +5068,8 @@ export const listReviewTemplateAnswers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /reviewTemplates/{TemplateArn}/lensReviews/{LensAlias}/answers",
     input: {
+      TemplateArn: 0,
+      LensAlias: 0,
       PillarId: D.m({ query: "PillarId" }),
       NextToken: D.m({ query: "NextToken" }),
       MaxResults: D.m({ query: "MaxResults" }),
@@ -5023,7 +5195,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{WorkloadArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{WorkloadArn}",
+    input: { WorkloadArn: 0 },
+  },
   errors: [InternalServerException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5051,6 +5227,7 @@ export const listTemplateShares: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /templates/shares/{TemplateArn}",
     input: {
+      TemplateArn: 0,
       SharedWithPrefix: D.m({ query: "SharedWithPrefix" }),
       NextToken: D.m({ query: "NextToken" }),
       MaxResults: D.m({ query: "MaxResults" }),
@@ -5093,6 +5270,7 @@ export const listWorkloads: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workloadsSummaries",
+    input: { WorkloadNamePrefix: 0, NextToken: 0, MaxResults: 0 },
     output: { WorkloadSummaries: D.list(o_WorkloadSummary) },
     body: true,
   },
@@ -5133,6 +5311,7 @@ export const listWorkloadShares: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /workloads/{WorkloadId}/shares",
     input: {
+      WorkloadId: 0,
       SharedWithPrefix: D.m({ query: "SharedWithPrefix" }),
       NextToken: D.m({ query: "NextToken" }),
       MaxResults: D.m({ query: "MaxResults" }),
@@ -5175,6 +5354,7 @@ export const putAgentRecommendationFeedback: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /api/v1/agent-recommendations/{recommendationArn}/feedback",
+    input: { recommendationArn: 0, type: 0, feedbackCategory: 0, comments: 0 },
     body: true,
   },
   errors: [
@@ -5209,6 +5389,13 @@ export const startAgentRecommendationGeneration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /api/v1/agent-profiles/{profileArn}/generations",
+    input: {
+      profileArn: 0,
+      types: 0,
+      name: 0,
+      additionalContext: 0,
+      scope: { pillars: 0, goalIds: 0, items: D.list({ pillar: 0, ids: 0 }) },
+    },
     output: {
       estimatedCompletionTime: D.ts,
       createdAt: D.ts,
@@ -5244,7 +5431,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{WorkloadArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{WorkloadArn}",
+    input: { WorkloadArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [InternalServerException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5273,7 +5465,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{WorkloadArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { WorkloadArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [InternalServerException, ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -5300,7 +5492,13 @@ export const updateAgentContext: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /api/v1/agent-profiles/{profileArn}/contexts/{id}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      profileArn: 0,
+      id: 0,
+      title: 0,
+      content: i_ContextContent,
+    },
     output: { context: o_ContextSummary },
     body: true,
   },
@@ -5335,7 +5533,14 @@ export const updateAgentGoal: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /api/v1/agent-profiles/{profileArn}/goals/{id}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      profileArn: 0,
+      id: 0,
+      pillars: 0,
+      title: 0,
+      description: 0,
+    },
     output: { goal: o_GoalSummary },
     body: true,
   },
@@ -5370,7 +5575,17 @@ export const updateAgentProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /api/v1/agent-profiles/{profileArn}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      profileArn: 0,
+      displayName: 0,
+      description: 0,
+      executionRoleArn: 0,
+      aggregationConfiguration: D.list(i_AggregationConfiguration),
+      businessOverview: 0,
+      pillars: 0,
+      deletionProtection: 0,
+    },
     output: {
       displayName: D.secret,
       description: D.secret,
@@ -5411,6 +5626,7 @@ export const updateAgentRecommendationStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /api/v1/agent-recommendations/{recommendationArn}/status",
+    input: { recommendationArn: 0, status: 0, updateReason: 0 },
     body: true,
   },
   errors: [
@@ -5445,6 +5661,16 @@ export const updateAnswer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /workloads/{WorkloadId}/lensReviews/{LensAlias}/answers/{QuestionId}",
+    input: {
+      WorkloadId: 0,
+      LensAlias: 0,
+      QuestionId: 0,
+      SelectedChoices: 0,
+      ChoiceUpdates: D.map(i_ChoiceUpdate),
+      Notes: 0,
+      IsApplicable: 0,
+      Reason: 0,
+    },
     output: { Answer: o_Answer },
     body: true,
   },
@@ -5477,7 +5703,21 @@ export const updateGlobalSettings: API.OperationMethod<
   UpdateGlobalSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /global-settings", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /global-settings",
+    input: {
+      OrganizationSharingStatus: 0,
+      DiscoveryIntegrationStatus: 0,
+      JiraConfiguration: {
+        IssueManagementStatus: 0,
+        IssueManagementType: 0,
+        JiraProjectKey: 0,
+        IntegrationStatus: 0,
+      },
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5510,7 +5750,11 @@ export const updateIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workloads/{WorkloadId}/updateIntegration",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      WorkloadId: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      IntegratingService: 0,
+    },
     body: true,
   },
   errors: [
@@ -5546,6 +5790,15 @@ export const updateLensReview: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /workloads/{WorkloadId}/lensReviews/{LensAlias}",
+    input: {
+      WorkloadId: 0,
+      LensAlias: 0,
+      LensNotes: 0,
+      PillarNotes: 0,
+      JiraConfiguration: {
+        SelectedPillars: D.list({ PillarId: 0, SelectedQuestionIds: 0 }),
+      },
+    },
     output: { LensReview: o_LensReview },
     body: true,
   },
@@ -5582,6 +5835,11 @@ export const updateProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /profiles/{ProfileArn}",
+    input: {
+      ProfileArn: 0,
+      ProfileDescription: 0,
+      ProfileQuestions: D.list(i_ProfileQuestionUpdate),
+    },
     output: { Profile: o_Profile },
     body: true,
   },
@@ -5618,6 +5876,14 @@ export const updateReviewTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /reviewTemplates/{TemplateArn}",
+    input: {
+      TemplateArn: 0,
+      TemplateName: 0,
+      Description: 0,
+      Notes: 0,
+      LensesToAssociate: 0,
+      LensesToDisassociate: 0,
+    },
     output: { ReviewTemplate: o_ReviewTemplate },
     body: true,
   },
@@ -5654,6 +5920,16 @@ export const updateReviewTemplateAnswer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /reviewTemplates/{TemplateArn}/lensReviews/{LensAlias}/answers/{QuestionId}",
+    input: {
+      TemplateArn: 0,
+      LensAlias: 0,
+      QuestionId: 0,
+      SelectedChoices: 0,
+      ChoiceUpdates: D.map(i_ChoiceUpdate),
+      Notes: 0,
+      IsApplicable: 0,
+      Reason: 0,
+    },
     body: true,
   },
   errors: [
@@ -5689,6 +5965,7 @@ export const updateReviewTemplateLensReview: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /reviewTemplates/{TemplateArn}/lensReviews/{LensAlias}",
+    input: { TemplateArn: 0, LensAlias: 0, LensNotes: 0, PillarNotes: 0 },
     output: { LensReview: o_ReviewTemplateLensReview },
     body: true,
   },
@@ -5727,6 +6004,7 @@ export const updateShareInvitation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /shareInvitations/{ShareInvitationId}",
+    input: { ShareInvitationId: 0, ShareInvitationAction: 0 },
     body: true,
   },
   errors: [
@@ -5762,6 +6040,26 @@ export const updateWorkload: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /workloads/{WorkloadId}",
+    input: {
+      WorkloadId: 0,
+      WorkloadName: 0,
+      Description: 0,
+      Environment: 0,
+      AccountIds: 0,
+      AwsRegions: 0,
+      NonAwsRegions: 0,
+      PillarPriorities: 0,
+      ArchitecturalDesign: 0,
+      ReviewOwner: 0,
+      IsReviewOwnerUpdateAcknowledged: 0,
+      IndustryType: 0,
+      Industry: 0,
+      Notes: 0,
+      ImprovementStatus: 0,
+      DiscoveryConfig: i_WorkloadDiscoveryConfig,
+      Applications: 0,
+      JiraConfiguration: i_WorkloadJiraConfigurationInput,
+    },
     output: { Workload: o_Workload },
     body: true,
   },
@@ -5798,6 +6096,7 @@ export const updateWorkloadShare: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /workloads/{WorkloadId}/shares/{ShareId}",
+    input: { ShareId: 0, WorkloadId: 0, PermissionType: 0 },
     body: true,
   },
   errors: [
@@ -5834,6 +6133,12 @@ export const upgradeLensReview: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workloads/{WorkloadId}/lensReviews/{LensAlias}/upgrade",
+    input: {
+      WorkloadId: 0,
+      LensAlias: 0,
+      MilestoneName: 0,
+      ClientRequestToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -5871,7 +6176,12 @@ export const upgradeProfileVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workloads/{WorkloadId}/profiles/{ProfileArn}/upgrade",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      WorkloadId: 0,
+      ProfileArn: 0,
+      MilestoneName: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -5908,6 +6218,7 @@ export const upgradeReviewTemplateLensReview: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /reviewTemplates/{TemplateArn}/lensReviews/{LensAlias}/upgrade",
+    input: { TemplateArn: 0, LensAlias: 0, ClientRequestToken: 0 },
     body: true,
   },
   errors: [
@@ -5923,6 +6234,38 @@ export const upgradeReviewTemplateLensReview: API.OperationMethod<
   operationName: "UpgradeReviewTemplateLensReview",
 })) as any;
 
+const i_AggregationConfiguration: D.LazyStruct = () => ({
+  accountId: 0,
+  regions: 0,
+  accessRoleArn: 0,
+});
+const i_ChoiceUpdate: D.LazyStruct = () => ({ Status: 0, Reason: 0, Notes: 0 });
+const i_ContextContent: D.LazyStruct = () => ({
+  accountIds: 0,
+  regions: 0,
+  awsServices: 0,
+  resourceTypes: 0,
+  resourceTags: D.list({ key: 0, value: 0 }),
+  applicationOverview: 0,
+  industry: 0,
+  applicationType: 0,
+  criticality: 0,
+  architectureOverview: 0,
+  additionalContext: 0,
+});
+const i_ProfileQuestionUpdate: D.LazyStruct = () => ({
+  QuestionId: 0,
+  SelectedChoiceIds: 0,
+});
+const i_WorkloadDiscoveryConfig: D.LazyStruct = () => ({
+  TrustedAdvisorIntegrationStatus: 0,
+  WorkloadResourceDefinition: 0,
+});
+const i_WorkloadJiraConfigurationInput: D.LazyStruct = () => ({
+  IssueManagementStatus: 0,
+  IssueManagementType: 0,
+  JiraProjectKey: 0,
+});
 const o_Answer: D.LazyStruct = () => ({
   JiraConfiguration: o_JiraConfiguration,
 });

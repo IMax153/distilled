@@ -943,7 +943,12 @@ export const copyBlueprintStage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /blueprints/{blueprintArn}/copy-stage",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      blueprintArn: 0,
+      sourceStage: 0,
+      targetStage: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -978,7 +983,15 @@ export const createBlueprint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /blueprints/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      blueprintName: 0,
+      type: 0,
+      blueprintStage: 0,
+      schema: 0,
+      clientToken: D.m({ idempotency: true }),
+      encryptionConfiguration: i_EncryptionConfiguration,
+      tags: D.list(i_Tag),
+    },
     output: { blueprint: o_Blueprint },
     body: true,
   },
@@ -1015,7 +1028,7 @@ export const createBlueprintVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /blueprints/{blueprintArn}/versions/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { blueprintArn: 0, clientToken: D.m({ idempotency: true }) },
     output: { blueprint: o_Blueprint },
     body: true,
   },
@@ -1052,7 +1065,13 @@ export const createDataAutomationLibrary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /data-automation-libraries/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      libraryName: 0,
+      libraryDescription: 0,
+      clientToken: D.m({ idempotency: true }),
+      encryptionConfiguration: i_EncryptionConfiguration,
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -1088,7 +1107,19 @@ export const createDataAutomationProject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /data-automation-projects/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      projectName: 0,
+      projectDescription: 0,
+      projectStage: 0,
+      projectType: 0,
+      standardOutputConfiguration: i_StandardOutputConfiguration,
+      customOutputConfiguration: i_CustomOutputConfiguration,
+      overrideConfiguration: i_OverrideConfiguration,
+      dataAutomationLibraryConfiguration: i_DataAutomationLibraryConfiguration,
+      clientToken: D.m({ idempotency: true }),
+      encryptionConfiguration: i_EncryptionConfiguration,
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -1123,7 +1154,10 @@ export const deleteBlueprint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /blueprints/{blueprintArn}/",
-    input: { blueprintVersion: D.m({ query: "blueprintVersion" }) },
+    input: {
+      blueprintArn: 0,
+      blueprintVersion: D.m({ query: "blueprintVersion" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1157,6 +1191,7 @@ export const deleteDataAutomationLibrary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /data-automation-libraries/{libraryArn}/",
+    input: { libraryArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1190,6 +1225,7 @@ export const deleteDataAutomationProject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /data-automation-projects/{projectArn}/",
+    input: { projectArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1222,6 +1258,7 @@ export const getBlueprint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /blueprints/{blueprintArn}/",
+    input: { blueprintArn: 0, blueprintVersion: 0, blueprintStage: 0 },
     output: { blueprint: o_Blueprint },
     body: true,
   },
@@ -1256,6 +1293,7 @@ export const getBlueprintOptimizationStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getBlueprintOptimizationStatus/{invocationArn}",
+    input: { invocationArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1288,6 +1326,7 @@ export const getDataAutomationLibrary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /data-automation-libraries/{libraryArn}/",
+    input: { libraryArn: 0 },
     output: {
       library: {
         creationTime: D.ts,
@@ -1327,6 +1366,7 @@ export const getDataAutomationLibraryEntity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /data-automation-libraries/{libraryArn}/entityType/{entityType}/entities/{entityId}",
+    input: { libraryArn: 0, entityType: 0, entityId: 0 },
     output: {
       entity: {
         vocabulary: {
@@ -1368,6 +1408,7 @@ export const getDataAutomationLibraryIngestionJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /data-automation-libraries/{libraryArn}/library-ingestion-jobs/{jobArn}",
+    input: { libraryArn: 0, jobArn: 0 },
     output: { job: { creationTime: D.ts, completionTime: D.ts } },
   },
   errors: [
@@ -1401,6 +1442,7 @@ export const getDataAutomationProject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /data-automation-projects/{projectArn}/",
+    input: { projectArn: 0, projectStage: 0 },
     output: {
       project: {
         creationTime: D.ts,
@@ -1443,6 +1485,17 @@ export const invokeBlueprintOptimizationAsync: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /invokeBlueprintOptimizationAsync",
+    input: {
+      blueprint: { blueprintArn: 0, stage: 0 },
+      samples: D.list({
+        assetS3Object: i_S3Object,
+        groundTruthS3Object: i_S3Object,
+      }),
+      outputConfiguration: { s3Object: i_S3Object },
+      dataAutomationProfileArn: 0,
+      encryptionConfiguration: i_EncryptionConfiguration,
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -1479,7 +1532,31 @@ export const invokeDataAutomationLibraryIngestionJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /data-automation-libraries/{libraryArn}/library-ingestion-jobs/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      libraryArn: 0,
+      clientToken: D.m({ idempotency: true }),
+      inputConfiguration: {
+        s3Object: i_S3Object,
+        inlinePayload: {
+          upsertEntitiesInfo: D.list({
+            vocabulary: {
+              entityId: 0,
+              description: 0,
+              language: 0,
+              phrases: D.list({ text: 0, displayAsText: 0 }),
+            },
+          }),
+          deleteEntitiesInfo: { entityIds: 0 },
+        },
+      },
+      entityType: 0,
+      operationType: 0,
+      outputConfiguration: { s3Uri: 0 },
+      notificationConfiguration: {
+        eventBridgeConfiguration: { eventBridgeEnabled: 0 },
+      },
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -1516,6 +1593,14 @@ export const listBlueprints: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /blueprints/",
+    input: {
+      blueprintArn: 0,
+      resourceOwner: 0,
+      blueprintStageFilter: 0,
+      maxResults: 0,
+      nextToken: 0,
+      projectFilter: i_DataAutomationProjectFilter,
+    },
     output: {
       blueprints: D.list({
         blueprintName: D.secret,
@@ -1562,6 +1647,11 @@ export const listDataAutomationLibraries: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /data-automation-libraries/",
+    input: {
+      maxResults: 0,
+      nextToken: 0,
+      projectFilter: i_DataAutomationProjectFilter,
+    },
     output: {
       libraries: D.list({ libraryName: D.secret, creationTime: D.ts }),
     },
@@ -1604,6 +1694,7 @@ export const listDataAutomationLibraryEntities: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /data-automation-libraries/{libraryArn}/entityType/{entityType}/entities/",
+    input: { libraryArn: 0, entityType: 0, maxResults: 0, nextToken: 0 },
     output: {
       entities: D.list({
         vocabulary: { description: D.secret, lastModifiedTime: D.ts },
@@ -1649,6 +1740,7 @@ export const listDataAutomationLibraryIngestionJobs: API.PaginatedOperationMetho
   descriptor: {
     service: svc,
     http: "POST /data-automation-libraries/{libraryArn}/library-ingestion-jobs/",
+    input: { libraryArn: 0, maxResults: 0, nextToken: 0 },
     output: { jobs: D.list({ creationTime: D.ts, completionTime: D.ts }) },
     body: true,
   },
@@ -1690,6 +1782,18 @@ export const listDataAutomationProjects: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /data-automation-projects/",
+    input: {
+      maxResults: 0,
+      nextToken: 0,
+      projectStageFilter: 0,
+      blueprintFilter: {
+        blueprintArn: 0,
+        blueprintVersion: 0,
+        blueprintStage: 0,
+      },
+      resourceOwner: 0,
+      libraryFilter: { libraryArn: 0 },
+    },
     output: { projects: D.list({ projectName: D.secret, creationTime: D.ts }) },
     body: true,
   },
@@ -1727,7 +1831,12 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /listTagsForResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /listTagsForResource",
+    input: { resourceARN: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1757,7 +1866,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tagResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tagResource",
+    input: { resourceARN: 0, tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1787,7 +1901,12 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /untagResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /untagResource",
+    input: { resourceARN: 0, tagKeys: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1820,6 +1939,12 @@ export const updateBlueprint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /blueprints/{blueprintArn}/",
+    input: {
+      blueprintArn: 0,
+      schema: 0,
+      blueprintStage: 0,
+      encryptionConfiguration: i_EncryptionConfiguration,
+    },
     output: { blueprint: o_Blueprint },
     body: true,
   },
@@ -1856,7 +1981,11 @@ export const updateDataAutomationLibrary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /data-automation-libraries/{libraryArn}/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      libraryArn: 0,
+      libraryDescription: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1893,6 +2022,16 @@ export const updateDataAutomationProject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /data-automation-projects/{projectArn}/",
+    input: {
+      projectArn: 0,
+      projectStage: 0,
+      projectDescription: 0,
+      standardOutputConfiguration: i_StandardOutputConfiguration,
+      customOutputConfiguration: i_CustomOutputConfiguration,
+      overrideConfiguration: i_OverrideConfiguration,
+      dataAutomationLibraryConfiguration: i_DataAutomationLibraryConfiguration,
+      encryptionConfiguration: i_EncryptionConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -1909,10 +2048,96 @@ export const updateDataAutomationProject: API.OperationMethod<
   operationName: "UpdateDataAutomationProject",
 })) as any;
 
+const i_CustomOutputConfiguration: D.LazyStruct = () => ({
+  blueprints: D.list(i_BlueprintItem),
+  document: { fallbackBlueprints: D.list(i_BlueprintItem) },
+});
+const i_DataAutomationLibraryConfiguration: D.LazyStruct = () => ({
+  libraries: D.list({ libraryArn: 0 }),
+});
+const i_DataAutomationProjectFilter: D.LazyStruct = () => ({
+  projectArn: 0,
+  projectStage: 0,
+});
+const i_EncryptionConfiguration: D.LazyStruct = () => ({
+  kmsKeyId: 0,
+  kmsEncryptionContext: 0,
+});
+const i_OverrideConfiguration: D.LazyStruct = () => ({
+  document: {
+    splitter: { state: 0 },
+    modalityProcessing: i_ModalityProcessingConfiguration,
+    sensitiveDataConfiguration: i_SensitiveDataConfiguration,
+  },
+  image: {
+    modalityProcessing: i_ModalityProcessingConfiguration,
+    sensitiveDataConfiguration: i_SensitiveDataConfiguration,
+  },
+  video: {
+    modalityProcessing: i_ModalityProcessingConfiguration,
+    sensitiveDataConfiguration: i_SensitiveDataConfiguration,
+  },
+  audio: {
+    modalityProcessing: i_ModalityProcessingConfiguration,
+    languageConfiguration: {
+      inputLanguages: 0,
+      generativeOutputLanguage: 0,
+      identifyMultipleLanguages: 0,
+    },
+    sensitiveDataConfiguration: i_SensitiveDataConfiguration,
+  },
+  modalityRouting: { jpeg: 0, png: 0, mp4: 0, mov: 0 },
+});
+const i_S3Object: D.LazyStruct = () => ({ s3Uri: 0, version: 0 });
+const i_StandardOutputConfiguration: D.LazyStruct = () => ({
+  document: {
+    extraction: { granularity: { types: 0 }, boundingBox: { state: 0 } },
+    generativeField: { state: 0 },
+    outputFormat: {
+      textFormat: { types: 0 },
+      additionalFileFormat: { state: 0 },
+    },
+  },
+  image: {
+    extraction: { category: { state: 0, types: 0 }, boundingBox: { state: 0 } },
+    generativeField: { state: 0, types: 0 },
+  },
+  video: {
+    extraction: { category: { state: 0, types: 0 }, boundingBox: { state: 0 } },
+    generativeField: { state: 0, types: 0 },
+  },
+  audio: {
+    extraction: {
+      category: {
+        state: 0,
+        types: 0,
+        typeConfiguration: {
+          transcript: {
+            speakerLabeling: { state: 0 },
+            channelLabeling: { state: 0 },
+          },
+        },
+      },
+    },
+    generativeField: { state: 0, types: 0 },
+  },
+});
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
 const o_Blueprint: D.LazyStruct = () => ({
   schema: D.secret,
   creationTime: D.ts,
   lastModifiedTime: D.ts,
   blueprintName: D.secret,
   optimizationTime: D.ts,
+});
+const i_BlueprintItem: D.LazyStruct = () => ({
+  blueprintArn: 0,
+  blueprintVersion: 0,
+  blueprintStage: 0,
+});
+const i_ModalityProcessingConfiguration: D.LazyStruct = () => ({ state: 0 });
+const i_SensitiveDataConfiguration: D.LazyStruct = () => ({
+  detectionMode: 0,
+  detectionScope: 0,
+  piiEntitiesConfiguration: { piiEntityTypes: 0, redactionMaskMode: 0 },
 });

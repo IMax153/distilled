@@ -402,7 +402,11 @@ export const createSuiteDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /suiteDefinitions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      suiteDefinitionConfiguration: i_SuiteDefinitionConfiguration,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -430,6 +434,7 @@ export const deleteSuiteDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /suiteDefinitions/{suiteDefinitionId}",
+    input: { suiteDefinitionId: 0 },
   },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
@@ -490,7 +495,10 @@ export const getSuiteDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /suiteDefinitions/{suiteDefinitionId}",
-    input: { suiteDefinitionVersion: D.m({ query: "suiteDefinitionVersion" }) },
+    input: {
+      suiteDefinitionId: 0,
+      suiteDefinitionVersion: D.m({ query: "suiteDefinitionVersion" }),
+    },
     output: { createdAt: D.ts, lastModifiedAt: D.ts },
   },
   errors: [
@@ -522,6 +530,7 @@ export const getSuiteRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /suiteDefinitions/{suiteDefinitionId}/suiteRuns/{suiteRunId}",
+    input: { suiteDefinitionId: 0, suiteRunId: 0 },
     output: {
       testResult: {
         groups: D.list({ tests: D.list({ startTime: D.ts, endTime: D.ts }) }),
@@ -559,6 +568,7 @@ export const getSuiteRunReport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /suiteDefinitions/{suiteDefinitionId}/suiteRuns/{suiteRunId}/report",
+    input: { suiteDefinitionId: 0, suiteRunId: 0 },
   },
   errors: [
     InternalServerException,
@@ -663,7 +673,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -693,6 +707,16 @@ export const startSuiteRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /suiteDefinitions/{suiteDefinitionId}/suiteRuns",
+    input: {
+      suiteDefinitionId: 0,
+      suiteDefinitionVersion: 0,
+      suiteRunConfiguration: {
+        primaryDevice: i_DeviceUnderTest,
+        selectedTestList: 0,
+        parallelRun: 0,
+      },
+      tags: 0,
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -721,6 +745,7 @@ export const stopSuiteRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /suiteDefinitions/{suiteDefinitionId}/suiteRuns/{suiteRunId}/stop",
+    input: { suiteDefinitionId: 0, suiteRunId: 0 },
   },
   errors: [
     InternalServerException,
@@ -748,7 +773,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -778,7 +808,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -808,6 +838,10 @@ export const updateSuiteDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /suiteDefinitions/{suiteDefinitionId}",
+    input: {
+      suiteDefinitionId: 0,
+      suiteDefinitionConfiguration: i_SuiteDefinitionConfiguration,
+    },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
     body: true,
   },
@@ -816,3 +850,18 @@ export const updateSuiteDefinition: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateSuiteDefinition",
 })) as any;
+
+const i_DeviceUnderTest: D.LazyStruct = () => ({
+  thingArn: 0,
+  certificateArn: 0,
+  deviceRoleArn: 0,
+});
+const i_SuiteDefinitionConfiguration: D.LazyStruct = () => ({
+  suiteDefinitionName: 0,
+  devices: D.list(i_DeviceUnderTest),
+  intendedForQualification: 0,
+  isLongDurationTest: 0,
+  rootGroup: 0,
+  devicePermissionRoleArn: 0,
+  protocol: 0,
+});

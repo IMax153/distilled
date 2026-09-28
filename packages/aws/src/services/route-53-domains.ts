@@ -966,7 +966,7 @@ export const acceptDomainTransferFromAnotherAwsAccount: API.OperationMethod<
   AcceptDomainTransferFromAnotherAwsAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainName: 0, Password: 0 } },
   errors: [
     DomainLimitExceeded,
     InvalidInput,
@@ -1003,7 +1003,13 @@ export const associateDelegationSignerToDomain: API.OperationMethod<
   AssociateDelegationSignerToDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DomainName: 0,
+      SigningAttributes: { Algorithm: 0, Flags: 0, PublicKey: 0 },
+    },
+  },
   errors: [
     DnssecLimitExceeded,
     DuplicateRequest,
@@ -1038,7 +1044,7 @@ export const cancelDomainTransferToAnotherAwsAccount: API.OperationMethod<
   CancelDomainTransferToAnotherAwsAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainName: 0 } },
   errors: [InvalidInput, OperationLimitExceeded, UnsupportedTLD],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1061,7 +1067,7 @@ export const checkDomainAvailability: API.OperationMethod<
   CheckDomainAvailabilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainName: 0, IdnLangCode: 0 } },
   errors: [InvalidInput, TLDInMaintenance, UnsupportedTLD],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1082,7 +1088,7 @@ export const checkDomainTransferability: API.OperationMethod<
   CheckDomainTransferabilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainName: 0, AuthCode: 0 } },
   errors: [InvalidInput, TLDInMaintenance, UnsupportedTLD],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1121,7 +1127,7 @@ export const deleteDomain: API.OperationMethod<
   DeleteDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainName: 0 } },
   errors: [DuplicateRequest, InvalidInput, TLDRulesViolation, UnsupportedTLD],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1145,7 +1151,7 @@ export const deleteTagsForDomain: API.OperationMethod<
   DeleteTagsForDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainName: 0, TagsToDelete: 0 } },
   errors: [InvalidInput, OperationLimitExceeded, UnsupportedTLD],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1166,7 +1172,7 @@ export const disableDomainAutoRenew: API.OperationMethod<
   DisableDomainAutoRenewError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainName: 0 } },
   errors: [InvalidInput, UnsupportedTLD],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1194,7 +1200,7 @@ export const disableDomainTransferLock: API.OperationMethod<
   DisableDomainTransferLockError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainName: 0 } },
   errors: [
     DuplicateRequest,
     InvalidInput,
@@ -1224,7 +1230,7 @@ export const disassociateDelegationSignerFromDomain: API.OperationMethod<
   DisassociateDelegationSignerFromDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainName: 0, Id: 0 } },
   errors: [
     DuplicateRequest,
     InvalidInput,
@@ -1259,7 +1265,7 @@ export const enableDomainAutoRenew: API.OperationMethod<
   EnableDomainAutoRenewError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainName: 0 } },
   errors: [InvalidInput, TLDRulesViolation, UnsupportedTLD],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1286,7 +1292,7 @@ export const enableDomainTransferLock: API.OperationMethod<
   EnableDomainTransferLockError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainName: 0 } },
   errors: [
     DuplicateRequest,
     InvalidInput,
@@ -1318,7 +1324,7 @@ export const getContactReachabilityStatus: API.OperationMethod<
   GetContactReachabilityStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { domainName: 0 } },
   errors: [InvalidInput, OperationLimitExceeded, UnsupportedTLD],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1343,6 +1349,7 @@ export const getDomainDetail: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DomainName: 0 },
     output: {
       AdminContact: o_ContactDetail,
       RegistrantContact: o_ContactDetail,
@@ -1375,7 +1382,10 @@ export const getDomainSuggestions: API.OperationMethod<
   GetDomainSuggestionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DomainName: 0, SuggestionCount: 0, OnlyAvailable: 0 },
+  },
   errors: [InvalidInput, TLDInMaintenance, UnsupportedTLD],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1395,6 +1405,7 @@ export const getOperationDetail: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { OperationId: 0 },
     output: { SubmittedDate: D.ts, LastUpdatedDate: D.ts },
   },
   errors: [InvalidInput],
@@ -1415,7 +1426,16 @@ export const listDomains: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DomainSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Domains: D.list({ Expiry: D.ts }) } },
+  descriptor: {
+    service: svc,
+    input: {
+      FilterConditions: D.list({ Name: 0, Operator: 0, Values: 0 }),
+      SortCondition: { Name: 0, SortOrder: 0 },
+      Marker: 0,
+      MaxItems: 0,
+    },
+    output: { Domains: D.list({ Expiry: D.ts }) },
+  },
   errors: [InvalidInput],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1444,6 +1464,15 @@ export const listOperations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      SubmittedSince: 0,
+      Marker: 0,
+      MaxItems: 0,
+      Status: 0,
+      Type: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: {
       Operations: D.list({ SubmittedDate: D.ts, LastUpdatedDate: D.ts }),
     },
@@ -1482,7 +1511,7 @@ export const listPrices: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DomainPrice
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Tld: 0, Marker: 0, MaxItems: 0 } },
   errors: [InvalidInput, UnsupportedTLD],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1513,7 +1542,7 @@ export const listTagsForDomain: API.OperationMethod<
   ListTagsForDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainName: 0 } },
   errors: [InvalidInput, OperationLimitExceeded, UnsupportedTLD],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1540,7 +1569,7 @@ export const pushDomain: API.OperationMethod<
   PushDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainName: 0, Target: 0 } },
   errors: [
     InvalidInput,
     OperationLimitExceeded,
@@ -1596,7 +1625,23 @@ export const registerDomain: API.OperationMethod<
   RegisterDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DomainName: 0,
+      IdnLangCode: 0,
+      DurationInYears: 0,
+      AutoRenew: 0,
+      AdminContact: i_ContactDetail,
+      RegistrantContact: i_ContactDetail,
+      TechContact: i_ContactDetail,
+      PrivacyProtectAdminContact: 0,
+      PrivacyProtectRegistrantContact: 0,
+      PrivacyProtectTechContact: 0,
+      BillingContact: i_ContactDetail,
+      PrivacyProtectBillingContact: 0,
+    },
+  },
   errors: [
     DomainLimitExceeded,
     DuplicateRequest,
@@ -1628,7 +1673,7 @@ export const rejectDomainTransferFromAnotherAwsAccount: API.OperationMethod<
   RejectDomainTransferFromAnotherAwsAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainName: 0 } },
   errors: [InvalidInput, OperationLimitExceeded, UnsupportedTLD],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1659,7 +1704,10 @@ export const renewDomain: API.OperationMethod<
   RenewDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DomainName: 0, DurationInYears: 0, CurrentExpiryYear: 0 },
+  },
   errors: [
     DuplicateRequest,
     InvalidInput,
@@ -1690,7 +1738,11 @@ export const resendContactReachabilityEmail: API.OperationMethod<
   ResendContactReachabilityEmailError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { emailAddress: D.secret } },
+  descriptor: {
+    service: svc,
+    input: { domainName: 0 },
+    output: { emailAddress: D.secret },
+  },
   errors: [
     InvalidInput,
     OperationLimitExceeded,
@@ -1715,7 +1767,7 @@ export const resendOperationAuthorization: API.OperationMethod<
   ResendOperationAuthorizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OperationId: 0 } },
   errors: [InvalidInput, TLDInMaintenance],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1738,7 +1790,11 @@ export const retrieveDomainAuthCode: API.OperationMethod<
   RetrieveDomainAuthCodeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AuthCode: D.secret } },
+  descriptor: {
+    service: svc,
+    input: { DomainName: 0 },
+    output: { AuthCode: D.secret },
+  },
   errors: [InvalidInput, TLDInMaintenance, UnsupportedTLD, DomainNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1795,7 +1851,25 @@ export const transferDomain: API.OperationMethod<
   TransferDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DomainName: 0,
+      IdnLangCode: 0,
+      DurationInYears: 0,
+      Nameservers: D.list(i_Nameserver),
+      AuthCode: 0,
+      AutoRenew: 0,
+      AdminContact: i_ContactDetail,
+      RegistrantContact: i_ContactDetail,
+      TechContact: i_ContactDetail,
+      PrivacyProtectAdminContact: 0,
+      PrivacyProtectRegistrantContact: 0,
+      PrivacyProtectTechContact: 0,
+      BillingContact: i_ContactDetail,
+      PrivacyProtectBillingContact: 0,
+    },
+  },
   errors: [
     DomainLimitExceeded,
     DuplicateRequest,
@@ -1843,7 +1917,11 @@ export const transferDomainToAnotherAwsAccount: API.OperationMethod<
   TransferDomainToAnotherAwsAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Password: D.secret } },
+  descriptor: {
+    service: svc,
+    input: { DomainName: 0, AccountId: 0 },
+    output: { Password: D.secret },
+  },
   errors: [
     DuplicateRequest,
     InvalidInput,
@@ -1877,7 +1955,17 @@ export const updateDomainContact: API.OperationMethod<
   UpdateDomainContactError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DomainName: 0,
+      AdminContact: i_ContactDetail,
+      RegistrantContact: i_ContactDetail,
+      TechContact: i_ContactDetail,
+      Consent: { MaxPrice: 0, Currency: 0 },
+      BillingContact: i_ContactDetail,
+    },
+  },
   errors: [
     DuplicateRequest,
     InvalidInput,
@@ -1926,7 +2014,16 @@ export const updateDomainContactPrivacy: API.OperationMethod<
   UpdateDomainContactPrivacyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DomainName: 0,
+      AdminPrivacy: 0,
+      RegistrantPrivacy: 0,
+      TechPrivacy: 0,
+      BillingPrivacy: 0,
+    },
+  },
   errors: [
     DuplicateRequest,
     InvalidInput,
@@ -1962,7 +2059,10 @@ export const updateDomainNameservers: API.OperationMethod<
   UpdateDomainNameserversError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DomainName: 0, FIAuthKey: 0, Nameservers: D.list(i_Nameserver) },
+  },
   errors: [
     DuplicateRequest,
     InvalidInput,
@@ -1993,7 +2093,10 @@ export const updateTagsForDomain: API.OperationMethod<
   UpdateTagsForDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DomainName: 0, TagsToUpdate: D.list({ Key: 0, Value: 0 }) },
+  },
   errors: [InvalidInput, OperationLimitExceeded, UnsupportedTLD],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2013,6 +2116,7 @@ export const viewBilling: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Start: 0, End: 0, Marker: 0, MaxItems: 0 },
     output: { BillingRecords: D.list({ BillDate: D.ts }) },
   },
   errors: [InvalidInput],
@@ -2027,6 +2131,23 @@ export const viewBilling: API.PaginatedOperationMethod<
   } as const,
 })) as any;
 
+const i_ContactDetail: D.LazyStruct = () => ({
+  FirstName: 0,
+  LastName: 0,
+  ContactType: 0,
+  OrganizationName: 0,
+  AddressLine1: 0,
+  AddressLine2: 0,
+  City: 0,
+  State: 0,
+  CountryCode: 0,
+  ZipCode: 0,
+  PhoneNumber: 0,
+  Email: 0,
+  Fax: 0,
+  ExtraParams: D.list({ Name: 0, Value: 0 }),
+});
+const i_Nameserver: D.LazyStruct = () => ({ Name: 0, GlueIps: 0 });
 const o_ContactDetail: D.LazyStruct = () => ({
   FirstName: D.secret,
   LastName: D.secret,

@@ -3812,6 +3812,66 @@ export const agenticRetrieveStream: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /agenticRetrieveStream",
+    input: {
+      messages: D.list({ content: { text: 0 }, role: 0 }),
+      retrievers: D.list({
+        description: 0,
+        configuration: {
+          knowledgeBase: {
+            knowledgeBaseId: 0,
+            retrievalOverrides: {
+              filter: i_RetrievalFilter,
+              maxNumberOfResults: 0,
+            },
+          },
+        },
+      }),
+      agenticRetrieveConfiguration: {
+        foundationModelType: 0,
+        foundationModelConfiguration: {
+          type: 0,
+          bedrockFoundationModelConfiguration: {
+            modelConfiguration: { modelArn: 0 },
+          },
+        },
+        rerankingModelType: 0,
+        rerankingConfiguration: {
+          type: 0,
+          bedrockRerankingConfiguration: {
+            modelConfiguration: { modelArn: 0 },
+          },
+        },
+        maxAgentIteration: 0,
+      },
+      policyConfiguration: {
+        bedrockGuardrailConfiguration: { guardrailId: 0, guardrailVersion: 0 },
+      },
+      nextToken: 0,
+      userContext: i_UserContext,
+      memoryConfiguration: {
+        memoryId: 0,
+        sessionBinding: { actorId: 0, sessionId: 0 },
+        retrievalConfigs: D.list({
+          namespace: 0,
+          namespacePath: 0,
+          strategyId: 0,
+          metadataFilters: D.list({
+            left: { metadataKey: 0 },
+            operator: 0,
+            right: {
+              metadataValue: {
+                stringValue: 0,
+                numberValue: 0,
+                stringListValue: 0,
+                dateTimeValue: 0,
+              },
+            },
+          }),
+        }),
+        persistenceMode: 0,
+      },
+      generateResponse: 0,
+    },
     output: {
       stream: D.m({
         payload: true,
@@ -3872,6 +3932,12 @@ export const checkIngestedDocumentAcl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgebases/{knowledgeBaseId}/datasources/{dataSourceId}/check-ingested-document-acl",
+    input: {
+      knowledgeBaseId: 0,
+      dataSourceId: 0,
+      documentId: 0,
+      userContext: i_UserContext,
+    },
     body: true,
   },
   errors: [
@@ -3915,6 +3981,7 @@ export const createInvocation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /sessions/{sessionIdentifier}/invocations/",
+    input: { invocationId: 0, description: 0, sessionIdentifier: 0 },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -3966,6 +4033,7 @@ export const createSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /sessions/",
+    input: { sessionMetadata: 0, encryptionKeyArn: 0, tags: 0 },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -4006,6 +4074,8 @@ export const deleteAgentMemory: API.OperationMethod<
     service: svc,
     http: "DELETE /agents/{agentId}/agentAliases/{agentAliasId}/memories",
     input: {
+      agentId: 0,
+      agentAliasId: 0,
       memoryId: D.m({ query: "memoryId" }),
       sessionId: D.m({ query: "sessionId" }),
     },
@@ -4043,7 +4113,11 @@ export const deleteSession: API.OperationMethod<
   DeleteSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /sessions/{sessionIdentifier}/" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /sessions/{sessionIdentifier}/",
+    input: { sessionIdentifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4074,7 +4148,11 @@ export const endSession: API.OperationMethod<
   EndSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /sessions/{sessionIdentifier}" },
+  descriptor: {
+    service: svc,
+    http: "PATCH /sessions/{sessionIdentifier}",
+    input: { sessionIdentifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4108,7 +4186,21 @@ export const generateQuery: API.OperationMethod<
   GenerateQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /generateQuery", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /generateQuery",
+    input: {
+      queryGenerationInput: { type: 0, text: 0 },
+      transformationConfiguration: {
+        mode: 0,
+        textToSqlConfiguration: {
+          type: 0,
+          knowledgeBaseConfiguration: { knowledgeBaseArn: 0 },
+        },
+      },
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     BadGatewayException,
@@ -4152,6 +4244,8 @@ export const getAgentMemory: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxItems: D.m({ query: "maxItems" }),
+      agentId: 0,
+      agentAliasId: 0,
       memoryType: D.m({ query: "memoryType" }),
       memoryId: D.m({ query: "memoryId" }),
     },
@@ -4202,6 +4296,13 @@ export const getDocumentContent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgebases/{knowledgeBaseId}/datasources/{dataSourceId}/documents/{documentId}/content",
+    input: {
+      knowledgeBaseId: 0,
+      dataSourceId: 0,
+      documentId: 0,
+      outputFormat: 0,
+      userContext: i_UserContext,
+    },
     output: { presignedUrl: D.secret },
     body: true,
   },
@@ -4238,6 +4339,11 @@ export const getExecutionFlowSnapshot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /flows/{flowIdentifier}/aliases/{flowAliasIdentifier}/executions/{executionIdentifier}/flowsnapshot",
+    input: {
+      flowIdentifier: 0,
+      flowAliasIdentifier: 0,
+      executionIdentifier: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -4270,6 +4376,11 @@ export const getFlowExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /flows/{flowIdentifier}/aliases/{flowAliasIdentifier}/executions/{executionIdentifier}",
+    input: {
+      flowIdentifier: 0,
+      flowAliasIdentifier: 0,
+      executionIdentifier: 0,
+    },
     output: { startedAt: D.ts, endedAt: D.ts },
   },
   errors: [
@@ -4303,6 +4414,7 @@ export const getIngestedDocumentAcl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgebases/{knowledgeBaseId}/datasources/{dataSourceId}/get-ingested-document-acl",
+    input: { knowledgeBaseId: 0, dataSourceId: 0, documentId: 0 },
     body: true,
   },
   errors: [
@@ -4336,6 +4448,11 @@ export const getInvocationStep: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sessions/{sessionIdentifier}/invocationSteps/{invocationStepId}",
+    input: {
+      invocationIdentifier: 0,
+      invocationStepId: 0,
+      sessionIdentifier: 0,
+    },
     output: {
       invocationStep: {
         invocationStepTime: D.ts,
@@ -4377,6 +4494,7 @@ export const getSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sessions/{sessionIdentifier}/",
+    input: { sessionIdentifier: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -4437,7 +4555,33 @@ export const invokeAgent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /agents/{agentId}/agentAliases/{agentAliasId}/sessions/{sessionId}/text",
-    input: { sourceArn: D.m({ header: "x-amz-source-arn" }) },
+    input: {
+      sessionState: {
+        sessionAttributes: 0,
+        promptSessionAttributes: 0,
+        returnControlInvocationResults: D.list(i_InvocationResultMember),
+        invocationId: 0,
+        files: D.list(i_InputFile),
+        knowledgeBaseConfigurations: D.list({
+          knowledgeBaseId: 0,
+          retrievalConfiguration: i_KnowledgeBaseRetrievalConfiguration,
+        }),
+        conversationHistory: i_ConversationHistory,
+      },
+      agentId: 0,
+      agentAliasId: 0,
+      sessionId: 0,
+      endSession: 0,
+      enableTrace: 0,
+      inputText: 0,
+      memoryId: 0,
+      bedrockModelConfigurations: {
+        performanceConfig: i_PerformanceConfiguration,
+      },
+      streamingConfigurations: i_StreamingConfigurations,
+      promptCreationConfigurations: i_PromptCreationConfigurations,
+      sourceArn: D.m({ header: "x-amz-source-arn" }),
+    },
     output: {
       completion: D.m({
         payload: true,
@@ -4506,6 +4650,14 @@ export const invokeFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /flows/{flowIdentifier}/aliases/{flowAliasIdentifier}",
+    input: {
+      flowIdentifier: 0,
+      flowAliasIdentifier: 0,
+      inputs: D.list(i_FlowInput),
+      enableTrace: 0,
+      modelPerformanceConfiguration: i_ModelPerformanceConfiguration,
+      executionId: 0,
+    },
     output: {
       responseStream: D.m({
         payload: true,
@@ -4592,6 +4744,51 @@ export const invokeInlineAgent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /agents/{sessionId}",
+    input: {
+      customerEncryptionKeyArn: 0,
+      foundationModel: 0,
+      instruction: 0,
+      idleSessionTTLInSeconds: 0,
+      actionGroups: D.list(i_AgentActionGroup),
+      knowledgeBases: D.list(i_KnowledgeBase),
+      guardrailConfiguration: i_GuardrailConfigurationWithArn,
+      promptOverrideConfiguration: i_PromptOverrideConfiguration,
+      agentCollaboration: 0,
+      collaboratorConfigurations: D.list(i_CollaboratorConfiguration),
+      agentName: 0,
+      sessionId: 0,
+      endSession: 0,
+      enableTrace: 0,
+      inputText: 0,
+      streamingConfigurations: i_StreamingConfigurations,
+      promptCreationConfigurations: i_PromptCreationConfigurations,
+      inlineSessionState: {
+        sessionAttributes: 0,
+        promptSessionAttributes: 0,
+        returnControlInvocationResults: D.list(i_InvocationResultMember),
+        invocationId: 0,
+        files: D.list(i_InputFile),
+        conversationHistory: i_ConversationHistory,
+      },
+      collaborators: D.list({
+        customerEncryptionKeyArn: 0,
+        foundationModel: 0,
+        instruction: 0,
+        idleSessionTTLInSeconds: 0,
+        actionGroups: D.list(i_AgentActionGroup),
+        knowledgeBases: D.list(i_KnowledgeBase),
+        guardrailConfiguration: i_GuardrailConfigurationWithArn,
+        promptOverrideConfiguration: i_PromptOverrideConfiguration,
+        agentCollaboration: 0,
+        collaboratorConfigurations: D.list(i_CollaboratorConfiguration),
+        agentName: 0,
+      }),
+      bedrockModelConfigurations: {
+        performanceConfig: i_PerformanceConfiguration,
+      },
+      orchestrationType: 0,
+      customOrchestration: { executor: { lambda: 0 } },
+    },
     output: {
       completion: D.m({
         payload: true,
@@ -4659,6 +4856,9 @@ export const listFlowExecutionEvents: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /flows/{flowIdentifier}/aliases/{flowAliasIdentifier}/executions/{executionIdentifier}/events",
     input: {
+      flowIdentifier: 0,
+      flowAliasIdentifier: 0,
+      executionIdentifier: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
       eventType: D.m({ query: "eventType" }),
@@ -4724,6 +4924,7 @@ export const listFlowExecutions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /flows/{flowIdentifier}/executions",
     input: {
+      flowIdentifier: 0,
       flowAliasIdentifier: D.m({ query: "flowAliasIdentifier" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -4773,6 +4974,7 @@ export const listInvocations: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      sessionIdentifier: 0,
     },
     output: { invocationSummaries: D.list({ createdAt: D.ts }) },
   },
@@ -4815,8 +5017,10 @@ export const listInvocationSteps: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /sessions/{sessionIdentifier}/invocationSteps/",
     input: {
+      invocationIdentifier: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      sessionIdentifier: 0,
     },
     output: { invocationStepSummaries: D.list({ invocationStepTime: D.ts }) },
     body: true,
@@ -4899,7 +5103,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4932,6 +5140,7 @@ export const optimizePrompt: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /optimize-prompt",
+    input: { input: { textPrompt: { text: 0 } }, targetModelId: 0 },
     output: {
       optimizedPrompt: D.m({
         payload: true,
@@ -4993,7 +5202,18 @@ export const putInvocationStep: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /sessions/{sessionIdentifier}/invocationSteps/",
-    input: { invocationStepTime: D.tsAs("date-time") },
+    input: {
+      sessionIdentifier: 0,
+      invocationIdentifier: 0,
+      invocationStepTime: D.tsAs("date-time"),
+      payload: {
+        contentBlocks: D.list({
+          text: 0,
+          image: { format: 0, source: { bytes: 0, s3Location: { uri: 0 } } },
+        }),
+      },
+      invocationStepId: 0,
+    },
     body: true,
   },
   errors: [
@@ -5031,7 +5251,30 @@ export const rerank: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RerankResult
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /rerank", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /rerank",
+    input: {
+      queries: D.list({ type: 0, textQuery: i_RerankTextDocument }),
+      sources: D.list({
+        type: 0,
+        inlineDocumentSource: {
+          type: 0,
+          textDocument: i_RerankTextDocument,
+          jsonDocument: 0,
+        },
+      }),
+      rerankingConfiguration: {
+        type: 0,
+        bedrockRerankingConfiguration: {
+          numberOfResults: 0,
+          modelConfiguration: { modelArn: 0, additionalModelRequestFields: 0 },
+        },
+      },
+      nextToken: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     BadGatewayException,
@@ -5077,6 +5320,18 @@ export const retrieve: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgebases/{knowledgeBaseId}/retrieve",
+    input: {
+      knowledgeBaseId: 0,
+      retrievalQuery: {
+        type: 0,
+        text: 0,
+        image: { format: 0, inlineContent: 0 },
+      },
+      retrievalConfiguration: i_KnowledgeBaseRetrievalConfiguration,
+      guardrailConfiguration: i_GuardrailConfiguration,
+      nextToken: 0,
+      userContext: i_UserContext,
+    },
     body: true,
   },
   errors: [
@@ -5122,7 +5377,18 @@ export const retrieveAndGenerate: API.OperationMethod<
   RetrieveAndGenerateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /retrieveAndGenerate", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /retrieveAndGenerate",
+    input: {
+      sessionId: 0,
+      input: i_RetrieveAndGenerateInput,
+      retrieveAndGenerateConfiguration: i_RetrieveAndGenerateConfiguration,
+      sessionConfiguration: i_RetrieveAndGenerateSessionConfiguration,
+      userContext: i_UserContext,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     BadGatewayException,
@@ -5168,6 +5434,13 @@ export const retrieveAndGenerateStream: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /retrieveAndGenerateStream",
+    input: {
+      sessionId: 0,
+      input: i_RetrieveAndGenerateInput,
+      retrieveAndGenerateConfiguration: i_RetrieveAndGenerateConfiguration,
+      sessionConfiguration: i_RetrieveAndGenerateSessionConfiguration,
+      userContext: i_UserContext,
+    },
     output: {
       stream: D.m({
         payload: true,
@@ -5233,6 +5506,13 @@ export const startFlowExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /flows/{flowIdentifier}/aliases/{flowAliasIdentifier}/executions",
+    input: {
+      flowIdentifier: 0,
+      flowAliasIdentifier: 0,
+      flowExecutionName: 0,
+      inputs: D.list(i_FlowInput),
+      modelPerformanceConfiguration: i_ModelPerformanceConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -5273,6 +5553,11 @@ export const stopFlowExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /flows/{flowIdentifier}/aliases/{flowAliasIdentifier}/executions/{executionIdentifier}/stop",
+    input: {
+      flowIdentifier: 0,
+      flowAliasIdentifier: 0,
+      executionIdentifier: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -5306,7 +5591,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5339,7 +5629,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -5373,6 +5663,7 @@ export const updateSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /sessions/{sessionIdentifier}/",
+    input: { sessionMetadata: 0, sessionIdentifier: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
     body: true,
   },
@@ -5389,6 +5680,200 @@ export const updateSession: API.OperationMethod<
   operationName: "UpdateSession",
 })) as any;
 
+const i_AgentActionGroup: D.LazyStruct = () => ({
+  actionGroupName: 0,
+  description: 0,
+  parentActionGroupSignature: 0,
+  actionGroupExecutor: { lambda: 0, customControl: 0 },
+  apiSchema: { s3: { s3BucketName: 0, s3ObjectKey: 0 }, payload: 0 },
+  functionSchema: {
+    functions: D.list({
+      name: 0,
+      description: 0,
+      parameters: D.map({ description: 0, type: 0, required: 0 }),
+      requireConfirmation: 0,
+    }),
+  },
+  parentActionGroupSignatureParams: 0,
+});
+const i_CollaboratorConfiguration: D.LazyStruct = () => ({
+  collaboratorName: 0,
+  collaboratorInstruction: 0,
+  agentAliasArn: 0,
+  relayConversationHistory: 0,
+});
+const i_ConversationHistory: D.LazyStruct = () => ({
+  messages: D.list({ role: 0, content: D.list({ text: 0 }) }),
+});
+const i_FlowInput: D.LazyStruct = () => ({
+  nodeName: 0,
+  nodeOutputName: 0,
+  content: { document: 0 },
+  nodeInputName: 0,
+});
+const i_GuardrailConfiguration: D.LazyStruct = () => ({
+  guardrailId: 0,
+  guardrailVersion: 0,
+});
+const i_GuardrailConfigurationWithArn: D.LazyStruct = () => ({
+  guardrailIdentifier: 0,
+  guardrailVersion: 0,
+});
+const i_InputFile: D.LazyStruct = () => ({
+  name: 0,
+  source: {
+    sourceType: 0,
+    s3Location: { uri: 0 },
+    byteContent: { mediaType: 0, data: 0 },
+  },
+  useCase: 0,
+});
+const i_InvocationResultMember: D.LazyStruct = () => ({
+  apiResult: {
+    actionGroup: 0,
+    httpMethod: 0,
+    apiPath: 0,
+    confirmationState: 0,
+    responseState: 0,
+    httpStatusCode: 0,
+    responseBody: D.map(i_ContentBody),
+    agentId: 0,
+  },
+  functionResult: {
+    actionGroup: 0,
+    confirmationState: 0,
+    function: 0,
+    responseBody: D.map(i_ContentBody),
+    responseState: 0,
+    agentId: 0,
+  },
+});
+const i_KnowledgeBase: D.LazyStruct = () => ({
+  knowledgeBaseId: 0,
+  description: 0,
+  retrievalConfiguration: i_KnowledgeBaseRetrievalConfiguration,
+});
+const i_KnowledgeBaseRetrievalConfiguration: D.LazyStruct = () => ({
+  vectorSearchConfiguration: {
+    numberOfResults: 0,
+    overrideSearchType: 0,
+    filter: i_RetrievalFilter,
+    rerankingConfiguration: {
+      type: 0,
+      bedrockRerankingConfiguration: {
+        modelConfiguration: { modelArn: 0, additionalModelRequestFields: 0 },
+        numberOfRerankedResults: 0,
+        metadataConfiguration: i_MetadataConfigurationForReranking,
+      },
+    },
+    implicitFilterConfiguration: {
+      metadataAttributes: D.list({ key: 0, type: 0, description: 0 }),
+      modelArn: 0,
+    },
+  },
+  managedSearchConfiguration: {
+    numberOfResults: 0,
+    filter: i_RetrievalFilter,
+    rerankingModelType: 0,
+    rerankingConfiguration: {
+      type: 0,
+      bedrockRerankingConfiguration: {
+        modelConfiguration: { modelArn: 0, additionalModelRequestFields: 0 },
+        numberOfRerankedResults: 0,
+        metadataConfiguration: i_MetadataConfigurationForReranking,
+      },
+    },
+  },
+});
+const i_ModelPerformanceConfiguration: D.LazyStruct = () => ({
+  performanceConfig: i_PerformanceConfiguration,
+});
+const i_PerformanceConfiguration: D.LazyStruct = () => ({ latency: 0 });
+const i_PromptCreationConfigurations: D.LazyStruct = () => ({
+  previousConversationTurnsToInclude: 0,
+  excludePreviousThinkingSteps: 0,
+});
+const i_PromptOverrideConfiguration: D.LazyStruct = () => ({
+  promptConfigurations: D.list({
+    promptType: 0,
+    promptCreationMode: 0,
+    promptState: 0,
+    basePromptTemplate: 0,
+    inferenceConfiguration: {
+      temperature: 0,
+      topP: 0,
+      topK: 0,
+      maximumLength: 0,
+      stopSequences: 0,
+    },
+    parserMode: 0,
+    foundationModel: 0,
+    additionalModelRequestFields: 0,
+  }),
+  overrideLambda: 0,
+});
+const i_RerankTextDocument: D.LazyStruct = () => ({ text: 0 });
+const i_RetrievalFilter: D.LazyStruct = () => ({
+  equals: i_FilterAttribute,
+  notEquals: i_FilterAttribute,
+  greaterThan: i_FilterAttribute,
+  greaterThanOrEquals: i_FilterAttribute,
+  lessThan: i_FilterAttribute,
+  lessThanOrEquals: i_FilterAttribute,
+  in: i_FilterAttribute,
+  notIn: i_FilterAttribute,
+  startsWith: i_FilterAttribute,
+  listContains: i_FilterAttribute,
+  stringContains: i_FilterAttribute,
+  andAll: D.list(i_RetrievalFilter),
+  orAll: D.list(i_RetrievalFilter),
+});
+const i_RetrieveAndGenerateConfiguration: D.LazyStruct = () => ({
+  type: 0,
+  knowledgeBaseConfiguration: {
+    knowledgeBaseId: 0,
+    modelArn: 0,
+    retrievalConfiguration: i_KnowledgeBaseRetrievalConfiguration,
+    generationConfiguration: {
+      promptTemplate: i_PromptTemplate,
+      guardrailConfiguration: i_GuardrailConfiguration,
+      inferenceConfig: i_InferenceConfig,
+      additionalModelRequestFields: 0,
+      performanceConfig: i_PerformanceConfiguration,
+    },
+    orchestrationConfiguration: {
+      promptTemplate: i_PromptTemplate,
+      inferenceConfig: i_InferenceConfig,
+      additionalModelRequestFields: 0,
+      queryTransformationConfiguration: { type: 0 },
+      performanceConfig: i_PerformanceConfiguration,
+    },
+  },
+  externalSourcesConfiguration: {
+    modelArn: 0,
+    sources: D.list({
+      sourceType: 0,
+      s3Location: { uri: 0 },
+      byteContent: { identifier: 0, contentType: 0, data: 0 },
+    }),
+    generationConfiguration: {
+      promptTemplate: i_PromptTemplate,
+      guardrailConfiguration: i_GuardrailConfiguration,
+      inferenceConfig: i_InferenceConfig,
+      additionalModelRequestFields: 0,
+      performanceConfig: i_PerformanceConfiguration,
+    },
+  },
+});
+const i_RetrieveAndGenerateInput: D.LazyStruct = () => ({ text: 0 });
+const i_RetrieveAndGenerateSessionConfiguration: D.LazyStruct = () => ({
+  kmsKeyArn: 0,
+});
+const i_StreamingConfigurations: D.LazyStruct = () => ({
+  streamFinalResponse: 0,
+  applyGuardrailInterval: 0,
+});
+const i_UserContext: D.LazyStruct = () => ({ userId: 0 });
 const o_InvocationInputMember: D.LazyStruct = () => ({
   apiInvocationInput: { apiPath: D.secret, collaboratorName: D.secret },
   functionInvocationInput: { collaboratorName: D.secret },
@@ -5439,6 +5924,27 @@ const o_TracePart: D.LazyStruct = () => ({
   eventTime: D.ts,
   collaboratorName: D.secret,
 });
+const i_ContentBody: D.LazyStruct = () => ({
+  body: 0,
+  images: D.list({ format: 0, source: { bytes: 0 } }),
+});
+const i_FilterAttribute: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_InferenceConfig: D.LazyStruct = () => ({
+  textInferenceConfig: {
+    temperature: 0,
+    topP: 0,
+    maxTokens: 0,
+    stopSequences: 0,
+  },
+});
+const i_MetadataConfigurationForReranking: D.LazyStruct = () => ({
+  selectionMode: 0,
+  selectiveModeConfiguration: {
+    fieldsToInclude: D.list(i_FieldForReranking),
+    fieldsToExclude: D.list(i_FieldForReranking),
+  },
+});
+const i_PromptTemplate: D.LazyStruct = () => ({ textPromptTemplate: 0 });
 const o_InvocationInput: D.LazyStruct = () => ({
   actionGroupInvocationInput: {
     actionGroupName: D.secret,
@@ -5475,6 +5981,7 @@ const o_Observation: D.LazyStruct = () => ({
 const o_ReasoningContentBlock: D.LazyStruct = () => ({
   redactedContent: D.blob,
 });
+const i_FieldForReranking: D.LazyStruct = () => ({ fieldName: 0 });
 const o_ContentBody: D.LazyStruct = () => ({
   images: D.list({ source: { bytes: D.blob } }),
 });

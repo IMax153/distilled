@@ -1400,7 +1400,11 @@ export const applyArchiveRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /archive-rule",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      analyzerArn: 0,
+      ruleName: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1430,7 +1434,11 @@ export const cancelPolicyGeneration: API.OperationMethod<
   CancelPolicyGenerationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /policy/generation/{jobId}" },
+  descriptor: {
+    service: svc,
+    http: "PUT /policy/generation/{jobId}",
+    input: { jobId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1462,6 +1470,11 @@ export const checkAccessNotGranted: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /policy/check-access-not-granted",
+    input: {
+      policyDocument: 0,
+      access: D.list({ actions: 0, resources: 0 }),
+      policyType: 0,
+    },
     body: true,
   },
   errors: [
@@ -1499,6 +1512,7 @@ export const checkNoNewAccess: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /policy/check-no-new-access",
+    input: { newPolicyDocument: 0, existingPolicyDocument: 0, policyType: 0 },
     body: true,
   },
   errors: [
@@ -1534,6 +1548,7 @@ export const checkNoPublicAccess: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /policy/check-no-public-access",
+    input: { policyDocument: 0, resourceType: 0 },
     body: true,
   },
   errors: [
@@ -1570,7 +1585,59 @@ export const createAccessPreview: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /access-preview",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      analyzerArn: 0,
+      configurations: D.map({
+        ebsSnapshot: { userIds: 0, groups: 0, kmsKeyId: 0 },
+        ecrRepository: { repositoryPolicy: 0 },
+        iamRole: { trustPolicy: 0 },
+        efsFileSystem: { fileSystemPolicy: 0 },
+        kmsKey: {
+          keyPolicies: 0,
+          grants: D.list({
+            operations: 0,
+            granteePrincipal: 0,
+            retiringPrincipal: 0,
+            constraints: {
+              encryptionContextEquals: 0,
+              encryptionContextSubset: 0,
+            },
+            issuingAccount: 0,
+          }),
+        },
+        rdsDbClusterSnapshot: {
+          attributes: D.map({ accountIds: 0 }),
+          kmsKeyId: 0,
+        },
+        rdsDbSnapshot: { attributes: D.map({ accountIds: 0 }), kmsKeyId: 0 },
+        secretsManagerSecret: { kmsKeyId: 0, secretPolicy: 0 },
+        s3Bucket: {
+          bucketPolicy: 0,
+          bucketAclGrants: D.list({
+            permission: 0,
+            grantee: { id: 0, uri: 0 },
+          }),
+          bucketPublicAccessBlock: i_S3PublicAccessBlockConfiguration,
+          accessPoints: D.map({
+            accessPointPolicy: 0,
+            publicAccessBlock: i_S3PublicAccessBlockConfiguration,
+            networkOrigin: i_NetworkOriginConfiguration,
+          }),
+        },
+        snsTopic: { topicPolicy: 0 },
+        sqsQueue: { queuePolicy: 0 },
+        s3ExpressDirectoryBucket: {
+          bucketPolicy: 0,
+          accessPoints: D.map({
+            accessPointPolicy: 0,
+            networkOrigin: i_NetworkOriginConfiguration,
+          }),
+        },
+        dynamodbStream: { streamPolicy: 0 },
+        dynamodbTable: { tablePolicy: 0 },
+      }),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1607,7 +1674,14 @@ export const createAnalyzer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /analyzer",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      analyzerName: 0,
+      type: 0,
+      archiveRules: D.list(i_InlineArchiveRule),
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+      configuration: i_AnalyzerConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -1646,7 +1720,12 @@ export const createArchiveRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /analyzer/{analyzerName}/archive-rule",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      analyzerName: 0,
+      ruleName: 0,
+      filter: D.map(i_Criterion),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1685,7 +1764,12 @@ export const createServiceLinkedAnalyzer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /service-linked-analyzer",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      type: 0,
+      archiveRules: D.list(i_InlineArchiveRule),
+      clientToken: D.m({ idempotency: true }),
+      configuration: i_AnalyzerConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -1720,7 +1804,10 @@ export const deleteAnalyzer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /analyzer/{analyzerName}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      analyzerName: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1753,7 +1840,11 @@ export const deleteArchiveRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /analyzer/{analyzerName}/archive-rule/{ruleName}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      analyzerName: 0,
+      ruleName: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1789,7 +1880,10 @@ export const deleteServiceLinkedAnalyzer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /service-linked-analyzer/{analyzerName}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      analyzerName: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1822,7 +1916,7 @@ export const generateFindingRecommendation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /recommendation/{id}",
-    input: { analyzerArn: D.m({ query: "analyzerArn" }) },
+    input: { analyzerArn: D.m({ query: "analyzerArn" }), id: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1854,7 +1948,7 @@ export const getAccessPreview: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /access-preview/{accessPreviewId}",
-    input: { analyzerArn: D.m({ query: "analyzerArn" }) },
+    input: { accessPreviewId: 0, analyzerArn: D.m({ query: "analyzerArn" }) },
     output: { accessPreview: { createdAt: D.ts } },
   },
   errors: [
@@ -1929,6 +2023,7 @@ export const getAnalyzer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /analyzer/{analyzerName}",
+    input: { analyzerName: 0 },
     output: { analyzer: o_AnalyzerSummary },
   },
   errors: [
@@ -1964,6 +2059,7 @@ export const getArchiveRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /analyzer/{analyzerName}/archive-rule/{ruleName}",
+    input: { analyzerName: 0, ruleName: 0 },
     output: { archiveRule: o_ArchiveRuleSummary },
   },
   errors: [
@@ -1999,7 +2095,7 @@ export const getFinding: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /finding/{id}",
-    input: { analyzerArn: D.m({ query: "analyzerArn" }) },
+    input: { analyzerArn: D.m({ query: "analyzerArn" }), id: 0 },
     output: { finding: { createdAt: D.ts, analyzedAt: D.ts, updatedAt: D.ts } },
   },
   errors: [
@@ -2036,6 +2132,7 @@ export const getFindingRecommendation: API.PaginatedOperationMethod<
     http: "GET /recommendation/{id}",
     input: {
       analyzerArn: D.m({ query: "analyzerArn" }),
+      id: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -2084,6 +2181,7 @@ export const getFindingsStatistics: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /analyzer/findings/statistics",
+    input: { analyzerArn: 0 },
     output: { lastUpdatedAt: D.ts },
     body: true,
   },
@@ -2121,6 +2219,7 @@ export const getFindingV2: API.PaginatedOperationMethod<
     http: "GET /findingv2/{id}",
     input: {
       analyzerArn: D.m({ query: "analyzerArn" }),
+      id: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -2176,6 +2275,7 @@ export const getGeneratedPolicy: API.OperationMethod<
     service: svc,
     http: "GET /policy/generation/{jobId}",
     input: {
+      jobId: 0,
       includeResourcePlaceholders: D.m({
         query: "includeResourcePlaceholders",
       }),
@@ -2224,6 +2324,13 @@ export const listAccessPreviewFindings: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /access-preview/{accessPreviewId}",
+    input: {
+      accessPreviewId: 0,
+      analyzerArn: 0,
+      filter: D.map(i_Criterion),
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { findings: D.list({ createdAt: D.ts }) },
     body: true,
   },
@@ -2308,7 +2415,12 @@ export const listAnalyzedResources: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AnalyzedResourceSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /analyzed-resource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /analyzed-resource",
+    input: { analyzerArn: 0, resourceType: 0, nextToken: 0, maxResults: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2390,6 +2502,7 @@ export const listArchiveRules: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /analyzer/{analyzerName}/archive-rule",
     input: {
+      analyzerName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -2436,6 +2549,13 @@ export const listFindings: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /finding",
+    input: {
+      analyzerArn: 0,
+      filter: D.map(i_Criterion),
+      sort: i_SortCriteria,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       findings: D.list({ createdAt: D.ts, analyzedAt: D.ts, updatedAt: D.ts }),
     },
@@ -2481,6 +2601,13 @@ export const listFindingsV2: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /findingv2",
+    input: {
+      analyzerArn: 0,
+      filter: D.map(i_Criterion),
+      maxResults: 0,
+      nextToken: 0,
+      sort: i_SortCriteria,
+    },
     output: {
       findings: D.list({ analyzedAt: D.ts, createdAt: D.ts, updatedAt: D.ts }),
     },
@@ -2565,7 +2692,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2599,7 +2730,10 @@ export const startPolicyGeneration: API.OperationMethod<
     service: svc,
     http: "PUT /policy/generation",
     input: {
+      policyGenerationDetails: { principalArn: 0 },
       cloudTrailDetails: {
+        trails: D.list({ cloudTrailArn: 0, regions: 0, allRegions: 0 }),
+        accessRole: 0,
         startTime: D.tsAs("date-time"),
         endTime: D.tsAs("date-time"),
       },
@@ -2638,7 +2772,12 @@ export const startResourceScan: API.OperationMethod<
   StartResourceScanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /resource/scan", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /resource/scan",
+    input: { analyzerArn: 0, resourceArn: 0, resourceOwnerAccount: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2667,7 +2806,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2699,7 +2843,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -2735,6 +2879,7 @@ export const updateAnalyzer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /analyzer/{analyzerName}",
+    input: { analyzerName: 0, configuration: i_AnalyzerConfiguration },
     body: true,
   },
   errors: [
@@ -2769,7 +2914,12 @@ export const updateArchiveRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /analyzer/{analyzerName}/archive-rule/{ruleName}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      analyzerName: 0,
+      ruleName: 0,
+      filter: D.map(i_Criterion),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2803,7 +2953,13 @@ export const updateFindings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /finding",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      analyzerArn: 0,
+      status: 0,
+      ids: 0,
+      resourceArn: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2838,8 +2994,12 @@ export const validatePolicy: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /policy/validation",
     input: {
+      locale: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      policyDocument: 0,
+      policyType: 0,
+      validatePolicyResourceType: 0,
     },
     body: true,
   },
@@ -2860,6 +3020,36 @@ export const validatePolicy: API.PaginatedOperationMethod<
   } as const,
 })) as any;
 
+const i_AnalyzerConfiguration: D.LazyStruct = () => ({
+  unusedAccess: {
+    unusedAccessAge: 0,
+    analysisRule: { exclusions: D.list({ accountIds: 0, resourceTags: 0 }) },
+  },
+  internalAccess: {
+    analysisRule: {
+      inclusions: D.list({ accountIds: 0, resourceTypes: 0, resourceArns: 0 }),
+    },
+  },
+});
+const i_Criterion: D.LazyStruct = () => ({
+  eq: 0,
+  neq: 0,
+  contains: 0,
+  exists: 0,
+});
+const i_InlineArchiveRule: D.LazyStruct = () => ({
+  ruleName: 0,
+  filter: D.map(i_Criterion),
+});
+const i_NetworkOriginConfiguration: D.LazyStruct = () => ({
+  vpcConfiguration: { vpcId: 0 },
+  internetConfiguration: {},
+});
+const i_S3PublicAccessBlockConfiguration: D.LazyStruct = () => ({
+  ignorePublicAcls: 0,
+  restrictPublicBuckets: 0,
+});
+const i_SortCriteria: D.LazyStruct = () => ({ attributeName: 0, orderBy: 0 });
 const o_AnalyzerSummary: D.LazyStruct = () => ({
   createdAt: D.ts,
   lastResourceAnalyzedAt: D.ts,

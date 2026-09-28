@@ -1242,6 +1242,7 @@ export const batchUpdateCluster: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ClusterNames: 0, ServiceUpdate: { ServiceUpdateNameToApply: 0 } },
     output: { ProcessedClusters: D.list(o_Cluster) },
   },
   errors: [
@@ -1273,7 +1274,17 @@ export const copySnapshot: API.OperationMethod<
   CopySnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Snapshot: o_Snapshot } },
+  descriptor: {
+    service: svc,
+    input: {
+      SourceSnapshotName: 0,
+      TargetSnapshotName: 0,
+      TargetBucket: 0,
+      KmsKeyId: 0,
+      Tags: D.list(i_Tag),
+    },
+    output: { Snapshot: o_Snapshot },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterValueException,
@@ -1307,7 +1318,10 @@ export const createACL: API.OperationMethod<
   CreateACLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ACLName: 0, UserNames: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     ACLAlreadyExistsFault,
     ACLQuotaExceededFault,
@@ -1351,7 +1365,38 @@ export const createCluster: API.OperationMethod<
   CreateClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterName: 0,
+      NodeType: 0,
+      MultiRegionClusterName: 0,
+      ParameterGroupName: 0,
+      Description: 0,
+      NumShards: 0,
+      NumReplicasPerShard: 0,
+      SubnetGroupName: 0,
+      SecurityGroupIds: 0,
+      MaintenanceWindow: 0,
+      Port: 0,
+      SnsTopicArn: 0,
+      TLSEnabled: 0,
+      KmsKeyId: 0,
+      SnapshotArns: 0,
+      SnapshotName: 0,
+      SnapshotRetentionLimit: 0,
+      Tags: D.list(i_Tag),
+      SnapshotWindow: 0,
+      ACLName: 0,
+      Engine: 0,
+      EngineVersion: 0,
+      AutoMinorVersionUpgrade: 0,
+      DataTiering: 0,
+      NetworkType: 0,
+      IpDiscovery: 0,
+    },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     ACLNotFoundFault,
     ClusterAlreadyExistsFault,
@@ -1394,7 +1439,20 @@ export const createMultiRegionCluster: API.OperationMethod<
   CreateMultiRegionClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MultiRegionClusterNameSuffix: 0,
+      Description: 0,
+      Engine: 0,
+      EngineVersion: 0,
+      NodeType: 0,
+      MultiRegionParameterGroupName: 0,
+      NumShards: 0,
+      TLSEnabled: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     ClusterQuotaForCustomerExceededFault,
     InvalidParameterCombinationException,
@@ -1427,7 +1485,15 @@ export const createParameterGroup: API.OperationMethod<
   CreateParameterGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ParameterGroupName: 0,
+      Family: 0,
+      Description: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterGroupStateFault,
@@ -1461,7 +1527,16 @@ export const createSnapshot: API.OperationMethod<
   CreateSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Snapshot: o_Snapshot } },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterName: 0,
+      SnapshotName: 0,
+      KmsKeyId: 0,
+      Tags: D.list(i_Tag),
+    },
+    output: { Snapshot: o_Snapshot },
+  },
   errors: [
     ClusterNotFoundFault,
     InvalidClusterStateFault,
@@ -1498,7 +1573,15 @@ export const createSubnetGroup: API.OperationMethod<
   CreateSubnetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SubnetGroupName: 0,
+      Description: 0,
+      SubnetIds: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InvalidSubnet,
     ServiceLinkedRoleNotFoundFault,
@@ -1530,7 +1613,15 @@ export const createUser: API.OperationMethod<
   CreateUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UserName: 0,
+      AuthenticationMode: i_AuthenticationMode,
+      AccessString: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     DuplicateUserNameFault,
     InvalidParameterCombinationException,
@@ -1558,7 +1649,7 @@ export const deleteACL: API.OperationMethod<
   DeleteACLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ACLName: 0 } },
   errors: [
     ACLNotFoundFault,
     InvalidACLStateFault,
@@ -1589,7 +1680,11 @@ export const deleteCluster: API.OperationMethod<
   DeleteClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: { ClusterName: 0, MultiRegionClusterName: 0, FinalSnapshotName: 0 },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     ClusterNotFoundFault,
     InvalidClusterStateFault,
@@ -1617,7 +1712,7 @@ export const deleteMultiRegionCluster: API.OperationMethod<
   DeleteMultiRegionClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MultiRegionClusterName: 0 } },
   errors: [
     InvalidMultiRegionClusterStateFault,
     InvalidParameterValueException,
@@ -1645,7 +1740,7 @@ export const deleteParameterGroup: API.OperationMethod<
   DeleteParameterGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ParameterGroupName: 0 } },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterGroupStateFault,
@@ -1674,7 +1769,11 @@ export const deleteSnapshot: API.OperationMethod<
   DeleteSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Snapshot: o_Snapshot } },
+  descriptor: {
+    service: svc,
+    input: { SnapshotName: 0 },
+    output: { Snapshot: o_Snapshot },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterValueException,
@@ -1701,7 +1800,7 @@ export const deleteSubnetGroup: API.OperationMethod<
   DeleteSubnetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SubnetGroupName: 0 } },
   errors: [
     ServiceLinkedRoleNotFoundFault,
     SubnetGroupInUseFault,
@@ -1726,7 +1825,7 @@ export const deleteUser: API.OperationMethod<
   DeleteUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserName: 0 } },
   errors: [
     InvalidParameterValueException,
     InvalidUserStateFault,
@@ -1751,7 +1850,10 @@ export const describeACLs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ACL
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ACLName: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [ACLNotFoundFault, InvalidParameterCombinationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1780,7 +1882,11 @@ export const describeClusters: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Cluster
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Clusters: D.list(o_Cluster) } },
+  descriptor: {
+    service: svc,
+    input: { ClusterName: 0, MaxResults: 0, NextToken: 0, ShowShardDetails: 0 },
+    output: { Clusters: D.list(o_Cluster) },
+  },
   errors: [
     ClusterNotFoundFault,
     InvalidParameterCombinationException,
@@ -1813,7 +1919,17 @@ export const describeEngineVersions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   EngineVersionInfo
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Engine: 0,
+      EngineVersion: 0,
+      ParameterGroupFamily: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      DefaultOnly: 0,
+    },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterValueException,
@@ -1847,7 +1963,19 @@ export const describeEvents: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Event
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Events: D.list({ Date: D.ts }) } },
+  descriptor: {
+    service: svc,
+    input: {
+      SourceName: 0,
+      SourceType: 0,
+      StartTime: 0,
+      EndTime: 0,
+      Duration: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+    output: { Events: D.list({ Date: D.ts }) },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterValueException,
@@ -1880,7 +2008,15 @@ export const describeMultiRegionClusters: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   MultiRegionCluster
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MultiRegionClusterName: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      ShowClusterDetails: 0,
+    },
+  },
   errors: [
     ClusterNotFoundFault,
     InvalidParameterCombinationException,
@@ -1913,7 +2049,10 @@ export const describeMultiRegionParameterGroups: API.OperationMethod<
   DescribeMultiRegionParameterGroupsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MultiRegionParameterGroupName: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterValueException,
@@ -1940,7 +2079,15 @@ export const describeMultiRegionParameters: API.OperationMethod<
   DescribeMultiRegionParametersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MultiRegionParameterGroupName: 0,
+      Source: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterValueException,
@@ -1968,7 +2115,10 @@ export const describeParameterGroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ParameterGroup
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ParameterGroupName: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterValueException,
@@ -2002,7 +2152,10 @@ export const describeParameters: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Parameter
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ParameterGroupName: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterValueException,
@@ -2038,6 +2191,15 @@ export const describeReservedNodes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ReservationId: 0,
+      ReservedNodesOfferingId: 0,
+      NodeType: 0,
+      Duration: 0,
+      OfferingType: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { ReservedNodes: D.list(o_ReservedNode) },
   },
   errors: [
@@ -2073,7 +2235,17 @@ export const describeReservedNodesOfferings: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ReservedNodesOffering
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ReservedNodesOfferingId: 0,
+      NodeType: 0,
+      Duration: 0,
+      OfferingType: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterValueException,
@@ -2107,6 +2279,13 @@ export const describeServiceUpdates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ServiceUpdateName: 0,
+      ClusterNames: 0,
+      Status: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       ServiceUpdates: D.list({ ReleaseDate: D.ts, AutoUpdateStartDate: D.ts }),
     },
@@ -2143,7 +2322,18 @@ export const describeSnapshots: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Snapshot
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Snapshots: D.list(o_Snapshot) } },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterName: 0,
+      SnapshotName: 0,
+      Source: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      ShowDetail: 0,
+    },
+    output: { Snapshots: D.list(o_Snapshot) },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterValueException,
@@ -2175,7 +2365,10 @@ export const describeSubnetGroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   SubnetGroup
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SubnetGroupName: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [ServiceLinkedRoleNotFoundFault, SubnetGroupNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2202,7 +2395,15 @@ export const describeUsers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   User
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UserName: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [InvalidParameterCombinationException, UserNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2235,7 +2436,11 @@ export const failoverShard: API.OperationMethod<
   FailoverShardError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: { ClusterName: 0, ShardName: 0 },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     APICallRateForCustomerExceededFault,
     ClusterNotFoundFault,
@@ -2265,7 +2470,7 @@ export const listAllowedMultiRegionClusterUpdates: API.OperationMethod<
   ListAllowedMultiRegionClusterUpdatesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MultiRegionClusterName: 0 } },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterValueException,
@@ -2293,7 +2498,7 @@ export const listAllowedNodeTypeUpdates: API.OperationMethod<
   ListAllowedNodeTypeUpdatesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ClusterName: 0 } },
   errors: [
     ClusterNotFoundFault,
     InvalidParameterCombinationException,
@@ -2329,7 +2534,7 @@ export const listTags: API.OperationMethod<
   ListTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     ACLNotFoundFault,
     ClusterNotFoundFault,
@@ -2366,7 +2571,16 @@ export const purchaseReservedNodesOffering: API.OperationMethod<
   PurchaseReservedNodesOfferingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ReservedNode: o_ReservedNode } },
+  descriptor: {
+    service: svc,
+    input: {
+      ReservedNodesOfferingId: 0,
+      ReservationId: 0,
+      NodeCount: 0,
+      Tags: D.list(i_Tag),
+    },
+    output: { ReservedNode: o_ReservedNode },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterValueException,
@@ -2397,7 +2611,10 @@ export const resetParameterGroup: API.OperationMethod<
   ResetParameterGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ParameterGroupName: 0, AllParameters: 0, ParameterNames: 0 },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterGroupStateFault,
@@ -2442,7 +2659,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     ACLNotFoundFault,
     ClusterNotFoundFault,
@@ -2495,7 +2712,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     ACLNotFoundFault,
     ClusterNotFoundFault,
@@ -2534,7 +2751,10 @@ export const updateACL: API.OperationMethod<
   UpdateACLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ACLName: 0, UserNamesToAdd: 0, UserNamesToRemove: 0 },
+  },
   errors: [
     ACLNotFoundFault,
     DefaultUserRequired,
@@ -2576,7 +2796,28 @@ export const updateCluster: API.OperationMethod<
   UpdateClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterName: 0,
+      Description: 0,
+      SecurityGroupIds: 0,
+      MaintenanceWindow: 0,
+      SnsTopicArn: 0,
+      SnsTopicStatus: 0,
+      ParameterGroupName: 0,
+      SnapshotWindow: 0,
+      SnapshotRetentionLimit: 0,
+      NodeType: 0,
+      Engine: 0,
+      EngineVersion: 0,
+      ReplicaConfiguration: { ReplicaCount: 0 },
+      ShardConfiguration: i_ShardConfigurationRequest,
+      ACLName: 0,
+      IpDiscovery: 0,
+    },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     ACLNotFoundFault,
     ClusterNotFoundFault,
@@ -2616,7 +2857,18 @@ export const updateMultiRegionCluster: API.OperationMethod<
   UpdateMultiRegionClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MultiRegionClusterName: 0,
+      NodeType: 0,
+      Description: 0,
+      EngineVersion: 0,
+      ShardConfiguration: i_ShardConfigurationRequest,
+      MultiRegionParameterGroupName: 0,
+      UpdateStrategy: 0,
+    },
+  },
   errors: [
     InvalidMultiRegionClusterStateFault,
     InvalidParameterCombinationException,
@@ -2645,7 +2897,13 @@ export const updateParameterGroup: API.OperationMethod<
   UpdateParameterGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ParameterGroupName: 0,
+      ParameterNameValues: D.list({ ParameterName: 0, ParameterValue: 0 }),
+    },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterGroupStateFault,
@@ -2675,7 +2933,10 @@ export const updateSubnetGroup: API.OperationMethod<
   UpdateSubnetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SubnetGroupName: 0, Description: 0, SubnetIds: 0 },
+  },
   errors: [
     InvalidSubnet,
     ServiceLinkedRoleNotFoundFault,
@@ -2704,7 +2965,14 @@ export const updateUser: API.OperationMethod<
   UpdateUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UserName: 0,
+      AuthenticationMode: i_AuthenticationMode,
+      AccessString: 0,
+    },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterValueException,
@@ -2716,6 +2984,9 @@ export const updateUser: API.OperationMethod<
   operationName: "UpdateUser",
 })) as any;
 
+const i_AuthenticationMode: D.LazyStruct = () => ({ Type: 0, Passwords: 0 });
+const i_ShardConfigurationRequest: D.LazyStruct = () => ({ ShardCount: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Cluster: D.LazyStruct = () => ({
   Shards: D.list({ Nodes: D.list({ CreateTime: D.ts }) }),
 });

@@ -1374,6 +1374,7 @@ export const addSourceIdentifierToSubscription: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SubscriptionName: 0, SourceIdentifier: 0 },
     output: { EventSubscription: o_EventSubscription },
   },
   errors: [SourceNotFoundFault, SubscriptionNotFoundFault],
@@ -1399,7 +1400,10 @@ export const addTagsToResource: API.OperationMethod<
   AddTagsToResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, input: { Tags: D.list(0, { item: "Tag" }) } },
+  descriptor: {
+    service: svc,
+    input: { ResourceName: 0, Tags: D.list(i_Tag, { item: "Tag" }) },
+  },
   errors: [
     DBClusterNotFoundFault,
     DBInstanceNotFoundFault,
@@ -1427,6 +1431,7 @@ export const applyPendingMaintenanceAction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResourceIdentifier: 0, ApplyAction: 0, OptInType: 0 },
     output: {
       ResourcePendingMaintenanceActions: o_ResourcePendingMaintenanceActions,
     },
@@ -1457,7 +1462,12 @@ export const copyDBClusterParameterGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      SourceDBClusterParameterGroupIdentifier: 0,
+      TargetDBClusterParameterGroupIdentifier: 0,
+      TargetDBClusterParameterGroupDescription: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { DBClusterParameterGroup: {} },
   },
   errors: [
@@ -1500,7 +1510,14 @@ export const copyDBClusterSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      SourceDBClusterSnapshotIdentifier: 0,
+      TargetDBClusterSnapshotIdentifier: 0,
+      KmsKeyId: 0,
+      PreSignedUrl: 0,
+      CopyTags: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { DBClusterSnapshot: o_DBClusterSnapshot },
   },
   errors: [
@@ -1549,8 +1566,30 @@ export const createDBCluster: API.OperationMethod<
     service: svc,
     input: {
       AvailabilityZones: D.list(0, { item: "AvailabilityZone" }),
+      BackupRetentionPeriod: 0,
+      DBClusterIdentifier: 0,
+      DBClusterParameterGroupName: 0,
       VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
-      Tags: D.list(0, { item: "Tag" }),
+      DBSubnetGroupName: 0,
+      Engine: 0,
+      EngineVersion: 0,
+      Port: 0,
+      MasterUsername: 0,
+      MasterUserPassword: 0,
+      PreferredBackupWindow: 0,
+      PreferredMaintenanceWindow: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      StorageEncrypted: 0,
+      KmsKeyId: 0,
+      PreSignedUrl: 0,
+      EnableCloudwatchLogsExports: 0,
+      DeletionProtection: 0,
+      GlobalClusterIdentifier: 0,
+      StorageType: 0,
+      ServerlessV2ScalingConfiguration: i_ServerlessV2ScalingConfiguration,
+      ManageMasterUserPassword: 0,
+      MasterUserSecretKmsKeyId: 0,
+      NetworkType: 0,
     },
     output: { DBCluster: o_DBCluster },
   },
@@ -1613,7 +1652,12 @@ export const createDBClusterParameterGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      DBClusterParameterGroupName: 0,
+      DBParameterGroupFamily: 0,
+      Description: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { DBClusterParameterGroup: {} },
   },
   errors: [
@@ -1643,7 +1687,11 @@ export const createDBClusterSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      DBClusterSnapshotIdentifier: 0,
+      DBClusterIdentifier: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { DBClusterSnapshot: o_DBClusterSnapshot },
   },
   errors: [
@@ -1686,7 +1734,21 @@ export const createDBInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      DBInstanceIdentifier: 0,
+      DBInstanceClass: 0,
+      Engine: 0,
+      AvailabilityZone: 0,
+      PreferredMaintenanceWindow: 0,
+      AutoMinorVersionUpgrade: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      DBClusterIdentifier: 0,
+      CopyTagsToSnapshot: 0,
+      PromotionTier: 0,
+      EnablePerformanceInsights: 0,
+      PerformanceInsightsKMSKeyId: 0,
+      CACertificateIdentifier: 0,
+    },
     output: { DBInstance: o_DBInstance },
   },
   errors: [
@@ -1731,8 +1793,10 @@ export const createDBSubnetGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DBSubnetGroupName: 0,
+      DBSubnetGroupDescription: 0,
       SubnetIds: D.list(0, { item: "SubnetIdentifier" }),
-      Tags: D.list(0, { item: "Tag" }),
+      Tags: D.list(i_Tag, { item: "Tag" }),
     },
     output: { DBSubnetGroup: o_DBSubnetGroup },
   },
@@ -1773,9 +1837,13 @@ export const createEventSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      SubscriptionName: 0,
+      SnsTopicArn: 0,
+      SourceType: 0,
       EventCategories: D.list(0, { item: "EventCategory" }),
       SourceIds: D.list(0, { item: "SourceId" }),
-      Tags: D.list(0, { item: "Tag" }),
+      Enabled: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
     },
     output: { EventSubscription: o_EventSubscription },
   },
@@ -1814,7 +1882,19 @@ export const createGlobalCluster: API.OperationMethod<
   CreateGlobalClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GlobalCluster: o_GlobalCluster } },
+  descriptor: {
+    service: svc,
+    input: {
+      GlobalClusterIdentifier: 0,
+      SourceDBClusterIdentifier: 0,
+      Engine: 0,
+      EngineVersion: 0,
+      DeletionProtection: 0,
+      DatabaseName: 0,
+      StorageEncrypted: 0,
+    },
+    output: { GlobalCluster: o_GlobalCluster },
+  },
   errors: [
     DBClusterNotFoundFault,
     GlobalClusterAlreadyExistsFault,
@@ -1842,7 +1922,15 @@ export const deleteDBCluster: API.OperationMethod<
   DeleteDBClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBCluster: o_DBCluster } },
+  descriptor: {
+    service: svc,
+    input: {
+      DBClusterIdentifier: 0,
+      SkipFinalSnapshot: 0,
+      FinalDBSnapshotIdentifier: 0,
+    },
+    output: { DBCluster: o_DBCluster },
+  },
   errors: [
     DBClusterNotFoundFault,
     DBClusterSnapshotAlreadyExistsFault,
@@ -1868,7 +1956,7 @@ export const deleteDBClusterParameterGroup: API.OperationMethod<
   DeleteDBClusterParameterGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DBClusterParameterGroupName: 0 } },
   errors: [DBParameterGroupNotFoundFault, InvalidDBParameterGroupStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1892,6 +1980,7 @@ export const deleteDBClusterSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DBClusterSnapshotIdentifier: 0 },
     output: { DBClusterSnapshot: o_DBClusterSnapshot },
   },
   errors: [DBClusterSnapshotNotFoundFault, InvalidDBClusterSnapshotStateFault],
@@ -1916,7 +2005,11 @@ export const deleteDBInstance: API.OperationMethod<
   DeleteDBInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBInstance: o_DBInstance } },
+  descriptor: {
+    service: svc,
+    input: { DBInstanceIdentifier: 0 },
+    output: { DBInstance: o_DBInstance },
+  },
   errors: [
     DBInstanceNotFoundFault,
     DBSnapshotAlreadyExistsFault,
@@ -1946,7 +2039,7 @@ export const deleteDBSubnetGroup: API.OperationMethod<
   DeleteDBSubnetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DBSubnetGroupName: 0 } },
   errors: [
     DBSubnetGroupNotFoundFault,
     InvalidDBSubnetGroupStateFault,
@@ -1972,6 +2065,7 @@ export const deleteEventSubscription: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SubscriptionName: 0 },
     output: { EventSubscription: o_EventSubscription },
   },
   errors: [InvalidEventSubscriptionStateFault, SubscriptionNotFoundFault],
@@ -1995,7 +2089,11 @@ export const deleteGlobalCluster: API.OperationMethod<
   DeleteGlobalClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GlobalCluster: o_GlobalCluster } },
+  descriptor: {
+    service: svc,
+    input: { GlobalClusterIdentifier: 0 },
+    output: { GlobalCluster: o_GlobalCluster },
+  },
   errors: [GlobalClusterNotFoundFault, InvalidGlobalClusterStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2015,7 +2113,12 @@ export const describeCertificates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      CertificateIdentifier: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       Certificates: D.list(
         { ValidFrom: D.ts, ValidTill: D.ts },
@@ -2050,7 +2153,12 @@ export const describeDBClusterParameterGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBClusterParameterGroupName: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       DBClusterParameterGroups: D.list({}, { item: "DBClusterParameterGroup" }),
     },
@@ -2083,7 +2191,13 @@ export const describeDBClusterParameters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBClusterParameterGroupName: 0,
+      Source: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: { Parameters: D.list(o_Parameter, { item: "Parameter" }) },
   },
   errors: [DBParameterGroupNotFoundFault],
@@ -2116,7 +2230,12 @@ export const describeDBClusters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBClusterIdentifier: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: { DBClusters: D.list(o_DBCluster, { item: "DBCluster" }) },
   },
   errors: [DBClusterNotFoundFault],
@@ -2149,6 +2268,7 @@ export const describeDBClusterSnapshotAttributes: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DBClusterSnapshotIdentifier: 0 },
     output: {
       DBClusterSnapshotAttributesResult: o_DBClusterSnapshotAttributesResult,
     },
@@ -2174,7 +2294,16 @@ export const describeDBClusterSnapshots: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBClusterIdentifier: 0,
+      DBClusterSnapshotIdentifier: 0,
+      SnapshotType: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+      IncludeShared: 0,
+      IncludePublic: 0,
+    },
     output: {
       DBClusterSnapshots: D.list(o_DBClusterSnapshot, {
         item: "DBClusterSnapshot",
@@ -2206,7 +2335,17 @@ export const describeDBEngineVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      Engine: 0,
+      EngineVersion: 0,
+      DBParameterGroupFamily: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+      DefaultOnly: 0,
+      ListSupportedCharacterSets: 0,
+      ListSupportedTimezones: 0,
+    },
     output: {
       DBEngineVersions: D.list(
         {
@@ -2252,7 +2391,12 @@ export const describeDBInstances: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBInstanceIdentifier: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: { DBInstances: D.list(o_DBInstance, { item: "DBInstance" }) },
   },
   errors: [DBInstanceNotFoundFault],
@@ -2283,7 +2427,12 @@ export const describeDBSubnetGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBSubnetGroupName: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       DBSubnetGroups: D.list(o_DBSubnetGroup, { item: "DBSubnetGroup" }),
     },
@@ -2313,7 +2462,12 @@ export const describeEngineDefaultClusterParameters: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBParameterGroupFamily: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       EngineDefaults: {
         Parameters: D.list(o_Parameter, { item: "Parameter" }),
@@ -2339,7 +2493,7 @@ export const describeEventCategories: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: { SourceType: 0, Filters: D.list(i_Filter, { item: "Filter" }) },
     output: {
       EventCategoriesMapList: D.list(
         { EventCategories: D.list(0, { item: "EventCategory" }) },
@@ -2367,8 +2521,15 @@ export const describeEvents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      SourceIdentifier: 0,
+      SourceType: 0,
+      StartTime: 0,
+      EndTime: 0,
+      Duration: 0,
       EventCategories: D.list(0, { item: "EventCategory" }),
       Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
     },
     output: {
       Events: D.list(
@@ -2406,7 +2567,12 @@ export const describeEventSubscriptions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      SubscriptionName: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       EventSubscriptionsList: D.list(o_EventSubscription, {
         item: "EventSubscription",
@@ -2442,7 +2608,12 @@ export const describeGlobalClusters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      GlobalClusterIdentifier: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       GlobalClusters: D.list(o_GlobalCluster, { item: "GlobalClusterMember" }),
     },
@@ -2472,7 +2643,16 @@ export const describeOrderableDBInstanceOptions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      Engine: 0,
+      EngineVersion: 0,
+      DBInstanceClass: 0,
+      LicenseModel: 0,
+      Vpc: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       OrderableDBInstanceOptions: D.list(
         {
@@ -2511,7 +2691,12 @@ export const describePendingMaintenanceActions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      ResourceIdentifier: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      Marker: 0,
+      MaxRecords: 0,
+    },
     output: {
       PendingMaintenanceActions: D.list(o_ResourcePendingMaintenanceActions, {
         item: "ResourcePendingMaintenanceActions",
@@ -2548,7 +2733,11 @@ export const failoverDBCluster: API.OperationMethod<
   FailoverDBClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBCluster: o_DBCluster } },
+  descriptor: {
+    service: svc,
+    input: { DBClusterIdentifier: 0, TargetDBInstanceIdentifier: 0 },
+    output: { DBCluster: o_DBCluster },
+  },
   errors: [
     DBClusterNotFoundFault,
     InvalidDBClusterStateFault,
@@ -2578,7 +2767,16 @@ export const failoverGlobalCluster: API.OperationMethod<
   FailoverGlobalClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GlobalCluster: o_GlobalCluster } },
+  descriptor: {
+    service: svc,
+    input: {
+      GlobalClusterIdentifier: 0,
+      TargetDbClusterIdentifier: 0,
+      AllowDataLoss: 0,
+      Switchover: 0,
+    },
+    output: { GlobalCluster: o_GlobalCluster },
+  },
   errors: [
     DBClusterNotFoundFault,
     GlobalClusterNotFoundFault,
@@ -2606,7 +2804,7 @@ export const listTagsForResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: { ResourceName: 0, Filters: D.list(i_Filter, { item: "Filter" }) },
     output: { TagList: D.list({}, { item: "Tag" }) },
   },
   errors: [
@@ -2646,7 +2844,31 @@ export const modifyDBCluster: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }) },
+    input: {
+      DBClusterIdentifier: 0,
+      NewDBClusterIdentifier: 0,
+      ApplyImmediately: 0,
+      BackupRetentionPeriod: 0,
+      DBClusterParameterGroupName: 0,
+      VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
+      Port: 0,
+      MasterUserPassword: 0,
+      PreferredBackupWindow: 0,
+      PreferredMaintenanceWindow: 0,
+      CloudwatchLogsExportConfiguration: {
+        EnableLogTypes: 0,
+        DisableLogTypes: 0,
+      },
+      EngineVersion: 0,
+      AllowMajorVersionUpgrade: 0,
+      DeletionProtection: 0,
+      StorageType: 0,
+      ServerlessV2ScalingConfiguration: i_ServerlessV2ScalingConfiguration,
+      ManageMasterUserPassword: 0,
+      MasterUserSecretKmsKeyId: 0,
+      RotateMasterUserPassword: 0,
+      NetworkType: 0,
+    },
     output: { DBCluster: o_DBCluster },
   },
   errors: [
@@ -2699,7 +2921,10 @@ export const modifyDBClusterParameterGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Parameters: D.list(0, { item: "Parameter" }) },
+    input: {
+      DBClusterParameterGroupName: 0,
+      Parameters: D.list(i_Parameter, { item: "Parameter" }),
+    },
   },
   errors: [DBParameterGroupNotFoundFault, InvalidDBParameterGroupStateFault],
   protocol: AwsProtocol,
@@ -2726,6 +2951,8 @@ export const modifyDBClusterSnapshotAttribute: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DBClusterSnapshotIdentifier: 0,
+      AttributeName: 0,
       ValuesToAdd: D.list(0, { item: "AttributeValue" }),
       ValuesToRemove: D.list(0, { item: "AttributeValue" }),
     },
@@ -2767,7 +2994,24 @@ export const modifyDBInstance: API.OperationMethod<
   ModifyDBInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBInstance: o_DBInstance } },
+  descriptor: {
+    service: svc,
+    input: {
+      DBInstanceIdentifier: 0,
+      DBInstanceClass: 0,
+      ApplyImmediately: 0,
+      PreferredMaintenanceWindow: 0,
+      AutoMinorVersionUpgrade: 0,
+      NewDBInstanceIdentifier: 0,
+      CACertificateIdentifier: 0,
+      CopyTagsToSnapshot: 0,
+      PromotionTier: 0,
+      EnablePerformanceInsights: 0,
+      PerformanceInsightsKMSKeyId: 0,
+      CertificateRotationRestart: 0,
+    },
+    output: { DBInstance: o_DBInstance },
+  },
   errors: [
     AuthorizationNotFoundFault,
     CertificateNotFoundFault,
@@ -2806,7 +3050,11 @@ export const modifyDBSubnetGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { SubnetIds: D.list(0, { item: "SubnetIdentifier" }) },
+    input: {
+      DBSubnetGroupName: 0,
+      DBSubnetGroupDescription: 0,
+      SubnetIds: D.list(0, { item: "SubnetIdentifier" }),
+    },
     output: { DBSubnetGroup: o_DBSubnetGroup },
   },
   errors: [
@@ -2840,7 +3088,13 @@ export const modifyEventSubscription: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { EventCategories: D.list(0, { item: "EventCategory" }) },
+    input: {
+      SubscriptionName: 0,
+      SnsTopicArn: 0,
+      SourceType: 0,
+      EventCategories: D.list(0, { item: "EventCategory" }),
+      Enabled: 0,
+    },
     output: { EventSubscription: o_EventSubscription },
   },
   errors: [
@@ -2871,7 +3125,15 @@ export const modifyGlobalCluster: API.OperationMethod<
   ModifyGlobalClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GlobalCluster: o_GlobalCluster } },
+  descriptor: {
+    service: svc,
+    input: {
+      GlobalClusterIdentifier: 0,
+      NewGlobalClusterIdentifier: 0,
+      DeletionProtection: 0,
+    },
+    output: { GlobalCluster: o_GlobalCluster },
+  },
   errors: [GlobalClusterNotFoundFault, InvalidGlobalClusterStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2898,7 +3160,11 @@ export const rebootDBInstance: API.OperationMethod<
   RebootDBInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBInstance: o_DBInstance } },
+  descriptor: {
+    service: svc,
+    input: { DBInstanceIdentifier: 0, ForceFailover: 0 },
+    output: { DBInstance: o_DBInstance },
+  },
   errors: [DBInstanceNotFoundFault, InvalidDBInstanceStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2921,7 +3187,11 @@ export const removeFromGlobalCluster: API.OperationMethod<
   RemoveFromGlobalClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GlobalCluster: o_GlobalCluster } },
+  descriptor: {
+    service: svc,
+    input: { GlobalClusterIdentifier: 0, DbClusterIdentifier: 0 },
+    output: { GlobalCluster: o_GlobalCluster },
+  },
   errors: [
     DBClusterNotFoundFault,
     GlobalClusterNotFoundFault,
@@ -2948,6 +3218,7 @@ export const removeSourceIdentifierFromSubscription: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SubscriptionName: 0, SourceIdentifier: 0 },
     output: { EventSubscription: o_EventSubscription },
   },
   errors: [SourceNotFoundFault, SubscriptionNotFoundFault],
@@ -2970,7 +3241,7 @@ export const removeTagsFromResource: API.OperationMethod<
   RemoveTagsFromResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceName: 0, TagKeys: 0 } },
   errors: [
     DBClusterNotFoundFault,
     DBInstanceNotFoundFault,
@@ -3004,7 +3275,11 @@ export const resetDBClusterParameterGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Parameters: D.list(0, { item: "Parameter" }) },
+    input: {
+      DBClusterParameterGroupName: 0,
+      ResetAllParameters: 0,
+      Parameters: D.list(i_Parameter, { item: "Parameter" }),
+    },
   },
   errors: [DBParameterGroupNotFoundFault, InvalidDBParameterGroupStateFault],
   protocol: AwsProtocol,
@@ -3046,8 +3321,21 @@ export const restoreDBClusterFromSnapshot: API.OperationMethod<
     service: svc,
     input: {
       AvailabilityZones: D.list(0, { item: "AvailabilityZone" }),
+      DBClusterIdentifier: 0,
+      SnapshotIdentifier: 0,
+      Engine: 0,
+      EngineVersion: 0,
+      Port: 0,
+      DBSubnetGroupName: 0,
       VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
-      Tags: D.list(0, { item: "Tag" }),
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      KmsKeyId: 0,
+      EnableCloudwatchLogsExports: 0,
+      DeletionProtection: 0,
+      DBClusterParameterGroupName: 0,
+      ServerlessV2ScalingConfiguration: i_ServerlessV2ScalingConfiguration,
+      StorageType: 0,
+      NetworkType: 0,
     },
     output: { DBCluster: o_DBCluster },
   },
@@ -3107,8 +3395,21 @@ export const restoreDBClusterToPointInTime: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DBClusterIdentifier: 0,
+      RestoreType: 0,
+      SourceDBClusterIdentifier: 0,
+      RestoreToTime: 0,
+      UseLatestRestorableTime: 0,
+      Port: 0,
+      DBSubnetGroupName: 0,
       VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
-      Tags: D.list(0, { item: "Tag" }),
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      KmsKeyId: 0,
+      EnableCloudwatchLogsExports: 0,
+      DeletionProtection: 0,
+      ServerlessV2ScalingConfiguration: i_ServerlessV2ScalingConfiguration,
+      StorageType: 0,
+      NetworkType: 0,
     },
     output: { DBCluster: o_DBCluster },
   },
@@ -3151,7 +3452,11 @@ export const startDBCluster: API.OperationMethod<
   StartDBClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBCluster: o_DBCluster } },
+  descriptor: {
+    service: svc,
+    input: { DBClusterIdentifier: 0 },
+    output: { DBCluster: o_DBCluster },
+  },
   errors: [
     DBClusterNotFoundFault,
     InvalidDBClusterStateFault,
@@ -3179,7 +3484,11 @@ export const stopDBCluster: API.OperationMethod<
   StopDBClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBCluster: o_DBCluster } },
+  descriptor: {
+    service: svc,
+    input: { DBClusterIdentifier: 0 },
+    output: { DBCluster: o_DBCluster },
+  },
   errors: [
     DBClusterNotFoundFault,
     InvalidDBClusterStateFault,
@@ -3205,7 +3514,11 @@ export const switchoverGlobalCluster: API.OperationMethod<
   SwitchoverGlobalClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GlobalCluster: o_GlobalCluster } },
+  descriptor: {
+    service: svc,
+    input: { GlobalClusterIdentifier: 0, TargetDbClusterIdentifier: 0 },
+    output: { GlobalCluster: o_GlobalCluster },
+  },
   errors: [
     DBClusterNotFoundFault,
     GlobalClusterNotFoundFault,
@@ -3217,7 +3530,27 @@ export const switchoverGlobalCluster: API.OperationMethod<
   operationName: "SwitchoverGlobalCluster",
 })) as any;
 
-const i_Filter: D.LazyStruct = () => ({ Values: D.list(0, { item: "Value" }) });
+const i_Filter: D.LazyStruct = () => ({
+  Name: 0,
+  Values: D.list(0, { item: "Value" }),
+});
+const i_Parameter: D.LazyStruct = () => ({
+  ParameterName: 0,
+  ParameterValue: 0,
+  Description: 0,
+  Source: 0,
+  ApplyType: 0,
+  DataType: 0,
+  AllowedValues: 0,
+  IsModifiable: 0,
+  MinimumEngineVersion: 0,
+  ApplyMethod: 0,
+});
+const i_ServerlessV2ScalingConfiguration: D.LazyStruct = () => ({
+  MinCapacity: 0,
+  MaxCapacity: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_DBCluster: D.LazyStruct = () => ({
   AvailabilityZones: D.list(0, { item: "AvailabilityZone" }),
   BackupRetentionPeriod: D.num,

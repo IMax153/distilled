@@ -1377,7 +1377,10 @@ export const associateDelegateToResource: API.OperationMethod<
   AssociateDelegateToResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, ResourceId: 0, EntityId: 0 },
+  },
   errors: [
     EntityNotFoundException,
     EntityStateException,
@@ -1410,7 +1413,10 @@ export const associateMemberToGroup: API.OperationMethod<
   AssociateMemberToGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, GroupId: 0, MemberId: 0 },
+  },
   errors: [
     DirectoryServiceAuthenticationFailedException,
     DirectoryUnavailableException,
@@ -1442,7 +1448,10 @@ export const assumeImpersonationRole: API.OperationMethod<
   AssumeImpersonationRoleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, ImpersonationRoleId: 0 },
+  },
   errors: [
     InvalidParameterException,
     OrganizationNotFoundException,
@@ -1474,7 +1483,11 @@ export const cancelMailboxExportJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      JobId: 0,
+      OrganizationId: 0,
+    },
   },
   errors: [
     EntityNotFoundException,
@@ -1507,7 +1520,10 @@ export const createAlias: API.OperationMethod<
   CreateAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, EntityId: 0, Alias: 0 },
+  },
   errors: [
     EmailAddressInUseException,
     EntityNotFoundException,
@@ -1542,7 +1558,13 @@ export const createAvailabilityConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      OrganizationId: 0,
+      DomainName: 0,
+      EwsProvider: i_EwsAvailabilityProvider,
+      LambdaProvider: i_LambdaAvailabilityProvider,
+    },
   },
   errors: [
     InvalidParameterException,
@@ -1575,7 +1597,10 @@ export const createGroup: API.OperationMethod<
   CreateGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, Name: 0, HiddenFromGlobalAddressList: 0 },
+  },
   errors: [
     DirectoryServiceAuthenticationFailedException,
     DirectoryUnavailableException,
@@ -1605,7 +1630,7 @@ export const createIdentityCenterApplication: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: { Name: 0, InstanceArn: 0, ClientToken: D.m({ idempotency: true }) },
   },
   errors: [InvalidParameterException],
   protocol: AwsProtocol,
@@ -1637,7 +1662,14 @@ export const createImpersonationRole: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      OrganizationId: 0,
+      Name: 0,
+      Type: 0,
+      Description: 0,
+      Rules: D.list(i_ImpersonationRule),
+    },
   },
   errors: [
     EntityNotFoundException,
@@ -1669,7 +1701,21 @@ export const createMobileDeviceAccessRule: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      OrganizationId: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Name: 0,
+      Description: 0,
+      Effect: 0,
+      DeviceTypes: 0,
+      NotDeviceTypes: 0,
+      DeviceModels: 0,
+      NotDeviceModels: 0,
+      DeviceOperatingSystems: 0,
+      NotDeviceOperatingSystems: 0,
+      DeviceUserAgents: 0,
+      NotDeviceUserAgents: 0,
+    },
   },
   errors: [
     InvalidParameterException,
@@ -1710,7 +1756,14 @@ export const createOrganization: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      DirectoryId: 0,
+      Alias: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Domains: D.list({ DomainName: 0, HostedZoneId: 0 }),
+      KmsKeyArn: 0,
+      EnableInteroperability: 0,
+    },
   },
   errors: [
     DirectoryInUseException,
@@ -1743,7 +1796,16 @@ export const createResource: API.OperationMethod<
   CreateResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OrganizationId: 0,
+      Name: 0,
+      Type: 0,
+      Description: 0,
+      HiddenFromGlobalAddressList: 0,
+    },
+  },
   errors: [
     DirectoryServiceAuthenticationFailedException,
     DirectoryUnavailableException,
@@ -1779,7 +1841,20 @@ export const createUser: API.OperationMethod<
   CreateUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OrganizationId: 0,
+      Name: 0,
+      DisplayName: 0,
+      Password: 0,
+      Role: 0,
+      FirstName: 0,
+      LastName: 0,
+      HiddenFromGlobalAddressList: 0,
+      IdentityProviderUserId: 0,
+    },
+  },
   errors: [
     DirectoryServiceAuthenticationFailedException,
     DirectoryUnavailableException,
@@ -1811,7 +1886,7 @@ export const deleteAccessControlRule: API.OperationMethod<
   DeleteAccessControlRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationId: 0, Name: 0 } },
   errors: [OrganizationNotFoundException, OrganizationStateException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1835,7 +1910,10 @@ export const deleteAlias: API.OperationMethod<
   DeleteAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, EntityId: 0, Alias: 0 },
+  },
   errors: [
     EntityNotFoundException,
     EntityStateException,
@@ -1861,7 +1939,7 @@ export const deleteAvailabilityConfiguration: API.OperationMethod<
   DeleteAvailabilityConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationId: 0, DomainName: 0 } },
   errors: [OrganizationNotFoundException, OrganizationStateException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1882,7 +1960,7 @@ export const deleteEmailMonitoringConfiguration: API.OperationMethod<
   DeleteEmailMonitoringConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationId: 0 } },
   errors: [
     InvalidParameterException,
     OrganizationNotFoundException,
@@ -1911,7 +1989,7 @@ export const deleteGroup: API.OperationMethod<
   DeleteGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationId: 0, GroupId: 0 } },
   errors: [
     DirectoryServiceAuthenticationFailedException,
     DirectoryUnavailableException,
@@ -1939,7 +2017,7 @@ export const deleteIdentityCenterApplication: API.OperationMethod<
   DeleteIdentityCenterApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ApplicationArn: 0 } },
   errors: [InvalidParameterException, OrganizationStateException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1960,7 +2038,7 @@ export const deleteIdentityProviderConfiguration: API.OperationMethod<
   DeleteIdentityProviderConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationId: 0 } },
   errors: [
     InvalidParameterException,
     OrganizationNotFoundException,
@@ -1985,7 +2063,10 @@ export const deleteImpersonationRole: API.OperationMethod<
   DeleteImpersonationRoleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, ImpersonationRoleId: 0 },
+  },
   errors: [
     InvalidParameterException,
     OrganizationNotFoundException,
@@ -2012,7 +2093,10 @@ export const deleteMailboxPermissions: API.OperationMethod<
   DeleteMailboxPermissionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, EntityId: 0, GranteeId: 0 },
+  },
   errors: [
     EntityNotFoundException,
     EntityStateException,
@@ -2042,7 +2126,10 @@ export const deleteMobileDeviceAccessOverride: API.OperationMethod<
   DeleteMobileDeviceAccessOverrideError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, UserId: 0, DeviceId: 0 },
+  },
   errors: [
     EntityNotFoundException,
     InvalidParameterException,
@@ -2070,7 +2157,10 @@ export const deleteMobileDeviceAccessRule: API.OperationMethod<
   DeleteMobileDeviceAccessRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, MobileDeviceAccessRuleId: 0 },
+  },
   errors: [
     InvalidParameterException,
     OrganizationNotFoundException,
@@ -2097,7 +2187,13 @@ export const deleteOrganization: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      OrganizationId: 0,
+      DeleteDirectory: 0,
+      ForceDelete: 0,
+      DeleteIdentityCenterApplication: 0,
+    },
   },
   errors: [
     InvalidParameterException,
@@ -2123,7 +2219,10 @@ export const deletePersonalAccessToken: API.OperationMethod<
   DeletePersonalAccessTokenError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, PersonalAccessTokenId: 0 },
+  },
   errors: [
     InvalidParameterException,
     OrganizationNotFoundException,
@@ -2150,7 +2249,7 @@ export const deleteResource: API.OperationMethod<
   DeleteResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationId: 0, ResourceId: 0 } },
   errors: [
     EntityStateException,
     InvalidParameterException,
@@ -2177,7 +2276,7 @@ export const deleteRetentionPolicy: API.OperationMethod<
   DeleteRetentionPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationId: 0, Id: 0 } },
   errors: [
     InvalidParameterException,
     OrganizationNotFoundException,
@@ -2211,7 +2310,7 @@ export const deleteUser: API.OperationMethod<
   DeleteUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationId: 0, UserId: 0 } },
   errors: [
     DirectoryServiceAuthenticationFailedException,
     DirectoryUnavailableException,
@@ -2245,7 +2344,7 @@ export const deregisterFromWorkMail: API.OperationMethod<
   DeregisterFromWorkMailError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationId: 0, EntityId: 0 } },
   errors: [
     EntityNotFoundException,
     EntityStateException,
@@ -2275,7 +2374,7 @@ export const deregisterMailDomain: API.OperationMethod<
   DeregisterMailDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationId: 0, DomainName: 0 } },
   errors: [
     InvalidCustomSesConfigurationException,
     InvalidParameterException,
@@ -2303,7 +2402,7 @@ export const describeEmailMonitoringConfiguration: API.OperationMethod<
   DescribeEmailMonitoringConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationId: 0 } },
   errors: [
     InvalidParameterException,
     OrganizationNotFoundException,
@@ -2330,7 +2429,7 @@ export const describeEntity: API.OperationMethod<
   DescribeEntityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationId: 0, Email: 0 } },
   errors: [
     EntityNotFoundException,
     InvalidParameterException,
@@ -2359,6 +2458,7 @@ export const describeGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { OrganizationId: 0, GroupId: 0 },
     output: { EnabledDate: D.ts, DisabledDate: D.ts },
   },
   errors: [
@@ -2387,7 +2487,7 @@ export const describeIdentityProviderConfiguration: API.OperationMethod<
   DescribeIdentityProviderConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationId: 0 } },
   errors: [
     InvalidParameterException,
     OrganizationNotFoundException,
@@ -2412,7 +2512,7 @@ export const describeInboundDmarcSettings: API.OperationMethod<
   DescribeInboundDmarcSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationId: 0 } },
   errors: [OrganizationNotFoundException, OrganizationStateException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2434,7 +2534,11 @@ export const describeMailboxExportJob: API.OperationMethod<
   DescribeMailboxExportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { StartTime: D.ts, EndTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { JobId: 0, OrganizationId: 0 },
+    output: { StartTime: D.ts, EndTime: D.ts },
+  },
   errors: [
     EntityNotFoundException,
     InvalidParameterException,
@@ -2460,7 +2564,11 @@ export const describeOrganization: API.OperationMethod<
   DescribeOrganizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CompletedDate: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0 },
+    output: { CompletedDate: D.ts },
+  },
   errors: [InvalidParameterException, OrganizationNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2485,6 +2593,7 @@ export const describeResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { OrganizationId: 0, ResourceId: 0 },
     output: { EnabledDate: D.ts, DisabledDate: D.ts, Description: D.secret },
   },
   errors: [
@@ -2518,6 +2627,7 @@ export const describeUser: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { OrganizationId: 0, UserId: 0 },
     output: {
       DisplayName: D.secret,
       EnabledDate: D.ts,
@@ -2568,7 +2678,10 @@ export const disassociateDelegateFromResource: API.OperationMethod<
   DisassociateDelegateFromResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, ResourceId: 0, EntityId: 0 },
+  },
   errors: [
     EntityNotFoundException,
     EntityStateException,
@@ -2601,7 +2714,10 @@ export const disassociateMemberFromGroup: API.OperationMethod<
   DisassociateMemberFromGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, GroupId: 0, MemberId: 0 },
+  },
   errors: [
     DirectoryServiceAuthenticationFailedException,
     DirectoryUnavailableException,
@@ -2634,7 +2750,16 @@ export const getAccessControlEffect: API.OperationMethod<
   GetAccessControlEffectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OrganizationId: 0,
+      IpAddress: 0,
+      Action: 0,
+      UserId: 0,
+      ImpersonationRoleId: 0,
+    },
+  },
   errors: [
     EntityNotFoundException,
     InvalidParameterException,
@@ -2662,7 +2787,7 @@ export const getDefaultRetentionPolicy: API.OperationMethod<
   GetDefaultRetentionPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationId: 0 } },
   errors: [
     EntityNotFoundException,
     InvalidParameterException,
@@ -2691,6 +2816,7 @@ export const getImpersonationRole: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { OrganizationId: 0, ImpersonationRoleId: 0 },
     output: { DateCreated: D.ts, DateModified: D.ts },
   },
   errors: [
@@ -2721,7 +2847,10 @@ export const getImpersonationRoleEffect: API.OperationMethod<
   GetImpersonationRoleEffectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, ImpersonationRoleId: 0, TargetUser: 0 },
+  },
   errors: [
     EntityNotFoundException,
     EntityStateException,
@@ -2750,7 +2879,7 @@ export const getMailboxDetails: API.OperationMethod<
   GetMailboxDetailsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationId: 0, UserId: 0 } },
   errors: [
     EntityNotFoundException,
     InvalidParameterException,
@@ -2777,7 +2906,7 @@ export const getMailDomain: API.OperationMethod<
   GetMailDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationId: 0, DomainName: 0 } },
   errors: [
     InvalidParameterException,
     MailDomainNotFoundException,
@@ -2804,7 +2933,16 @@ export const getMobileDeviceAccessEffect: API.OperationMethod<
   GetMobileDeviceAccessEffectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OrganizationId: 0,
+      DeviceType: 0,
+      DeviceModel: 0,
+      DeviceOperatingSystem: 0,
+      DeviceUserAgent: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     OrganizationNotFoundException,
@@ -2833,6 +2971,7 @@ export const getMobileDeviceAccessOverride: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { OrganizationId: 0, UserId: 0, DeviceId: 0 },
     output: { DateCreated: D.ts, DateModified: D.ts },
   },
   errors: [
@@ -2864,6 +3003,7 @@ export const getPersonalAccessTokenMetadata: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { OrganizationId: 0, PersonalAccessTokenId: 0 },
     output: { DateCreated: D.ts, DateLastUsed: D.ts, ExpiresTime: D.ts },
   },
   errors: [
@@ -2892,6 +3032,7 @@ export const listAccessControlRules: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { OrganizationId: 0 },
     output: { Rules: D.list({ DateCreated: D.ts, DateModified: D.ts }) },
   },
   errors: [OrganizationNotFoundException, OrganizationStateException],
@@ -2918,7 +3059,10 @@ export const listAliases: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, EntityId: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     EntityNotFoundException,
     EntityStateException,
@@ -2953,6 +3097,7 @@ export const listAvailabilityConfigurations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { OrganizationId: 0, MaxResults: 0, NextToken: 0 },
     output: {
       AvailabilityConfigurations: D.list({
         DateCreated: D.ts,
@@ -2996,6 +3141,7 @@ export const listGroupMembers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { OrganizationId: 0, GroupId: 0, NextToken: 0, MaxResults: 0 },
     output: { Members: D.list({ EnabledDate: D.ts, DisabledDate: D.ts }) },
   },
   errors: [
@@ -3033,6 +3179,12 @@ export const listGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      OrganizationId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      Filters: { NamePrefix: 0, PrimaryEmailPrefix: 0, State: 0 },
+    },
     output: { Groups: D.list({ EnabledDate: D.ts, DisabledDate: D.ts }) },
   },
   errors: [
@@ -3068,7 +3220,16 @@ export const listGroupsForEntity: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OrganizationId: 0,
+      EntityId: 0,
+      Filters: { GroupNamePrefix: 0 },
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     EntityNotFoundException,
     EntityStateException,
@@ -3103,6 +3264,7 @@ export const listImpersonationRoles: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { OrganizationId: 0, NextToken: 0, MaxResults: 0 },
     output: { Roles: D.list({ DateCreated: D.ts, DateModified: D.ts }) },
   },
   errors: [
@@ -3138,6 +3300,7 @@ export const listMailboxExportJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { OrganizationId: 0, NextToken: 0, MaxResults: 0 },
     output: { Jobs: D.list({ StartTime: D.ts, EndTime: D.ts }) },
   },
   errors: [
@@ -3172,7 +3335,10 @@ export const listMailboxPermissions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, EntityId: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     EntityNotFoundException,
     InvalidParameterException,
@@ -3204,7 +3370,10 @@ export const listMailDomains: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     InvalidParameterException,
     OrganizationNotFoundException,
@@ -3238,6 +3407,13 @@ export const listMobileDeviceAccessOverrides: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      OrganizationId: 0,
+      UserId: 0,
+      DeviceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { Overrides: D.list({ DateCreated: D.ts, DateModified: D.ts }) },
   },
   errors: [
@@ -3272,6 +3448,7 @@ export const listMobileDeviceAccessRules: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { OrganizationId: 0 },
     output: { Rules: D.list({ DateCreated: D.ts, DateModified: D.ts }) },
   },
   errors: [
@@ -3295,7 +3472,7 @@ export const listOrganizations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [InvalidParameterException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3326,6 +3503,7 @@ export const listPersonalAccessTokens: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { OrganizationId: 0, UserId: 0, NextToken: 0, MaxResults: 0 },
     output: {
       PersonalAccessTokenSummaries: D.list({
         DateCreated: D.ts,
@@ -3371,7 +3549,10 @@ export const listResourceDelegates: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, ResourceId: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     EntityNotFoundException,
     EntityStateException,
@@ -3408,6 +3589,12 @@ export const listResources: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      OrganizationId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      Filters: { NamePrefix: 0, PrimaryEmailPrefix: 0, State: 0 },
+    },
     output: {
       Resources: D.list({
         EnabledDate: D.ts,
@@ -3442,7 +3629,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3466,6 +3653,18 @@ export const listUsers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      OrganizationId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      Filters: {
+        UsernamePrefix: 0,
+        DisplayNamePrefix: 0,
+        PrimaryEmailPrefix: 0,
+        State: 0,
+        IdentityProviderUserIdPrefix: 0,
+      },
+    },
     output: { Users: D.list({ EnabledDate: D.ts, DisabledDate: D.ts }) },
   },
   errors: [
@@ -3503,7 +3702,23 @@ export const putAccessControlRule: API.OperationMethod<
   PutAccessControlRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Effect: 0,
+      Description: 0,
+      IpRanges: 0,
+      NotIpRanges: 0,
+      Actions: 0,
+      NotActions: 0,
+      UserIds: 0,
+      NotUserIds: 0,
+      OrganizationId: 0,
+      ImpersonationRoleIds: 0,
+      NotImpersonationRoleIds: 0,
+    },
+  },
   errors: [
     EntityNotFoundException,
     InvalidParameterException,
@@ -3532,7 +3747,10 @@ export const putEmailMonitoringConfiguration: API.OperationMethod<
   PutEmailMonitoringConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, RoleArn: 0, LogGroupArn: 0 },
+  },
   errors: [
     InvalidParameterException,
     OrganizationNotFoundException,
@@ -3560,7 +3778,15 @@ export const putIdentityProviderConfiguration: API.OperationMethod<
   PutIdentityProviderConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OrganizationId: 0,
+      AuthenticationMode: 0,
+      IdentityCenterConfiguration: { InstanceArn: 0, ApplicationArn: 0 },
+      PersonalAccessTokenConfiguration: { Status: 0, LifetimeInDays: 0 },
+    },
+  },
   errors: [
     InvalidParameterException,
     OrganizationNotFoundException,
@@ -3585,7 +3811,7 @@ export const putInboundDmarcSettings: API.OperationMethod<
   PutInboundDmarcSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationId: 0, Enforced: 0 } },
   errors: [OrganizationNotFoundException, OrganizationStateException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3609,7 +3835,15 @@ export const putMailboxPermissions: API.OperationMethod<
   PutMailboxPermissionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OrganizationId: 0,
+      EntityId: 0,
+      GranteeId: 0,
+      PermissionValues: 0,
+    },
+  },
   errors: [
     EntityNotFoundException,
     EntityStateException,
@@ -3638,7 +3872,16 @@ export const putMobileDeviceAccessOverride: API.OperationMethod<
   PutMobileDeviceAccessOverrideError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OrganizationId: 0,
+      UserId: 0,
+      DeviceId: 0,
+      Effect: 0,
+      Description: 0,
+    },
+  },
   errors: [
     EntityNotFoundException,
     EntityStateException,
@@ -3666,7 +3909,16 @@ export const putRetentionPolicy: API.OperationMethod<
   PutRetentionPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OrganizationId: 0,
+      Id: 0,
+      Name: 0,
+      Description: 0,
+      FolderConfigurations: D.list({ Name: 0, Action: 0, Period: 0 }),
+    },
+  },
   errors: [
     InvalidParameterException,
     LimitExceededException,
@@ -3697,7 +3949,11 @@ export const registerMailDomain: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      OrganizationId: 0,
+      DomainName: 0,
+    },
   },
   errors: [
     InvalidParameterException,
@@ -3741,7 +3997,10 @@ export const registerToWorkMail: API.OperationMethod<
   RegisterToWorkMailError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, EntityId: 0, Email: 0 },
+  },
   errors: [
     DirectoryServiceAuthenticationFailedException,
     DirectoryUnavailableException,
@@ -3781,7 +4040,10 @@ export const resetPassword: API.OperationMethod<
   ResetPasswordError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, UserId: 0, Password: 0 },
+  },
   errors: [
     DirectoryServiceAuthenticationFailedException,
     DirectoryUnavailableException,
@@ -3819,7 +4081,16 @@ export const startMailboxExportJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      OrganizationId: 0,
+      EntityId: 0,
+      Description: 0,
+      RoleArn: 0,
+      KmsKeyArn: 0,
+      S3BucketName: 0,
+      S3Prefix: 0,
+    },
   },
   errors: [
     EntityNotFoundException,
@@ -3849,7 +4120,10 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceARN: 0, Tags: D.list({ Key: 0, Value: 0 }) },
+  },
   errors: [
     InvalidParameterException,
     OrganizationStateException,
@@ -3882,7 +4156,15 @@ export const testAvailabilityConfiguration: API.OperationMethod<
   TestAvailabilityConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OrganizationId: 0,
+      DomainName: 0,
+      EwsProvider: i_EwsAvailabilityProvider,
+      LambdaProvider: i_LambdaAvailabilityProvider,
+    },
+  },
   errors: [
     InvalidParameterException,
     OrganizationNotFoundException,
@@ -3905,7 +4187,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3928,7 +4210,15 @@ export const updateAvailabilityConfiguration: API.OperationMethod<
   UpdateAvailabilityConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OrganizationId: 0,
+      DomainName: 0,
+      EwsProvider: i_EwsAvailabilityProvider,
+      LambdaProvider: i_LambdaAvailabilityProvider,
+    },
+  },
   errors: [
     InvalidParameterException,
     OrganizationNotFoundException,
@@ -3956,7 +4246,7 @@ export const updateDefaultMailDomain: API.OperationMethod<
   UpdateDefaultMailDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationId: 0, DomainName: 0 } },
   errors: [
     InvalidParameterException,
     MailDomainNotFoundException,
@@ -3986,7 +4276,10 @@ export const updateGroup: API.OperationMethod<
   UpdateGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, GroupId: 0, HiddenFromGlobalAddressList: 0 },
+  },
   errors: [
     EntityNotFoundException,
     EntityStateException,
@@ -4018,7 +4311,17 @@ export const updateImpersonationRole: API.OperationMethod<
   UpdateImpersonationRoleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OrganizationId: 0,
+      ImpersonationRoleId: 0,
+      Name: 0,
+      Type: 0,
+      Description: 0,
+      Rules: D.list(i_ImpersonationRule),
+    },
+  },
   errors: [
     EntityNotFoundException,
     EntityStateException,
@@ -4050,7 +4353,10 @@ export const updateMailboxQuota: API.OperationMethod<
   UpdateMailboxQuotaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, UserId: 0, MailboxQuota: 0 },
+  },
   errors: [
     EntityNotFoundException,
     EntityStateException,
@@ -4078,7 +4384,24 @@ export const updateMobileDeviceAccessRule: API.OperationMethod<
   UpdateMobileDeviceAccessRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OrganizationId: 0,
+      MobileDeviceAccessRuleId: 0,
+      Name: 0,
+      Description: 0,
+      Effect: 0,
+      DeviceTypes: 0,
+      NotDeviceTypes: 0,
+      DeviceModels: 0,
+      NotDeviceModels: 0,
+      DeviceOperatingSystems: 0,
+      NotDeviceOperatingSystems: 0,
+      DeviceUserAgents: 0,
+      NotDeviceUserAgents: 0,
+    },
+  },
   errors: [
     EntityNotFoundException,
     InvalidParameterException,
@@ -4114,7 +4437,10 @@ export const updatePrimaryEmailAddress: API.OperationMethod<
   UpdatePrimaryEmailAddressError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OrganizationId: 0, EntityId: 0, Email: 0 },
+  },
   errors: [
     DirectoryServiceAuthenticationFailedException,
     DirectoryUnavailableException,
@@ -4158,7 +4484,22 @@ export const updateResource: API.OperationMethod<
   UpdateResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OrganizationId: 0,
+      ResourceId: 0,
+      Name: 0,
+      BookingOptions: {
+        AutoAcceptRequests: 0,
+        AutoDeclineRecurringRequests: 0,
+        AutoDeclineConflictingRequests: 0,
+      },
+      Description: 0,
+      Type: 0,
+      HiddenFromGlobalAddressList: 0,
+    },
+  },
   errors: [
     DirectoryUnavailableException,
     EmailAddressInUseException,
@@ -4199,7 +4540,29 @@ export const updateUser: API.OperationMethod<
   UpdateUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OrganizationId: 0,
+      UserId: 0,
+      Role: 0,
+      DisplayName: 0,
+      FirstName: 0,
+      LastName: 0,
+      HiddenFromGlobalAddressList: 0,
+      Initials: 0,
+      Telephone: 0,
+      Street: 0,
+      JobTitle: 0,
+      City: 0,
+      Company: 0,
+      ZipCode: 0,
+      Department: 0,
+      Country: 0,
+      Office: 0,
+      IdentityProviderUserId: 0,
+    },
+  },
   errors: [
     DirectoryServiceAuthenticationFailedException,
     DirectoryUnavailableException,
@@ -4214,3 +4577,18 @@ export const updateUser: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateUser",
 })) as any;
+
+const i_EwsAvailabilityProvider: D.LazyStruct = () => ({
+  EwsEndpoint: 0,
+  EwsUsername: 0,
+  EwsPassword: 0,
+});
+const i_ImpersonationRule: D.LazyStruct = () => ({
+  ImpersonationRuleId: 0,
+  Name: 0,
+  Description: 0,
+  Effect: 0,
+  TargetUsers: 0,
+  NotTargetUsers: 0,
+});
+const i_LambdaAvailabilityProvider: D.LazyStruct = () => ({ LambdaArn: 0 });

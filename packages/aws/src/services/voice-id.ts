@@ -625,7 +625,11 @@ export const associateFraudster: API.OperationMethod<
   AssociateFraudsterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Fraudster: o_Fraudster } },
+  descriptor: {
+    service: svc,
+    input: { DomainId: 0, WatchlistId: 0, FraudsterId: 0 },
+    output: { Fraudster: o_Fraudster },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -661,7 +665,13 @@ export const createDomain: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Description: 0,
+      ServerSideEncryptionConfiguration: i_ServerSideEncryptionConfiguration,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
     output: { Domain: o_Domain },
   },
   errors: [
@@ -698,7 +708,12 @@ export const createWatchlist: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      DomainId: 0,
+      Name: 0,
+      Description: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { Watchlist: o_Watchlist },
   },
   errors: [
@@ -732,7 +747,7 @@ export const deleteDomain: API.OperationMethod<
   DeleteDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -763,7 +778,7 @@ export const deleteFraudster: API.OperationMethod<
   DeleteFraudsterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainId: 0, FraudsterId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -794,7 +809,7 @@ export const deleteSpeaker: API.OperationMethod<
   DeleteSpeakerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainId: 0, SpeakerId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -827,7 +842,7 @@ export const deleteWatchlist: API.OperationMethod<
   DeleteWatchlistError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainId: 0, WatchlistId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -857,7 +872,11 @@ export const describeDomain: API.OperationMethod<
   DescribeDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Domain: o_Domain } },
+  descriptor: {
+    service: svc,
+    input: { DomainId: 0 },
+    output: { Domain: o_Domain },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -886,7 +905,11 @@ export const describeFraudster: API.OperationMethod<
   DescribeFraudsterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Fraudster: o_Fraudster } },
+  descriptor: {
+    service: svc,
+    input: { DomainId: 0, FraudsterId: 0 },
+    output: { Fraudster: o_Fraudster },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -915,7 +938,11 @@ export const describeFraudsterRegistrationJob: API.OperationMethod<
   DescribeFraudsterRegistrationJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Job: o_FraudsterRegistrationJob } },
+  descriptor: {
+    service: svc,
+    input: { DomainId: 0, JobId: 0 },
+    output: { Job: o_FraudsterRegistrationJob },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -944,7 +971,11 @@ export const describeSpeaker: API.OperationMethod<
   DescribeSpeakerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Speaker: o_Speaker } },
+  descriptor: {
+    service: svc,
+    input: { DomainId: 0, SpeakerId: 0 },
+    output: { Speaker: o_Speaker },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -973,7 +1004,11 @@ export const describeSpeakerEnrollmentJob: API.OperationMethod<
   DescribeSpeakerEnrollmentJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Job: o_SpeakerEnrollmentJob } },
+  descriptor: {
+    service: svc,
+    input: { DomainId: 0, JobId: 0 },
+    output: { Job: o_SpeakerEnrollmentJob },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1002,7 +1037,11 @@ export const describeWatchlist: API.OperationMethod<
   DescribeWatchlistError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Watchlist: o_Watchlist } },
+  descriptor: {
+    service: svc,
+    input: { DomainId: 0, WatchlistId: 0 },
+    output: { Watchlist: o_Watchlist },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1034,7 +1073,11 @@ export const disassociateFraudster: API.OperationMethod<
   DisassociateFraudsterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Fraudster: o_Fraudster } },
+  descriptor: {
+    service: svc,
+    input: { DomainId: 0, WatchlistId: 0, FraudsterId: 0 },
+    output: { Fraudster: o_Fraudster },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1068,6 +1111,7 @@ export const evaluateSession: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DomainId: 0, SessionNameOrId: 0 },
     output: {
       AuthenticationResult: {
         AudioAggregationStartedAt: D.ts,
@@ -1111,6 +1155,7 @@ export const listDomains: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
     output: {
       DomainSummaries: D.list({
         Name: D.secret,
@@ -1158,6 +1203,7 @@ export const listFraudsterRegistrationJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DomainId: 0, JobStatus: 0, MaxResults: 0, NextToken: 0 },
     output: {
       JobSummaries: D.list({
         JobName: D.secret,
@@ -1203,6 +1249,7 @@ export const listFraudsters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DomainId: 0, WatchlistId: 0, MaxResults: 0, NextToken: 0 },
     output: { FraudsterSummaries: D.list({ CreatedAt: D.ts }) },
   },
   errors: [
@@ -1244,6 +1291,7 @@ export const listSpeakerEnrollmentJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DomainId: 0, JobStatus: 0, MaxResults: 0, NextToken: 0 },
     output: {
       JobSummaries: D.list({
         JobName: D.secret,
@@ -1289,6 +1337,7 @@ export const listSpeakers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DomainId: 0, MaxResults: 0, NextToken: 0 },
     output: {
       SpeakerSummaries: D.list({
         CustomerSpeakerId: D.secret,
@@ -1334,6 +1383,7 @@ export const listTagsForResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResourceArn: 0 },
     output: { Tags: D.list({ Key: D.secret, Value: D.secret }) },
   },
   errors: [
@@ -1367,6 +1417,7 @@ export const listWatchlists: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DomainId: 0, MaxResults: 0, NextToken: 0 },
     output: {
       WatchlistSummaries: D.list({
         Name: D.secret,
@@ -1417,7 +1468,11 @@ export const optOutSpeaker: API.OperationMethod<
   OptOutSpeakerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Speaker: o_Speaker } },
+  descriptor: {
+    service: svc,
+    input: { DomainId: 0, SpeakerId: 0 },
+    output: { Speaker: o_Speaker },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1452,7 +1507,19 @@ export const startFraudsterRegistrationJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      JobName: 0,
+      DomainId: 0,
+      DataAccessRoleArn: 0,
+      RegistrationConfig: {
+        DuplicateRegistrationAction: 0,
+        FraudsterSimilarityThreshold: 0,
+        WatchlistIds: 0,
+      },
+      InputDataConfig: i_InputDataConfig,
+      OutputDataConfig: i_OutputDataConfig,
+    },
     output: { Job: o_FraudsterRegistrationJob },
   },
   errors: [
@@ -1489,7 +1556,22 @@ export const startSpeakerEnrollmentJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      JobName: 0,
+      DomainId: 0,
+      DataAccessRoleArn: 0,
+      EnrollmentConfig: {
+        ExistingEnrollmentAction: 0,
+        FraudDetectionConfig: {
+          FraudDetectionAction: 0,
+          RiskThreshold: 0,
+          WatchlistIds: 0,
+        },
+      },
+      InputDataConfig: i_InputDataConfig,
+      OutputDataConfig: i_OutputDataConfig,
+    },
     output: { Job: o_SpeakerEnrollmentJob },
   },
   errors: [
@@ -1523,7 +1605,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1554,7 +1636,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1587,7 +1669,16 @@ export const updateDomain: API.OperationMethod<
   UpdateDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Domain: o_Domain } },
+  descriptor: {
+    service: svc,
+    input: {
+      DomainId: 0,
+      Name: 0,
+      Description: 0,
+      ServerSideEncryptionConfiguration: i_ServerSideEncryptionConfiguration,
+    },
+    output: { Domain: o_Domain },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1618,7 +1709,11 @@ export const updateWatchlist: API.OperationMethod<
   UpdateWatchlistError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Watchlist: o_Watchlist } },
+  descriptor: {
+    service: svc,
+    input: { DomainId: 0, WatchlistId: 0, Name: 0, Description: 0 },
+    output: { Watchlist: o_Watchlist },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1632,6 +1727,12 @@ export const updateWatchlist: API.OperationMethod<
   operationName: "UpdateWatchlist",
 })) as any;
 
+const i_InputDataConfig: D.LazyStruct = () => ({ S3Uri: 0 });
+const i_OutputDataConfig: D.LazyStruct = () => ({ S3Uri: 0, KmsKeyId: 0 });
+const i_ServerSideEncryptionConfiguration: D.LazyStruct = () => ({
+  KmsKeyId: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Domain: D.LazyStruct = () => ({
   Name: D.secret,
   Description: D.secret,

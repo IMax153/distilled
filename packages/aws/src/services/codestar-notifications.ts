@@ -350,7 +350,16 @@ export const createNotificationRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /createNotificationRule",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      EventTypeIds: 0,
+      Resource: 0,
+      Targets: D.list(i_Target),
+      DetailType: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: 0,
+      Status: 0,
+    },
     body: true,
   },
   errors: [
@@ -383,6 +392,7 @@ export const deleteNotificationRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /deleteNotificationRule",
+    input: { Arn: 0 },
     body: true,
   },
   errors: [
@@ -405,7 +415,12 @@ export const deleteTarget: API.OperationMethod<
   DeleteTargetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /deleteTarget", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /deleteTarget",
+    input: { TargetAddress: 0, ForceUnsubscribeAll: 0 },
+    body: true,
+  },
   errors: [ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -428,6 +443,7 @@ export const describeNotificationRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describeNotificationRule",
+    input: { Arn: 0 },
     output: {
       Name: D.secret,
       Targets: D.list(o_TargetSummary),
@@ -456,7 +472,16 @@ export const listEventTypes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   EventTypeSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /listEventTypes", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /listEventTypes",
+    input: {
+      Filters: D.list({ Name: 0, Value: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+    body: true,
+  },
   errors: [InvalidNextTokenException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -483,7 +508,16 @@ export const listNotificationRules: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   NotificationRuleSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /listNotificationRules", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /listNotificationRules",
+    input: {
+      Filters: D.list({ Name: 0, Value: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+    body: true,
+  },
   errors: [InvalidNextTokenException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -509,7 +543,12 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /listTagsForResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /listTagsForResource",
+    input: { Arn: 0 },
+    body: true,
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -533,6 +572,11 @@ export const listTargets: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listTargets",
+    input: {
+      Filters: D.list({ Name: 0, Value: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { Targets: D.list(o_TargetSummary) },
     body: true,
   },
@@ -564,7 +608,12 @@ export const subscribe: API.OperationMethod<
   SubscribeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /subscribe", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /subscribe",
+    input: { Arn: 0, Target: i_Target, ClientRequestToken: 0 },
+    body: true,
+  },
   errors: [
     ConfigurationException,
     ResourceNotFoundException,
@@ -590,7 +639,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tagResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tagResource",
+    input: { Arn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     ConcurrentModificationException,
     LimitExceededException,
@@ -614,7 +668,12 @@ export const unsubscribe: API.OperationMethod<
   UnsubscribeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /unsubscribe", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /unsubscribe",
+    input: { Arn: 0, TargetAddress: 0 },
+    body: true,
+  },
   errors: [ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -640,7 +699,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /untagResource/{Arn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { Arn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     ConcurrentModificationException,
@@ -674,6 +733,14 @@ export const updateNotificationRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /updateNotificationRule",
+    input: {
+      Arn: 0,
+      Name: 0,
+      Status: 0,
+      EventTypeIds: 0,
+      Targets: D.list(i_Target),
+      DetailType: 0,
+    },
     body: true,
   },
   errors: [
@@ -686,4 +753,5 @@ export const updateNotificationRule: API.OperationMethod<
   operationName: "UpdateNotificationRule",
 })) as any;
 
+const i_Target: D.LazyStruct = () => ({ TargetType: 0, TargetAddress: 0 });
 const o_TargetSummary: D.LazyStruct = () => ({ TargetAddress: D.secret });

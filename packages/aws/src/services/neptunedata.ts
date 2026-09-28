@@ -1138,7 +1138,11 @@ export const cancelGremlinQuery: API.OperationMethod<
   CancelGremlinQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /gremlin/status/{queryId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /gremlin/status/{queryId}",
+    input: { queryId: 0 },
+  },
   errors: [
     BadRequestException,
     ClientTimeoutException,
@@ -1186,7 +1190,11 @@ export const cancelLoaderJob: API.OperationMethod<
   CancelLoaderJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /loader/{loadId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /loader/{loadId}",
+    input: { loadId: 0 },
+  },
   errors: [
     BadRequestException,
     BulkLoadIdNotFoundException,
@@ -1235,6 +1243,7 @@ export const cancelMLDataProcessingJob: API.OperationMethod<
     service: svc,
     http: "DELETE /ml/dataprocessing/{id}",
     input: {
+      id: 0,
       neptuneIamRoleArn: D.m({ query: "neptuneIamRoleArn" }),
       clean: D.m({ query: "clean" }),
     },
@@ -1285,6 +1294,7 @@ export const cancelMLModelTrainingJob: API.OperationMethod<
     service: svc,
     http: "DELETE /ml/modeltraining/{id}",
     input: {
+      id: 0,
       neptuneIamRoleArn: D.m({ query: "neptuneIamRoleArn" }),
       clean: D.m({ query: "clean" }),
     },
@@ -1335,6 +1345,7 @@ export const cancelMLModelTransformJob: API.OperationMethod<
     service: svc,
     http: "DELETE /ml/modeltransform/{id}",
     input: {
+      id: 0,
       neptuneIamRoleArn: D.m({ query: "neptuneIamRoleArn" }),
       clean: D.m({ query: "clean" }),
     },
@@ -1388,7 +1399,7 @@ export const cancelOpenCypherQuery: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /opencypher/status/{queryId}",
-    input: { silent: D.m({ query: "silent" }) },
+    input: { queryId: 0, silent: D.m({ query: "silent" }) },
   },
   errors: [
     BadRequestException,
@@ -1436,7 +1447,22 @@ export const createMLEndpoint: API.OperationMethod<
   CreateMLEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /ml/endpoints", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ml/endpoints",
+    input: {
+      id: 0,
+      mlModelTrainingJobId: 0,
+      mlModelTransformJobId: 0,
+      update: 0,
+      neptuneIamRoleArn: 0,
+      modelName: 0,
+      instanceType: 0,
+      instanceCount: 0,
+      volumeEncryptionKMSKey: 0,
+    },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ClientTimeoutException,
@@ -1483,6 +1509,7 @@ export const deleteMLEndpoint: API.OperationMethod<
     service: svc,
     http: "DELETE /ml/endpoints/{id}",
     input: {
+      id: 0,
       neptuneIamRoleArn: D.m({ query: "neptuneIamRoleArn" }),
       clean: D.m({ query: "clean" }),
     },
@@ -1635,7 +1662,12 @@ export const executeFastReset: API.OperationMethod<
   ExecuteFastResetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /system", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /system",
+    input: { action: 0, token: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ClientTimeoutException,
@@ -1705,7 +1737,7 @@ export const executeGremlinExplainQuery: API.OperationMethod<
     service: svc,
     http: "POST /gremlin/explain",
     input: { gremlinQuery: D.m({ wire: "gremlin" }) },
-    output: { output: D.m({ payload: true, shape: D.stream }) },
+    output: { output: D.m({ payload: true, shape: D.blob }) },
     body: true,
   },
   errors: [
@@ -1780,7 +1812,7 @@ export const executeGremlinProfileQuery: API.OperationMethod<
       serializer: D.m({ wire: "profile.serializer" }),
       indexOps: D.m({ wire: "profile.indexOps" }),
     },
-    output: { output: D.m({ payload: true, shape: D.stream }) },
+    output: { output: D.m({ payload: true, shape: D.blob }) },
     body: true,
   },
   errors: [
@@ -1928,9 +1960,10 @@ export const executeOpenCypherExplainQuery: API.OperationMethod<
     http: "POST /opencypher/explain",
     input: {
       openCypherQuery: D.m({ wire: "query" }),
+      parameters: 0,
       explainMode: D.m({ wire: "explain" }),
     },
-    output: { results: D.m({ payload: true, shape: D.stream }) },
+    output: { results: D.m({ payload: true, shape: D.blob }) },
     body: true,
   },
   errors: [
@@ -2010,7 +2043,7 @@ export const executeOpenCypherQuery: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /opencypher",
-    input: { openCypherQuery: D.m({ wire: "query" }) },
+    input: { openCypherQuery: D.m({ wire: "query" }), parameters: 0 },
     body: true,
   },
   errors: [
@@ -2109,7 +2142,11 @@ export const getGremlinQueryStatus: API.OperationMethod<
   GetGremlinQueryStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /gremlin/status/{queryId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /gremlin/status/{queryId}",
+    input: { queryId: 0 },
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -2165,6 +2202,7 @@ export const getLoaderJobStatus: API.OperationMethod<
     service: svc,
     http: "GET /loader/{loadId}",
     input: {
+      loadId: 0,
       details: D.m({ query: "details" }),
       errors: D.m({ query: "errors" }),
       page: D.m({ query: "page" }),
@@ -2218,7 +2256,7 @@ export const getMLDataProcessingJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /ml/dataprocessing/{id}",
-    input: { neptuneIamRoleArn: D.m({ query: "neptuneIamRoleArn" }) },
+    input: { id: 0, neptuneIamRoleArn: D.m({ query: "neptuneIamRoleArn" }) },
   },
   errors: [
     BadRequestException,
@@ -2265,7 +2303,7 @@ export const getMLEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /ml/endpoints/{id}",
-    input: { neptuneIamRoleArn: D.m({ query: "neptuneIamRoleArn" }) },
+    input: { id: 0, neptuneIamRoleArn: D.m({ query: "neptuneIamRoleArn" }) },
   },
   errors: [
     BadRequestException,
@@ -2312,7 +2350,7 @@ export const getMLModelTrainingJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /ml/modeltraining/{id}",
-    input: { neptuneIamRoleArn: D.m({ query: "neptuneIamRoleArn" }) },
+    input: { id: 0, neptuneIamRoleArn: D.m({ query: "neptuneIamRoleArn" }) },
   },
   errors: [
     BadRequestException,
@@ -2359,7 +2397,7 @@ export const getMLModelTransformJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /ml/modeltransform/{id}",
-    input: { neptuneIamRoleArn: D.m({ query: "neptuneIamRoleArn" }) },
+    input: { id: 0, neptuneIamRoleArn: D.m({ query: "neptuneIamRoleArn" }) },
   },
   errors: [
     BadRequestException,
@@ -2411,7 +2449,11 @@ export const getOpenCypherQueryStatus: API.OperationMethod<
   GetOpenCypherQueryStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /opencypher/status/{queryId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /opencypher/status/{queryId}",
+    input: { queryId: 0 },
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -3193,6 +3235,7 @@ export const managePropertygraphStatistics: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /propertygraph/statistics",
+    input: { mode: 0 },
     body: true,
   },
   errors: [
@@ -3241,7 +3284,12 @@ export const manageSparqlStatistics: API.OperationMethod<
   ManageSparqlStatisticsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /sparql/statistics", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /sparql/statistics",
+    input: { mode: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -3292,7 +3340,21 @@ export const startLoaderJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /loader",
-    input: { s3BucketRegion: D.m({ wire: "region" }) },
+    input: {
+      source: 0,
+      format: 0,
+      s3BucketRegion: D.m({ wire: "region" }),
+      iamRoleArn: 0,
+      mode: 0,
+      failOnError: 0,
+      parallelism: 0,
+      parserConfiguration: 0,
+      updateSingleCardinalityProperties: 0,
+      queueRequest: 0,
+      dependencies: 0,
+      userProvidedEdgeIds: 0,
+      edgeOnlyLoad: 0,
+    },
     body: true,
   },
   errors: [
@@ -3340,7 +3402,28 @@ export const startMLDataProcessingJob: API.OperationMethod<
   StartMLDataProcessingJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /ml/dataprocessing", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ml/dataprocessing",
+    input: {
+      id: 0,
+      previousDataProcessingJobId: 0,
+      inputDataS3Location: 0,
+      processedDataS3Location: 0,
+      sagemakerIamRoleArn: 0,
+      neptuneIamRoleArn: 0,
+      processingInstanceType: 0,
+      processingInstanceVolumeSizeInGB: 0,
+      processingTimeOutInSeconds: 0,
+      modelType: 0,
+      configFileName: 0,
+      subnets: 0,
+      securityGroupIds: 0,
+      volumeEncryptionKMSKey: 0,
+      s3OutputEncryptionKMSKey: 0,
+    },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ClientTimeoutException,
@@ -3383,7 +3466,35 @@ export const startMLModelTrainingJob: API.OperationMethod<
   StartMLModelTrainingJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /ml/modeltraining", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ml/modeltraining",
+    input: {
+      id: 0,
+      previousModelTrainingJobId: 0,
+      dataProcessingJobId: 0,
+      trainModelS3Location: 0,
+      sagemakerIamRoleArn: 0,
+      neptuneIamRoleArn: 0,
+      baseProcessingInstanceType: 0,
+      trainingInstanceType: 0,
+      trainingInstanceVolumeSizeInGB: 0,
+      trainingTimeOutInSeconds: 0,
+      maxHPONumberOfTrainingJobs: 0,
+      maxHPOParallelTrainingJobs: 0,
+      subnets: 0,
+      securityGroupIds: 0,
+      volumeEncryptionKMSKey: 0,
+      s3OutputEncryptionKMSKey: 0,
+      enableManagedSpotTraining: 0,
+      customModelTrainingParameters: {
+        sourceS3DirectoryPath: 0,
+        trainingEntryPointScript: 0,
+        transformEntryPointScript: 0,
+      },
+    },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ClientTimeoutException,
@@ -3426,7 +3537,30 @@ export const startMLModelTransformJob: API.OperationMethod<
   StartMLModelTransformJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /ml/modeltransform", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ml/modeltransform",
+    input: {
+      id: 0,
+      dataProcessingJobId: 0,
+      mlModelTrainingJobId: 0,
+      trainingJobName: 0,
+      modelTransformOutputS3Location: 0,
+      sagemakerIamRoleArn: 0,
+      neptuneIamRoleArn: 0,
+      customModelTransformParameters: {
+        sourceS3DirectoryPath: 0,
+        transformEntryPointScript: 0,
+      },
+      baseProcessingInstanceType: 0,
+      baseProcessingInstanceVolumeSizeInGB: 0,
+      subnets: 0,
+      securityGroupIds: 0,
+      volumeEncryptionKMSKey: 0,
+      s3OutputEncryptionKMSKey: 0,
+    },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ClientTimeoutException,

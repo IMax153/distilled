@@ -5274,7 +5274,7 @@ export const acceptCertificateTransfer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /accept-certificate-transfer/{certificateId}",
-    input: { setAsActive: D.m({ query: "setAsActive" }) },
+    input: { certificateId: 0, setAsActive: D.m({ query: "setAsActive" }) },
   },
   errors: [
     InternalFailureException,
@@ -5310,6 +5310,12 @@ export const addThingToBillingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /billing-groups/addThingToBillingGroup",
+    input: {
+      billingGroupName: 0,
+      billingGroupArn: 0,
+      thingName: 0,
+      thingArn: 0,
+    },
     body: true,
   },
   errors: [
@@ -5343,6 +5349,13 @@ export const addThingToThingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /thing-groups/addThingToThingGroup",
+    input: {
+      thingGroupName: 0,
+      thingGroupArn: 0,
+      thingName: 0,
+      thingArn: 0,
+      overrideDynamicGroups: 0,
+    },
     body: true,
   },
   errors: [
@@ -5378,7 +5391,12 @@ export const associateSbomWithPackageVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /packages/{packageName}/versions/{versionName}/sbom",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      packageName: 0,
+      versionName: 0,
+      sbom: { s3Location: i_S3Location },
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -5423,7 +5441,12 @@ export const associateTargetsWithJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /jobs/{jobId}/targets",
-    input: { namespaceId: D.m({ query: "namespaceId" }) },
+    input: {
+      targets: 0,
+      jobId: 0,
+      comment: 0,
+      namespaceId: D.m({ query: "namespaceId" }),
+    },
     body: true,
   },
   errors: [
@@ -5462,6 +5485,7 @@ export const attachPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /target-policies/{policyName}",
+    input: { policyName: 0, target: 0 },
     body: true,
   },
   errors: [
@@ -5505,7 +5529,10 @@ export const attachPrincipalPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /principal-policies/{policyName}",
-    input: { principal: D.m({ header: "x-amzn-iot-principal" }) },
+    input: {
+      policyName: 0,
+      principal: D.m({ header: "x-amzn-iot-principal" }),
+    },
   },
   errors: [
     InternalFailureException,
@@ -5547,6 +5574,7 @@ export const attachSecurityProfile: API.OperationMethod<
     service: svc,
     http: "PUT /security-profiles/{securityProfileName}/targets",
     input: {
+      securityProfileName: 0,
       securityProfileTargetArn: D.m({ query: "securityProfileTargetArn" }),
     },
   },
@@ -5587,6 +5615,7 @@ export const attachThingPrincipal: API.OperationMethod<
     service: svc,
     http: "PUT /things/{thingName}/principals",
     input: {
+      thingName: 0,
       principal: D.m({ header: "x-amzn-principal" }),
       thingPrincipalType: D.m({ query: "thingPrincipalType" }),
     },
@@ -5626,6 +5655,7 @@ export const cancelAuditMitigationActionsTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /audit/mitigationactions/tasks/{taskId}/cancel",
+    input: { taskId: 0 },
   },
   errors: [
     InternalFailureException,
@@ -5655,7 +5685,11 @@ export const cancelAuditTask: API.OperationMethod<
   CancelAuditTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /audit/tasks/{taskId}/cancel" },
+  descriptor: {
+    service: svc,
+    http: "PUT /audit/tasks/{taskId}/cancel",
+    input: { taskId: 0 },
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -5698,6 +5732,7 @@ export const cancelCertificateTransfer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /cancel-certificate-transfer/{certificateId}",
+    input: { certificateId: 0 },
   },
   errors: [
     InternalFailureException,
@@ -5735,6 +5770,7 @@ export const cancelDetectMitigationActionsTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /detect/mitigationactions/tasks/{taskId}/cancel",
+    input: { taskId: 0 },
   },
   errors: [
     InternalFailureException,
@@ -5768,7 +5804,12 @@ export const cancelJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /jobs/{jobId}/cancel",
-    input: { force: D.m({ query: "force" }) },
+    input: {
+      jobId: 0,
+      reasonCode: 0,
+      comment: 0,
+      force: D.m({ query: "force" }),
+    },
     body: true,
   },
   errors: [
@@ -5805,7 +5846,13 @@ export const cancelJobExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /things/{thingName}/jobs/{jobId}/cancel",
-    input: { force: D.m({ query: "force" }) },
+    input: {
+      jobId: 0,
+      thingName: 0,
+      force: D.m({ query: "force" }),
+      expectedVersion: 0,
+      statusDetails: 0,
+    },
     body: true,
   },
   errors: [
@@ -5840,7 +5887,7 @@ export const clearDefaultAuthorizer: API.OperationMethod<
   ClearDefaultAuthorizerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /default-authorizer" },
+  descriptor: { service: svc, http: "DELETE /default-authorizer", input: {} },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -5878,6 +5925,7 @@ export const confirmTopicRuleDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /confirmdestination/{confirmationToken+}",
+    input: { confirmationToken: 0 },
   },
   errors: [
     ConflictingResourceUpdateException,
@@ -5912,7 +5960,14 @@ export const createAuditSuppression: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /audit/suppressions/create",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      checkName: 0,
+      resourceIdentifier: i_ResourceIdentifier,
+      expirationDate: 0,
+      suppressIndefinitely: 0,
+      description: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -5950,6 +6005,16 @@ export const createAuthorizer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /authorizer/{authorizerName}",
+    input: {
+      authorizerName: 0,
+      authorizerFunctionArn: 0,
+      tokenKeyName: 0,
+      tokenSigningPublicKeys: 0,
+      status: 0,
+      tags: D.list(i_Tag),
+      signingDisabled: 0,
+      enableCachingForHttp: 0,
+    },
     body: true,
   },
   errors: [
@@ -5988,6 +6053,11 @@ export const createBillingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /billing-groups/{billingGroupName}",
+    input: {
+      billingGroupName: 0,
+      billingGroupProperties: i_BillingGroupProperties,
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -6063,7 +6133,10 @@ export const createCertificateFromCsr: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /certificates",
-    input: { setAsActive: D.m({ query: "setAsActive" }) },
+    input: {
+      certificateSigningRequest: 0,
+      setAsActive: D.m({ query: "setAsActive" }),
+    },
     body: true,
   },
   errors: [
@@ -6111,7 +6184,13 @@ export const createCertificateProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /certificate-providers/{certificateProviderName}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      certificateProviderName: 0,
+      lambdaFunctionArn: 0,
+      accountDefaultForOperations: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -6145,7 +6224,39 @@ export const createCommand: API.OperationMethod<
   CreateCommandError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /commands/{commandId}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /commands/{commandId}",
+    input: {
+      commandId: 0,
+      namespace: 0,
+      displayName: 0,
+      description: 0,
+      payload: { content: 0, contentType: 0 },
+      payloadTemplate: 0,
+      preprocessor: { awsJsonSubstitution: { outputFormat: 0 } },
+      mandatoryParameters: D.list({
+        name: 0,
+        type: 0,
+        value: i_CommandParameterValue,
+        defaultValue: i_CommandParameterValue,
+        valueConditions: D.list({
+          comparisonOperator: 0,
+          operand: {
+            number: 0,
+            numbers: 0,
+            string: 0,
+            strings: 0,
+            numberRange: { min: 0, max: 0 },
+          },
+        }),
+        description: 0,
+      }),
+      roleArn: 0,
+      tags: D.list(i_Tag),
+    },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -6184,7 +6295,13 @@ export const createCustomMetric: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /custom-metric/{metricName}",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      metricName: 0,
+      displayName: 0,
+      metricType: 0,
+      tags: D.list(i_Tag),
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -6223,7 +6340,13 @@ export const createDimension: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /dimensions/{name}",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      type: 0,
+      stringValues: 0,
+      tags: D.list(i_Tag),
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -6262,6 +6385,20 @@ export const createDomainConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domainConfigurations/{domainConfigurationName}",
+    input: {
+      domainConfigurationName: 0,
+      domainName: 0,
+      serverCertificateArns: 0,
+      validationCertificateArn: 0,
+      authorizerConfig: i_AuthorizerConfig,
+      serviceType: 0,
+      tags: D.list(i_Tag),
+      tlsConfig: i_TlsConfig,
+      serverCertificateConfig: i_ServerCertificateConfig,
+      authenticationType: 0,
+      applicationProtocol: 0,
+      clientCertificateConfig: i_ClientCertificateConfig,
+    },
     body: true,
   },
   errors: [
@@ -6302,6 +6439,14 @@ export const createDynamicThingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /dynamic-thing-groups/{thingGroupName}",
+    input: {
+      thingGroupName: 0,
+      thingGroupProperties: i_ThingGroupProperties,
+      indexName: 0,
+      queryString: 0,
+      queryVersion: 0,
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -6345,6 +6490,18 @@ export const createFleetMetric: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /fleet-metric/{metricName}",
+    input: {
+      metricName: 0,
+      queryString: 0,
+      aggregationType: i_AggregationType,
+      period: 0,
+      aggregationField: 0,
+      description: 0,
+      queryVersion: 0,
+      indexName: 0,
+      unit: 0,
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -6384,7 +6541,35 @@ export const createJob: API.OperationMethod<
   CreateJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /jobs/{jobId}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /jobs/{jobId}",
+    input: {
+      jobId: 0,
+      targets: 0,
+      documentSource: 0,
+      document: 0,
+      description: 0,
+      presignedUrlConfig: i_PresignedUrlConfig,
+      targetSelection: 0,
+      jobExecutionsRolloutConfig: i_JobExecutionsRolloutConfig,
+      abortConfig: i_AbortConfig,
+      timeoutConfig: i_TimeoutConfig,
+      tags: D.list(i_Tag),
+      namespaceId: 0,
+      jobTemplateArn: 0,
+      jobExecutionsRetryConfig: i_JobExecutionsRetryConfig,
+      documentParameters: 0,
+      schedulingConfig: {
+        startTime: 0,
+        endTime: 0,
+        endBehavior: 0,
+        maintenanceWindows: D.list(i_MaintenanceWindow),
+      },
+      destinationPackageVersions: 0,
+    },
+    body: true,
+  },
   errors: [
     InvalidRequestException,
     LimitExceededException,
@@ -6420,6 +6605,21 @@ export const createJobTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /job-templates/{jobTemplateId}",
+    input: {
+      jobTemplateId: 0,
+      jobArn: 0,
+      documentSource: 0,
+      document: 0,
+      description: 0,
+      presignedUrlConfig: i_PresignedUrlConfig,
+      jobExecutionsRolloutConfig: i_JobExecutionsRolloutConfig,
+      abortConfig: i_AbortConfig,
+      timeoutConfig: i_TimeoutConfig,
+      tags: D.list(i_Tag),
+      jobExecutionsRetryConfig: i_JobExecutionsRetryConfig,
+      maintenanceWindows: D.list(i_MaintenanceWindow),
+      destinationPackageVersions: 0,
+    },
     body: true,
   },
   errors: [
@@ -6498,6 +6698,12 @@ export const createMitigationAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /mitigationactions/actions/{actionName}",
+    input: {
+      actionName: 0,
+      roleArn: 0,
+      actionParams: i_MitigationActionParams,
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -6536,6 +6742,65 @@ export const createOTAUpdate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /otaUpdates/{otaUpdateId}",
+    input: {
+      otaUpdateId: 0,
+      description: 0,
+      targets: 0,
+      protocols: 0,
+      targetSelection: 0,
+      awsJobExecutionsRolloutConfig: {
+        maximumPerMinute: 0,
+        exponentialRate: {
+          baseRatePerMinute: 0,
+          incrementFactor: 0,
+          rateIncreaseCriteria: {
+            numberOfNotifiedThings: 0,
+            numberOfSucceededThings: 0,
+          },
+        },
+      },
+      awsJobPresignedUrlConfig: { expiresInSec: 0 },
+      awsJobAbortConfig: {
+        abortCriteriaList: D.list({
+          failureType: 0,
+          action: 0,
+          thresholdPercentage: 0,
+          minNumberOfExecutedThings: 0,
+        }),
+      },
+      awsJobTimeoutConfig: { inProgressTimeoutInMinutes: 0 },
+      files: D.list({
+        fileName: 0,
+        fileType: 0,
+        fileVersion: 0,
+        fileLocation: {
+          stream: { streamId: 0, fileId: 0 },
+          s3Location: i_S3Location,
+        },
+        codeSigning: {
+          awsSignerJobId: 0,
+          startSigningJobParameter: {
+            signingProfileParameter: {
+              certificateArn: 0,
+              platform: 0,
+              certificatePathOnDevice: 0,
+            },
+            signingProfileName: 0,
+            destination: { s3Destination: { bucket: 0, prefix: 0 } },
+          },
+          customCodeSigning: {
+            signature: { inlineDocument: 0 },
+            certificateChain: { certificateName: 0, inlineDocument: 0 },
+            hashAlgorithm: 0,
+            signatureAlgorithm: 0,
+          },
+        },
+        attributes: 0,
+      }),
+      roleArn: 0,
+      additionalParameters: 0,
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -6574,7 +6839,12 @@ export const createPackage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /packages/{packageName}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      packageName: 0,
+      description: 0,
+      tags: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
     output: { description: D.secret },
     body: true,
   },
@@ -6611,7 +6881,16 @@ export const createPackageVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /packages/{packageName}/versions/{versionName}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      packageName: 0,
+      versionName: 0,
+      description: 0,
+      attributes: 0,
+      artifact: i_PackageVersionArtifact,
+      recipe: 0,
+      tags: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
     output: { description: D.secret },
     body: true,
   },
@@ -6651,7 +6930,12 @@ export const createPolicy: API.OperationMethod<
   CreatePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /policies/{policyName}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /policies/{policyName}",
+    input: { policyName: 0, policyDocument: 0, tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -6697,7 +6981,11 @@ export const createPolicyVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /policies/{policyName}/version",
-    input: { setAsDefault: D.m({ query: "setAsDefault" }) },
+    input: {
+      policyName: 0,
+      policyDocument: 0,
+      setAsDefault: D.m({ query: "setAsDefault" }),
+    },
     body: true,
   },
   errors: [
@@ -6737,6 +7025,7 @@ export const createProvisioningClaim: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /provisioning-templates/{templateName}/provisioning-claim",
+    input: { templateName: 0 },
     output: { keyPair: o_KeyPair, expiration: D.ts },
   },
   errors: [
@@ -6774,6 +7063,16 @@ export const createProvisioningTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /provisioning-templates",
+    input: {
+      templateName: 0,
+      description: 0,
+      templateBody: 0,
+      enabled: 0,
+      provisioningRoleArn: 0,
+      preProvisioningHook: i_ProvisioningHook,
+      tags: D.list(i_Tag),
+      type: 0,
+    },
     body: true,
   },
   errors: [
@@ -6812,7 +7111,11 @@ export const createProvisioningTemplateVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /provisioning-templates/{templateName}/versions",
-    input: { setAsDefault: D.m({ query: "setAsDefault" }) },
+    input: {
+      templateName: 0,
+      templateBody: 0,
+      setAsDefault: D.m({ query: "setAsDefault" }),
+    },
     body: true,
   },
   errors: [
@@ -6859,6 +7162,12 @@ export const createRoleAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /role-aliases/{roleAlias}",
+    input: {
+      roleAlias: 0,
+      roleArn: 0,
+      credentialDurationSeconds: 0,
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -6897,6 +7206,14 @@ export const createScheduledAudit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /audit/scheduledaudits/{scheduledAuditName}",
+    input: {
+      frequency: 0,
+      dayOfMonth: 0,
+      dayOfWeek: 0,
+      targetCheckNames: 0,
+      scheduledAuditName: 0,
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -6933,6 +7250,16 @@ export const createSecurityProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /security-profiles/{securityProfileName}",
+    input: {
+      securityProfileName: 0,
+      securityProfileDescription: 0,
+      behaviors: D.list(i_Behavior),
+      alertTargets: D.map(i_AlertTarget),
+      additionalMetricsToRetain: 0,
+      additionalMetricsToRetainV2: D.list(i_MetricToRetain),
+      tags: D.list(i_Tag),
+      metricsExportConfig: i_MetricsExportConfig,
+    },
     body: true,
   },
   errors: [
@@ -6969,7 +7296,18 @@ export const createStream: API.OperationMethod<
   CreateStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /streams/{streamId}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /streams/{streamId}",
+    input: {
+      streamId: 0,
+      description: 0,
+      files: D.list(i_StreamFile),
+      roleArn: 0,
+      tags: D.list(i_Tag),
+    },
+    body: true,
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -7011,7 +7349,17 @@ export const createThing: API.OperationMethod<
   CreateThingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /things/{thingName}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /things/{thingName}",
+    input: {
+      thingName: 0,
+      thingTypeName: 0,
+      attributePayload: i_AttributePayload,
+      billingGroupName: 0,
+    },
+    body: true,
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -7052,6 +7400,12 @@ export const createThingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /thing-groups/{thingGroupName}",
+    input: {
+      thingGroupName: 0,
+      parentGroupName: 0,
+      thingGroupProperties: i_ThingGroupProperties,
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -7089,6 +7443,11 @@ export const createThingType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /thing-types/{thingTypeName}",
+    input: {
+      thingTypeName: 0,
+      thingTypeProperties: i_ThingTypeProperties,
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -7129,7 +7488,8 @@ export const createTopicRule: API.OperationMethod<
     service: svc,
     http: "POST /rules/{ruleName}",
     input: {
-      topicRulePayload: D.m({ payload: true }),
+      ruleName: 0,
+      topicRulePayload: D.m({ payload: true, shape: i_TopicRulePayload }),
       tags: D.m({ header: "x-amz-tagging" }),
     },
   },
@@ -7169,6 +7529,24 @@ export const createTopicRuleDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /destinations",
+    input: {
+      destinationConfiguration: {
+        httpUrlConfiguration: { confirmationUrl: 0 },
+        vpcConfiguration: {
+          subnetIds: 0,
+          securityGroups: 0,
+          vpcId: 0,
+          roleArn: 0,
+        },
+        influxDBConfiguration: {
+          endpoint: 0,
+          influxDBVersion: 0,
+          secretId: 0,
+          secretType: 0,
+          secretKey: 0,
+        },
+      },
+    },
     output: { topicRuleDestination: o_TopicRuleDestination },
     body: true,
   },
@@ -7239,6 +7617,7 @@ export const deleteAuditSuppression: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /audit/suppressions/delete",
+    input: { checkName: 0, resourceIdentifier: i_ResourceIdentifier },
     body: true,
   },
   errors: [
@@ -7271,7 +7650,11 @@ export const deleteAuthorizer: API.OperationMethod<
   DeleteAuthorizerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /authorizer/{authorizerName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /authorizer/{authorizerName}",
+    input: { authorizerName: 0 },
+  },
   errors: [
     DeleteConflictException,
     InternalFailureException,
@@ -7306,7 +7689,10 @@ export const deleteBillingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /billing-groups/{billingGroupName}",
-    input: { expectedVersion: D.m({ query: "expectedVersion" }) },
+    input: {
+      billingGroupName: 0,
+      expectedVersion: D.m({ query: "expectedVersion" }),
+    },
   },
   errors: [
     InternalFailureException,
@@ -7339,7 +7725,11 @@ export const deleteCACertificate: API.OperationMethod<
   DeleteCACertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /cacertificate/{certificateId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /cacertificate/{certificateId}",
+    input: { certificateId: 0 },
+  },
   errors: [
     CertificateStateException,
     InternalFailureException,
@@ -7382,7 +7772,7 @@ export const deleteCertificate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /certificates/{certificateId}",
-    input: { forceDelete: D.m({ query: "forceDelete" }) },
+    input: { certificateId: 0, forceDelete: D.m({ query: "forceDelete" }) },
   },
   errors: [
     CertificateStateException,
@@ -7426,6 +7816,7 @@ export const deleteCertificateProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /certificate-providers/{certificateProviderName}",
+    input: { certificateProviderName: 0 },
   },
   errors: [
     DeleteConflictException,
@@ -7459,6 +7850,7 @@ export const deleteCommand: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /commands/{commandId}",
+    input: { commandId: 0 },
     output: { statusCode: D.m({ status: true }) },
   },
   errors: [
@@ -7493,7 +7885,7 @@ export const deleteCommandExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /command-executions/{executionId}",
-    input: { targetArn: D.m({ query: "targetArn" }) },
+    input: { executionId: 0, targetArn: D.m({ query: "targetArn" }) },
   },
   errors: [
     ConflictException,
@@ -7531,7 +7923,11 @@ export const deleteCustomMetric: API.OperationMethod<
   DeleteCustomMetricError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /custom-metric/{metricName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /custom-metric/{metricName}",
+    input: { metricName: 0 },
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -7560,7 +7956,11 @@ export const deleteDimension: API.OperationMethod<
   DeleteDimensionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /dimensions/{name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /dimensions/{name}",
+    input: { name: 0 },
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -7593,6 +7993,7 @@ export const deleteDomainConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domainConfigurations/{domainConfigurationName}",
+    input: { domainConfigurationName: 0 },
   },
   errors: [
     InternalFailureException,
@@ -7627,7 +8028,10 @@ export const deleteDynamicThingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /dynamic-thing-groups/{thingGroupName}",
-    input: { expectedVersion: D.m({ query: "expectedVersion" }) },
+    input: {
+      thingGroupName: 0,
+      expectedVersion: D.m({ query: "expectedVersion" }),
+    },
   },
   errors: [
     InternalFailureException,
@@ -7663,7 +8067,10 @@ export const deleteFleetMetric: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /fleet-metric/{metricName}",
-    input: { expectedVersion: D.m({ query: "expectedVersion" }) },
+    input: {
+      metricName: 0,
+      expectedVersion: D.m({ query: "expectedVersion" }),
+    },
   },
   errors: [
     InternalFailureException,
@@ -7709,6 +8116,7 @@ export const deleteJob: API.OperationMethod<
     service: svc,
     http: "DELETE /jobs/{jobId}",
     input: {
+      jobId: 0,
       force: D.m({ query: "force" }),
       namespaceId: D.m({ query: "namespaceId" }),
     },
@@ -7748,6 +8156,9 @@ export const deleteJobExecution: API.OperationMethod<
     service: svc,
     http: "DELETE /things/{thingName}/jobs/{jobId}/executionNumber/{executionNumber}",
     input: {
+      jobId: 0,
+      thingName: 0,
+      executionNumber: 0,
       force: D.m({ query: "force" }),
       namespaceId: D.m({ query: "namespaceId" }),
     },
@@ -7779,7 +8190,11 @@ export const deleteJobTemplate: API.OperationMethod<
   DeleteJobTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /job-templates/{jobTemplateId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /job-templates/{jobTemplateId}",
+    input: { jobTemplateId: 0 },
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -7810,6 +8225,7 @@ export const deleteMitigationAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /mitigationactions/actions/{actionName}",
+    input: { actionName: 0 },
   },
   errors: [
     InternalFailureException,
@@ -7845,6 +8261,7 @@ export const deleteOTAUpdate: API.OperationMethod<
     service: svc,
     http: "DELETE /otaUpdates/{otaUpdateId}",
     input: {
+      otaUpdateId: 0,
       deleteStream: D.m({ query: "deleteStream" }),
       forceDeleteAWSJob: D.m({ query: "forceDeleteAWSJob" }),
     },
@@ -7884,7 +8301,10 @@ export const deletePackage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /packages/{packageName}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      packageName: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [InternalServerException, ThrottlingException, ValidationException],
   protocol: AwsProtocol,
@@ -7911,7 +8331,11 @@ export const deletePackageVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /packages/{packageName}/versions/{versionName}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      packageName: 0,
+      versionName: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [InternalServerException, ThrottlingException, ValidationException],
   protocol: AwsProtocol,
@@ -7952,7 +8376,11 @@ export const deletePolicy: API.OperationMethod<
   DeletePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /policies/{policyName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /policies/{policyName}",
+    input: { policyName: 0 },
+  },
   errors: [
     DeleteConflictException,
     InternalFailureException,
@@ -7992,6 +8420,7 @@ export const deletePolicyVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /policies/{policyName}/version/{policyVersionId}",
+    input: { policyName: 0, policyVersionId: 0 },
   },
   errors: [
     DeleteConflictException,
@@ -8030,6 +8459,7 @@ export const deleteProvisioningTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /provisioning-templates/{templateName}",
+    input: { templateName: 0 },
   },
   errors: [
     ConflictingResourceUpdateException,
@@ -8068,6 +8498,7 @@ export const deleteProvisioningTemplateVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /provisioning-templates/{templateName}/versions/{versionId}",
+    input: { templateName: 0, versionId: 0 },
   },
   errors: [
     ConflictingResourceUpdateException,
@@ -8101,7 +8532,7 @@ export const deleteRegistrationCode: API.OperationMethod<
   DeleteRegistrationCodeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /registrationcode" },
+  descriptor: { service: svc, http: "DELETE /registrationcode", input: {} },
   errors: [
     InternalFailureException,
     ResourceNotFoundException,
@@ -8134,7 +8565,11 @@ export const deleteRoleAlias: API.OperationMethod<
   DeleteRoleAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /role-aliases/{roleAlias}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /role-aliases/{roleAlias}",
+    input: { roleAlias: 0 },
+  },
   errors: [
     DeleteConflictException,
     InternalFailureException,
@@ -8169,6 +8604,7 @@ export const deleteScheduledAudit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /audit/scheduledaudits/{scheduledAuditName}",
+    input: { scheduledAuditName: 0 },
   },
   errors: [
     InternalFailureException,
@@ -8203,7 +8639,10 @@ export const deleteSecurityProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /security-profiles/{securityProfileName}",
-    input: { expectedVersion: D.m({ query: "expectedVersion" }) },
+    input: {
+      securityProfileName: 0,
+      expectedVersion: D.m({ query: "expectedVersion" }),
+    },
   },
   errors: [
     InternalFailureException,
@@ -8236,7 +8675,11 @@ export const deleteStream: API.OperationMethod<
   DeleteStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /streams/{streamId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /streams/{streamId}",
+    input: { streamId: 0 },
+  },
   errors: [
     DeleteConflictException,
     InternalFailureException,
@@ -8275,7 +8718,7 @@ export const deleteThing: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /things/{thingName}",
-    input: { expectedVersion: D.m({ query: "expectedVersion" }) },
+    input: { thingName: 0, expectedVersion: D.m({ query: "expectedVersion" }) },
   },
   errors: [
     InternalFailureException,
@@ -8311,7 +8754,10 @@ export const deleteThingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /thing-groups/{thingGroupName}",
-    input: { expectedVersion: D.m({ query: "expectedVersion" }) },
+    input: {
+      thingGroupName: 0,
+      expectedVersion: D.m({ query: "expectedVersion" }),
+    },
   },
   errors: [
     InternalFailureException,
@@ -8345,7 +8791,11 @@ export const deleteThingType: API.OperationMethod<
   DeleteThingTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /thing-types/{thingTypeName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /thing-types/{thingTypeName}",
+    input: { thingTypeName: 0 },
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -8378,7 +8828,11 @@ export const deleteTopicRule: API.OperationMethod<
   DeleteTopicRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /rules/{ruleName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /rules/{ruleName}",
+    input: { ruleName: 0 },
+  },
   errors: [
     ConflictingResourceUpdateException,
     InternalException,
@@ -8410,7 +8864,11 @@ export const deleteTopicRuleDestination: API.OperationMethod<
   DeleteTopicRuleDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /destinations/{arn+}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /destinations/{arn+}",
+    input: { arn: 0 },
+  },
   errors: [
     ConflictingResourceUpdateException,
     InternalException,
@@ -8480,6 +8938,7 @@ export const deprecateThingType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /thing-types/{thingTypeName}/deprecate",
+    input: { thingTypeName: 0, undoDeprecate: 0 },
     body: true,
   },
   errors: [
@@ -8512,7 +8971,7 @@ export const describeAccountAuditConfiguration: API.OperationMethod<
   DescribeAccountAuditConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /audit/configuration" },
+  descriptor: { service: svc, http: "GET /audit/configuration", input: {} },
   errors: [InternalFailureException, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -8543,6 +9002,7 @@ export const describeAuditFinding: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /audit/findings/{findingId}",
+    input: { findingId: 0 },
     output: { finding: o_AuditFinding },
   },
   errors: [
@@ -8574,6 +9034,7 @@ export const describeAuditMitigationActionsTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /audit/mitigationactions/tasks/{taskId}",
+    input: { taskId: 0 },
     output: { startTime: D.ts, endTime: D.ts },
   },
   errors: [
@@ -8605,6 +9066,7 @@ export const describeAuditSuppression: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /audit/suppressions/describe",
+    input: { checkName: 0, resourceIdentifier: i_ResourceIdentifier },
     output: { expirationDate: D.ts },
     body: true,
   },
@@ -8639,6 +9101,7 @@ export const describeAuditTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /audit/tasks/{taskId}",
+    input: { taskId: 0 },
     output: { taskStartTime: D.ts },
   },
   errors: [
@@ -8674,6 +9137,7 @@ export const describeAuthorizer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /authorizer/{authorizerName}",
+    input: { authorizerName: 0 },
     output: { authorizerDescription: o_AuthorizerDescription },
   },
   errors: [
@@ -8709,6 +9173,7 @@ export const describeBillingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /billing-groups/{billingGroupName}",
+    input: { billingGroupName: 0 },
     output: { billingGroupMetadata: { creationDate: D.ts } },
   },
   errors: [
@@ -8744,6 +9209,7 @@ export const describeCACertificate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /cacertificate/{certificateId}",
+    input: { certificateId: 0 },
     output: {
       certificateDescription: {
         creationDate: D.ts,
@@ -8787,6 +9253,7 @@ export const describeCertificate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /certificates/{certificateId}",
+    input: { certificateId: 0 },
     output: {
       certificateDescription: {
         creationDate: D.ts,
@@ -8835,6 +9302,7 @@ export const describeCertificateProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /certificate-providers/{certificateProviderName}",
+    input: { certificateProviderName: 0 },
     output: { creationDate: D.ts, lastModifiedDate: D.ts },
   },
   errors: [
@@ -8872,6 +9340,7 @@ export const describeCustomMetric: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /custom-metric/{metricName}",
+    input: { metricName: 0 },
     output: { creationDate: D.ts, lastModifiedDate: D.ts },
   },
   errors: [
@@ -8907,6 +9376,7 @@ export const describeDefaultAuthorizer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /default-authorizer",
+    input: {},
     output: { authorizerDescription: o_AuthorizerDescription },
   },
   errors: [
@@ -8944,6 +9414,7 @@ export const describeDetectMitigationActionsTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /detect/mitigationactions/tasks/{taskId}",
+    input: { taskId: 0 },
     output: { taskSummary: o_DetectMitigationActionsTaskSummary },
   },
   errors: [
@@ -8979,6 +9450,7 @@ export const describeDimension: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /dimensions/{name}",
+    input: { name: 0 },
     output: { creationDate: D.ts, lastModifiedDate: D.ts },
   },
   errors: [
@@ -9014,6 +9486,7 @@ export const describeDomainConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domainConfigurations/{domainConfigurationName}",
+    input: { domainConfigurationName: 0 },
     output: { lastStatusChangeDate: D.ts },
   },
   errors: [
@@ -9050,6 +9523,7 @@ export const describeEncryptionConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /encryption-configuration",
+    input: {},
     output: { lastModifiedDate: D.ts },
   },
   errors: [
@@ -9118,6 +9592,7 @@ export const describeEventConfigurations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /event-configurations",
+    input: {},
     output: { creationDate: D.ts, lastModifiedDate: D.ts },
   },
   errors: [InternalFailureException, ThrottlingException],
@@ -9148,6 +9623,7 @@ export const describeFleetMetric: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /fleet-metric/{metricName}",
+    input: { metricName: 0 },
     output: { creationDate: D.ts, lastModifiedDate: D.ts },
   },
   errors: [
@@ -9182,7 +9658,11 @@ export const describeIndex: API.OperationMethod<
   DescribeIndexError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /indices/{indexName}" },
+  descriptor: {
+    service: svc,
+    http: "GET /indices/{indexName}",
+    input: { indexName: 0 },
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -9216,7 +9696,10 @@ export const describeJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /jobs/{jobId}",
-    input: { beforeSubstitution: D.m({ query: "beforeSubstitution" }) },
+    input: {
+      jobId: 0,
+      beforeSubstitution: D.m({ query: "beforeSubstitution" }),
+    },
     output: {
       job: { createdAt: D.ts, lastUpdatedAt: D.ts, completedAt: D.ts },
     },
@@ -9252,7 +9735,11 @@ export const describeJobExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /things/{thingName}/jobs/{jobId}",
-    input: { executionNumber: D.m({ query: "executionNumber" }) },
+    input: {
+      jobId: 0,
+      thingName: 0,
+      executionNumber: D.m({ query: "executionNumber" }),
+    },
     output: {
       execution: { queuedAt: D.ts, startedAt: D.ts, lastUpdatedAt: D.ts },
     },
@@ -9286,6 +9773,7 @@ export const describeJobTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /job-templates/{jobTemplateId}",
+    input: { jobTemplateId: 0 },
     output: { createdAt: D.ts },
   },
   errors: [
@@ -9317,7 +9805,10 @@ export const describeManagedJobTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /managed-job-templates/{templateName}",
-    input: { templateVersion: D.m({ query: "templateVersion" }) },
+    input: {
+      templateName: 0,
+      templateVersion: D.m({ query: "templateVersion" }),
+    },
   },
   errors: [
     InternalServerException,
@@ -9350,6 +9841,7 @@ export const describeMitigationAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /mitigationactions/actions/{actionName}",
+    input: { actionName: 0 },
     output: { creationDate: D.ts, lastModifiedDate: D.ts },
   },
   errors: [
@@ -9384,6 +9876,7 @@ export const describeProvisioningTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /provisioning-templates/{templateName}",
+    input: { templateName: 0 },
     output: { creationDate: D.ts, lastModifiedDate: D.ts },
   },
   errors: [
@@ -9419,6 +9912,7 @@ export const describeProvisioningTemplateVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /provisioning-templates/{templateName}/versions/{versionId}",
+    input: { templateName: 0, versionId: 0 },
     output: { creationDate: D.ts },
   },
   errors: [
@@ -9455,6 +9949,7 @@ export const describeRoleAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /role-aliases/{roleAlias}",
+    input: { roleAlias: 0 },
     output: {
       roleAliasDescription: { creationDate: D.ts, lastModifiedDate: D.ts },
     },
@@ -9492,6 +9987,7 @@ export const describeScheduledAudit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /audit/scheduledaudits/{scheduledAuditName}",
+    input: { scheduledAuditName: 0 },
   },
   errors: [
     InternalFailureException,
@@ -9526,6 +10022,7 @@ export const describeSecurityProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /security-profiles/{securityProfileName}",
+    input: { securityProfileName: 0 },
     output: { creationDate: D.ts, lastModifiedDate: D.ts },
   },
   errors: [
@@ -9561,6 +10058,7 @@ export const describeStream: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /streams/{streamId}",
+    input: { streamId: 0 },
     output: { streamInfo: { createdAt: D.ts, lastUpdatedAt: D.ts } },
   },
   errors: [
@@ -9595,7 +10093,11 @@ export const describeThing: API.OperationMethod<
   DescribeThingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /things/{thingName}" },
+  descriptor: {
+    service: svc,
+    http: "GET /things/{thingName}",
+    input: { thingName: 0 },
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -9629,6 +10131,7 @@ export const describeThingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /thing-groups/{thingGroupName}",
+    input: { thingGroupName: 0 },
     output: { thingGroupMetadata: { creationDate: D.ts } },
   },
   errors: [
@@ -9663,6 +10166,7 @@ export const describeThingRegistrationTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /thing-registration-tasks/{taskId}",
+    input: { taskId: 0 },
     output: { creationDate: D.ts, lastModifiedDate: D.ts },
   },
   errors: [
@@ -9699,6 +10203,7 @@ export const describeThingType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /thing-types/{thingTypeName}",
+    input: { thingTypeName: 0 },
     output: { thingTypeMetadata: o_ThingTypeMetadata },
   },
   errors: [
@@ -9739,6 +10244,7 @@ export const detachPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /target-policies/{policyName}",
+    input: { policyName: 0, target: 0 },
     body: true,
   },
   errors: [
@@ -9779,7 +10285,10 @@ export const detachPrincipalPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /principal-policies/{policyName}",
-    input: { principal: D.m({ header: "x-amzn-iot-principal" }) },
+    input: {
+      policyName: 0,
+      principal: D.m({ header: "x-amzn-iot-principal" }),
+    },
   },
   errors: [
     InternalFailureException,
@@ -9817,6 +10326,7 @@ export const detachSecurityProfile: API.OperationMethod<
     service: svc,
     http: "DELETE /security-profiles/{securityProfileName}/targets",
     input: {
+      securityProfileName: 0,
       securityProfileTargetArn: D.m({ query: "securityProfileTargetArn" }),
     },
   },
@@ -9858,7 +10368,7 @@ export const detachThingPrincipal: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /things/{thingName}/principals",
-    input: { principal: D.m({ header: "x-amzn-principal" }) },
+    input: { thingName: 0, principal: D.m({ header: "x-amzn-principal" }) },
   },
   errors: [
     InternalFailureException,
@@ -9891,7 +10401,11 @@ export const disableTopicRule: API.OperationMethod<
   DisableTopicRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /rules/{ruleName}/disable" },
+  descriptor: {
+    service: svc,
+    http: "POST /rules/{ruleName}/disable",
+    input: { ruleName: 0 },
+  },
   errors: [
     ConflictingResourceUpdateException,
     InternalException,
@@ -9925,7 +10439,11 @@ export const disassociateSbomFromPackageVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /packages/{packageName}/versions/{versionName}/sbom",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      packageName: 0,
+      versionName: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     ConflictException,
@@ -9957,7 +10475,11 @@ export const enableTopicRule: API.OperationMethod<
   EnableTopicRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /rules/{ruleName}/enable" },
+  descriptor: {
+    service: svc,
+    http: "POST /rules/{ruleName}/enable",
+    input: { ruleName: 0 },
+  },
   errors: [
     ConflictingResourceUpdateException,
     InternalException,
@@ -10044,7 +10566,18 @@ export const getBucketsAggregation: API.OperationMethod<
   GetBucketsAggregationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /indices/buckets", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /indices/buckets",
+    input: {
+      indexName: 0,
+      queryString: 0,
+      aggregationField: 0,
+      queryVersion: 0,
+      bucketsAggregationType: { termsAggregation: { maxBuckets: 0 } },
+    },
+    body: true,
+  },
   errors: [
     IndexNotReadyException,
     InternalFailureException,
@@ -10083,7 +10616,17 @@ export const getCardinality: API.OperationMethod<
   GetCardinalityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /indices/cardinality", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /indices/cardinality",
+    input: {
+      indexName: 0,
+      queryString: 0,
+      aggregationField: 0,
+      queryVersion: 0,
+    },
+    body: true,
+  },
   errors: [
     IndexNotReadyException,
     InternalFailureException,
@@ -10118,6 +10661,7 @@ export const getCommand: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /commands/{commandId}",
+    input: { commandId: 0 },
     output: {
       mandatoryParameters: D.list({
         value: o_CommandParameterValue,
@@ -10158,6 +10702,7 @@ export const getCommandExecution: API.OperationMethod<
     service: svc,
     http: "GET /command-executions/{executionId}",
     input: {
+      executionId: 0,
       targetArn: D.m({ query: "targetArn" }),
       includeResult: D.m({ query: "includeResult" }),
     },
@@ -10206,7 +10751,11 @@ export const getEffectivePolicies: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /effective-policies",
-    input: { thingName: D.m({ query: "thingName" }) },
+    input: {
+      principal: 0,
+      cognitoIdentityPoolId: 0,
+      thingName: D.m({ query: "thingName" }),
+    },
     body: true,
   },
   errors: [
@@ -10241,7 +10790,7 @@ export const getIndexingConfiguration: API.OperationMethod<
   GetIndexingConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /indexing/config" },
+  descriptor: { service: svc, http: "GET /indexing/config", input: {} },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -10274,7 +10823,10 @@ export const getJobDocument: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /jobs/{jobId}/job-document",
-    input: { beforeSubstitution: D.m({ query: "beforeSubstitution" }) },
+    input: {
+      jobId: 0,
+      beforeSubstitution: D.m({ query: "beforeSubstitution" }),
+    },
   },
   errors: [
     InvalidRequestException,
@@ -10306,7 +10858,7 @@ export const getLoggingOptions: API.OperationMethod<
   GetLoggingOptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /loggingOptions" },
+  descriptor: { service: svc, http: "GET /loggingOptions", input: {} },
   errors: [
     InternalException,
     InvalidRequestException,
@@ -10339,6 +10891,7 @@ export const getOTAUpdate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /otaUpdates/{otaUpdateId}",
+    input: { otaUpdateId: 0 },
     output: {
       otaUpdateInfo: {
         creationDate: D.ts,
@@ -10384,6 +10937,7 @@ export const getPackage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /packages/{packageName}",
+    input: { packageName: 0 },
     output: {
       description: D.secret,
       creationDate: D.ts,
@@ -10416,7 +10970,7 @@ export const getPackageConfiguration: API.OperationMethod<
   GetPackageConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /package-configuration" },
+  descriptor: { service: svc, http: "GET /package-configuration", input: {} },
   errors: [InternalServerException, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -10443,6 +10997,7 @@ export const getPackageVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /packages/{packageName}/versions/{versionName}",
+    input: { packageName: 0, versionName: 0 },
     output: {
       description: D.secret,
       creationDate: D.ts,
@@ -10491,7 +11046,18 @@ export const getPercentiles: API.OperationMethod<
   GetPercentilesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /indices/percentiles", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /indices/percentiles",
+    input: {
+      indexName: 0,
+      queryString: 0,
+      aggregationField: 0,
+      queryVersion: 0,
+      percents: 0,
+    },
+    body: true,
+  },
   errors: [
     IndexNotReadyException,
     InternalFailureException,
@@ -10531,6 +11097,7 @@ export const getPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /policies/{policyName}",
+    input: { policyName: 0 },
     output: { creationDate: D.ts, lastModifiedDate: D.ts },
   },
   errors: [
@@ -10568,6 +11135,7 @@ export const getPolicyVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /policies/{policyName}/version/{policyVersionId}",
+    input: { policyName: 0, policyVersionId: 0 },
     output: { creationDate: D.ts, lastModifiedDate: D.ts },
   },
   errors: [
@@ -10605,7 +11173,7 @@ export const getRegistrationCode: API.OperationMethod<
   GetRegistrationCodeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /registrationcode" },
+  descriptor: { service: svc, http: "GET /registrationcode", input: {} },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -10642,7 +11210,17 @@ export const getStatistics: API.OperationMethod<
   GetStatisticsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /indices/statistics", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /indices/statistics",
+    input: {
+      indexName: 0,
+      queryString: 0,
+      aggregationField: 0,
+      queryVersion: 0,
+    },
+    body: true,
+  },
   errors: [
     IndexNotReadyException,
     InternalFailureException,
@@ -10680,6 +11258,7 @@ export const getThingConnectivityData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /things/{thingName}/connectivity-data",
+    input: { thingName: 0, includeSocketInformation: 0 },
     output: {
       thingName: D.secret,
       timestamp: D.ts,
@@ -10724,6 +11303,7 @@ export const getTopicRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /rules/{ruleName}",
+    input: { ruleName: 0 },
     output: { rule: { createdAt: D.ts } },
   },
   errors: [
@@ -10758,6 +11338,7 @@ export const getTopicRuleDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /destinations/{arn+}",
+    input: { arn: 0 },
     output: { topicRuleDestination: o_TopicRuleDestination },
   },
   errors: [
@@ -10883,6 +11464,7 @@ export const listAttachedPolicies: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /attached-policies/{target}",
     input: {
+      target: 0,
       recursive: D.m({ query: "recursive" }),
       marker: D.m({ query: "marker" }),
       pageSize: D.m({ query: "pageSize" }),
@@ -10929,6 +11511,16 @@ export const listAuditFindings: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /audit/findings",
+    input: {
+      taskId: 0,
+      checkName: 0,
+      resourceIdentifier: i_ResourceIdentifier,
+      maxResults: 0,
+      nextToken: 0,
+      startTime: 0,
+      endTime: 0,
+      listSuppressedFindings: 0,
+    },
     output: { findings: D.list(o_AuditFinding) },
     body: true,
   },
@@ -11020,8 +11612,8 @@ export const listAuditMitigationActionsTasks: API.PaginatedOperationMethod<
       taskStatus: D.m({ query: "taskStatus" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
-      startTime: D.m({ query: "startTime" }),
-      endTime: D.m({ query: "endTime" }),
+      startTime: D.m({ query: "startTime", shape: D.tsAs("epoch-seconds") }),
+      endTime: D.m({ query: "endTime", shape: D.tsAs("epoch-seconds") }),
     },
     output: { tasks: D.list({ startTime: D.ts }) },
   },
@@ -11061,6 +11653,13 @@ export const listAuditSuppressions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /audit/suppressions/list",
+    input: {
+      checkName: 0,
+      resourceIdentifier: i_ResourceIdentifier,
+      ascendingOrder: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { suppressions: D.list({ expirationDate: D.ts }) },
     body: true,
   },
@@ -11102,8 +11701,8 @@ export const listAuditTasks: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /audit/tasks",
     input: {
-      startTime: D.m({ query: "startTime" }),
-      endTime: D.m({ query: "endTime" }),
+      startTime: D.m({ query: "startTime", shape: D.tsAs("epoch-seconds") }),
+      endTime: D.m({ query: "endTime", shape: D.tsAs("epoch-seconds") }),
       taskType: D.m({ query: "taskType" }),
       taskStatus: D.m({ query: "taskStatus" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -11379,6 +11978,7 @@ export const listCertificatesByCA: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /certificates-by-ca/{caCertificateId}",
     input: {
+      caCertificateId: 0,
       pageSize: D.m({ query: "pageSize" }),
       marker: D.m({ query: "marker" }),
       ascendingOrder: D.m({ query: "isAscendingOrder" }),
@@ -11440,6 +12040,13 @@ export const listCommandExecutions: API.PaginatedOperationMethod<
     input: {
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      namespace: 0,
+      status: 0,
+      sortOrder: 0,
+      startedTimeFilter: i_TimeFilter,
+      completedTimeFilter: i_TimeFilter,
+      targetArn: 0,
+      commandArn: 0,
     },
     output: {
       commandExecutions: D.list({
@@ -11575,8 +12182,8 @@ export const listDetectMitigationActionsExecutions: API.PaginatedOperationMethod
       taskId: D.m({ query: "taskId" }),
       violationId: D.m({ query: "violationId" }),
       thingName: D.m({ query: "thingName" }),
-      startTime: D.m({ query: "startTime" }),
-      endTime: D.m({ query: "endTime" }),
+      startTime: D.m({ query: "startTime", shape: D.tsAs("epoch-seconds") }),
+      endTime: D.m({ query: "endTime", shape: D.tsAs("epoch-seconds") }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -11628,8 +12235,8 @@ export const listDetectMitigationActionsTasks: API.PaginatedOperationMethod<
     input: {
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
-      startTime: D.m({ query: "startTime" }),
-      endTime: D.m({ query: "endTime" }),
+      startTime: D.m({ query: "startTime", shape: D.tsAs("epoch-seconds") }),
+      endTime: D.m({ query: "endTime", shape: D.tsAs("epoch-seconds") }),
     },
     output: { tasks: D.list(o_DetectMitigationActionsTaskSummary) },
   },
@@ -11851,6 +12458,7 @@ export const listJobExecutionsForJob: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /jobs/{jobId}/things",
     input: {
+      jobId: 0,
       status: D.m({ query: "status" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -11900,6 +12508,7 @@ export const listJobExecutionsForThing: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /things/{thingName}/jobs",
     input: {
+      thingName: 0,
       status: D.m({ query: "status" }),
       namespaceId: D.m({ query: "namespaceId" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -12089,8 +12698,8 @@ export const listMetricValues: API.PaginatedOperationMethod<
       metricName: D.m({ query: "metricName" }),
       dimensionName: D.m({ query: "dimensionName" }),
       dimensionValueOperator: D.m({ query: "dimensionValueOperator" }),
-      startTime: D.m({ query: "startTime" }),
-      endTime: D.m({ query: "endTime" }),
+      startTime: D.m({ query: "startTime", shape: D.tsAs("epoch-seconds") }),
+      endTime: D.m({ query: "endTime", shape: D.tsAs("epoch-seconds") }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -12313,6 +12922,7 @@ export const listPackageVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /packages/{packageName}/versions",
     input: {
+      packageName: 0,
       status: D.m({ query: "status" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -12457,6 +13067,7 @@ export const listPolicyVersions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /policies/{policyName}/version",
+    input: { policyName: 0 },
     output: { policyVersions: D.list({ createDate: D.ts }) },
   },
   errors: [
@@ -12694,6 +13305,7 @@ export const listProvisioningTemplateVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /provisioning-templates/{templateName}/versions",
     input: {
+      templateName: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -12851,6 +13463,8 @@ export const listSbomValidationResults: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /packages/{packageName}/versions/{versionName}/sbom-validation-results",
     input: {
+      packageName: 0,
+      versionName: 0,
       validationResult: D.m({ query: "validationResult" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -13125,6 +13739,7 @@ export const listTargetsForPolicy: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /policy-targets/{policyName}",
     input: {
+      policyName: 0,
       marker: D.m({ query: "marker" }),
       pageSize: D.m({ query: "pageSize" }),
     },
@@ -13173,6 +13788,7 @@ export const listTargetsForSecurityProfile: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /security-profiles/{securityProfileName}/targets",
     input: {
+      securityProfileName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -13262,6 +13878,7 @@ export const listThingGroupsForThing: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /things/{thingName}/thing-groups",
     input: {
+      thingName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -13311,6 +13928,7 @@ export const listThingPrincipals: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      thingName: 0,
     },
   },
   errors: [
@@ -13359,6 +13977,7 @@ export const listThingPrincipalsV2: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      thingName: 0,
       thingPrincipalType: D.m({ query: "thingPrincipalType" }),
     },
   },
@@ -13401,6 +14020,7 @@ export const listThingRegistrationTaskReports: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /thing-registration-tasks/{taskId}/reports",
     input: {
+      taskId: 0,
       reportType: D.m({ query: "reportType" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -13544,6 +14164,7 @@ export const listThingsInBillingGroup: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /billing-groups/{billingGroupName}/things",
     input: {
+      billingGroupName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -13587,6 +14208,7 @@ export const listThingsInThingGroup: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /thing-groups/{thingGroupName}/things",
     input: {
+      thingGroupName: 0,
       recursive: D.m({ query: "recursive" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -13817,8 +14439,8 @@ export const listViolationEvents: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /violation-events",
     input: {
-      startTime: D.m({ query: "startTime" }),
-      endTime: D.m({ query: "endTime" }),
+      startTime: D.m({ query: "startTime", shape: D.tsAs("epoch-seconds") }),
+      endTime: D.m({ query: "endTime", shape: D.tsAs("epoch-seconds") }),
       thingName: D.m({ query: "thingName" }),
       securityProfileName: D.m({ query: "securityProfileName" }),
       behaviorCriteriaType: D.m({ query: "behaviorCriteriaType" }),
@@ -13864,6 +14486,11 @@ export const putVerificationStateOnViolation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /violations/verification-state/{violationId}",
+    input: {
+      violationId: 0,
+      verificationState: 0,
+      verificationStateDescription: 0,
+    },
     body: true,
   },
   errors: [
@@ -13905,8 +14532,13 @@ export const registerCACertificate: API.OperationMethod<
     service: svc,
     http: "POST /cacertificate",
     input: {
+      caCertificate: 0,
+      verificationCertificate: 0,
       setAsActive: D.m({ query: "setAsActive" }),
       allowAutoRegistration: D.m({ query: "allowAutoRegistration" }),
+      registrationConfig: i_RegistrationConfig,
+      tags: D.list(i_Tag),
+      certificateMode: 0,
     },
     body: true,
   },
@@ -13954,7 +14586,12 @@ export const registerCertificate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /certificate/register",
-    input: { setAsActive: D.m({ query: "setAsActive" }) },
+    input: {
+      certificatePem: 0,
+      caCertificatePem: 0,
+      setAsActive: D.m({ query: "setAsActive" }),
+      status: 0,
+    },
     body: true,
   },
   errors: [
@@ -13997,6 +14634,7 @@ export const registerCertificateWithoutCA: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /certificate/register-no-ca",
+    input: { certificatePem: 0, status: 0 },
     body: true,
   },
   errors: [
@@ -14037,7 +14675,12 @@ export const registerThing: API.OperationMethod<
   RegisterThingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /things", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /things",
+    input: { templateBody: 0, parameters: 0 },
+    body: true,
+  },
   errors: [
     ConflictingResourceUpdateException,
     InternalFailureException,
@@ -14083,6 +14726,7 @@ export const rejectCertificateTransfer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /reject-certificate-transfer/{certificateId}",
+    input: { certificateId: 0, rejectReason: 0 },
     body: true,
   },
   errors: [
@@ -14121,6 +14765,12 @@ export const removeThingFromBillingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /billing-groups/removeThingFromBillingGroup",
+    input: {
+      billingGroupName: 0,
+      billingGroupArn: 0,
+      thingName: 0,
+      thingArn: 0,
+    },
     body: true,
   },
   errors: [
@@ -14159,6 +14809,7 @@ export const removeThingFromThingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /thing-groups/removeThingFromThingGroup",
+    input: { thingGroupName: 0, thingGroupArn: 0, thingName: 0, thingArn: 0 },
     body: true,
   },
   errors: [
@@ -14196,7 +14847,10 @@ export const replaceTopicRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /rules/{ruleName}",
-    input: { topicRulePayload: D.m({ payload: true }) },
+    input: {
+      ruleName: 0,
+      topicRulePayload: D.m({ payload: true, shape: i_TopicRulePayload }),
+    },
   },
   errors: [
     ConflictingResourceUpdateException,
@@ -14234,7 +14888,18 @@ export const searchIndex: API.OperationMethod<
   SearchIndexError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /indices/search", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /indices/search",
+    input: {
+      indexName: 0,
+      queryString: 0,
+      nextToken: 0,
+      maxResults: 0,
+      queryVersion: 0,
+    },
+    body: true,
+  },
   errors: [
     IndexNotReadyException,
     InternalFailureException,
@@ -14271,7 +14936,12 @@ export const setDefaultAuthorizer: API.OperationMethod<
   SetDefaultAuthorizerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /default-authorizer", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /default-authorizer",
+    input: { authorizerName: 0 },
+    body: true,
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -14311,6 +14981,7 @@ export const setDefaultPolicyVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /policies/{policyName}/version/{policyVersionId}",
+    input: { policyName: 0, policyVersionId: 0 },
   },
   errors: [
     InternalFailureException,
@@ -14347,7 +15018,12 @@ export const setLoggingOptions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /loggingOptions",
-    input: { loggingOptionsPayload: D.m({ payload: true }) },
+    input: {
+      loggingOptionsPayload: D.m({
+        payload: true,
+        shape: { roleArn: 0, logLevel: 0 },
+      }),
+    },
   },
   errors: [
     InternalException,
@@ -14377,7 +15053,12 @@ export const setV2LoggingLevel: API.OperationMethod<
   SetV2LoggingLevelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2LoggingLevel", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v2LoggingLevel",
+    input: { logTarget: { targetType: 0, targetName: 0 }, logLevel: 0 },
+    body: true,
+  },
   errors: [
     InternalException,
     InvalidRequestException,
@@ -14406,7 +15087,21 @@ export const setV2LoggingOptions: API.OperationMethod<
   SetV2LoggingOptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2LoggingOptions", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v2LoggingOptions",
+    input: {
+      roleArn: 0,
+      defaultLogLevel: 0,
+      disableAllLogs: 0,
+      eventConfigurations: D.list({
+        eventType: 0,
+        logLevel: 0,
+        logDestination: 0,
+      }),
+    },
+    body: true,
+  },
   errors: [
     InternalException,
     InvalidRequestException,
@@ -14438,7 +15133,16 @@ export const startAuditMitigationActionsTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /audit/mitigationactions/tasks/{taskId}",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      taskId: 0,
+      target: {
+        auditTaskId: 0,
+        findingIds: 0,
+        auditCheckToReasonCodeFilter: 0,
+      },
+      auditCheckToActionsMapping: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -14476,7 +15180,15 @@ export const startDetectMitigationActionsTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /detect/mitigationactions/tasks/{taskId}",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      taskId: 0,
+      target: { violationIds: 0, securityProfileName: 0, behaviorName: 0 },
+      actions: 0,
+      violationEventOccurrenceRange: { startTime: 0, endTime: 0 },
+      includeOnlyActiveViolations: 0,
+      includeSuppressedAlerts: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -14508,7 +15220,12 @@ export const startOnDemandAuditTask: API.OperationMethod<
   StartOnDemandAuditTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /audit/tasks", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /audit/tasks",
+    input: { targetCheckNames: 0 },
+    body: true,
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -14540,6 +15257,7 @@ export const startThingRegistrationTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /thing-registration-tasks",
+    input: { templateBody: 0, inputFileBucket: 0, inputFileKey: 0, roleArn: 0 },
     body: true,
   },
   errors: [
@@ -14574,6 +15292,7 @@ export const stopThingRegistrationTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /thing-registration-tasks/{taskId}/cancel",
+    input: { taskId: 0 },
   },
   errors: [
     InternalFailureException,
@@ -14606,7 +15325,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags",
+    input: { resourceArn: 0, tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -14644,7 +15368,14 @@ export const testAuthorization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /test-authorization",
-    input: { clientId: D.m({ query: "clientId" }) },
+    input: {
+      principal: 0,
+      cognitoIdentityPoolId: 0,
+      authInfos: D.list({ actionType: 0, resources: 0 }),
+      clientId: D.m({ query: "clientId" }),
+      policyNamesToAdd: 0,
+      policyNamesToSkip: 0,
+    },
     body: true,
   },
   errors: [
@@ -14686,6 +15417,14 @@ export const testInvokeAuthorizer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /authorizer/{authorizerName}/test",
+    input: {
+      authorizerName: 0,
+      token: 0,
+      tokenSignature: 0,
+      httpContext: { headers: 0, queryString: 0 },
+      mqttContext: { username: 0, password: 0, clientId: 0 },
+      tlsContext: { serverName: 0 },
+    },
     body: true,
   },
   errors: [
@@ -14750,7 +15489,11 @@ export const transferCertificate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /transfer-certificate/{certificateId}",
-    input: { targetAwsAccount: D.m({ query: "targetAwsAccount" }) },
+    input: {
+      certificateId: 0,
+      targetAwsAccount: D.m({ query: "targetAwsAccount" }),
+      transferMessage: 0,
+    },
     body: true,
   },
   errors: [
@@ -14785,7 +15528,12 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /untag", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /untag",
+    input: { resourceArn: 0, tagKeys: 0 },
+    body: true,
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -14815,7 +15563,20 @@ export const updateAccountAuditConfiguration: API.OperationMethod<
   UpdateAccountAuditConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /audit/configuration", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /audit/configuration",
+    input: {
+      roleArn: 0,
+      auditNotificationTargetConfigurations: D.map({
+        targetArn: 0,
+        roleArn: 0,
+        enabled: 0,
+      }),
+      auditCheckConfigurations: D.map({ enabled: 0, configuration: 0 }),
+    },
+    body: true,
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -14844,6 +15605,13 @@ export const updateAuditSuppression: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /audit/suppressions/update",
+    input: {
+      checkName: 0,
+      resourceIdentifier: i_ResourceIdentifier,
+      expirationDate: 0,
+      suppressIndefinitely: 0,
+      description: 0,
+    },
     body: true,
   },
   errors: [
@@ -14880,6 +15648,14 @@ export const updateAuthorizer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /authorizer/{authorizerName}",
+    input: {
+      authorizerName: 0,
+      authorizerFunctionArn: 0,
+      tokenKeyName: 0,
+      tokenSigningPublicKeys: 0,
+      status: 0,
+      enableCachingForHttp: 0,
+    },
     body: true,
   },
   errors: [
@@ -14917,6 +15693,11 @@ export const updateBillingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /billing-groups/{billingGroupName}",
+    input: {
+      billingGroupName: 0,
+      billingGroupProperties: i_BillingGroupProperties,
+      expectedVersion: 0,
+    },
     body: true,
   },
   errors: [
@@ -14954,8 +15735,11 @@ export const updateCACertificate: API.OperationMethod<
     service: svc,
     http: "PUT /cacertificate/{certificateId}",
     input: {
+      certificateId: 0,
       newStatus: D.m({ query: "newStatus" }),
       newAutoRegistrationStatus: D.m({ query: "newAutoRegistrationStatus" }),
+      registrationConfig: i_RegistrationConfig,
+      removeAutoRegistration: 0,
     },
     body: true,
   },
@@ -15003,7 +15787,7 @@ export const updateCertificate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /certificates/{certificateId}",
-    input: { newStatus: D.m({ query: "newStatus" }) },
+    input: { certificateId: 0, newStatus: D.m({ query: "newStatus" }) },
   },
   errors: [
     CertificateStateException,
@@ -15041,6 +15825,11 @@ export const updateCertificateProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /certificate-providers/{certificateProviderName}",
+    input: {
+      certificateProviderName: 0,
+      lambdaFunctionArn: 0,
+      accountDefaultForOperations: 0,
+    },
     body: true,
   },
   errors: [
@@ -15075,6 +15864,7 @@ export const updateCommand: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /commands/{commandId}",
+    input: { commandId: 0, displayName: 0, description: 0, deprecated: 0 },
     output: { lastUpdatedAt: D.ts },
     body: true,
   },
@@ -15113,6 +15903,7 @@ export const updateCustomMetric: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /custom-metric/{metricName}",
+    input: { metricName: 0, displayName: 0 },
     output: { creationDate: D.ts, lastModifiedDate: D.ts },
     body: true,
   },
@@ -15154,6 +15945,7 @@ export const updateDimension: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /dimensions/{name}",
+    input: { name: 0, stringValues: 0 },
     output: { creationDate: D.ts, lastModifiedDate: D.ts },
     body: true,
   },
@@ -15192,6 +15984,17 @@ export const updateDomainConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domainConfigurations/{domainConfigurationName}",
+    input: {
+      domainConfigurationName: 0,
+      authorizerConfig: i_AuthorizerConfig,
+      domainConfigurationStatus: 0,
+      removeAuthorizerConfig: 0,
+      tlsConfig: i_TlsConfig,
+      serverCertificateConfig: i_ServerCertificateConfig,
+      authenticationType: 0,
+      applicationProtocol: 0,
+      clientCertificateConfig: i_ClientCertificateConfig,
+    },
     body: true,
   },
   errors: [
@@ -15230,6 +16033,14 @@ export const updateDynamicThingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /dynamic-thing-groups/{thingGroupName}",
+    input: {
+      thingGroupName: 0,
+      thingGroupProperties: i_ThingGroupProperties,
+      expectedVersion: 0,
+      indexName: 0,
+      queryString: 0,
+      queryVersion: 0,
+    },
     body: true,
   },
   errors: [
@@ -15268,6 +16079,7 @@ export const updateEncryptionConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /encryption-configuration",
+    input: { encryptionType: 0, kmsKeyArn: 0, kmsAccessRoleArn: 0 },
     body: true,
   },
   errors: [
@@ -15298,7 +16110,12 @@ export const updateEventConfigurations: API.OperationMethod<
   UpdateEventConfigurationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /event-configurations", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /event-configurations",
+    input: { eventConfigurations: D.map({ Enabled: 0 }) },
+    body: true,
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -15335,6 +16152,18 @@ export const updateFleetMetric: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /fleet-metric/{metricName}",
+    input: {
+      metricName: 0,
+      queryString: 0,
+      aggregationType: i_AggregationType,
+      period: 0,
+      aggregationField: 0,
+      description: 0,
+      queryVersion: 0,
+      indexName: 0,
+      unit: 0,
+      expectedVersion: 0,
+    },
     body: true,
   },
   errors: [
@@ -15372,7 +16201,31 @@ export const updateIndexingConfiguration: API.OperationMethod<
   UpdateIndexingConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /indexing/config", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /indexing/config",
+    input: {
+      thingIndexingConfiguration: {
+        thingIndexingMode: 0,
+        thingConnectivityIndexingMode: 0,
+        deviceDefenderIndexingMode: 0,
+        namedShadowIndexingMode: 0,
+        managedFields: D.list(i_Field),
+        customFields: D.list(i_Field),
+        filter: {
+          namedShadowNames: 0,
+          geoLocations: D.list({ name: 0, order: 0 }),
+          connectivity: { includeSocketInformation: 0 },
+        },
+      },
+      thingGroupIndexingConfiguration: {
+        thingGroupIndexingMode: 0,
+        managedFields: D.list(i_Field),
+        customFields: D.list(i_Field),
+      },
+    },
+    body: true,
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -15405,7 +16258,16 @@ export const updateJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /jobs/{jobId}",
-    input: { namespaceId: D.m({ query: "namespaceId" }) },
+    input: {
+      jobId: 0,
+      description: 0,
+      presignedUrlConfig: i_PresignedUrlConfig,
+      jobExecutionsRolloutConfig: i_JobExecutionsRolloutConfig,
+      abortConfig: i_AbortConfig,
+      timeoutConfig: i_TimeoutConfig,
+      namespaceId: D.m({ query: "namespaceId" }),
+      jobExecutionsRetryConfig: i_JobExecutionsRetryConfig,
+    },
     body: true,
   },
   errors: [
@@ -15439,6 +16301,11 @@ export const updateMitigationAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /mitigationactions/actions/{actionName}",
+    input: {
+      actionName: 0,
+      roleArn: 0,
+      actionParams: i_MitigationActionParams,
+    },
     body: true,
   },
   errors: [
@@ -15473,7 +16340,13 @@ export const updatePackage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /packages/{packageName}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      packageName: 0,
+      description: 0,
+      defaultVersionName: 0,
+      unsetDefaultVersion: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -15508,7 +16381,10 @@ export const updatePackageConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /package-configuration",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      versionUpdateByJobsConfig: { enabled: 0, roleArn: 0 },
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -15543,7 +16419,16 @@ export const updatePackageVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /packages/{packageName}/versions/{versionName}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      packageName: 0,
+      versionName: 0,
+      description: 0,
+      attributes: 0,
+      artifact: i_PackageVersionArtifact,
+      action: 0,
+      recipe: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -15579,6 +16464,15 @@ export const updateProvisioningTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /provisioning-templates/{templateName}",
+    input: {
+      templateName: 0,
+      description: 0,
+      enabled: 0,
+      defaultVersionId: 0,
+      provisioningRoleArn: 0,
+      preProvisioningHook: i_ProvisioningHook,
+      removePreProvisioningHook: 0,
+    },
     body: true,
   },
   errors: [
@@ -15622,6 +16516,7 @@ export const updateRoleAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /role-aliases/{roleAlias}",
+    input: { roleAlias: 0, roleArn: 0, credentialDurationSeconds: 0 },
     body: true,
   },
   errors: [
@@ -15658,6 +16553,13 @@ export const updateScheduledAudit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /audit/scheduledaudits/{scheduledAuditName}",
+    input: {
+      frequency: 0,
+      dayOfMonth: 0,
+      dayOfWeek: 0,
+      targetCheckNames: 0,
+      scheduledAuditName: 0,
+    },
     body: true,
   },
   errors: [
@@ -15694,7 +16596,20 @@ export const updateSecurityProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /security-profiles/{securityProfileName}",
-    input: { expectedVersion: D.m({ query: "expectedVersion" }) },
+    input: {
+      securityProfileName: 0,
+      securityProfileDescription: 0,
+      behaviors: D.list(i_Behavior),
+      alertTargets: D.map(i_AlertTarget),
+      additionalMetricsToRetain: 0,
+      additionalMetricsToRetainV2: D.list(i_MetricToRetain),
+      deleteBehaviors: 0,
+      deleteAlertTargets: 0,
+      deleteAdditionalMetricsToRetain: 0,
+      expectedVersion: D.m({ query: "expectedVersion" }),
+      metricsExportConfig: i_MetricsExportConfig,
+      deleteMetricsExportConfig: 0,
+    },
     output: { creationDate: D.ts, lastModifiedDate: D.ts },
     body: true,
   },
@@ -15730,7 +16645,17 @@ export const updateStream: API.OperationMethod<
   UpdateStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /streams/{streamId}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /streams/{streamId}",
+    input: {
+      streamId: 0,
+      description: 0,
+      files: D.list(i_StreamFile),
+      roleArn: 0,
+    },
+    body: true,
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -15765,7 +16690,18 @@ export const updateThing: API.OperationMethod<
   UpdateThingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /things/{thingName}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /things/{thingName}",
+    input: {
+      thingName: 0,
+      thingTypeName: 0,
+      attributePayload: i_AttributePayload,
+      expectedVersion: 0,
+      removeThingType: 0,
+    },
+    body: true,
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -15801,6 +16737,11 @@ export const updateThingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /thing-groups/{thingGroupName}",
+    input: {
+      thingGroupName: 0,
+      thingGroupProperties: i_ThingGroupProperties,
+      expectedVersion: 0,
+    },
     body: true,
   },
   errors: [
@@ -15835,6 +16776,12 @@ export const updateThingGroupsForThing: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /thing-groups/updateThingGroupsForThing",
+    input: {
+      thingName: 0,
+      thingGroupsToAdd: 0,
+      thingGroupsToRemove: 0,
+      overrideDynamicGroups: 0,
+    },
     body: true,
   },
   errors: [
@@ -15868,6 +16815,7 @@ export const updateThingType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /thing-types/{thingTypeName}",
+    input: { thingTypeName: 0, thingTypeProperties: i_ThingTypeProperties },
     body: true,
   },
   errors: [
@@ -15902,7 +16850,12 @@ export const updateTopicRuleDestination: API.OperationMethod<
   UpdateTopicRuleDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /destinations", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /destinations",
+    input: { arn: 0, status: 0 },
+    body: true,
+  },
   errors: [
     ConflictingResourceUpdateException,
     InternalException,
@@ -15936,6 +16889,7 @@ export const validateSecurityProfileBehaviors: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /security-profile-behaviors/validate",
+    input: { behaviors: D.list(i_Behavior) },
     body: true,
   },
   errors: [
@@ -15948,6 +16902,157 @@ export const validateSecurityProfileBehaviors: API.OperationMethod<
   operationName: "ValidateSecurityProfileBehaviors",
 })) as any;
 
+const i_AbortConfig: D.LazyStruct = () => ({
+  criteriaList: D.list({
+    failureType: 0,
+    action: 0,
+    thresholdPercentage: 0,
+    minNumberOfExecutedThings: 0,
+  }),
+});
+const i_AggregationType: D.LazyStruct = () => ({ name: 0, values: 0 });
+const i_AlertTarget: D.LazyStruct = () => ({ alertTargetArn: 0, roleArn: 0 });
+const i_AttributePayload: D.LazyStruct = () => ({ attributes: 0, merge: 0 });
+const i_AuthorizerConfig: D.LazyStruct = () => ({
+  defaultAuthorizerName: 0,
+  allowAuthorizerOverride: 0,
+});
+const i_Behavior: D.LazyStruct = () => ({
+  name: 0,
+  metric: 0,
+  metricDimension: i_MetricDimension,
+  criteria: {
+    comparisonOperator: 0,
+    value: { count: 0, cidrs: 0, ports: 0, number: 0, numbers: 0, strings: 0 },
+    durationSeconds: 0,
+    consecutiveDatapointsToAlarm: 0,
+    consecutiveDatapointsToClear: 0,
+    statisticalThreshold: { statistic: 0 },
+    mlDetectionConfig: { confidenceLevel: 0 },
+  },
+  suppressAlerts: 0,
+  exportMetric: 0,
+});
+const i_BillingGroupProperties: D.LazyStruct = () => ({
+  billingGroupDescription: 0,
+});
+const i_ClientCertificateConfig: D.LazyStruct = () => ({
+  clientCertificateCallbackArn: 0,
+});
+const i_CommandParameterValue: D.LazyStruct = () => ({
+  S: 0,
+  B: 0,
+  I: 0,
+  L: 0,
+  D: 0,
+  BIN: 0,
+  UL: 0,
+});
+const i_Field: D.LazyStruct = () => ({ name: 0, type: 0 });
+const i_JobExecutionsRetryConfig: D.LazyStruct = () => ({
+  criteriaList: D.list({ failureType: 0, numberOfRetries: 0 }),
+});
+const i_JobExecutionsRolloutConfig: D.LazyStruct = () => ({
+  maximumPerMinute: 0,
+  exponentialRate: {
+    baseRatePerMinute: 0,
+    incrementFactor: 0,
+    rateIncreaseCriteria: {
+      numberOfNotifiedThings: 0,
+      numberOfSucceededThings: 0,
+    },
+  },
+});
+const i_MaintenanceWindow: D.LazyStruct = () => ({
+  startTime: 0,
+  durationInMinutes: 0,
+});
+const i_MetricToRetain: D.LazyStruct = () => ({
+  metric: 0,
+  metricDimension: i_MetricDimension,
+  exportMetric: 0,
+});
+const i_MetricsExportConfig: D.LazyStruct = () => ({
+  mqttTopic: 0,
+  roleArn: 0,
+});
+const i_MitigationActionParams: D.LazyStruct = () => ({
+  updateDeviceCertificateParams: { action: 0 },
+  updateCACertificateParams: { action: 0 },
+  addThingsToThingGroupParams: { thingGroupNames: 0, overrideDynamicGroups: 0 },
+  replaceDefaultPolicyVersionParams: { templateName: 0 },
+  enableIoTLoggingParams: { roleArnForLogging: 0, logLevel: 0 },
+  publishFindingToSnsParams: { topicArn: 0 },
+});
+const i_PackageVersionArtifact: D.LazyStruct = () => ({
+  s3Location: i_S3Location,
+});
+const i_PresignedUrlConfig: D.LazyStruct = () => ({
+  roleArn: 0,
+  expiresInSec: 0,
+});
+const i_ProvisioningHook: D.LazyStruct = () => ({
+  payloadVersion: 0,
+  targetArn: 0,
+});
+const i_RegistrationConfig: D.LazyStruct = () => ({
+  templateBody: 0,
+  roleArn: 0,
+  templateName: 0,
+});
+const i_ResourceIdentifier: D.LazyStruct = () => ({
+  deviceCertificateId: 0,
+  caCertificateId: 0,
+  cognitoIdentityPoolId: 0,
+  clientId: 0,
+  policyVersionIdentifier: { policyName: 0, policyVersionId: 0 },
+  account: 0,
+  iamRoleArn: 0,
+  roleAliasArn: 0,
+  issuerCertificateIdentifier: {
+    issuerCertificateSubject: 0,
+    issuerId: 0,
+    issuerCertificateSerialNumber: 0,
+  },
+  deviceCertificateArn: 0,
+});
+const i_S3Location: D.LazyStruct = () => ({ bucket: 0, key: 0, version: 0 });
+const i_ServerCertificateConfig: D.LazyStruct = () => ({
+  enableOCSPCheck: 0,
+  ocspLambdaArn: 0,
+  ocspAuthorizedResponderArn: 0,
+});
+const i_StreamFile: D.LazyStruct = () => ({
+  fileId: 0,
+  s3Location: i_S3Location,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_ThingGroupProperties: D.LazyStruct = () => ({
+  thingGroupDescription: 0,
+  attributePayload: i_AttributePayload,
+});
+const i_ThingTypeProperties: D.LazyStruct = () => ({
+  thingTypeDescription: 0,
+  searchableAttributes: 0,
+  mqtt5Configuration: {
+    propagatingAttributes: D.list({
+      userPropertyKey: 0,
+      thingAttribute: 0,
+      connectionAttribute: 0,
+    }),
+  },
+});
+const i_TimeFilter: D.LazyStruct = () => ({ after: 0, before: 0 });
+const i_TimeoutConfig: D.LazyStruct = () => ({ inProgressTimeoutInMinutes: 0 });
+const i_TlsConfig: D.LazyStruct = () => ({ securityPolicy: 0 });
+const i_TopicRulePayload: D.LazyStruct = () => ({
+  sql: 0,
+  description: 0,
+  actions: D.list(i_Action),
+  ruleDisabled: 0,
+  awsIotSqlVersion: 0,
+  errorAction: i_Action,
+});
 const o_AuditFinding: D.LazyStruct = () => ({
   taskStartTime: D.ts,
   findingTime: D.ts,
@@ -15980,4 +17085,128 @@ const o_ThingTypeMetadata: D.LazyStruct = () => ({
 const o_TopicRuleDestination: D.LazyStruct = () => ({
   createdAt: D.ts,
   lastUpdatedAt: D.ts,
+});
+const i_Action: D.LazyStruct = () => ({
+  dynamoDB: {
+    tableName: 0,
+    roleArn: 0,
+    operation: 0,
+    hashKeyField: 0,
+    hashKeyValue: 0,
+    hashKeyType: 0,
+    rangeKeyField: 0,
+    rangeKeyValue: 0,
+    rangeKeyType: 0,
+    payloadField: 0,
+  },
+  dynamoDBv2: { roleArn: 0, putItem: { tableName: 0 } },
+  lambda: { functionArn: 0 },
+  sns: { targetArn: 0, roleArn: 0, messageFormat: 0 },
+  sqs: { roleArn: 0, queueUrl: 0, useBase64: 0 },
+  kinesis: { roleArn: 0, streamName: 0, partitionKey: 0 },
+  republish: {
+    roleArn: 0,
+    topic: 0,
+    qos: 0,
+    headers: {
+      payloadFormatIndicator: 0,
+      contentType: 0,
+      responseTopic: 0,
+      correlationData: 0,
+      messageExpiry: 0,
+      userProperties: D.list({ key: 0, value: 0 }),
+    },
+  },
+  s3: { roleArn: 0, bucketName: 0, key: 0, cannedAcl: 0 },
+  firehose: { roleArn: 0, deliveryStreamName: 0, separator: 0, batchMode: 0 },
+  cloudwatchMetric: {
+    roleArn: 0,
+    metricNamespace: 0,
+    metricName: 0,
+    metricValue: 0,
+    metricUnit: 0,
+    metricTimestamp: 0,
+  },
+  cloudwatchAlarm: { roleArn: 0, alarmName: 0, stateReason: 0, stateValue: 0 },
+  cloudwatchLogs: { roleArn: 0, logGroupName: 0, batchMode: 0 },
+  elasticsearch: { roleArn: 0, endpoint: 0, index: 0, type: 0, id: 0 },
+  salesforce: { token: 0, url: 0 },
+  iotAnalytics: { channelArn: 0, channelName: 0, batchMode: 0, roleArn: 0 },
+  iotEvents: { inputName: 0, messageId: 0, batchMode: 0, roleArn: 0 },
+  iotSiteWise: {
+    putAssetPropertyValueEntries: D.list({
+      entryId: 0,
+      assetId: 0,
+      propertyId: 0,
+      propertyAlias: 0,
+      propertyValues: D.list({
+        value: {
+          stringValue: 0,
+          integerValue: 0,
+          doubleValue: 0,
+          booleanValue: 0,
+        },
+        timestamp: { timeInSeconds: 0, offsetInNanos: 0 },
+        quality: 0,
+      }),
+    }),
+    roleArn: 0,
+  },
+  stepFunctions: { executionNamePrefix: 0, stateMachineName: 0, roleArn: 0 },
+  timestream: {
+    roleArn: 0,
+    databaseName: 0,
+    tableName: 0,
+    dimensions: D.list({ name: 0, value: 0 }),
+    timestamp: { value: 0, unit: 0 },
+  },
+  http: {
+    url: 0,
+    confirmationUrl: 0,
+    headers: D.list({ key: 0, value: 0 }),
+    auth: { sigv4: { signingRegion: 0, serviceName: 0, roleArn: 0 } },
+    enableBatching: 0,
+    batchConfig: {
+      maxBatchOpenMs: 0,
+      maxBatchSize: 0,
+      maxBatchSizeBytes: 0,
+      batchAcrossTopics: 0,
+    },
+  },
+  kafka: {
+    destinationArn: 0,
+    topic: 0,
+    key: 0,
+    partition: 0,
+    clientProperties: 0,
+    headers: D.list({ key: 0, value: 0 }),
+  },
+  openSearch: { roleArn: 0, endpoint: 0, index: 0, type: 0, id: 0 },
+  location: {
+    roleArn: 0,
+    trackerName: 0,
+    deviceId: 0,
+    timestamp: { value: 0, unit: 0 },
+    latitude: 0,
+    longitude: 0,
+  },
+  influxDB: {
+    destinationArn: 0,
+    roleArn: 0,
+    databaseName: 0,
+    tableName: 0,
+    organization: 0,
+    tags: 0,
+    timestampUnit: 0,
+    batchConfig: {
+      maxBatchSize: 0,
+      maxBatchOpenMs: 0,
+      maxBatchSizeBytes: 0,
+      batchAcrossTopics: 0,
+    },
+  },
+});
+const i_MetricDimension: D.LazyStruct = () => ({
+  dimensionName: 0,
+  operator: 0,
 });

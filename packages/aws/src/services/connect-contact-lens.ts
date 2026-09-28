@@ -280,6 +280,7 @@ export const listRealtimeContactAnalysisSegments: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /realtime-contact-analysis/analysis-segments",
+    input: { InstanceId: 0, ContactId: 0, MaxResults: 0, NextToken: 0 },
     body: true,
   },
   errors: [

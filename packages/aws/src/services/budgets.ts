@@ -850,7 +850,18 @@ export const createBudget: API.OperationMethod<
   CreateBudgetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AccountId: 0,
+      Budget: i_Budget,
+      NotificationsWithSubscribers: D.list({
+        Notification: i_Notification,
+        Subscribers: D.list(i_Subscriber),
+      }),
+      ResourceTags: D.list(i_ResourceTag),
+    },
+  },
   errors: [
     AccessDeniedException,
     BillingViewHealthStatusException,
@@ -886,7 +897,21 @@ export const createBudgetAction: API.OperationMethod<
   CreateBudgetActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AccountId: 0,
+      BudgetName: 0,
+      NotificationType: 0,
+      ActionType: 0,
+      ActionThreshold: i_ActionThreshold,
+      Definition: i_Definition,
+      ExecutionRoleArn: 0,
+      ApprovalModel: 0,
+      Subscribers: D.list(i_Subscriber),
+      ResourceTags: D.list(i_ResourceTag),
+    },
+  },
   errors: [
     AccessDeniedException,
     CreationLimitExceededException,
@@ -920,7 +945,15 @@ export const createNotification: API.OperationMethod<
   CreateNotificationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AccountId: 0,
+      BudgetName: 0,
+      Notification: i_Notification,
+      Subscribers: D.list(i_Subscriber),
+    },
+  },
   errors: [
     AccessDeniedException,
     CreationLimitExceededException,
@@ -953,7 +986,15 @@ export const createSubscriber: API.OperationMethod<
   CreateSubscriberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AccountId: 0,
+      BudgetName: 0,
+      Notification: i_Notification,
+      Subscriber: i_Subscriber,
+    },
+  },
   errors: [
     AccessDeniedException,
     CreationLimitExceededException,
@@ -986,7 +1027,7 @@ export const deleteBudget: API.OperationMethod<
   DeleteBudgetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AccountId: 0, BudgetName: 0 } },
   errors: [
     AccessDeniedException,
     InternalErrorException,
@@ -1016,7 +1057,11 @@ export const deleteBudgetAction: API.OperationMethod<
   DeleteBudgetActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Action: o_Action } },
+  descriptor: {
+    service: svc,
+    input: { AccountId: 0, BudgetName: 0, ActionId: 0 },
+    output: { Action: o_Action },
+  },
   errors: [
     AccessDeniedException,
     InternalErrorException,
@@ -1048,7 +1093,10 @@ export const deleteNotification: API.OperationMethod<
   DeleteNotificationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AccountId: 0, BudgetName: 0, Notification: i_Notification },
+  },
   errors: [
     AccessDeniedException,
     InternalErrorException,
@@ -1079,7 +1127,15 @@ export const deleteSubscriber: API.OperationMethod<
   DeleteSubscriberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AccountId: 0,
+      BudgetName: 0,
+      Notification: i_Notification,
+      Subscriber: i_Subscriber,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalErrorException,
@@ -1111,7 +1167,11 @@ export const describeBudget: API.OperationMethod<
   DescribeBudgetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Budget: o_Budget } },
+  descriptor: {
+    service: svc,
+    input: { AccountId: 0, BudgetName: 0, ShowFilterExpression: 0 },
+    output: { Budget: o_Budget },
+  },
   errors: [
     AccessDeniedException,
     InternalErrorException,
@@ -1140,7 +1200,11 @@ export const describeBudgetAction: API.OperationMethod<
   DescribeBudgetActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Action: o_Action } },
+  descriptor: {
+    service: svc,
+    input: { AccountId: 0, BudgetName: 0, ActionId: 0 },
+    output: { Action: o_Action },
+  },
   errors: [
     AccessDeniedException,
     InternalErrorException,
@@ -1173,6 +1237,14 @@ export const describeBudgetActionHistories: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AccountId: 0,
+      BudgetName: 0,
+      ActionId: 0,
+      TimePeriod: i_TimePeriod,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       ActionHistories: D.list({
         Timestamp: D.ts,
@@ -1216,7 +1288,11 @@ export const describeBudgetActionsForAccount: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Action
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Actions: D.list(o_Action) } },
+  descriptor: {
+    service: svc,
+    input: { AccountId: 0, MaxResults: 0, NextToken: 0 },
+    output: { Actions: D.list(o_Action) },
+  },
   errors: [
     AccessDeniedException,
     InternalErrorException,
@@ -1253,7 +1329,11 @@ export const describeBudgetActionsForBudget: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Action
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Actions: D.list(o_Action) } },
+  descriptor: {
+    service: svc,
+    input: { AccountId: 0, BudgetName: 0, MaxResults: 0, NextToken: 0 },
+    output: { Actions: D.list(o_Action) },
+  },
   errors: [
     AccessDeniedException,
     InternalErrorException,
@@ -1292,7 +1372,10 @@ export const describeBudgetNotificationsForAccount: API.PaginatedOperationMethod
   Credentials | HttpClient.HttpClient,
   BudgetNotificationsForAccount
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AccountId: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     ExpiredNextTokenException,
@@ -1335,6 +1418,13 @@ export const describeBudgetPerformanceHistory: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AccountId: 0,
+      BudgetName: 0,
+      TimePeriod: i_TimePeriod,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       BudgetPerformanceHistory: {
         BudgetedAndActualAmountsList: D.list({ TimePeriod: o_TimePeriod }),
@@ -1383,7 +1473,16 @@ export const describeBudgets: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Budget
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Budgets: D.list(o_Budget) } },
+  descriptor: {
+    service: svc,
+    input: {
+      AccountId: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      ShowFilterExpression: 0,
+    },
+    output: { Budgets: D.list(o_Budget) },
+  },
   errors: [
     AccessDeniedException,
     ExpiredNextTokenException,
@@ -1423,7 +1522,10 @@ export const describeNotificationsForBudget: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Notification
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AccountId: 0, BudgetName: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     ExpiredNextTokenException,
@@ -1463,7 +1565,17 @@ export const describeSubscribersForNotification: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Subscriber
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Subscribers: D.list(o_Subscriber) } },
+  descriptor: {
+    service: svc,
+    input: {
+      AccountId: 0,
+      BudgetName: 0,
+      Notification: i_Notification,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+    output: { Subscribers: D.list(o_Subscriber) },
+  },
   errors: [
     AccessDeniedException,
     ExpiredNextTokenException,
@@ -1501,7 +1613,10 @@ export const executeBudgetAction: API.OperationMethod<
   ExecuteBudgetActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AccountId: 0, BudgetName: 0, ActionId: 0, ExecutionType: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalErrorException,
@@ -1531,7 +1646,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [
     AccessDeniedException,
     InternalErrorException,
@@ -1561,7 +1676,10 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceARN: 0, ResourceTags: D.list(i_ResourceTag) },
+  },
   errors: [
     AccessDeniedException,
     InternalErrorException,
@@ -1591,7 +1709,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, ResourceTagKeys: 0 } },
   errors: [
     AccessDeniedException,
     InternalErrorException,
@@ -1634,7 +1752,7 @@ export const updateBudget: API.OperationMethod<
   UpdateBudgetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AccountId: 0, NewBudget: i_Budget } },
   errors: [
     AccessDeniedException,
     BillingViewHealthStatusException,
@@ -1668,6 +1786,17 @@ export const updateBudgetAction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AccountId: 0,
+      BudgetName: 0,
+      ActionId: 0,
+      NotificationType: 0,
+      ActionThreshold: i_ActionThreshold,
+      Definition: i_Definition,
+      ExecutionRoleArn: 0,
+      ApprovalModel: 0,
+      Subscribers: D.list(i_Subscriber),
+    },
     output: { OldAction: o_Action, NewAction: o_Action },
   },
   errors: [
@@ -1700,7 +1829,15 @@ export const updateNotification: API.OperationMethod<
   UpdateNotificationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AccountId: 0,
+      BudgetName: 0,
+      OldNotification: i_Notification,
+      NewNotification: i_Notification,
+    },
+  },
   errors: [
     AccessDeniedException,
     DuplicateRecordException,
@@ -1731,7 +1868,16 @@ export const updateSubscriber: API.OperationMethod<
   UpdateSubscriberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AccountId: 0,
+      BudgetName: 0,
+      Notification: i_Notification,
+      OldSubscriber: i_Subscriber,
+      NewSubscriber: i_Subscriber,
+    },
+  },
   errors: [
     AccessDeniedException,
     DuplicateRecordException,
@@ -1745,6 +1891,61 @@ export const updateSubscriber: API.OperationMethod<
   operationName: "UpdateSubscriber",
 })) as any;
 
+const i_ActionThreshold: D.LazyStruct = () => ({
+  ActionThresholdValue: 0,
+  ActionThresholdType: 0,
+});
+const i_Budget: D.LazyStruct = () => ({
+  BudgetName: 0,
+  BudgetLimit: i_Spend,
+  PlannedBudgetLimits: D.map(i_Spend),
+  CostFilters: 0,
+  CostTypes: {
+    IncludeTax: 0,
+    IncludeSubscription: 0,
+    UseBlended: 0,
+    IncludeRefund: 0,
+    IncludeCredit: 0,
+    IncludeUpfront: 0,
+    IncludeRecurring: 0,
+    IncludeOtherSubscription: 0,
+    IncludeSupport: 0,
+    IncludeDiscount: 0,
+    UseAmortized: 0,
+  },
+  TimeUnit: 0,
+  TimePeriod: i_TimePeriod,
+  CalculatedSpend: { ActualSpend: i_Spend, ForecastedSpend: i_Spend },
+  BudgetType: 0,
+  LastUpdatedTime: 0,
+  AutoAdjustData: {
+    AutoAdjustType: 0,
+    HistoricalOptions: {
+      BudgetAdjustmentPeriod: 0,
+      LookBackAvailablePeriods: 0,
+    },
+    LastAutoAdjustTime: 0,
+  },
+  FilterExpression: i_Expression,
+  Metrics: 0,
+  BillingViewArn: 0,
+  HealthStatus: { Status: 0, StatusReason: 0, LastUpdatedTime: 0 },
+});
+const i_Definition: D.LazyStruct = () => ({
+  IamActionDefinition: { PolicyArn: 0, Roles: 0, Groups: 0, Users: 0 },
+  ScpActionDefinition: { PolicyId: 0, TargetIds: 0 },
+  SsmActionDefinition: { ActionSubType: 0, Region: 0, InstanceIds: 0 },
+});
+const i_Notification: D.LazyStruct = () => ({
+  NotificationType: 0,
+  ComparisonOperator: 0,
+  Threshold: 0,
+  ThresholdType: 0,
+  NotificationState: 0,
+});
+const i_ResourceTag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_Subscriber: D.LazyStruct = () => ({ SubscriptionType: 0, Address: 0 });
+const i_TimePeriod: D.LazyStruct = () => ({ Start: 0, End: 0 });
 const o_Action: D.LazyStruct = () => ({ Subscribers: D.list(o_Subscriber) });
 const o_Budget: D.LazyStruct = () => ({
   TimePeriod: o_TimePeriod,
@@ -1754,3 +1955,12 @@ const o_Budget: D.LazyStruct = () => ({
 });
 const o_Subscriber: D.LazyStruct = () => ({ Address: D.secret });
 const o_TimePeriod: D.LazyStruct = () => ({ Start: D.ts, End: D.ts });
+const i_Expression: D.LazyStruct = () => ({
+  Or: D.list(i_Expression),
+  And: D.list(i_Expression),
+  Not: i_Expression,
+  Dimensions: { Key: 0, Values: 0, MatchOptions: 0 },
+  Tags: { Key: 0, Values: 0, MatchOptions: 0 },
+  CostCategories: { Key: 0, Values: 0, MatchOptions: 0 },
+});
+const i_Spend: D.LazyStruct = () => ({ Amount: 0, Unit: 0 });

@@ -1243,6 +1243,7 @@ export const cancelCapacityTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /outposts/{OutpostIdentifier}/capacity/{CapacityTaskId}",
+    input: { CapacityTaskId: 0, OutpostIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1272,7 +1273,11 @@ export const cancelOrder: API.OperationMethod<
   CancelOrderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /orders/{OrderId}/cancel" },
+  descriptor: {
+    service: svc,
+    http: "POST /orders/{OrderId}/cancel",
+    input: { OrderId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1305,6 +1310,14 @@ export const createOrder: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /orders",
+    input: {
+      OutpostIdentifier: 0,
+      QuoteIdentifier: 0,
+      QuoteOptionIdentifier: 0,
+      LineItems: D.list({ CatalogItemId: 0, Quantity: 0 }),
+      PaymentOption: 0,
+      PaymentTerm: 0,
+    },
     output: { Order: o_Order },
     body: true,
   },
@@ -1340,7 +1353,20 @@ export const createOutpost: API.OperationMethod<
   CreateOutpostError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /outposts", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /outposts",
+    input: {
+      Name: 0,
+      Description: 0,
+      SiteId: 0,
+      AvailabilityZone: 0,
+      AvailabilityZoneId: 0,
+      Tags: 0,
+      SupportedHardwareType: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1376,6 +1402,10 @@ export const createPrivateConnectivityConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /outposts/{OutpostId}/privateConnectivity",
+    input: {
+      OutpostId: 0,
+      VpcInformationList: D.list({ VpcId: 0, SubnetIds: 0, VpcEndpointId: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -1410,6 +1440,15 @@ export const createQuote: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /quotes",
+    input: {
+      OutpostIdentifier: 0,
+      CountryCode: 0,
+      RequestedCapacities: D.list(i_QuoteCapacity),
+      RequestedConstraints: D.list(i_QuoteConstraint),
+      RequestedPaymentOptions: 0,
+      RequestedPaymentTerms: 0,
+      Description: 0,
+    },
     output: { Quote: o_Quote },
     body: true,
   },
@@ -1442,7 +1481,12 @@ export const createRenewal: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /renewals",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      PaymentOption: 0,
+      PaymentTerm: 0,
+      OutpostIdentifier: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1472,7 +1516,30 @@ export const createSite: API.OperationMethod<
   CreateSiteError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /sites", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /sites",
+    input: {
+      Name: 0,
+      Description: 0,
+      Notes: 0,
+      Tags: 0,
+      OperatingAddress: i_Address,
+      ShippingAddress: i_Address,
+      RackPhysicalProperties: {
+        PowerDrawKva: 0,
+        PowerPhase: 0,
+        PowerConnector: 0,
+        PowerFeedDrop: 0,
+        UplinkGbps: 0,
+        UplinkCount: 0,
+        FiberOpticCableType: 0,
+        OpticalStandard: 0,
+        MaximumSupportedWeightLbs: 0,
+      },
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1501,7 +1568,11 @@ export const deleteOutpost: API.OperationMethod<
   DeleteOutpostError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /outposts/{OutpostId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /outposts/{OutpostId}",
+    input: { OutpostId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1529,7 +1600,11 @@ export const deleteQuote: API.OperationMethod<
   DeleteQuoteError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /quotes/{QuoteIdentifier}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /quotes/{QuoteIdentifier}",
+    input: { QuoteIdentifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1557,7 +1632,11 @@ export const deleteSite: API.OperationMethod<
   DeleteSiteError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /sites/{SiteId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /sites/{SiteId}",
+    input: { SiteId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1588,6 +1667,7 @@ export const getCapacityTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /outposts/{OutpostIdentifier}/capacity/{CapacityTaskId}",
+    input: { CapacityTaskId: 0, OutpostIdentifier: 0 },
     output: {
       CreationDate: D.ts,
       CompletionDate: D.ts,
@@ -1620,7 +1700,11 @@ export const getCatalogItem: API.OperationMethod<
   GetCatalogItemError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /catalog/item/{CatalogItemId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /catalog/item/{CatalogItemId}",
+    input: { CatalogItemId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1654,7 +1738,11 @@ export const getConnection: API.OperationMethod<
   GetConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /connections/{ConnectionId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /connections/{ConnectionId}",
+    input: { ConnectionId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1683,6 +1771,7 @@ export const getOrder: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /orders/{OrderId}",
+    input: { OrderId: 0 },
     output: { Order: o_Order },
   },
   errors: [InternalServerException, NotFoundException, ValidationException],
@@ -1706,7 +1795,11 @@ export const getOutpost: API.OperationMethod<
   GetOutpostError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /outposts/{OutpostId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /outposts/{OutpostId}",
+    input: { OutpostId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1739,6 +1832,7 @@ export const getOutpostBillingInformation: API.PaginatedOperationMethod<
     input: {
       NextToken: D.m({ query: "NextToken" }),
       MaxResults: D.m({ query: "MaxResults" }),
+      OutpostIdentifier: 0,
     },
     output: { Subscriptions: D.list({ BeginDate: D.ts, EndDate: D.ts }) },
   },
@@ -1774,6 +1868,7 @@ export const getOutpostInstanceTypes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /outposts/{OutpostId}/instanceTypes",
     input: {
+      OutpostId: 0,
       NextToken: D.m({ query: "NextToken" }),
       MaxResults: D.m({ query: "MaxResults" }),
     },
@@ -1817,6 +1912,7 @@ export const getOutpostSupportedInstanceTypes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /outposts/{OutpostIdentifier}/supportedInstanceTypes",
     input: {
+      OutpostIdentifier: 0,
       OrderId: D.m({ query: "OrderId" }),
       AssetId: D.m({ query: "AssetId" }),
       MaxResults: D.m({ query: "MaxResults" }),
@@ -1858,6 +1954,7 @@ export const getPrivateConnectivityConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /outposts/{OutpostId}/privateConnectivity",
+    input: { OutpostId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1888,6 +1985,7 @@ export const getQuote: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /quotes/{QuoteIdentifier}",
+    input: { QuoteIdentifier: 0 },
     output: { Quote: o_Quote },
   },
   errors: [
@@ -1919,6 +2017,7 @@ export const getRenewalPricing: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /outpost/{OutpostIdentifier}/renewal-pricing",
+    input: { OutpostIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1946,7 +2045,11 @@ export const getSite: API.OperationMethod<
   GetSiteError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /sites/{SiteId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /sites/{SiteId}",
+    input: { SiteId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1976,7 +2079,7 @@ export const getSiteAddress: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sites/{SiteId}/address",
-    input: { AddressType: D.m({ query: "AddressType" }) },
+    input: { SiteId: 0, AddressType: D.m({ query: "AddressType" }) },
   },
   errors: [
     AccessDeniedException,
@@ -2010,6 +2113,7 @@ export const listAssetInstances: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /outposts/{OutpostIdentifier}/assetInstances",
     input: {
+      OutpostIdentifier: 0,
       AssetIdFilter: D.m({ query: "AssetIdFilter" }),
       InstanceTypeFilter: D.m({ query: "InstanceTypeFilter" }),
       AccountIdFilter: D.m({ query: "AccountIdFilter" }),
@@ -2059,6 +2163,7 @@ export const listAssets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /outposts/{OutpostIdentifier}/assets",
     input: {
+      OutpostIdentifier: 0,
       HostIdFilter: D.m({ query: "HostIdFilter" }),
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
@@ -2105,6 +2210,8 @@ export const listBlockingInstancesForCapacityTask: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /outposts/{OutpostIdentifier}/capacity/{CapacityTaskId}/blockingInstances",
     input: {
+      OutpostIdentifier: 0,
+      CapacityTaskId: 0,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
     },
@@ -2460,7 +2567,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [InternalServerException, NotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2487,6 +2598,15 @@ export const startCapacityTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /outposts/{OutpostIdentifier}/capacity",
+    input: {
+      OutpostIdentifier: 0,
+      OrderId: 0,
+      AssetId: 0,
+      InstancePools: D.list({ InstanceType: 0, Count: 0 }),
+      InstancesToExclude: { Instances: 0, AccountIds: 0, Services: 0 },
+      DryRun: 0,
+      TaskActionOnBlockingInstances: 0,
+    },
     output: {
       CreationDate: D.ts,
       CompletionDate: D.ts,
@@ -2528,7 +2648,17 @@ export const startConnection: API.OperationMethod<
   StartConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /connections", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /connections",
+    input: {
+      DeviceSerialNumber: 0,
+      AssetId: 0,
+      ClientPublicKey: 0,
+      NetworkInterfaceDeviceIndex: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2559,6 +2689,7 @@ export const startOutpostDecommission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /outposts/{OutpostIdentifier}/decommission",
+    input: { OutpostIdentifier: 0, ValidateOnly: 0 },
     body: true,
   },
   errors: [
@@ -2587,7 +2718,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [InternalServerException, NotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2611,7 +2747,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [InternalServerException, NotFoundException, ValidationException],
   protocol: AwsProtocol,
@@ -2635,7 +2771,12 @@ export const updateOutpost: API.OperationMethod<
   UpdateOutpostError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /outposts/{OutpostId}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /outposts/{OutpostId}",
+    input: { OutpostId: 0, Name: 0, Description: 0, SupportedHardwareType: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2667,6 +2808,16 @@ export const updateQuote: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /quotes/{QuoteIdentifier}",
+    input: {
+      QuoteIdentifier: 0,
+      OutpostIdentifier: 0,
+      CountryCode: 0,
+      RequestedCapacities: D.list(i_QuoteCapacity),
+      RequestedConstraints: D.list(i_QuoteConstraint),
+      RequestedPaymentOptions: 0,
+      RequestedPaymentTerms: 0,
+      Description: 0,
+    },
     output: { Quote: o_Quote },
     body: true,
   },
@@ -2697,7 +2848,12 @@ export const updateSite: API.OperationMethod<
   UpdateSiteError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /sites/{SiteId}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /sites/{SiteId}",
+    input: { SiteId: 0, Name: 0, Description: 0, Notes: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2732,7 +2888,12 @@ export const updateSiteAddress: API.OperationMethod<
   UpdateSiteAddressError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /sites/{SiteId}/address", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /sites/{SiteId}/address",
+    input: { SiteId: 0, AddressType: 0, Address: i_Address },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2769,6 +2930,18 @@ export const updateSiteRackPhysicalProperties: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /sites/{SiteId}/rackPhysicalProperties",
+    input: {
+      SiteId: 0,
+      PowerDrawKva: 0,
+      PowerPhase: 0,
+      PowerConnector: 0,
+      PowerFeedDrop: 0,
+      UplinkGbps: 0,
+      UplinkCount: 0,
+      FiberOpticCableType: 0,
+      OpticalStandard: 0,
+      MaximumSupportedWeightLbs: 0,
+    },
     body: true,
   },
   errors: [
@@ -2783,6 +2956,28 @@ export const updateSiteRackPhysicalProperties: API.OperationMethod<
   operationName: "UpdateSiteRackPhysicalProperties",
 })) as any;
 
+const i_Address: D.LazyStruct = () => ({
+  ContactName: 0,
+  ContactPhoneNumber: 0,
+  AddressLine1: 0,
+  AddressLine2: 0,
+  AddressLine3: 0,
+  City: 0,
+  StateOrRegion: 0,
+  DistrictOrCounty: 0,
+  PostalCode: 0,
+  CountryCode: 0,
+  Municipality: 0,
+});
+const i_QuoteCapacity: D.LazyStruct = () => ({
+  QuoteCapacityType: 0,
+  Unit: 0,
+  Quantity: 0,
+});
+const i_QuoteConstraint: D.LazyStruct = () => ({
+  QuoteConstraintType: 0,
+  Value: 0,
+});
 const o_Order: D.LazyStruct = () => ({
   OrderSubmissionDate: D.ts,
   OrderFulfilledDate: D.ts,

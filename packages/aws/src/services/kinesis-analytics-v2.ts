@@ -1221,7 +1221,15 @@ export const addApplicationCloudWatchLoggingOption: API.OperationMethod<
   AddApplicationCloudWatchLoggingOptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ApplicationName: 0,
+      CurrentApplicationVersionId: 0,
+      CloudWatchLoggingOption: i_CloudWatchLoggingOption,
+      ConditionalToken: 0,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidApplicationConfigurationException,
@@ -1260,7 +1268,14 @@ export const addApplicationInput: API.OperationMethod<
   AddApplicationInputError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ApplicationName: 0,
+      CurrentApplicationVersionId: 0,
+      Input: i_Input,
+    },
+  },
   errors: [
     CodeValidationException,
     ConcurrentModificationException,
@@ -1292,7 +1307,15 @@ export const addApplicationInputProcessingConfiguration: API.OperationMethod<
   AddApplicationInputProcessingConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ApplicationName: 0,
+      CurrentApplicationVersionId: 0,
+      InputId: 0,
+      InputProcessingConfiguration: i_InputProcessingConfiguration,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidArgumentException,
@@ -1336,7 +1359,14 @@ export const addApplicationOutput: API.OperationMethod<
   AddApplicationOutputError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ApplicationName: 0,
+      CurrentApplicationVersionId: 0,
+      Output: i_Output,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidArgumentException,
@@ -1371,7 +1401,14 @@ export const addApplicationReferenceDataSource: API.OperationMethod<
   AddApplicationReferenceDataSourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ApplicationName: 0,
+      CurrentApplicationVersionId: 0,
+      ReferenceDataSource: i_ReferenceDataSource,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidArgumentException,
@@ -1408,7 +1445,15 @@ export const addApplicationVpcConfiguration: API.OperationMethod<
   AddApplicationVpcConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ApplicationName: 0,
+      CurrentApplicationVersionId: 0,
+      VpcConfiguration: i_VpcConfiguration,
+      ConditionalToken: 0,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidApplicationConfigurationException,
@@ -1444,6 +1489,64 @@ export const createApplication: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ApplicationName: 0,
+      ApplicationDescription: 0,
+      RuntimeEnvironment: 0,
+      ServiceExecutionRole: 0,
+      ApplicationConfiguration: {
+        SqlApplicationConfiguration: {
+          Inputs: D.list(i_Input),
+          Outputs: D.list(i_Output),
+          ReferenceDataSources: D.list(i_ReferenceDataSource),
+        },
+        FlinkApplicationConfiguration: {
+          CheckpointConfiguration: {
+            ConfigurationType: 0,
+            CheckpointingEnabled: 0,
+            CheckpointInterval: 0,
+            MinPauseBetweenCheckpoints: 0,
+          },
+          MonitoringConfiguration: {
+            ConfigurationType: 0,
+            MetricsLevel: 0,
+            LogLevel: 0,
+          },
+          ParallelismConfiguration: {
+            ConfigurationType: 0,
+            Parallelism: 0,
+            ParallelismPerKPU: 0,
+            AutoScalingEnabled: 0,
+          },
+        },
+        EnvironmentProperties: { PropertyGroups: D.list(i_PropertyGroup) },
+        ApplicationCodeConfiguration: {
+          CodeContent: {
+            TextContent: 0,
+            ZipFileContent: 0,
+            S3ContentLocation: i_S3ContentLocation,
+          },
+          CodeContentType: 0,
+        },
+        ApplicationSnapshotConfiguration: { SnapshotsEnabled: 0 },
+        ApplicationSystemRollbackConfiguration: { RollbackEnabled: 0 },
+        VpcConfigurations: D.list(i_VpcConfiguration),
+        ZeppelinApplicationConfiguration: {
+          MonitoringConfiguration: { LogLevel: 0 },
+          CatalogConfiguration: {
+            GlueDataCatalogConfiguration: { DatabaseARN: 0 },
+          },
+          DeployAsApplicationConfiguration: {
+            S3ContentLocation: { BucketARN: 0, BasePath: 0 },
+          },
+          CustomArtifactsConfiguration: D.list(i_CustomArtifactConfiguration),
+        },
+        ApplicationEncryptionConfiguration: { KeyId: 0, KeyType: 0 },
+      },
+      CloudWatchLoggingOptions: D.list(i_CloudWatchLoggingOption),
+      Tags: D.list(i_Tag),
+      ApplicationMode: 0,
+    },
     output: { ApplicationDetail: o_ApplicationDetail },
   },
   errors: [
@@ -1488,7 +1591,14 @@ export const createApplicationPresignedUrl: API.OperationMethod<
   CreateApplicationPresignedUrlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ApplicationName: 0,
+      UrlType: 0,
+      SessionExpirationDurationInSeconds: 0,
+    },
+  },
   errors: [
     InvalidArgumentException,
     ResourceInUseException,
@@ -1517,7 +1627,7 @@ export const createApplicationSnapshot: API.OperationMethod<
   CreateApplicationSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ApplicationName: 0, SnapshotName: 0 } },
   errors: [
     InvalidApplicationConfigurationException,
     InvalidArgumentException,
@@ -1549,7 +1659,10 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ApplicationName: 0, CreateTimestamp: 0 },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidApplicationConfigurationException,
@@ -1580,7 +1693,15 @@ export const deleteApplicationCloudWatchLoggingOption: API.OperationMethod<
   DeleteApplicationCloudWatchLoggingOptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ApplicationName: 0,
+      CurrentApplicationVersionId: 0,
+      CloudWatchLoggingOptionId: 0,
+      ConditionalToken: 0,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidApplicationConfigurationException,
@@ -1610,7 +1731,10 @@ export const deleteApplicationInputProcessingConfiguration: API.OperationMethod<
   DeleteApplicationInputProcessingConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ApplicationName: 0, CurrentApplicationVersionId: 0, InputId: 0 },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidArgumentException,
@@ -1641,7 +1765,10 @@ export const deleteApplicationOutput: API.OperationMethod<
   DeleteApplicationOutputError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ApplicationName: 0, CurrentApplicationVersionId: 0, OutputId: 0 },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidArgumentException,
@@ -1673,7 +1800,14 @@ export const deleteApplicationReferenceDataSource: API.OperationMethod<
   DeleteApplicationReferenceDataSourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ApplicationName: 0,
+      CurrentApplicationVersionId: 0,
+      ReferenceId: 0,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidArgumentException,
@@ -1703,7 +1837,14 @@ export const deleteApplicationSnapshot: API.OperationMethod<
   DeleteApplicationSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ApplicationName: 0,
+      SnapshotName: 0,
+      SnapshotCreationTimestamp: 0,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidArgumentException,
@@ -1733,7 +1874,15 @@ export const deleteApplicationVpcConfiguration: API.OperationMethod<
   DeleteApplicationVpcConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ApplicationName: 0,
+      CurrentApplicationVersionId: 0,
+      VpcConfigurationId: 0,
+      ConditionalToken: 0,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidApplicationConfigurationException,
@@ -1765,6 +1914,7 @@ export const describeApplication: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ApplicationName: 0, IncludeAdditionalDetails: 0 },
     output: { ApplicationDetail: o_ApplicationDetail },
   },
   errors: [
@@ -1795,6 +1945,7 @@ export const describeApplicationOperation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ApplicationName: 0, OperationId: 0 },
     output: {
       ApplicationOperationInfoDetails: { StartTime: D.ts, EndTime: D.ts },
     },
@@ -1823,7 +1974,11 @@ export const describeApplicationSnapshot: API.OperationMethod<
   DescribeApplicationSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { SnapshotDetails: o_SnapshotDetails } },
+  descriptor: {
+    service: svc,
+    input: { ApplicationName: 0, SnapshotName: 0 },
+    output: { SnapshotDetails: o_SnapshotDetails },
+  },
   errors: [
     InvalidArgumentException,
     ResourceNotFoundException,
@@ -1852,6 +2007,7 @@ export const describeApplicationVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ApplicationName: 0, ApplicationVersionId: 0 },
     output: { ApplicationVersionDetail: o_ApplicationDetail },
   },
   errors: [
@@ -1888,7 +2044,16 @@ export const discoverInputSchema: API.OperationMethod<
   DiscoverInputSchemaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceARN: 0,
+      ServiceExecutionRole: 0,
+      InputStartingPositionConfiguration: i_InputStartingPositionConfiguration,
+      S3Configuration: { BucketARN: 0, FileKey: 0 },
+      InputProcessingConfiguration: i_InputProcessingConfiguration,
+    },
+  },
   errors: [
     InvalidArgumentException,
     InvalidRequestException,
@@ -1924,6 +2089,13 @@ export const listApplicationOperations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ApplicationName: 0,
+      Limit: 0,
+      NextToken: 0,
+      Operation: 0,
+      OperationStatus: 0,
+    },
     output: {
       ApplicationOperationInfoList: D.list({ StartTime: D.ts, EndTime: D.ts }),
     },
@@ -1960,7 +2132,7 @@ export const listApplications: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ApplicationSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Limit: 0, NextToken: 0 } },
   errors: [InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1989,6 +2161,7 @@ export const listApplicationSnapshots: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ApplicationName: 0, Limit: 0, NextToken: 0 },
     output: { SnapshotSummaries: D.list(o_SnapshotDetails) },
   },
   errors: [InvalidArgumentException, UnsupportedOperationException],
@@ -2023,7 +2196,10 @@ export const listApplicationVersions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ApplicationVersionSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ApplicationName: 0, Limit: 0, NextToken: 0 },
+  },
   errors: [
     InvalidArgumentException,
     ResourceNotFoundException,
@@ -2055,7 +2231,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [
     ConcurrentModificationException,
     InvalidArgumentException,
@@ -2092,6 +2268,7 @@ export const rollbackApplication: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ApplicationName: 0, CurrentApplicationVersionId: 0 },
     output: { ApplicationDetail: o_ApplicationDetail },
   },
   errors: [
@@ -2124,7 +2301,21 @@ export const startApplication: API.OperationMethod<
   StartApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ApplicationName: 0,
+      RunConfiguration: {
+        FlinkRunConfiguration: i_FlinkRunConfiguration,
+        SqlRunConfigurations: D.list({
+          InputId: 0,
+          InputStartingPositionConfiguration:
+            i_InputStartingPositionConfiguration,
+        }),
+        ApplicationRestoreConfiguration: i_ApplicationRestoreConfiguration,
+      },
+    },
+  },
   errors: [
     InvalidApplicationConfigurationException,
     InvalidArgumentException,
@@ -2161,7 +2352,7 @@ export const stopApplication: API.OperationMethod<
   StopApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ApplicationName: 0, Force: 0 } },
   errors: [
     ConcurrentModificationException,
     InvalidApplicationConfigurationException,
@@ -2193,7 +2384,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [
     ConcurrentModificationException,
     InvalidArgumentException,
@@ -2223,7 +2414,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [
     ConcurrentModificationException,
     InvalidArgumentException,
@@ -2261,6 +2452,114 @@ export const updateApplication: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ApplicationName: 0,
+      CurrentApplicationVersionId: 0,
+      ApplicationConfigurationUpdate: {
+        SqlApplicationConfigurationUpdate: {
+          InputUpdates: D.list({
+            InputId: 0,
+            NamePrefixUpdate: 0,
+            InputProcessingConfigurationUpdate: {
+              InputLambdaProcessorUpdate: { ResourceARNUpdate: 0 },
+            },
+            KinesisStreamsInputUpdate: { ResourceARNUpdate: 0 },
+            KinesisFirehoseInputUpdate: { ResourceARNUpdate: 0 },
+            InputSchemaUpdate: {
+              RecordFormatUpdate: i_RecordFormat,
+              RecordEncodingUpdate: 0,
+              RecordColumnUpdates: D.list(i_RecordColumn),
+            },
+            InputParallelismUpdate: { CountUpdate: 0 },
+          }),
+          OutputUpdates: D.list({
+            OutputId: 0,
+            NameUpdate: 0,
+            KinesisStreamsOutputUpdate: { ResourceARNUpdate: 0 },
+            KinesisFirehoseOutputUpdate: { ResourceARNUpdate: 0 },
+            LambdaOutputUpdate: { ResourceARNUpdate: 0 },
+            DestinationSchemaUpdate: i_DestinationSchema,
+          }),
+          ReferenceDataSourceUpdates: D.list({
+            ReferenceId: 0,
+            TableNameUpdate: 0,
+            S3ReferenceDataSourceUpdate: {
+              BucketARNUpdate: 0,
+              FileKeyUpdate: 0,
+            },
+            ReferenceSchemaUpdate: i_SourceSchema,
+          }),
+        },
+        ApplicationCodeConfigurationUpdate: {
+          CodeContentTypeUpdate: 0,
+          CodeContentUpdate: {
+            TextContentUpdate: 0,
+            ZipFileContentUpdate: 0,
+            S3ContentLocationUpdate: {
+              BucketARNUpdate: 0,
+              FileKeyUpdate: 0,
+              ObjectVersionUpdate: 0,
+            },
+          },
+        },
+        FlinkApplicationConfigurationUpdate: {
+          CheckpointConfigurationUpdate: {
+            ConfigurationTypeUpdate: 0,
+            CheckpointingEnabledUpdate: 0,
+            CheckpointIntervalUpdate: 0,
+            MinPauseBetweenCheckpointsUpdate: 0,
+          },
+          MonitoringConfigurationUpdate: {
+            ConfigurationTypeUpdate: 0,
+            MetricsLevelUpdate: 0,
+            LogLevelUpdate: 0,
+          },
+          ParallelismConfigurationUpdate: {
+            ConfigurationTypeUpdate: 0,
+            ParallelismUpdate: 0,
+            ParallelismPerKPUUpdate: 0,
+            AutoScalingEnabledUpdate: 0,
+          },
+        },
+        EnvironmentPropertyUpdates: { PropertyGroups: D.list(i_PropertyGroup) },
+        ApplicationSnapshotConfigurationUpdate: { SnapshotsEnabledUpdate: 0 },
+        ApplicationSystemRollbackConfigurationUpdate: {
+          RollbackEnabledUpdate: 0,
+        },
+        VpcConfigurationUpdates: D.list({
+          VpcConfigurationId: 0,
+          SubnetIdUpdates: 0,
+          SecurityGroupIdUpdates: 0,
+        }),
+        ZeppelinApplicationConfigurationUpdate: {
+          MonitoringConfigurationUpdate: { LogLevelUpdate: 0 },
+          CatalogConfigurationUpdate: {
+            GlueDataCatalogConfigurationUpdate: { DatabaseARNUpdate: 0 },
+          },
+          DeployAsApplicationConfigurationUpdate: {
+            S3ContentLocationUpdate: { BucketARNUpdate: 0, BasePathUpdate: 0 },
+          },
+          CustomArtifactsConfigurationUpdate: D.list(
+            i_CustomArtifactConfiguration,
+          ),
+        },
+        ApplicationEncryptionConfigurationUpdate: {
+          KeyIdUpdate: 0,
+          KeyTypeUpdate: 0,
+        },
+      },
+      ServiceExecutionRoleUpdate: 0,
+      RunConfigurationUpdate: {
+        FlinkRunConfiguration: i_FlinkRunConfiguration,
+        ApplicationRestoreConfiguration: i_ApplicationRestoreConfiguration,
+      },
+      CloudWatchLoggingOptionUpdates: D.list({
+        CloudWatchLoggingOptionId: 0,
+        LogStreamARNUpdate: 0,
+      }),
+      ConditionalToken: 0,
+      RuntimeEnvironmentUpdate: 0,
+    },
     output: { ApplicationDetail: o_ApplicationDetail },
   },
   errors: [
@@ -2311,7 +2610,15 @@ export const updateApplicationMaintenanceConfiguration: API.OperationMethod<
   UpdateApplicationMaintenanceConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ApplicationName: 0,
+      ApplicationMaintenanceConfigurationUpdate: {
+        ApplicationMaintenanceWindowStartTimeUpdate: 0,
+      },
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidArgumentException,
@@ -2324,6 +2631,77 @@ export const updateApplicationMaintenanceConfiguration: API.OperationMethod<
   operationName: "UpdateApplicationMaintenanceConfiguration",
 })) as any;
 
+const i_ApplicationRestoreConfiguration: D.LazyStruct = () => ({
+  ApplicationRestoreType: 0,
+  SnapshotName: 0,
+});
+const i_CloudWatchLoggingOption: D.LazyStruct = () => ({ LogStreamARN: 0 });
+const i_CustomArtifactConfiguration: D.LazyStruct = () => ({
+  ArtifactType: 0,
+  S3ContentLocation: i_S3ContentLocation,
+  MavenReference: { GroupId: 0, ArtifactId: 0, Version: 0 },
+});
+const i_DestinationSchema: D.LazyStruct = () => ({ RecordFormatType: 0 });
+const i_FlinkRunConfiguration: D.LazyStruct = () => ({
+  AllowNonRestoredState: 0,
+});
+const i_Input: D.LazyStruct = () => ({
+  NamePrefix: 0,
+  InputProcessingConfiguration: i_InputProcessingConfiguration,
+  KinesisStreamsInput: { ResourceARN: 0 },
+  KinesisFirehoseInput: { ResourceARN: 0 },
+  InputParallelism: { Count: 0 },
+  InputSchema: i_SourceSchema,
+});
+const i_InputProcessingConfiguration: D.LazyStruct = () => ({
+  InputLambdaProcessor: { ResourceARN: 0 },
+});
+const i_InputStartingPositionConfiguration: D.LazyStruct = () => ({
+  InputStartingPosition: 0,
+});
+const i_Output: D.LazyStruct = () => ({
+  Name: 0,
+  KinesisStreamsOutput: { ResourceARN: 0 },
+  KinesisFirehoseOutput: { ResourceARN: 0 },
+  LambdaOutput: { ResourceARN: 0 },
+  DestinationSchema: i_DestinationSchema,
+});
+const i_PropertyGroup: D.LazyStruct = () => ({
+  PropertyGroupId: 0,
+  PropertyMap: 0,
+});
+const i_RecordColumn: D.LazyStruct = () => ({
+  Name: 0,
+  Mapping: 0,
+  SqlType: 0,
+});
+const i_RecordFormat: D.LazyStruct = () => ({
+  RecordFormatType: 0,
+  MappingParameters: {
+    JSONMappingParameters: { RecordRowPath: 0 },
+    CSVMappingParameters: { RecordRowDelimiter: 0, RecordColumnDelimiter: 0 },
+  },
+});
+const i_ReferenceDataSource: D.LazyStruct = () => ({
+  TableName: 0,
+  S3ReferenceDataSource: { BucketARN: 0, FileKey: 0 },
+  ReferenceSchema: i_SourceSchema,
+});
+const i_S3ContentLocation: D.LazyStruct = () => ({
+  BucketARN: 0,
+  FileKey: 0,
+  ObjectVersion: 0,
+});
+const i_SourceSchema: D.LazyStruct = () => ({
+  RecordFormat: i_RecordFormat,
+  RecordEncoding: 0,
+  RecordColumns: D.list(i_RecordColumn),
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_VpcConfiguration: D.LazyStruct = () => ({
+  SubnetIds: 0,
+  SecurityGroupIds: 0,
+});
 const o_ApplicationDetail: D.LazyStruct = () => ({
   CreateTimestamp: D.ts,
   LastUpdateTimestamp: D.ts,

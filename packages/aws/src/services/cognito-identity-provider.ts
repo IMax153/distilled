@@ -2619,7 +2619,10 @@ export const addCustomAttributes: API.OperationMethod<
   AddCustomAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, CustomAttributes: D.list(i_SchemaAttributeType) },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -2653,6 +2656,7 @@ export const addUserPoolClientSecret: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserPoolId: 0, ClientId: 0, ClientSecret: 0 },
     output: { ClientSecretDescriptor: o_ClientSecretDescriptorType },
   },
   errors: [
@@ -2698,7 +2702,10 @@ export const adminAddUserToGroup: API.OperationMethod<
   AdminAddUserToGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, Username: 0, GroupName: 0 },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -2754,7 +2761,10 @@ export const adminConfirmSignUp: API.OperationMethod<
   AdminConfirmSignUpError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, Username: 0, ClientMetadata: 0 },
+  },
   errors: [
     InternalErrorException,
     InvalidLambdaResponseException,
@@ -2847,7 +2857,21 @@ export const adminCreateUser: API.OperationMethod<
   AdminCreateUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { User: o_UserType } },
+  descriptor: {
+    service: svc,
+    input: {
+      UserPoolId: 0,
+      Username: 0,
+      UserAttributes: D.list(i_AttributeType),
+      ValidationData: D.list(i_AttributeType),
+      TemporaryPassword: 0,
+      ForceAliasCreation: 0,
+      MessageAction: 0,
+      DesiredDeliveryMediums: 0,
+      ClientMetadata: 0,
+    },
+    output: { User: o_UserType },
+  },
   errors: [
     CodeDeliveryFailureException,
     InternalErrorException,
@@ -2906,7 +2930,7 @@ export const adminDeleteSoftwareToken: API.OperationMethod<
   AdminDeleteSoftwareTokenError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserPoolId: 0, Username: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -2950,7 +2974,7 @@ export const adminDeleteUser: API.OperationMethod<
   AdminDeleteUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserPoolId: 0, Username: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -2995,7 +3019,10 @@ export const adminDeleteUserAttributes: API.OperationMethod<
   AdminDeleteUserAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, Username: 0, UserAttributeNames: 0 },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -3065,7 +3092,10 @@ export const adminDisableProviderForUser: API.OperationMethod<
   AdminDisableProviderForUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, User: i_ProviderUserIdentifierType },
+  },
   errors: [
     AliasExistsException,
     InternalErrorException,
@@ -3111,7 +3141,7 @@ export const adminDisableUser: API.OperationMethod<
   AdminDisableUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserPoolId: 0, Username: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -3155,7 +3185,7 @@ export const adminEnableUser: API.OperationMethod<
   AdminEnableUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserPoolId: 0, Username: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -3201,7 +3231,10 @@ export const adminForgetDevice: API.OperationMethod<
   AdminForgetDeviceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, Username: 0, DeviceKey: 0 },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -3246,7 +3279,11 @@ export const adminGetDevice: API.OperationMethod<
   AdminGetDeviceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Device: o_DeviceType } },
+  descriptor: {
+    service: svc,
+    input: { DeviceKey: 0, UserPoolId: 0, Username: 0 },
+    output: { Device: o_DeviceType },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -3295,6 +3332,7 @@ export const adminGetUser: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserPoolId: 0, Username: 0 },
     output: {
       Username: D.secret,
       UserAttributes: D.list(o_AttributeType),
@@ -3350,7 +3388,11 @@ export const adminGetUserAuthFactors: API.OperationMethod<
   AdminGetUserAuthFactorsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Username: D.secret } },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, Username: 0 },
+    output: { Username: D.secret },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -3427,6 +3469,16 @@ export const adminInitiateAuth: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      UserPoolId: 0,
+      ClientId: 0,
+      AuthFlow: 0,
+      AuthParameters: 0,
+      ClientMetadata: 0,
+      AnalyticsMetadata: i_AnalyticsMetadataType,
+      ContextData: i_ContextDataType,
+      Session: 0,
+    },
     output: {
       Session: D.secret,
       AuthenticationResult: o_AuthenticationResultType,
@@ -3501,7 +3553,14 @@ export const adminLinkProviderForUser: API.OperationMethod<
   AdminLinkProviderForUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UserPoolId: 0,
+      DestinationUser: i_ProviderUserIdentifierType,
+      SourceUser: i_ProviderUserIdentifierType,
+    },
+  },
   errors: [
     AliasExistsException,
     InternalErrorException,
@@ -3549,7 +3608,11 @@ export const adminListDevices: API.OperationMethod<
   AdminListDevicesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Devices: D.list(o_DeviceType) } },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, Username: 0, Limit: 0, PaginationToken: 0 },
+    output: { Devices: D.list(o_DeviceType) },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -3595,7 +3658,11 @@ export const adminListGroupsForUser: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   GroupType
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Groups: D.list(o_GroupType) } },
+  descriptor: {
+    service: svc,
+    input: { Username: 0, UserPoolId: 0, Limit: 0, NextToken: 0 },
+    output: { Groups: D.list(o_GroupType) },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -3649,6 +3716,7 @@ export const adminListUserAuthEvents: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { UserPoolId: 0, Username: 0, MaxResults: 0, NextToken: 0 },
     output: {
       AuthEvents: D.list({
         CreationDate: D.ts,
@@ -3707,7 +3775,10 @@ export const adminRemoveUserFromGroup: API.OperationMethod<
   AdminRemoveUserFromGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, Username: 0, GroupName: 0 },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -3782,7 +3853,10 @@ export const adminResetUserPassword: API.OperationMethod<
   AdminResetUserPasswordError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, Username: 0, ClientMetadata: 0 },
+  },
   errors: [
     InternalErrorException,
     InvalidEmailRoleAccessPolicyException,
@@ -3874,6 +3948,16 @@ export const adminRespondToAuthChallenge: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      UserPoolId: 0,
+      ClientId: 0,
+      ChallengeName: 0,
+      ChallengeResponses: 0,
+      Session: 0,
+      AnalyticsMetadata: i_AnalyticsMetadataType,
+      ContextData: i_ContextDataType,
+      ClientMetadata: 0,
+    },
     output: {
       Session: D.secret,
       AuthenticationResult: o_AuthenticationResultType,
@@ -3942,7 +4026,17 @@ export const adminSetUserMFAPreference: API.OperationMethod<
   AdminSetUserMFAPreferenceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SMSMfaSettings: i_SMSMfaSettingsType,
+      SoftwareTokenMfaSettings: i_SoftwareTokenMfaSettingsType,
+      EmailMfaSettings: i_EmailMfaSettingsType,
+      WebAuthnMfaSettings: i_WebAuthnMfaSettingsType,
+      Username: 0,
+      UserPoolId: 0,
+    },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -4016,7 +4110,10 @@ export const adminSetUserPassword: API.OperationMethod<
   AdminSetUserPasswordError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, Username: 0, Password: 0, Permanent: 0 },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -4062,7 +4159,10 @@ export const adminSetUserSettings: API.OperationMethod<
   AdminSetUserSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, Username: 0, MFAOptions: D.list(i_MFAOptionType) },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -4115,7 +4215,10 @@ export const adminUpdateAuthEventFeedback: API.OperationMethod<
   AdminUpdateAuthEventFeedbackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, Username: 0, EventId: 0, FeedbackValue: 0 },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -4165,7 +4268,15 @@ export const adminUpdateDeviceStatus: API.OperationMethod<
   AdminUpdateDeviceStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UserPoolId: 0,
+      Username: 0,
+      DeviceKey: 0,
+      DeviceRememberedStatus: 0,
+    },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -4242,7 +4353,15 @@ export const adminUpdateUserAttributes: API.OperationMethod<
   AdminUpdateUserAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UserPoolId: 0,
+      Username: 0,
+      UserAttributes: D.list(i_AttributeType),
+      ClientMetadata: 0,
+    },
+  },
   errors: [
     AliasExistsException,
     InternalErrorException,
@@ -4315,7 +4434,7 @@ export const adminUserGlobalSignOut: API.OperationMethod<
   AdminUserGlobalSignOutError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserPoolId: 0, Username: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -4362,6 +4481,7 @@ export const associateSoftwareToken: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AccessToken: 0, Session: 0 },
     output: { SecretCode: D.secret, Session: D.secret },
   },
   errors: [
@@ -4410,7 +4530,10 @@ export const changePassword: API.OperationMethod<
   ChangePasswordError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { PreviousPassword: 0, ProposedPassword: 0, AccessToken: 0 },
+  },
   errors: [
     ForbiddenException,
     InternalErrorException,
@@ -4459,7 +4582,7 @@ export const completeWebAuthnRegistration: API.OperationMethod<
   CompleteWebAuthnRegistrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AccessToken: 0, Credential: 0 } },
   errors: [
     ForbiddenException,
     InternalErrorException,
@@ -4517,7 +4640,15 @@ export const confirmDevice: API.OperationMethod<
   ConfirmDeviceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AccessToken: 0,
+      DeviceKey: 0,
+      DeviceSecretVerifierConfig: { PasswordVerifier: 0, Salt: 0 },
+      DeviceName: 0,
+    },
+  },
   errors: [
     DeviceKeyExistsException,
     ForbiddenException,
@@ -4575,7 +4706,19 @@ export const confirmForgotPassword: API.OperationMethod<
   ConfirmForgotPasswordError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClientId: 0,
+      SecretHash: 0,
+      Username: 0,
+      ConfirmationCode: 0,
+      Password: 0,
+      AnalyticsMetadata: i_AnalyticsMetadataType,
+      UserContextData: i_UserContextDataType,
+      ClientMetadata: 0,
+    },
+  },
   errors: [
     CodeMismatchException,
     ExpiredCodeException,
@@ -4642,7 +4785,21 @@ export const confirmSignUp: API.OperationMethod<
   ConfirmSignUpError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Session: D.secret } },
+  descriptor: {
+    service: svc,
+    input: {
+      ClientId: 0,
+      SecretHash: 0,
+      Username: 0,
+      ConfirmationCode: 0,
+      ForceAliasCreation: 0,
+      AnalyticsMetadata: i_AnalyticsMetadataType,
+      UserContextData: i_UserContextDataType,
+      ClientMetadata: 0,
+      Session: 0,
+    },
+    output: { Session: D.secret },
+  },
   errors: [
     AliasExistsException,
     CodeMismatchException,
@@ -4696,7 +4853,17 @@ export const createGroup: API.OperationMethod<
   CreateGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Group: o_GroupType } },
+  descriptor: {
+    service: svc,
+    input: {
+      GroupName: 0,
+      UserPoolId: 0,
+      Description: 0,
+      RoleArn: 0,
+      Precedence: 0,
+    },
+    output: { Group: o_GroupType },
+  },
   errors: [
     GroupExistsException,
     InternalErrorException,
@@ -4744,6 +4911,14 @@ export const createIdentityProvider: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      UserPoolId: 0,
+      ProviderName: 0,
+      ProviderType: 0,
+      ProviderDetails: 0,
+      AttributeMapping: 0,
+      IdpIdentifiers: 0,
+    },
     output: { IdentityProvider: o_IdentityProviderType },
   },
   errors: [
@@ -4807,6 +4982,13 @@ export const createManagedLoginBranding: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      UserPoolId: 0,
+      ClientId: 0,
+      UseCognitoProvidedValues: 0,
+      Settings: 0,
+      Assets: D.list(i_AssetType),
+    },
     output: { ManagedLoginBranding: o_ManagedLoginBrandingType },
   },
   errors: [
@@ -4855,7 +5037,15 @@ export const createResourceServer: API.OperationMethod<
   CreateResourceServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UserPoolId: 0,
+      Identifier: 0,
+      Name: 0,
+      Scopes: D.list(i_ResourceServerScopeType),
+    },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -4913,7 +5103,18 @@ export const createTerms: API.OperationMethod<
   CreateTermsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Terms: o_TermsType } },
+  descriptor: {
+    service: svc,
+    input: {
+      UserPoolId: 0,
+      ClientId: 0,
+      TermsName: 0,
+      TermsSource: 0,
+      Enforcement: 0,
+      Links: 0,
+    },
+    output: { Terms: o_TermsType },
+  },
   errors: [
     ConcurrentModificationException,
     InternalErrorException,
@@ -4960,7 +5161,16 @@ export const createUserImportJob: API.OperationMethod<
   CreateUserImportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { UserImportJob: o_UserImportJobType } },
+  descriptor: {
+    service: svc,
+    input: {
+      JobName: 0,
+      UserPoolId: 0,
+      CloudWatchLogsRoleArn: 0,
+      PasswordHashingAlgorithm: 0,
+    },
+    output: { UserImportJob: o_UserImportJobType },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -5028,7 +5238,38 @@ export const createUserPool: API.OperationMethod<
   CreateUserPoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { UserPool: o_UserPoolType } },
+  descriptor: {
+    service: svc,
+    input: {
+      PoolName: 0,
+      Policies: i_UserPoolPolicyType,
+      DeletionProtection: 0,
+      LambdaConfig: i_LambdaConfigType,
+      AutoVerifiedAttributes: 0,
+      AliasAttributes: 0,
+      UsernameAttributes: 0,
+      SmsVerificationMessage: 0,
+      EmailVerificationMessage: 0,
+      EmailVerificationSubject: 0,
+      VerificationMessageTemplate: i_VerificationMessageTemplateType,
+      SmsAuthenticationMessage: 0,
+      MfaConfiguration: 0,
+      UserAttributeUpdateSettings: i_UserAttributeUpdateSettingsType,
+      DeviceConfiguration: i_DeviceConfigurationType,
+      EmailConfiguration: i_EmailConfigurationType,
+      SmsConfiguration: i_SmsConfigurationType,
+      UserPoolTags: 0,
+      AdminCreateUserConfig: i_AdminCreateUserConfigType,
+      Schema: D.list(i_SchemaAttributeType),
+      UserPoolAddOns: i_UserPoolAddOnsType,
+      UsernameConfiguration: { CaseSensitive: 0 },
+      AccountRecoverySetting: i_AccountRecoverySettingType,
+      UserPoolTier: 0,
+      KeyConfiguration: i_KeyConfigurationType,
+      IssuerConfiguration: i_IssuerConfigurationType,
+    },
+    output: { UserPool: o_UserPoolType },
+  },
   errors: [
     FeatureUnavailableInTierException,
     InternalErrorException,
@@ -5087,6 +5328,32 @@ export const createUserPoolClient: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      UserPoolId: 0,
+      ClientName: 0,
+      GenerateSecret: 0,
+      ClientSecret: 0,
+      RefreshTokenValidity: 0,
+      AccessTokenValidity: 0,
+      IdTokenValidity: 0,
+      TokenValidityUnits: i_TokenValidityUnitsType,
+      ReadAttributes: 0,
+      WriteAttributes: 0,
+      ExplicitAuthFlows: 0,
+      SupportedIdentityProviders: 0,
+      CallbackURLs: 0,
+      LogoutURLs: 0,
+      DefaultRedirectURI: 0,
+      AllowedOAuthFlows: 0,
+      AllowedOAuthScopes: 0,
+      AllowedOAuthFlowsUserPoolClient: 0,
+      AnalyticsConfiguration: i_AnalyticsConfigurationType,
+      PreventUserExistenceErrors: 0,
+      EnableTokenRevocation: 0,
+      EnablePropagateAdditionalUserContextData: 0,
+      AuthSessionValidity: 0,
+      RefreshTokenRotation: i_RefreshTokenRotationType,
+    },
     output: { UserPoolClient: o_UserPoolClientType },
   },
   errors: [
@@ -5146,7 +5413,16 @@ export const createUserPoolDomain: API.OperationMethod<
   CreateUserPoolDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Domain: 0,
+      UserPoolId: 0,
+      ManagedLoginVersion: 0,
+      CustomDomainConfig: i_CustomDomainConfigType,
+      Routing: i_RoutingType,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     FeatureUnavailableInTierException,
@@ -5194,7 +5470,10 @@ export const createUserPoolReplica: API.OperationMethod<
   CreateUserPoolReplicaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, RegionName: 0, UserPoolTags: 0 },
+  },
   errors: [
     FeatureUnavailableInTierException,
     InternalErrorException,
@@ -5242,7 +5521,7 @@ export const deleteGroup: API.OperationMethod<
   DeleteGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GroupName: 0, UserPoolId: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -5286,7 +5565,7 @@ export const deleteIdentityProvider: API.OperationMethod<
   DeleteIdentityProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserPoolId: 0, ProviderName: 0 } },
   errors: [
     ConcurrentModificationException,
     InternalErrorException,
@@ -5332,7 +5611,10 @@ export const deleteManagedLoginBranding: API.OperationMethod<
   DeleteManagedLoginBrandingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ManagedLoginBrandingId: 0, UserPoolId: 0 },
+  },
   errors: [
     ConcurrentModificationException,
     InternalErrorException,
@@ -5378,7 +5660,7 @@ export const deleteResourceServer: API.OperationMethod<
   DeleteResourceServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserPoolId: 0, Identifier: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -5420,7 +5702,7 @@ export const deleteTerms: API.OperationMethod<
   DeleteTermsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TermsId: 0, UserPoolId: 0 } },
   errors: [
     ConcurrentModificationException,
     InternalErrorException,
@@ -5464,7 +5746,7 @@ export const deleteUser: API.OperationMethod<
   DeleteUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AccessToken: 0 } },
   errors: [
     ForbiddenException,
     InternalErrorException,
@@ -5512,7 +5794,10 @@ export const deleteUserAttributes: API.OperationMethod<
   DeleteUserAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserAttributeNames: 0, AccessToken: 0 },
+  },
   errors: [
     ForbiddenException,
     InternalErrorException,
@@ -5558,7 +5843,7 @@ export const deleteUserPool: API.OperationMethod<
   DeleteUserPoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserPoolId: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -5592,7 +5877,7 @@ export const deleteUserPoolClient: API.OperationMethod<
   DeleteUserPoolClientError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserPoolId: 0, ClientId: 0 } },
   errors: [
     ConcurrentModificationException,
     InternalErrorException,
@@ -5623,7 +5908,10 @@ export const deleteUserPoolClientSecret: API.OperationMethod<
   DeleteUserPoolClientSecretError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, ClientId: 0, ClientSecretId: 0 },
+  },
   errors: [
     InternalServerException,
     InvalidParameterException,
@@ -5655,7 +5943,7 @@ export const deleteUserPoolDomain: API.OperationMethod<
   DeleteUserPoolDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Domain: 0, UserPoolId: 0 } },
   errors: [
     ConcurrentModificationException,
     InternalErrorException,
@@ -5697,7 +5985,7 @@ export const deleteUserPoolReplica: API.OperationMethod<
   DeleteUserPoolReplicaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserPoolId: 0, RegionName: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -5739,7 +6027,7 @@ export const deleteWebAuthnCredential: API.OperationMethod<
   DeleteWebAuthnCredentialError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AccessToken: 0, CredentialId: 0 } },
   errors: [
     ForbiddenException,
     InternalErrorException,
@@ -5775,6 +6063,7 @@ export const describeIdentityProvider: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserPoolId: 0, ProviderName: 0 },
     output: { IdentityProvider: o_IdentityProviderType },
   },
   errors: [
@@ -5809,6 +6098,11 @@ export const describeManagedLoginBranding: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      UserPoolId: 0,
+      ManagedLoginBrandingId: 0,
+      ReturnMergedResources: 0,
+    },
     output: { ManagedLoginBranding: o_ManagedLoginBrandingType },
   },
   errors: [
@@ -5844,6 +6138,7 @@ export const describeManagedLoginBrandingByClient: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserPoolId: 0, ClientId: 0, ReturnMergedResources: 0 },
     output: { ManagedLoginBranding: o_ManagedLoginBrandingType },
   },
   errors: [
@@ -5876,7 +6171,7 @@ export const describeResourceServer: API.OperationMethod<
   DescribeResourceServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserPoolId: 0, Identifier: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -5913,6 +6208,7 @@ export const describeRiskConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserPoolId: 0, ClientId: 0 },
     output: { RiskConfiguration: o_RiskConfigurationType },
   },
   errors: [
@@ -5956,7 +6252,11 @@ export const describeTerms: API.OperationMethod<
   DescribeTermsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Terms: o_TermsType } },
+  descriptor: {
+    service: svc,
+    input: { TermsId: 0, UserPoolId: 0 },
+    output: { Terms: o_TermsType },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -6006,7 +6306,11 @@ export const describeTermsByClient: API.OperationMethod<
   DescribeTermsByClientError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Terms: o_TermsType } },
+  descriptor: {
+    service: svc,
+    input: { ClientId: 0, UserPoolId: 0, TermsName: 0 },
+    output: { Terms: o_TermsType },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -6037,7 +6341,11 @@ export const describeUserImportJob: API.OperationMethod<
   DescribeUserImportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { UserImportJob: o_UserImportJobType } },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, JobId: 0 },
+    output: { UserImportJob: o_UserImportJobType },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -6081,7 +6389,11 @@ export const describeUserPool: API.OperationMethod<
   DescribeUserPoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { UserPool: o_UserPoolType } },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0 },
+    output: { UserPool: o_UserPoolType },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -6127,6 +6439,7 @@ export const describeUserPoolClient: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserPoolId: 0, ClientId: 0 },
     output: { UserPoolClient: o_UserPoolClientType },
   },
   errors: [
@@ -6174,7 +6487,7 @@ export const describeUserPoolDomain: API.OperationMethod<
   DescribeUserPoolDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Domain: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -6217,7 +6530,7 @@ export const forgetDevice: API.OperationMethod<
   ForgetDeviceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AccessToken: 0, DeviceKey: 0 } },
   errors: [
     ForbiddenException,
     InternalErrorException,
@@ -6296,7 +6609,17 @@ export const forgotPassword: API.OperationMethod<
   ForgotPasswordError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClientId: 0,
+      SecretHash: 0,
+      UserContextData: i_UserContextDataType,
+      Username: 0,
+      AnalyticsMetadata: i_AnalyticsMetadataType,
+      ClientMetadata: 0,
+    },
+  },
   errors: [
     CodeDeliveryFailureException,
     ForbiddenException,
@@ -6354,6 +6677,7 @@ export const getClientToken: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ClientId: 0, Secret: 0, Scopes: 0, ClientMetadata: 0 },
     output: { ClientAuthenticationResult: { AccessToken: D.secret } },
   },
   errors: [
@@ -6402,7 +6726,7 @@ export const getCSVHeader: API.OperationMethod<
   GetCSVHeaderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserPoolId: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -6446,7 +6770,11 @@ export const getDevice: API.OperationMethod<
   GetDeviceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Device: o_DeviceType } },
+  descriptor: {
+    service: svc,
+    input: { DeviceKey: 0, AccessToken: 0 },
+    output: { Device: o_DeviceType },
+  },
   errors: [
     ForbiddenException,
     InternalErrorException,
@@ -6495,7 +6823,11 @@ export const getGroup: API.OperationMethod<
   GetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Group: o_GroupType } },
+  descriptor: {
+    service: svc,
+    input: { GroupName: 0, UserPoolId: 0 },
+    output: { Group: o_GroupType },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -6529,6 +6861,7 @@ export const getIdentityProviderByIdentifier: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserPoolId: 0, IdpIdentifier: 0 },
     output: { IdentityProvider: o_IdentityProviderType },
   },
   errors: [
@@ -6570,7 +6903,7 @@ export const getLogDeliveryConfiguration: API.OperationMethod<
   GetLogDeliveryConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserPoolId: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -6609,7 +6942,10 @@ export const getProvisionedLimit: API.OperationMethod<
   GetProvisionedLimitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { LimitDefinition: i_LimitDefinitionType },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -6654,7 +6990,7 @@ export const getSigningCertificate: API.OperationMethod<
   GetSigningCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserPoolId: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -6695,6 +7031,13 @@ export const getTokensFromRefreshToken: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      RefreshToken: 0,
+      ClientId: 0,
+      ClientSecret: 0,
+      DeviceKey: 0,
+      ClientMetadata: 0,
+    },
     output: { AuthenticationResult: o_AuthenticationResultType },
   },
   errors: [
@@ -6739,6 +7082,7 @@ export const getUICustomization: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserPoolId: 0, ClientId: 0 },
     output: { UICustomization: o_UICustomizationType },
   },
   errors: [
@@ -6784,6 +7128,7 @@ export const getUser: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AccessToken: 0 },
     output: { Username: D.secret, UserAttributes: D.list(o_AttributeType) },
   },
   errors: [
@@ -6857,7 +7202,10 @@ export const getUserAttributeVerificationCode: API.OperationMethod<
   GetUserAttributeVerificationCodeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AccessToken: 0, AttributeName: 0, ClientMetadata: 0 },
+  },
   errors: [
     CodeDeliveryFailureException,
     ForbiddenException,
@@ -6917,7 +7265,11 @@ export const getUserAuthFactors: API.OperationMethod<
   GetUserAuthFactorsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Username: D.secret } },
+  descriptor: {
+    service: svc,
+    input: { AccessToken: 0 },
+    output: { Username: D.secret },
+  },
   errors: [
     ForbiddenException,
     InternalErrorException,
@@ -6973,7 +7325,7 @@ export const getUserPoolMfaConfig: API.OperationMethod<
   GetUserPoolMfaConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserPoolId: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -7036,7 +7388,7 @@ export const globalSignOut: API.OperationMethod<
   GlobalSignOutError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AccessToken: 0 } },
   errors: [
     ForbiddenException,
     InternalErrorException,
@@ -7110,6 +7462,15 @@ export const initiateAuth: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AuthFlow: 0,
+      AuthParameters: 0,
+      ClientMetadata: 0,
+      ClientId: 0,
+      AnalyticsMetadata: i_AnalyticsMetadataType,
+      UserContextData: i_UserContextDataType,
+      Session: 0,
+    },
     output: {
       Session: D.secret,
       AuthenticationResult: o_AuthenticationResultType,
@@ -7170,7 +7531,11 @@ export const listDevices: API.OperationMethod<
   ListDevicesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Devices: D.list(o_DeviceType) } },
+  descriptor: {
+    service: svc,
+    input: { AccessToken: 0, Limit: 0, PaginationToken: 0 },
+    output: { Devices: D.list(o_DeviceType) },
+  },
   errors: [
     ForbiddenException,
     InternalErrorException,
@@ -7217,7 +7582,11 @@ export const listGroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   GroupType
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Groups: D.list(o_GroupType) } },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, Limit: 0, NextToken: 0 },
+    output: { Groups: D.list(o_GroupType) },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -7267,6 +7636,7 @@ export const listIdentityProviders: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { UserPoolId: 0, MaxResults: 0, NextToken: 0 },
     output: {
       Providers: D.list({ LastModifiedDate: D.ts, CreationDate: D.ts }),
     },
@@ -7318,7 +7688,10 @@ export const listResourceServers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ResourceServerType
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -7357,7 +7730,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -7400,6 +7773,7 @@ export const listTerms: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserPoolId: 0, MaxResults: 0, NextToken: 0 },
     output: { Terms: D.list({ CreationDate: D.ts, LastModifiedDate: D.ts }) },
   },
   errors: [
@@ -7446,6 +7820,7 @@ export const listUserImportJobs: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserPoolId: 0, MaxResults: 0, PaginationToken: 0 },
     output: { UserImportJobs: D.list(o_UserImportJobType) },
   },
   errors: [
@@ -7492,6 +7867,7 @@ export const listUserPoolClients: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { UserPoolId: 0, MaxResults: 0, NextToken: 0 },
     output: { UserPoolClients: D.list({ ClientId: D.secret }) },
   },
   errors: [
@@ -7531,6 +7907,7 @@ export const listUserPoolClientSecrets: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserPoolId: 0, ClientId: 0, NextToken: 0 },
     output: { ClientSecrets: D.list(o_ClientSecretDescriptorType) },
   },
   errors: [
@@ -7574,7 +7951,7 @@ export const listUserPoolReplicas: API.OperationMethod<
   ListUserPoolReplicasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserPoolId: 0, NextToken: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -7616,6 +7993,7 @@ export const listUserPools: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: {
       UserPools: D.list({ LastModifiedDate: D.ts, CreationDate: D.ts }),
     },
@@ -7670,7 +8048,17 @@ export const listUsers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   UserType
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Users: D.list(o_UserType) } },
+  descriptor: {
+    service: svc,
+    input: {
+      UserPoolId: 0,
+      AttributesToGet: 0,
+      Limit: 0,
+      PaginationToken: 0,
+      Filter: 0,
+    },
+    output: { Users: D.list(o_UserType) },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -7719,7 +8107,11 @@ export const listUsersInGroup: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   UserType
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Users: D.list(o_UserType) } },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, GroupName: 0, Limit: 0, NextToken: 0 },
+    output: { Users: D.list(o_UserType) },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -7768,6 +8160,7 @@ export const listWebAuthnCredentials: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AccessToken: 0, NextToken: 0, MaxResults: 0 },
     output: { Credentials: D.list({ CreatedAt: D.ts }) },
   },
   errors: [
@@ -7838,7 +8231,17 @@ export const resendConfirmationCode: API.OperationMethod<
   ResendConfirmationCodeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClientId: 0,
+      SecretHash: 0,
+      UserContextData: i_UserContextDataType,
+      Username: 0,
+      AnalyticsMetadata: i_AnalyticsMetadataType,
+      ClientMetadata: 0,
+    },
+  },
   errors: [
     CodeDeliveryFailureException,
     ForbiddenException,
@@ -7928,6 +8331,15 @@ export const respondToAuthChallenge: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ClientId: 0,
+      ChallengeName: 0,
+      Session: 0,
+      ChallengeResponses: 0,
+      AnalyticsMetadata: i_AnalyticsMetadataType,
+      UserContextData: i_UserContextDataType,
+      ClientMetadata: 0,
+    },
     output: {
       Session: D.secret,
       AuthenticationResult: o_AuthenticationResultType,
@@ -7990,7 +8402,10 @@ export const revokeToken: API.OperationMethod<
   RevokeTokenError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Token: 0, ClientId: 0, ClientSecret: 0 },
+  },
   errors: [
     ForbiddenException,
     InternalErrorException,
@@ -8026,7 +8441,19 @@ export const setLogDeliveryConfiguration: API.OperationMethod<
   SetLogDeliveryConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UserPoolId: 0,
+      LogConfigurations: D.list({
+        LogLevel: 0,
+        EventSource: 0,
+        CloudWatchLogsConfiguration: { LogGroupArn: 0 },
+        S3Configuration: { BucketArn: 0 },
+        FirehoseConfiguration: { StreamArn: 0 },
+      }),
+    },
+  },
   errors: [
     FeatureUnavailableInTierException,
     InternalErrorException,
@@ -8086,6 +8513,33 @@ export const setRiskConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      UserPoolId: 0,
+      ClientId: 0,
+      CompromisedCredentialsRiskConfiguration: {
+        EventFilter: 0,
+        Actions: { EventAction: 0 },
+      },
+      AccountTakeoverRiskConfiguration: {
+        NotifyConfiguration: {
+          From: 0,
+          ReplyTo: 0,
+          SourceArn: 0,
+          BlockEmail: i_NotifyEmailType,
+          NoActionEmail: i_NotifyEmailType,
+          MfaEmail: i_NotifyEmailType,
+        },
+        Actions: {
+          LowAction: i_AccountTakeoverActionType,
+          MediumAction: i_AccountTakeoverActionType,
+          HighAction: i_AccountTakeoverActionType,
+        },
+      },
+      RiskExceptionConfiguration: {
+        BlockedIPRangeList: 0,
+        SkippedIPRangeList: 0,
+      },
+    },
     output: { RiskConfiguration: o_RiskConfigurationType },
   },
   errors: [
@@ -8139,6 +8593,7 @@ export const setUICustomization: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserPoolId: 0, ClientId: 0, CSS: 0, ImageFile: 0 },
     output: { UICustomization: o_UICustomizationType },
   },
   errors: [
@@ -8189,7 +8644,16 @@ export const setUserMFAPreference: API.OperationMethod<
   SetUserMFAPreferenceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SMSMfaSettings: i_SMSMfaSettingsType,
+      SoftwareTokenMfaSettings: i_SoftwareTokenMfaSettingsType,
+      EmailMfaSettings: i_EmailMfaSettingsType,
+      WebAuthnMfaSettings: i_WebAuthnMfaSettingsType,
+      AccessToken: 0,
+    },
+  },
   errors: [
     ForbiddenException,
     InternalErrorException,
@@ -8245,7 +8709,24 @@ export const setUserPoolMfaConfig: API.OperationMethod<
   SetUserPoolMfaConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UserPoolId: 0,
+      SmsMfaConfiguration: {
+        SmsAuthenticationMessage: 0,
+        SmsConfiguration: i_SmsConfigurationType,
+      },
+      SoftwareTokenMfaConfiguration: { Enabled: 0 },
+      EmailMfaConfiguration: { Message: 0, Subject: 0 },
+      MfaConfiguration: 0,
+      WebAuthnConfiguration: {
+        RelyingPartyId: 0,
+        UserVerification: 0,
+        FactorConfiguration: 0,
+      },
+    },
+  },
   errors: [
     ConcurrentModificationException,
     FeatureUnavailableInTierException,
@@ -8292,7 +8773,10 @@ export const setUserSettings: API.OperationMethod<
   SetUserSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AccessToken: 0, MFAOptions: D.list(i_MFAOptionType) },
+  },
   errors: [
     ForbiddenException,
     InternalErrorException,
@@ -8366,7 +8850,21 @@ export const signUp: API.OperationMethod<
   SignUpError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Session: D.secret } },
+  descriptor: {
+    service: svc,
+    input: {
+      ClientId: 0,
+      SecretHash: 0,
+      Username: 0,
+      Password: 0,
+      UserAttributes: D.list(i_AttributeType),
+      ValidationData: D.list(i_AttributeType),
+      AnalyticsMetadata: i_AnalyticsMetadataType,
+      UserContextData: i_UserContextDataType,
+      ClientMetadata: 0,
+    },
+    output: { Session: D.secret },
+  },
   errors: [
     CodeDeliveryFailureException,
     ForbiddenException,
@@ -8411,7 +8909,11 @@ export const startUserImportJob: API.OperationMethod<
   StartUserImportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { UserImportJob: o_UserImportJobType } },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, JobId: 0 },
+    output: { UserImportJob: o_UserImportJobType },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -8452,7 +8954,7 @@ export const startWebAuthnRegistration: API.OperationMethod<
   StartWebAuthnRegistrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AccessToken: 0 } },
   errors: [
     ForbiddenException,
     InternalErrorException,
@@ -8490,7 +8992,11 @@ export const stopUserImportJob: API.OperationMethod<
   StopUserImportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { UserImportJob: o_UserImportJobType } },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, JobId: 0 },
+    output: { UserImportJob: o_UserImportJobType },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -8538,7 +9044,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -8569,7 +9075,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -8620,7 +9126,16 @@ export const updateAuthEventFeedback: API.OperationMethod<
   UpdateAuthEventFeedbackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UserPoolId: 0,
+      Username: 0,
+      EventId: 0,
+      FeedbackToken: 0,
+      FeedbackValue: 0,
+    },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -8670,7 +9185,10 @@ export const updateDeviceStatus: API.OperationMethod<
   UpdateDeviceStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AccessToken: 0, DeviceKey: 0, DeviceRememberedStatus: 0 },
+  },
   errors: [
     ForbiddenException,
     InternalErrorException,
@@ -8717,7 +9235,17 @@ export const updateGroup: API.OperationMethod<
   UpdateGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Group: o_GroupType } },
+  descriptor: {
+    service: svc,
+    input: {
+      GroupName: 0,
+      UserPoolId: 0,
+      Description: 0,
+      RoleArn: 0,
+      Precedence: 0,
+    },
+    output: { Group: o_GroupType },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -8764,6 +9292,13 @@ export const updateIdentityProvider: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      UserPoolId: 0,
+      ProviderName: 0,
+      ProviderDetails: 0,
+      AttributeMapping: 0,
+      IdpIdentifiers: 0,
+    },
     output: { IdentityProvider: o_IdentityProviderType },
   },
   errors: [
@@ -8820,6 +9355,13 @@ export const updateManagedLoginBranding: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      UserPoolId: 0,
+      ManagedLoginBrandingId: 0,
+      UseCognitoProvidedValues: 0,
+      Settings: 0,
+      Assets: D.list(i_AssetType),
+    },
     output: { ManagedLoginBranding: o_ManagedLoginBrandingType },
   },
   errors: [
@@ -8868,7 +9410,10 @@ export const updateProvisionedLimit: API.OperationMethod<
   UpdateProvisionedLimitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { LimitDefinition: i_LimitDefinitionType, RequestedLimitValue: 0 },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -8913,7 +9458,15 @@ export const updateResourceServer: API.OperationMethod<
   UpdateResourceServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UserPoolId: 0,
+      Identifier: 0,
+      Name: 0,
+      Scopes: D.list(i_ResourceServerScopeType),
+    },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -8969,7 +9522,18 @@ export const updateTerms: API.OperationMethod<
   UpdateTermsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Terms: o_TermsType } },
+  descriptor: {
+    service: svc,
+    input: {
+      TermsId: 0,
+      UserPoolId: 0,
+      TermsName: 0,
+      TermsSource: 0,
+      Enforcement: 0,
+      Links: 0,
+    },
+    output: { Terms: o_TermsType },
+  },
   errors: [
     ConcurrentModificationException,
     InternalErrorException,
@@ -9044,7 +9608,14 @@ export const updateUserAttributes: API.OperationMethod<
   UpdateUserAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UserAttributes: D.list(i_AttributeType),
+      AccessToken: 0,
+      ClientMetadata: 0,
+    },
+  },
   errors: [
     AliasExistsException,
     CodeDeliveryFailureException,
@@ -9133,7 +9704,34 @@ export const updateUserPool: API.OperationMethod<
   UpdateUserPoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UserPoolId: 0,
+      Policies: i_UserPoolPolicyType,
+      DeletionProtection: 0,
+      LambdaConfig: i_LambdaConfigType,
+      AutoVerifiedAttributes: 0,
+      SmsVerificationMessage: 0,
+      EmailVerificationMessage: 0,
+      EmailVerificationSubject: 0,
+      VerificationMessageTemplate: i_VerificationMessageTemplateType,
+      SmsAuthenticationMessage: 0,
+      UserAttributeUpdateSettings: i_UserAttributeUpdateSettingsType,
+      MfaConfiguration: 0,
+      DeviceConfiguration: i_DeviceConfigurationType,
+      EmailConfiguration: i_EmailConfigurationType,
+      SmsConfiguration: i_SmsConfigurationType,
+      UserPoolTags: 0,
+      AdminCreateUserConfig: i_AdminCreateUserConfigType,
+      UserPoolAddOns: i_UserPoolAddOnsType,
+      AccountRecoverySetting: i_AccountRecoverySettingType,
+      PoolName: 0,
+      UserPoolTier: 0,
+      KeyConfiguration: i_KeyConfigurationType,
+      IssuerConfiguration: i_IssuerConfigurationType,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     FeatureUnavailableInTierException,
@@ -9197,6 +9795,31 @@ export const updateUserPoolClient: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      UserPoolId: 0,
+      ClientId: 0,
+      ClientName: 0,
+      RefreshTokenValidity: 0,
+      AccessTokenValidity: 0,
+      IdTokenValidity: 0,
+      TokenValidityUnits: i_TokenValidityUnitsType,
+      ReadAttributes: 0,
+      WriteAttributes: 0,
+      ExplicitAuthFlows: 0,
+      SupportedIdentityProviders: 0,
+      CallbackURLs: 0,
+      LogoutURLs: 0,
+      DefaultRedirectURI: 0,
+      AllowedOAuthFlows: 0,
+      AllowedOAuthScopes: 0,
+      AllowedOAuthFlowsUserPoolClient: 0,
+      AnalyticsConfiguration: i_AnalyticsConfigurationType,
+      PreventUserExistenceErrors: 0,
+      EnableTokenRevocation: 0,
+      EnablePropagateAdditionalUserContextData: 0,
+      AuthSessionValidity: 0,
+      RefreshTokenRotation: i_RefreshTokenRotationType,
+    },
     output: { UserPoolClient: o_UserPoolClientType },
   },
   errors: [
@@ -9266,7 +9889,16 @@ export const updateUserPoolDomain: API.OperationMethod<
   UpdateUserPoolDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Domain: 0,
+      UserPoolId: 0,
+      ManagedLoginVersion: 0,
+      CustomDomainConfig: i_CustomDomainConfigType,
+      Routing: i_RoutingType,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     FeatureUnavailableInTierException,
@@ -9311,7 +9943,10 @@ export const updateUserPoolReplica: API.OperationMethod<
   UpdateUserPoolReplicaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserPoolId: 0, RegionName: 0, Status: 0 },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -9358,7 +9993,11 @@ export const verifySoftwareToken: API.OperationMethod<
   VerifySoftwareTokenError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Session: D.secret } },
+  descriptor: {
+    service: svc,
+    input: { AccessToken: 0, Session: 0, UserCode: 0, FriendlyDeviceName: 0 },
+    output: { Session: D.secret },
+  },
   errors: [
     CodeMismatchException,
     EnableSoftwareTokenMFAException,
@@ -9418,7 +10057,10 @@ export const verifyUserAttribute: API.OperationMethod<
   VerifyUserAttributeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AccessToken: 0, AttributeName: 0, Code: 0 },
+  },
   errors: [
     AliasExistsException,
     CodeMismatchException,
@@ -9440,6 +10082,181 @@ export const verifyUserAttribute: API.OperationMethod<
   operationName: "VerifyUserAttribute",
 })) as any;
 
+const i_AccountRecoverySettingType: D.LazyStruct = () => ({
+  RecoveryMechanisms: D.list({ Priority: 0, Name: 0 }),
+});
+const i_AccountTakeoverActionType: D.LazyStruct = () => ({
+  Notify: 0,
+  EventAction: 0,
+});
+const i_AdminCreateUserConfigType: D.LazyStruct = () => ({
+  AllowAdminCreateUserOnly: 0,
+  UnusedAccountValidityDays: 0,
+  InviteMessageTemplate: { SMSMessage: 0, EmailMessage: 0, EmailSubject: 0 },
+});
+const i_AnalyticsConfigurationType: D.LazyStruct = () => ({
+  ApplicationId: 0,
+  ApplicationArn: 0,
+  RoleArn: 0,
+  ExternalId: 0,
+  UserDataShared: 0,
+});
+const i_AnalyticsMetadataType: D.LazyStruct = () => ({
+  AnalyticsEndpointId: 0,
+});
+const i_AssetType: D.LazyStruct = () => ({
+  Category: 0,
+  ColorMode: 0,
+  Extension: 0,
+  Bytes: 0,
+  ResourceId: 0,
+});
+const i_AttributeType: D.LazyStruct = () => ({ Name: 0, Value: 0 });
+const i_ContextDataType: D.LazyStruct = () => ({
+  IpAddress: 0,
+  ServerName: 0,
+  ServerPath: 0,
+  HttpHeaders: D.list({ headerName: 0, headerValue: 0 }),
+  EncodedData: 0,
+});
+const i_CustomDomainConfigType: D.LazyStruct = () => ({
+  CertificateArn: 0,
+  SecurityPolicy: 0,
+});
+const i_DeviceConfigurationType: D.LazyStruct = () => ({
+  ChallengeRequiredOnNewDevice: 0,
+  DeviceOnlyRememberedOnUserPrompt: 0,
+});
+const i_EmailConfigurationType: D.LazyStruct = () => ({
+  SourceArn: 0,
+  ReplyToEmailAddress: 0,
+  EmailSendingAccount: 0,
+  From: 0,
+  ConfigurationSet: 0,
+});
+const i_EmailMfaSettingsType: D.LazyStruct = () => ({
+  Enabled: 0,
+  PreferredMfa: 0,
+});
+const i_IssuerConfigurationType: D.LazyStruct = () => ({ Type: 0 });
+const i_KeyConfigurationType: D.LazyStruct = () => ({
+  KeyType: 0,
+  KmsKeyArn: 0,
+});
+const i_LambdaConfigType: D.LazyStruct = () => ({
+  PreSignUp: 0,
+  CustomMessage: 0,
+  PostConfirmation: 0,
+  PreAuthentication: 0,
+  PostAuthentication: 0,
+  DefineAuthChallenge: 0,
+  CreateAuthChallenge: 0,
+  VerifyAuthChallengeResponse: 0,
+  PreTokenGeneration: 0,
+  UserMigration: 0,
+  PreTokenGenerationConfig: { LambdaVersion: 0, LambdaArn: 0 },
+  CustomSMSSender: { LambdaVersion: 0, LambdaArn: 0 },
+  CustomEmailSender: { LambdaVersion: 0, LambdaArn: 0 },
+  KMSKeyID: 0,
+  InboundFederation: { LambdaVersion: 0, LambdaArn: 0 },
+});
+const i_LimitDefinitionType: D.LazyStruct = () => ({
+  LimitClass: 0,
+  Attributes: 0,
+});
+const i_MFAOptionType: D.LazyStruct = () => ({
+  DeliveryMedium: 0,
+  AttributeName: 0,
+});
+const i_NotifyEmailType: D.LazyStruct = () => ({
+  Subject: 0,
+  HtmlBody: 0,
+  TextBody: 0,
+});
+const i_ProviderUserIdentifierType: D.LazyStruct = () => ({
+  ProviderName: 0,
+  ProviderAttributeName: 0,
+  ProviderAttributeValue: 0,
+});
+const i_RefreshTokenRotationType: D.LazyStruct = () => ({
+  Feature: 0,
+  RetryGracePeriodSeconds: 0,
+});
+const i_ResourceServerScopeType: D.LazyStruct = () => ({
+  ScopeName: 0,
+  ScopeDescription: 0,
+});
+const i_RoutingType: D.LazyStruct = () => ({
+  Failover: { SecondaryRegion: 0, PrimaryRoute53HealthCheckId: 0 },
+});
+const i_SMSMfaSettingsType: D.LazyStruct = () => ({
+  Enabled: 0,
+  PreferredMfa: 0,
+});
+const i_SchemaAttributeType: D.LazyStruct = () => ({
+  Name: 0,
+  AttributeDataType: 0,
+  DeveloperOnlyAttribute: 0,
+  Mutable: 0,
+  Required: 0,
+  NumberAttributeConstraints: { MinValue: 0, MaxValue: 0 },
+  StringAttributeConstraints: { MinLength: 0, MaxLength: 0 },
+});
+const i_SmsConfigurationType: D.LazyStruct = () => ({
+  SnsCallerArn: 0,
+  ExternalId: 0,
+  SnsRegion: 0,
+  EumsSms: {
+    CallerArn: 0,
+    ExternalId: 0,
+    OriginationIdentity: 0,
+    ConfigurationSetName: 0,
+    InEntityId: 0,
+    InTemplateId: 0,
+    Region: 0,
+  },
+});
+const i_SoftwareTokenMfaSettingsType: D.LazyStruct = () => ({
+  Enabled: 0,
+  PreferredMfa: 0,
+});
+const i_TokenValidityUnitsType: D.LazyStruct = () => ({
+  AccessToken: 0,
+  IdToken: 0,
+  RefreshToken: 0,
+});
+const i_UserAttributeUpdateSettingsType: D.LazyStruct = () => ({
+  AttributesRequireVerificationBeforeUpdate: 0,
+});
+const i_UserContextDataType: D.LazyStruct = () => ({
+  IpAddress: 0,
+  EncodedData: 0,
+});
+const i_UserPoolAddOnsType: D.LazyStruct = () => ({
+  AdvancedSecurityMode: 0,
+  AdvancedSecurityAdditionalFlows: { CustomAuthMode: 0 },
+});
+const i_UserPoolPolicyType: D.LazyStruct = () => ({
+  PasswordPolicy: {
+    MinimumLength: 0,
+    RequireUppercase: 0,
+    RequireLowercase: 0,
+    RequireNumbers: 0,
+    RequireSymbols: 0,
+    PasswordHistorySize: 0,
+    TemporaryPasswordValidityDays: 0,
+  },
+  SignInPolicy: { AllowedFirstAuthFactors: 0 },
+});
+const i_VerificationMessageTemplateType: D.LazyStruct = () => ({
+  SmsMessage: 0,
+  EmailMessage: 0,
+  EmailSubject: 0,
+  EmailMessageByLink: 0,
+  EmailSubjectByLink: 0,
+  DefaultEmailOption: 0,
+});
+const i_WebAuthnMfaSettingsType: D.LazyStruct = () => ({ Enabled: 0 });
 const o_AttributeType: D.LazyStruct = () => ({ Value: D.secret });
 const o_AuthenticationResultType: D.LazyStruct = () => ({
   AccessToken: D.secret,

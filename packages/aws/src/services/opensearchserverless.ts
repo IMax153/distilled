@@ -937,7 +937,7 @@ export const batchGetCollection: API.OperationMethod<
   BatchGetCollectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ids: 0, names: 0 } },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -957,7 +957,7 @@ export const batchGetCollectionGroup: API.OperationMethod<
   BatchGetCollectionGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ids: 0, names: 0 } },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -977,7 +977,10 @@ export const batchGetEffectiveLifecyclePolicy: API.OperationMethod<
   BatchGetEffectiveLifecyclePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { resourceIdentifiers: D.list({ type: 0, resource: 0 }) },
+  },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -997,7 +1000,10 @@ export const batchGetLifecyclePolicy: API.OperationMethod<
   BatchGetLifecyclePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { identifiers: D.list({ type: 0, name: 0 }) },
+  },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1017,7 +1023,7 @@ export const batchGetVpcEndpoint: API.OperationMethod<
   BatchGetVpcEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ids: 0 } },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1041,7 +1047,13 @@ export const createAccessPolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      type: 0,
+      name: 0,
+      description: 0,
+      policy: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     ConflictException,
@@ -1072,7 +1084,18 @@ export const createCollection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      type: 0,
+      description: 0,
+      tags: D.list(i_Tag),
+      standbyReplicas: 0,
+      vectorOptions: i_VectorOptions,
+      collectionGroupName: 0,
+      encryptionConfig: { aWSOwnedKey: 0, kmsKeyArn: 0 },
+      deletionProtection: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     ConflictException,
@@ -1105,7 +1128,15 @@ export const createCollectionGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      standbyReplicas: 0,
+      description: 0,
+      tags: D.list(i_Tag),
+      capacityLimits: i_CollectionGroupCapacityLimits,
+      generation: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     ConflictException,
@@ -1133,7 +1164,7 @@ export const createIndex: API.OperationMethod<
   CreateIndexError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { id: 0, indexName: 0, indexSchema: 0 } },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1162,7 +1193,13 @@ export const createLifecyclePolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      type: 0,
+      name: 0,
+      description: 0,
+      policy: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     ConflictException,
@@ -1192,7 +1229,19 @@ export const createSecurityConfig: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      type: 0,
+      name: 0,
+      description: 0,
+      samlOptions: i_SamlConfigOptions,
+      iamIdentityCenterOptions: {
+        instanceArn: 0,
+        userAttribute: 0,
+        groupAttribute: 0,
+      },
+      iamFederationOptions: i_IamFederationConfigOptions,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     ConflictException,
@@ -1222,7 +1271,13 @@ export const createSecurityPolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      type: 0,
+      name: 0,
+      description: 0,
+      policy: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     ConflictException,
@@ -1252,7 +1307,13 @@ export const createVpcEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      vpcId: 0,
+      subnetIds: 0,
+      securityGroupIds: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     ConflictException,
@@ -1282,7 +1343,7 @@ export const deleteAccessPolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { type: 0, name: 0, clientToken: D.m({ idempotency: true }) },
   },
   errors: [
     ConflictException,
@@ -1312,7 +1373,7 @@ export const deleteCollection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { id: 0, clientToken: D.m({ idempotency: true }) },
   },
   errors: [
     ConflictException,
@@ -1342,7 +1403,7 @@ export const deleteCollectionGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { id: 0, clientToken: D.m({ idempotency: true }) },
   },
   errors: [
     ConflictException,
@@ -1369,7 +1430,7 @@ export const deleteIndex: API.OperationMethod<
   DeleteIndexError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { id: 0, indexName: 0 } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1397,7 +1458,7 @@ export const deleteLifecyclePolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { type: 0, name: 0, clientToken: D.m({ idempotency: true }) },
   },
   errors: [
     ConflictException,
@@ -1427,7 +1488,7 @@ export const deleteSecurityConfig: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { id: 0, clientToken: D.m({ idempotency: true }) },
   },
   errors: [
     ConflictException,
@@ -1457,7 +1518,7 @@ export const deleteSecurityPolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { type: 0, name: 0, clientToken: D.m({ idempotency: true }) },
   },
   errors: [
     ConflictException,
@@ -1487,7 +1548,7 @@ export const deleteVpcEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { id: 0, clientToken: D.m({ idempotency: true }) },
   },
   errors: [
     ConflictException,
@@ -1514,7 +1575,7 @@ export const getAccessPolicy: API.OperationMethod<
   GetAccessPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { type: 0, name: 0 } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1538,7 +1599,7 @@ export const getAccountSettings: API.OperationMethod<
   GetAccountSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1559,7 +1620,7 @@ export const getIndex: API.OperationMethod<
   GetIndexError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { id: 0, indexName: 0 } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1580,7 +1641,7 @@ export const getPoliciesStats: API.OperationMethod<
   GetPoliciesStatsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [InternalServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1601,7 +1662,7 @@ export const getSecurityConfig: API.OperationMethod<
   GetSecurityConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { id: 0 } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1626,7 +1687,7 @@ export const getSecurityPolicy: API.OperationMethod<
   GetSecurityPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { type: 0, name: 0 } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1651,7 +1712,10 @@ export const listAccessPolicies: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { type: 0, resource: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1673,7 +1737,7 @@ export const listCollectionGroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0, maxResults: 0 } },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1697,7 +1761,14 @@ export const listCollections: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      collectionFilters: { name: 0, status: 0, collectionGroupName: 0 },
+      nextToken: 0,
+      maxResults: 0,
+    },
+  },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1719,7 +1790,10 @@ export const listLifecyclePolicies: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { type: 0, resources: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1741,7 +1815,7 @@ export const listSecurityConfigs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { type: 0, nextToken: 0, maxResults: 0 } },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1763,7 +1837,10 @@ export const listSecurityPolicies: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { type: 0, resource: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1785,7 +1862,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1810,7 +1887,10 @@ export const listVpcEndpoints: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { vpcEndpointFilters: { status: 0 }, nextToken: 0, maxResults: 0 },
+  },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1834,7 +1914,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: D.list(i_Tag) } },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1862,7 +1942,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1891,7 +1971,14 @@ export const updateAccessPolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      type: 0,
+      name: 0,
+      policyVersion: 0,
+      description: 0,
+      policy: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     ConflictException,
@@ -1918,7 +2005,15 @@ export const updateAccountSettings: API.OperationMethod<
   UpdateAccountSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      capacityLimits: {
+        maxIndexingCapacityInOCU: 0,
+        maxSearchCapacityInOCU: 0,
+      },
+    },
+  },
   errors: [
     InternalServerException,
     ServiceQuotaExceededException,
@@ -1945,7 +2040,13 @@ export const updateCollection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      id: 0,
+      description: 0,
+      vectorOptions: i_VectorOptions,
+      deletionProtection: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [ConflictException, InternalServerException, ValidationException],
   protocol: AwsProtocol,
@@ -1970,7 +2071,12 @@ export const updateCollectionGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      id: 0,
+      description: 0,
+      capacityLimits: i_CollectionGroupCapacityLimits,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     ConflictException,
@@ -1997,7 +2103,7 @@ export const updateIndex: API.OperationMethod<
   UpdateIndexError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { id: 0, indexName: 0, indexSchema: 0 } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -2026,7 +2132,14 @@ export const updateLifecyclePolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      type: 0,
+      name: 0,
+      policyVersion: 0,
+      description: 0,
+      policy: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     ConflictException,
@@ -2057,7 +2170,15 @@ export const updateSecurityConfig: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      id: 0,
+      configVersion: 0,
+      description: 0,
+      samlOptions: i_SamlConfigOptions,
+      iamIdentityCenterOptionsUpdates: { userAttribute: 0, groupAttribute: 0 },
+      iamFederationOptions: i_IamFederationConfigOptions,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     ConflictException,
@@ -2088,7 +2209,14 @@ export const updateSecurityPolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      type: 0,
+      name: 0,
+      policyVersion: 0,
+      description: 0,
+      policy: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     ConflictException,
@@ -2118,10 +2246,39 @@ export const updateVpcEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      id: 0,
+      addSubnetIds: 0,
+      removeSubnetIds: 0,
+      addSecurityGroupIds: 0,
+      removeSecurityGroupIds: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [ConflictException, InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "UpdateVpcEndpoint",
 })) as any;
+
+const i_CollectionGroupCapacityLimits: D.LazyStruct = () => ({
+  maxIndexingCapacityInOCU: 0,
+  maxSearchCapacityInOCU: 0,
+  minIndexingCapacityInOCU: 0,
+  minSearchCapacityInOCU: 0,
+});
+const i_IamFederationConfigOptions: D.LazyStruct = () => ({
+  groupAttribute: 0,
+  userAttribute: 0,
+});
+const i_SamlConfigOptions: D.LazyStruct = () => ({
+  metadata: 0,
+  userAttribute: 0,
+  groupAttribute: 0,
+  openSearchServerlessEntityId: 0,
+  sessionTimeout: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_VectorOptions: D.LazyStruct = () => ({
+  ServerlessVectorAcceleration: 0,
+});

@@ -4687,7 +4687,11 @@ export const cancelJob: API.OperationMethod<
   CancelJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /2017-08-29/jobs/{Id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /2017-08-29/jobs/{Id}",
+    input: { Id: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -5113,7 +5117,11 @@ export const deleteJobTemplate: API.OperationMethod<
   DeleteJobTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /2017-08-29/jobTemplates/{Name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /2017-08-29/jobTemplates/{Name}",
+    input: { Name: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -5146,7 +5154,7 @@ export const deletePolicy: API.OperationMethod<
   DeletePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /2017-08-29/policy" },
+  descriptor: { service: svc, http: "DELETE /2017-08-29/policy", input: {} },
   errors: [
     BadRequestException,
     ConflictException,
@@ -5179,7 +5187,11 @@ export const deletePreset: API.OperationMethod<
   DeletePresetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /2017-08-29/presets/{Name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /2017-08-29/presets/{Name}",
+    input: { Name: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -5212,7 +5224,11 @@ export const deleteQueue: API.OperationMethod<
   DeleteQueueError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /2017-08-29/queues/{Name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /2017-08-29/queues/{Name}",
+    input: { Name: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -5301,7 +5317,11 @@ export const disassociateCertificate: API.OperationMethod<
   DisassociateCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /2017-08-29/certificates/{Arn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /2017-08-29/certificates/{Arn}",
+    input: { Arn: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -5337,6 +5357,7 @@ export const getJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2017-08-29/jobs/{Id}",
+    input: { Id: 0 },
     output: { Job: D.m({ wire: "job", shape: o_Job }) },
   },
   errors: [
@@ -5374,6 +5395,7 @@ export const getJobsQueryResults: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2017-08-29/jobsQueries/{Id}",
+    input: { Id: 0 },
     output: {
       Jobs: D.m({ wire: "jobs", shape: D.list(o_Job) }),
       NextToken: D.m({ wire: "nextToken" }),
@@ -5415,6 +5437,7 @@ export const getJobTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2017-08-29/jobTemplates/{Name}",
+    input: { Name: 0 },
     output: { JobTemplate: D.m({ wire: "jobTemplate", shape: o_JobTemplate }) },
   },
   errors: [
@@ -5452,6 +5475,7 @@ export const getPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2017-08-29/policy",
+    input: {},
     output: { Policy: D.m({ wire: "policy", shape: o_Policy }) },
   },
   errors: [
@@ -5489,6 +5513,7 @@ export const getPreset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2017-08-29/presets/{Name}",
+    input: { Name: 0 },
     output: { Preset: D.m({ wire: "preset", shape: o_Preset }) },
   },
   errors: [
@@ -5526,6 +5551,7 @@ export const getQueue: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2017-08-29/queues/{Name}",
+    input: { Name: 0 },
     output: { Queue: D.m({ wire: "queue", shape: o_Queue }) },
   },
   errors: [
@@ -5780,6 +5806,7 @@ export const listTagsForResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2017-08-29/tags/{Arn}",
+    input: { Arn: 0 },
     output: {
       ResourceTags: D.m({
         wire: "resourceTags",
@@ -6240,7 +6267,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2017-08-29/tags/{Arn}",
-    input: { TagKeys: D.m({ wire: "tagKeys" }) },
+    input: { Arn: 0, TagKeys: D.m({ wire: "tagKeys" }) },
     body: true,
   },
   errors: [
@@ -6289,6 +6316,7 @@ export const updateJobTemplate: API.OperationMethod<
         wire: "hopDestinations",
         shape: D.list(i_HopDestination),
       }),
+      Name: 0,
       Priority: D.m({ wire: "priority" }),
       Queue: D.m({ wire: "queue" }),
       Settings: D.m({ wire: "settings", shape: i_JobTemplateSettings }),
@@ -6335,6 +6363,7 @@ export const updatePreset: API.OperationMethod<
     input: {
       Category: D.m({ wire: "category" }),
       Description: D.m({ wire: "description" }),
+      Name: 0,
       Settings: D.m({ wire: "settings", shape: i_PresetSettings }),
     },
     output: { Preset: D.m({ wire: "preset", shape: o_Preset }) },
@@ -6379,6 +6408,7 @@ export const updateQueue: API.OperationMethod<
       ConcurrentJobs: D.m({ wire: "concurrentJobs" }),
       Description: D.m({ wire: "description" }),
       MaximumConcurrentFeeds: D.m({ wire: "maximumConcurrentFeeds" }),
+      Name: 0,
       ReservationPlanSettings: D.m({
         wire: "reservationPlanSettings",
         shape: i_ReservationPlanSettings,

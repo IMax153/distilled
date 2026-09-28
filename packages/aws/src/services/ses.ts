@@ -1184,7 +1184,10 @@ export const cloneReceiptRuleSet: API.OperationMethod<
   CloneReceiptRuleSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { RuleSetName: 0, OriginalRuleSetName: 0 },
+  },
   errors: [
     AlreadyExistsException,
     LimitExceededException,
@@ -1215,7 +1218,7 @@ export const createConfigurationSet: API.OperationMethod<
   CreateConfigurationSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConfigurationSet: { Name: 0 } } },
   errors: [
     ConfigurationSetAlreadyExistsException,
     InvalidConfigurationSetException,
@@ -1253,7 +1256,10 @@ export const createConfigurationSetEventDestination: API.OperationMethod<
   CreateConfigurationSetEventDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ConfigurationSetName: 0, EventDestination: i_EventDestination },
+  },
   errors: [
     ConfigurationSetDoesNotExistException,
     EventDestinationAlreadyExistsException,
@@ -1286,7 +1292,10 @@ export const createConfigurationSetTrackingOptions: API.OperationMethod<
   CreateConfigurationSetTrackingOptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ConfigurationSetName: 0, TrackingOptions: i_TrackingOptions },
+  },
   errors: [
     ConfigurationSetDoesNotExistException,
     InvalidTrackingOptionsException,
@@ -1318,7 +1327,17 @@ export const createCustomVerificationEmailTemplate: API.OperationMethod<
   CreateCustomVerificationEmailTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TemplateName: 0,
+      FromEmailAddress: 0,
+      TemplateSubject: 0,
+      TemplateContent: 0,
+      SuccessRedirectionURL: 0,
+      FailureRedirectionURL: 0,
+    },
+  },
   errors: [
     CustomVerificationEmailInvalidContentException,
     CustomVerificationEmailTemplateAlreadyExistsException,
@@ -1348,7 +1367,10 @@ export const createReceiptFilter: API.OperationMethod<
   CreateReceiptFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Filter: { Name: 0, IpFilter: { Policy: 0, Cidr: 0 } } },
+  },
   errors: [AlreadyExistsException, LimitExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1380,7 +1402,10 @@ export const createReceiptRule: API.OperationMethod<
   CreateReceiptRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { RuleSetName: 0, After: 0, Rule: i_ReceiptRule },
+  },
   errors: [
     AlreadyExistsException,
     InvalidLambdaFunctionException,
@@ -1414,7 +1439,7 @@ export const createReceiptRuleSet: API.OperationMethod<
   CreateReceiptRuleSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RuleSetName: 0 } },
   errors: [AlreadyExistsException, LimitExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1439,7 +1464,7 @@ export const createTemplate: API.OperationMethod<
   CreateTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Template: i_Template } },
   errors: [
     AlreadyExistsException,
     InvalidTemplateException,
@@ -1466,7 +1491,7 @@ export const deleteConfigurationSet: API.OperationMethod<
   DeleteConfigurationSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConfigurationSetName: 0 } },
   errors: [ConfigurationSetDoesNotExistException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1491,7 +1516,10 @@ export const deleteConfigurationSetEventDestination: API.OperationMethod<
   DeleteConfigurationSetEventDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ConfigurationSetName: 0, EventDestinationName: 0 },
+  },
   errors: [
     ConfigurationSetDoesNotExistException,
     EventDestinationDoesNotExistException,
@@ -1523,7 +1551,7 @@ export const deleteConfigurationSetTrackingOptions: API.OperationMethod<
   DeleteConfigurationSetTrackingOptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConfigurationSetName: 0 } },
   errors: [
     ConfigurationSetDoesNotExistException,
     TrackingOptionsDoesNotExistException,
@@ -1549,7 +1577,7 @@ export const deleteCustomVerificationEmailTemplate: API.OperationMethod<
   DeleteCustomVerificationEmailTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TemplateName: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1569,7 +1597,7 @@ export const deleteIdentity: API.OperationMethod<
   DeleteIdentityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Identity: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1598,7 +1626,7 @@ export const deleteIdentityPolicy: API.OperationMethod<
   DeleteIdentityPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Identity: 0, PolicyName: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1620,7 +1648,7 @@ export const deleteReceiptFilter: API.OperationMethod<
   DeleteReceiptFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FilterName: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1644,7 +1672,7 @@ export const deleteReceiptRule: API.OperationMethod<
   DeleteReceiptRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RuleSetName: 0, RuleName: 0 } },
   errors: [RuleSetDoesNotExistException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1669,7 +1697,7 @@ export const deleteReceiptRuleSet: API.OperationMethod<
   DeleteReceiptRuleSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RuleSetName: 0 } },
   errors: [CannotDeleteException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1688,7 +1716,7 @@ export const deleteTemplate: API.OperationMethod<
   DeleteTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TemplateName: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1706,7 +1734,7 @@ export const deleteVerifiedEmailAddress: API.OperationMethod<
   DeleteVerifiedEmailAddressError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EmailAddress: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1730,6 +1758,7 @@ export const describeActiveReceiptRuleSet: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {},
     output: {
       Metadata: o_ReceiptRuleSetMetadata,
       Rules: D.list(o_ReceiptRule),
@@ -1759,6 +1788,7 @@ export const describeConfigurationSet: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ConfigurationSetName: 0, ConfigurationSetAttributeNames: 0 },
     output: {
       ConfigurationSet: {},
       EventDestinations: D.list({
@@ -1801,7 +1831,11 @@ export const describeReceiptRule: API.OperationMethod<
   DescribeReceiptRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Rule: o_ReceiptRule } },
+  descriptor: {
+    service: svc,
+    input: { RuleSetName: 0, RuleName: 0 },
+    output: { Rule: o_ReceiptRule },
+  },
   errors: [RuleDoesNotExistException, RuleSetDoesNotExistException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1827,6 +1861,7 @@ export const describeReceiptRuleSet: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { RuleSetName: 0 },
     output: {
       Metadata: o_ReceiptRuleSetMetadata,
       Rules: D.list(o_ReceiptRule),
@@ -1876,7 +1911,7 @@ export const getCustomVerificationEmailTemplate: API.OperationMethod<
   GetCustomVerificationEmailTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TemplateName: 0 } },
   errors: [CustomVerificationEmailTemplateDoesNotExistException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1916,6 +1951,7 @@ export const getIdentityDkimAttributes: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Identities: 0 },
     output: {
       DkimAttributes: D.map({ DkimEnabled: D.bool, DkimTokens: D.list() }),
     },
@@ -1940,7 +1976,11 @@ export const getIdentityMailFromDomainAttributes: API.OperationMethod<
   GetIdentityMailFromDomainAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { MailFromDomainAttributes: D.map({}) } },
+  descriptor: {
+    service: svc,
+    input: { Identities: 0 },
+    output: { MailFromDomainAttributes: D.map({}) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1966,6 +2006,7 @@ export const getIdentityNotificationAttributes: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Identities: 0 },
     output: {
       NotificationAttributes: D.map({
         ForwardingEnabled: D.bool,
@@ -2003,7 +2044,11 @@ export const getIdentityPolicies: API.OperationMethod<
   GetIdentityPoliciesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Policies: D.map() } },
+  descriptor: {
+    service: svc,
+    input: { Identity: 0, PolicyNames: 0 },
+    output: { Policies: D.map() },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2038,7 +2083,11 @@ export const getIdentityVerificationAttributes: API.OperationMethod<
   GetIdentityVerificationAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { VerificationAttributes: D.map({}) } },
+  descriptor: {
+    service: svc,
+    input: { Identities: 0 },
+    output: { VerificationAttributes: D.map({}) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2116,7 +2165,11 @@ export const getTemplate: API.OperationMethod<
   GetTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Template: {} } },
+  descriptor: {
+    service: svc,
+    input: { TemplateName: 0 },
+    output: { Template: {} },
+  },
   errors: [TemplateDoesNotExistException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2143,7 +2196,11 @@ export const listConfigurationSets: API.OperationMethod<
   ListConfigurationSetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ConfigurationSets: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0, MaxItems: 0 },
+    output: { ConfigurationSets: D.list({}) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2170,6 +2227,7 @@ export const listCustomVerificationEmailTemplates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: { CustomVerificationEmailTemplates: D.list({}) },
   },
   errors: [],
@@ -2206,7 +2264,11 @@ export const listIdentities: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Identity
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Identities: D.list() } },
+  descriptor: {
+    service: svc,
+    input: { IdentityType: 0, NextToken: 0, MaxItems: 0 },
+    output: { Identities: D.list() },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2241,7 +2303,11 @@ export const listIdentityPolicies: API.OperationMethod<
   ListIdentityPoliciesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { PolicyNames: D.list() } },
+  descriptor: {
+    service: svc,
+    input: { Identity: 0 },
+    output: { PolicyNames: D.list() },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2264,7 +2330,11 @@ export const listReceiptFilters: API.OperationMethod<
   ListReceiptFiltersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Filters: D.list({ IpFilter: {} }) } },
+  descriptor: {
+    service: svc,
+    input: {},
+    output: { Filters: D.list({ IpFilter: {} }) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2291,6 +2361,7 @@ export const listReceiptRuleSets: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0 },
     output: { RuleSets: D.list(o_ReceiptRuleSetMetadata) },
   },
   errors: [],
@@ -2314,6 +2385,7 @@ export const listTemplates: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxItems: 0 },
     output: { TemplatesMetadata: D.list({ CreatedTimestamp: D.ts }) },
   },
   errors: [],
@@ -2353,7 +2425,10 @@ export const putConfigurationSetDeliveryOptions: API.OperationMethod<
   PutConfigurationSetDeliveryOptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ConfigurationSetName: 0, DeliveryOptions: { TlsPolicy: 0 } },
+  },
   errors: [
     ConfigurationSetDoesNotExistException,
     InvalidDeliveryOptionsException,
@@ -2384,7 +2459,10 @@ export const putIdentityPolicy: API.OperationMethod<
   PutIdentityPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Identity: 0, PolicyName: 0, Policy: 0 },
+  },
   errors: [InvalidPolicyException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2412,7 +2490,7 @@ export const reorderReceiptRuleSet: API.OperationMethod<
   ReorderReceiptRuleSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RuleSetName: 0, RuleNames: 0 } },
   errors: [RuleDoesNotExistException, RuleSetDoesNotExistException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2439,7 +2517,34 @@ export const sendBounce: API.OperationMethod<
   SendBounceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OriginalMessageId: 0,
+      BounceSender: 0,
+      Explanation: 0,
+      MessageDsn: {
+        ReportingMta: 0,
+        ArrivalDate: 0,
+        ExtensionFields: D.list(i_ExtensionField),
+      },
+      BouncedRecipientInfoList: D.list({
+        Recipient: 0,
+        RecipientArn: 0,
+        BounceType: 0,
+        RecipientDsnFields: {
+          FinalRecipient: 0,
+          Action: 0,
+          RemoteMta: 0,
+          Status: 0,
+          DiagnosticCode: 0,
+          LastAttemptDate: 0,
+          ExtensionFields: D.list(i_ExtensionField),
+        },
+      }),
+      BounceSenderArn: 0,
+    },
+  },
   errors: [MessageRejected],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2496,7 +2601,27 @@ export const sendBulkTemplatedEmail: API.OperationMethod<
   SendBulkTemplatedEmailError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Status: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: {
+      Source: 0,
+      SourceArn: 0,
+      ReplyToAddresses: 0,
+      ReturnPath: 0,
+      ReturnPathArn: 0,
+      ConfigurationSetName: 0,
+      DefaultTags: D.list(i_MessageTag),
+      Template: 0,
+      TemplateArn: 0,
+      DefaultTemplateData: 0,
+      Destinations: D.list({
+        Destination: i_Destination,
+        ReplacementTags: D.list(i_MessageTag),
+        ReplacementTemplateData: 0,
+      }),
+    },
+    output: { Status: D.list({}) },
+  },
   errors: [
     AccountSendingPausedException,
     ConfigurationSetDoesNotExistException,
@@ -2536,7 +2661,10 @@ export const sendCustomVerificationEmail: API.OperationMethod<
   SendCustomVerificationEmailError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { EmailAddress: 0, TemplateName: 0, ConfigurationSetName: 0 },
+  },
   errors: [
     ConfigurationSetDoesNotExistException,
     CustomVerificationEmailTemplateDoesNotExistException,
@@ -2597,7 +2725,23 @@ export const sendEmail: API.OperationMethod<
   SendEmailError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Source: 0,
+      Destination: i_Destination,
+      Message: {
+        Subject: i_Content,
+        Body: { Text: i_Content, Html: i_Content },
+      },
+      ReplyToAddresses: 0,
+      ReturnPath: 0,
+      SourceArn: 0,
+      ReturnPathArn: 0,
+      Tags: D.list(i_MessageTag),
+      ConfigurationSetName: 0,
+    },
+  },
   errors: [
     AccountSendingPausedException,
     ConfigurationSetDoesNotExistException,
@@ -2703,7 +2847,19 @@ export const sendRawEmail: API.OperationMethod<
   SendRawEmailError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Source: 0,
+      Destinations: 0,
+      RawMessage: { Data: 0 },
+      FromArn: 0,
+      SourceArn: 0,
+      ReturnPathArn: 0,
+      Tags: D.list(i_MessageTag),
+      ConfigurationSetName: 0,
+    },
+  },
   errors: [
     AccountSendingPausedException,
     ConfigurationSetDoesNotExistException,
@@ -2773,7 +2929,22 @@ export const sendTemplatedEmail: API.OperationMethod<
   SendTemplatedEmailError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Source: 0,
+      Destination: i_Destination,
+      ReplyToAddresses: 0,
+      ReturnPath: 0,
+      SourceArn: 0,
+      ReturnPathArn: 0,
+      Tags: D.list(i_MessageTag),
+      ConfigurationSetName: 0,
+      Template: 0,
+      TemplateArn: 0,
+      TemplateData: 0,
+    },
+  },
   errors: [
     AccountSendingPausedException,
     ConfigurationSetDoesNotExistException,
@@ -2807,7 +2978,7 @@ export const setActiveReceiptRuleSet: API.OperationMethod<
   SetActiveReceiptRuleSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RuleSetName: 0 } },
   errors: [RuleSetDoesNotExistException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2839,7 +3010,7 @@ export const setIdentityDkimEnabled: API.OperationMethod<
   SetIdentityDkimEnabledError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Identity: 0, DkimEnabled: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2867,7 +3038,7 @@ export const setIdentityFeedbackForwardingEnabled: API.OperationMethod<
   SetIdentityFeedbackForwardingEnabledError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Identity: 0, ForwardingEnabled: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2891,7 +3062,10 @@ export const setIdentityHeadersInNotificationsEnabled: API.OperationMethod<
   SetIdentityHeadersInNotificationsEnabledError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Identity: 0, NotificationType: 0, Enabled: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2916,7 +3090,10 @@ export const setIdentityMailFromDomain: API.OperationMethod<
   SetIdentityMailFromDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Identity: 0, MailFromDomain: 0, BehaviorOnMXFailure: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2943,7 +3120,10 @@ export const setIdentityNotificationTopic: API.OperationMethod<
   SetIdentityNotificationTopicError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Identity: 0, NotificationType: 0, SnsTopic: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2968,7 +3148,10 @@ export const setReceiptRulePosition: API.OperationMethod<
   SetReceiptRulePositionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { RuleSetName: 0, RuleName: 0, After: 0 },
+  },
   errors: [RuleDoesNotExistException, RuleSetDoesNotExistException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2992,7 +3175,7 @@ export const testRenderTemplate: API.OperationMethod<
   TestRenderTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TemplateName: 0, TemplateData: 0 } },
   errors: [
     InvalidRenderingParameterException,
     MissingRenderingAttributeException,
@@ -3019,7 +3202,7 @@ export const updateAccountSendingEnabled: API.OperationMethod<
   UpdateAccountSendingEnabledError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Enabled: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3052,7 +3235,10 @@ export const updateConfigurationSetEventDestination: API.OperationMethod<
   UpdateConfigurationSetEventDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ConfigurationSetName: 0, EventDestination: i_EventDestination },
+  },
   errors: [
     ConfigurationSetDoesNotExistException,
     EventDestinationDoesNotExistException,
@@ -3082,7 +3268,7 @@ export const updateConfigurationSetReputationMetricsEnabled: API.OperationMethod
   UpdateConfigurationSetReputationMetricsEnabledError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConfigurationSetName: 0, Enabled: 0 } },
   errors: [ConfigurationSetDoesNotExistException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3107,7 +3293,7 @@ export const updateConfigurationSetSendingEnabled: API.OperationMethod<
   UpdateConfigurationSetSendingEnabledError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConfigurationSetName: 0, Enabled: 0 } },
   errors: [ConfigurationSetDoesNotExistException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3133,7 +3319,10 @@ export const updateConfigurationSetTrackingOptions: API.OperationMethod<
   UpdateConfigurationSetTrackingOptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ConfigurationSetName: 0, TrackingOptions: i_TrackingOptions },
+  },
   errors: [
     ConfigurationSetDoesNotExistException,
     InvalidTrackingOptionsException,
@@ -3164,7 +3353,17 @@ export const updateCustomVerificationEmailTemplate: API.OperationMethod<
   UpdateCustomVerificationEmailTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TemplateName: 0,
+      FromEmailAddress: 0,
+      TemplateSubject: 0,
+      TemplateContent: 0,
+      SuccessRedirectionURL: 0,
+      FailureRedirectionURL: 0,
+    },
+  },
   errors: [
     CustomVerificationEmailInvalidContentException,
     CustomVerificationEmailTemplateDoesNotExistException,
@@ -3199,7 +3398,7 @@ export const updateReceiptRule: API.OperationMethod<
   UpdateReceiptRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RuleSetName: 0, Rule: i_ReceiptRule } },
   errors: [
     InvalidLambdaFunctionException,
     InvalidS3ConfigurationException,
@@ -3232,7 +3431,7 @@ export const updateTemplate: API.OperationMethod<
   UpdateTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Template: i_Template } },
   errors: [InvalidTemplateException, TemplateDoesNotExistException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3281,7 +3480,11 @@ export const verifyDomainDkim: API.OperationMethod<
   VerifyDomainDkimError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DkimTokens: D.list() } },
+  descriptor: {
+    service: svc,
+    input: { Domain: 0 },
+    output: { DkimTokens: D.list() },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3303,7 +3506,7 @@ export const verifyDomainIdentity: API.OperationMethod<
   VerifyDomainIdentityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Domain: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3321,7 +3524,7 @@ export const verifyEmailAddress: API.OperationMethod<
   VerifyEmailAddressError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EmailAddress: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3342,13 +3545,71 @@ export const verifyEmailIdentity: API.OperationMethod<
   VerifyEmailIdentityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EmailAddress: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "VerifyEmailIdentity",
 })) as any;
 
+const i_Content: D.LazyStruct = () => ({ Data: 0, Charset: 0 });
+const i_Destination: D.LazyStruct = () => ({
+  ToAddresses: 0,
+  CcAddresses: 0,
+  BccAddresses: 0,
+});
+const i_EventDestination: D.LazyStruct = () => ({
+  Name: 0,
+  Enabled: 0,
+  MatchingEventTypes: 0,
+  KinesisFirehoseDestination: { IAMRoleARN: 0, DeliveryStreamARN: 0 },
+  CloudWatchDestination: {
+    DimensionConfigurations: D.list({
+      DimensionName: 0,
+      DimensionValueSource: 0,
+      DefaultDimensionValue: 0,
+    }),
+  },
+  SNSDestination: { TopicARN: 0 },
+});
+const i_ExtensionField: D.LazyStruct = () => ({ Name: 0, Value: 0 });
+const i_MessageTag: D.LazyStruct = () => ({ Name: 0, Value: 0 });
+const i_ReceiptRule: D.LazyStruct = () => ({
+  Name: 0,
+  Enabled: 0,
+  TlsPolicy: 0,
+  Recipients: 0,
+  Actions: D.list({
+    S3Action: {
+      TopicArn: 0,
+      BucketName: 0,
+      ObjectKeyPrefix: 0,
+      KmsKeyArn: 0,
+      IamRoleArn: 0,
+    },
+    BounceAction: {
+      TopicArn: 0,
+      SmtpReplyCode: 0,
+      StatusCode: 0,
+      Message: 0,
+      Sender: 0,
+    },
+    WorkmailAction: { TopicArn: 0, OrganizationArn: 0 },
+    LambdaAction: { TopicArn: 0, FunctionArn: 0, InvocationType: 0 },
+    StopAction: { Scope: 0, TopicArn: 0 },
+    AddHeaderAction: { HeaderName: 0, HeaderValue: 0 },
+    SNSAction: { TopicArn: 0, Encoding: 0 },
+    ConnectAction: { InstanceARN: 0, IAMRoleARN: 0 },
+  }),
+  ScanEnabled: 0,
+});
+const i_Template: D.LazyStruct = () => ({
+  TemplateName: 0,
+  SubjectPart: 0,
+  TextPart: 0,
+  HtmlPart: 0,
+});
+const i_TrackingOptions: D.LazyStruct = () => ({ CustomRedirectDomain: 0 });
 const o_ReceiptRule: D.LazyStruct = () => ({
   Enabled: D.bool,
   Recipients: D.list(),

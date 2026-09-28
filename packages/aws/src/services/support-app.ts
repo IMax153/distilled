@@ -247,6 +247,16 @@ export const createSlackChannelConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /control/create-slack-channel-configuration",
+    input: {
+      teamId: 0,
+      channelId: 0,
+      channelName: 0,
+      notifyOnCreateOrReopenCase: 0,
+      notifyOnAddCorrespondenceToCase: 0,
+      notifyOnResolveCase: 0,
+      notifyOnCaseSeverity: 0,
+      channelRoleArn: 0,
+    },
     body: true,
   },
   errors: [
@@ -276,7 +286,11 @@ export const deleteAccountAlias: API.OperationMethod<
   DeleteAccountAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /control/delete-account-alias" },
+  descriptor: {
+    service: svc,
+    http: "POST /control/delete-account-alias",
+    input: {},
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -307,6 +321,7 @@ export const deleteSlackChannelConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /control/delete-slack-channel-configuration",
+    input: { teamId: 0, channelId: 0 },
     body: true,
   },
   errors: [
@@ -341,6 +356,7 @@ export const deleteSlackWorkspaceConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /control/delete-slack-workspace-configuration",
+    input: { teamId: 0 },
     body: true,
   },
   errors: [
@@ -366,7 +382,11 @@ export const getAccountAlias: API.OperationMethod<
   GetAccountAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /control/get-account-alias" },
+  descriptor: {
+    service: svc,
+    http: "POST /control/get-account-alias",
+    input: {},
+  },
   errors: [InternalServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -390,6 +410,7 @@ export const listSlackChannelConfigurations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /control/list-slack-channel-configurations",
+    input: { nextToken: 0 },
     body: true,
   },
   errors: [AccessDeniedException, InternalServerException],
@@ -416,6 +437,7 @@ export const listSlackWorkspaceConfigurations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /control/list-slack-workspace-configurations",
+    input: { nextToken: 0 },
     body: true,
   },
   errors: [AccessDeniedException, InternalServerException],
@@ -444,6 +466,7 @@ export const putAccountAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /control/put-account-alias",
+    input: { accountAlias: 0 },
     body: true,
   },
   errors: [AccessDeniedException, InternalServerException, ValidationException],
@@ -495,6 +518,7 @@ export const registerSlackWorkspaceForOrganization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /control/register-slack-workspace-for-organization",
+    input: { teamId: 0 },
     body: true,
   },
   errors: [
@@ -528,6 +552,16 @@ export const updateSlackChannelConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /control/update-slack-channel-configuration",
+    input: {
+      teamId: 0,
+      channelId: 0,
+      channelName: 0,
+      notifyOnCreateOrReopenCase: 0,
+      notifyOnAddCorrespondenceToCase: 0,
+      notifyOnResolveCase: 0,
+      notifyOnCaseSeverity: 0,
+      channelRoleArn: 0,
+    },
     body: true,
   },
   errors: [

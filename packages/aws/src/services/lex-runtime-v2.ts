@@ -780,6 +780,7 @@ export const deleteSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /bots/{botId}/botAliases/{botAliasId}/botLocales/{localeId}/sessions/{sessionId}",
+    input: { botId: 0, botAliasId: 0, localeId: 0, sessionId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -823,6 +824,7 @@ export const getSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /bots/{botId}/botAliases/{botAliasId}/botLocales/{localeId}/sessions/{sessionId}",
+    input: { botId: 0, botAliasId: 0, localeId: 0, sessionId: 0 },
     output: { messages: D.list(o_Message), sessionState: o_SessionState },
   },
   errors: [
@@ -861,7 +863,16 @@ export const putSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/botAliases/{botAliasId}/botLocales/{localeId}/sessions/{sessionId}",
-    input: { responseContentType: D.m({ header: "ResponseContentType" }) },
+    input: {
+      botId: 0,
+      botAliasId: 0,
+      localeId: 0,
+      sessionId: 0,
+      messages: D.list(i_Message),
+      sessionState: i_SessionState,
+      requestAttributes: 0,
+      responseContentType: D.m({ header: "ResponseContentType" }),
+    },
     output: {
       contentType: D.m({ header: "Content-Type" }),
       messages: D.m({ header: "x-amz-lex-messages" }),
@@ -934,6 +945,15 @@ export const recognizeText: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{botId}/botAliases/{botAliasId}/botLocales/{localeId}/sessions/{sessionId}/text",
+    input: {
+      botId: 0,
+      botAliasId: 0,
+      localeId: 0,
+      sessionId: 0,
+      text: 0,
+      sessionState: i_SessionState,
+      requestAttributes: 0,
+    },
     output: { messages: D.list(o_Message), sessionState: o_SessionState },
     body: true,
   },
@@ -1023,6 +1043,10 @@ export const recognizeUtterance: API.OperationMethod<
     service: svc,
     http: "POST /bots/{botId}/botAliases/{botAliasId}/botLocales/{localeId}/sessions/{sessionId}/utterance",
     input: {
+      botId: 0,
+      botAliasId: 0,
+      localeId: 0,
+      sessionId: 0,
       sessionState: D.m({ header: "x-amz-lex-session-state" }),
       requestAttributes: D.m({ header: "x-amz-lex-request-attributes" }),
       requestContentType: D.m({ header: "Content-Type" }),
@@ -1120,16 +1144,37 @@ export const startConversation: API.OperationMethod<
     service: svc,
     http: "POST /bots/{botId}/botAliases/{botAliasId}/botLocales/{localeId}/sessions/{sessionId}/conversation",
     input: {
+      botId: 0,
+      botAliasId: 0,
+      localeId: 0,
+      sessionId: 0,
       conversationMode: D.m({ header: "x-amz-lex-conversation-mode" }),
       requestEventStream: D.m({
         payload: true,
         shape: D.events({
-          ConfigurationEvent: 0,
-          AudioInputEvent: 0,
-          DTMFInputEvent: 0,
-          TextInputEvent: 0,
-          PlaybackCompletionEvent: 0,
-          DisconnectionEvent: 0,
+          ConfigurationEvent: {
+            requestAttributes: 0,
+            responseContentType: 0,
+            sessionState: i_SessionState,
+            welcomeMessages: D.list(i_Message),
+            disablePlayback: 0,
+            eventId: 0,
+            clientTimestampMillis: 0,
+          },
+          AudioInputEvent: {
+            audioChunk: 0,
+            contentType: 0,
+            eventId: 0,
+            clientTimestampMillis: 0,
+          },
+          DTMFInputEvent: {
+            inputCharacter: 0,
+            eventId: 0,
+            clientTimestampMillis: 0,
+          },
+          TextInputEvent: { text: 0, eventId: 0, clientTimestampMillis: 0 },
+          PlaybackCompletionEvent: { eventId: 0, clientTimestampMillis: 0 },
+          DisconnectionEvent: { eventId: 0, clientTimestampMillis: 0 },
         }),
       }),
     },
@@ -1166,7 +1211,48 @@ export const startConversation: API.OperationMethod<
   operationName: "StartConversation",
 })) as any;
 
+const i_Message: D.LazyStruct = () => ({
+  content: 0,
+  contentType: 0,
+  imageResponseCard: {
+    title: 0,
+    subtitle: 0,
+    imageUrl: 0,
+    buttons: D.list({ text: 0, value: 0 }),
+  },
+});
+const i_SessionState: D.LazyStruct = () => ({
+  dialogAction: {
+    type: 0,
+    slotToElicit: 0,
+    slotElicitationStyle: 0,
+    subSlotToElicit: i_ElicitSubSlot,
+  },
+  intent: { name: 0, slots: D.map(i_Slot), state: 0, confirmationState: 0 },
+  activeContexts: D.list({
+    name: 0,
+    timeToLive: { timeToLiveInSeconds: 0, turnsToLive: 0 },
+    contextAttributes: 0,
+  }),
+  sessionAttributes: 0,
+  originatingRequestId: 0,
+  runtimeHints: { slotHints: D.map(D.map(i_RuntimeHintDetails)) },
+});
 const o_Message: D.LazyStruct = () => ({ content: D.secret });
 const o_SessionState: D.LazyStruct = () => ({
   activeContexts: D.list({ contextAttributes: D.map(D.secret) }),
+});
+const i_ElicitSubSlot: D.LazyStruct = () => ({
+  name: 0,
+  subSlotToElicit: i_ElicitSubSlot,
+});
+const i_RuntimeHintDetails: D.LazyStruct = () => ({
+  runtimeHintValues: D.list({ phrase: 0 }),
+  subSlotHints: D.map(i_RuntimeHintDetails),
+});
+const i_Slot: D.LazyStruct = () => ({
+  value: { originalValue: 0, interpretedValue: 0, resolvedValues: 0 },
+  shape: 0,
+  values: D.list(i_Slot),
+  subSlots: D.map(i_Slot),
 });

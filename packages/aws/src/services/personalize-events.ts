@@ -1,6 +1,7 @@
 import type * as HttpClient from "effect/unstable/http/HttpClient";
 import type * as redacted from "effect/Redacted";
 import * as API from "@distilled.cloud/core/api";
+import * as D from "@distilled.cloud/core/shape";
 import * as TE from "@distilled.cloud/core/error-class";
 import { AwsProtocol } from "../protocol.ts";
 import { restJson1Protocol } from "../protocols/rest-json.ts";
@@ -211,7 +212,25 @@ export const putActionInteractions: API.OperationMethod<
   PutActionInteractionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /action-interactions", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /action-interactions",
+    input: {
+      trackingId: 0,
+      actionInteractions: D.list({
+        actionId: 0,
+        userId: 0,
+        sessionId: 0,
+        timestamp: 0,
+        eventType: 0,
+        eventId: 0,
+        recommendationId: 0,
+        impression: 0,
+        properties: 0,
+      }),
+    },
+    body: true,
+  },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -237,7 +256,12 @@ export const putActions: API.OperationMethod<
   PutActionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /actions", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /actions",
+    input: { datasetArn: 0, actions: D.list({ actionId: 0, properties: 0 }) },
+    body: true,
+  },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -259,7 +283,27 @@ export const putEvents: API.OperationMethod<
   PutEventsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /events", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /events",
+    input: {
+      trackingId: 0,
+      userId: 0,
+      sessionId: 0,
+      eventList: D.list({
+        eventId: 0,
+        eventType: 0,
+        eventValue: 0,
+        itemId: 0,
+        properties: 0,
+        sentAt: 0,
+        recommendationId: 0,
+        impression: 0,
+        metricAttribution: { eventAttributionSource: 0 },
+      }),
+    },
+    body: true,
+  },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -281,7 +325,12 @@ export const putItems: API.OperationMethod<
   PutItemsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /items", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /items",
+    input: { datasetArn: 0, items: D.list({ itemId: 0, properties: 0 }) },
+    body: true,
+  },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -307,7 +356,12 @@ export const putUsers: API.OperationMethod<
   PutUsersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /users", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /users",
+    input: { datasetArn: 0, users: D.list({ userId: 0, properties: 0 }) },
+    body: true,
+  },
   errors: [
     InvalidInputException,
     ResourceInUseException,

@@ -487,7 +487,19 @@ export const createEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /environments",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      desktopArn: 0,
+      desktopEndpoint: 0,
+      softwareSetUpdateSchedule: 0,
+      maintenanceWindow: i_MaintenanceWindow,
+      softwareSetUpdateMode: 0,
+      desiredSoftwareSetId: 0,
+      kmsKeyArn: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+      deviceCreationTags: 0,
+    },
     output: { environment: o_EnvironmentSummary },
     body: true,
   },
@@ -526,7 +538,10 @@ export const deleteDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /devices/{id}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      id: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -562,7 +577,10 @@ export const deleteEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /environments/{id}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      id: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -598,7 +616,11 @@ export const deregisterDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /deregister-device/{id}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      id: 0,
+      targetDeviceStatus: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -634,6 +656,7 @@ export const getDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /devices/{id}",
+    input: { id: 0 },
     output: {
       device: {
         name: D.secret,
@@ -677,6 +700,7 @@ export const getEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /environments/{id}",
+    input: { id: 0 },
     output: {
       environment: {
         name: D.secret,
@@ -719,6 +743,7 @@ export const getSoftwareSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /softwaresets/{id}",
+    input: { id: 0 },
     output: { softwareSet: { releasedAt: D.ts, supportedUntil: D.ts } },
   },
   errors: [
@@ -881,7 +906,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -912,7 +941,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -947,7 +981,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -982,6 +1016,12 @@ export const updateDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /devices/{id}",
+    input: {
+      id: 0,
+      name: 0,
+      desiredSoftwareSetId: 0,
+      softwareSetUpdateSchedule: 0,
+    },
     output: { device: o_DeviceSummary },
     body: true,
   },
@@ -1018,6 +1058,17 @@ export const updateEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /environments/{id}",
+    input: {
+      id: 0,
+      name: 0,
+      desktopArn: 0,
+      desktopEndpoint: 0,
+      softwareSetUpdateSchedule: 0,
+      maintenanceWindow: i_MaintenanceWindow,
+      softwareSetUpdateMode: 0,
+      desiredSoftwareSetId: 0,
+      deviceCreationTags: 0,
+    },
     output: { environment: o_EnvironmentSummary },
     body: true,
   },
@@ -1051,7 +1102,12 @@ export const updateSoftwareSet: API.OperationMethod<
   UpdateSoftwareSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /softwaresets/{id}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /softwaresets/{id}",
+    input: { id: 0, validationStatus: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1065,6 +1121,15 @@ export const updateSoftwareSet: API.OperationMethod<
   endpointHostPrefix: "api.",
 })) as any;
 
+const i_MaintenanceWindow: D.LazyStruct = () => ({
+  type: 0,
+  startTimeHour: 0,
+  startTimeMinute: 0,
+  endTimeHour: 0,
+  endTimeMinute: 0,
+  daysOfTheWeek: 0,
+  applyTimeOf: 0,
+});
 const o_DeviceSummary: D.LazyStruct = () => ({
   name: D.secret,
   lastConnectedAt: D.ts,

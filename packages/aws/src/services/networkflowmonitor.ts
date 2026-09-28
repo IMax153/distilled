@@ -536,7 +536,14 @@ export const createMonitor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /monitors",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      monitorName: 0,
+      localResources: D.list(i_MonitorLocalResource),
+      remoteResources: D.list(i_MonitorRemoteResource),
+      scopeArn: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { createdAt: D.ts, modifiedAt: D.ts },
     body: true,
   },
@@ -583,7 +590,11 @@ export const createScope: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /scopes",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      targets: D.list(i_TargetResource),
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -616,7 +627,11 @@ export const deleteMonitor: API.OperationMethod<
   DeleteMonitorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /monitors/{monitorName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /monitors/{monitorName}",
+    input: { monitorName: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -648,7 +663,11 @@ export const deleteScope: API.OperationMethod<
   DeleteScopeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /scopes/{scopeId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /scopes/{scopeId}",
+    input: { scopeId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -682,6 +701,7 @@ export const getMonitor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /monitors/{monitorName}",
+    input: { monitorName: 0 },
     output: { createdAt: D.ts, modifiedAt: D.ts },
   },
   errors: [
@@ -722,6 +742,8 @@ export const getQueryResultsMonitorTopContributors: API.PaginatedOperationMethod
     service: svc,
     http: "GET /monitors/{monitorName}/topContributorsQueries/{queryId}/results",
     input: {
+      monitorName: 0,
+      queryId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -773,6 +795,8 @@ export const getQueryResultsWorkloadInsightsTopContributors: API.PaginatedOperat
     service: svc,
     http: "GET /workloadInsights/{scopeId}/topContributorsQueries/{queryId}/results",
     input: {
+      scopeId: 0,
+      queryId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -826,6 +850,8 @@ export const getQueryResultsWorkloadInsightsTopContributorsData: API.PaginatedOp
     service: svc,
     http: "GET /workloadInsights/{scopeId}/topContributorsDataQueries/{queryId}/results",
     input: {
+      scopeId: 0,
+      queryId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -873,6 +899,7 @@ export const getQueryStatusMonitorTopContributors: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /monitors/{monitorName}/topContributorsQueries/{queryId}/status",
+    input: { monitorName: 0, queryId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -909,6 +936,7 @@ export const getQueryStatusWorkloadInsightsTopContributors: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workloadInsights/{scopeId}/topContributorsQueries/{queryId}/status",
+    input: { scopeId: 0, queryId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -947,6 +975,7 @@ export const getQueryStatusWorkloadInsightsTopContributorsData: API.OperationMet
   descriptor: {
     service: svc,
     http: "GET /workloadInsights/{scopeId}/topContributorsDataQueries/{queryId}/status",
+    input: { scopeId: 0, queryId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -977,7 +1006,11 @@ export const getScope: API.OperationMethod<
   GetScopeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /scopes/{scopeId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /scopes/{scopeId}",
+    input: { scopeId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1093,7 +1126,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1130,7 +1167,14 @@ export const startQueryMonitorTopContributors: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /monitors/{monitorName}/topContributorsQueries",
-    input: { startTime: D.tsAs("date-time"), endTime: D.tsAs("date-time") },
+    input: {
+      monitorName: 0,
+      startTime: D.tsAs("date-time"),
+      endTime: D.tsAs("date-time"),
+      metricName: 0,
+      destinationCategory: 0,
+      limit: 0,
+    },
     body: true,
   },
   errors: [
@@ -1168,7 +1212,14 @@ export const startQueryWorkloadInsightsTopContributors: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workloadInsights/{scopeId}/topContributorsQueries",
-    input: { startTime: D.tsAs("date-time"), endTime: D.tsAs("date-time") },
+    input: {
+      scopeId: 0,
+      startTime: D.tsAs("date-time"),
+      endTime: D.tsAs("date-time"),
+      metricName: 0,
+      destinationCategory: 0,
+      limit: 0,
+    },
     body: true,
   },
   errors: [
@@ -1206,7 +1257,13 @@ export const startQueryWorkloadInsightsTopContributorsData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workloadInsights/{scopeId}/topContributorsDataQueries",
-    input: { startTime: D.tsAs("date-time"), endTime: D.tsAs("date-time") },
+    input: {
+      scopeId: 0,
+      startTime: D.tsAs("date-time"),
+      endTime: D.tsAs("date-time"),
+      metricName: 0,
+      destinationCategory: 0,
+    },
     body: true,
   },
   errors: [
@@ -1242,6 +1299,7 @@ export const stopQueryMonitorTopContributors: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /monitors/{monitorName}/topContributorsQueries/{queryId}",
+    input: { monitorName: 0, queryId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1276,6 +1334,7 @@ export const stopQueryWorkloadInsightsTopContributors: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workloadInsights/{scopeId}/topContributorsQueries/{queryId}",
+    input: { scopeId: 0, queryId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1310,6 +1369,7 @@ export const stopQueryWorkloadInsightsTopContributorsData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workloadInsights/{scopeId}/topContributorsDataQueries/{queryId}",
+    input: { scopeId: 0, queryId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1340,7 +1400,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1374,7 +1439,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1408,7 +1473,14 @@ export const updateMonitor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /monitors/{monitorName}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      monitorName: 0,
+      localResourcesToAdd: D.list(i_MonitorLocalResource),
+      localResourcesToRemove: D.list(i_MonitorLocalResource),
+      remoteResourcesToAdd: D.list(i_MonitorRemoteResource),
+      remoteResourcesToRemove: D.list(i_MonitorRemoteResource),
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { createdAt: D.ts, modifiedAt: D.ts },
     body: true,
   },
@@ -1442,7 +1514,16 @@ export const updateScope: API.OperationMethod<
   UpdateScopeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /scopes/{scopeId}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /scopes/{scopeId}",
+    input: {
+      scopeId: 0,
+      resourcesToAdd: D.list(i_TargetResource),
+      resourcesToDelete: D.list(i_TargetResource),
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1456,3 +1537,13 @@ export const updateScope: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateScope",
 })) as any;
+
+const i_MonitorLocalResource: D.LazyStruct = () => ({ type: 0, identifier: 0 });
+const i_MonitorRemoteResource: D.LazyStruct = () => ({
+  type: 0,
+  identifier: 0,
+});
+const i_TargetResource: D.LazyStruct = () => ({
+  targetIdentifier: { targetId: { accountId: 0 }, targetType: 0 },
+  region: 0,
+});

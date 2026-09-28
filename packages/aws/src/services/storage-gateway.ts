@@ -1611,7 +1611,19 @@ export const activateGateway: API.OperationMethod<
   ActivateGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ActivationKey: 0,
+      GatewayName: 0,
+      GatewayTimezone: 0,
+      GatewayRegion: 0,
+      GatewayType: 0,
+      TapeDriveType: 0,
+      MediumChangerType: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1635,7 +1647,7 @@ export const addCache: API.OperationMethod<
   AddCacheError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0, DiskIds: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1671,7 +1683,7 @@ export const addTagsToResource: API.OperationMethod<
   AddTagsToResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1697,7 +1709,7 @@ export const addUploadBuffer: API.OperationMethod<
   AddUploadBufferError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0, DiskIds: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1727,7 +1739,7 @@ export const addWorkingStorage: API.OperationMethod<
   AddWorkingStorageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0, DiskIds: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1750,7 +1762,10 @@ export const assignTapePool: API.OperationMethod<
   AssignTapePoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TapeARN: 0, PoolId: 0, BypassGovernanceRetention: 0 },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1773,7 +1788,20 @@ export const associateFileSystem: API.OperationMethod<
   AssociateFileSystemError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UserName: 0,
+      Password: 0,
+      ClientToken: 0,
+      GatewayARN: 0,
+      LocationARN: 0,
+      Tags: D.list(i_Tag),
+      AuditDestinationARN: 0,
+      CacheAttributes: i_CacheAttributes,
+      EndpointNetworkConfiguration: { IpAddresses: 0 },
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1796,7 +1824,16 @@ export const attachVolume: API.OperationMethod<
   AttachVolumeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      GatewayARN: 0,
+      TargetName: 0,
+      VolumeARN: 0,
+      NetworkInterfaceId: 0,
+      DiskId: 0,
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1817,7 +1854,7 @@ export const cancelArchival: API.OperationMethod<
   CancelArchivalError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0, TapeARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1841,7 +1878,7 @@ export const cancelCacheReport: API.OperationMethod<
   CancelCacheReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CacheReportARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1863,7 +1900,7 @@ export const cancelRetrieval: API.OperationMethod<
   CancelRetrievalError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0, TapeARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1898,7 +1935,21 @@ export const createCachediSCSIVolume: API.OperationMethod<
   CreateCachediSCSIVolumeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      GatewayARN: 0,
+      VolumeSizeInBytes: 0,
+      SnapshotId: 0,
+      TargetName: 0,
+      SourceVolumeARN: 0,
+      NetworkInterfaceId: 0,
+      ClientToken: 0,
+      KMSEncrypted: 0,
+      KMSKey: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1932,7 +1983,33 @@ export const createNFSFileShare: API.OperationMethod<
   CreateNFSFileShareError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClientToken: 0,
+      NFSFileShareDefaults: i_NFSFileShareDefaults,
+      GatewayARN: 0,
+      EncryptionType: 0,
+      KMSEncrypted: 0,
+      KMSKey: 0,
+      Role: 0,
+      LocationARN: 0,
+      DefaultStorageClass: 0,
+      ObjectACL: 0,
+      ClientList: 0,
+      Squash: 0,
+      ReadOnly: 0,
+      GuessMIMETypeEnabled: 0,
+      RequesterPays: 0,
+      Tags: D.list(i_Tag),
+      FileShareName: 0,
+      CacheAttributes: i_CacheAttributes,
+      NotificationPolicy: 0,
+      VPCEndpointDNSName: 0,
+      BucketRegion: 0,
+      AuditDestinationARN: 0,
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1966,7 +2043,38 @@ export const createSMBFileShare: API.OperationMethod<
   CreateSMBFileShareError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClientToken: 0,
+      GatewayARN: 0,
+      EncryptionType: 0,
+      KMSEncrypted: 0,
+      KMSKey: 0,
+      Role: 0,
+      LocationARN: 0,
+      DefaultStorageClass: 0,
+      ObjectACL: 0,
+      ReadOnly: 0,
+      GuessMIMETypeEnabled: 0,
+      RequesterPays: 0,
+      SMBACLEnabled: 0,
+      AccessBasedEnumeration: 0,
+      AdminUserList: 0,
+      ValidUserList: 0,
+      InvalidUserList: 0,
+      AuditDestinationARN: 0,
+      Authentication: 0,
+      CaseSensitivity: 0,
+      Tags: D.list(i_Tag),
+      FileShareName: 0,
+      CacheAttributes: i_CacheAttributes,
+      NotificationPolicy: 0,
+      VPCEndpointDNSName: 0,
+      BucketRegion: 0,
+      OplocksEnabled: 0,
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2010,7 +2118,10 @@ export const createSnapshot: API.OperationMethod<
   CreateSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { VolumeARN: 0, SnapshotDescription: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     InternalServerError,
     InvalidGatewayRequestException,
@@ -2053,7 +2164,10 @@ export const createSnapshotFromVolumeRecoveryPoint: API.OperationMethod<
   CreateSnapshotFromVolumeRecoveryPointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { VolumeARN: 0, SnapshotDescription: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     InternalServerError,
     InvalidGatewayRequestException,
@@ -2088,7 +2202,20 @@ export const createStorediSCSIVolume: API.OperationMethod<
   CreateStorediSCSIVolumeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      GatewayARN: 0,
+      DiskId: 0,
+      SnapshotId: 0,
+      PreserveExistingData: 0,
+      TargetName: 0,
+      NetworkInterfaceId: 0,
+      KMSEncrypted: 0,
+      KMSKey: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2109,7 +2236,16 @@ export const createTapePool: API.OperationMethod<
   CreateTapePoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      PoolName: 0,
+      StorageClass: 0,
+      RetentionLockType: 0,
+      RetentionLockTimeInDays: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2133,7 +2269,21 @@ export const createTapes: API.OperationMethod<
   CreateTapesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      GatewayARN: 0,
+      TapeSizeInBytes: 0,
+      ClientToken: 0,
+      NumTapesToCreate: 0,
+      TapeBarcodePrefix: 0,
+      KMSEncrypted: 0,
+      KMSKey: 0,
+      PoolId: 0,
+      Worm: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2159,7 +2309,19 @@ export const createTapeWithBarcode: API.OperationMethod<
   CreateTapeWithBarcodeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      GatewayARN: 0,
+      TapeSizeInBytes: 0,
+      TapeBarcode: 0,
+      KMSEncrypted: 0,
+      KMSKey: 0,
+      PoolId: 0,
+      Worm: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2181,7 +2343,7 @@ export const deleteAutomaticTapeCreationPolicy: API.OperationMethod<
   DeleteAutomaticTapeCreationPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2205,7 +2367,7 @@ export const deleteBandwidthRateLimit: API.OperationMethod<
   DeleteBandwidthRateLimitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0, BandwidthType: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2229,7 +2391,7 @@ export const deleteCacheReport: API.OperationMethod<
   DeleteCacheReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CacheReportARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2251,7 +2413,7 @@ export const deleteChapCredentials: API.OperationMethod<
   DeleteChapCredentialsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TargetARN: 0, InitiatorName: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2272,7 +2434,7 @@ export const deleteFileShare: API.OperationMethod<
   DeleteFileShareError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FileShareARN: 0, ForceDelete: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2307,7 +2469,7 @@ export const deleteGateway: API.OperationMethod<
   DeleteGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2338,7 +2500,7 @@ export const deleteSnapshotSchedule: API.OperationMethod<
   DeleteSnapshotScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { VolumeARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2359,7 +2521,10 @@ export const deleteTape: API.OperationMethod<
   DeleteTapeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { GatewayARN: 0, TapeARN: 0, BypassGovernanceRetention: 0 },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2380,7 +2545,10 @@ export const deleteTapeArchive: API.OperationMethod<
   DeleteTapeArchiveError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TapeARN: 0, BypassGovernanceRetention: 0 },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2402,7 +2570,7 @@ export const deleteTapePool: API.OperationMethod<
   DeleteTapePoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PoolARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2434,7 +2602,7 @@ export const deleteVolume: API.OperationMethod<
   DeleteVolumeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { VolumeARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2456,7 +2624,11 @@ export const describeAvailabilityMonitorTest: API.OperationMethod<
   DescribeAvailabilityMonitorTestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { StartTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { GatewayARN: 0 },
+    output: { StartTime: D.ts },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2484,7 +2656,7 @@ export const describeBandwidthRateLimit: API.OperationMethod<
   DescribeBandwidthRateLimitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2520,7 +2692,7 @@ export const describeBandwidthRateLimitSchedule: API.OperationMethod<
   DescribeBandwidthRateLimitScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2544,7 +2716,7 @@ export const describeCache: API.OperationMethod<
   DescribeCacheError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2571,6 +2743,7 @@ export const describeCachediSCSIVolumes: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { VolumeARNs: 0 },
     output: { CachediSCSIVolumes: D.list({ CreatedDate: D.ts }) },
   },
   errors: [InternalServerError, InvalidGatewayRequestException],
@@ -2593,7 +2766,11 @@ export const describeCacheReport: API.OperationMethod<
   DescribeCacheReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CacheReportInfo: o_CacheReportInfo } },
+  descriptor: {
+    service: svc,
+    input: { CacheReportARN: 0 },
+    output: { CacheReportInfo: o_CacheReportInfo },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2617,6 +2794,7 @@ export const describeChapCredentials: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TargetARN: 0 },
     output: {
       ChapCredentials: D.list({
         SecretToAuthenticateInitiator: D.secret,
@@ -2644,7 +2822,7 @@ export const describeFileSystemAssociations: API.OperationMethod<
   DescribeFileSystemAssociationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FileSystemAssociationARNList: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2666,7 +2844,7 @@ export const describeGatewayInformation: API.OperationMethod<
   DescribeGatewayInformationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2688,7 +2866,7 @@ export const describeMaintenanceStartTime: API.OperationMethod<
   DescribeMaintenanceStartTimeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2709,7 +2887,7 @@ export const describeNFSFileShares: API.OperationMethod<
   DescribeNFSFileSharesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FileShareARNList: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2730,7 +2908,7 @@ export const describeSMBFileShares: API.OperationMethod<
   DescribeSMBFileSharesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FileShareARNList: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2751,7 +2929,7 @@ export const describeSMBSettings: API.OperationMethod<
   DescribeSMBSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2774,7 +2952,7 @@ export const describeSnapshotSchedule: API.OperationMethod<
   DescribeSnapshotScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { VolumeARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2798,6 +2976,7 @@ export const describeStorediSCSIVolumes: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { VolumeARNs: 0 },
     output: { StorediSCSIVolumes: D.list({ CreatedDate: D.ts }) },
   },
   errors: [InternalServerError, InvalidGatewayRequestException],
@@ -2826,6 +3005,7 @@ export const describeTapeArchives: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { TapeARNs: 0, Marker: 0, Limit: 0 },
     output: {
       TapeArchives: D.list({
         TapeCreatedDate: D.ts,
@@ -2869,6 +3049,7 @@ export const describeTapeRecoveryPoints: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { GatewayARN: 0, Marker: 0, Limit: 0 },
     output: { TapeRecoveryPointInfos: D.list({ TapeRecoveryPointTime: D.ts }) },
   },
   errors: [InternalServerError, InvalidGatewayRequestException],
@@ -2909,6 +3090,7 @@ export const describeTapes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { GatewayARN: 0, TapeARNs: 0, Marker: 0, Limit: 0 },
     output: {
       Tapes: D.list({
         TapeCreatedDate: D.ts,
@@ -2946,7 +3128,7 @@ export const describeUploadBuffer: API.OperationMethod<
   DescribeUploadBufferError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2970,7 +3152,10 @@ export const describeVTLDevices: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   VTLDevice
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { GatewayARN: 0, VTLDeviceARNs: 0, Marker: 0, Limit: 0 },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3004,7 +3189,7 @@ export const describeWorkingStorage: API.OperationMethod<
   DescribeWorkingStorageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3028,7 +3213,7 @@ export const detachVolume: API.OperationMethod<
   DetachVolumeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { VolumeARN: 0, ForceDetach: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3054,7 +3239,7 @@ export const disableGateway: API.OperationMethod<
   DisableGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3076,7 +3261,10 @@ export const disassociateFileSystem: API.OperationMethod<
   DisassociateFileSystemError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { FileSystemAssociationARN: 0, ForceDelete: 0 },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3107,7 +3295,7 @@ export const evictFilesFailingUpload: API.OperationMethod<
   EvictFilesFailingUploadError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FileShareARN: 0, ForceRemove: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3137,7 +3325,18 @@ export const joinDomain: API.OperationMethod<
   JoinDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      GatewayARN: 0,
+      DomainName: 0,
+      OrganizationalUnit: 0,
+      DomainControllers: 0,
+      TimeoutInSeconds: 0,
+      UserName: 0,
+      Password: 0,
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3160,7 +3359,7 @@ export const listAutomaticTapeCreationPolicies: API.OperationMethod<
   ListAutomaticTapeCreationPoliciesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3186,6 +3385,7 @@ export const listCacheReports: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Marker: 0 },
     output: { CacheReportList: D.list(o_CacheReportInfo) },
   },
   errors: [InternalServerError, InvalidGatewayRequestException],
@@ -3215,7 +3415,7 @@ export const listFileShares: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   FileShareInfo
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0, Limit: 0, Marker: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3244,7 +3444,7 @@ export const listFileSystemAssociations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   FileSystemAssociationSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0, Limit: 0, Marker: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3281,7 +3481,7 @@ export const listGateways: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   GatewayInfo
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Marker: 0, Limit: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3315,7 +3515,7 @@ export const listLocalDisks: API.OperationMethod<
   ListLocalDisksError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3337,7 +3537,7 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Tag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Marker: 0, Limit: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3372,7 +3572,7 @@ export const listTapePools: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   PoolInfo
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PoolARNs: 0, Marker: 0, Limit: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3411,6 +3611,7 @@ export const listTapes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { TapeARNs: 0, Marker: 0, Limit: 0 },
     output: {
       TapeInfos: D.list({ RetentionStartDate: D.ts, PoolEntryDate: D.ts }),
     },
@@ -3442,7 +3643,7 @@ export const listVolumeInitiators: API.OperationMethod<
   ListVolumeInitiatorsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { VolumeARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3468,7 +3669,7 @@ export const listVolumeRecoveryPoints: API.OperationMethod<
   ListVolumeRecoveryPointsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3498,7 +3699,7 @@ export const listVolumes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   VolumeInfo
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0, Marker: 0, Limit: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3536,7 +3737,7 @@ export const notifyWhenUploaded: API.OperationMethod<
   NotifyWhenUploadedError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FileShareARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3593,7 +3794,10 @@ export const refreshCache: API.OperationMethod<
   RefreshCacheError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { FileShareARN: 0, FolderList: 0, Recursive: 0 },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3614,7 +3818,7 @@ export const removeTagsFromResource: API.OperationMethod<
   RemoveTagsFromResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3644,7 +3848,7 @@ export const resetCache: API.OperationMethod<
   ResetCacheError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3671,7 +3875,7 @@ export const retrieveTapeArchive: API.OperationMethod<
   RetrieveTapeArchiveError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TapeARN: 0, GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3700,7 +3904,7 @@ export const retrieveTapeRecoveryPoint: API.OperationMethod<
   RetrieveTapeRecoveryPointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TapeARN: 0, GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3723,7 +3927,10 @@ export const setLocalConsolePassword: API.OperationMethod<
   SetLocalConsolePasswordError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { GatewayARN: 0, LocalConsolePassword: 0 },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3745,7 +3952,7 @@ export const setSMBGuestPassword: API.OperationMethod<
   SetSMBGuestPasswordError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0, Password: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3787,7 +3994,7 @@ export const shutdownGateway: API.OperationMethod<
   ShutdownGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3813,7 +4020,7 @@ export const startAvailabilityMonitorTest: API.OperationMethod<
   StartAvailabilityMonitorTestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3860,7 +4067,20 @@ export const startCacheReport: API.OperationMethod<
   StartCacheReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FileShareARN: 0,
+      Role: 0,
+      LocationARN: 0,
+      BucketRegion: 0,
+      VPCEndpointDNSName: 0,
+      InclusionFilters: D.list(i_CacheReportFilter),
+      ExclusionFilters: D.list(i_CacheReportFilter),
+      ClientToken: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3890,7 +4110,7 @@ export const startGateway: API.OperationMethod<
   StartGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3916,7 +4136,19 @@ export const updateAutomaticTapeCreationPolicy: API.OperationMethod<
   UpdateAutomaticTapeCreationPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AutomaticTapeCreationRules: D.list({
+        TapeBarcodePrefix: 0,
+        PoolId: 0,
+        TapeSizeInBytes: 0,
+        MinimumNumTapes: 0,
+        Worm: 0,
+      }),
+      GatewayARN: 0,
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3947,7 +4179,14 @@ export const updateBandwidthRateLimit: API.OperationMethod<
   UpdateBandwidthRateLimitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      GatewayARN: 0,
+      AverageUploadRateLimitInBitsPerSec: 0,
+      AverageDownloadRateLimitInBitsPerSec: 0,
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3972,7 +4211,21 @@ export const updateBandwidthRateLimitSchedule: API.OperationMethod<
   UpdateBandwidthRateLimitScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      GatewayARN: 0,
+      BandwidthRateLimitIntervals: D.list({
+        StartHourOfDay: 0,
+        StartMinuteOfHour: 0,
+        EndHourOfDay: 0,
+        EndMinuteOfHour: 0,
+        DaysOfWeek: 0,
+        AverageUploadRateLimitInBitsPerSec: 0,
+        AverageDownloadRateLimitInBitsPerSec: 0,
+      }),
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3998,7 +4251,15 @@ export const updateChapCredentials: API.OperationMethod<
   UpdateChapCredentialsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TargetARN: 0,
+      SecretToAuthenticateInitiator: 0,
+      InitiatorName: 0,
+      SecretToAuthenticateTarget: 0,
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4019,7 +4280,16 @@ export const updateFileSystemAssociation: API.OperationMethod<
   UpdateFileSystemAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FileSystemAssociationARN: 0,
+      UserName: 0,
+      Password: 0,
+      AuditDestinationARN: 0,
+      CacheAttributes: i_CacheAttributes,
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4045,7 +4315,16 @@ export const updateGatewayInformation: API.OperationMethod<
   UpdateGatewayInformationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      GatewayARN: 0,
+      GatewayName: 0,
+      GatewayTimezone: 0,
+      CloudWatchLogGroupARN: 0,
+      GatewayCapacity: 0,
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4076,7 +4355,7 @@ export const updateGatewaySoftwareNow: API.OperationMethod<
   UpdateGatewaySoftwareNowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4111,7 +4390,17 @@ export const updateMaintenanceStartTime: API.OperationMethod<
   UpdateMaintenanceStartTimeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      GatewayARN: 0,
+      HourOfDay: 0,
+      MinuteOfHour: 0,
+      DayOfWeek: 0,
+      DayOfMonth: 0,
+      SoftwareUpdatePreferences: { AutomaticUpdatePolicy: 0 },
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4147,7 +4436,27 @@ export const updateNFSFileShare: API.OperationMethod<
   UpdateNFSFileShareError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FileShareARN: 0,
+      EncryptionType: 0,
+      KMSEncrypted: 0,
+      KMSKey: 0,
+      NFSFileShareDefaults: i_NFSFileShareDefaults,
+      DefaultStorageClass: 0,
+      ObjectACL: 0,
+      ClientList: 0,
+      Squash: 0,
+      ReadOnly: 0,
+      GuessMIMETypeEnabled: 0,
+      RequesterPays: 0,
+      FileShareName: 0,
+      CacheAttributes: i_CacheAttributes,
+      NotificationPolicy: 0,
+      AuditDestinationARN: 0,
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4182,7 +4491,31 @@ export const updateSMBFileShare: API.OperationMethod<
   UpdateSMBFileShareError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FileShareARN: 0,
+      EncryptionType: 0,
+      KMSEncrypted: 0,
+      KMSKey: 0,
+      DefaultStorageClass: 0,
+      ObjectACL: 0,
+      ReadOnly: 0,
+      GuessMIMETypeEnabled: 0,
+      RequesterPays: 0,
+      SMBACLEnabled: 0,
+      AccessBasedEnumeration: 0,
+      AdminUserList: 0,
+      ValidUserList: 0,
+      InvalidUserList: 0,
+      AuditDestinationARN: 0,
+      CaseSensitivity: 0,
+      FileShareName: 0,
+      CacheAttributes: i_CacheAttributes,
+      NotificationPolicy: 0,
+      OplocksEnabled: 0,
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4203,7 +4536,7 @@ export const updateSMBFileShareVisibility: API.OperationMethod<
   UpdateSMBFileShareVisibilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayARN: 0, FileSharesVisible: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4224,7 +4557,10 @@ export const updateSMBLocalGroups: API.OperationMethod<
   UpdateSMBLocalGroupsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { GatewayARN: 0, SMBLocalGroups: { GatewayAdmins: 0 } },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4251,7 +4587,10 @@ export const updateSMBSecurityStrategy: API.OperationMethod<
   UpdateSMBSecurityStrategyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { GatewayARN: 0, SMBSecurityStrategy: 0 },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4280,7 +4619,16 @@ export const updateSnapshotSchedule: API.OperationMethod<
   UpdateSnapshotScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      VolumeARN: 0,
+      StartAt: 0,
+      RecurrenceInHours: 0,
+      Description: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4303,13 +4651,24 @@ export const updateVTLDeviceType: API.OperationMethod<
   UpdateVTLDeviceTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { VTLDeviceARN: 0, DeviceType: 0 } },
   errors: [InternalServerError, InvalidGatewayRequestException],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "UpdateVTLDeviceType",
 })) as any;
 
+const i_CacheAttributes: D.LazyStruct = () => ({
+  CacheStaleTimeoutInSeconds: 0,
+});
+const i_CacheReportFilter: D.LazyStruct = () => ({ Name: 0, Values: 0 });
+const i_NFSFileShareDefaults: D.LazyStruct = () => ({
+  FileMode: 0,
+  DirectoryMode: 0,
+  GroupId: 0,
+  OwnerId: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_CacheReportInfo: D.LazyStruct = () => ({
   EndTime: D.ts,
   StartTime: D.ts,

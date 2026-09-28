@@ -1305,7 +1305,21 @@ export const createEnvironment: API.OperationMethod<
   CreateEnvironmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /environment", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /environment",
+    input: {
+      name: 0,
+      description: 0,
+      kmsKeyId: 0,
+      tags: 0,
+      federationMode: 0,
+      federationParameters: i_FederationParameters,
+      superuserParameters: { emailAddress: 0, firstName: 0, lastName: 0 },
+      dataBundles: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1340,7 +1354,12 @@ export const createKxChangeset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /kx/environments/{environmentId}/databases/{databaseName}/changesets",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      environmentId: 0,
+      databaseName: 0,
+      changeRequests: D.list({ changeType: 0, s3Path: 0, dbPath: 0 }),
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { createdTimestamp: D.ts, lastModifiedTimestamp: D.ts },
     body: true,
   },
@@ -1379,7 +1398,47 @@ export const createKxCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /kx/environments/{environmentId}/clusters",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      environmentId: 0,
+      clusterName: 0,
+      clusterType: 0,
+      tickerplantLogConfiguration: { tickerplantLogVolumes: 0 },
+      databases: D.list(i_KxDatabaseConfiguration),
+      cacheStorageConfigurations: D.list({ type: 0, size: 0 }),
+      autoScalingConfiguration: {
+        minNodeCount: 0,
+        maxNodeCount: 0,
+        autoScalingMetric: 0,
+        metricTarget: 0,
+        scaleInCooldownSeconds: 0,
+        scaleOutCooldownSeconds: 0,
+      },
+      clusterDescription: 0,
+      capacityConfiguration: { nodeType: 0, nodeCount: 0 },
+      releaseLabel: 0,
+      vpcConfiguration: {
+        vpcId: 0,
+        securityGroupIds: 0,
+        subnetIds: 0,
+        ipAddressType: 0,
+      },
+      initializationScript: 0,
+      commandLineArguments: D.list(i_KxCommandLineArgument),
+      code: i_CodeConfiguration,
+      executionRole: 0,
+      savedownStorageConfiguration: { type: 0, size: 0, volumeName: 0 },
+      azMode: 0,
+      availabilityZoneId: 0,
+      tags: 0,
+      scalingGroupConfiguration: {
+        scalingGroupName: 0,
+        memoryLimit: 0,
+        memoryReservation: 0,
+        nodeCount: 0,
+        cpu: 0,
+      },
+    },
     output: { lastModifiedTimestamp: D.ts, createdTimestamp: D.ts },
     body: true,
   },
@@ -1419,7 +1478,13 @@ export const createKxDatabase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /kx/environments/{environmentId}/databases",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      environmentId: 0,
+      databaseName: 0,
+      description: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { createdTimestamp: D.ts, lastModifiedTimestamp: D.ts },
     body: true,
   },
@@ -1460,7 +1525,20 @@ export const createKxDataview: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /kx/environments/{environmentId}/databases/{databaseName}/dataviews",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      environmentId: 0,
+      databaseName: 0,
+      dataviewName: 0,
+      azMode: 0,
+      availabilityZoneId: 0,
+      changesetId: 0,
+      segmentConfigurations: D.list(i_KxDataviewSegmentConfiguration),
+      autoUpdate: 0,
+      readWrite: 0,
+      description: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { createdTimestamp: D.ts, lastModifiedTimestamp: D.ts },
     body: true,
   },
@@ -1500,7 +1578,13 @@ export const createKxEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /kx/environments",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      kmsKeyId: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { creationTimestamp: D.ts },
     body: true,
   },
@@ -1539,7 +1623,14 @@ export const createKxScalingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /kx/environments/{environmentId}/scalingGroups",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      environmentId: 0,
+      scalingGroupName: 0,
+      hostType: 0,
+      availabilityZoneId: 0,
+      tags: 0,
+    },
     output: { lastModifiedTimestamp: D.ts, createdTimestamp: D.ts },
     body: true,
   },
@@ -1579,7 +1670,13 @@ export const createKxUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /kx/environments/{environmentId}/users",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      environmentId: 0,
+      userName: 0,
+      iamRole: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1619,7 +1716,17 @@ export const createKxVolume: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /kx/environments/{environmentId}/kxvolumes",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      environmentId: 0,
+      volumeType: 0,
+      volumeName: 0,
+      description: 0,
+      nas1Configuration: i_KxNAS1Configuration,
+      azMode: 0,
+      availabilityZoneIds: 0,
+      tags: 0,
+    },
     output: { createdTimestamp: D.ts },
     body: true,
   },
@@ -1654,7 +1761,11 @@ export const deleteEnvironment: API.OperationMethod<
   DeleteEnvironmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /environment/{environmentId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /environment/{environmentId}",
+    input: { environmentId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1688,7 +1799,11 @@ export const deleteKxCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /kx/environments/{environmentId}/clusters/{clusterName}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      environmentId: 0,
+      clusterName: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1723,6 +1838,7 @@ export const deleteKxClusterNode: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /kx/environments/{environmentId}/clusters/{clusterName}/nodes/{nodeId}",
+    input: { environmentId: 0, clusterName: 0, nodeId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1756,7 +1872,11 @@ export const deleteKxDatabase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /kx/environments/{environmentId}/databases/{databaseName}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      environmentId: 0,
+      databaseName: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1791,7 +1911,12 @@ export const deleteKxDataview: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /kx/environments/{environmentId}/databases/{databaseName}/dataviews/{dataviewName}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      environmentId: 0,
+      databaseName: 0,
+      dataviewName: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1826,7 +1951,10 @@ export const deleteKxEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /kx/environments/{environmentId}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      environmentId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1862,7 +1990,11 @@ export const deleteKxScalingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /kx/environments/{environmentId}/scalingGroups/{scalingGroupName}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      environmentId: 0,
+      scalingGroupName: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1898,7 +2030,11 @@ export const deleteKxUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /kx/environments/{environmentId}/users/{userName}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      userName: 0,
+      environmentId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1934,7 +2070,11 @@ export const deleteKxVolume: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /kx/environments/{environmentId}/kxvolumes/{volumeName}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      environmentId: 0,
+      volumeName: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1965,7 +2105,11 @@ export const getEnvironment: API.OperationMethod<
   GetEnvironmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /environment/{environmentId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /environment/{environmentId}",
+    input: { environmentId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1996,6 +2140,7 @@ export const getKxChangeset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /kx/environments/{environmentId}/databases/{databaseName}/changesets/{changesetId}",
+    input: { environmentId: 0, databaseName: 0, changesetId: 0 },
     output: {
       createdTimestamp: D.ts,
       activeFromTimestamp: D.ts,
@@ -2035,6 +2180,7 @@ export const getKxCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /kx/environments/{environmentId}/clusters/{clusterName}",
+    input: { environmentId: 0, clusterName: 0 },
     output: { lastModifiedTimestamp: D.ts, createdTimestamp: D.ts },
   },
   errors: [
@@ -2072,6 +2218,7 @@ export const getKxConnectionString: API.OperationMethod<
     http: "GET /kx/environments/{environmentId}/connectionString",
     input: {
       userArn: D.m({ query: "userArn" }),
+      environmentId: 0,
       clusterName: D.m({ query: "clusterName" }),
     },
     output: { signedConnectionString: D.secret },
@@ -2107,6 +2254,7 @@ export const getKxDatabase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /kx/environments/{environmentId}/databases/{databaseName}",
+    input: { environmentId: 0, databaseName: 0 },
     output: { createdTimestamp: D.ts, lastModifiedTimestamp: D.ts },
   },
   errors: [
@@ -2140,6 +2288,7 @@ export const getKxDataview: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /kx/environments/{environmentId}/databases/{databaseName}/dataviews/{dataviewName}",
+    input: { environmentId: 0, databaseName: 0, dataviewName: 0 },
     output: {
       activeVersions: D.list(o_KxDataviewActiveVersion),
       createdTimestamp: D.ts,
@@ -2177,6 +2326,7 @@ export const getKxEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /kx/environments/{environmentId}",
+    input: { environmentId: 0 },
     output: { creationTimestamp: D.ts, updateTimestamp: D.ts },
   },
   errors: [
@@ -2212,6 +2362,7 @@ export const getKxScalingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /kx/environments/{environmentId}/scalingGroups/{scalingGroupName}",
+    input: { environmentId: 0, scalingGroupName: 0 },
     output: { lastModifiedTimestamp: D.ts, createdTimestamp: D.ts },
   },
   errors: [
@@ -2247,6 +2398,7 @@ export const getKxUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /kx/environments/{environmentId}/users/{userName}",
+    input: { userName: 0, environmentId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2281,6 +2433,7 @@ export const getKxVolume: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /kx/environments/{environmentId}/kxvolumes/{volumeName}",
+    input: { environmentId: 0, volumeName: 0 },
     output: { createdTimestamp: D.ts, lastModifiedTimestamp: D.ts },
   },
   errors: [
@@ -2346,6 +2499,8 @@ export const listKxChangesets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /kx/environments/{environmentId}/databases/{databaseName}/changesets",
     input: {
+      environmentId: 0,
+      databaseName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -2396,6 +2551,8 @@ export const listKxClusterNodes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /kx/environments/{environmentId}/clusters/{clusterName}/nodes",
     input: {
+      environmentId: 0,
+      clusterName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -2441,6 +2598,7 @@ export const listKxClusters: API.OperationMethod<
     service: svc,
     http: "GET /kx/environments/{environmentId}/clusters",
     input: {
+      environmentId: 0,
       clusterType: D.m({ query: "clusterType" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -2487,6 +2645,7 @@ export const listKxDatabases: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /kx/environments/{environmentId}/databases",
     input: {
+      environmentId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -2535,6 +2694,8 @@ export const listKxDataviews: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /kx/environments/{environmentId}/databases/{databaseName}/dataviews",
     input: {
+      environmentId: 0,
+      databaseName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -2624,6 +2785,7 @@ export const listKxScalingGroups: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /kx/environments/{environmentId}/scalingGroups",
     input: {
+      environmentId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -2673,6 +2835,7 @@ export const listKxUsers: API.OperationMethod<
     service: svc,
     http: "GET /kx/environments/{environmentId}/users",
     input: {
+      environmentId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -2712,6 +2875,7 @@ export const listKxVolumes: API.OperationMethod<
     service: svc,
     http: "GET /kx/environments/{environmentId}/kxvolumes",
     input: {
+      environmentId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
       volumeType: D.m({ query: "volumeType" }),
@@ -2751,7 +2915,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2776,7 +2944,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2804,7 +2977,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -2835,6 +3008,13 @@ export const updateEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /environment/{environmentId}",
+    input: {
+      environmentId: 0,
+      name: 0,
+      description: 0,
+      federationMode: 0,
+      federationParameters: i_FederationParameters,
+    },
     body: true,
   },
   errors: [
@@ -2871,7 +3051,15 @@ export const updateKxClusterCodeConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /kx/environments/{environmentId}/clusters/{clusterName}/configuration/code",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      environmentId: 0,
+      clusterName: 0,
+      clientToken: D.m({ idempotency: true }),
+      code: i_CodeConfiguration,
+      initializationScript: 0,
+      commandLineArguments: D.list(i_KxCommandLineArgument),
+      deploymentConfiguration: { deploymentStrategy: 0 },
+    },
     body: true,
   },
   errors: [
@@ -2911,7 +3099,13 @@ export const updateKxClusterDatabases: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /kx/environments/{environmentId}/clusters/{clusterName}/configuration/databases",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      environmentId: 0,
+      clusterName: 0,
+      clientToken: D.m({ idempotency: true }),
+      databases: D.list(i_KxDatabaseConfiguration),
+      deploymentConfiguration: { deploymentStrategy: 0 },
+    },
     body: true,
   },
   errors: [
@@ -2948,7 +3142,12 @@ export const updateKxDatabase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /kx/environments/{environmentId}/databases/{databaseName}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      environmentId: 0,
+      databaseName: 0,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { lastModifiedTimestamp: D.ts },
     body: true,
   },
@@ -2986,7 +3185,15 @@ export const updateKxDataview: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /kx/environments/{environmentId}/databases/{databaseName}/dataviews/{dataviewName}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      environmentId: 0,
+      databaseName: 0,
+      dataviewName: 0,
+      description: 0,
+      changesetId: 0,
+      segmentConfigurations: D.list(i_KxDataviewSegmentConfiguration),
+      clientToken: D.m({ idempotency: true }),
+    },
     output: {
       activeVersions: D.list(o_KxDataviewActiveVersion),
       createdTimestamp: D.ts,
@@ -3028,7 +3235,12 @@ export const updateKxEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /kx/environments/{environmentId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      environmentId: 0,
+      name: 0,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { creationTimestamp: D.ts, updateTimestamp: D.ts },
     body: true,
   },
@@ -3067,7 +3279,26 @@ export const updateKxEnvironmentNetwork: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /kx/environments/{environmentId}/network",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      environmentId: 0,
+      transitGatewayConfiguration: {
+        transitGatewayID: 0,
+        routableCIDRSpace: 0,
+        attachmentNetworkAclConfiguration: D.list({
+          ruleNumber: 0,
+          protocol: 0,
+          ruleAction: 0,
+          portRange: { from: 0, to: 0 },
+          icmpTypeCode: { type: 0, code: 0 },
+          cidrBlock: 0,
+        }),
+      },
+      customDNSConfiguration: D.list({
+        customDNSServerName: 0,
+        customDNSServerIP: 0,
+      }),
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { creationTimestamp: D.ts, updateTimestamp: D.ts },
     body: true,
   },
@@ -3105,7 +3336,12 @@ export const updateKxUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /kx/environments/{environmentId}/users/{userName}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      environmentId: 0,
+      userName: 0,
+      iamRole: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -3144,7 +3380,13 @@ export const updateKxVolume: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /kx/environments/{environmentId}/kxvolumes/{volumeName}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      environmentId: 0,
+      volumeName: 0,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+      nas1Configuration: i_KxNAS1Configuration,
+    },
     output: { createdTimestamp: D.ts, lastModifiedTimestamp: D.ts },
     body: true,
   },
@@ -3162,6 +3404,38 @@ export const updateKxVolume: API.OperationMethod<
   operationName: "UpdateKxVolume",
 })) as any;
 
+const i_CodeConfiguration: D.LazyStruct = () => ({
+  s3Bucket: 0,
+  s3Key: 0,
+  s3ObjectVersion: 0,
+});
+const i_FederationParameters: D.LazyStruct = () => ({
+  samlMetadataDocument: 0,
+  samlMetadataURL: 0,
+  applicationCallBackURL: 0,
+  federationURN: 0,
+  federationProviderName: 0,
+  attributeMap: 0,
+});
+const i_KxCommandLineArgument: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_KxDatabaseConfiguration: D.LazyStruct = () => ({
+  databaseName: 0,
+  cacheConfigurations: D.list({ cacheType: 0, dbPaths: 0, dataviewName: 0 }),
+  changesetId: 0,
+  dataviewName: 0,
+  dataviewConfiguration: {
+    dataviewName: 0,
+    dataviewVersionId: 0,
+    changesetId: 0,
+    segmentConfigurations: D.list(i_KxDataviewSegmentConfiguration),
+  },
+});
+const i_KxDataviewSegmentConfiguration: D.LazyStruct = () => ({
+  dbPaths: 0,
+  volumeName: 0,
+  onDemand: 0,
+});
+const i_KxNAS1Configuration: D.LazyStruct = () => ({ type: 0, size: 0 });
 const o_KxDataviewActiveVersion: D.LazyStruct = () => ({
   createdTimestamp: D.ts,
 });

@@ -1148,6 +1148,7 @@ export const batchDeleteRecipeVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /recipes/{Name}/batchDeleteRecipeVersion",
+    input: { Name: 0, RecipeVersions: 0 },
     body: true,
   },
   errors: [
@@ -1177,7 +1178,19 @@ export const createDataset: API.OperationMethod<
   CreateDatasetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /datasets", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /datasets",
+    input: {
+      Name: 0,
+      Format: 0,
+      FormatOptions: i_FormatOptions,
+      Input: i_Input,
+      PathOptions: i_PathOptions,
+      Tags: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1208,7 +1221,27 @@ export const createProfileJob: API.OperationMethod<
   CreateProfileJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /profileJobs", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /profileJobs",
+    input: {
+      DatasetName: 0,
+      EncryptionKeyArn: 0,
+      EncryptionMode: 0,
+      Name: 0,
+      LogSubscription: 0,
+      MaxCapacity: 0,
+      MaxRetries: 0,
+      OutputLocation: i_S3Location,
+      Configuration: i_ProfileConfiguration,
+      ValidationConfigurations: D.list(i_ValidationConfiguration),
+      RoleArn: 0,
+      Tags: 0,
+      Timeout: 0,
+      JobSample: i_JobSample,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1240,7 +1273,19 @@ export const createProject: API.OperationMethod<
   CreateProjectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /projects", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /projects",
+    input: {
+      DatasetName: 0,
+      Name: 0,
+      RecipeName: 0,
+      Sample: i_Sample,
+      RoleArn: 0,
+      Tags: 0,
+    },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1269,7 +1314,12 @@ export const createRecipe: API.OperationMethod<
   CreateRecipeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /recipes", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /recipes",
+    input: { Description: 0, Name: 0, Steps: D.list(i_RecipeStep), Tags: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     ServiceQuotaExceededException,
@@ -1299,7 +1349,28 @@ export const createRecipeJob: API.OperationMethod<
   CreateRecipeJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /recipeJobs", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /recipeJobs",
+    input: {
+      DatasetName: 0,
+      EncryptionKeyArn: 0,
+      EncryptionMode: 0,
+      Name: 0,
+      LogSubscription: 0,
+      MaxCapacity: 0,
+      MaxRetries: 0,
+      Outputs: D.list(i_Output),
+      DataCatalogOutputs: D.list(i_DataCatalogOutput),
+      DatabaseOutputs: D.list(i_DatabaseOutput),
+      ProjectName: 0,
+      RecipeReference: { Name: 0, RecipeVersion: 0 },
+      RoleArn: 0,
+      Tags: 0,
+      Timeout: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1330,7 +1401,18 @@ export const createRuleset: API.OperationMethod<
   CreateRulesetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /rulesets", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /rulesets",
+    input: {
+      Name: 0,
+      Description: 0,
+      TargetArn: 0,
+      Rules: D.list(i_Rule),
+      Tags: 0,
+    },
+    body: true,
+  },
   errors: [
     ConflictException,
     ServiceQuotaExceededException,
@@ -1358,7 +1440,12 @@ export const createSchedule: API.OperationMethod<
   CreateScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /schedules", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /schedules",
+    input: { JobNames: 0, CronExpression: 0, Tags: 0, Name: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     ServiceQuotaExceededException,
@@ -1385,7 +1472,11 @@ export const deleteDataset: API.OperationMethod<
   DeleteDatasetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /datasets/{Name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /datasets/{Name}",
+    input: { Name: 0 },
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -1412,7 +1503,7 @@ export const deleteJob: API.OperationMethod<
   DeleteJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /jobs/{Name}" },
+  descriptor: { service: svc, http: "DELETE /jobs/{Name}", input: { Name: 0 } },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -1439,7 +1530,11 @@ export const deleteProject: API.OperationMethod<
   DeleteProjectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /projects/{Name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /projects/{Name}",
+    input: { Name: 0 },
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -1469,6 +1564,7 @@ export const deleteRecipeVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /recipes/{Name}/recipeVersion/{RecipeVersion}",
+    input: { Name: 0, RecipeVersion: 0 },
   },
   errors: [
     ConflictException,
@@ -1496,7 +1592,11 @@ export const deleteRuleset: API.OperationMethod<
   DeleteRulesetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /rulesets/{Name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /rulesets/{Name}",
+    input: { Name: 0 },
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -1522,7 +1622,11 @@ export const deleteSchedule: API.OperationMethod<
   DeleteScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /schedules/{Name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /schedules/{Name}",
+    input: { Name: 0 },
+  },
   errors: [
     ResourceNotFoundException,
     ValidationException,
@@ -1550,6 +1654,7 @@ export const describeDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /datasets/{Name}",
+    input: { Name: 0 },
     output: { CreateDate: D.ts, LastModifiedDate: D.ts },
   },
   errors: [
@@ -1579,6 +1684,7 @@ export const describeJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /jobs/{Name}",
+    input: { Name: 0 },
     output: { CreateDate: D.ts, LastModifiedDate: D.ts },
   },
   errors: [
@@ -1608,6 +1714,7 @@ export const describeJobRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /jobs/{Name}/jobRun/{RunId}",
+    input: { Name: 0, RunId: 0 },
     output: { CompletedOn: D.ts, StartedOn: D.ts },
   },
   errors: [
@@ -1637,6 +1744,7 @@ export const describeProject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /projects/{Name}",
+    input: { Name: 0 },
     output: { CreateDate: D.ts, LastModifiedDate: D.ts, OpenDate: D.ts },
   },
   errors: [
@@ -1667,7 +1775,7 @@ export const describeRecipe: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /recipes/{Name}",
-    input: { RecipeVersion: D.m({ query: "recipeVersion" }) },
+    input: { Name: 0, RecipeVersion: D.m({ query: "recipeVersion" }) },
     output: { CreateDate: D.ts, LastModifiedDate: D.ts, PublishedDate: D.ts },
   },
   errors: [
@@ -1697,6 +1805,7 @@ export const describeRuleset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /rulesets/{Name}",
+    input: { Name: 0 },
     output: { CreateDate: D.ts, LastModifiedDate: D.ts },
   },
   errors: [
@@ -1726,6 +1835,7 @@ export const describeSchedule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /schedules/{Name}",
+    input: { Name: 0 },
     output: { CreateDate: D.ts, LastModifiedDate: D.ts },
   },
   errors: [
@@ -1792,6 +1902,7 @@ export const listJobRuns: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /jobs/{Name}/jobRuns",
     input: {
+      Name: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -2062,7 +2173,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -2092,6 +2207,7 @@ export const publishRecipe: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /recipes/{Name}/publishRecipe",
+    input: { Description: 0, Name: 0 },
     body: true,
   },
   errors: [
@@ -2123,6 +2239,21 @@ export const sendProjectSessionAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /projects/{Name}/sendProjectSessionAction",
+    input: {
+      Preview: 0,
+      Name: 0,
+      RecipeStep: i_RecipeStep,
+      StepIndex: 0,
+      ClientSessionId: 0,
+      ViewFrame: {
+        StartColumnIndex: 0,
+        ColumnRange: 0,
+        HiddenColumns: 0,
+        StartRowIndex: 0,
+        RowRange: 0,
+        Analytics: 0,
+      },
+    },
     body: true,
   },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
@@ -2147,7 +2278,11 @@ export const startJobRun: API.OperationMethod<
   StartJobRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /jobs/{Name}/startJobRun" },
+  descriptor: {
+    service: svc,
+    http: "POST /jobs/{Name}/startJobRun",
+    input: { Name: 0 },
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -2179,6 +2314,7 @@ export const startProjectSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /projects/{Name}/startProjectSession",
+    input: { Name: 0, AssumeControl: 0 },
     output: { ClientSessionId: D.secret },
     body: true,
   },
@@ -2210,6 +2346,7 @@ export const stopJobRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /jobs/{Name}/jobRun/{RunId}/stopJobRun",
+    input: { Name: 0, RunId: 0 },
   },
   errors: [
     ResourceNotFoundException,
@@ -2237,7 +2374,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -2267,7 +2409,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -2295,7 +2437,18 @@ export const updateDataset: API.OperationMethod<
   UpdateDatasetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /datasets/{Name}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /datasets/{Name}",
+    input: {
+      Name: 0,
+      Format: 0,
+      FormatOptions: i_FormatOptions,
+      Input: i_Input,
+      PathOptions: i_PathOptions,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -2323,7 +2476,25 @@ export const updateProfileJob: API.OperationMethod<
   UpdateProfileJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /profileJobs/{Name}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /profileJobs/{Name}",
+    input: {
+      Configuration: i_ProfileConfiguration,
+      EncryptionKeyArn: 0,
+      EncryptionMode: 0,
+      Name: 0,
+      LogSubscription: 0,
+      MaxCapacity: 0,
+      MaxRetries: 0,
+      OutputLocation: i_S3Location,
+      ValidationConfigurations: D.list(i_ValidationConfiguration),
+      RoleArn: 0,
+      Timeout: 0,
+      JobSample: i_JobSample,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -2354,6 +2525,7 @@ export const updateProject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /projects/{Name}",
+    input: { Sample: i_Sample, RoleArn: 0, Name: 0 },
     output: { LastModifiedDate: D.ts },
     body: true,
   },
@@ -2383,7 +2555,12 @@ export const updateRecipe: API.OperationMethod<
   UpdateRecipeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /recipes/{Name}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /recipes/{Name}",
+    input: { Description: 0, Name: 0, Steps: D.list(i_RecipeStep) },
+    body: true,
+  },
   errors: [
     ResourceNotFoundException,
     ValidationException,
@@ -2410,7 +2587,24 @@ export const updateRecipeJob: API.OperationMethod<
   UpdateRecipeJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /recipeJobs/{Name}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /recipeJobs/{Name}",
+    input: {
+      EncryptionKeyArn: 0,
+      EncryptionMode: 0,
+      Name: 0,
+      LogSubscription: 0,
+      MaxCapacity: 0,
+      MaxRetries: 0,
+      Outputs: D.list(i_Output),
+      DataCatalogOutputs: D.list(i_DataCatalogOutput),
+      DatabaseOutputs: D.list(i_DatabaseOutput),
+      RoleArn: 0,
+      Timeout: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -2437,7 +2631,12 @@ export const updateRuleset: API.OperationMethod<
   UpdateRulesetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /rulesets/{Name}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /rulesets/{Name}",
+    input: { Name: 0, Description: 0, Rules: D.list(i_Rule) },
+    body: true,
+  },
   errors: [
     ResourceNotFoundException,
     ValidationException,
@@ -2463,7 +2662,12 @@ export const updateSchedule: API.OperationMethod<
   UpdateScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /schedules/{Name}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /schedules/{Name}",
+    input: { JobNames: 0, CronExpression: 0, Name: 0 },
+    body: true,
+  },
   errors: [
     ResourceNotFoundException,
     ServiceQuotaExceededException,
@@ -2475,8 +2679,110 @@ export const updateSchedule: API.OperationMethod<
   operationName: "UpdateSchedule",
 })) as any;
 
+const i_DataCatalogOutput: D.LazyStruct = () => ({
+  CatalogId: 0,
+  DatabaseName: 0,
+  TableName: 0,
+  S3Options: { Location: i_S3Location },
+  DatabaseOptions: i_DatabaseTableOutputOptions,
+  Overwrite: 0,
+});
+const i_DatabaseOutput: D.LazyStruct = () => ({
+  GlueConnectionName: 0,
+  DatabaseOptions: i_DatabaseTableOutputOptions,
+  DatabaseOutputMode: 0,
+});
+const i_FormatOptions: D.LazyStruct = () => ({
+  Json: { MultiLine: 0 },
+  Excel: { SheetNames: 0, SheetIndexes: 0, HeaderRow: 0 },
+  Csv: { Delimiter: 0, HeaderRow: 0 },
+});
+const i_Input: D.LazyStruct = () => ({
+  S3InputDefinition: i_S3Location,
+  DataCatalogInputDefinition: {
+    CatalogId: 0,
+    DatabaseName: 0,
+    TableName: 0,
+    TempDirectory: i_S3Location,
+  },
+  DatabaseInputDefinition: {
+    GlueConnectionName: 0,
+    DatabaseTableName: 0,
+    TempDirectory: i_S3Location,
+    QueryString: 0,
+  },
+  Metadata: { SourceArn: 0 },
+});
+const i_JobSample: D.LazyStruct = () => ({ Mode: 0, Size: 0 });
+const i_Output: D.LazyStruct = () => ({
+  CompressionFormat: 0,
+  Format: 0,
+  PartitionColumns: 0,
+  Location: i_S3Location,
+  Overwrite: 0,
+  FormatOptions: { Csv: { Delimiter: 0 } },
+  MaxOutputFiles: 0,
+});
+const i_PathOptions: D.LazyStruct = () => ({
+  LastModifiedDateCondition: i_FilterExpression,
+  FilesLimit: { MaxFiles: 0, OrderedBy: 0, Order: 0 },
+  Parameters: D.map({
+    Name: 0,
+    Type: 0,
+    DatetimeOptions: { Format: 0, TimezoneOffset: 0, LocaleCode: 0 },
+    CreateColumn: 0,
+    Filter: i_FilterExpression,
+  }),
+});
+const i_ProfileConfiguration: D.LazyStruct = () => ({
+  DatasetStatisticsConfiguration: i_StatisticsConfiguration,
+  ProfileColumns: D.list(i_ColumnSelector),
+  ColumnStatisticsConfigurations: D.list({
+    Selectors: D.list(i_ColumnSelector),
+    Statistics: i_StatisticsConfiguration,
+  }),
+  EntityDetectorConfiguration: {
+    EntityTypes: 0,
+    AllowedStatistics: D.list({ Statistics: 0 }),
+  },
+});
+const i_RecipeStep: D.LazyStruct = () => ({
+  Action: { Operation: 0, Parameters: 0 },
+  ConditionExpressions: D.list({ Condition: 0, Value: 0, TargetColumn: 0 }),
+});
+const i_Rule: D.LazyStruct = () => ({
+  Name: 0,
+  Disabled: 0,
+  CheckExpression: 0,
+  SubstitutionMap: 0,
+  Threshold: { Value: 0, Type: 0, Unit: 0 },
+  ColumnSelectors: D.list(i_ColumnSelector),
+});
+const i_S3Location: D.LazyStruct = () => ({
+  Bucket: 0,
+  Key: 0,
+  BucketOwner: 0,
+});
+const i_Sample: D.LazyStruct = () => ({ Size: 0, Type: 0 });
+const i_ValidationConfiguration: D.LazyStruct = () => ({
+  RulesetArn: 0,
+  ValidationMode: 0,
+});
 const o_Recipe: D.LazyStruct = () => ({
   CreateDate: D.ts,
   LastModifiedDate: D.ts,
   PublishedDate: D.ts,
+});
+const i_ColumnSelector: D.LazyStruct = () => ({ Regex: 0, Name: 0 });
+const i_DatabaseTableOutputOptions: D.LazyStruct = () => ({
+  TempDirectory: i_S3Location,
+  TableName: 0,
+});
+const i_FilterExpression: D.LazyStruct = () => ({
+  Expression: 0,
+  ValuesMap: 0,
+});
+const i_StatisticsConfiguration: D.LazyStruct = () => ({
+  IncludedStatistics: 0,
+  Overrides: D.list({ Statistic: 0, Parameters: 0 }),
 });

@@ -575,7 +575,10 @@ export const associateVolume: API.OperationMethod<
   AssociateVolumeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { WorkspaceInstanceId: 0, VolumeId: 0, Device: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -608,7 +611,18 @@ export const createVolume: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      AvailabilityZone: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Encrypted: 0,
+      Iops: 0,
+      KmsKeyId: 0,
+      SizeInGB: 0,
+      SnapshotId: 0,
+      TagSpecifications: D.list(i_TagSpecification),
+      Throughput: 0,
+      VolumeType: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -642,7 +656,120 @@ export const createWorkspaceInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+      ManagedInstance: {
+        BlockDeviceMappings: D.list({
+          DeviceName: 0,
+          Ebs: {
+            VolumeType: 0,
+            Encrypted: 0,
+            KmsKeyId: 0,
+            Iops: 0,
+            Throughput: 0,
+            VolumeSize: 0,
+          },
+          NoDevice: 0,
+          VirtualName: 0,
+        }),
+        CapacityReservationSpecification: {
+          CapacityReservationPreference: 0,
+          CapacityReservationTarget: {
+            CapacityReservationId: 0,
+            CapacityReservationResourceGroupArn: 0,
+          },
+        },
+        CpuOptions: { AmdSevSnp: 0, CoreCount: 0, ThreadsPerCore: 0 },
+        CreditSpecification: { CpuCredits: 0 },
+        DisableApiStop: 0,
+        EbsOptimized: 0,
+        EnablePrimaryIpv6: 0,
+        EnclaveOptions: { Enabled: 0 },
+        HibernationOptions: { Configured: 0 },
+        IamInstanceProfile: { Arn: 0, Name: 0 },
+        ImageId: 0,
+        InstanceMarketOptions: {
+          MarketType: 0,
+          SpotOptions: {
+            BlockDurationMinutes: 0,
+            InstanceInterruptionBehavior: 0,
+            MaxPrice: 0,
+            SpotInstanceType: 0,
+            ValidUntilUtc: 0,
+          },
+        },
+        InstanceType: 0,
+        Ipv6Addresses: D.list(i_InstanceIpv6Address),
+        Ipv6AddressCount: 0,
+        KernelId: 0,
+        KeyName: 0,
+        LicenseSpecifications: D.list({ LicenseConfigurationArn: 0 }),
+        MaintenanceOptions: { AutoRecovery: 0 },
+        MetadataOptions: {
+          HttpEndpoint: 0,
+          HttpProtocolIpv6: 0,
+          HttpPutResponseHopLimit: 0,
+          HttpTokens: 0,
+          InstanceMetadataTags: 0,
+        },
+        Monitoring: { Enabled: 0 },
+        NetworkInterfaces: D.list({
+          AssociateCarrierIpAddress: 0,
+          AssociatePublicIpAddress: 0,
+          ConnectionTrackingSpecification: {
+            TcpEstablishedTimeout: 0,
+            UdpStreamTimeout: 0,
+            UdpTimeout: 0,
+          },
+          Description: 0,
+          DeviceIndex: 0,
+          EnaSrdSpecification: {
+            EnaSrdEnabled: 0,
+            EnaSrdUdpSpecification: { EnaSrdUdpEnabled: 0 },
+          },
+          InterfaceType: 0,
+          Ipv4Prefixes: D.list({ Ipv4Prefix: 0 }),
+          Ipv4PrefixCount: 0,
+          Ipv6AddressCount: 0,
+          Ipv6Addresses: D.list(i_InstanceIpv6Address),
+          Ipv6Prefixes: D.list({ Ipv6Prefix: 0 }),
+          Ipv6PrefixCount: 0,
+          NetworkCardIndex: 0,
+          NetworkInterfaceId: 0,
+          PrimaryIpv6: 0,
+          PrivateIpAddress: 0,
+          PrivateIpAddresses: D.list({ Primary: 0, PrivateIpAddress: 0 }),
+          SecondaryPrivateIpAddressCount: 0,
+          Groups: 0,
+          SubnetId: 0,
+        }),
+        NetworkPerformanceOptions: { BandwidthWeighting: 0 },
+        Placement: {
+          Affinity: 0,
+          AvailabilityZone: 0,
+          GroupId: 0,
+          GroupName: 0,
+          HostId: 0,
+          HostResourceGroupArn: 0,
+          PartitionNumber: 0,
+          Tenancy: 0,
+        },
+        PrivateDnsNameOptions: {
+          HostnameType: 0,
+          EnableResourceNameDnsARecord: 0,
+          EnableResourceNameDnsAAAARecord: 0,
+        },
+        PrivateIpAddress: 0,
+        RamdiskId: 0,
+        SecurityGroupIds: 0,
+        SecurityGroups: 0,
+        SubnetId: 0,
+        TagSpecifications: D.list(i_TagSpecification),
+        UserData: 0,
+      },
+      BillingConfiguration: { BillingMode: 0 },
+    },
   },
   errors: [
     AccessDeniedException,
@@ -674,7 +801,7 @@ export const deleteVolume: API.OperationMethod<
   DeleteVolumeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { VolumeId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -707,7 +834,7 @@ export const deleteWorkspaceInstance: API.OperationMethod<
   DeleteWorkspaceInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WorkspaceInstanceId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -738,7 +865,15 @@ export const disassociateVolume: API.OperationMethod<
   DisassociateVolumeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      WorkspaceInstanceId: 0,
+      VolumeId: 0,
+      Device: 0,
+      DisassociateMode: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -768,7 +903,7 @@ export const getWorkspaceInstance: API.OperationMethod<
   GetWorkspaceInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WorkspaceInstanceId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -797,7 +932,19 @@ export const listInstanceTypes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   InstanceTypeInfo
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { NextToken: D.secret } },
+  descriptor: {
+    service: svc,
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      InstanceConfigurationFilter: {
+        BillingMode: 0,
+        PlatformType: 0,
+        Tenancy: 0,
+      },
+    },
+    output: { NextToken: D.secret },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -831,7 +978,11 @@ export const listRegions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Region
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { NextToken: D.secret } },
+  descriptor: {
+    service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
+    output: { NextToken: D.secret },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -865,7 +1016,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WorkspaceInstanceId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -894,7 +1045,11 @@ export const listWorkspaceInstances: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   WorkspaceInstance
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { NextToken: D.secret } },
+  descriptor: {
+    service: svc,
+    input: { ProvisionStates: 0, MaxResults: 0, NextToken: 0 },
+    output: { NextToken: D.secret },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -928,7 +1083,10 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { WorkspaceInstanceId: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -957,7 +1115,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WorkspaceInstanceId: 0, TagKeys: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -969,3 +1127,13 @@ export const untagResource: API.OperationMethod<
   retry: Retry,
   operationName: "UntagResource",
 })) as any;
+
+const i_InstanceIpv6Address: D.LazyStruct = () => ({
+  Ipv6Address: 0,
+  IsPrimaryIpv6: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_TagSpecification: D.LazyStruct = () => ({
+  ResourceType: 0,
+  Tags: D.list(i_Tag),
+});

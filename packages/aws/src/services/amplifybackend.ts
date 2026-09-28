@@ -803,7 +803,11 @@ export const cloneBackend: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backend/{AppId}/environments/{BackendEnvironmentName}/clone",
-    input: { TargetEnvironmentName: D.m({ wire: "targetEnvironmentName" }) },
+    input: {
+      AppId: 0,
+      BackendEnvironmentName: 0,
+      TargetEnvironmentName: D.m({ wire: "targetEnvironmentName" }),
+    },
     output: {
       AppId: D.m({ wire: "appId" }),
       BackendEnvironmentName: D.m({ wire: "backendEnvironmentName" }),
@@ -847,7 +851,7 @@ export const createBackend: API.OperationMethod<
       AppId: D.m({ wire: "appId" }),
       AppName: D.m({ wire: "appName" }),
       BackendEnvironmentName: D.m({ wire: "backendEnvironmentName" }),
-      ResourceConfig: D.m({ wire: "resourceConfig" }),
+      ResourceConfig: D.m({ wire: "resourceConfig", shape: {} }),
       ResourceName: D.m({ wire: "resourceName" }),
     },
     output: {
@@ -890,6 +894,7 @@ export const createBackendAPI: API.OperationMethod<
     service: svc,
     http: "POST /backend/{AppId}/api",
     input: {
+      AppId: 0,
       BackendEnvironmentName: D.m({ wire: "backendEnvironmentName" }),
       ResourceConfig: D.m({
         wire: "resourceConfig",
@@ -937,6 +942,7 @@ export const createBackendAuth: API.OperationMethod<
     service: svc,
     http: "POST /backend/{AppId}/auth",
     input: {
+      AppId: 0,
       BackendEnvironmentName: D.m({ wire: "backendEnvironmentName" }),
       ResourceConfig: D.m({
         wire: "resourceConfig",
@@ -970,6 +976,7 @@ export const createBackendAuth: API.OperationMethod<
               Mfa: D.m({
                 wire: "mfa",
                 shape: {
+                  MFAMode: 0,
                   Settings: D.m({ wire: "settings", shape: i_Settings }),
                 },
               }),
@@ -1058,7 +1065,10 @@ export const createBackendConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backend/{AppId}/config",
-    input: { BackendManagerAppId: D.m({ wire: "backendManagerAppId" }) },
+    input: {
+      AppId: 0,
+      BackendManagerAppId: D.m({ wire: "backendManagerAppId" }),
+    },
     output: {
       AppId: D.m({ wire: "appId" }),
       BackendEnvironmentName: D.m({ wire: "backendEnvironmentName" }),
@@ -1097,6 +1107,7 @@ export const createBackendStorage: API.OperationMethod<
     service: svc,
     http: "POST /backend/{AppId}/storage",
     input: {
+      AppId: 0,
       BackendEnvironmentName: D.m({ wire: "backendEnvironmentName" }),
       ResourceConfig: D.m({
         wire: "resourceConfig",
@@ -1148,6 +1159,7 @@ export const createToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backend/{AppId}/challenge",
+    input: { AppId: 0 },
     output: {
       AppId: D.m({ wire: "appId" }),
       ChallengeCode: D.m({ wire: "challengeCode" }),
@@ -1184,6 +1196,7 @@ export const deleteBackend: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backend/{AppId}/environments/{BackendEnvironmentName}/remove",
+    input: { AppId: 0, BackendEnvironmentName: 0 },
     output: {
       AppId: D.m({ wire: "appId" }),
       BackendEnvironmentName: D.m({ wire: "backendEnvironmentName" }),
@@ -1223,6 +1236,8 @@ export const deleteBackendAPI: API.OperationMethod<
     service: svc,
     http: "POST /backend/{AppId}/api/{BackendEnvironmentName}/remove",
     input: {
+      AppId: 0,
+      BackendEnvironmentName: 0,
       ResourceConfig: D.m({
         wire: "resourceConfig",
         shape: i_BackendAPIResourceConfig,
@@ -1268,7 +1283,11 @@ export const deleteBackendAuth: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backend/{AppId}/auth/{BackendEnvironmentName}/remove",
-    input: { ResourceName: D.m({ wire: "resourceName" }) },
+    input: {
+      AppId: 0,
+      BackendEnvironmentName: 0,
+      ResourceName: D.m({ wire: "resourceName" }),
+    },
     output: {
       AppId: D.m({ wire: "appId" }),
       BackendEnvironmentName: D.m({ wire: "backendEnvironmentName" }),
@@ -1309,6 +1328,8 @@ export const deleteBackendStorage: API.OperationMethod<
     service: svc,
     http: "POST /backend/{AppId}/storage/{BackendEnvironmentName}/remove",
     input: {
+      AppId: 0,
+      BackendEnvironmentName: 0,
       ResourceName: D.m({ wire: "resourceName" }),
       ServiceName: D.m({ wire: "serviceName" }),
     },
@@ -1349,6 +1370,7 @@ export const deleteToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backend/{AppId}/challenge/{SessionId}/remove",
+    input: { AppId: 0, SessionId: 0 },
     output: { IsSuccess: D.m({ wire: "isSuccess" }) },
   },
   errors: [
@@ -1380,7 +1402,11 @@ export const generateBackendAPIModels: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backend/{AppId}/api/{BackendEnvironmentName}/generateModels",
-    input: { ResourceName: D.m({ wire: "resourceName" }) },
+    input: {
+      AppId: 0,
+      BackendEnvironmentName: 0,
+      ResourceName: D.m({ wire: "resourceName" }),
+    },
     output: {
       AppId: D.m({ wire: "appId" }),
       BackendEnvironmentName: D.m({ wire: "backendEnvironmentName" }),
@@ -1420,7 +1446,10 @@ export const getBackend: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backend/{AppId}/details",
-    input: { BackendEnvironmentName: D.m({ wire: "backendEnvironmentName" }) },
+    input: {
+      AppId: 0,
+      BackendEnvironmentName: D.m({ wire: "backendEnvironmentName" }),
+    },
     output: {
       AmplifyFeatureFlags: D.m({ wire: "amplifyFeatureFlags" }),
       AmplifyMetaConfig: D.m({ wire: "amplifyMetaConfig" }),
@@ -1462,6 +1491,8 @@ export const getBackendAPI: API.OperationMethod<
     service: svc,
     http: "POST /backend/{AppId}/api/{BackendEnvironmentName}/details",
     input: {
+      AppId: 0,
+      BackendEnvironmentName: 0,
       ResourceConfig: D.m({
         wire: "resourceConfig",
         shape: i_BackendAPIResourceConfig,
@@ -1525,7 +1556,11 @@ export const getBackendAPIModels: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backend/{AppId}/api/{BackendEnvironmentName}/getModels",
-    input: { ResourceName: D.m({ wire: "resourceName" }) },
+    input: {
+      AppId: 0,
+      BackendEnvironmentName: 0,
+      ResourceName: D.m({ wire: "resourceName" }),
+    },
     output: {
       Models: D.m({ wire: "models" }),
       Status: D.m({ wire: "status" }),
@@ -1562,7 +1597,11 @@ export const getBackendAuth: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backend/{AppId}/auth/{BackendEnvironmentName}/details",
-    input: { ResourceName: D.m({ wire: "resourceName" }) },
+    input: {
+      AppId: 0,
+      BackendEnvironmentName: 0,
+      ResourceName: D.m({ wire: "resourceName" }),
+    },
     output: {
       AppId: D.m({ wire: "appId" }),
       BackendEnvironmentName: D.m({ wire: "backendEnvironmentName" }),
@@ -1695,6 +1734,7 @@ export const getBackendJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /backend/{AppId}/job/{BackendEnvironmentName}/{JobId}",
+    input: { AppId: 0, BackendEnvironmentName: 0, JobId: 0 },
     output: {
       AppId: D.m({ wire: "appId" }),
       BackendEnvironmentName: D.m({ wire: "backendEnvironmentName" }),
@@ -1735,7 +1775,11 @@ export const getBackendStorage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backend/{AppId}/storage/{BackendEnvironmentName}/details",
-    input: { ResourceName: D.m({ wire: "resourceName" }) },
+    input: {
+      AppId: 0,
+      BackendEnvironmentName: 0,
+      ResourceName: D.m({ wire: "resourceName" }),
+    },
     output: {
       AppId: D.m({ wire: "appId" }),
       BackendEnvironmentName: D.m({ wire: "backendEnvironmentName" }),
@@ -1787,6 +1831,7 @@ export const getToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /backend/{AppId}/challenge/{SessionId}",
+    input: { AppId: 0, SessionId: 0 },
     output: {
       AppId: D.m({ wire: "appId" }),
       ChallengeCode: D.m({ wire: "challengeCode" }),
@@ -1824,6 +1869,8 @@ export const importBackendAuth: API.OperationMethod<
     service: svc,
     http: "POST /backend/{AppId}/auth/{BackendEnvironmentName}/import",
     input: {
+      AppId: 0,
+      BackendEnvironmentName: 0,
       IdentityPoolId: D.m({ wire: "identityPoolId" }),
       NativeClientId: D.m({ wire: "nativeClientId" }),
       UserPoolId: D.m({ wire: "userPoolId" }),
@@ -1869,6 +1916,8 @@ export const importBackendStorage: API.OperationMethod<
     service: svc,
     http: "POST /backend/{AppId}/storage/{BackendEnvironmentName}/import",
     input: {
+      AppId: 0,
+      BackendEnvironmentName: 0,
       BucketName: D.m({ wire: "bucketName" }),
       ServiceName: D.m({ wire: "serviceName" }),
     },
@@ -1910,6 +1959,8 @@ export const listBackendJobs: API.OperationMethod<
     service: svc,
     http: "POST /backend/{AppId}/job/{BackendEnvironmentName}",
     input: {
+      AppId: 0,
+      BackendEnvironmentName: 0,
       JobId: D.m({ wire: "jobId" }),
       MaxResults: D.m({ wire: "maxResults" }),
       NextToken: D.m({ wire: "nextToken" }),
@@ -2005,7 +2056,7 @@ export const removeAllBackends: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backend/{AppId}/remove",
-    input: { CleanAmplifyApp: D.m({ wire: "cleanAmplifyApp" }) },
+    input: { AppId: 0, CleanAmplifyApp: D.m({ wire: "cleanAmplifyApp" }) },
     output: {
       AppId: D.m({ wire: "appId" }),
       Error: D.m({ wire: "error" }),
@@ -2044,6 +2095,7 @@ export const removeBackendConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backend/{AppId}/config/remove",
+    input: { AppId: 0 },
     output: { Error: D.m({ wire: "error" }) },
   },
   errors: [
@@ -2076,6 +2128,8 @@ export const updateBackendAPI: API.OperationMethod<
     service: svc,
     http: "POST /backend/{AppId}/api/{BackendEnvironmentName}",
     input: {
+      AppId: 0,
+      BackendEnvironmentName: 0,
       ResourceConfig: D.m({
         wire: "resourceConfig",
         shape: i_BackendAPIResourceConfig,
@@ -2122,6 +2176,8 @@ export const updateBackendAuth: API.OperationMethod<
     service: svc,
     http: "POST /backend/{AppId}/auth/{BackendEnvironmentName}",
     input: {
+      AppId: 0,
+      BackendEnvironmentName: 0,
       ResourceConfig: D.m({
         wire: "resourceConfig",
         shape: {
@@ -2153,6 +2209,7 @@ export const updateBackendAuth: API.OperationMethod<
               Mfa: D.m({
                 wire: "mfa",
                 shape: {
+                  MFAMode: 0,
                   Settings: D.m({ wire: "settings", shape: i_Settings }),
                 },
               }),
@@ -2237,6 +2294,7 @@ export const updateBackendConfig: API.OperationMethod<
     service: svc,
     http: "POST /backend/{AppId}/config/update",
     input: {
+      AppId: 0,
       LoginAuthConfig: D.m({
         wire: "loginAuthConfig",
         shape: {
@@ -2301,6 +2359,9 @@ export const updateBackendJob: API.OperationMethod<
     service: svc,
     http: "POST /backend/{AppId}/job/{BackendEnvironmentName}/{JobId}",
     input: {
+      AppId: 0,
+      BackendEnvironmentName: 0,
+      JobId: 0,
       Operation: D.m({ wire: "operation" }),
       Status: D.m({ wire: "status" }),
     },
@@ -2346,6 +2407,8 @@ export const updateBackendStorage: API.OperationMethod<
     service: svc,
     http: "POST /backend/{AppId}/storage/{BackendEnvironmentName}",
     input: {
+      AppId: 0,
+      BackendEnvironmentName: 0,
       ResourceConfig: D.m({
         wire: "resourceConfig",
         shape: {

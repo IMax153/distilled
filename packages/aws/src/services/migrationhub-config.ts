@@ -177,6 +177,7 @@ export const createHomeRegionControl: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { HomeRegion: 0, Target: i_Target, DryRun: 0 },
     output: { HomeRegionControl: o_HomeRegionControl },
   },
   errors: [
@@ -208,7 +209,7 @@ export const deleteHomeRegionControl: API.OperationMethod<
   DeleteHomeRegionControlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ControlId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -241,6 +242,13 @@ export const describeHomeRegionControls: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ControlId: 0,
+      HomeRegion: 0,
+      Target: i_Target,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { HomeRegionControls: D.list(o_HomeRegionControl) },
   },
   errors: [
@@ -280,7 +288,7 @@ export const getHomeRegion: API.OperationMethod<
   GetHomeRegionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -293,4 +301,5 @@ export const getHomeRegion: API.OperationMethod<
   operationName: "GetHomeRegion",
 })) as any;
 
+const i_Target: D.LazyStruct = () => ({ Type: 0, Id: 0 });
 const o_HomeRegionControl: D.LazyStruct = () => ({ RequestedTime: D.ts });

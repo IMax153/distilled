@@ -1,5 +1,6 @@
 import type * as HttpClient from "effect/unstable/http/HttpClient";
 import * as API from "@distilled.cloud/core/api";
+import * as D from "@distilled.cloud/core/shape";
 import * as TE from "@distilled.cloud/core/error-class";
 import { AwsProtocol } from "../protocol.ts";
 import { awsJson1_1Protocol } from "../protocols/aws-json.ts";
@@ -392,7 +393,14 @@ export const activatePipeline: API.OperationMethod<
   ActivatePipelineError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      pipelineId: 0,
+      parameterValues: D.list(i_ParameterValue),
+      startTimestamp: 0,
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -419,7 +427,7 @@ export const addTags: API.OperationMethod<
   AddTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { pipelineId: 0, tags: D.list(i_Tag) } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -464,7 +472,10 @@ export const createPipeline: API.OperationMethod<
   CreatePipelineError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { name: 0, uniqueId: 0, description: 0, tags: D.list(i_Tag) },
+  },
   errors: [InternalServiceError, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -490,7 +501,7 @@ export const deactivatePipeline: API.OperationMethod<
   DeactivatePipelineError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { pipelineId: 0, cancelActive: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -538,7 +549,7 @@ export const deletePipeline: API.OperationMethod<
   DeletePipelineError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { pipelineId: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -613,7 +624,10 @@ export const describeObjects: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   PipelineObject
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { pipelineId: 0, objectIds: 0, evaluateExpressions: 0, marker: 0 },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -698,7 +712,7 @@ export const describePipelines: API.OperationMethod<
   DescribePipelinesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { pipelineIds: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -746,7 +760,10 @@ export const evaluateExpression: API.OperationMethod<
   EvaluateExpressionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { pipelineId: 0, objectId: 0, expression: 0 },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -828,7 +845,7 @@ export const getPipelineDefinition: API.OperationMethod<
   GetPipelineDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { pipelineId: 0, version: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -879,7 +896,7 @@ export const listPipelines: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   PipelineIdName
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { marker: 0 } },
   errors: [InternalServiceError, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -973,7 +990,14 @@ export const pollForTask: API.OperationMethod<
   PollForTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      workerGroup: 0,
+      hostname: 0,
+      instanceIdentity: { document: 0, signature: 0 },
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1138,7 +1162,15 @@ export const putPipelineDefinition: API.OperationMethod<
   PutPipelineDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      pipelineId: 0,
+      pipelineObjects: D.list(i_PipelineObject),
+      parameterObjects: D.list(i_ParameterObject),
+      parameterValues: D.list(i_ParameterValue),
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1194,7 +1226,18 @@ export const queryObjects: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Id
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      pipelineId: 0,
+      query: {
+        selectors: D.list({ fieldName: 0, operator: { type: 0, values: 0 } }),
+      },
+      sphere: 0,
+      marker: 0,
+      limit: 0,
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1227,7 +1270,7 @@ export const removeTags: API.OperationMethod<
   RemoveTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { pipelineId: 0, tagKeys: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1284,7 +1327,7 @@ export const reportTaskProgress: API.OperationMethod<
   ReportTaskProgressError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { taskId: 0, fields: D.list(i_Field) } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1332,7 +1375,10 @@ export const reportTaskRunnerHeartbeat: API.OperationMethod<
   ReportTaskRunnerHeartbeatError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { taskrunnerId: 0, workerGroup: 0, hostname: 0 },
+  },
   errors: [InternalServiceError, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1376,7 +1422,10 @@ export const setStatus: API.OperationMethod<
   SetStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { pipelineId: 0, objectIds: 0, status: 0 },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1424,7 +1473,16 @@ export const setTaskStatus: API.OperationMethod<
   SetTaskStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      taskId: 0,
+      taskStatus: 0,
+      errorId: 0,
+      errorMessage: 0,
+      errorStackTrace: 0,
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1583,7 +1641,15 @@ export const validatePipelineDefinition: API.OperationMethod<
   ValidatePipelineDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      pipelineId: 0,
+      pipelineObjects: D.list(i_PipelineObject),
+      parameterObjects: D.list(i_ParameterObject),
+      parameterValues: D.list(i_ParameterValue),
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1594,3 +1660,16 @@ export const validatePipelineDefinition: API.OperationMethod<
   retry: Retry,
   operationName: "ValidatePipelineDefinition",
 })) as any;
+
+const i_Field: D.LazyStruct = () => ({ key: 0, stringValue: 0, refValue: 0 });
+const i_ParameterObject: D.LazyStruct = () => ({
+  id: 0,
+  attributes: D.list({ key: 0, stringValue: 0 }),
+});
+const i_ParameterValue: D.LazyStruct = () => ({ id: 0, stringValue: 0 });
+const i_PipelineObject: D.LazyStruct = () => ({
+  id: 0,
+  name: 0,
+  fields: D.list(i_Field),
+});
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });

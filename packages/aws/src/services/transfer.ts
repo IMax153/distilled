@@ -1530,7 +1530,19 @@ export const createAccess: API.OperationMethod<
   CreateAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      HomeDirectory: 0,
+      HomeDirectoryType: 0,
+      HomeDirectoryMappings: D.list(i_HomeDirectoryMapEntry),
+      Policy: 0,
+      PosixProfile: i_PosixProfile,
+      Role: 0,
+      ServerId: 0,
+      ExternalId: 0,
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1564,7 +1576,22 @@ export const createAgreement: API.OperationMethod<
   CreateAgreementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Description: 0,
+      ServerId: 0,
+      LocalProfileId: 0,
+      PartnerProfileId: 0,
+      BaseDirectory: 0,
+      AccessRole: 0,
+      Status: 0,
+      Tags: D.list(i_Tag),
+      PreserveFilename: 0,
+      EnforceMessageSigning: 0,
+      CustomDirectories: i_CustomDirectoriesType,
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1597,7 +1624,22 @@ export const createConnector: API.OperationMethod<
   CreateConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Url: 0,
+      As2Config: i_As2ConnectorConfig,
+      AccessRole: 0,
+      LoggingRole: 0,
+      Tags: D.list(i_Tag),
+      SftpConfig: i_SftpConnectorConfig,
+      SecurityPolicyName: 0,
+      EgressConfig: {
+        VpcLattice: { ResourceConfigurationArn: 0, PortNumber: 0 },
+      },
+      IpAddressType: 0,
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1627,7 +1669,10 @@ export const createProfile: API.OperationMethod<
   CreateProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { As2Id: 0, ProfileType: 0, CertificateIds: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1658,7 +1703,29 @@ export const createServer: API.OperationMethod<
   CreateServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Certificate: 0,
+      Domain: 0,
+      EndpointDetails: i_EndpointDetails,
+      EndpointType: 0,
+      HostKey: 0,
+      IdentityProviderDetails: i_IdentityProviderDetails,
+      IdentityProviderType: 0,
+      LoggingRole: 0,
+      PostAuthenticationLoginBanner: 0,
+      PreAuthenticationLoginBanner: 0,
+      Protocols: 0,
+      ProtocolDetails: i_ProtocolDetails,
+      SecurityPolicyName: 0,
+      Tags: D.list(i_Tag),
+      WorkflowDetails: i_WorkflowDetails,
+      StructuredLogDestinations: 0,
+      S3StorageOptions: i_S3StorageOptions,
+      IpAddressType: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceError,
@@ -1689,7 +1756,21 @@ export const createUser: API.OperationMethod<
   CreateUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      HomeDirectory: 0,
+      HomeDirectoryType: 0,
+      HomeDirectoryMappings: D.list(i_HomeDirectoryMapEntry),
+      Policy: 0,
+      PosixProfile: i_PosixProfile,
+      Role: 0,
+      ServerId: 0,
+      SshPublicKeyBody: 0,
+      Tags: D.list(i_Tag),
+      UserName: 0,
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1720,7 +1801,21 @@ export const createWebApp: API.OperationMethod<
   CreateWebAppError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IdentityProviderDetails: {
+        IdentityCenterConfig: { InstanceArn: 0, Role: 0 },
+      },
+      AccessEndpoint: 0,
+      WebAppUnits: i_WebAppUnits,
+      Tags: D.list(i_Tag),
+      WebAppEndpointPolicy: 0,
+      EndpointDetails: {
+        Vpc: { SubnetIds: 0, VpcId: 0, SecurityGroupIds: 0, IpAddressType: 0 },
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceError,
@@ -1750,7 +1845,15 @@ export const createWorkflow: API.OperationMethod<
   CreateWorkflowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Description: 0,
+      Steps: D.list(i_WorkflowStep),
+      OnExceptionSteps: D.list(i_WorkflowStep),
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceError,
@@ -1779,7 +1882,7 @@ export const deleteAccess: API.OperationMethod<
   DeleteAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServerId: 0, ExternalId: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1806,7 +1909,7 @@ export const deleteAgreement: API.OperationMethod<
   DeleteAgreementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AgreementId: 0, ServerId: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1833,7 +1936,7 @@ export const deleteCertificate: API.OperationMethod<
   DeleteCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CertificateId: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1860,7 +1963,7 @@ export const deleteConnector: API.OperationMethod<
   DeleteConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConnectorId: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1888,7 +1991,7 @@ export const deleteHostKey: API.OperationMethod<
   DeleteHostKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServerId: 0, HostKeyId: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1916,7 +2019,7 @@ export const deleteProfile: API.OperationMethod<
   DeleteProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ProfileId: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1946,7 +2049,7 @@ export const deleteServer: API.OperationMethod<
   DeleteServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServerId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceError,
@@ -1975,7 +2078,10 @@ export const deleteSshPublicKey: API.OperationMethod<
   DeleteSshPublicKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServerId: 0, SshPublicKeyId: 0, UserName: 0 },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -2007,7 +2113,7 @@ export const deleteUser: API.OperationMethod<
   DeleteUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServerId: 0, UserName: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -2035,7 +2141,7 @@ export const deleteWebApp: API.OperationMethod<
   DeleteWebAppError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WebAppId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceError,
@@ -2065,7 +2171,7 @@ export const deleteWebAppCustomization: API.OperationMethod<
   DeleteWebAppCustomizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WebAppId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2095,7 +2201,7 @@ export const deleteWorkflow: API.OperationMethod<
   DeleteWorkflowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WorkflowId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceError,
@@ -2125,7 +2231,7 @@ export const describeAccess: API.OperationMethod<
   DescribeAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServerId: 0, ExternalId: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -2152,7 +2258,7 @@ export const describeAgreement: API.OperationMethod<
   DescribeAgreementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AgreementId: 0, ServerId: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -2183,6 +2289,7 @@ export const describeCertificate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CertificateId: 0 },
     output: {
       Certificate: {
         Certificate: D.secret,
@@ -2222,6 +2329,7 @@ export const describeConnector: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ConnectorId: 0 },
     output: { Connector: { As2Config: { MessageSubject: D.secret } } },
   },
   errors: [
@@ -2254,7 +2362,7 @@ export const describeExecution: API.OperationMethod<
   DescribeExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ExecutionId: 0, WorkflowId: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -2281,7 +2389,11 @@ export const describeHostKey: API.OperationMethod<
   DescribeHostKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { HostKey: { DateImported: D.ts } } },
+  descriptor: {
+    service: svc,
+    input: { ServerId: 0, HostKeyId: 0 },
+    output: { HostKey: { DateImported: D.ts } },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -2308,7 +2420,7 @@ export const describeProfile: API.OperationMethod<
   DescribeProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ProfileId: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -2335,7 +2447,7 @@ export const describeSecurityPolicy: API.OperationMethod<
   DescribeSecurityPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SecurityPolicyName: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -2364,7 +2476,7 @@ export const describeServer: API.OperationMethod<
   DescribeServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServerId: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -2395,6 +2507,7 @@ export const describeUser: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ServerId: 0, UserName: 0 },
     output: { User: { SshPublicKeys: D.list({ DateImported: D.ts }) } },
   },
   errors: [
@@ -2426,7 +2539,7 @@ export const describeWebApp: API.OperationMethod<
   DescribeWebAppError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WebAppId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceError,
@@ -2457,6 +2570,7 @@ export const describeWebAppCustomization: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { WebAppId: 0 },
     output: {
       WebAppCustomization: {
         LogoFile: D.secretBlob,
@@ -2491,7 +2605,7 @@ export const describeWorkflow: API.OperationMethod<
   DescribeWorkflowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WorkflowId: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -2538,7 +2652,19 @@ export const importCertificate: API.OperationMethod<
   ImportCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Usage: 0,
+      Certificate: 0,
+      CertificateChain: 0,
+      PrivateKey: 0,
+      ActiveDate: 0,
+      InactiveDate: 0,
+      Description: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -2567,7 +2693,10 @@ export const importHostKey: API.OperationMethod<
   ImportHostKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServerId: 0, HostKeyBody: 0, Description: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -2600,7 +2729,10 @@ export const importSshPublicKey: API.OperationMethod<
   ImportSshPublicKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServerId: 0, SshPublicKeyBody: 0, UserName: 0 },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -2631,7 +2763,10 @@ export const listAccesses: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ListedAccess
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MaxResults: 0, NextToken: 0, ServerId: 0 },
+  },
   errors: [
     InternalServiceError,
     InvalidNextTokenException,
@@ -2667,7 +2802,10 @@ export const listAgreements: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ListedAgreement
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MaxResults: 0, NextToken: 0, ServerId: 0 },
+  },
   errors: [
     InternalServiceError,
     InvalidNextTokenException,
@@ -2705,6 +2843,7 @@ export const listCertificates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
     output: { Certificates: D.list({ ActiveDate: D.ts, InactiveDate: D.ts }) },
   },
   errors: [
@@ -2742,7 +2881,7 @@ export const listConnectors: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ListedConnector
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [
     InternalServiceError,
     InvalidNextTokenException,
@@ -2780,7 +2919,10 @@ export const listExecutions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ListedExecution
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MaxResults: 0, NextToken: 0, WorkflowId: 0 },
+  },
   errors: [
     InternalServiceError,
     InvalidNextTokenException,
@@ -2817,7 +2959,10 @@ export const listFileTransferResults: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ConnectorFileTransferResult
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ConnectorId: 0, TransferId: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -2853,6 +2998,7 @@ export const listHostKeys: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0, ServerId: 0 },
     output: { HostKeys: D.list({ DateImported: D.ts }) },
   },
   errors: [
@@ -2884,7 +3030,10 @@ export const listProfiles: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ListedProfile
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MaxResults: 0, NextToken: 0, ProfileType: 0 },
+  },
   errors: [
     InternalServiceError,
     InvalidNextTokenException,
@@ -2919,7 +3068,7 @@ export const listSecurityPolicies: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   SecurityPolicyName
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [
     InternalServiceError,
     InvalidNextTokenException,
@@ -2953,7 +3102,7 @@ export const listServers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ListedServer
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [
     InternalServiceError,
     InvalidNextTokenException,
@@ -2987,7 +3136,7 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Tag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Arn: 0, MaxResults: 0, NextToken: 0 } },
   errors: [
     InternalServiceError,
     InvalidNextTokenException,
@@ -3022,7 +3171,10 @@ export const listUsers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ListedUser
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MaxResults: 0, NextToken: 0, ServerId: 0 },
+  },
   errors: [
     InternalServiceError,
     InvalidNextTokenException,
@@ -3059,7 +3211,7 @@ export const listWebApps: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ListedWebApp
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [
     InternalServiceError,
     InvalidNextTokenException,
@@ -3093,7 +3245,7 @@ export const listWorkflows: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ListedWorkflow
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [
     InternalServiceError,
     InvalidNextTokenException,
@@ -3130,7 +3282,10 @@ export const sendWorkflowStepState: API.OperationMethod<
   SendWorkflowStepStateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { WorkflowId: 0, ExecutionId: 0, Token: 0, Status: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceError,
@@ -3174,7 +3329,15 @@ export const startDirectoryListing: API.OperationMethod<
   StartDirectoryListingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConnectorId: 0,
+      RemoteDirectoryPath: 0,
+      MaxItems: 0,
+      OutputDirectoryPath: 0,
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -3211,7 +3374,17 @@ export const startFileTransfer: API.OperationMethod<
   StartFileTransferError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConnectorId: 0,
+      SendFilePaths: 0,
+      RetrieveFilePaths: 0,
+      LocalDirectoryPath: 0,
+      RemoteDirectoryPath: 0,
+      CustomHttpHeaders: D.list({ Key: 0, Value: 0 }),
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -3240,7 +3413,7 @@ export const startRemoteDelete: API.OperationMethod<
   StartRemoteDeleteError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConnectorId: 0, DeletePath: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -3269,7 +3442,10 @@ export const startRemoteMove: API.OperationMethod<
   StartRemoteMoveError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ConnectorId: 0, SourcePath: 0, TargetPath: 0 },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -3302,7 +3478,7 @@ export const startServer: API.OperationMethod<
   StartServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServerId: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -3337,7 +3513,7 @@ export const stopServer: API.OperationMethod<
   StopServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServerId: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -3367,7 +3543,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Arn: 0, Tags: D.list(i_Tag) } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -3394,7 +3570,7 @@ export const testConnection: API.OperationMethod<
   TestConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConnectorId: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -3443,7 +3619,16 @@ export const testIdentityProvider: API.OperationMethod<
   TestIdentityProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ServerId: 0,
+      ServerProtocol: 0,
+      SourceIp: 0,
+      UserName: 0,
+      UserPassword: 0,
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -3472,7 +3657,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Arn: 0, TagKeys: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -3501,7 +3686,19 @@ export const updateAccess: API.OperationMethod<
   UpdateAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      HomeDirectory: 0,
+      HomeDirectoryType: 0,
+      HomeDirectoryMappings: D.list(i_HomeDirectoryMapEntry),
+      Policy: 0,
+      PosixProfile: i_PosixProfile,
+      Role: 0,
+      ServerId: 0,
+      ExternalId: 0,
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -3536,7 +3733,22 @@ export const updateAgreement: API.OperationMethod<
   UpdateAgreementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AgreementId: 0,
+      ServerId: 0,
+      Description: 0,
+      Status: 0,
+      LocalProfileId: 0,
+      PartnerProfileId: 0,
+      BaseDirectory: 0,
+      AccessRole: 0,
+      PreserveFilename: 0,
+      EnforceMessageSigning: 0,
+      CustomDirectories: i_CustomDirectoriesType,
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -3566,7 +3778,10 @@ export const updateCertificate: API.OperationMethod<
   UpdateCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CertificateId: 0, ActiveDate: 0, InactiveDate: 0, Description: 0 },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -3596,7 +3811,22 @@ export const updateConnector: API.OperationMethod<
   UpdateConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConnectorId: 0,
+      Url: 0,
+      As2Config: i_As2ConnectorConfig,
+      AccessRole: 0,
+      LoggingRole: 0,
+      SftpConfig: i_SftpConnectorConfig,
+      SecurityPolicyName: 0,
+      EgressConfig: {
+        VpcLattice: { ResourceConfigurationArn: 0, PortNumber: 0 },
+      },
+      IpAddressType: 0,
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -3626,7 +3856,10 @@ export const updateHostKey: API.OperationMethod<
   UpdateHostKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServerId: 0, HostKeyId: 0, Description: 0 },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -3655,7 +3888,7 @@ export const updateProfile: API.OperationMethod<
   UpdateProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ProfileId: 0, CertificateIds: 0 } },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -3689,7 +3922,28 @@ export const updateServer: API.OperationMethod<
   UpdateServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Certificate: 0,
+      ProtocolDetails: i_ProtocolDetails,
+      EndpointDetails: i_EndpointDetails,
+      EndpointType: 0,
+      HostKey: 0,
+      IdentityProviderDetails: i_IdentityProviderDetails,
+      LoggingRole: 0,
+      PostAuthenticationLoginBanner: 0,
+      PreAuthenticationLoginBanner: 0,
+      Protocols: 0,
+      SecurityPolicyName: 0,
+      ServerId: 0,
+      WorkflowDetails: i_WorkflowDetails,
+      StructuredLogDestinations: 0,
+      S3StorageOptions: i_S3StorageOptions,
+      IpAddressType: 0,
+      IdentityProviderType: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3729,7 +3983,19 @@ export const updateUser: API.OperationMethod<
   UpdateUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      HomeDirectory: 0,
+      HomeDirectoryType: 0,
+      HomeDirectoryMappings: D.list(i_HomeDirectoryMapEntry),
+      Policy: 0,
+      PosixProfile: i_PosixProfile,
+      Role: 0,
+      ServerId: 0,
+      UserName: 0,
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -3761,7 +4027,16 @@ export const updateWebApp: API.OperationMethod<
   UpdateWebAppError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      WebAppId: 0,
+      IdentityProviderDetails: { IdentityCenterConfig: { Role: 0 } },
+      AccessEndpoint: 0,
+      WebAppUnits: i_WebAppUnits,
+      EndpointDetails: { Vpc: { SubnetIds: 0, IpAddressType: 0 } },
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3792,7 +4067,10 @@ export const updateWebAppCustomization: API.OperationMethod<
   UpdateWebAppCustomizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { WebAppId: 0, Title: 0, LogoFile: 0, FaviconFile: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3805,3 +4083,104 @@ export const updateWebAppCustomization: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateWebAppCustomization",
 })) as any;
+
+const i_As2ConnectorConfig: D.LazyStruct = () => ({
+  LocalProfileId: 0,
+  PartnerProfileId: 0,
+  MessageSubject: 0,
+  Compression: 0,
+  EncryptionAlgorithm: 0,
+  SigningAlgorithm: 0,
+  MdnSigningAlgorithm: 0,
+  MdnResponse: 0,
+  BasicAuthSecretId: 0,
+  PreserveContentType: 0,
+  AsyncMdnConfig: { Url: 0, ServerIds: 0 },
+});
+const i_CustomDirectoriesType: D.LazyStruct = () => ({
+  FailedFilesDirectory: 0,
+  MdnFilesDirectory: 0,
+  PayloadFilesDirectory: 0,
+  StatusFilesDirectory: 0,
+  TemporaryFilesDirectory: 0,
+});
+const i_EndpointDetails: D.LazyStruct = () => ({
+  AddressAllocationIds: 0,
+  SubnetIds: 0,
+  VpcEndpointId: 0,
+  VpcId: 0,
+  SecurityGroupIds: 0,
+});
+const i_HomeDirectoryMapEntry: D.LazyStruct = () => ({
+  Entry: 0,
+  Target: 0,
+  Type: 0,
+});
+const i_IdentityProviderDetails: D.LazyStruct = () => ({
+  Url: 0,
+  InvocationRole: 0,
+  DirectoryId: 0,
+  Function: 0,
+  SftpAuthenticationMethods: 0,
+});
+const i_PosixProfile: D.LazyStruct = () => ({
+  Uid: 0,
+  Gid: 0,
+  SecondaryGids: 0,
+});
+const i_ProtocolDetails: D.LazyStruct = () => ({
+  PassiveIp: 0,
+  TlsSessionResumptionMode: 0,
+  SetStatOption: 0,
+  As2Transports: 0,
+});
+const i_S3StorageOptions: D.LazyStruct = () => ({
+  DirectoryListingOptimization: 0,
+});
+const i_SftpConnectorConfig: D.LazyStruct = () => ({
+  UserSecretId: 0,
+  TrustedHostKeys: 0,
+  MaxConcurrentConnections: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_WebAppUnits: D.LazyStruct = () => ({ Provisioned: 0 });
+const i_WorkflowDetails: D.LazyStruct = () => ({
+  OnUpload: D.list(i_WorkflowDetail),
+  OnPartialUpload: D.list(i_WorkflowDetail),
+});
+const i_WorkflowStep: D.LazyStruct = () => ({
+  Type: 0,
+  CopyStepDetails: {
+    Name: 0,
+    DestinationFileLocation: i_InputFileLocation,
+    OverwriteExisting: 0,
+    SourceFileLocation: 0,
+  },
+  CustomStepDetails: {
+    Name: 0,
+    Target: 0,
+    TimeoutSeconds: 0,
+    SourceFileLocation: 0,
+  },
+  DeleteStepDetails: { Name: 0, SourceFileLocation: 0 },
+  TagStepDetails: {
+    Name: 0,
+    Tags: D.list({ Key: 0, Value: 0 }),
+    SourceFileLocation: 0,
+  },
+  DecryptStepDetails: {
+    Name: 0,
+    Type: 0,
+    SourceFileLocation: 0,
+    OverwriteExisting: 0,
+    DestinationFileLocation: i_InputFileLocation,
+  },
+});
+const i_InputFileLocation: D.LazyStruct = () => ({
+  S3FileLocation: { Bucket: 0, Key: 0 },
+  EfsFileLocation: { FileSystemId: 0, Path: 0 },
+});
+const i_WorkflowDetail: D.LazyStruct = () => ({
+  WorkflowId: 0,
+  ExecutionRole: 0,
+});

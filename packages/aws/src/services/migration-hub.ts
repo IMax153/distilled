@@ -426,7 +426,15 @@ export const associateCreatedArtifact: API.OperationMethod<
   AssociateCreatedArtifactError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProgressUpdateStream: 0,
+      MigrationTaskName: 0,
+      CreatedArtifact: { Name: 0, Description: 0 },
+      DryRun: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     DryRunOperation,
@@ -465,7 +473,15 @@ export const associateDiscoveredResource: API.OperationMethod<
   AssociateDiscoveredResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProgressUpdateStream: 0,
+      MigrationTaskName: 0,
+      DiscoveredResource: { ConfigurationId: 0, Description: 0 },
+      DryRun: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     DryRunOperation,
@@ -503,7 +519,15 @@ export const associateSourceResource: API.OperationMethod<
   AssociateSourceResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProgressUpdateStream: 0,
+      MigrationTaskName: 0,
+      SourceResource: { Name: 0, Description: 0, StatusDetail: 0 },
+      DryRun: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     DryRunOperation,
@@ -542,7 +566,10 @@ export const createProgressUpdateStream: API.OperationMethod<
   CreateProgressUpdateStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ProgressUpdateStreamName: 0, DryRun: 0 },
+  },
   errors: [
     AccessDeniedException,
     DryRunOperation,
@@ -600,7 +627,10 @@ export const deleteProgressUpdateStream: API.OperationMethod<
   DeleteProgressUpdateStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ProgressUpdateStreamName: 0, DryRun: 0 },
+  },
   errors: [
     AccessDeniedException,
     DryRunOperation,
@@ -636,7 +666,11 @@ export const describeApplicationState: API.OperationMethod<
   DescribeApplicationStateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LastUpdatedTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ApplicationId: 0 },
+    output: { LastUpdatedTime: D.ts },
+  },
   errors: [
     AccessDeniedException,
     HomeRegionNotSetException,
@@ -672,6 +706,7 @@ export const describeMigrationTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ProgressUpdateStream: 0, MigrationTaskName: 0 },
     output: { MigrationTask: { UpdateDateTime: D.ts } },
   },
   errors: [
@@ -719,7 +754,15 @@ export const disassociateCreatedArtifact: API.OperationMethod<
   DisassociateCreatedArtifactError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProgressUpdateStream: 0,
+      MigrationTaskName: 0,
+      CreatedArtifactName: 0,
+      DryRun: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     DryRunOperation,
@@ -757,7 +800,15 @@ export const disassociateDiscoveredResource: API.OperationMethod<
   DisassociateDiscoveredResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProgressUpdateStream: 0,
+      MigrationTaskName: 0,
+      ConfigurationId: 0,
+      DryRun: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     DryRunOperation,
@@ -793,7 +844,15 @@ export const disassociateSourceResource: API.OperationMethod<
   DisassociateSourceResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProgressUpdateStream: 0,
+      MigrationTaskName: 0,
+      SourceResourceName: 0,
+      DryRun: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     DryRunOperation,
@@ -833,7 +892,10 @@ export const importMigrationTask: API.OperationMethod<
   ImportMigrationTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ProgressUpdateStream: 0, MigrationTaskName: 0, DryRun: 0 },
+  },
   errors: [
     AccessDeniedException,
     DryRunOperation,
@@ -872,6 +934,7 @@ export const listApplicationStates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ApplicationIds: 0, NextToken: 0, MaxResults: 0 },
     output: { ApplicationStateList: D.list({ LastUpdatedTime: D.ts }) },
   },
   errors: [
@@ -921,7 +984,15 @@ export const listCreatedArtifacts: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   CreatedArtifact
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProgressUpdateStream: 0,
+      MigrationTaskName: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     HomeRegionNotSetException,
@@ -961,7 +1032,15 @@ export const listDiscoveredResources: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DiscoveredResource
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProgressUpdateStream: 0,
+      MigrationTaskName: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     HomeRegionNotSetException,
@@ -1012,6 +1091,7 @@ export const listMigrationTasks: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, ResourceName: 0 },
     output: { MigrationTaskSummaryList: D.list({ UpdateDateTime: D.ts }) },
   },
   errors: [
@@ -1056,6 +1136,12 @@ export const listMigrationTaskUpdates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ProgressUpdateStream: 0,
+      MigrationTaskName: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { MigrationTaskUpdateList: D.list({ UpdateDateTime: D.ts }) },
   },
   errors: [
@@ -1095,7 +1181,7 @@ export const listProgressUpdateStreams: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ProgressUpdateStreamSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [
     AccessDeniedException,
     HomeRegionNotSetException,
@@ -1134,7 +1220,15 @@ export const listSourceResources: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   SourceResource
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProgressUpdateStream: 0,
+      MigrationTaskName: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -1178,7 +1272,10 @@ export const notifyApplicationState: API.OperationMethod<
   NotifyApplicationStateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ApplicationId: 0, Status: 0, UpdateDateTime: 0, DryRun: 0 },
+  },
   errors: [
     AccessDeniedException,
     DryRunOperation,
@@ -1226,7 +1323,17 @@ export const notifyMigrationTaskState: API.OperationMethod<
   NotifyMigrationTaskStateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProgressUpdateStream: 0,
+      MigrationTaskName: 0,
+      Task: { Status: 0, StatusDetail: 0, ProgressPercent: 0 },
+      UpdateDateTime: 0,
+      NextUpdateSeconds: 0,
+      DryRun: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     DryRunOperation,
@@ -1280,7 +1387,15 @@ export const putResourceAttributes: API.OperationMethod<
   PutResourceAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProgressUpdateStream: 0,
+      MigrationTaskName: 0,
+      ResourceAttributeList: D.list({ Type: 0, Value: 0 }),
+      DryRun: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     DryRunOperation,

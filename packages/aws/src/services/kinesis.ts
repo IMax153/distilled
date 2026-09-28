@@ -1514,6 +1514,8 @@ export const addTagsToStream: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      StreamName: 0,
+      Tags: 0,
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -1586,6 +1588,14 @@ export const createStream: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      StreamName: 0,
+      ShardCount: 0,
+      StreamModeDetails: i_StreamModeDetails,
+      Tags: 0,
+      WarmThroughputMiBps: 0,
+      MaxRecordSizeInKiB: 0,
+    },
     staticContext: { OperationType: { value: "control" } },
   },
   errors: [
@@ -1628,6 +1638,8 @@ export const decreaseStreamRetentionPeriod: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      StreamName: 0,
+      RetentionPeriodHours: 0,
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -1729,6 +1741,8 @@ export const deleteStream: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      StreamName: 0,
+      EnforceConsumerDeletion: 0,
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -1772,6 +1786,7 @@ export const deregisterStreamConsumer: API.OperationMethod<
     service: svc,
     input: {
       StreamARN: D.m({ context: "StreamARN" }),
+      ConsumerName: 0,
       ConsumerARN: D.m({ context: "ConsumerARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -1803,6 +1818,7 @@ export const describeAccountSettings: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {},
     output: {
       MinimumThroughputBillingCommitment:
         o_MinimumThroughputBillingCommitmentOutput,
@@ -1832,6 +1848,7 @@ export const describeLimits: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {},
     staticContext: { OperationType: { value: "control" } },
   },
   errors: [LimitExceededException],
@@ -1884,6 +1901,9 @@ export const describeStream: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      StreamName: 0,
+      Limit: 0,
+      ExclusiveStartShardId: 0,
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -1929,6 +1949,7 @@ export const describeStreamConsumer: API.OperationMethod<
     service: svc,
     input: {
       StreamARN: D.m({ context: "StreamARN" }),
+      ConsumerName: 0,
       ConsumerARN: D.m({ context: "ConsumerARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -1975,6 +1996,7 @@ export const describeStreamSummary: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      StreamName: 0,
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -2015,6 +2037,8 @@ export const disableEnhancedMonitoring: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      StreamName: 0,
+      ShardLevelMetrics: 0,
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -2055,6 +2079,8 @@ export const enableEnhancedMonitoring: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      StreamName: 0,
+      ShardLevelMetrics: 0,
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -2159,6 +2185,8 @@ export const getRecords: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ShardIterator: 0,
+      Limit: 0,
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -2285,6 +2313,11 @@ export const getShardIterator: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      StreamName: 0,
+      ShardId: 0,
+      ShardIteratorType: 0,
+      StartingSequenceNumber: 0,
+      Timestamp: 0,
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -2334,6 +2367,8 @@ export const increaseStreamRetentionPeriod: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      StreamName: 0,
+      RetentionPeriodHours: 0,
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -2385,6 +2420,12 @@ export const listShards: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      StreamName: 0,
+      NextToken: 0,
+      ExclusiveStartShardId: 0,
+      MaxResults: 0,
+      StreamCreationTimestamp: 0,
+      ShardFilter: { Type: 0, ShardId: 0, Timestamp: 0 },
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -2427,6 +2468,9 @@ export const listStreamConsumers: API.PaginatedOperationMethod<
     service: svc,
     input: {
       StreamARN: D.m({ context: "StreamARN" }),
+      NextToken: 0,
+      MaxResults: 0,
+      StreamCreationTimestamp: 0,
       StreamId: D.m({ context: "StreamId" }),
     },
     output: { Consumers: D.list(o_Consumer) },
@@ -2483,6 +2527,7 @@ export const listStreams: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Limit: 0, ExclusiveStartStreamName: 0, NextToken: 0 },
     output: { StreamSummaries: D.list({ StreamCreationTimestamp: D.ts }) },
     staticContext: { OperationType: { value: "control" } },
   },
@@ -2562,6 +2607,9 @@ export const listTagsForStream: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      StreamName: 0,
+      ExclusiveStartTagKey: 0,
+      Limit: 0,
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -2642,6 +2690,9 @@ export const mergeShards: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      StreamName: 0,
+      ShardToMerge: 0,
+      AdjacentShardToMerge: 0,
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -2730,6 +2781,11 @@ export const putRecord: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      StreamName: 0,
+      Data: 0,
+      PartitionKey: 0,
+      ExplicitHashKey: 0,
+      SequenceNumberForOrdering: 0,
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -2846,6 +2902,8 @@ export const putRecords: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Records: D.list({ Data: 0, ExplicitHashKey: 0, PartitionKey: 0 }),
+      StreamName: 0,
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -2902,6 +2960,7 @@ export const putResourcePolicy: API.OperationMethod<
     input: {
       ResourceARN: D.m({ context: "ResourceARN" }),
       StreamId: D.m({ context: "StreamId" }),
+      Policy: 0,
     },
     staticContext: { OperationType: { value: "control" } },
   },
@@ -2954,7 +3013,9 @@ export const registerStreamConsumer: API.OperationMethod<
     service: svc,
     input: {
       StreamARN: D.m({ context: "StreamARN" }),
+      ConsumerName: 0,
       StreamId: D.m({ context: "StreamId" }),
+      Tags: 0,
     },
     output: { Consumer: o_Consumer },
     staticContext: { OperationType: { value: "control" } },
@@ -2999,6 +3060,8 @@ export const removeTagsFromStream: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      StreamName: 0,
+      TagKeys: 0,
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -3086,6 +3149,9 @@ export const splitShard: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      StreamName: 0,
+      ShardToSplit: 0,
+      NewStartingHashKey: 0,
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -3151,6 +3217,9 @@ export const startStreamEncryption: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      StreamName: 0,
+      EncryptionType: 0,
+      KeyId: 0,
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -3214,6 +3283,9 @@ export const stopStreamEncryption: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      StreamName: 0,
+      EncryptionType: 0,
+      KeyId: 0,
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -3278,6 +3350,8 @@ export const subscribeToShard: API.OperationMethod<
     input: {
       ConsumerARN: D.m({ context: "ConsumerARN" }),
       StreamId: D.m({ context: "StreamId" }),
+      ShardId: 0,
+      StartingPosition: { Type: 0, SequenceNumber: 0, Timestamp: 0 },
     },
     output: {
       EventStream: D.events({
@@ -3326,6 +3400,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Tags: 0,
       ResourceARN: D.m({ context: "ResourceARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -3362,6 +3437,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      TagKeys: 0,
       ResourceARN: D.m({ context: "ResourceARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -3403,6 +3479,7 @@ export const updateAccountSettings: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { MinimumThroughputBillingCommitment: { Status: 0 } },
     output: {
       MinimumThroughputBillingCommitment:
         o_MinimumThroughputBillingCommitmentOutput,
@@ -3441,6 +3518,7 @@ export const updateMaxRecordSize: API.OperationMethod<
     input: {
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
+      MaxRecordSizeInKiB: 0,
     },
     staticContext: { OperationType: { value: "control" } },
   },
@@ -3523,6 +3601,9 @@ export const updateShardCount: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      StreamName: 0,
+      TargetShardCount: 0,
+      ScalingType: 0,
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
     },
@@ -3566,6 +3647,8 @@ export const updateStreamMode: API.OperationMethod<
     input: {
       StreamARN: D.m({ context: "StreamARN" }),
       StreamId: D.m({ context: "StreamId" }),
+      StreamModeDetails: i_StreamModeDetails,
+      WarmThroughputMiBps: 0,
     },
     staticContext: { OperationType: { value: "control" } },
   },
@@ -3619,7 +3702,9 @@ export const updateStreamWarmThroughput: API.OperationMethod<
     service: svc,
     input: {
       StreamARN: D.m({ context: "StreamARN" }),
+      StreamName: 0,
       StreamId: D.m({ context: "StreamId" }),
+      WarmThroughputMiBps: 0,
     },
     staticContext: { OperationType: { value: "control" } },
   },
@@ -3636,6 +3721,7 @@ export const updateStreamWarmThroughput: API.OperationMethod<
   operationName: "UpdateStreamWarmThroughput",
 })) as any;
 
+const i_StreamModeDetails: D.LazyStruct = () => ({ StreamMode: 0 });
 const o_Consumer: D.LazyStruct = () => ({ ConsumerCreationTimestamp: D.ts });
 const o_MinimumThroughputBillingCommitmentOutput: D.LazyStruct = () => ({
   StartedAt: D.ts,

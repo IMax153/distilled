@@ -1998,7 +1998,10 @@ export const associateAppBlockBuilderAppBlock: API.OperationMethod<
   AssociateAppBlockBuilderAppBlockError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AppBlockArn: 0, AppBlockBuilderName: 0 },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidParameterCombinationException,
@@ -2027,7 +2030,7 @@ export const associateApplicationFleet: API.OperationMethod<
   AssociateApplicationFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FleetName: 0, ApplicationArn: 0 } },
   errors: [
     ConcurrentModificationException,
     InvalidParameterCombinationException,
@@ -2055,7 +2058,10 @@ export const associateApplicationToEntitlement: API.OperationMethod<
   AssociateApplicationToEntitlementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { StackName: 0, EntitlementName: 0, ApplicationIdentifier: 0 },
+  },
   errors: [
     EntitlementNotFoundException,
     LimitExceededException,
@@ -2084,7 +2090,7 @@ export const associateFleet: API.OperationMethod<
   AssociateFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FleetName: 0, StackName: 0 } },
   errors: [
     ConcurrentModificationException,
     IncompatibleImageException,
@@ -2114,7 +2120,10 @@ export const associateSoftwareToImageBuilder: API.OperationMethod<
   AssociateSoftwareToImageBuilderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ImageBuilderName: 0, SoftwareNames: 0 },
+  },
   errors: [
     ConcurrentModificationException,
     IncompatibleImageException,
@@ -2142,6 +2151,7 @@ export const batchAssociateUserStack: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserStackAssociations: D.list(i_UserStackAssociation) },
     output: { errors: D.list(o_UserStackAssociationError) },
   },
   errors: [
@@ -2168,6 +2178,7 @@ export const batchDisassociateUserStack: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserStackAssociations: D.list(i_UserStackAssociation) },
     output: { errors: D.list(o_UserStackAssociationError) },
   },
   errors: [
@@ -2196,7 +2207,15 @@ export const copyImage: API.OperationMethod<
   CopyImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SourceImageName: 0,
+      DestinationImageName: 0,
+      DestinationRegion: 0,
+      DestinationImageDescription: 0,
+    },
+  },
   errors: [
     IncompatibleImageException,
     InvalidAccountStatusException,
@@ -2233,7 +2252,20 @@ export const createAppBlock: API.OperationMethod<
   CreateAppBlockError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AppBlock: o_AppBlock } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      DisplayName: 0,
+      SourceS3Location: i_S3Location,
+      SetupScriptDetails: i_ScriptDetails,
+      Tags: 0,
+      PostSetupScriptDetails: i_ScriptDetails,
+      PackagingType: 0,
+    },
+    output: { AppBlock: o_AppBlock },
+  },
   errors: [
     ConcurrentModificationException,
     LimitExceededException,
@@ -2266,7 +2298,23 @@ export const createAppBlockBuilder: API.OperationMethod<
   CreateAppBlockBuilderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AppBlockBuilder: o_AppBlockBuilder } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      DisplayName: 0,
+      Tags: 0,
+      Platform: 0,
+      InstanceType: 0,
+      VpcConfig: i_VpcConfig,
+      EnableDefaultInternetAccess: 0,
+      IamRoleArn: 0,
+      AccessEndpoints: D.list(i_AccessEndpoint),
+      DisableIMDSV1: 0,
+    },
+    output: { AppBlockBuilder: o_AppBlockBuilder },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidAccountStatusException,
@@ -2297,7 +2345,11 @@ export const createAppBlockBuilderStreamingURL: API.OperationMethod<
   CreateAppBlockBuilderStreamingURLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Expires: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { AppBlockBuilderName: 0, Validity: 0 },
+    output: { Expires: D.ts },
+  },
   errors: [OperationNotPermittedException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2328,7 +2380,23 @@ export const createApplication: API.OperationMethod<
   CreateApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Application: o_Application } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      DisplayName: 0,
+      Description: 0,
+      IconS3Location: i_S3Location,
+      LaunchPath: 0,
+      WorkingDirectory: 0,
+      LaunchParameters: 0,
+      Platforms: 0,
+      InstanceFamilies: 0,
+      AppBlockArn: 0,
+      Tags: 0,
+    },
+    output: { Application: o_Application },
+  },
   errors: [
     ConcurrentModificationException,
     LimitExceededException,
@@ -2358,7 +2426,16 @@ export const createDirectoryConfig: API.OperationMethod<
   CreateDirectoryConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DirectoryConfig: o_DirectoryConfig } },
+  descriptor: {
+    service: svc,
+    input: {
+      DirectoryName: 0,
+      OrganizationalUnitDistinguishedNames: 0,
+      ServiceAccountCredentials: i_ServiceAccountCredentials,
+      CertificateBasedAuthProperties: i_CertificateBasedAuthProperties,
+    },
+    output: { DirectoryConfig: o_DirectoryConfig },
+  },
   errors: [
     InvalidAccountStatusException,
     InvalidRoleException,
@@ -2392,7 +2469,17 @@ export const createEntitlement: API.OperationMethod<
   CreateEntitlementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Entitlement: o_Entitlement } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      StackName: 0,
+      Description: 0,
+      AppVisibility: 0,
+      Attributes: D.list(i_EntitlementAttribute),
+    },
+    output: { Entitlement: o_Entitlement },
+  },
   errors: [
     EntitlementAlreadyExistsException,
     LimitExceededException,
@@ -2422,7 +2509,17 @@ export const createExportImageTask: API.OperationMethod<
   CreateExportImageTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ExportImageTask: o_ExportImageTask } },
+  descriptor: {
+    service: svc,
+    input: {
+      ImageName: 0,
+      AmiName: 0,
+      IamRoleArn: 0,
+      TagSpecifications: 0,
+      AmiDescription: 0,
+    },
+    output: { ExportImageTask: o_ExportImageTask },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidAccountStatusException,
@@ -2459,7 +2556,36 @@ export const createFleet: API.OperationMethod<
   CreateFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Fleet: o_Fleet } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      ImageName: 0,
+      ImageArn: 0,
+      InstanceType: 0,
+      FleetType: 0,
+      ComputeCapacity: i_ComputeCapacity,
+      VpcConfig: i_VpcConfig,
+      MaxUserDurationInSeconds: 0,
+      DisconnectTimeoutInSeconds: 0,
+      Description: 0,
+      DisplayName: 0,
+      EnableDefaultInternetAccess: 0,
+      DomainJoinInfo: i_DomainJoinInfo,
+      Tags: 0,
+      IdleDisconnectTimeoutInSeconds: 0,
+      IamRoleArn: 0,
+      StreamView: 0,
+      Platform: 0,
+      MaxConcurrentSessions: 0,
+      UsbDeviceFilterStrings: 0,
+      SessionScriptS3Location: i_S3Location,
+      MaxSessionsPerInstance: 0,
+      RootVolumeConfig: i_VolumeConfig,
+      DisableIMDSV1: 0,
+    },
+    output: { Fleet: o_Fleet },
+  },
   errors: [
     ConcurrentModificationException,
     IncompatibleImageException,
@@ -2502,7 +2628,29 @@ export const createImageBuilder: API.OperationMethod<
   CreateImageBuilderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ImageBuilder: o_ImageBuilder } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      ImageName: 0,
+      ImageArn: 0,
+      InstanceType: 0,
+      Description: 0,
+      DisplayName: 0,
+      VpcConfig: i_VpcConfig,
+      IamRoleArn: 0,
+      EnableDefaultInternetAccess: 0,
+      DomainJoinInfo: i_DomainJoinInfo,
+      AppstreamAgentVersion: 0,
+      Tags: 0,
+      AccessEndpoints: D.list(i_AccessEndpoint),
+      RootVolumeConfig: i_VolumeConfig,
+      SoftwaresToInstall: 0,
+      SoftwaresToUninstall: 0,
+      DisableIMDSV1: 0,
+    },
+    output: { ImageBuilder: o_ImageBuilder },
+  },
   errors: [
     ConcurrentModificationException,
     IncompatibleImageException,
@@ -2534,7 +2682,11 @@ export const createImageBuilderStreamingURL: API.OperationMethod<
   CreateImageBuilderStreamingURLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Expires: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, Validity: 0 },
+    output: { Expires: D.ts },
+  },
   errors: [OperationNotPermittedException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2561,7 +2713,31 @@ export const createImportedImage: API.OperationMethod<
   CreateImportedImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Image: o_Image } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      SourceAmiId: 0,
+      WorkspaceImageId: 0,
+      IamRoleArn: 0,
+      Description: 0,
+      DisplayName: 0,
+      Tags: 0,
+      RuntimeValidationConfig: { IntendedInstanceType: 0 },
+      AgentSoftwareVersion: 0,
+      AppCatalogConfig: D.list({
+        Name: 0,
+        DisplayName: 0,
+        AbsoluteAppPath: 0,
+        AbsoluteIconPath: 0,
+        AbsoluteManifestPath: 0,
+        WorkingDirectory: 0,
+        LaunchParameters: 0,
+      }),
+      DryRun: 0,
+    },
+    output: { Image: o_Image },
+  },
   errors: [
     DryRunOperationException,
     IncompatibleImageException,
@@ -2597,7 +2773,33 @@ export const createStack: API.OperationMethod<
   CreateStackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Stack: o_Stack } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      DisplayName: 0,
+      StorageConnectors: D.list(i_StorageConnector),
+      RedirectURL: 0,
+      FeedbackURL: 0,
+      UserSettings: D.list(i_UserSetting),
+      ApplicationSettings: i_ApplicationSettings,
+      Tags: 0,
+      AccessEndpoints: D.list(i_AccessEndpoint),
+      EmbedHostDomains: 0,
+      StreamingExperienceSettings: i_StreamingExperienceSettings,
+      ContentRedirection: i_ContentRedirection,
+      AgentAccessConfig: {
+        Settings: D.list(i_AgentAccessSetting),
+        S3BucketArn: 0,
+        ScreenshotsUploadEnabled: 0,
+        ScreenResolution: 0,
+        ScreenImageFormat: 0,
+        UserControlMode: 0,
+      },
+    },
+    output: { Stack: o_Stack },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidAccountStatusException,
@@ -2628,7 +2830,18 @@ export const createStreamingURL: API.OperationMethod<
   CreateStreamingURLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Expires: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      StackName: 0,
+      FleetName: 0,
+      UserId: 0,
+      ApplicationId: 0,
+      Validity: 0,
+      SessionContext: 0,
+    },
+    output: { Expires: D.ts },
+  },
   errors: [
     InvalidParameterCombinationException,
     OperationNotPermittedException,
@@ -2657,7 +2870,18 @@ export const createThemeForStack: API.OperationMethod<
   CreateThemeForStackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Theme: o_Theme } },
+  descriptor: {
+    service: svc,
+    input: {
+      StackName: 0,
+      FooterLinks: D.list(i_ThemeFooterLink),
+      TitleText: 0,
+      ThemeStyling: 0,
+      OrganizationLogoS3Location: i_S3Location,
+      FaviconS3Location: i_S3Location,
+    },
+    output: { Theme: o_Theme },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidAccountStatusException,
@@ -2692,7 +2916,18 @@ export const createUpdatedImage: API.OperationMethod<
   CreateUpdatedImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { image: o_Image } },
+  descriptor: {
+    service: svc,
+    input: {
+      existingImageName: 0,
+      newImageName: 0,
+      newImageDescription: 0,
+      newImageDisplayName: 0,
+      newImageTags: 0,
+      dryRun: 0,
+    },
+    output: { image: o_Image },
+  },
   errors: [
     ConcurrentModificationException,
     IncompatibleImageException,
@@ -2721,7 +2956,7 @@ export const createUsageReportSubscription: API.OperationMethod<
   CreateUsageReportSubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     InvalidAccountStatusException,
     InvalidRoleException,
@@ -2748,7 +2983,16 @@ export const createUser: API.OperationMethod<
   CreateUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UserName: 0,
+      MessageAction: 0,
+      FirstName: 0,
+      LastName: 0,
+      AuthenticationType: 0,
+    },
+  },
   errors: [
     InvalidAccountStatusException,
     InvalidParameterCombinationException,
@@ -2775,7 +3019,7 @@ export const deleteAppBlock: API.OperationMethod<
   DeleteAppBlockError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     ConcurrentModificationException,
     ResourceInUseException,
@@ -2804,7 +3048,7 @@ export const deleteAppBlockBuilder: API.OperationMethod<
   DeleteAppBlockBuilderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     ConcurrentModificationException,
     OperationNotPermittedException,
@@ -2831,7 +3075,7 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     ConcurrentModificationException,
     OperationNotPermittedException,
@@ -2856,7 +3100,7 @@ export const deleteDirectoryConfig: API.OperationMethod<
   DeleteDirectoryConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryName: 0 } },
   errors: [ResourceInUseException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2878,7 +3122,7 @@ export const deleteEntitlement: API.OperationMethod<
   DeleteEntitlementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, StackName: 0 } },
   errors: [
     ConcurrentModificationException,
     EntitlementNotFoundException,
@@ -2904,7 +3148,7 @@ export const deleteFleet: API.OperationMethod<
   DeleteFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     ConcurrentModificationException,
     ResourceInUseException,
@@ -2931,7 +3175,7 @@ export const deleteImage: API.OperationMethod<
   DeleteImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Image: o_Image } },
+  descriptor: { service: svc, input: { Name: 0 }, output: { Image: o_Image } },
   errors: [
     ConcurrentModificationException,
     OperationNotPermittedException,
@@ -2957,7 +3201,11 @@ export const deleteImageBuilder: API.OperationMethod<
   DeleteImageBuilderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ImageBuilder: o_ImageBuilder } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0 },
+    output: { ImageBuilder: o_ImageBuilder },
+  },
   errors: [
     ConcurrentModificationException,
     OperationNotPermittedException,
@@ -2981,7 +3229,7 @@ export const deleteImagePermissions: API.OperationMethod<
   DeleteImagePermissionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, SharedAccountId: 0 } },
   errors: [ResourceNotAvailableException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3003,7 +3251,7 @@ export const deleteStack: API.OperationMethod<
   DeleteStackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     ConcurrentModificationException,
     OperationNotPermittedException,
@@ -3029,7 +3277,7 @@ export const deleteThemeForStack: API.OperationMethod<
   DeleteThemeForStackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { StackName: 0 } },
   errors: [
     ConcurrentModificationException,
     OperationNotPermittedException,
@@ -3053,7 +3301,7 @@ export const deleteUsageReportSubscription: API.OperationMethod<
   DeleteUsageReportSubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [InvalidAccountStatusException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3070,7 +3318,7 @@ export const deleteUser: API.OperationMethod<
   DeleteUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserName: 0, AuthenticationType: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3091,7 +3339,15 @@ export const describeAppBlockBuilderAppBlockAssociations: API.PaginatedOperation
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AppBlockArn: 0,
+      AppBlockBuilderName: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     InvalidParameterCombinationException,
     OperationNotPermittedException,
@@ -3122,6 +3378,7 @@ export const describeAppBlockBuilders: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Names: 0, NextToken: 0, MaxResults: 0 },
     output: { AppBlockBuilders: D.list(o_AppBlockBuilder) },
   },
   errors: [OperationNotPermittedException, ResourceNotFoundException],
@@ -3148,7 +3405,11 @@ export const describeAppBlocks: API.OperationMethod<
   DescribeAppBlocksError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AppBlocks: D.list(o_AppBlock) } },
+  descriptor: {
+    service: svc,
+    input: { Arns: 0, NextToken: 0, MaxResults: 0 },
+    output: { AppBlocks: D.list(o_AppBlock) },
+  },
   errors: [OperationNotPermittedException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3168,7 +3429,10 @@ export const describeApplicationFleetAssociations: API.OperationMethod<
   DescribeApplicationFleetAssociationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { FleetName: 0, ApplicationArn: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     InvalidParameterCombinationException,
     OperationNotPermittedException,
@@ -3191,7 +3455,11 @@ export const describeApplications: API.OperationMethod<
   DescribeApplicationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Applications: D.list(o_Application) } },
+  descriptor: {
+    service: svc,
+    input: { Arns: 0, NextToken: 0, MaxResults: 0 },
+    output: { Applications: D.list(o_Application) },
+  },
   errors: [OperationNotPermittedException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3214,6 +3482,7 @@ export const describeAppLicenseUsage: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { BillingPeriod: 0, MaxResults: 0, NextToken: 0 },
     output: {
       AppLicenseUsages: D.list({
         SubscriptionFirstUsedDate: D.ts,
@@ -3247,6 +3516,7 @@ export const describeDirectoryConfigs: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DirectoryNames: 0, MaxResults: 0, NextToken: 0 },
     output: { DirectoryConfigs: D.list(o_DirectoryConfig) },
   },
   errors: [ResourceNotFoundException],
@@ -3269,7 +3539,11 @@ export const describeEntitlements: API.OperationMethod<
   DescribeEntitlementsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Entitlements: D.list(o_Entitlement) } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, StackName: 0, NextToken: 0, MaxResults: 0 },
+    output: { Entitlements: D.list(o_Entitlement) },
+  },
   errors: [
     EntitlementNotFoundException,
     OperationNotPermittedException,
@@ -3290,7 +3564,11 @@ export const describeFleets: API.OperationMethod<
   DescribeFleetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Fleets: D.list(o_Fleet) } },
+  descriptor: {
+    service: svc,
+    input: { Names: 0, NextToken: 0 },
+    output: { Fleets: D.list(o_Fleet) },
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3311,6 +3589,7 @@ export const describeImageBuilders: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Names: 0, MaxResults: 0, NextToken: 0 },
     output: { ImageBuilders: D.list(o_ImageBuilder) },
   },
   errors: [ResourceNotFoundException],
@@ -3332,7 +3611,10 @@ export const describeImagePermissions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, MaxResults: 0, SharedAwsAccountIds: 0, NextToken: 0 },
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3358,7 +3640,11 @@ export const describeImages: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Images: D.list(o_Image) } },
+  descriptor: {
+    service: svc,
+    input: { Names: 0, Arns: 0, Type: 0, NextToken: 0, MaxResults: 0 },
+    output: { Images: D.list(o_Image) },
+  },
   errors: [InvalidParameterCombinationException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3386,6 +3672,15 @@ export const describeSessions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      StackName: 0,
+      FleetName: 0,
+      UserId: 0,
+      NextToken: 0,
+      Limit: 0,
+      AuthenticationType: 0,
+      InstanceId: 0,
+    },
     output: { Sessions: D.list({ StartTime: D.ts, MaxExpirationTime: D.ts }) },
   },
   errors: [InvalidParameterCombinationException],
@@ -3407,7 +3702,10 @@ export const describeSoftwareAssociations: API.OperationMethod<
   DescribeSoftwareAssociationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AssociatedResource: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [OperationNotPermittedException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3424,7 +3722,11 @@ export const describeStacks: API.OperationMethod<
   DescribeStacksError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Stacks: D.list(o_Stack) } },
+  descriptor: {
+    service: svc,
+    input: { Names: 0, NextToken: 0 },
+    output: { Stacks: D.list(o_Stack) },
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3444,7 +3746,11 @@ export const describeThemeForStack: API.OperationMethod<
   DescribeThemeForStackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Theme: o_Theme } },
+  descriptor: {
+    service: svc,
+    input: { StackName: 0 },
+    output: { Theme: o_Theme },
+  },
   errors: [OperationNotPermittedException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3466,6 +3772,7 @@ export const describeUsageReportSubscriptions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
     output: {
       UsageReportSubscriptions: D.list({ LastGeneratedReportDate: D.ts }),
     },
@@ -3492,6 +3799,7 @@ export const describeUsers: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AuthenticationType: 0, MaxResults: 0, NextToken: 0 },
     output: {
       Users: D.list({
         UserName: D.secret,
@@ -3530,6 +3838,13 @@ export const describeUserStackAssociations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      StackName: 0,
+      UserName: 0,
+      AuthenticationType: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { UserStackAssociations: D.list(o_UserStackAssociation) },
   },
   errors: [
@@ -3551,7 +3866,7 @@ export const disableUser: API.OperationMethod<
   DisableUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserName: 0, AuthenticationType: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3573,7 +3888,10 @@ export const disassociateAppBlockBuilderAppBlock: API.OperationMethod<
   DisassociateAppBlockBuilderAppBlockError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AppBlockArn: 0, AppBlockBuilderName: 0 },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidParameterCombinationException,
@@ -3599,7 +3917,7 @@ export const disassociateApplicationFleet: API.OperationMethod<
   DisassociateApplicationFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FleetName: 0, ApplicationArn: 0 } },
   errors: [
     ConcurrentModificationException,
     InvalidParameterCombinationException,
@@ -3624,7 +3942,10 @@ export const disassociateApplicationFromEntitlement: API.OperationMethod<
   DisassociateApplicationFromEntitlementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { StackName: 0, EntitlementName: 0, ApplicationIdentifier: 0 },
+  },
   errors: [
     EntitlementNotFoundException,
     OperationNotPermittedException,
@@ -3650,7 +3971,7 @@ export const disassociateFleet: API.OperationMethod<
   DisassociateFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FleetName: 0, StackName: 0 } },
   errors: [
     ConcurrentModificationException,
     OperationNotPermittedException,
@@ -3677,7 +3998,10 @@ export const disassociateSoftwareFromImageBuilder: API.OperationMethod<
   DisassociateSoftwareFromImageBuilderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ImageBuilderName: 0, SoftwareNames: 0 },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidParameterCombinationException,
@@ -3703,7 +4027,7 @@ export const drainSessionInstance: API.OperationMethod<
   DrainSessionInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SessionId: 0 } },
   errors: [
     ConcurrentModificationException,
     OperationNotPermittedException,
@@ -3727,7 +4051,7 @@ export const enableUser: API.OperationMethod<
   EnableUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserName: 0, AuthenticationType: 0 } },
   errors: [InvalidAccountStatusException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3744,7 +4068,7 @@ export const expireSession: API.OperationMethod<
   ExpireSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SessionId: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3764,7 +4088,11 @@ export const getExportImageTask: API.OperationMethod<
   GetExportImageTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ExportImageTask: o_ExportImageTask } },
+  descriptor: {
+    service: svc,
+    input: { TaskId: 0 },
+    output: { ExportImageTask: o_ExportImageTask },
+  },
   errors: [OperationNotPermittedException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3781,7 +4109,7 @@ export const listAssociatedFleets: API.OperationMethod<
   ListAssociatedFleetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { StackName: 0, NextToken: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3798,7 +4126,7 @@ export const listAssociatedStacks: API.OperationMethod<
   ListAssociatedStacksError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FleetName: 0, NextToken: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3819,7 +4147,10 @@ export const listEntitledApplications: API.OperationMethod<
   ListEntitledApplicationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { StackName: 0, EntitlementName: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     EntitlementNotFoundException,
     OperationNotPermittedException,
@@ -3844,6 +4175,11 @@ export const listExportImageTasks: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filters: D.list({ Name: 0, Values: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { ExportImageTasks: D.list(o_ExportImageTask) },
   },
   errors: [OperationNotPermittedException],
@@ -3864,7 +4200,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3895,7 +4231,11 @@ export const startAppBlockBuilder: API.OperationMethod<
   StartAppBlockBuilderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AppBlockBuilder: o_AppBlockBuilder } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0 },
+    output: { AppBlockBuilder: o_AppBlockBuilder },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidAccountStatusException,
@@ -3929,7 +4269,7 @@ export const startFleet: API.OperationMethod<
   StartFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     ConcurrentModificationException,
     InvalidAccountStatusException,
@@ -3961,7 +4301,11 @@ export const startImageBuilder: API.OperationMethod<
   StartImageBuilderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ImageBuilder: o_ImageBuilder } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, AppstreamAgentVersion: 0 },
+    output: { ImageBuilder: o_ImageBuilder },
+  },
   errors: [
     ConcurrentModificationException,
     IncompatibleImageException,
@@ -3988,7 +4332,10 @@ export const startSoftwareDeploymentToImageBuilder: API.OperationMethod<
   StartSoftwareDeploymentToImageBuilderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ImageBuilderName: 0, RetryFailedDeployments: 0 },
+  },
   errors: [
     ConcurrentModificationException,
     OperationNotPermittedException,
@@ -4016,7 +4363,11 @@ export const stopAppBlockBuilder: API.OperationMethod<
   StopAppBlockBuilderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AppBlockBuilder: o_AppBlockBuilder } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0 },
+    output: { AppBlockBuilder: o_AppBlockBuilder },
+  },
   errors: [
     ConcurrentModificationException,
     OperationNotPermittedException,
@@ -4040,7 +4391,7 @@ export const stopFleet: API.OperationMethod<
   StopFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [ConcurrentModificationException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4061,7 +4412,11 @@ export const stopImageBuilder: API.OperationMethod<
   StopImageBuilderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ImageBuilder: o_ImageBuilder } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0 },
+    output: { ImageBuilder: o_ImageBuilder },
+  },
   errors: [
     ConcurrentModificationException,
     OperationNotPermittedException,
@@ -4094,7 +4449,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: 0 } },
   errors: [
     InvalidAccountStatusException,
     LimitExceededException,
@@ -4119,7 +4474,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4152,7 +4507,23 @@ export const updateAppBlockBuilder: API.OperationMethod<
   UpdateAppBlockBuilderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AppBlockBuilder: o_AppBlockBuilder } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      DisplayName: 0,
+      Platform: 0,
+      InstanceType: 0,
+      VpcConfig: i_VpcConfig,
+      EnableDefaultInternetAccess: 0,
+      IamRoleArn: 0,
+      AccessEndpoints: D.list(i_AccessEndpoint),
+      AttributesToDelete: 0,
+      DisableIMDSV1: 0,
+    },
+    output: { AppBlockBuilder: o_AppBlockBuilder },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidAccountStatusException,
@@ -4184,7 +4555,21 @@ export const updateApplication: API.OperationMethod<
   UpdateApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Application: o_Application } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      DisplayName: 0,
+      Description: 0,
+      IconS3Location: i_S3Location,
+      LaunchPath: 0,
+      WorkingDirectory: 0,
+      LaunchParameters: 0,
+      AppBlockArn: 0,
+      AttributesToDelete: 0,
+    },
+    output: { Application: o_Application },
+  },
   errors: [
     ConcurrentModificationException,
     OperationNotPermittedException,
@@ -4212,7 +4597,16 @@ export const updateDirectoryConfig: API.OperationMethod<
   UpdateDirectoryConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DirectoryConfig: o_DirectoryConfig } },
+  descriptor: {
+    service: svc,
+    input: {
+      DirectoryName: 0,
+      OrganizationalUnitDistinguishedNames: 0,
+      ServiceAccountCredentials: i_ServiceAccountCredentials,
+      CertificateBasedAuthProperties: i_CertificateBasedAuthProperties,
+    },
+    output: { DirectoryConfig: o_DirectoryConfig },
+  },
   errors: [
     ConcurrentModificationException,
     IncompatibleImageException,
@@ -4241,7 +4635,17 @@ export const updateEntitlement: API.OperationMethod<
   UpdateEntitlementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Entitlement: o_Entitlement } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      StackName: 0,
+      Description: 0,
+      AppVisibility: 0,
+      Attributes: D.list(i_EntitlementAttribute),
+    },
+    output: { Entitlement: o_Entitlement },
+  },
   errors: [
     ConcurrentModificationException,
     EntitlementNotFoundException,
@@ -4297,7 +4701,36 @@ export const updateFleet: API.OperationMethod<
   UpdateFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Fleet: o_Fleet } },
+  descriptor: {
+    service: svc,
+    input: {
+      ImageName: 0,
+      ImageArn: 0,
+      Name: 0,
+      InstanceType: 0,
+      ComputeCapacity: i_ComputeCapacity,
+      VpcConfig: i_VpcConfig,
+      MaxUserDurationInSeconds: 0,
+      DisconnectTimeoutInSeconds: 0,
+      DeleteVpcConfig: 0,
+      Description: 0,
+      DisplayName: 0,
+      EnableDefaultInternetAccess: 0,
+      DomainJoinInfo: i_DomainJoinInfo,
+      IdleDisconnectTimeoutInSeconds: 0,
+      AttributesToDelete: 0,
+      IamRoleArn: 0,
+      StreamView: 0,
+      Platform: 0,
+      MaxConcurrentSessions: 0,
+      UsbDeviceFilterStrings: 0,
+      SessionScriptS3Location: i_S3Location,
+      MaxSessionsPerInstance: 0,
+      RootVolumeConfig: i_VolumeConfig,
+      DisableIMDSV1: 0,
+    },
+    output: { Fleet: o_Fleet },
+  },
   errors: [
     ConcurrentModificationException,
     IncompatibleImageException,
@@ -4330,7 +4763,14 @@ export const updateImagePermissions: API.OperationMethod<
   UpdateImagePermissionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      SharedAccountId: 0,
+      ImagePermissions: { allowFleet: 0, allowImageBuilder: 0 },
+    },
+  },
   errors: [
     LimitExceededException,
     ResourceNotAvailableException,
@@ -4361,7 +4801,34 @@ export const updateStack: API.OperationMethod<
   UpdateStackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Stack: o_Stack } },
+  descriptor: {
+    service: svc,
+    input: {
+      DisplayName: 0,
+      Description: 0,
+      Name: 0,
+      StorageConnectors: D.list(i_StorageConnector),
+      DeleteStorageConnectors: 0,
+      RedirectURL: 0,
+      FeedbackURL: 0,
+      AttributesToDelete: 0,
+      UserSettings: D.list(i_UserSetting),
+      ApplicationSettings: i_ApplicationSettings,
+      AccessEndpoints: D.list(i_AccessEndpoint),
+      EmbedHostDomains: 0,
+      StreamingExperienceSettings: i_StreamingExperienceSettings,
+      ContentRedirection: i_ContentRedirection,
+      AgentAccessConfig: {
+        Settings: D.list(i_AgentAccessSetting),
+        S3BucketArn: 0,
+        ScreenshotsUploadEnabled: 0,
+        ScreenResolution: 0,
+        ScreenImageFormat: 0,
+        UserControlMode: 0,
+      },
+    },
+    output: { Stack: o_Stack },
+  },
   errors: [
     ConcurrentModificationException,
     IncompatibleImageException,
@@ -4395,7 +4862,20 @@ export const updateThemeForStack: API.OperationMethod<
   UpdateThemeForStackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Theme: o_Theme } },
+  descriptor: {
+    service: svc,
+    input: {
+      StackName: 0,
+      FooterLinks: D.list(i_ThemeFooterLink),
+      TitleText: 0,
+      ThemeStyling: 0,
+      OrganizationLogoS3Location: i_S3Location,
+      FaviconS3Location: i_S3Location,
+      State: 0,
+      AttributesToDelete: 0,
+    },
+    output: { Theme: o_Theme },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidAccountStatusException,
@@ -4409,6 +4889,68 @@ export const updateThemeForStack: API.OperationMethod<
   operationName: "UpdateThemeForStack",
 })) as any;
 
+const i_AccessEndpoint: D.LazyStruct = () => ({ EndpointType: 0, VpceId: 0 });
+const i_AgentAccessSetting: D.LazyStruct = () => ({
+  AgentAction: 0,
+  Permission: 0,
+});
+const i_ApplicationSettings: D.LazyStruct = () => ({
+  Enabled: 0,
+  SettingsGroup: 0,
+});
+const i_CertificateBasedAuthProperties: D.LazyStruct = () => ({
+  Status: 0,
+  CertificateAuthorityArn: 0,
+});
+const i_ComputeCapacity: D.LazyStruct = () => ({
+  DesiredInstances: 0,
+  DesiredSessions: 0,
+});
+const i_ContentRedirection: D.LazyStruct = () => ({
+  HostToClient: { Enabled: 0, AllowedUrls: 0, DeniedUrls: 0 },
+});
+const i_DomainJoinInfo: D.LazyStruct = () => ({
+  DirectoryName: 0,
+  OrganizationalUnitDistinguishedName: 0,
+});
+const i_EntitlementAttribute: D.LazyStruct = () => ({ Name: 0, Value: 0 });
+const i_S3Location: D.LazyStruct = () => ({ S3Bucket: 0, S3Key: 0 });
+const i_ScriptDetails: D.LazyStruct = () => ({
+  ScriptS3Location: i_S3Location,
+  ExecutablePath: 0,
+  ExecutableParameters: 0,
+  TimeoutInSeconds: 0,
+});
+const i_ServiceAccountCredentials: D.LazyStruct = () => ({
+  AccountName: 0,
+  AccountPassword: 0,
+});
+const i_StorageConnector: D.LazyStruct = () => ({
+  ConnectorType: 0,
+  ResourceIdentifier: 0,
+  Domains: 0,
+  DomainsRequireAdminConsent: 0,
+});
+const i_StreamingExperienceSettings: D.LazyStruct = () => ({
+  PreferredProtocol: 0,
+});
+const i_ThemeFooterLink: D.LazyStruct = () => ({
+  DisplayName: 0,
+  FooterLinkURL: 0,
+});
+const i_UserSetting: D.LazyStruct = () => ({
+  Action: 0,
+  Permission: 0,
+  MaximumLength: 0,
+});
+const i_UserStackAssociation: D.LazyStruct = () => ({
+  StackName: 0,
+  UserName: 0,
+  AuthenticationType: 0,
+  SendEmailNotification: 0,
+});
+const i_VolumeConfig: D.LazyStruct = () => ({ VolumeSizeInGb: 0 });
+const i_VpcConfig: D.LazyStruct = () => ({ SubnetIds: 0, SecurityGroupIds: 0 });
 const o_AppBlock: D.LazyStruct = () => ({ CreatedTime: D.ts });
 const o_AppBlockBuilder: D.LazyStruct = () => ({
   CreatedTime: D.ts,

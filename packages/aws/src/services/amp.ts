@@ -831,7 +831,7 @@ export const createAlertManagerDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/alertmanager/definition",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { workspaceId: 0, data: 0, clientToken: D.m({ idempotency: true }) },
     body: true,
   },
   errors: [
@@ -868,7 +868,16 @@ export const createAnomalyDetector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/anomalydetectors",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workspaceId: 0,
+      alias: 0,
+      evaluationIntervalInSeconds: 0,
+      missingDataAction: i_AnomalyDetectorMissingDataAction,
+      configuration: i_AnomalyDetectorConfiguration,
+      labels: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -905,7 +914,11 @@ export const createLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/logging",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workspaceId: 0,
+      logGroupArn: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -939,7 +952,11 @@ export const createQueryLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/logging/query",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workspaceId: 0,
+      destinations: D.list(i_LoggingDestination),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -979,7 +996,13 @@ export const createRuleGroupsNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/rulegroupsnamespaces",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workspaceId: 0,
+      name: 0,
+      data: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1025,7 +1048,19 @@ export const createScraper: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /scrapers",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      alias: 0,
+      scrapeConfiguration: i_ScrapeConfiguration,
+      source: {
+        eksConfiguration: { clusterArn: 0, securityGroupIds: 0, subnetIds: 0 },
+        vpcConfiguration: { securityGroupIds: 0, subnetIds: 0 },
+      },
+      destination: i_Destination,
+      roleConfiguration: i_RoleConfiguration,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+      exporters: D.list(i_ExporterConfiguration),
+    },
     body: true,
   },
   errors: [
@@ -1062,7 +1097,12 @@ export const createWorkspace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      alias: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+      kmsKeyArn: 0,
+    },
     body: true,
   },
   errors: [
@@ -1098,7 +1138,10 @@ export const deleteAlertManagerDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{workspaceId}/alertmanager/definition",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      workspaceId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1133,7 +1176,11 @@ export const deleteAnomalyDetector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{workspaceId}/anomalydetectors/{anomalyDetectorId}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      workspaceId: 0,
+      anomalyDetectorId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1169,7 +1216,10 @@ export const deleteLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{workspaceId}/logging",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      workspaceId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1202,7 +1252,10 @@ export const deleteQueryLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{workspaceId}/logging/query",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      workspaceId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1237,6 +1290,7 @@ export const deleteResourcePolicy: API.OperationMethod<
     service: svc,
     http: "DELETE /workspaces/{workspaceId}/policy",
     input: {
+      workspaceId: 0,
       clientToken: D.m({ query: "clientToken", idempotency: true }),
       revisionId: D.m({ query: "revisionId" }),
     },
@@ -1274,7 +1328,11 @@ export const deleteRuleGroupsNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{workspaceId}/rulegroupsnamespaces/{name}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      workspaceId: 0,
+      name: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1309,7 +1367,10 @@ export const deleteScraper: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /scrapers/{scraperId}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      scraperId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1343,7 +1404,10 @@ export const deleteScraperLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /scrapers/{scraperId}/logging-configuration",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      scraperId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1379,7 +1443,10 @@ export const deleteWorkspace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{workspaceId}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      workspaceId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1413,6 +1480,7 @@ export const describeAlertManagerDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceId}/alertmanager/definition",
+    input: { workspaceId: 0 },
     output: {
       alertManagerDefinition: {
         data: D.blob,
@@ -1452,6 +1520,7 @@ export const describeAnomalyDetector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceId}/anomalydetectors/{anomalyDetectorId}",
+    input: { workspaceId: 0, anomalyDetectorId: 0 },
     output: { anomalyDetector: { createdAt: D.ts, modifiedAt: D.ts } },
   },
   errors: [
@@ -1486,6 +1555,7 @@ export const describeLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceId}/logging",
+    input: { workspaceId: 0 },
     output: { loggingConfiguration: { createdAt: D.ts, modifiedAt: D.ts } },
   },
   errors: [
@@ -1517,6 +1587,7 @@ export const describeQueryLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceId}/logging/query",
+    input: { workspaceId: 0 },
     output: {
       queryLoggingConfiguration: { createdAt: D.ts, modifiedAt: D.ts },
     },
@@ -1548,7 +1619,11 @@ export const describeResourcePolicy: API.OperationMethod<
   DescribeResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /workspaces/{workspaceId}/policy" },
+  descriptor: {
+    service: svc,
+    http: "GET /workspaces/{workspaceId}/policy",
+    input: { workspaceId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1580,6 +1655,7 @@ export const describeRuleGroupsNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceId}/rulegroupsnamespaces/{name}",
+    input: { workspaceId: 0, name: 0 },
     output: {
       ruleGroupsNamespace: { data: D.blob, createdAt: D.ts, modifiedAt: D.ts },
     },
@@ -1615,6 +1691,7 @@ export const describeScraper: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /scrapers/{scraperId}",
+    input: { scraperId: 0 },
     output: {
       scraper: {
         createdAt: D.ts,
@@ -1653,6 +1730,7 @@ export const describeScraperLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /scrapers/{scraperId}/logging-configuration",
+    input: { scraperId: 0 },
     output: { modifiedAt: D.ts },
   },
   errors: [
@@ -1685,6 +1763,7 @@ export const describeWorkspace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceId}",
+    input: { workspaceId: 0 },
     output: { workspace: { createdAt: D.ts } },
   },
   errors: [
@@ -1718,6 +1797,7 @@ export const describeWorkspaceConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceId}/configuration",
+    input: { workspaceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1748,6 +1828,7 @@ export const getDefaultScraperConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /scraperconfiguration",
+    input: {},
     output: { configuration: D.blob },
   },
   errors: [AccessDeniedException, InternalServerException, ThrottlingException],
@@ -1777,6 +1858,7 @@ export const listAnomalyDetectors: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /workspaces/{workspaceId}/anomalydetectors",
     input: {
+      workspaceId: 0,
       alias: D.m({ query: "alias" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -1822,6 +1904,7 @@ export const listRuleGroupsNamespaces: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /workspaces/{workspaceId}/rulegroupsnamespaces",
     input: {
+      workspaceId: 0,
       name: D.m({ query: "name" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -1907,7 +1990,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1984,7 +2071,7 @@ export const putAlertManagerDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workspaces/{workspaceId}/alertmanager/definition",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { workspaceId: 0, data: 0, clientToken: D.m({ idempotency: true }) },
     body: true,
   },
   errors: [
@@ -2021,7 +2108,15 @@ export const putAnomalyDetector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workspaces/{workspaceId}/anomalydetectors/{anomalyDetectorId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workspaceId: 0,
+      anomalyDetectorId: 0,
+      evaluationIntervalInSeconds: 0,
+      missingDataAction: i_AnomalyDetectorMissingDataAction,
+      configuration: i_AnomalyDetectorConfiguration,
+      labels: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2063,7 +2158,12 @@ export const putResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workspaces/{workspaceId}/policy",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workspaceId: 0,
+      policyDocument: 0,
+      clientToken: D.m({ idempotency: true }),
+      revisionId: 0,
+    },
     body: true,
   },
   errors: [
@@ -2106,7 +2206,12 @@ export const putRuleGroupsNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workspaces/{workspaceId}/rulegroupsnamespaces/{name}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workspaceId: 0,
+      name: 0,
+      data: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2141,7 +2246,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2173,7 +2283,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -2208,7 +2318,11 @@ export const updateLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workspaces/{workspaceId}/logging",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workspaceId: 0,
+      logGroupArn: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2242,7 +2356,11 @@ export const updateQueryLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workspaces/{workspaceId}/logging/query",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workspaceId: 0,
+      destinations: D.list(i_LoggingDestination),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2280,7 +2398,15 @@ export const updateScraper: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /scrapers/{scraperId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      scraperId: 0,
+      alias: 0,
+      scrapeConfiguration: i_ScrapeConfiguration,
+      destination: i_Destination,
+      roleConfiguration: i_RoleConfiguration,
+      clientToken: D.m({ idempotency: true }),
+      exporters: D.list(i_ExporterConfiguration),
+    },
     body: true,
   },
   errors: [
@@ -2316,6 +2442,11 @@ export const updateScraperLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /scrapers/{scraperId}/logging-configuration",
+    input: {
+      scraperId: 0,
+      loggingDestination: { cloudWatchLogs: i_CloudWatchLogDestination },
+      scraperComponents: D.list({ type: 0, config: { options: 0 } }),
+    },
     body: true,
   },
   errors: [
@@ -2351,7 +2482,11 @@ export const updateWorkspaceAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/alias",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workspaceId: 0,
+      alias: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2391,7 +2526,14 @@ export const updateWorkspaceConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /workspaces/{workspaceId}/configuration",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workspaceId: 0,
+      clientToken: D.m({ idempotency: true }),
+      limitsPerLabelSet: D.list({ limits: { maxSeries: 0 }, labelSet: 0 }),
+      retentionPeriodInDays: 0,
+      outOfOrderTimeWindowInSeconds: 0,
+      ruleQueryOffsetInSeconds: 0,
+    },
     body: true,
   },
   errors: [
@@ -2407,3 +2549,35 @@ export const updateWorkspaceConfiguration: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateWorkspaceConfiguration",
 })) as any;
+
+const i_AnomalyDetectorConfiguration: D.LazyStruct = () => ({
+  randomCutForest: {
+    query: 0,
+    shingleSize: 0,
+    sampleSize: 0,
+    ignoreNearExpectedFromAbove: i_IgnoreNearExpected,
+    ignoreNearExpectedFromBelow: i_IgnoreNearExpected,
+  },
+});
+const i_AnomalyDetectorMissingDataAction: D.LazyStruct = () => ({
+  markAsAnomaly: 0,
+  skip: 0,
+});
+const i_CloudWatchLogDestination: D.LazyStruct = () => ({ logGroupArn: 0 });
+const i_Destination: D.LazyStruct = () => ({
+  ampConfiguration: { workspaceArn: 0 },
+  cloudWatchConfiguration: { datasetArn: 0 },
+});
+const i_ExporterConfiguration: D.LazyStruct = () => ({
+  openSearchConfiguration: { domainArn: 0 },
+});
+const i_LoggingDestination: D.LazyStruct = () => ({
+  cloudWatchLogs: i_CloudWatchLogDestination,
+  filters: { qspThreshold: 0 },
+});
+const i_RoleConfiguration: D.LazyStruct = () => ({
+  sourceRoleArn: 0,
+  targetRoleArn: 0,
+});
+const i_ScrapeConfiguration: D.LazyStruct = () => ({ configurationBlob: 0 });
+const i_IgnoreNearExpected: D.LazyStruct = () => ({ amount: 0, ratio: 0 });

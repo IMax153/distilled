@@ -580,7 +580,7 @@ export const associateServiceQuotaTemplate: API.OperationMethod<
   AssociateServiceQuotaTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     AWSServiceAccessNotEnabledException,
@@ -616,7 +616,7 @@ export const createSupportCase: API.OperationMethod<
   CreateSupportCaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RequestId: 0 } },
   errors: [
     AccessDeniedException,
     DependencyAccessDeniedException,
@@ -653,7 +653,10 @@ export const deleteServiceQuotaIncreaseRequestFromTemplate: API.OperationMethod<
   DeleteServiceQuotaIncreaseRequestFromTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServiceCode: 0, QuotaCode: 0, AwsRegion: 0 },
+  },
   errors: [
     AccessDeniedException,
     AWSServiceAccessNotEnabledException,
@@ -691,7 +694,7 @@ export const disassociateServiceQuotaTemplate: API.OperationMethod<
   DisassociateServiceQuotaTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     AWSServiceAccessNotEnabledException,
@@ -726,7 +729,7 @@ export const getAssociationForServiceQuotaTemplate: API.OperationMethod<
   GetAssociationForServiceQuotaTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     AWSServiceAccessNotEnabledException,
@@ -759,7 +762,7 @@ export const getAutoManagementConfiguration: API.OperationMethod<
   GetAutoManagementConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     IllegalArgumentException,
@@ -789,7 +792,7 @@ export const getAWSDefaultServiceQuota: API.OperationMethod<
   GetAWSDefaultServiceQuotaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServiceCode: 0, QuotaCode: 0 } },
   errors: [
     AccessDeniedException,
     IllegalArgumentException,
@@ -829,7 +832,11 @@ export const getQuotaUtilizationReport: API.OperationMethod<
   GetQuotaUtilizationReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GeneratedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ReportId: 0, NextToken: 0, MaxResults: 0 },
+    output: { GeneratedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     IllegalArgumentException,
@@ -860,6 +867,7 @@ export const getRequestedServiceQuotaChange: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { RequestId: 0 },
     output: { RequestedQuota: o_RequestedServiceQuotaChange },
   },
   errors: [
@@ -892,7 +900,10 @@ export const getServiceQuota: API.OperationMethod<
   GetServiceQuotaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServiceCode: 0, QuotaCode: 0, ContextId: 0 },
+  },
   errors: [
     AccessDeniedException,
     IllegalArgumentException,
@@ -926,7 +937,10 @@ export const getServiceQuotaIncreaseRequestFromTemplate: API.OperationMethod<
   GetServiceQuotaIncreaseRequestFromTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServiceCode: 0, QuotaCode: 0, AwsRegion: 0 },
+  },
   errors: [
     AccessDeniedException,
     AWSServiceAccessNotEnabledException,
@@ -962,7 +976,10 @@ export const listAWSDefaultServiceQuotas: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ServiceQuota
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServiceCode: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     IllegalArgumentException,
@@ -1004,6 +1021,13 @@ export const listRequestedServiceQuotaChangeHistory: API.PaginatedOperationMetho
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ServiceCode: 0,
+      Status: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      QuotaRequestedAtLevel: 0,
+    },
     output: { RequestedQuotas: D.list(o_RequestedServiceQuotaChange) },
   },
   errors: [
@@ -1046,6 +1070,14 @@ export const listRequestedServiceQuotaChangeHistoryByQuota: API.PaginatedOperati
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ServiceCode: 0,
+      QuotaCode: 0,
+      Status: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      QuotaRequestedAtLevel: 0,
+    },
     output: { RequestedQuotas: D.list(o_RequestedServiceQuotaChange) },
   },
   errors: [
@@ -1087,7 +1119,10 @@ export const listServiceQuotaIncreaseRequestsInTemplate: API.PaginatedOperationM
   Credentials | HttpClient.HttpClient,
   ServiceQuotaIncreaseRequestInTemplate
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServiceCode: 0, AwsRegion: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     AWSServiceAccessNotEnabledException,
@@ -1130,7 +1165,16 @@ export const listServiceQuotas: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ServiceQuota
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ServiceCode: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      QuotaCode: 0,
+      QuotaAppliedAtLevel: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     IllegalArgumentException,
@@ -1167,7 +1211,7 @@ export const listServices: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ServiceInfo
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [
     AccessDeniedException,
     IllegalArgumentException,
@@ -1202,7 +1246,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [
     AccessDeniedException,
     IllegalArgumentException,
@@ -1236,7 +1280,10 @@ export const putServiceQuotaIncreaseRequestIntoTemplate: API.OperationMethod<
   PutServiceQuotaIncreaseRequestIntoTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { QuotaCode: 0, ServiceCode: 0, AwsRegion: 0, DesiredValue: 0 },
+  },
   errors: [
     AccessDeniedException,
     AWSServiceAccessNotEnabledException,
@@ -1277,6 +1324,13 @@ export const requestServiceQuotaIncrease: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ServiceCode: 0,
+      QuotaCode: 0,
+      DesiredValue: 0,
+      ContextId: 0,
+      SupportCaseAllowed: 0,
+    },
     output: { RequestedQuota: o_RequestedServiceQuotaChange },
   },
   errors: [
@@ -1313,7 +1367,15 @@ export const startAutoManagement: API.OperationMethod<
   StartAutoManagementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OptInLevel: 0,
+      OptInType: 0,
+      NotificationArn: 0,
+      ExclusionList: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     IllegalArgumentException,
@@ -1349,7 +1411,7 @@ export const startQuotaUtilizationReport: API.OperationMethod<
   StartQuotaUtilizationReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     IllegalArgumentException,
@@ -1381,7 +1443,7 @@ export const stopAutoManagement: API.OperationMethod<
   StopAutoManagementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     IllegalArgumentException,
@@ -1413,7 +1475,10 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceARN: 0, Tags: D.list({ Key: 0, Value: 0 }) },
+  },
   errors: [
     AccessDeniedException,
     IllegalArgumentException,
@@ -1445,7 +1510,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [
     AccessDeniedException,
     IllegalArgumentException,
@@ -1476,7 +1541,10 @@ export const updateAutoManagement: API.OperationMethod<
   UpdateAutoManagementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OptInType: 0, NotificationArn: 0, ExclusionList: 0 },
+  },
   errors: [
     AccessDeniedException,
     IllegalArgumentException,

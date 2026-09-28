@@ -159,7 +159,12 @@ export const scanSbom: API.OperationMethod<
   ScanSbomError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /scan/sbom", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /scan/sbom",
+    input: { sbom: 0, outputFormat: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,

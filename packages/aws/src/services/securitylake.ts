@@ -570,6 +570,7 @@ export const createAwsLogSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/datalake/logsources/aws",
+    input: { sources: D.list(i_AwsLogSourceConfiguration) },
     body: true,
   },
   errors: [
@@ -613,6 +614,15 @@ export const createCustomLogSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/datalake/logsources/custom",
+    input: {
+      sourceName: 0,
+      sourceVersion: 0,
+      eventClasses: 0,
+      configuration: {
+        crawlerConfiguration: { roleArn: 0 },
+        providerIdentity: i_AwsIdentity,
+      },
+    },
     body: true,
   },
   errors: [
@@ -661,7 +671,16 @@ export const createDataLake: API.OperationMethod<
   CreateDataLakeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/datalake", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/datalake",
+    input: {
+      configurations: D.list(i_DataLakeConfiguration),
+      metaStoreManagerRoleArn: 0,
+      tags: D.list(i_Tag),
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -698,6 +717,11 @@ export const createDataLakeExceptionSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/datalake/exceptions/subscription",
+    input: {
+      subscriptionProtocol: 0,
+      notificationEndpoint: 0,
+      exceptionTimeToLive: 0,
+    },
     body: true,
   },
   errors: [
@@ -738,6 +762,9 @@ export const createDataLakeOrganizationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/datalake/organization/configuration",
+    input: {
+      autoEnableNewAccount: D.list(i_DataLakeAutoEnableNewAccountConfiguration),
+    },
     body: true,
   },
   errors: [
@@ -775,6 +802,14 @@ export const createSubscriber: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/subscribers",
+    input: {
+      subscriberIdentity: i_AwsIdentity,
+      subscriberName: 0,
+      subscriberDescription: 0,
+      sources: D.list(i_LogSourceResource),
+      accessTypes: 0,
+      tags: D.list(i_Tag),
+    },
     output: { subscriber: o_SubscriberResource },
     body: true,
   },
@@ -815,6 +850,7 @@ export const createSubscriberNotification: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/subscribers/{subscriberId}/notification",
+    input: { subscriberId: 0, configuration: i_NotificationConfiguration },
     body: true,
   },
   errors: [
@@ -859,6 +895,7 @@ export const deleteAwsLogSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/datalake/logsources/aws/delete",
+    input: { sources: D.list(i_AwsLogSourceConfiguration) },
     body: true,
   },
   errors: [
@@ -897,7 +934,7 @@ export const deleteCustomLogSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/datalake/logsources/custom/{sourceName}",
-    input: { sourceVersion: D.m({ query: "sourceVersion" }) },
+    input: { sourceName: 0, sourceVersion: D.m({ query: "sourceVersion" }) },
   },
   errors: [
     AccessDeniedException,
@@ -939,7 +976,12 @@ export const deleteDataLake: API.OperationMethod<
   DeleteDataLakeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/datalake/delete", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/datalake/delete",
+    input: { regions: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -976,6 +1018,7 @@ export const deleteDataLakeExceptionSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/datalake/exceptions/subscription",
+    input: {},
   },
   errors: [
     AccessDeniedException,
@@ -1013,6 +1056,9 @@ export const deleteDataLakeOrganizationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/datalake/organization/configuration/delete",
+    input: {
+      autoEnableNewAccount: D.list(i_DataLakeAutoEnableNewAccountConfiguration),
+    },
     body: true,
   },
   errors: [
@@ -1049,7 +1095,11 @@ export const deleteSubscriber: API.OperationMethod<
   DeleteSubscriberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v1/subscribers/{subscriberId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v1/subscribers/{subscriberId}",
+    input: { subscriberId: 0 },
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -1086,6 +1136,7 @@ export const deleteSubscriberNotification: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/subscribers/{subscriberId}/notification",
+    input: { subscriberId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1120,7 +1171,7 @@ export const deregisterDataLakeDelegatedAdministrator: API.OperationMethod<
   DeregisterDataLakeDelegatedAdministratorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v1/datalake/delegate" },
+  descriptor: { service: svc, http: "DELETE /v1/datalake/delegate", input: {} },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -1155,6 +1206,7 @@ export const getDataLakeExceptionSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/datalake/exceptions/subscription",
+    input: {},
   },
   errors: [
     AccessDeniedException,
@@ -1192,6 +1244,7 @@ export const getDataLakeOrganizationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/datalake/organization/configuration",
+    input: {},
   },
   errors: [
     AccessDeniedException,
@@ -1226,7 +1279,12 @@ export const getDataLakeSources: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DataLakeSource
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /v1/datalake/sources", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/datalake/sources",
+    input: { accounts: 0, maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -1269,6 +1327,7 @@ export const getSubscriber: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/subscribers/{subscriberId}",
+    input: { subscriberId: 0 },
     output: { subscriber: o_SubscriberResource },
   },
   errors: [
@@ -1308,6 +1367,7 @@ export const listDataLakeExceptions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/datalake/exceptions",
+    input: { regions: 0, maxResults: 0, nextToken: 0 },
     output: { exceptions: D.list({ timestamp: D.ts }) },
     body: true,
   },
@@ -1391,6 +1451,13 @@ export const listLogSources: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/datalake/logsources/list",
+    input: {
+      accounts: 0,
+      regions: 0,
+      sources: D.list(i_LogSourceResource),
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -1481,7 +1548,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /v1/tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -1515,7 +1586,12 @@ export const registerDataLakeDelegatedAdministrator: API.OperationMethod<
   RegisterDataLakeDelegatedAdministratorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/datalake/delegate", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/datalake/delegate",
+    input: { accountId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -1554,7 +1630,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/tags/{resourceArn}",
+    input: { resourceArn: 0, tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -1591,7 +1672,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1637,7 +1718,15 @@ export const updateDataLake: API.OperationMethod<
   UpdateDataLakeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /v1/datalake", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /v1/datalake",
+    input: {
+      configurations: D.list(i_DataLakeConfiguration),
+      metaStoreManagerRoleArn: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -1674,6 +1763,11 @@ export const updateDataLakeExceptionSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/datalake/exceptions/subscription",
+    input: {
+      subscriptionProtocol: 0,
+      notificationEndpoint: 0,
+      exceptionTimeToLive: 0,
+    },
     body: true,
   },
   errors: [
@@ -1712,6 +1806,13 @@ export const updateSubscriber: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/subscribers/{subscriberId}",
+    input: {
+      subscriberId: 0,
+      subscriberIdentity: i_AwsIdentity,
+      subscriberName: 0,
+      subscriberDescription: 0,
+      sources: D.list(i_LogSourceResource),
+    },
     output: { subscriber: o_SubscriberResource },
     body: true,
   },
@@ -1751,6 +1852,7 @@ export const updateSubscriberNotification: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/subscribers/{subscriberId}/notification",
+    input: { subscriberId: 0, configuration: i_NotificationConfiguration },
     body: true,
   },
   errors: [
@@ -1767,7 +1869,51 @@ export const updateSubscriberNotification: API.OperationMethod<
   operationName: "UpdateSubscriberNotification",
 })) as any;
 
+const i_AwsIdentity: D.LazyStruct = () => ({ principal: 0, externalId: 0 });
+const i_AwsLogSourceConfiguration: D.LazyStruct = () => ({
+  accounts: 0,
+  regions: 0,
+  sourceName: 0,
+  sourceVersion: 0,
+});
+const i_DataLakeAutoEnableNewAccountConfiguration: D.LazyStruct = () => ({
+  region: 0,
+  sources: D.list(i_AwsLogSourceResource),
+});
+const i_DataLakeConfiguration: D.LazyStruct = () => ({
+  region: 0,
+  encryptionConfiguration: { kmsKeyId: 0 },
+  lifecycleConfiguration: {
+    expiration: { days: 0 },
+    transitions: D.list({ storageClass: 0, days: 0 }),
+  },
+  replicationConfiguration: { regions: 0, roleArn: 0 },
+});
+const i_LogSourceResource: D.LazyStruct = () => ({
+  awsLogSource: i_AwsLogSourceResource,
+  customLogSource: {
+    sourceName: 0,
+    sourceVersion: 0,
+    provider: { roleArn: 0, location: 0 },
+    attributes: { crawlerArn: 0, databaseArn: 0, tableArn: 0 },
+  },
+});
+const i_NotificationConfiguration: D.LazyStruct = () => ({
+  sqsNotificationConfiguration: {},
+  httpsNotificationConfiguration: {
+    endpoint: 0,
+    authorizationApiKeyName: 0,
+    authorizationApiKeyValue: 0,
+    httpMethod: 0,
+    targetRoleArn: 0,
+  },
+});
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
 const o_SubscriberResource: D.LazyStruct = () => ({
   createdAt: D.ts,
   updatedAt: D.ts,
+});
+const i_AwsLogSourceResource: D.LazyStruct = () => ({
+  sourceName: 0,
+  sourceVersion: 0,
 });

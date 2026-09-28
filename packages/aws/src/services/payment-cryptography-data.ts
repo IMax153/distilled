@@ -1180,6 +1180,12 @@ export const decryptData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /keys/{KeyIdentifier}/decrypt",
+    input: {
+      KeyIdentifier: 0,
+      CipherText: 0,
+      DecryptionAttributes: i_EncryptionDecryptionAttributes,
+      WrappedKey: i_WrappedKey,
+    },
     output: { PlainText: D.secret },
     body: true,
   },
@@ -1240,6 +1246,12 @@ export const encryptData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /keys/{KeyIdentifier}/encrypt",
+    input: {
+      KeyIdentifier: 0,
+      PlainText: 0,
+      EncryptionAttributes: i_EncryptionDecryptionAttributes,
+      WrappedKey: i_WrappedKey,
+    },
     output: { CipherText: D.secret },
     body: true,
   },
@@ -1284,6 +1296,14 @@ export const generateAs2805KekValidation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /as2805kekvalidation/generate",
+    input: {
+      KeyIdentifier: 0,
+      KekValidationType: {
+        KekValidationRequest: { DeriveKeyAlgorithm: 0, RandomKeyMaxLength: 0 },
+        KekValidationResponse: { RandomKeySend: 0 },
+      },
+      RandomKeySendVariantMask: 0,
+    },
     output: { RandomKeySend: D.secret, RandomKeyReceive: D.secret },
     body: true,
   },
@@ -1330,6 +1350,12 @@ export const generateAuthRequestCryptogram: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cryptogram/generate",
+    input: {
+      KeyIdentifier: 0,
+      TransactionData: 0,
+      MajorKeyDerivationMode: 0,
+      SessionKeyDerivationAttributes: i_SessionKeyDerivation,
+    },
     output: { AuthRequestCryptogram: D.secret },
     body: true,
   },
@@ -1376,6 +1402,20 @@ export const generateCardValidationData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cardvalidationdata/generate",
+    input: {
+      KeyIdentifier: 0,
+      PrimaryAccountNumber: 0,
+      GenerationAttributes: {
+        AmexCardSecurityCodeVersion1: i_AmexCardSecurityCodeVersion1,
+        AmexCardSecurityCodeVersion2: i_AmexCardSecurityCodeVersion2,
+        CardVerificationValue1: i_CardVerificationValue1,
+        CardVerificationValue2: i_CardVerificationValue2,
+        CardHolderVerificationValue: i_CardHolderVerificationValue,
+        DynamicCardVerificationCode: i_DynamicCardVerificationCode,
+        DynamicCardVerificationValue: i_DynamicCardVerificationValue,
+      },
+      ValidationDataLength: 0,
+    },
     output: { ValidationData: D.secret },
     body: true,
   },
@@ -1422,6 +1462,12 @@ export const generateMac: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /mac/generate",
+    input: {
+      KeyIdentifier: 0,
+      MessageData: 0,
+      GenerationAttributes: i_MacAttributes,
+      MacLength: 0,
+    },
     output: { Mac: D.secret },
     body: true,
   },
@@ -1474,6 +1520,53 @@ export const generateMacEmvPinChange: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /macemvpinchange/generate",
+    input: {
+      NewPinPekIdentifier: 0,
+      NewEncryptedPinBlock: 0,
+      PinBlockFormat: 0,
+      SecureMessagingIntegrityKeyIdentifier: 0,
+      SecureMessagingConfidentialityKeyIdentifier: 0,
+      MessageData: 0,
+      DerivationMethodAttributes: {
+        EmvCommon: {
+          MajorKeyDerivationMode: 0,
+          PrimaryAccountNumber: 0,
+          PanSequenceNumber: 0,
+          ApplicationCryptogram: 0,
+          Mode: 0,
+          PinBlockPaddingType: 0,
+          PinBlockLengthPosition: 0,
+        },
+        Amex: {
+          MajorKeyDerivationMode: 0,
+          PrimaryAccountNumber: 0,
+          PanSequenceNumber: 0,
+          ApplicationTransactionCounter: 0,
+          AuthorizationRequestKeyIdentifier: 0,
+          CurrentPinAttributes: i_CurrentPinAttributes,
+        },
+        Visa: {
+          MajorKeyDerivationMode: 0,
+          PrimaryAccountNumber: 0,
+          PanSequenceNumber: 0,
+          ApplicationTransactionCounter: 0,
+          AuthorizationRequestKeyIdentifier: 0,
+          CurrentPinAttributes: i_CurrentPinAttributes,
+        },
+        Emv2000: {
+          MajorKeyDerivationMode: 0,
+          PrimaryAccountNumber: 0,
+          PanSequenceNumber: 0,
+          ApplicationTransactionCounter: 0,
+        },
+        Mastercard: {
+          MajorKeyDerivationMode: 0,
+          PrimaryAccountNumber: 0,
+          PanSequenceNumber: 0,
+          ApplicationCryptogram: 0,
+        },
+      },
+    },
     output: { Mac: D.secret, EncryptedPinBlock: D.secret },
     body: true,
   },
@@ -1524,6 +1617,43 @@ export const generatePinData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /pindata/generate",
+    input: {
+      GenerationKeyIdentifier: 0,
+      EncryptionKeyIdentifier: 0,
+      GenerationAttributes: {
+        VisaPin: { PinVerificationKeyIndex: 0 },
+        VisaPinVerificationValue: {
+          EncryptedPinBlock: 0,
+          PinVerificationKeyIndex: 0,
+        },
+        Ibm3624PinOffset: {
+          EncryptedPinBlock: 0,
+          DecimalizationTable: 0,
+          PinValidationDataPadCharacter: 0,
+          PinValidationData: 0,
+        },
+        Ibm3624NaturalPin: {
+          DecimalizationTable: 0,
+          PinValidationDataPadCharacter: 0,
+          PinValidationData: 0,
+        },
+        Ibm3624RandomPin: {
+          DecimalizationTable: 0,
+          PinValidationDataPadCharacter: 0,
+          PinValidationData: 0,
+        },
+        Ibm3624PinFromOffset: {
+          DecimalizationTable: 0,
+          PinValidationDataPadCharacter: 0,
+          PinValidationData: 0,
+          PinOffset: 0,
+        },
+      },
+      PinDataLength: 0,
+      PrimaryAccountNumber: 0,
+      PinBlockFormat: 0,
+      EncryptionWrappedKey: i_WrappedKey,
+    },
     output: {
       EncryptedPinBlock: D.secret,
       PinData: { PinOffset: D.secret, VerificationValue: D.secret },
@@ -1581,6 +1711,15 @@ export const reEncryptData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /keys/{IncomingKeyIdentifier}/reencrypt",
+    input: {
+      IncomingKeyIdentifier: 0,
+      OutgoingKeyIdentifier: 0,
+      CipherText: 0,
+      IncomingEncryptionAttributes: i_ReEncryptionAttributes,
+      OutgoingEncryptionAttributes: i_ReEncryptionAttributes,
+      IncomingWrappedKey: i_WrappedKey,
+      OutgoingWrappedKey: i_WrappedKey,
+    },
     output: { CipherText: D.secret },
     body: true,
   },
@@ -1631,6 +1770,22 @@ export const translateKeyMaterial: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /keymaterial/translate",
+    input: {
+      IncomingKeyMaterial: {
+        DiffieHellmanTr31KeyBlock: {
+          PrivateKeyIdentifier: 0,
+          CertificateAuthorityPublicKeyIdentifier: 0,
+          PublicKeyCertificate: 0,
+          DeriveKeyAlgorithm: 0,
+          KeyDerivationFunction: 0,
+          KeyDerivationHashAlgorithm: 0,
+          DerivationData: { SharedInformation: 0 },
+          WrappedKeyBlock: 0,
+        },
+      },
+      OutgoingKeyMaterial: { Tr31KeyBlock: { WrappingKeyIdentifier: 0 } },
+      KeyCheckValueAlgorithm: 0,
+    },
     output: { WrappedKey: { WrappedKeyMaterial: D.secret } },
     body: true,
   },
@@ -1687,6 +1842,21 @@ export const translatePinData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /pindata/translate",
+    input: {
+      IncomingKeyIdentifier: 0,
+      OutgoingKeyIdentifier: 0,
+      IncomingTranslationAttributes: i_TranslationIsoFormats,
+      OutgoingTranslationAttributes: i_TranslationIsoFormats,
+      EncryptedPinBlock: 0,
+      IncomingDukptAttributes: i_DukptDerivationAttributes,
+      OutgoingDukptAttributes: i_DukptDerivationAttributes,
+      IncomingWrappedKey: i_WrappedKey,
+      OutgoingWrappedKey: i_WrappedKey,
+      IncomingAs2805Attributes: {
+        SystemTraceAuditNumber: 0,
+        TransactionAmount: 0,
+      },
+    },
     output: { PinBlock: D.secret },
     body: true,
   },
@@ -1734,6 +1904,17 @@ export const verifyAuthRequestCryptogram: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cryptogram/verify",
+    input: {
+      KeyIdentifier: 0,
+      TransactionData: 0,
+      AuthRequestCryptogram: 0,
+      MajorKeyDerivationMode: 0,
+      SessionKeyDerivationAttributes: i_SessionKeyDerivation,
+      AuthResponseAttributes: {
+        ArpcMethod1: { AuthResponseCode: 0 },
+        ArpcMethod2: { CardStatusUpdate: 0, ProprietaryAuthenticationData: 0 },
+      },
+    },
     output: { AuthResponseValue: D.secret },
     body: true,
   },
@@ -1784,6 +1965,25 @@ export const verifyCardValidationData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cardvalidationdata/verify",
+    input: {
+      KeyIdentifier: 0,
+      PrimaryAccountNumber: 0,
+      VerificationAttributes: {
+        AmexCardSecurityCodeVersion1: i_AmexCardSecurityCodeVersion1,
+        AmexCardSecurityCodeVersion2: i_AmexCardSecurityCodeVersion2,
+        CardVerificationValue1: i_CardVerificationValue1,
+        CardVerificationValue2: i_CardVerificationValue2,
+        CardHolderVerificationValue: i_CardHolderVerificationValue,
+        DynamicCardVerificationCode: i_DynamicCardVerificationCode,
+        DynamicCardVerificationValue: i_DynamicCardVerificationValue,
+        DiscoverDynamicCardVerificationCode: {
+          CardExpiryDate: 0,
+          UnpredictableNumber: 0,
+          ApplicationTransactionCounter: 0,
+        },
+      },
+      ValidationData: 0,
+    },
     body: true,
   },
   errors: [
@@ -1826,7 +2026,18 @@ export const verifyMac: API.OperationMethod<
   VerifyMacError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /mac/verify", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /mac/verify",
+    input: {
+      KeyIdentifier: 0,
+      MessageData: 0,
+      Mac: 0,
+      VerificationAttributes: i_MacAttributes,
+      MacLength: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1869,7 +2080,30 @@ export const verifyPinData: API.OperationMethod<
   VerifyPinDataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /pindata/verify", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /pindata/verify",
+    input: {
+      VerificationKeyIdentifier: 0,
+      EncryptionKeyIdentifier: 0,
+      VerificationAttributes: {
+        VisaPin: { PinVerificationKeyIndex: 0, VerificationValue: 0 },
+        Ibm3624Pin: {
+          DecimalizationTable: 0,
+          PinValidationDataPadCharacter: 0,
+          PinValidationData: 0,
+          PinOffset: 0,
+        },
+      },
+      EncryptedPinBlock: 0,
+      PrimaryAccountNumber: 0,
+      PinBlockFormat: 0,
+      PinDataLength: 0,
+      DukptAttributes: { KeySerialNumber: 0, DukptDerivationType: 0 },
+      EncryptionWrappedKey: i_WrappedKey,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1882,3 +2116,141 @@ export const verifyPinData: API.OperationMethod<
   retry: Retry,
   operationName: "VerifyPinData",
 })) as any;
+
+const i_AmexCardSecurityCodeVersion1: D.LazyStruct = () => ({
+  CardExpiryDate: 0,
+});
+const i_AmexCardSecurityCodeVersion2: D.LazyStruct = () => ({
+  CardExpiryDate: 0,
+  ServiceCode: 0,
+});
+const i_CardHolderVerificationValue: D.LazyStruct = () => ({
+  UnpredictableNumber: 0,
+  PanSequenceNumber: 0,
+  ApplicationTransactionCounter: 0,
+});
+const i_CardVerificationValue1: D.LazyStruct = () => ({
+  CardExpiryDate: 0,
+  ServiceCode: 0,
+});
+const i_CardVerificationValue2: D.LazyStruct = () => ({ CardExpiryDate: 0 });
+const i_CurrentPinAttributes: D.LazyStruct = () => ({
+  CurrentPinPekIdentifier: 0,
+  CurrentEncryptedPinBlock: 0,
+});
+const i_DukptDerivationAttributes: D.LazyStruct = () => ({
+  KeySerialNumber: 0,
+  DukptKeyDerivationType: 0,
+  DukptKeyVariant: 0,
+});
+const i_DynamicCardVerificationCode: D.LazyStruct = () => ({
+  UnpredictableNumber: 0,
+  PanSequenceNumber: 0,
+  ApplicationTransactionCounter: 0,
+  TrackData: 0,
+});
+const i_DynamicCardVerificationValue: D.LazyStruct = () => ({
+  PanSequenceNumber: 0,
+  CardExpiryDate: 0,
+  ServiceCode: 0,
+  ApplicationTransactionCounter: 0,
+});
+const i_EncryptionDecryptionAttributes: D.LazyStruct = () => ({
+  Symmetric: i_SymmetricEncryptionAttributes,
+  Asymmetric: { PaddingType: 0 },
+  Dukpt: i_DukptEncryptionAttributes,
+  Emv: {
+    MajorKeyDerivationMode: 0,
+    PrimaryAccountNumber: 0,
+    PanSequenceNumber: 0,
+    SessionDerivationData: 0,
+    Mode: 0,
+    InitializationVector: 0,
+  },
+});
+const i_MacAttributes: D.LazyStruct = () => ({
+  Algorithm: 0,
+  EmvMac: {
+    MajorKeyDerivationMode: 0,
+    PrimaryAccountNumber: 0,
+    PanSequenceNumber: 0,
+    SessionKeyDerivationMode: 0,
+    SessionKeyDerivationValue: {
+      ApplicationCryptogram: 0,
+      ApplicationTransactionCounter: 0,
+    },
+  },
+  DukptIso9797Algorithm1: i_MacAlgorithmDukpt,
+  DukptIso9797Algorithm3: i_MacAlgorithmDukpt,
+  DukptCmac: i_MacAlgorithmDukpt,
+});
+const i_ReEncryptionAttributes: D.LazyStruct = () => ({
+  Symmetric: i_SymmetricEncryptionAttributes,
+  Dukpt: i_DukptEncryptionAttributes,
+});
+const i_SessionKeyDerivation: D.LazyStruct = () => ({
+  EmvCommon: {
+    PrimaryAccountNumber: 0,
+    PanSequenceNumber: 0,
+    ApplicationTransactionCounter: 0,
+  },
+  Mastercard: {
+    PrimaryAccountNumber: 0,
+    PanSequenceNumber: 0,
+    ApplicationTransactionCounter: 0,
+    UnpredictableNumber: 0,
+  },
+  Emv2000: {
+    PrimaryAccountNumber: 0,
+    PanSequenceNumber: 0,
+    ApplicationTransactionCounter: 0,
+  },
+  Amex: { PrimaryAccountNumber: 0, PanSequenceNumber: 0 },
+  Visa: { PrimaryAccountNumber: 0, PanSequenceNumber: 0 },
+  UnionPay: {
+    PrimaryAccountNumber: 0,
+    PanSequenceNumber: 0,
+    ApplicationTransactionCounter: 0,
+  },
+});
+const i_TranslationIsoFormats: D.LazyStruct = () => ({
+  IsoFormat0: i_TranslationPinDataIsoFormat034,
+  IsoFormat1: {},
+  IsoFormat3: i_TranslationPinDataIsoFormat034,
+  IsoFormat4: i_TranslationPinDataIsoFormat034,
+  As2805Format0: { PrimaryAccountNumber: 0 },
+});
+const i_WrappedKey: D.LazyStruct = () => ({
+  WrappedKeyMaterial: {
+    Tr31KeyBlock: 0,
+    DiffieHellmanSymmetricKey: {
+      CertificateAuthorityPublicKeyIdentifier: 0,
+      PublicKeyCertificate: 0,
+      KeyAlgorithm: 0,
+      KeyDerivationFunction: 0,
+      KeyDerivationHashAlgorithm: 0,
+      SharedInformation: 0,
+    },
+  },
+  KeyCheckValueAlgorithm: 0,
+});
+const i_DukptEncryptionAttributes: D.LazyStruct = () => ({
+  KeySerialNumber: 0,
+  Mode: 0,
+  DukptKeyDerivationType: 0,
+  DukptKeyVariant: 0,
+  InitializationVector: 0,
+});
+const i_MacAlgorithmDukpt: D.LazyStruct = () => ({
+  KeySerialNumber: 0,
+  DukptKeyVariant: 0,
+  DukptDerivationType: 0,
+});
+const i_SymmetricEncryptionAttributes: D.LazyStruct = () => ({
+  Mode: 0,
+  InitializationVector: 0,
+  PaddingType: 0,
+});
+const i_TranslationPinDataIsoFormat034: D.LazyStruct = () => ({
+  PrimaryAccountNumber: 0,
+});

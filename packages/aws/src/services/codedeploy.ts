@@ -1561,7 +1561,10 @@ export const addTagsToOnPremisesInstances: API.OperationMethod<
   AddTagsToOnPremisesInstancesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { tags: D.list(i_Tag), instanceNames: 0 },
+  },
   errors: [
     InstanceLimitExceededException,
     InstanceNameRequiredException,
@@ -1596,6 +1599,7 @@ export const batchGetApplicationRevisions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { applicationName: 0, revisions: D.list(i_RevisionLocation) },
     output: {
       revisions: D.list({ genericRevisionInfo: o_GenericRevisionInfo }),
     },
@@ -1631,6 +1635,7 @@ export const batchGetApplications: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { applicationNames: 0 },
     output: { applicationsInfo: D.list(o_ApplicationInfo) },
   },
   errors: [
@@ -1664,6 +1669,7 @@ export const batchGetDeploymentGroups: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { applicationName: 0, deploymentGroupNames: 0 },
     output: { deploymentGroupsInfo: D.list(o_DeploymentGroupInfo) },
   },
   errors: [
@@ -1706,6 +1712,7 @@ export const batchGetDeploymentInstances: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { deploymentId: 0, instanceIds: 0 },
     output: { instancesSummary: D.list(o_InstanceSummary) },
   },
   errors: [
@@ -1739,6 +1746,7 @@ export const batchGetDeployments: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { deploymentIds: 0 },
     output: { deploymentsInfo: D.list(o_DeploymentInfo) },
   },
   errors: [
@@ -1790,6 +1798,7 @@ export const batchGetDeploymentTargets: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { deploymentId: 0, targetIds: 0 },
     output: { deploymentTargets: D.list(o_DeploymentTarget) },
   },
   errors: [
@@ -1825,6 +1834,7 @@ export const batchGetOnPremisesInstances: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { instanceNames: 0 },
     output: { instanceInfos: D.list(o_InstanceInfo) },
   },
   errors: [
@@ -1860,7 +1870,10 @@ export const continueDeployment: API.OperationMethod<
   ContinueDeploymentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { deploymentId: 0, deploymentWaitType: 0 },
+  },
   errors: [
     DeploymentAlreadyCompletedException,
     DeploymentDoesNotExistException,
@@ -1894,7 +1907,10 @@ export const createApplication: API.OperationMethod<
   CreateApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { applicationName: 0, computePlatform: 0, tags: D.list(i_Tag) },
+  },
   errors: [
     ApplicationAlreadyExistsException,
     ApplicationLimitExceededException,
@@ -1949,7 +1965,27 @@ export const createDeployment: API.OperationMethod<
   CreateDeploymentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      applicationName: 0,
+      deploymentGroupName: 0,
+      revision: i_RevisionLocation,
+      deploymentConfigName: 0,
+      description: 0,
+      ignoreApplicationStopFailures: 0,
+      targetInstances: {
+        tagFilters: D.list(i_EC2TagFilter),
+        autoScalingGroups: 0,
+        ec2TagSet: i_EC2TagSet,
+      },
+      autoRollbackConfiguration: i_AutoRollbackConfiguration,
+      updateOutdatedInstancesOnly: 0,
+      fileExistsBehavior: 0,
+      deploymentMode: 0,
+      overrideAlarmConfiguration: i_AlarmConfiguration,
+    },
+  },
   errors: [
     AlarmsLimitExceededException,
     ApplicationDoesNotExistException,
@@ -2005,7 +2041,24 @@ export const createDeploymentConfig: API.OperationMethod<
   CreateDeploymentConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      deploymentConfigName: 0,
+      minimumHealthyHosts: { type: 0, value: 0 },
+      trafficRoutingConfig: {
+        type: 0,
+        timeBasedCanary: { canaryPercentage: 0, canaryInterval: 0 },
+        timeBasedLinear: { linearPercentage: 0, linearInterval: 0 },
+      },
+      computePlatform: 0,
+      zonalConfig: {
+        firstZoneMonitorDurationInSeconds: 0,
+        monitorDurationInSeconds: 0,
+        minimumHealthyHostsPerZone: { type: 0, value: 0 },
+      },
+    },
+  },
   errors: [
     DeploymentConfigAlreadyExistsException,
     DeploymentConfigLimitExceededException,
@@ -2065,7 +2118,30 @@ export const createDeploymentGroup: API.OperationMethod<
   CreateDeploymentGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      applicationName: 0,
+      deploymentGroupName: 0,
+      deploymentConfigName: 0,
+      ec2TagFilters: D.list(i_EC2TagFilter),
+      onPremisesInstanceTagFilters: D.list(i_TagFilter),
+      autoScalingGroups: 0,
+      serviceRoleArn: 0,
+      triggerConfigurations: D.list(i_TriggerConfig),
+      alarmConfiguration: i_AlarmConfiguration,
+      autoRollbackConfiguration: i_AutoRollbackConfiguration,
+      outdatedInstancesStrategy: 0,
+      deploymentStyle: i_DeploymentStyle,
+      blueGreenDeploymentConfiguration: i_BlueGreenDeploymentConfiguration,
+      loadBalancerInfo: i_LoadBalancerInfo,
+      ec2TagSet: i_EC2TagSet,
+      ecsServices: D.list(i_ECSService),
+      onPremisesTagSet: i_OnPremisesTagSet,
+      tags: D.list(i_Tag),
+      terminationHookEnabled: 0,
+    },
+  },
   errors: [
     AlarmsLimitExceededException,
     ApplicationDoesNotExistException,
@@ -2120,7 +2196,7 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { applicationName: 0 } },
   errors: [
     ApplicationNameRequiredException,
     InvalidApplicationNameException,
@@ -2149,7 +2225,7 @@ export const deleteDeploymentConfig: API.OperationMethod<
   DeleteDeploymentConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { deploymentConfigName: 0 } },
   errors: [
     DeploymentConfigInUseException,
     DeploymentConfigNameRequiredException,
@@ -2177,7 +2253,10 @@ export const deleteDeploymentGroup: API.OperationMethod<
   DeleteDeploymentGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { applicationName: 0, deploymentGroupName: 0 },
+  },
   errors: [
     ApplicationNameRequiredException,
     DeploymentGroupNameRequiredException,
@@ -2206,7 +2285,7 @@ export const deleteGitHubAccountToken: API.OperationMethod<
   DeleteGitHubAccountTokenError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { tokenName: 0 } },
   errors: [
     GitHubAccountTokenDoesNotExistException,
     GitHubAccountTokenNameRequiredException,
@@ -2235,7 +2314,7 @@ export const deleteResourcesByExternalId: API.OperationMethod<
   DeleteResourcesByExternalIdError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { externalId: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2255,7 +2334,7 @@ export const deregisterOnPremisesInstance: API.OperationMethod<
   DeregisterOnPremisesInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { instanceName: 0 } },
   errors: [InstanceNameRequiredException, InvalidInstanceNameException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2276,7 +2355,11 @@ export const getApplication: API.OperationMethod<
   GetApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { application: o_ApplicationInfo } },
+  descriptor: {
+    service: svc,
+    input: { applicationName: 0 },
+    output: { application: o_ApplicationInfo },
+  },
   errors: [
     ApplicationDoesNotExistException,
     ApplicationNameRequiredException,
@@ -2304,7 +2387,11 @@ export const getApplicationRevision: API.OperationMethod<
   GetApplicationRevisionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { revisionInfo: o_GenericRevisionInfo } },
+  descriptor: {
+    service: svc,
+    input: { applicationName: 0, revision: i_RevisionLocation },
+    output: { revisionInfo: o_GenericRevisionInfo },
+  },
   errors: [
     ApplicationDoesNotExistException,
     ApplicationNameRequiredException,
@@ -2337,7 +2424,11 @@ export const getDeployment: API.OperationMethod<
   GetDeploymentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { deploymentInfo: o_DeploymentInfo } },
+  descriptor: {
+    service: svc,
+    input: { deploymentId: 0 },
+    output: { deploymentInfo: o_DeploymentInfo },
+  },
   errors: [
     DeploymentDoesNotExistException,
     DeploymentIdRequiredException,
@@ -2365,6 +2456,7 @@ export const getDeploymentConfig: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { deploymentConfigName: 0 },
     output: { deploymentConfigInfo: { createTime: D.ts } },
   },
   errors: [
@@ -2398,6 +2490,7 @@ export const getDeploymentGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { applicationName: 0, deploymentGroupName: 0 },
     output: { deploymentGroupInfo: o_DeploymentGroupInfo },
   },
   errors: [
@@ -2432,7 +2525,11 @@ export const getDeploymentInstance: API.OperationMethod<
   GetDeploymentInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { instanceSummary: o_InstanceSummary } },
+  descriptor: {
+    service: svc,
+    input: { deploymentId: 0, instanceId: 0 },
+    output: { instanceSummary: o_InstanceSummary },
+  },
   errors: [
     DeploymentDoesNotExistException,
     DeploymentIdRequiredException,
@@ -2468,6 +2565,7 @@ export const getDeploymentTarget: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { deploymentId: 0, targetId: 0 },
     output: { deploymentTarget: o_DeploymentTarget },
   },
   errors: [
@@ -2499,7 +2597,11 @@ export const getOnPremisesInstance: API.OperationMethod<
   GetOnPremisesInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { instanceInfo: o_InstanceInfo } },
+  descriptor: {
+    service: svc,
+    input: { instanceName: 0 },
+    output: { instanceInfo: o_InstanceInfo },
+  },
   errors: [
     InstanceNameRequiredException,
     InstanceNotRegisteredException,
@@ -2532,7 +2634,18 @@ export const listApplicationRevisions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RevisionLocation
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      applicationName: 0,
+      sortBy: 0,
+      sortOrder: 0,
+      s3Bucket: 0,
+      s3KeyPrefix: 0,
+      deployed: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     ApplicationDoesNotExistException,
     ApplicationNameRequiredException,
@@ -2566,7 +2679,7 @@ export const listApplications: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ApplicationName
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0 } },
   errors: [InvalidNextTokenException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2591,7 +2704,7 @@ export const listDeploymentConfigs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DeploymentConfigName
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0 } },
   errors: [InvalidNextTokenException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2620,7 +2733,7 @@ export const listDeploymentGroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DeploymentGroupName
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { applicationName: 0, nextToken: 0 } },
   errors: [
     ApplicationDoesNotExistException,
     ApplicationNameRequiredException,
@@ -2666,7 +2779,15 @@ export const listDeploymentInstances: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   InstanceId
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      deploymentId: 0,
+      nextToken: 0,
+      instanceStatusFilter: 0,
+      instanceTypeFilter: 0,
+    },
+  },
   errors: [
     ApplicationDoesNotExistException,
     DeploymentDoesNotExistException,
@@ -2715,7 +2836,17 @@ export const listDeployments: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DeploymentId
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      applicationName: 0,
+      deploymentGroupName: 0,
+      externalId: 0,
+      includeOnlyStatuses: 0,
+      createTimeRange: { start: 0, end: 0 },
+      nextToken: 0,
+    },
+  },
   errors: [
     ApplicationDoesNotExistException,
     ApplicationNameRequiredException,
@@ -2761,7 +2892,10 @@ export const listDeploymentTargets: API.OperationMethod<
   ListDeploymentTargetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { deploymentId: 0, nextToken: 0, targetFilters: 0 },
+  },
   errors: [
     ApplicationDoesNotExistException,
     DeploymentDoesNotExistException,
@@ -2794,7 +2928,7 @@ export const listGitHubAccountTokenNames: API.OperationMethod<
   ListGitHubAccountTokenNamesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0 } },
   errors: [
     InvalidNextTokenException,
     OperationNotSupportedException,
@@ -2823,7 +2957,14 @@ export const listOnPremisesInstances: API.OperationMethod<
   ListOnPremisesInstancesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      registrationStatus: 0,
+      tagFilters: D.list(i_TagFilter),
+      nextToken: 0,
+    },
+  },
   errors: [
     InvalidNextTokenException,
     InvalidRegistrationStatusException,
@@ -2849,7 +2990,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, NextToken: 0 } },
   errors: [
     ArnNotSupportedException,
     InvalidArnException,
@@ -2886,7 +3027,10 @@ export const putLifecycleEventHookExecutionStatus: API.OperationMethod<
   PutLifecycleEventHookExecutionStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { deploymentId: 0, lifecycleEventHookExecutionId: 0, status: 0 },
+  },
   errors: [
     DeploymentDoesNotExistException,
     DeploymentIdRequiredException,
@@ -2918,7 +3062,10 @@ export const registerApplicationRevision: API.OperationMethod<
   RegisterApplicationRevisionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { applicationName: 0, description: 0, revision: i_RevisionLocation },
+  },
   errors: [
     ApplicationDoesNotExistException,
     ApplicationNameRequiredException,
@@ -2955,7 +3102,10 @@ export const registerOnPremisesInstance: API.OperationMethod<
   RegisterOnPremisesInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { instanceName: 0, iamSessionArn: 0, iamUserArn: 0 },
+  },
   errors: [
     IamArnRequiredException,
     IamSessionArnAlreadyRegisteredException,
@@ -2991,7 +3141,10 @@ export const removeTagsFromOnPremisesInstances: API.OperationMethod<
   RemoveTagsFromOnPremisesInstancesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { tags: D.list(i_Tag), instanceNames: 0 },
+  },
   errors: [
     InstanceLimitExceededException,
     InstanceNameRequiredException,
@@ -3024,7 +3177,7 @@ export const skipWaitTimeForInstanceTermination: API.OperationMethod<
   SkipWaitTimeForInstanceTerminationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { deploymentId: 0 } },
   errors: [
     DeploymentAlreadyCompletedException,
     DeploymentDoesNotExistException,
@@ -3055,7 +3208,10 @@ export const stopDeployment: API.OperationMethod<
   StopDeploymentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { deploymentId: 0, autoRollbackEnabled: 0 },
+  },
   errors: [
     DeploymentAlreadyCompletedException,
     DeploymentDoesNotExistException,
@@ -3089,7 +3245,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     ApplicationDoesNotExistException,
     ArnNotSupportedException,
@@ -3126,7 +3282,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     ApplicationDoesNotExistException,
     ArnNotSupportedException,
@@ -3157,7 +3313,10 @@ export const updateApplication: API.OperationMethod<
   UpdateApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { applicationName: 0, newApplicationName: 0 },
+  },
   errors: [
     ApplicationAlreadyExistsException,
     ApplicationDoesNotExistException,
@@ -3211,7 +3370,30 @@ export const updateDeploymentGroup: API.OperationMethod<
   UpdateDeploymentGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      applicationName: 0,
+      currentDeploymentGroupName: 0,
+      newDeploymentGroupName: 0,
+      deploymentConfigName: 0,
+      ec2TagFilters: D.list(i_EC2TagFilter),
+      onPremisesInstanceTagFilters: D.list(i_TagFilter),
+      autoScalingGroups: 0,
+      serviceRoleArn: 0,
+      triggerConfigurations: D.list(i_TriggerConfig),
+      alarmConfiguration: i_AlarmConfiguration,
+      autoRollbackConfiguration: i_AutoRollbackConfiguration,
+      outdatedInstancesStrategy: 0,
+      deploymentStyle: i_DeploymentStyle,
+      blueGreenDeploymentConfiguration: i_BlueGreenDeploymentConfiguration,
+      loadBalancerInfo: i_LoadBalancerInfo,
+      ec2TagSet: i_EC2TagSet,
+      ecsServices: D.list(i_ECSService),
+      onPremisesTagSet: i_OnPremisesTagSet,
+      terminationHookEnabled: 0,
+    },
+  },
   errors: [
     AlarmsLimitExceededException,
     ApplicationDoesNotExistException,
@@ -3250,6 +3432,58 @@ export const updateDeploymentGroup: API.OperationMethod<
   operationName: "UpdateDeploymentGroup",
 })) as any;
 
+const i_AlarmConfiguration: D.LazyStruct = () => ({
+  enabled: 0,
+  ignorePollAlarmFailure: 0,
+  alarms: D.list({ name: 0 }),
+});
+const i_AutoRollbackConfiguration: D.LazyStruct = () => ({
+  enabled: 0,
+  events: 0,
+});
+const i_BlueGreenDeploymentConfiguration: D.LazyStruct = () => ({
+  terminateBlueInstancesOnDeploymentSuccess: {
+    action: 0,
+    terminationWaitTimeInMinutes: 0,
+  },
+  deploymentReadyOption: { actionOnTimeout: 0, waitTimeInMinutes: 0 },
+  greenFleetProvisioningOption: { action: 0 },
+});
+const i_DeploymentStyle: D.LazyStruct = () => ({
+  deploymentType: 0,
+  deploymentOption: 0,
+});
+const i_EC2TagFilter: D.LazyStruct = () => ({ Key: 0, Value: 0, Type: 0 });
+const i_EC2TagSet: D.LazyStruct = () => ({
+  ec2TagSetList: D.list(D.list(i_EC2TagFilter)),
+});
+const i_ECSService: D.LazyStruct = () => ({ serviceName: 0, clusterName: 0 });
+const i_LoadBalancerInfo: D.LazyStruct = () => ({
+  elbInfoList: D.list({ name: 0 }),
+  targetGroupInfoList: D.list(i_TargetGroupInfo),
+  targetGroupPairInfoList: D.list({
+    targetGroups: D.list(i_TargetGroupInfo),
+    prodTrafficRoute: i_TrafficRoute,
+    testTrafficRoute: i_TrafficRoute,
+  }),
+});
+const i_OnPremisesTagSet: D.LazyStruct = () => ({
+  onPremisesTagSetList: D.list(D.list(i_TagFilter)),
+});
+const i_RevisionLocation: D.LazyStruct = () => ({
+  revisionType: 0,
+  s3Location: { bucket: 0, key: 0, bundleType: 0, version: 0, eTag: 0 },
+  gitHubLocation: { repository: 0, commitId: 0 },
+  string: { content: 0, sha256: 0 },
+  appSpecContent: { content: 0, sha256: 0 },
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_TagFilter: D.LazyStruct = () => ({ Key: 0, Value: 0, Type: 0 });
+const i_TriggerConfig: D.LazyStruct = () => ({
+  triggerName: 0,
+  triggerTargetArn: 0,
+  triggerEvents: 0,
+});
 const o_ApplicationInfo: D.LazyStruct = () => ({ createTime: D.ts });
 const o_DeploymentGroupInfo: D.LazyStruct = () => ({
   lastSuccessfulDeployment: o_LastDeploymentInfo,
@@ -3288,6 +3522,8 @@ const o_InstanceSummary: D.LazyStruct = () => ({
   lastUpdatedAt: D.ts,
   lifecycleEvents: D.list(o_LifecycleEvent),
 });
+const i_TargetGroupInfo: D.LazyStruct = () => ({ name: 0 });
+const i_TrafficRoute: D.LazyStruct = () => ({ listenerArns: 0 });
 const o_LastDeploymentInfo: D.LazyStruct = () => ({
   endTime: D.ts,
   createTime: D.ts,

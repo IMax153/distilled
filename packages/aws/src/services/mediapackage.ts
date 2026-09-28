@@ -910,6 +910,7 @@ export const configureLogs: API.OperationMethod<
         wire: "egressAccessLogs",
         shape: { LogGroupName: D.m({ wire: "logGroupName" }) },
       }),
+      Id: 0,
       IngressAccessLogs: D.m({
         wire: "ingressAccessLogs",
         shape: { LogGroupName: D.m({ wire: "logGroupName" }) },
@@ -1152,7 +1153,7 @@ export const deleteChannel: API.OperationMethod<
   DeleteChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /channels/{Id}" },
+  descriptor: { service: svc, http: "DELETE /channels/{Id}", input: { Id: 0 } },
   errors: [
     ForbiddenException,
     InternalServerErrorException,
@@ -1183,7 +1184,11 @@ export const deleteOriginEndpoint: API.OperationMethod<
   DeleteOriginEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /origin_endpoints/{Id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /origin_endpoints/{Id}",
+    input: { Id: 0 },
+  },
   errors: [
     ForbiddenException,
     InternalServerErrorException,
@@ -1217,6 +1222,7 @@ export const describeChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /channels/{Id}",
+    input: { Id: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CreatedAt: D.m({ wire: "createdAt" }),
@@ -1267,6 +1273,7 @@ export const describeHarvestJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /harvest_jobs/{Id}",
+    input: { Id: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       ChannelId: D.m({ wire: "channelId" }),
@@ -1312,6 +1319,7 @@ export const describeOriginEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /origin_endpoints/{Id}",
+    input: { Id: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       Authorization: D.m({ wire: "authorization", shape: o_Authorization }),
@@ -1560,6 +1568,7 @@ export const listTagsForResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
   },
   errors: [],
@@ -1588,6 +1597,7 @@ export const rotateChannelCredentials: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /channels/{Id}/credentials",
+    input: { Id: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CreatedAt: D.m({ wire: "createdAt" }),
@@ -1638,6 +1648,7 @@ export const rotateIngestEndpointCredentials: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /channels/{Id}/ingest_endpoints/{IngestEndpointId}/credentials",
+    input: { Id: 0, IngestEndpointId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CreatedAt: D.m({ wire: "createdAt" }),
@@ -1681,7 +1692,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags/{ResourceArn}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: { ResourceArn: 0, Tags: D.m({ wire: "tags" }) },
     body: true,
   },
   errors: [],
@@ -1703,7 +1714,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [],
   protocol: AwsProtocol,
@@ -1731,7 +1742,7 @@ export const updateChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /channels/{Id}",
-    input: { Description: D.m({ wire: "description" }) },
+    input: { Description: D.m({ wire: "description" }), Id: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CreatedAt: D.m({ wire: "createdAt" }),
@@ -1792,6 +1803,7 @@ export const updateOriginEndpoint: API.OperationMethod<
       DashPackage: D.m({ wire: "dashPackage", shape: i_DashPackage }),
       Description: D.m({ wire: "description" }),
       HlsPackage: D.m({ wire: "hlsPackage", shape: i_HlsPackage }),
+      Id: 0,
       ManifestName: D.m({ wire: "manifestName" }),
       MssPackage: D.m({ wire: "mssPackage", shape: i_MssPackage }),
       Origination: D.m({ wire: "origination" }),

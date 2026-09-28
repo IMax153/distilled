@@ -1728,7 +1728,10 @@ export const addTags: API.OperationMethod<
   AddTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceId: 0, TagsList: D.list(i_Tag) },
+  },
   errors: [
     ChannelARNInvalidException,
     ChannelNotFoundException,
@@ -1778,7 +1781,10 @@ export const cancelQuery: API.OperationMethod<
   CancelQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { EventDataStore: 0, QueryId: 0, EventDataStoreOwnerAccountId: 0 },
+  },
   errors: [
     ConflictException,
     EventDataStoreARNInvalidException,
@@ -1821,7 +1827,15 @@ export const createChannel: API.OperationMethod<
   CreateChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Source: 0,
+      Destinations: D.list(i_Destination),
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     ChannelAlreadyExistsException,
     ChannelMaxLimitExceededException,
@@ -1876,7 +1890,16 @@ export const createDashboard: API.OperationMethod<
   CreateDashboardError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      RefreshSchedule: i_RefreshSchedule,
+      TagsList: D.list(i_Tag),
+      TerminationProtectionEnabled: 0,
+      Widgets: D.list(i_RequestWidget),
+    },
+  },
   errors: [
     ConflictException,
     EventDataStoreNotFoundException,
@@ -1925,6 +1948,18 @@ export const createEventDataStore: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Name: 0,
+      AdvancedEventSelectors: D.list(i_AdvancedEventSelector),
+      MultiRegionEnabled: 0,
+      OrganizationEnabled: 0,
+      RetentionPeriod: 0,
+      TerminationProtectionEnabled: 0,
+      TagsList: D.list(i_Tag),
+      KmsKeyId: 0,
+      StartIngestion: 0,
+      BillingMode: 0,
+    },
     output: { CreatedTimestamp: D.ts, UpdatedTimestamp: D.ts },
   },
   errors: [
@@ -1998,7 +2033,23 @@ export const createTrail: API.OperationMethod<
   CreateTrailError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      S3BucketName: 0,
+      S3KeyPrefix: 0,
+      SnsTopicName: 0,
+      IncludeGlobalServiceEvents: 0,
+      IsMultiRegionTrail: 0,
+      EnableLogFileValidation: 0,
+      CloudWatchLogsLogGroupArn: 0,
+      CloudWatchLogsRoleArn: 0,
+      KmsKeyId: 0,
+      IsOrganizationTrail: 0,
+      TagsList: D.list(i_Tag),
+    },
+  },
   errors: [
     CloudTrailAccessNotEnabledException,
     CloudTrailInvalidClientTokenIdException,
@@ -2054,7 +2105,7 @@ export const deleteChannel: API.OperationMethod<
   DeleteChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Channel: 0 } },
   errors: [
     ChannelARNInvalidException,
     ChannelNotFoundException,
@@ -2080,7 +2131,7 @@ export const deleteDashboard: API.OperationMethod<
   DeleteDashboardError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DashboardId: 0 } },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -2127,7 +2178,7 @@ export const deleteEventDataStore: API.OperationMethod<
   DeleteEventDataStoreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EventDataStore: 0 } },
   errors: [
     ChannelExistsForEDSException,
     ConflictException,
@@ -2167,7 +2218,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     ConflictException,
     OperationNotPermittedException,
@@ -2216,7 +2267,7 @@ export const deleteTrail: API.OperationMethod<
   DeleteTrailError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     CloudTrailARNInvalidException,
     ConflictException,
@@ -2258,7 +2309,7 @@ export const deregisterOrganizationDelegatedAdmin: API.OperationMethod<
   DeregisterOrganizationDelegatedAdminError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DelegatedAdminAccountId: 0 } },
   errors: [
     AccountNotFoundException,
     AccountNotRegisteredException,
@@ -2305,6 +2356,13 @@ export const describeQuery: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      EventDataStore: 0,
+      QueryId: 0,
+      QueryAlias: 0,
+      RefreshId: 0,
+      EventDataStoreOwnerAccountId: 0,
+    },
     output: { QueryStatistics: { CreationTime: D.ts } },
   },
   errors: [
@@ -2339,7 +2397,10 @@ export const describeTrails: API.OperationMethod<
   DescribeTrailsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { trailNameList: 0, includeShadowTrails: 0 },
+  },
   errors: [
     CloudTrailARNInvalidException,
     InvalidTrailNameException,
@@ -2381,7 +2442,7 @@ export const disableFederation: API.OperationMethod<
   DisableFederationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EventDataStore: 0 } },
   errors: [
     AccessDeniedException,
     CloudTrailAccessNotEnabledException,
@@ -2440,7 +2501,10 @@ export const enableFederation: API.OperationMethod<
   EnableFederationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { EventDataStore: 0, FederationRoleArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     CloudTrailAccessNotEnabledException,
@@ -2497,7 +2561,7 @@ export const generateQuery: API.OperationMethod<
   GenerateQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EventDataStores: 0, Prompt: 0 } },
   errors: [
     EventDataStoreARNInvalidException,
     EventDataStoreNotFoundException,
@@ -2530,6 +2594,7 @@ export const getChannel: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Channel: 0 },
     output: {
       IngestionStatus: {
         LatestIngestionSuccessTime: D.ts,
@@ -2563,6 +2628,7 @@ export const getDashboard: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DashboardId: 0 },
     output: { CreatedTimestamp: D.ts, UpdatedTimestamp: D.ts },
   },
   errors: [ResourceNotFoundException, UnsupportedOperationException],
@@ -2594,7 +2660,7 @@ export const getEventConfiguration: API.OperationMethod<
   GetEventConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrailName: 0, EventDataStore: 0 } },
   errors: [
     CloudTrailARNInvalidException,
     EventDataStoreARNInvalidException,
@@ -2634,6 +2700,7 @@ export const getEventDataStore: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { EventDataStore: 0 },
     output: { CreatedTimestamp: D.ts, UpdatedTimestamp: D.ts },
   },
   errors: [
@@ -2687,7 +2754,7 @@ export const getEventSelectors: API.OperationMethod<
   GetEventSelectorsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrailName: 0 } },
   errors: [
     CloudTrailARNInvalidException,
     InvalidTrailNameException,
@@ -2718,6 +2785,7 @@ export const getImport: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ImportId: 0 },
     output: {
       StartEventTime: D.ts,
       EndEventTime: D.ts,
@@ -2766,7 +2834,7 @@ export const getInsightSelectors: API.OperationMethod<
   GetInsightSelectorsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrailName: 0, EventDataStore: 0 } },
   errors: [
     CloudTrailARNInvalidException,
     InsightNotEnabledException,
@@ -2808,7 +2876,16 @@ export const getQueryResults: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EventDataStore: 0,
+      QueryId: 0,
+      NextToken: 0,
+      MaxQueryResults: 0,
+      EventDataStoreOwnerAccountId: 0,
+    },
+  },
   errors: [
     EventDataStoreARNInvalidException,
     EventDataStoreNotFoundException,
@@ -2845,7 +2922,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     OperationNotPermittedException,
     ResourceARNNotValidException,
@@ -2875,7 +2952,7 @@ export const getTrail: API.OperationMethod<
   GetTrailError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     CloudTrailARNInvalidException,
     InvalidTrailNameException,
@@ -2910,6 +2987,7 @@ export const getTrailStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0 },
     output: {
       LatestDeliveryTime: D.ts,
       LatestNotificationTime: D.ts,
@@ -2946,7 +3024,7 @@ export const listChannels: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [
     InvalidNextTokenException,
     OperationNotPermittedException,
@@ -2972,7 +3050,10 @@ export const listDashboards: API.OperationMethod<
   ListDashboardsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NamePrefix: 0, Type: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [UnsupportedOperationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2999,6 +3080,7 @@ export const listEventDataStores: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: {
       EventDataStores: D.list({
         CreatedTimestamp: D.ts,
@@ -3041,6 +3123,7 @@ export const listImportFailures: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ImportId: 0, MaxResults: 0, NextToken: 0 },
     output: { Failures: D.list({ LastUpdatedTime: D.ts }) },
   },
   errors: [
@@ -3080,6 +3163,7 @@ export const listImports: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, Destination: 0, ImportStatus: 0, NextToken: 0 },
     output: {
       Imports: D.list({ CreatedTimestamp: D.ts, UpdatedTimestamp: D.ts }),
     },
@@ -3132,7 +3216,19 @@ export const listInsightsData: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Event
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Events: D.list(o_Event) } },
+  descriptor: {
+    service: svc,
+    input: {
+      InsightSource: 0,
+      DataType: 0,
+      Dimensions: 0,
+      StartTime: 0,
+      EndTime: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+    output: { Events: D.list(o_Event) },
+  },
   errors: [
     InvalidParameterException,
     OperationNotPermittedException,
@@ -3184,7 +3280,23 @@ export const listInsightsMetricData: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Timestamps: D.list(D.ts) } },
+  descriptor: {
+    service: svc,
+    input: {
+      TrailName: 0,
+      EventSource: 0,
+      EventName: 0,
+      InsightType: 0,
+      ErrorCode: 0,
+      StartTime: 0,
+      EndTime: 0,
+      Period: 0,
+      DataType: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+    output: { Timestamps: D.list(D.ts) },
+  },
   errors: [
     InvalidParameterException,
     InvalidTrailNameException,
@@ -3226,6 +3338,7 @@ export const listPublicKeys: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { StartTime: 0, EndTime: 0, NextToken: 0 },
     output: {
       PublicKeyList: D.list({
         Value: D.blob,
@@ -3281,6 +3394,14 @@ export const listQueries: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      EventDataStore: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      StartTime: 0,
+      EndTime: 0,
+      QueryStatus: 0,
+    },
     output: { Queries: D.list({ CreationTime: D.ts }) },
   },
   errors: [
@@ -3330,7 +3451,7 @@ export const listTags: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ResourceTag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceIdList: 0, NextToken: 0 } },
   errors: [
     ChannelARNInvalidException,
     CloudTrailARNInvalidException,
@@ -3369,7 +3490,7 @@ export const listTrails: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TrailInfo
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0 } },
   errors: [OperationNotPermittedException, UnsupportedOperationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3437,7 +3558,18 @@ export const lookupEvents: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Event
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Events: D.list(o_Event) } },
+  descriptor: {
+    service: svc,
+    input: {
+      LookupAttributes: D.list({ AttributeKey: 0, AttributeValue: 0 }),
+      StartTime: 0,
+      EndTime: 0,
+      EventCategory: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+    output: { Events: D.list(o_Event) },
+  },
   errors: [
     InvalidEventCategoryException,
     InvalidLookupAttributesException,
@@ -3488,7 +3620,16 @@ export const putEventConfiguration: API.OperationMethod<
   PutEventConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TrailName: 0,
+      EventDataStore: 0,
+      MaxEventSize: 0,
+      ContextKeySelectors: D.list({ Type: 0, Equals: 0 }),
+      AggregationConfigurations: D.list({ Templates: 0, EventCategory: 0 }),
+    },
+  },
   errors: [
     CloudTrailARNInvalidException,
     ConflictException,
@@ -3593,7 +3734,19 @@ export const putEventSelectors: API.OperationMethod<
   PutEventSelectorsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TrailName: 0,
+      EventSelectors: D.list({
+        ReadWriteType: 0,
+        IncludeManagementEvents: 0,
+        DataResources: D.list({ Type: 0, Values: 0 }),
+        ExcludeManagementEventSources: 0,
+      }),
+      AdvancedEventSelectors: D.list(i_AdvancedEventSelector),
+    },
+  },
   errors: [
     CloudTrailARNInvalidException,
     ConflictException,
@@ -3666,7 +3819,15 @@ export const putInsightSelectors: API.OperationMethod<
   PutInsightSelectorsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TrailName: 0,
+      InsightSelectors: D.list({ InsightType: 0, EventCategories: 0 }),
+      EventDataStore: 0,
+      InsightsDestination: 0,
+    },
+  },
   errors: [
     CloudTrailARNInvalidException,
     InsufficientEncryptionPolicyException,
@@ -3710,7 +3871,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, ResourcePolicy: 0 } },
   errors: [
     ConflictException,
     OperationNotPermittedException,
@@ -3750,7 +3911,7 @@ export const registerOrganizationDelegatedAdmin: API.OperationMethod<
   RegisterOrganizationDelegatedAdminError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MemberAccountId: 0 } },
   errors: [
     AccountNotFoundException,
     AccountRegisteredException,
@@ -3798,7 +3959,10 @@ export const removeTags: API.OperationMethod<
   RemoveTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceId: 0, TagsList: D.list(i_Tag) },
+  },
   errors: [
     ChannelARNInvalidException,
     ChannelNotFoundException,
@@ -3850,6 +4014,7 @@ export const restoreEventDataStore: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { EventDataStore: 0 },
     output: { CreatedTimestamp: D.ts, UpdatedTimestamp: D.ts },
   },
   errors: [
@@ -3887,7 +4052,10 @@ export const searchSampleQueries: API.OperationMethod<
   SearchSampleQueriesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SearchPhrase: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     InvalidParameterException,
     OperationNotPermittedException,
@@ -3917,7 +4085,10 @@ export const startDashboardRefresh: API.OperationMethod<
   StartDashboardRefreshError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DashboardId: 0, QueryParameterValues: 0 },
+  },
   errors: [
     EventDataStoreNotFoundException,
     InactiveEventDataStoreException,
@@ -3953,7 +4124,7 @@ export const startEventDataStoreIngestion: API.OperationMethod<
   StartEventDataStoreIngestionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EventDataStore: 0 } },
   errors: [
     ConflictException,
     EventDataStoreARNInvalidException,
@@ -4014,6 +4185,15 @@ export const startImport: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Destinations: 0,
+      ImportSource: {
+        S3: { S3LocationUri: 0, S3BucketRegion: 0, S3BucketAccessRoleArn: 0 },
+      },
+      StartEventTime: 0,
+      EndEventTime: 0,
+      ImportId: 0,
+    },
     output: {
       StartEventTime: D.ts,
       EndEventTime: D.ts,
@@ -4065,7 +4245,7 @@ export const startLogging: API.OperationMethod<
   StartLoggingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     CloudTrailARNInvalidException,
     ConflictException,
@@ -4115,7 +4295,16 @@ export const startQuery: API.OperationMethod<
   StartQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      QueryStatement: 0,
+      DeliveryS3Uri: 0,
+      QueryAlias: 0,
+      QueryParameters: 0,
+      EventDataStoreOwnerAccountId: 0,
+    },
+  },
   errors: [
     EventDataStoreARNInvalidException,
     EventDataStoreNotFoundException,
@@ -4160,7 +4349,7 @@ export const stopEventDataStoreIngestion: API.OperationMethod<
   StopEventDataStoreIngestionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EventDataStore: 0 } },
   errors: [
     ConflictException,
     EventDataStoreARNInvalidException,
@@ -4196,6 +4385,7 @@ export const stopImport: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ImportId: 0 },
     output: {
       CreatedTimestamp: D.ts,
       UpdatedTimestamp: D.ts,
@@ -4242,7 +4432,7 @@ export const stopLogging: API.OperationMethod<
   StopLoggingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     CloudTrailARNInvalidException,
     ConflictException,
@@ -4282,7 +4472,10 @@ export const updateChannel: API.OperationMethod<
   UpdateChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Channel: 0, Destinations: D.list(i_Destination), Name: 0 },
+  },
   errors: [
     ChannelAlreadyExistsException,
     ChannelARNInvalidException,
@@ -4328,6 +4521,12 @@ export const updateDashboard: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DashboardId: 0,
+      Widgets: D.list(i_RequestWidget),
+      RefreshSchedule: i_RefreshSchedule,
+      TerminationProtectionEnabled: 0,
+    },
     output: { CreatedTimestamp: D.ts, UpdatedTimestamp: D.ts },
   },
   errors: [
@@ -4391,6 +4590,17 @@ export const updateEventDataStore: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      EventDataStore: 0,
+      Name: 0,
+      AdvancedEventSelectors: D.list(i_AdvancedEventSelector),
+      MultiRegionEnabled: 0,
+      OrganizationEnabled: 0,
+      RetentionPeriod: 0,
+      TerminationProtectionEnabled: 0,
+      KmsKeyId: 0,
+      BillingMode: 0,
+    },
     output: { CreatedTimestamp: D.ts, UpdatedTimestamp: D.ts },
   },
   errors: [
@@ -4471,7 +4681,22 @@ export const updateTrail: API.OperationMethod<
   UpdateTrailError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      S3BucketName: 0,
+      S3KeyPrefix: 0,
+      SnsTopicName: 0,
+      IncludeGlobalServiceEvents: 0,
+      IsMultiRegionTrail: 0,
+      EnableLogFileValidation: 0,
+      CloudWatchLogsLogGroupArn: 0,
+      CloudWatchLogsRoleArn: 0,
+      KmsKeyId: 0,
+      IsOrganizationTrail: 0,
+    },
+  },
   errors: [
     CloudTrailAccessNotEnabledException,
     CloudTrailARNInvalidException,
@@ -4512,4 +4737,28 @@ export const updateTrail: API.OperationMethod<
   operationName: "UpdateTrail",
 })) as any;
 
+const i_AdvancedEventSelector: D.LazyStruct = () => ({
+  Name: 0,
+  FieldSelectors: D.list({
+    Field: 0,
+    Equals: 0,
+    StartsWith: 0,
+    EndsWith: 0,
+    NotEquals: 0,
+    NotStartsWith: 0,
+    NotEndsWith: 0,
+  }),
+});
+const i_Destination: D.LazyStruct = () => ({ Type: 0, Location: 0 });
+const i_RefreshSchedule: D.LazyStruct = () => ({
+  Frequency: { Unit: 0, Value: 0 },
+  Status: 0,
+  TimeOfDay: 0,
+});
+const i_RequestWidget: D.LazyStruct = () => ({
+  QueryStatement: 0,
+  QueryParameters: 0,
+  ViewProperties: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Event: D.LazyStruct = () => ({ EventTime: D.ts });

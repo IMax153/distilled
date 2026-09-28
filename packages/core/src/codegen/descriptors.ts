@@ -49,8 +49,11 @@ export interface DescriptorProtocol {
   readonly xml: boolean;
   /** Operation-root members may carry HTTP bindings. */
   readonly rest: boolean;
-  /** Request bodies list every structure member in model order (XML schemas). */
-  readonly orderedRequests: boolean;
+  /**
+   * Request structures list every member in model order: encoders drop keys
+   * the model doesn't have, and XML schemas validate element order.
+   */
+  readonly closedRequests: boolean;
   /** Request maps must be marked (form/XML bodies can't tell a map from a structure). */
   readonly markRequestMaps: boolean;
   /** List item element names (`xmlName` on list members) are honored. */
@@ -119,7 +122,7 @@ export const makeDescriptorCompiler = (
   const needs = new Map<string, boolean>();
   const key = (id: string, dir: Direction) => `${dir}|${id}`;
   const alwaysStruct = (dir: Direction) =>
-    dir === "in" && protocol.orderedRequests;
+    dir === "in" && protocol.closedRequests;
   const structNeeded = (id: string, dir: Direction): boolean =>
     alwaysStruct(dir) || needs.get(key(id, dir)) === true;
 
@@ -133,16 +136,19 @@ export const makeDescriptorCompiler = (
     location: Location,
   ): string | undefined => {
     if (dir === "out") return `${D}.ts`;
-    const explicit = traits[`${S}timestampFormat`] as string | undefined;
-    const fallback =
+    // Headers default to http-date; body, query and label members use the
+    // protocol's body format (epoch-seconds for JSON protocols).
+    const format =
+      (traits[`${S}timestampFormat`] as string | undefined) ??
+      (location === "header" ? "http-date" : protocol.bodyTimestamp);
+    // The runtime's own default for this location; emit only a difference.
+    const runtimeDefault =
       location === "header"
         ? "http-date"
         : location === "body"
           ? protocol.bodyTimestamp
           : "date-time";
-    return explicit !== undefined && explicit !== fallback
-      ? `${D}.tsAs(${q(explicit)})`
-      : undefined;
+    return format !== runtimeDefault ? `${D}.tsAs(${q(format)})` : undefined;
   };
 
   /** Expression for a value of `target` (undefined: no data needed). */
@@ -163,11 +169,10 @@ export const makeDescriptorCompiler = (
       case "timestamp":
         return timestampExpr(traits, dir, location);
       case "blob":
-        if (traits[`${S}streaming`] !== undefined || payload) {
-          return `${D}.stream`;
-        }
+        if (traits[`${S}streaming`] !== undefined) return `${D}.stream`;
         if (dir === "out") return sensitive ? `${D}.secretBlob` : `${D}.blob`;
-        return undefined;
+        // A non-streaming payload blob is sent as raw bytes (not base64 JSON)
+        return payload ? `${D}.blob` : undefined;
       case "string":
       case "enum":
         if (payload) return `${D}.text`;
@@ -359,7 +364,7 @@ export const makeDescriptorCompiler = (
     const def = shape(id);
     const parts: string[] = [];
     let any = false;
-    if (protocol.orderedRequests && dir === "in") {
+    if (protocol.closedRequests && dir === "in") {
       const ns = def.traits?.[`${S}xmlNamespace`];
       if (ns !== undefined) {
         parts.push(`"@xmlns": ${q(ns.uri)}`);
@@ -371,8 +376,8 @@ export const makeDescriptorCompiler = (
       if (expr !== undefined) {
         parts.push(`${tsKey(name)}: ${expr}`);
         any = true;
-      } else if (protocol.orderedRequests && dir === "in") {
-        // XML element order: list plain members too
+      } else if (protocol.closedRequests && dir === "in") {
+        // Closed structure: list plain members too
         parts.push(`${tsKey(name)}: 0`);
       }
     }

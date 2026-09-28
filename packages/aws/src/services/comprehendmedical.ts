@@ -742,6 +742,7 @@ export const describeEntitiesDetectionV2Job: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: {
       ComprehendMedicalAsyncJobProperties:
         o_ComprehendMedicalAsyncJobProperties,
@@ -776,6 +777,7 @@ export const describeICD10CMInferenceJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: {
       ComprehendMedicalAsyncJobProperties:
         o_ComprehendMedicalAsyncJobProperties,
@@ -810,6 +812,7 @@ export const describePHIDetectionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: {
       ComprehendMedicalAsyncJobProperties:
         o_ComprehendMedicalAsyncJobProperties,
@@ -844,6 +847,7 @@ export const describeRxNormInferenceJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: {
       ComprehendMedicalAsyncJobProperties:
         o_ComprehendMedicalAsyncJobProperties,
@@ -877,6 +881,7 @@ export const describeSNOMEDCTInferenceJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: {
       ComprehendMedicalAsyncJobProperties:
         o_ComprehendMedicalAsyncJobProperties,
@@ -914,7 +919,7 @@ export const detectEntities: API.OperationMethod<
   DetectEntitiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Text: 0 } },
   errors: [
     InternalServerException,
     InvalidEncodingException,
@@ -956,7 +961,7 @@ export const detectEntitiesV2: API.OperationMethod<
   DetectEntitiesV2Error,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Text: 0 } },
   errors: [
     InternalServerException,
     InvalidEncodingException,
@@ -989,7 +994,7 @@ export const detectPHI: API.OperationMethod<
   DetectPHIError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Text: 0 } },
   errors: [
     InternalServerException,
     InvalidEncodingException,
@@ -1023,7 +1028,7 @@ export const inferICD10CM: API.OperationMethod<
   InferICD10CMError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Text: 0 } },
   errors: [
     InternalServerException,
     InvalidEncodingException,
@@ -1056,7 +1061,7 @@ export const inferRxNorm: API.OperationMethod<
   InferRxNormError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Text: 0 } },
   errors: [
     InternalServerException,
     InvalidEncodingException,
@@ -1087,7 +1092,7 @@ export const inferSNOMEDCT: API.OperationMethod<
   InferSNOMEDCTError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Text: 0 } },
   errors: [
     InternalServerException,
     InvalidEncodingException,
@@ -1118,6 +1123,11 @@ export const listEntitiesDetectionV2Jobs: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: i_ComprehendMedicalAsyncJobFilter,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       ComprehendMedicalAsyncJobPropertiesList: D.list(
         o_ComprehendMedicalAsyncJobProperties,
@@ -1152,6 +1162,11 @@ export const listICD10CMInferenceJobs: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: i_ComprehendMedicalAsyncJobFilter,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       ComprehendMedicalAsyncJobPropertiesList: D.list(
         o_ComprehendMedicalAsyncJobProperties,
@@ -1187,6 +1202,11 @@ export const listPHIDetectionJobs: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: i_ComprehendMedicalAsyncJobFilter,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       ComprehendMedicalAsyncJobPropertiesList: D.list(
         o_ComprehendMedicalAsyncJobProperties,
@@ -1221,6 +1241,11 @@ export const listRxNormInferenceJobs: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: i_ComprehendMedicalAsyncJobFilter,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       ComprehendMedicalAsyncJobPropertiesList: D.list(
         o_ComprehendMedicalAsyncJobProperties,
@@ -1255,6 +1280,11 @@ export const listSNOMEDCTInferenceJobs: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: i_ComprehendMedicalAsyncJobFilter,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       ComprehendMedicalAsyncJobPropertiesList: D.list(
         o_ComprehendMedicalAsyncJobProperties,
@@ -1290,7 +1320,15 @@ export const startEntitiesDetectionV2Job: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      InputDataConfig: i_InputDataConfig,
+      OutputDataConfig: i_OutputDataConfig,
+      DataAccessRoleArn: 0,
+      JobName: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      KMSKey: 0,
+      LanguageCode: 0,
+    },
   },
   errors: [
     InternalServerException,
@@ -1322,7 +1360,15 @@ export const startICD10CMInferenceJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      InputDataConfig: i_InputDataConfig,
+      OutputDataConfig: i_OutputDataConfig,
+      DataAccessRoleArn: 0,
+      JobName: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      KMSKey: 0,
+      LanguageCode: 0,
+    },
   },
   errors: [
     InternalServerException,
@@ -1353,7 +1399,15 @@ export const startPHIDetectionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      InputDataConfig: i_InputDataConfig,
+      OutputDataConfig: i_OutputDataConfig,
+      DataAccessRoleArn: 0,
+      JobName: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      KMSKey: 0,
+      LanguageCode: 0,
+    },
   },
   errors: [
     InternalServerException,
@@ -1385,7 +1439,15 @@ export const startRxNormInferenceJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      InputDataConfig: i_InputDataConfig,
+      OutputDataConfig: i_OutputDataConfig,
+      DataAccessRoleArn: 0,
+      JobName: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      KMSKey: 0,
+      LanguageCode: 0,
+    },
   },
   errors: [
     InternalServerException,
@@ -1415,7 +1477,15 @@ export const startSNOMEDCTInferenceJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      InputDataConfig: i_InputDataConfig,
+      OutputDataConfig: i_OutputDataConfig,
+      DataAccessRoleArn: 0,
+      JobName: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      KMSKey: 0,
+      LanguageCode: 0,
+    },
   },
   errors: [
     InternalServerException,
@@ -1442,7 +1512,7 @@ export const stopEntitiesDetectionV2Job: API.OperationMethod<
   StopEntitiesDetectionV2JobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -1467,7 +1537,7 @@ export const stopICD10CMInferenceJob: API.OperationMethod<
   StopICD10CMInferenceJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -1492,7 +1562,7 @@ export const stopPHIDetectionJob: API.OperationMethod<
   StopPHIDetectionJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -1517,7 +1587,7 @@ export const stopRxNormInferenceJob: API.OperationMethod<
   StopRxNormInferenceJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -1543,7 +1613,7 @@ export const stopSNOMEDCTInferenceJob: API.OperationMethod<
   StopSNOMEDCTInferenceJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -1555,6 +1625,14 @@ export const stopSNOMEDCTInferenceJob: API.OperationMethod<
   operationName: "StopSNOMEDCTInferenceJob",
 })) as any;
 
+const i_ComprehendMedicalAsyncJobFilter: D.LazyStruct = () => ({
+  JobName: 0,
+  JobStatus: 0,
+  SubmitTimeBefore: 0,
+  SubmitTimeAfter: 0,
+});
+const i_InputDataConfig: D.LazyStruct = () => ({ S3Bucket: 0, S3Key: 0 });
+const i_OutputDataConfig: D.LazyStruct = () => ({ S3Bucket: 0, S3Key: 0 });
 const o_ComprehendMedicalAsyncJobProperties: D.LazyStruct = () => ({
   SubmitTime: D.ts,
   EndTime: D.ts,

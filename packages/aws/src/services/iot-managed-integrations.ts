@@ -1649,7 +1649,14 @@ export const createAccountAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /account-associations",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      ConnectorDestinationId: 0,
+      Name: 0,
+      Description: 0,
+      Tags: 0,
+      GeneralAuthorization: { AuthMaterialName: 0 },
+    },
     output: { OAuthAuthorizationUrl: D.secret },
     body: true,
   },
@@ -1687,7 +1694,13 @@ export const createCloudConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cloud-connectors",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      EndpointConfig: { lambda: { arn: 0 } },
+      Description: 0,
+      EndpointType: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1723,7 +1736,25 @@ export const createConnectorDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /connector-destinations",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Description: 0,
+      CloudConnectorId: 0,
+      AuthType: 0,
+      AuthConfig: {
+        oAuth: {
+          authUrl: 0,
+          tokenUrl: 0,
+          scope: 0,
+          tokenEndpointAuthenticationScheme: 0,
+          oAuthCompleteRedirectUrl: 0,
+          proactiveRefreshTokenRenewal: i_ProactiveRefreshTokenRenewal,
+        },
+        GeneralAuthorization: D.list(i_AuthMaterial),
+      },
+      SecretsManager: i_SecretsManager,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1763,7 +1794,7 @@ export const createCredentialLocker: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /credential-lockers",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: { Name: 0, ClientToken: D.m({ idempotency: true }), Tags: 0 },
     output: { CreatedAt: D.ts },
     body: true,
   },
@@ -1800,7 +1831,15 @@ export const createDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /destinations",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      DeliveryDestinationArn: 0,
+      DeliveryDestinationType: 0,
+      Name: 0,
+      RoleArn: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Description: 0,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1835,7 +1874,12 @@ export const createEventLogConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /event-log-configurations",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ResourceType: 0,
+      ResourceId: 0,
+      EventLogLevel: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1873,7 +1917,25 @@ export const createManagedThing: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /managed-things",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Role: 0,
+      Owner: 0,
+      CredentialLockerId: 0,
+      AuthenticationMaterial: 0,
+      AuthenticationMaterialType: 0,
+      WiFiSimpleSetupConfiguration: i_WiFiSimpleSetupConfiguration,
+      SerialNumber: 0,
+      Brand: 0,
+      Model: 0,
+      Name: 0,
+      CapabilityReport: i_CapabilityReport,
+      CapabilitySchemas: D.list(i_CapabilitySchemaItem),
+      Capabilities: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Classification: 0,
+      Tags: 0,
+      MetaData: 0,
+    },
     output: { CreatedAt: D.ts },
     body: true,
   },
@@ -1911,7 +1973,12 @@ export const createNotificationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /notification-configurations",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      EventType: 0,
+      DestinationName: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1947,7 +2014,27 @@ export const createOtaTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ota-tasks",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Description: 0,
+      S3Url: 0,
+      Protocol: 0,
+      Target: 0,
+      TaskConfigurationId: 0,
+      OtaMechanism: 0,
+      OtaType: 0,
+      OtaTargetQueryString: 0,
+      ClientToken: D.m({ idempotency: true }),
+      OtaSchedulingConfig: {
+        EndBehavior: 0,
+        EndTime: 0,
+        MaintenanceWindows: D.list({ DurationInMinutes: 0, StartTime: 0 }),
+        StartTime: 0,
+      },
+      OtaTaskExecutionRetryConfig: {
+        RetryConfigCriteria: D.list({ FailureType: 0, MinNumberOfRetries: 0 }),
+      },
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1983,7 +2070,33 @@ export const createOtaTaskConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ota-task-configurations",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Description: 0,
+      Name: 0,
+      PushConfig: {
+        AbortConfig: {
+          AbortConfigCriteriaList: D.list({
+            Action: 0,
+            FailureType: 0,
+            MinNumberOfExecutedThings: 0,
+            ThresholdPercentage: 0,
+          }),
+        },
+        RolloutConfig: {
+          ExponentialRolloutRate: {
+            BaseRatePerMinute: 0,
+            IncrementFactor: 0,
+            RateIncreaseCriteria: {
+              numberOfNotifiedThings: 0,
+              numberOfSucceededThings: 0,
+            },
+          },
+          MaximumPerMinute: 0,
+        },
+        TimeoutConfig: { InProgressTimeoutInMinutes: 0 },
+      },
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2020,7 +2133,14 @@ export const createProvisioningProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /provisioning-profiles",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ProvisioningType: 0,
+      CaCertificate: 0,
+      ClaimCertificate: 0,
+      Name: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: 0,
+    },
     output: {
       ClaimCertificate: D.secret,
       ClaimCertificatePrivateKey: D.secret,
@@ -2064,6 +2184,7 @@ export const deleteAccountAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /account-associations/{AccountAssociationId}",
+    input: { AccountAssociationId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2095,7 +2216,11 @@ export const deleteCloudConnector: API.OperationMethod<
   DeleteCloudConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /cloud-connectors/{Identifier}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /cloud-connectors/{Identifier}",
+    input: { Identifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2130,6 +2255,7 @@ export const deleteConnectorDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /connector-destinations/{Identifier}",
+    input: { Identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2162,7 +2288,11 @@ export const deleteCredentialLocker: API.OperationMethod<
   DeleteCredentialLockerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /credential-lockers/{Identifier}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /credential-lockers/{Identifier}",
+    input: { Identifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2192,7 +2322,11 @@ export const deleteDestination: API.OperationMethod<
   DeleteDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /destinations/{Name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /destinations/{Name}",
+    input: { Name: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2221,7 +2355,11 @@ export const deleteEventLogConfiguration: API.OperationMethod<
   DeleteEventLogConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /event-log-configurations/{Id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /event-log-configurations/{Id}",
+    input: { Id: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2256,7 +2394,7 @@ export const deleteManagedThing: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /managed-things/{Identifier}",
-    input: { Force: D.m({ query: "Force" }) },
+    input: { Identifier: 0, Force: D.m({ query: "Force" }) },
   },
   errors: [
     AccessDeniedException,
@@ -2292,6 +2430,7 @@ export const deleteNotificationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /notification-configurations/{EventType}",
+    input: { EventType: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2322,7 +2461,11 @@ export const deleteOtaTask: API.OperationMethod<
   DeleteOtaTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /ota-tasks/{Identifier}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /ota-tasks/{Identifier}",
+    input: { Identifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2355,6 +2498,7 @@ export const deleteOtaTaskConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /ota-task-configurations/{Identifier}",
+    input: { Identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2390,6 +2534,7 @@ export const deleteProvisioningProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /provisioning-profiles/{Identifier}",
+    input: { Identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2426,6 +2571,7 @@ export const deregisterAccountAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /managed-thing-associations/deregister",
+    input: { ManagedThingId: 0, AccountAssociationId: 0 },
     body: true,
   },
   errors: [
@@ -2461,6 +2607,7 @@ export const getAccountAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /account-associations/{AccountAssociationId}",
+    input: { AccountAssociationId: 0 },
     output: { OAuthAuthorizationUrl: D.secret },
   },
   errors: [
@@ -2492,7 +2639,11 @@ export const getCloudConnector: API.OperationMethod<
   GetCloudConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /cloud-connectors/{Identifier}" },
+  descriptor: {
+    service: svc,
+    http: "GET /cloud-connectors/{Identifier}",
+    input: { Identifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2524,6 +2675,7 @@ export const getConnectorDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /connector-destinations/{Identifier}",
+    input: { Identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2557,6 +2709,7 @@ export const getCredentialLocker: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /credential-lockers/{Identifier}",
+    input: { Identifier: 0 },
     output: { Name: D.secret, CreatedAt: D.ts },
   },
   errors: [
@@ -2590,7 +2743,7 @@ export const getCustomEndpoint: API.OperationMethod<
   GetCustomEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /custom-endpoint" },
+  descriptor: { service: svc, http: "GET /custom-endpoint", input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2623,7 +2776,11 @@ export const getDefaultEncryptionConfiguration: API.OperationMethod<
   GetDefaultEncryptionConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /configuration/account/encryption" },
+  descriptor: {
+    service: svc,
+    http: "GET /configuration/account/encryption",
+    input: {},
+  },
   errors: [
     AccessDeniedException,
     InternalFailureException,
@@ -2657,6 +2814,7 @@ export const getDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /destinations/{Name}",
+    input: { Name: 0 },
     output: { CreatedAt: D.ts, UpdatedAt: D.ts },
   },
   errors: [
@@ -2692,6 +2850,7 @@ export const getDeviceDiscovery: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /device-discoveries/{Identifier}",
+    input: { Identifier: 0 },
     output: { StartedAt: D.ts, FinishedAt: D.ts },
   },
   errors: [
@@ -2724,7 +2883,11 @@ export const getEventLogConfiguration: API.OperationMethod<
   GetEventLogConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /event-log-configurations/{Id}" },
+  descriptor: {
+    service: svc,
+    http: "GET /event-log-configurations/{Id}",
+    input: { Id: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2757,6 +2920,7 @@ export const getHubConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /hub-configuration",
+    input: {},
     output: { UpdatedAt: D.ts },
   },
   errors: [
@@ -2793,6 +2957,7 @@ export const getManagedThing: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /managed-things/{Identifier}",
+    input: { Identifier: 0 },
     output: {
       Owner: D.secret,
       Model: D.secret,
@@ -2844,6 +3009,7 @@ export const getManagedThingCapabilities: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /managed-things-capabilities/{Identifier}",
+    input: { Identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2880,6 +3046,7 @@ export const getManagedThingCertificate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /managed-things-certificate/{Identifier}",
+    input: { Identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2916,6 +3083,7 @@ export const getManagedThingConnectivityData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /managed-things-connectivity-data/{Identifier}",
+    input: { Identifier: 0 },
     output: { Timestamp: D.ts },
   },
   errors: [
@@ -2955,6 +3123,7 @@ export const getManagedThingMetaData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /managed-things-metadata/{Identifier}",
+    input: { Identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2991,6 +3160,7 @@ export const getManagedThingState: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /managed-thing-states/{ManagedThingId}",
+    input: { ManagedThingId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3025,6 +3195,7 @@ export const getNotificationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /notification-configurations/{EventType}",
+    input: { EventType: 0 },
     output: { CreatedAt: D.ts, UpdatedAt: D.ts },
   },
   errors: [
@@ -3058,6 +3229,7 @@ export const getOtaTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /ota-tasks/{Identifier}",
+    input: { Identifier: 0 },
     output: { CreatedAt: D.ts, LastUpdatedAt: D.ts },
   },
   errors: [
@@ -3091,6 +3263,7 @@ export const getOtaTaskConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /ota-task-configurations/{Identifier}",
+    input: { Identifier: 0 },
     output: { Name: D.secret, CreatedAt: D.ts },
   },
   errors: [
@@ -3126,6 +3299,7 @@ export const getProvisioningProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /provisioning-profiles/{Identifier}",
+    input: { Identifier: 0 },
     output: { ClaimCertificate: D.secret },
   },
   errors: [
@@ -3161,6 +3335,7 @@ export const getRuntimeLogConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /runtime-log-configurations/{ManagedThingId}",
+    input: { ManagedThingId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3195,7 +3370,7 @@ export const getSchemaVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /schema-versions/{Type}/{SchemaVersionedId}",
-    input: { Format: D.m({ query: "Format" }) },
+    input: { Type: 0, SchemaVersionedId: 0, Format: D.m({ query: "Format" }) },
   },
   errors: [
     AccessDeniedException,
@@ -3495,6 +3670,7 @@ export const listDiscoveredDevices: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /device-discoveries/{Identifier}/devices",
     input: {
+      Identifier: 0,
       NextToken: D.m({ query: "NextToken" }),
       MaxResults: D.m({ query: "MaxResults" }),
     },
@@ -3706,6 +3882,7 @@ export const listManagedThingSchemas: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /managed-thing-schemas/{Identifier}",
     input: {
+      Identifier: 0,
       EndpointIdFilter: D.m({ query: "EndpointIdFilter" }),
       CapabilityIdFilter: D.m({ query: "CapabilityIdFilter" }),
       NextToken: D.m({ query: "NextToken" }),
@@ -3836,6 +4013,7 @@ export const listOtaTaskExecutions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /ota-tasks/{Identifier}/devices",
     input: {
+      Identifier: 0,
       NextToken: D.m({ query: "NextToken" }),
       MaxResults: D.m({ query: "MaxResults" }),
     },
@@ -3978,6 +4156,7 @@ export const listSchemaVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /schema-versions/{Type}",
     input: {
+      Type: 0,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
       SchemaId: D.m({ query: "SchemaIdFilter" }),
@@ -4020,7 +4199,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     InvalidRequestException,
     ResourceNotFoundException,
@@ -4053,6 +4236,7 @@ export const putDefaultEncryptionConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /configuration/account/encryption",
+    input: { encryptionType: 0, kmsKeyArn: 0 },
     body: true,
   },
   errors: [
@@ -4086,7 +4270,12 @@ export const putHubConfiguration: API.OperationMethod<
   PutHubConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /hub-configuration", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /hub-configuration",
+    input: { HubTokenTimerExpirySettingInSeconds: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4119,6 +4308,19 @@ export const putRuntimeLogConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /runtime-log-configurations/{ManagedThingId}",
+    input: {
+      ManagedThingId: 0,
+      RuntimeLogConfigurations: {
+        LogLevel: 0,
+        LogFlushLevel: 0,
+        LocalStoreLocation: 0,
+        LocalStoreFileRotationMaxFiles: 0,
+        LocalStoreFileRotationMaxBytes: 0,
+        UploadLog: 0,
+        UploadPeriodMinutes: 0,
+        DeleteLocalStoreAfterUpload: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -4153,6 +4355,7 @@ export const registerAccountAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /managed-thing-associations/register",
+    input: { ManagedThingId: 0, AccountAssociationId: 0, DeviceDiscoveryId: 0 },
     body: true,
   },
   errors: [
@@ -4186,7 +4389,7 @@ export const registerCustomEndpoint: API.OperationMethod<
   RegisterCustomEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /custom-endpoint" },
+  descriptor: { service: svc, http: "POST /custom-endpoint", input: {} },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4220,6 +4423,7 @@ export const resetRuntimeLogConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /runtime-log-configurations/{ManagedThingId}",
+    input: { ManagedThingId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4253,6 +4457,51 @@ export const sendConnectorEvent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /connector-event/{ConnectorId}",
+    input: {
+      ConnectorId: 0,
+      UserId: 0,
+      Operation: 0,
+      OperationVersion: 0,
+      StatusCode: 0,
+      Message: 0,
+      DeviceDiscoveryId: 0,
+      ConnectorDeviceId: 0,
+      TraceId: 0,
+      Devices: D.list({
+        ConnectorDeviceId: 0,
+        ConnectorDeviceName: 0,
+        CapabilityReport: {
+          version: 0,
+          nodeId: 0,
+          endpoints: D.list({
+            id: 0,
+            deviceTypes: 0,
+            clusters: D.list({
+              id: 0,
+              revision: 0,
+              publicId: 0,
+              name: 0,
+              specVersion: 0,
+              attributes: D.list({ id: 0, name: 0, value: 0 }),
+              commands: 0,
+              events: 0,
+              featureMap: 0,
+              generatedCommands: 0,
+              fabricIndex: 0,
+            }),
+            parts: 0,
+            semanticTags: 0,
+            clientClusters: 0,
+          }),
+        },
+        CapabilitySchemas: D.list(i_CapabilitySchemaItem),
+        DeviceMetadata: 0,
+      }),
+      MatterEndpoint: {
+        id: 0,
+        clusters: D.list({ id: 0, attributes: 0, commands: 0, events: 0 }),
+      },
+    },
     body: true,
   },
   errors: [
@@ -4289,6 +4538,20 @@ export const sendManagedThingCommand: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /managed-things-command/{ManagedThingId}",
+    input: {
+      ManagedThingId: 0,
+      Endpoints: D.list({
+        endpointId: 0,
+        capabilities: D.list({
+          id: 0,
+          name: 0,
+          version: 0,
+          actions: D.list({ name: 0, ref: 0, actionTraceId: 0, parameters: 0 }),
+        }),
+      }),
+      ConnectorAssociationId: 0,
+      AccountAssociationId: 0,
+    },
     body: true,
   },
   errors: [
@@ -4326,6 +4589,7 @@ export const startAccountAssociationRefresh: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /account-associations/{AccountAssociationId}/refresh",
+    input: { AccountAssociationId: 0 },
     output: { OAuthAuthorizationUrl: D.secret },
   },
   errors: [
@@ -4364,6 +4628,20 @@ export const startDeviceDiscovery: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /device-discoveries",
+    input: {
+      DiscoveryType: 0,
+      CustomProtocolDetail: 0,
+      ControllerIdentifier: 0,
+      ConnectorAssociationIdentifier: 0,
+      AccountAssociationId: 0,
+      AuthenticationMaterial: 0,
+      AuthenticationMaterialType: 0,
+      ClientToken: 0,
+      Tags: 0,
+      ConnectorDeviceIdList: 0,
+      Protocol: 0,
+      EndDeviceIdentifier: 0,
+    },
     output: { StartedAt: D.ts },
     body: true,
   },
@@ -4398,7 +4676,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     InvalidRequestException,
@@ -4430,7 +4713,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     ConflictException,
@@ -4465,6 +4748,7 @@ export const updateAccountAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /account-associations/{AccountAssociationId}",
+    input: { AccountAssociationId: 0, Name: 0, Description: 0 },
     body: true,
   },
   errors: [
@@ -4501,6 +4785,7 @@ export const updateCloudConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /cloud-connectors/{Identifier}",
+    input: { Identifier: 0, Name: 0, Description: 0 },
     body: true,
   },
   errors: [
@@ -4535,6 +4820,23 @@ export const updateConnectorDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /connector-destinations/{Identifier}",
+    input: {
+      Identifier: 0,
+      Description: 0,
+      Name: 0,
+      AuthType: 0,
+      AuthConfig: {
+        oAuthUpdate: {
+          oAuthCompleteRedirectUrl: 0,
+          proactiveRefreshTokenRenewal: i_ProactiveRefreshTokenRenewal,
+        },
+        GeneralAuthorizationUpdate: {
+          AuthMaterialsToAdd: D.list(i_AuthMaterial),
+          AuthMaterialsToUpdate: D.list(i_AuthMaterial),
+        },
+      },
+      SecretsManager: i_SecretsManager,
+    },
     body: true,
   },
   errors: [
@@ -4565,7 +4867,18 @@ export const updateDestination: API.OperationMethod<
   UpdateDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /destinations/{Name}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /destinations/{Name}",
+    input: {
+      Name: 0,
+      DeliveryDestinationArn: 0,
+      DeliveryDestinationType: 0,
+      RoleArn: 0,
+      Description: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4597,6 +4910,7 @@ export const updateEventLogConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /event-log-configurations/{Id}",
+    input: { Id: 0, EventLogLevel: 0 },
     body: true,
   },
   errors: [
@@ -4633,6 +4947,22 @@ export const updateManagedThing: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /managed-things/{Identifier}",
+    input: {
+      Identifier: 0,
+      Owner: 0,
+      CredentialLockerId: 0,
+      SerialNumber: 0,
+      WiFiSimpleSetupConfiguration: i_WiFiSimpleSetupConfiguration,
+      Brand: 0,
+      Model: 0,
+      Name: 0,
+      CapabilityReport: i_CapabilityReport,
+      CapabilitySchemas: D.list(i_CapabilitySchemaItem),
+      Capabilities: 0,
+      Classification: 0,
+      HubNetworkMode: 0,
+      MetaData: 0,
+    },
     body: true,
   },
   errors: [
@@ -4669,6 +4999,7 @@ export const updateNotificationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /notification-configurations/{EventType}",
+    input: { EventType: 0, DestinationName: 0 },
     body: true,
   },
   errors: [
@@ -4699,7 +5030,12 @@ export const updateOtaTask: API.OperationMethod<
   UpdateOtaTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /ota-tasks/{Identifier}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /ota-tasks/{Identifier}",
+    input: { Identifier: 0, Description: 0, TaskConfigurationId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4711,3 +5047,41 @@ export const updateOtaTask: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateOtaTask",
 })) as any;
+
+const i_AuthMaterial: D.LazyStruct = () => ({
+  SecretsManager: i_SecretsManager,
+  AuthMaterialName: 0,
+});
+const i_CapabilityReport: D.LazyStruct = () => ({
+  version: 0,
+  nodeId: 0,
+  endpoints: D.list({
+    id: 0,
+    deviceTypes: 0,
+    capabilities: D.list({
+      id: 0,
+      name: 0,
+      version: 0,
+      properties: 0,
+      actions: 0,
+      events: 0,
+    }),
+  }),
+});
+const i_CapabilitySchemaItem: D.LazyStruct = () => ({
+  Format: 0,
+  CapabilityId: 0,
+  ExtrinsicId: 0,
+  ExtrinsicVersion: 0,
+  Schema: 0,
+});
+const i_ProactiveRefreshTokenRenewal: D.LazyStruct = () => ({
+  enabled: 0,
+  DaysBeforeRenewal: 0,
+});
+const i_SecretsManager: D.LazyStruct = () => ({ arn: 0, versionId: 0 });
+const i_WiFiSimpleSetupConfiguration: D.LazyStruct = () => ({
+  EnableAsProvisioner: 0,
+  EnableAsProvisionee: 0,
+  TimeoutInMinutes: 0,
+});

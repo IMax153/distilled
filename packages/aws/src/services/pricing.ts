@@ -1,5 +1,6 @@
 import type * as HttpClient from "effect/unstable/http/HttpClient";
 import * as API from "@distilled.cloud/core/api";
+import * as D from "@distilled.cloud/core/shape";
 import * as TE from "@distilled.cloud/core/error-class";
 import { AwsProtocol } from "../protocol.ts";
 import { awsJson1_1Protocol } from "../protocols/aws-json.ts";
@@ -250,7 +251,10 @@ export const describeServices: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Service
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServiceCode: 0, FormatVersion: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     ExpiredNextTokenException,
@@ -290,7 +294,10 @@ export const getAttributeValues: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AttributeValue
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServiceCode: 0, AttributeName: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     ExpiredNextTokenException,
@@ -330,7 +337,7 @@ export const getPriceListFileUrl: API.OperationMethod<
   GetPriceListFileUrlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PriceListArn: 0, FileFormat: 0 } },
   errors: [
     AccessDeniedException,
     InternalErrorException,
@@ -363,7 +370,16 @@ export const getProducts: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   SynthesizedJsonPriceListJsonItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ServiceCode: 0,
+      Filters: D.list({ Type: 0, Field: 0, Value: 0 }),
+      FormatVersion: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ExpiredNextTokenException,
@@ -406,7 +422,17 @@ export const listPriceLists: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   PriceList
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ServiceCode: 0,
+      EffectiveDate: 0,
+      RegionCode: 0,
+      CurrencyCode: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ExpiredNextTokenException,

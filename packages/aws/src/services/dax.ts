@@ -598,7 +598,27 @@ export const createCluster: API.OperationMethod<
   CreateClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterName: 0,
+      NodeType: 0,
+      Description: 0,
+      ReplicationFactor: 0,
+      AvailabilityZones: 0,
+      SubnetGroupName: 0,
+      SecurityGroupIds: 0,
+      PreferredMaintenanceWindow: 0,
+      NotificationTopicArn: 0,
+      IamRoleArn: 0,
+      ParameterGroupName: 0,
+      Tags: D.list(i_Tag),
+      SSESpecification: { Enabled: 0 },
+      ClusterEndpointEncryptionType: 0,
+      NetworkType: 0,
+    },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     ClusterAlreadyExistsFault,
     ClusterQuotaForCustomerExceededFault,
@@ -639,7 +659,10 @@ export const createParameterGroup: API.OperationMethod<
   CreateParameterGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ParameterGroupName: 0, Description: 0 },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterGroupStateFault,
@@ -670,7 +693,10 @@ export const createSubnetGroup: API.OperationMethod<
   CreateSubnetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SubnetGroupName: 0, Description: 0, SubnetIds: 0 },
+  },
   errors: [
     InvalidSubnet,
     ServiceLinkedRoleNotFoundFault,
@@ -705,7 +731,16 @@ export const decreaseReplicationFactor: API.OperationMethod<
   DecreaseReplicationFactorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterName: 0,
+      NewReplicationFactor: 0,
+      AvailabilityZones: 0,
+      NodeIdsToRemove: 0,
+    },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     ClusterNotFoundFault,
     InvalidClusterStateFault,
@@ -739,7 +774,11 @@ export const deleteCluster: API.OperationMethod<
   DeleteClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: { ClusterName: 0 },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     ClusterNotFoundFault,
     InvalidClusterStateFault,
@@ -769,7 +808,7 @@ export const deleteParameterGroup: API.OperationMethod<
   DeleteParameterGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ParameterGroupName: 0 } },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterGroupStateFault,
@@ -799,7 +838,7 @@ export const deleteSubnetGroup: API.OperationMethod<
   DeleteSubnetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SubnetGroupName: 0 } },
   errors: [
     ServiceLinkedRoleNotFoundFault,
     SubnetGroupInUseFault,
@@ -841,7 +880,11 @@ export const describeClusters: API.OperationMethod<
   DescribeClustersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Clusters: D.list(o_Cluster) } },
+  descriptor: {
+    service: svc,
+    input: { ClusterNames: 0, MaxResults: 0, NextToken: 0 },
+    output: { Clusters: D.list(o_Cluster) },
+  },
   errors: [
     ClusterNotFoundFault,
     InvalidParameterCombinationException,
@@ -868,7 +911,7 @@ export const describeDefaultParameters: API.OperationMethod<
   DescribeDefaultParametersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterValueException,
@@ -898,7 +941,19 @@ export const describeEvents: API.OperationMethod<
   DescribeEventsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Events: D.list({ Date: D.ts }) } },
+  descriptor: {
+    service: svc,
+    input: {
+      SourceName: 0,
+      SourceType: 0,
+      StartTime: 0,
+      EndTime: 0,
+      Duration: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+    output: { Events: D.list({ Date: D.ts }) },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterValueException,
@@ -925,7 +980,10 @@ export const describeParameterGroups: API.OperationMethod<
   DescribeParameterGroupsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ParameterGroupNames: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterValueException,
@@ -952,7 +1010,10 @@ export const describeParameters: API.OperationMethod<
   DescribeParametersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ParameterGroupName: 0, Source: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterValueException,
@@ -978,7 +1039,10 @@ export const describeSubnetGroups: API.OperationMethod<
   DescribeSubnetGroupsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SubnetGroupNames: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [ServiceLinkedRoleNotFoundFault, SubnetGroupNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1005,7 +1069,11 @@ export const increaseReplicationFactor: API.OperationMethod<
   IncreaseReplicationFactorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: { ClusterName: 0, NewReplicationFactor: 0, AvailabilityZones: 0 },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     ClusterNotFoundFault,
     InsufficientClusterCapacityFault,
@@ -1040,7 +1108,7 @@ export const listTags: API.OperationMethod<
   ListTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceName: 0, NextToken: 0 } },
   errors: [
     ClusterNotFoundFault,
     InvalidARNFault,
@@ -1076,7 +1144,11 @@ export const rebootNode: API.OperationMethod<
   RebootNodeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: { ClusterName: 0, NodeId: 0 },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     ClusterNotFoundFault,
     InvalidClusterStateFault,
@@ -1110,7 +1182,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceName: 0, Tags: D.list(i_Tag) } },
   errors: [
     ClusterNotFoundFault,
     InvalidARNFault,
@@ -1144,7 +1216,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceName: 0, TagKeys: 0 } },
   errors: [
     ClusterNotFoundFault,
     InvalidARNFault,
@@ -1179,7 +1251,19 @@ export const updateCluster: API.OperationMethod<
   UpdateClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterName: 0,
+      Description: 0,
+      PreferredMaintenanceWindow: 0,
+      NotificationTopicArn: 0,
+      NotificationTopicStatus: 0,
+      ParameterGroupName: 0,
+      SecurityGroupIds: 0,
+    },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     ClusterNotFoundFault,
     InvalidClusterStateFault,
@@ -1211,7 +1295,13 @@ export const updateParameterGroup: API.OperationMethod<
   UpdateParameterGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ParameterGroupName: 0,
+      ParameterNameValues: D.list({ ParameterName: 0, ParameterValue: 0 }),
+    },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterGroupStateFault,
@@ -1241,7 +1331,10 @@ export const updateSubnetGroup: API.OperationMethod<
   UpdateSubnetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SubnetGroupName: 0, Description: 0, SubnetIds: 0 },
+  },
   errors: [
     InvalidSubnet,
     ServiceLinkedRoleNotFoundFault,
@@ -1255,6 +1348,7 @@ export const updateSubnetGroup: API.OperationMethod<
   operationName: "UpdateSubnetGroup",
 })) as any;
 
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Cluster: D.LazyStruct = () => ({
   Nodes: D.list({ NodeCreateTime: D.ts }),
 });

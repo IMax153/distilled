@@ -1261,7 +1261,15 @@ export const createActivity: API.OperationMethod<
   CreateActivityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { creationDate: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      tags: D.list(i_Tag),
+      encryptionConfiguration: i_EncryptionConfiguration,
+    },
+    output: { creationDate: D.ts },
+  },
   errors: [
     ActivityAlreadyExists,
     ActivityLimitExceeded,
@@ -1323,7 +1331,22 @@ export const createStateMachine: API.OperationMethod<
   CreateStateMachineError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { creationDate: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      definition: 0,
+      roleArn: 0,
+      type: 0,
+      loggingConfiguration: i_LoggingConfiguration,
+      tags: D.list(i_Tag),
+      tracingConfiguration: i_TracingConfiguration,
+      publish: 0,
+      versionDescription: 0,
+      encryptionConfiguration: i_EncryptionConfiguration,
+    },
+    output: { creationDate: D.ts },
+  },
   errors: [
     ConflictException,
     InvalidArn,
@@ -1392,7 +1415,15 @@ export const createStateMachineAlias: API.OperationMethod<
   CreateStateMachineAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { creationDate: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      description: 0,
+      name: 0,
+      routingConfiguration: D.list(i_RoutingConfigurationListItem),
+    },
+    output: { creationDate: D.ts },
+  },
   errors: [
     ConflictException,
     InvalidArn,
@@ -1417,7 +1448,7 @@ export const deleteActivity: API.OperationMethod<
   DeleteActivityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { activityArn: 0 } },
   errors: [InvalidArn],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1458,7 +1489,7 @@ export const deleteStateMachine: API.OperationMethod<
   DeleteStateMachineError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { stateMachineArn: 0 } },
   errors: [InvalidArn, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1494,7 +1525,7 @@ export const deleteStateMachineAlias: API.OperationMethod<
   DeleteStateMachineAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { stateMachineAliasArn: 0 } },
   errors: [
     ConflictException,
     InvalidArn,
@@ -1532,7 +1563,7 @@ export const deleteStateMachineVersion: API.OperationMethod<
   DeleteStateMachineVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { stateMachineVersionArn: 0 } },
   errors: [ConflictException, InvalidArn, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1554,7 +1585,11 @@ export const describeActivity: API.OperationMethod<
   DescribeActivityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { creationDate: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { activityArn: 0 },
+    output: { creationDate: D.ts },
+  },
   errors: [ActivityDoesNotExist, InvalidArn],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1586,6 +1621,7 @@ export const describeExecution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { executionArn: 0, includedData: 0 },
     output: {
       startDate: D.ts,
       stopDate: D.ts,
@@ -1621,6 +1657,7 @@ export const describeMapRun: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { mapRunArn: 0 },
     output: { startDate: D.ts, stopDate: D.ts, redriveDate: D.ts },
   },
   errors: [InvalidArn, ResourceNotFound],
@@ -1672,6 +1709,7 @@ export const describeStateMachine: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { stateMachineArn: 0, includedData: 0 },
     output: {
       definition: D.secret,
       creationDate: D.ts,
@@ -1717,6 +1755,7 @@ export const describeStateMachineAlias: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { stateMachineAliasArn: 0 },
     output: { description: D.secret, creationDate: D.ts, updateDate: D.ts },
   },
   errors: [InvalidArn, ResourceNotFound, ValidationException],
@@ -1750,6 +1789,7 @@ export const describeStateMachineForExecution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { executionArn: 0, includedData: 0 },
     output: {
       definition: D.secret,
       updateDate: D.ts,
@@ -1799,7 +1839,11 @@ export const getActivityTask: API.OperationMethod<
   GetActivityTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { input: D.secret } },
+  descriptor: {
+    service: svc,
+    input: { activityArn: 0, workerName: 0 },
+    output: { input: D.secret },
+  },
   errors: [
     ActivityDoesNotExist,
     ActivityWorkerLimitExceeded,
@@ -1840,6 +1884,13 @@ export const getExecutionHistory: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      executionArn: 0,
+      maxResults: 0,
+      reverseOrder: 0,
+      nextToken: 0,
+      includeExecutionData: 0,
+    },
     output: {
       events: D.list({
         timestamp: D.ts,
@@ -1929,6 +1980,7 @@ export const listActivities: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { maxResults: 0, nextToken: 0 },
     output: { activities: D.list({ creationDate: D.ts }) },
   },
   errors: [InvalidToken],
@@ -1975,6 +2027,14 @@ export const listExecutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      stateMachineArn: 0,
+      statusFilter: 0,
+      maxResults: 0,
+      nextToken: 0,
+      mapRunArn: 0,
+      redriveFilter: 0,
+    },
     output: {
       executions: D.list({
         startDate: D.ts,
@@ -2019,6 +2079,7 @@ export const listMapRuns: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { executionArn: 0, maxResults: 0, nextToken: 0 },
     output: { mapRuns: D.list({ startDate: D.ts, stopDate: D.ts }) },
   },
   errors: [ExecutionDoesNotExist, InvalidArn, InvalidToken],
@@ -2066,6 +2127,7 @@ export const listStateMachineAliases: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { stateMachineArn: 0, nextToken: 0, maxResults: 0 },
     output: { stateMachineAliases: D.list({ creationDate: D.ts }) },
   },
   errors: [
@@ -2098,6 +2160,7 @@ export const listStateMachines: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { maxResults: 0, nextToken: 0 },
     output: { stateMachines: D.list({ creationDate: D.ts }) },
   },
   errors: [InvalidToken],
@@ -2139,6 +2202,7 @@ export const listStateMachineVersions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { stateMachineArn: 0, nextToken: 0, maxResults: 0 },
     output: { stateMachineVersions: D.list({ creationDate: D.ts }) },
   },
   errors: [InvalidArn, InvalidToken, ValidationException],
@@ -2162,7 +2226,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [InvalidArn, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2204,7 +2268,11 @@ export const publishStateMachineVersion: API.OperationMethod<
   PublishStateMachineVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { creationDate: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { stateMachineArn: 0, revisionId: 0, description: 0 },
+    output: { creationDate: D.ts },
+  },
   errors: [
     ConflictException,
     InvalidArn,
@@ -2254,7 +2322,7 @@ export const redriveExecution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { executionArn: 0, clientToken: D.m({ idempotency: true }) },
     output: { redriveDate: D.ts },
   },
   errors: [
@@ -2291,7 +2359,7 @@ export const sendTaskFailure: API.OperationMethod<
   SendTaskFailureError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { taskToken: 0, error: 0, cause: 0 } },
   errors: [
     InvalidToken,
     KmsAccessDeniedException,
@@ -2332,7 +2400,7 @@ export const sendTaskHeartbeat: API.OperationMethod<
   SendTaskHeartbeatError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { taskToken: 0 } },
   errors: [InvalidToken, TaskDoesNotExist, TaskTimedOut],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2359,7 +2427,7 @@ export const sendTaskSuccess: API.OperationMethod<
   SendTaskSuccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { taskToken: 0, output: 0 } },
   errors: [
     InvalidOutput,
     InvalidToken,
@@ -2429,7 +2497,11 @@ export const startExecution: API.OperationMethod<
   StartExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { startDate: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { stateMachineArn: 0, name: 0, input: 0, traceHeader: 0 },
+    output: { startDate: D.ts },
+  },
   errors: [
     ExecutionAlreadyExists,
     ExecutionLimitExceeded,
@@ -2479,6 +2551,13 @@ export const startSyncExecution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      stateMachineArn: 0,
+      name: 0,
+      input: 0,
+      traceHeader: 0,
+      includedData: 0,
+    },
     output: {
       startDate: D.ts,
       stopDate: D.ts,
@@ -2528,7 +2607,11 @@ export const stopExecution: API.OperationMethod<
   StopExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { stopDate: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { executionArn: 0, error: 0, cause: 0 },
+    output: { stopDate: D.ts },
+  },
   errors: [
     ExecutionDoesNotExist,
     InvalidArn,
@@ -2563,7 +2646,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: D.list(i_Tag) } },
   errors: [InvalidArn, ResourceNotFound, TooManyTags],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2614,6 +2697,27 @@ export const testState: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      definition: 0,
+      roleArn: 0,
+      input: 0,
+      inspectionLevel: 0,
+      revealSecrets: 0,
+      variables: 0,
+      stateName: 0,
+      mock: {
+        result: 0,
+        errorOutput: { error: 0, cause: 0 },
+        fieldValidationMode: 0,
+      },
+      context: 0,
+      stateConfiguration: {
+        retrierRetryCount: 0,
+        errorCausedByState: 0,
+        mapIterationFailureCount: 0,
+        mapItemReaderData: 0,
+      },
+    },
     output: {
       output: D.secret,
       error: D.secret,
@@ -2656,7 +2760,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [InvalidArn, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2677,7 +2781,15 @@ export const updateMapRun: API.OperationMethod<
   UpdateMapRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      mapRunArn: 0,
+      maxConcurrency: 0,
+      toleratedFailurePercentage: 0,
+      toleratedFailureCount: 0,
+    },
+  },
   errors: [InvalidArn, ResourceNotFound, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2745,7 +2857,20 @@ export const updateStateMachine: API.OperationMethod<
   UpdateStateMachineError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { updateDate: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      stateMachineArn: 0,
+      definition: 0,
+      roleArn: 0,
+      loggingConfiguration: i_LoggingConfiguration,
+      tracingConfiguration: i_TracingConfiguration,
+      publish: 0,
+      versionDescription: 0,
+      encryptionConfiguration: i_EncryptionConfiguration,
+    },
+    output: { updateDate: D.ts },
+  },
   errors: [
     ConflictException,
     InvalidArn,
@@ -2804,7 +2929,15 @@ export const updateStateMachineAlias: API.OperationMethod<
   UpdateStateMachineAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { updateDate: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      stateMachineAliasArn: 0,
+      description: 0,
+      routingConfiguration: D.list(i_RoutingConfigurationListItem),
+    },
+    output: { updateDate: D.ts },
+  },
   errors: [
     ConflictException,
     InvalidArn,
@@ -2862,6 +2995,7 @@ export const validateStateMachineDefinition: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { definition: 0, type: 0, severity: 0, maxResults: 0 },
     output: {
       diagnostics: D.list({
         code: D.secret,
@@ -2875,3 +3009,20 @@ export const validateStateMachineDefinition: API.OperationMethod<
   retry: Retry,
   operationName: "ValidateStateMachineDefinition",
 })) as any;
+
+const i_EncryptionConfiguration: D.LazyStruct = () => ({
+  kmsKeyId: 0,
+  kmsDataKeyReusePeriodSeconds: 0,
+  type: 0,
+});
+const i_LoggingConfiguration: D.LazyStruct = () => ({
+  level: 0,
+  includeExecutionData: 0,
+  destinations: D.list({ cloudWatchLogsLogGroup: { logGroupArn: 0 } }),
+});
+const i_RoutingConfigurationListItem: D.LazyStruct = () => ({
+  stateMachineVersionArn: 0,
+  weight: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_TracingConfiguration: D.LazyStruct = () => ({ enabled: 0 });

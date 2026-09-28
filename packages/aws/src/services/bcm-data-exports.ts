@@ -417,7 +417,10 @@ export const createExport: API.OperationMethod<
   CreateExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Export: i_Export, ResourceTags: D.list(i_ResourceTag) },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -445,7 +448,7 @@ export const deleteExport: API.OperationMethod<
   DeleteExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ExportArn: 0 } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -472,7 +475,11 @@ export const getExecution: API.OperationMethod<
   GetExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ExecutionStatus: o_ExecutionStatus } },
+  descriptor: {
+    service: svc,
+    input: { ExportArn: 0, ExecutionId: 0 },
+    output: { ExecutionStatus: o_ExecutionStatus },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -499,7 +506,11 @@ export const getExport: API.OperationMethod<
   GetExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ExportStatus: o_ExportStatus } },
+  descriptor: {
+    service: svc,
+    input: { ExportArn: 0 },
+    output: { ExportStatus: o_ExportStatus },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -525,7 +536,7 @@ export const getTable: API.OperationMethod<
   GetTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TableName: 0, TableProperties: 0 } },
   errors: [InternalServerException, ThrottlingException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -550,6 +561,7 @@ export const listExecutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ExportArn: 0, MaxResults: 0, NextToken: 0 },
     output: { Executions: D.list({ ExecutionStatus: o_ExecutionStatus }) },
   },
   errors: [
@@ -586,6 +598,7 @@ export const listExports: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
     output: { Exports: D.list({ ExportStatus: o_ExportStatus }) },
   },
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -615,7 +628,7 @@ export const listTables: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Table
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [InternalServerException, ThrottlingException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -644,7 +657,10 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -673,7 +689,10 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, ResourceTags: D.list(i_ResourceTag) },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -702,7 +721,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, ResourceTagKeys: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -730,7 +749,7 @@ export const updateExport: API.OperationMethod<
   UpdateExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ExportArn: 0, Export: i_Export } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -742,6 +761,28 @@ export const updateExport: API.OperationMethod<
   operationName: "UpdateExport",
 })) as any;
 
+const i_Export: D.LazyStruct = () => ({
+  ExportArn: 0,
+  Name: 0,
+  Description: 0,
+  DataQuery: { QueryStatement: 0, TableConfigurations: 0 },
+  DestinationConfigurations: {
+    S3Destination: {
+      S3Bucket: 0,
+      S3BucketOwner: 0,
+      S3Prefix: 0,
+      S3Region: 0,
+      S3OutputConfigurations: {
+        OutputType: 0,
+        Format: 0,
+        Compression: 0,
+        Overwrite: 0,
+      },
+    },
+  },
+  RefreshCadence: { Frequency: 0 },
+});
+const i_ResourceTag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_ExecutionStatus: D.LazyStruct = () => ({
   CreatedAt: D.ts,
   CompletedAt: D.ts,

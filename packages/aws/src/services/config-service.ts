@@ -2786,7 +2786,10 @@ export const associateResourceTypes: API.OperationMethod<
   AssociateResourceTypesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ConfigurationRecorderArn: 0, ResourceTypes: 0 },
+  },
   errors: [
     ConflictException,
     NoSuchConfigurationRecorderException,
@@ -2817,6 +2820,10 @@ export const batchGetAggregateResourceConfig: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ConfigurationAggregatorName: 0,
+      ResourceIdentifiers: D.list(i_AggregateResourceIdentifier),
+    },
     output: { BaseConfigurationItems: D.list(o_BaseConfigurationItem) },
   },
   errors: [NoSuchConfigurationAggregatorException, ValidationException],
@@ -2852,6 +2859,7 @@ export const batchGetResourceConfig: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { resourceKeys: D.list(i_ResourceKey) },
     output: { baseConfigurationItems: D.list(o_BaseConfigurationItem) },
   },
   errors: [NoAvailableConfigurationRecorderException, ValidationException],
@@ -2873,7 +2881,10 @@ export const deleteAggregationAuthorization: API.OperationMethod<
   DeleteAggregationAuthorizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AuthorizedAccountId: 0, AuthorizedAwsRegion: 0 },
+  },
   errors: [InvalidParameterValueException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2915,7 +2926,7 @@ export const deleteConfigRule: API.OperationMethod<
   DeleteConfigRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConfigRuleName: 0 } },
   errors: [NoSuchConfigRuleException, ResourceInUseException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2935,7 +2946,7 @@ export const deleteConfigurationAggregator: API.OperationMethod<
   DeleteConfigurationAggregatorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConfigurationAggregatorName: 0 } },
   errors: [NoSuchConfigurationAggregatorException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2962,7 +2973,7 @@ export const deleteConfigurationRecorder: API.OperationMethod<
   DeleteConfigurationRecorderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConfigurationRecorderName: 0 } },
   errors: [NoSuchConfigurationRecorderException, UnmodifiableEntityException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2998,7 +3009,7 @@ export const deleteConformancePack: API.OperationMethod<
   DeleteConformancePackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConformancePackName: 0 } },
   errors: [NoSuchConformancePackException, ResourceInUseException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3018,7 +3029,7 @@ export const deleteConnector: API.OperationMethod<
   DeleteConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Arn: 0 } },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3040,7 +3051,7 @@ export const deleteDeliveryChannel: API.OperationMethod<
   DeleteDeliveryChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DeliveryChannelName: 0 } },
   errors: [
     LastDeliveryChannelDeleteFailedException,
     NoSuchDeliveryChannelException,
@@ -3066,7 +3077,7 @@ export const deleteEvaluationResults: API.OperationMethod<
   DeleteEvaluationResultsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConfigRuleName: 0 } },
   errors: [NoSuchConfigRuleException, ResourceInUseException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3106,7 +3117,7 @@ export const deleteOrganizationConfigRule: API.OperationMethod<
   DeleteOrganizationConfigRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationConfigRuleName: 0 } },
   errors: [
     NoSuchOrganizationConfigRuleException,
     OrganizationAccessDeniedException,
@@ -3151,7 +3162,7 @@ export const deleteOrganizationConformancePack: API.OperationMethod<
   DeleteOrganizationConformancePackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationConformancePackName: 0 } },
   errors: [
     NoSuchOrganizationConformancePackException,
     OrganizationAccessDeniedException,
@@ -3175,7 +3186,10 @@ export const deletePendingAggregationRequest: API.OperationMethod<
   DeletePendingAggregationRequestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { RequesterAccountId: 0, RequesterAwsRegion: 0 },
+  },
   errors: [InvalidParameterValueException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3197,7 +3211,7 @@ export const deleteRemediationConfiguration: API.OperationMethod<
   DeleteRemediationConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConfigRuleName: 0, ResourceType: 0 } },
   errors: [
     InsufficientPermissionsException,
     InvalidParameterValueException,
@@ -3224,7 +3238,13 @@ export const deleteRemediationExceptions: API.OperationMethod<
   DeleteRemediationExceptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConfigRuleName: 0,
+      ResourceKeys: D.list(i_RemediationExceptionResourceKey),
+    },
+  },
   errors: [NoSuchRemediationExceptionException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3244,7 +3264,7 @@ export const deleteResourceConfig: API.OperationMethod<
   DeleteResourceConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceType: 0, ResourceId: 0 } },
   errors: [NoRunningConfigurationRecorderException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3264,7 +3284,7 @@ export const deleteRetentionConfiguration: API.OperationMethod<
   DeleteRetentionConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RetentionConfigurationName: 0 } },
   errors: [
     InvalidParameterValueException,
     NoSuchRetentionConfigurationException,
@@ -3298,7 +3318,7 @@ export const deleteServiceLinkedConfigurationRecorder: API.OperationMethod<
   DeleteServiceLinkedConfigurationRecorderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServicePrincipal: 0, Arn: 0 } },
   errors: [
     ConflictException,
     NoSuchConfigurationRecorderException,
@@ -3322,7 +3342,7 @@ export const deleteStoredQuery: API.OperationMethod<
   DeleteStoredQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { QueryName: 0 } },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3354,7 +3374,7 @@ export const deliverConfigSnapshot: API.OperationMethod<
   DeliverConfigSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { deliveryChannelName: 0 } },
   errors: [
     NoAvailableConfigurationRecorderException,
     NoRunningConfigurationRecorderException,
@@ -3386,7 +3406,20 @@ export const describeAggregateComplianceByConfigRules: API.PaginatedOperationMet
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConfigurationAggregatorName: 0,
+      Filters: {
+        ConfigRuleName: 0,
+        ComplianceType: 0,
+        AccountId: 0,
+        AwsRegion: 0,
+      },
+      Limit: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     InvalidLimitException,
     InvalidNextTokenException,
@@ -3422,7 +3455,20 @@ export const describeAggregateComplianceByConformancePacks: API.PaginatedOperati
   Credentials | HttpClient.HttpClient,
   AggregateComplianceByConformancePack
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConfigurationAggregatorName: 0,
+      Filters: {
+        ConformancePackName: 0,
+        ComplianceType: 0,
+        AccountId: 0,
+        AwsRegion: 0,
+      },
+      Limit: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     InvalidLimitException,
     InvalidNextTokenException,
@@ -3458,6 +3504,7 @@ export const describeAggregationAuthorizations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Limit: 0, NextToken: 0 },
     output: { AggregationAuthorizations: D.list(o_AggregationAuthorization) },
   },
   errors: [
@@ -3520,7 +3567,10 @@ export const describeComplianceByConfigRule: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ComplianceByConfigRule
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ConfigRuleNames: 0, ComplianceTypes: 0, NextToken: 0 },
+  },
   errors: [
     InvalidNextTokenException,
     InvalidParameterValueException,
@@ -3579,7 +3629,16 @@ export const describeComplianceByResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ComplianceByResource
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceType: 0,
+      ResourceId: 0,
+      ComplianceTypes: 0,
+      Limit: 0,
+      NextToken: 0,
+    },
+  },
   errors: [InvalidNextTokenException, InvalidParameterValueException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3610,6 +3669,7 @@ export const describeConfigRuleEvaluationStatus: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ConfigRuleNames: 0, NextToken: 0, Limit: 0 },
     output: {
       ConfigRulesEvaluationStatus: D.list({
         LastSuccessfulInvocationTime: D.ts,
@@ -3653,7 +3713,14 @@ export const describeConfigRules: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ConfigRule
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConfigRuleNames: 0,
+      Filters: { EvaluationMode: 0, RuleEvaluationVisibility: 0 },
+      NextToken: 0,
+    },
+  },
   errors: [
     InvalidNextTokenException,
     InvalidParameterValueException,
@@ -3690,6 +3757,7 @@ export const describeConfigurationAggregators: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ConfigurationAggregatorNames: 0, NextToken: 0, Limit: 0 },
     output: { ConfigurationAggregators: D.list(o_ConfigurationAggregator) },
   },
   errors: [
@@ -3728,6 +3796,12 @@ export const describeConfigurationAggregatorSourcesStatus: API.PaginatedOperatio
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ConfigurationAggregatorName: 0,
+      UpdateStatus: 0,
+      NextToken: 0,
+      Limit: 0,
+    },
     output: { AggregatedSourceStatusList: D.list({ LastUpdateTime: D.ts }) },
   },
   errors: [
@@ -3765,7 +3839,10 @@ export const describeConfigurationRecorders: API.OperationMethod<
   DescribeConfigurationRecordersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ConfigurationRecorderNames: 0, ServicePrincipal: 0, Arn: 0 },
+  },
   errors: [NoSuchConfigurationRecorderException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3795,6 +3872,7 @@ export const describeConfigurationRecorderStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ConfigurationRecorderNames: 0, ServicePrincipal: 0, Arn: 0 },
     output: {
       ConfigurationRecordersStatus: D.list({
         lastStartTime: D.ts,
@@ -3828,7 +3906,15 @@ export const describeConformancePackCompliance: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ConformancePackRuleCompliance
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConformancePackName: 0,
+      Filters: { ConfigRuleNames: 0, ComplianceType: 0 },
+      Limit: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     InvalidLimitException,
     InvalidNextTokenException,
@@ -3865,6 +3951,7 @@ export const describeConformancePacks: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ConformancePackNames: 0, Limit: 0, NextToken: 0 },
     output: {
       ConformancePackDetails: D.list({ LastUpdateRequestedTime: D.ts }),
     },
@@ -3905,6 +3992,7 @@ export const describeConformancePackStatus: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ConformancePackNames: 0, Limit: 0, NextToken: 0 },
     output: {
       ConformancePackStatusDetails: D.list({
         LastUpdateRequestedTime: D.ts,
@@ -3945,7 +4033,7 @@ export const describeDeliveryChannels: API.OperationMethod<
   DescribeDeliveryChannelsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DeliveryChannelNames: 0 } },
   errors: [NoSuchDeliveryChannelException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3972,6 +4060,7 @@ export const describeDeliveryChannelStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DeliveryChannelNames: 0 },
     output: {
       DeliveryChannelsStatus: D.list({
         configSnapshotDeliveryInfo: o_ConfigExportDeliveryInfo,
@@ -4022,6 +4111,7 @@ export const describeOrganizationConfigRules: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { OrganizationConfigRuleNames: 0, Limit: 0, NextToken: 0 },
     output: { OrganizationConfigRules: D.list({ LastUpdateTime: D.ts }) },
   },
   errors: [
@@ -4066,6 +4156,7 @@ export const describeOrganizationConfigRuleStatuses: API.PaginatedOperationMetho
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { OrganizationConfigRuleNames: 0, Limit: 0, NextToken: 0 },
     output: {
       OrganizationConfigRuleStatuses: D.list({ LastUpdateTime: D.ts }),
     },
@@ -4123,6 +4214,7 @@ export const describeOrganizationConformancePacks: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { OrganizationConformancePackNames: 0, Limit: 0, NextToken: 0 },
     output: { OrganizationConformancePacks: D.list({ LastUpdateTime: D.ts }) },
   },
   errors: [
@@ -4167,6 +4259,7 @@ export const describeOrganizationConformancePackStatuses: API.PaginatedOperation
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { OrganizationConformancePackNames: 0, Limit: 0, NextToken: 0 },
     output: {
       OrganizationConformancePackStatuses: D.list({ LastUpdateTime: D.ts }),
     },
@@ -4203,7 +4296,7 @@ export const describePendingAggregationRequests: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   PendingAggregationRequest
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Limit: 0, NextToken: 0 } },
   errors: [
     InvalidLimitException,
     InvalidNextTokenException,
@@ -4230,7 +4323,7 @@ export const describeRemediationConfigurations: API.OperationMethod<
   DescribeRemediationConfigurationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConfigRuleNames: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4261,6 +4354,12 @@ export const describeRemediationExceptions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ConfigRuleName: 0,
+      ResourceKeys: D.list(i_RemediationExceptionResourceKey),
+      Limit: 0,
+      NextToken: 0,
+    },
     output: { RemediationExceptions: D.list(o_RemediationException) },
   },
   errors: [InvalidNextTokenException, InvalidParameterValueException],
@@ -4292,6 +4391,12 @@ export const describeRemediationExecutionStatus: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ConfigRuleName: 0,
+      ResourceKeys: D.list(i_ResourceKey),
+      Limit: 0,
+      NextToken: 0,
+    },
     output: {
       RemediationExecutionStatuses: D.list({
         StepDetails: D.list({ StartTime: D.ts, StopTime: D.ts }),
@@ -4337,7 +4442,10 @@ export const describeRetentionConfigurations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RetentionConfiguration
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { RetentionConfigurationNames: 0, NextToken: 0 },
+  },
   errors: [
     InvalidNextTokenException,
     InvalidParameterValueException,
@@ -4369,7 +4477,10 @@ export const disassociateResourceTypes: API.OperationMethod<
   DisassociateResourceTypesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ConfigurationRecorderArn: 0, ResourceTypes: 0 },
+  },
   errors: [
     ConflictException,
     NoSuchConfigurationRecorderException,
@@ -4405,6 +4516,15 @@ export const getAggregateComplianceDetailsByConfigRule: API.PaginatedOperationMe
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ConfigurationAggregatorName: 0,
+      ConfigRuleName: 0,
+      AccountId: 0,
+      AwsRegion: 0,
+      ComplianceType: 0,
+      Limit: 0,
+      NextToken: 0,
+    },
     output: {
       AggregateEvaluationResults: D.list({
         EvaluationResultIdentifier: o_EvaluationResultIdentifier,
@@ -4453,6 +4573,13 @@ export const getAggregateConfigRuleComplianceSummary: API.PaginatedOperationMeth
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ConfigurationAggregatorName: 0,
+      Filters: { AccountId: 0, AwsRegion: 0 },
+      GroupByKey: 0,
+      Limit: 0,
+      NextToken: 0,
+    },
     output: {
       AggregateComplianceCounts: D.list({
         ComplianceSummary: o_ComplianceSummary,
@@ -4493,7 +4620,16 @@ export const getAggregateConformancePackComplianceSummary: API.PaginatedOperatio
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConfigurationAggregatorName: 0,
+      Filters: { AccountId: 0, AwsRegion: 0 },
+      GroupByKey: 0,
+      Limit: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     InvalidLimitException,
     InvalidNextTokenException,
@@ -4529,7 +4665,16 @@ export const getAggregateDiscoveredResourceCounts: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConfigurationAggregatorName: 0,
+      Filters: { ResourceType: 0, AccountId: 0, Region: 0 },
+      GroupByKey: 0,
+      Limit: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     InvalidLimitException,
     InvalidNextTokenException,
@@ -4565,6 +4710,10 @@ export const getAggregateResourceConfig: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ConfigurationAggregatorName: 0,
+      ResourceIdentifier: i_AggregateResourceIdentifier,
+    },
     output: { ConfigurationItem: o_ConfigurationItem },
   },
   errors: [
@@ -4598,6 +4747,7 @@ export const getComplianceDetailsByConfigRule: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ConfigRuleName: 0, ComplianceTypes: 0, Limit: 0, NextToken: 0 },
     output: { EvaluationResults: D.list(o_EvaluationResult) },
   },
   errors: [
@@ -4634,6 +4784,13 @@ export const getComplianceDetailsByResource: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ResourceType: 0,
+      ResourceId: 0,
+      ComplianceTypes: 0,
+      NextToken: 0,
+      ResourceEvaluationId: 0,
+    },
     output: { EvaluationResults: D.list(o_EvaluationResult) },
   },
   errors: [InvalidParameterValueException],
@@ -4685,6 +4842,7 @@ export const getComplianceSummaryByResourceType: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResourceTypes: 0 },
     output: {
       ComplianceSummariesByResourceType: D.list({
         ComplianceSummary: o_ComplianceSummary,
@@ -4716,6 +4874,17 @@ export const getConformancePackComplianceDetails: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ConformancePackName: 0,
+      Filters: {
+        ConfigRuleNames: 0,
+        ComplianceType: 0,
+        ResourceType: 0,
+        ResourceIds: 0,
+      },
+      Limit: 0,
+      NextToken: 0,
+    },
     output: {
       ConformancePackRuleEvaluationResults: D.list({
         EvaluationResultIdentifier: o_EvaluationResultIdentifier,
@@ -4756,7 +4925,10 @@ export const getConformancePackComplianceSummary: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ConformancePackComplianceSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ConformancePackNames: 0, Limit: 0, NextToken: 0 },
+  },
   errors: [
     InvalidLimitException,
     InvalidNextTokenException,
@@ -4786,7 +4958,11 @@ export const getConnector: API.OperationMethod<
   GetConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Connector: { createdTime: D.ts } } },
+  descriptor: {
+    service: svc,
+    input: { Arn: 0 },
+    output: { Connector: { createdTime: D.ts } },
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4803,7 +4979,7 @@ export const getCustomRulePolicy: API.OperationMethod<
   GetCustomRulePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConfigRuleName: 0 } },
   errors: [NoSuchConfigRuleException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4867,7 +5043,10 @@ export const getDiscoveredResourceCounts: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { resourceTypes: 0, limit: 0, nextToken: 0 },
+  },
   errors: [
     InvalidLimitException,
     InvalidNextTokenException,
@@ -4901,6 +5080,12 @@ export const getOrganizationConfigRuleDetailedStatus: API.PaginatedOperationMeth
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      OrganizationConfigRuleName: 0,
+      Filters: { AccountId: 0, MemberAccountRuleStatus: 0 },
+      Limit: 0,
+      NextToken: 0,
+    },
     output: {
       OrganizationConfigRuleDetailedStatus: D.list({ LastUpdateTime: D.ts }),
     },
@@ -4940,6 +5125,12 @@ export const getOrganizationConformancePackDetailedStatus: API.PaginatedOperatio
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      OrganizationConformancePackName: 0,
+      Filters: { AccountId: 0, Status: 0 },
+      Limit: 0,
+      NextToken: 0,
+    },
     output: {
       OrganizationConformancePackDetailedStatuses: D.list({
         LastUpdateTime: D.ts,
@@ -4976,7 +5167,7 @@ export const getOrganizationCustomRulePolicy: API.OperationMethod<
   GetOrganizationCustomRulePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationConfigRuleName: 0 } },
   errors: [
     NoSuchOrganizationConfigRuleException,
     OrganizationAccessDeniedException,
@@ -5034,6 +5225,15 @@ export const getResourceConfigHistory: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      resourceType: 0,
+      resourceId: 0,
+      laterTime: 0,
+      earlierTime: 0,
+      chronologicalOrder: 0,
+      limit: 0,
+      nextToken: 0,
+    },
     output: { configurationItems: D.list(o_ConfigurationItem) },
   },
   errors: [
@@ -5072,7 +5272,11 @@ export const getResourceEvaluationSummary: API.OperationMethod<
   GetResourceEvaluationSummaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { EvaluationStartTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ResourceEvaluationId: 0 },
+    output: { EvaluationStartTimestamp: D.ts },
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5092,7 +5296,7 @@ export const getStoredQuery: API.OperationMethod<
   GetStoredQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { QueryName: 0 } },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5119,7 +5323,16 @@ export const listAggregateDiscoveredResources: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AggregateResourceIdentifier
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConfigurationAggregatorName: 0,
+      ResourceType: 0,
+      Filters: { AccountId: 0, ResourceId: 0, ResourceName: 0, Region: 0 },
+      Limit: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     InvalidLimitException,
     InvalidNextTokenException,
@@ -5150,7 +5363,14 @@ export const listConfigurationRecorders: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ConfigurationRecorderSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Filters: D.list({ filterName: 0, filterValue: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5185,6 +5405,13 @@ export const listConformancePackComplianceScores: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filters: { ConformancePackNames: 0 },
+      SortOrder: 0,
+      SortBy: 0,
+      Limit: 0,
+      NextToken: 0,
+    },
     output: {
       ConformancePackComplianceScores: D.list({ LastUpdatedTime: D.ts }),
     },
@@ -5217,6 +5444,11 @@ export const listConnectors: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list({ filterName: 0, filterValues: 0 }),
+    },
     output: { ConnectorSummaries: D.list({ createdTime: D.ts }) },
   },
   errors: [ValidationException],
@@ -5282,6 +5514,14 @@ export const listDiscoveredResources: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      resourceType: 0,
+      resourceIds: 0,
+      resourceName: 0,
+      limit: 0,
+      includeDeletedResources: 0,
+      nextToken: 0,
+    },
     output: { resourceIdentifiers: D.list({ resourceDeletionTime: D.ts }) },
   },
   errors: [
@@ -5318,6 +5558,15 @@ export const listResourceEvaluations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filters: {
+        EvaluationMode: 0,
+        TimeWindow: { StartTime: 0, EndTime: 0 },
+        EvaluationContextIdentifier: 0,
+      },
+      Limit: 0,
+      NextToken: 0,
+    },
     output: { ResourceEvaluations: D.list({ EvaluationStartTimestamp: D.ts }) },
   },
   errors: [
@@ -5350,7 +5599,7 @@ export const listStoredQueries: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [InvalidNextTokenException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5378,7 +5627,10 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Tag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, Limit: 0, NextToken: 0 },
+  },
   errors: [
     InvalidLimitException,
     InvalidNextTokenException,
@@ -5418,6 +5670,11 @@ export const putAggregationAuthorization: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AuthorizedAccountId: 0,
+      AuthorizedAwsRegion: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { AggregationAuthorization: o_AggregationAuthorization },
   },
   errors: [InvalidParameterValueException],
@@ -5493,7 +5750,45 @@ export const putConfigRule: API.OperationMethod<
   PutConfigRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConfigRule: {
+        ConfigRuleName: 0,
+        ConfigRuleArn: 0,
+        ConfigRuleId: 0,
+        Description: 0,
+        Scope: {
+          ComplianceResourceTypes: 0,
+          TagKey: 0,
+          TagValue: 0,
+          ComplianceResourceId: 0,
+          ServicePrincipals: 0,
+        },
+        Source: {
+          Owner: 0,
+          SourceIdentifier: 0,
+          SourceDetails: D.list({
+            EventSource: 0,
+            MessageType: 0,
+            MaximumExecutionFrequency: 0,
+          }),
+          CustomPolicyDetails: {
+            PolicyRuntime: 0,
+            PolicyText: 0,
+            EnableDebugLogDelivery: 0,
+          },
+        },
+        InputParameters: 0,
+        MaximumExecutionFrequency: 0,
+        ConfigRuleState: 0,
+        CreatedBy: 0,
+        EvaluationModes: D.list({ Mode: 0 }),
+        RuleEvaluationVisibility: 0,
+      },
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InsufficientPermissionsException,
     InvalidParameterValueException,
@@ -5546,6 +5841,24 @@ export const putConfigurationAggregator: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ConfigurationAggregatorName: 0,
+      AccountAggregationSources: D.list({
+        AccountIds: 0,
+        AllAwsRegions: 0,
+        AwsRegions: 0,
+      }),
+      OrganizationAggregationSource: {
+        RoleArn: 0,
+        AwsRegions: 0,
+        AllAwsRegions: 0,
+      },
+      Tags: D.list(i_Tag),
+      AggregatorFilters: {
+        ResourceType: { Type: 0, Value: 0 },
+        ServicePrincipal: { Type: 0, Value: 0 },
+      },
+    },
     output: { ConfigurationAggregator: o_ConfigurationAggregator },
   },
   errors: [
@@ -5603,7 +5916,36 @@ export const putConfigurationRecorder: API.OperationMethod<
   PutConfigurationRecorderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConfigurationRecorder: {
+        arn: 0,
+        name: 0,
+        roleARN: 0,
+        recordingGroup: {
+          allSupported: 0,
+          includeGlobalResourceTypes: 0,
+          resourceTypes: 0,
+          exclusionByResourceTypes: { resourceTypes: 0 },
+          recordingStrategy: { useOnly: 0 },
+        },
+        recordingMode: {
+          recordingFrequency: 0,
+          recordingModeOverrides: D.list({
+            description: 0,
+            resourceTypes: 0,
+            recordingFrequency: 0,
+          }),
+        },
+        recordingScope: 0,
+        servicePrincipal: 0,
+        connectorArn: 0,
+        scopeConfiguration: i_ScopeConfiguration,
+      },
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InvalidConfigurationRecorderNameException,
     InvalidRecordingGroupException,
@@ -5660,7 +6002,19 @@ export const putConformancePack: API.OperationMethod<
   PutConformancePackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConformancePackName: 0,
+      TemplateS3Uri: 0,
+      TemplateBody: 0,
+      DeliveryS3Bucket: 0,
+      DeliveryS3KeyPrefix: 0,
+      ConformancePackInputParameters: D.list(i_ConformancePackInputParameter),
+      TemplateSSMDocumentDetails: { DocumentName: 0, DocumentVersion: 0 },
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     ConformancePackTemplateValidationException,
     InsufficientPermissionsException,
@@ -5700,7 +6054,15 @@ export const putConnector: API.OperationMethod<
   PutConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConnectorConfiguration: {
+        azure: { tenantIdentifier: 0, clientIdentifier: 0 },
+      },
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     ConflictException,
     InsufficientPermissionsException,
@@ -5743,7 +6105,19 @@ export const putDeliveryChannel: API.OperationMethod<
   PutDeliveryChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DeliveryChannel: {
+        name: 0,
+        s3BucketName: 0,
+        s3KeyPrefix: 0,
+        s3KmsKeyArn: 0,
+        snsTopicARN: 0,
+        configSnapshotDeliveryProperties: { deliveryFrequency: 0 },
+      },
+    },
+  },
   errors: [
     InsufficientDeliveryPolicyException,
     InvalidDeliveryChannelNameException,
@@ -5777,6 +6151,17 @@ export const putEvaluations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Evaluations: D.list({
+        ComplianceResourceType: 0,
+        ComplianceResourceId: 0,
+        ComplianceType: 0,
+        Annotation: 0,
+        OrderingTimestamp: 0,
+      }),
+      ResultToken: 0,
+      TestMode: 0,
+    },
     output: { FailedEvaluations: D.list({ OrderingTimestamp: D.ts }) },
   },
   errors: [
@@ -5803,7 +6188,19 @@ export const putExternalEvaluation: API.OperationMethod<
   PutExternalEvaluationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConfigRuleName: 0,
+      ExternalEvaluation: {
+        ComplianceResourceType: 0,
+        ComplianceResourceId: 0,
+        ComplianceType: 0,
+        Annotation: 0,
+        OrderingTimestamp: 0,
+      },
+    },
+  },
   errors: [InvalidParameterValueException, NoSuchConfigRuleException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5870,7 +6267,48 @@ export const putOrganizationConfigRule: API.OperationMethod<
   PutOrganizationConfigRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OrganizationConfigRuleName: 0,
+      OrganizationManagedRuleMetadata: {
+        Description: 0,
+        RuleIdentifier: 0,
+        InputParameters: 0,
+        MaximumExecutionFrequency: 0,
+        ResourceTypesScope: 0,
+        ResourceIdScope: 0,
+        TagKeyScope: 0,
+        TagValueScope: 0,
+      },
+      OrganizationCustomRuleMetadata: {
+        Description: 0,
+        LambdaFunctionArn: 0,
+        OrganizationConfigRuleTriggerTypes: 0,
+        InputParameters: 0,
+        MaximumExecutionFrequency: 0,
+        ResourceTypesScope: 0,
+        ResourceIdScope: 0,
+        TagKeyScope: 0,
+        TagValueScope: 0,
+      },
+      ExcludedAccounts: 0,
+      OrganizationCustomPolicyRuleMetadata: {
+        Description: 0,
+        OrganizationConfigRuleTriggerTypes: 0,
+        InputParameters: 0,
+        MaximumExecutionFrequency: 0,
+        ResourceTypesScope: 0,
+        ResourceIdScope: 0,
+        TagKeyScope: 0,
+        TagValueScope: 0,
+        PolicyRuntime: 0,
+        PolicyText: 0,
+        DebugLogDeliveryAccounts: 0,
+      },
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InsufficientPermissionsException,
     InvalidParameterValueException,
@@ -5939,7 +6377,19 @@ export const putOrganizationConformancePack: API.OperationMethod<
   PutOrganizationConformancePackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OrganizationConformancePackName: 0,
+      TemplateS3Uri: 0,
+      TemplateBody: 0,
+      DeliveryS3Bucket: 0,
+      DeliveryS3KeyPrefix: 0,
+      ConformancePackInputParameters: D.list(i_ConformancePackInputParameter),
+      ExcludedAccounts: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InsufficientPermissionsException,
     MaxNumberOfOrganizationConformancePacksExceededException,
@@ -5995,7 +6445,33 @@ export const putRemediationConfigurations: API.OperationMethod<
   PutRemediationConfigurationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      RemediationConfigurations: D.list({
+        ConfigRuleName: 0,
+        TargetType: 0,
+        TargetId: 0,
+        TargetVersion: 0,
+        Parameters: D.map({
+          ResourceValue: { Value: 0 },
+          StaticValue: { Values: 0 },
+        }),
+        ResourceType: 0,
+        Automatic: 0,
+        ExecutionControls: {
+          SsmControls: {
+            ConcurrentExecutionRatePercentage: 0,
+            ErrorPercentage: 0,
+          },
+        },
+        MaximumAutomaticAttempts: 0,
+        RetryAttemptSeconds: 0,
+        Arn: 0,
+        CreatedByService: 0,
+      }),
+    },
+  },
   errors: [InsufficientPermissionsException, InvalidParameterValueException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6050,6 +6526,12 @@ export const putRemediationExceptions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ConfigRuleName: 0,
+      ResourceKeys: D.list(i_RemediationExceptionResourceKey),
+      Message: 0,
+      ExpirationTime: 0,
+    },
     output: {
       FailedBatches: D.list({ FailedItems: D.list(o_RemediationException) }),
     },
@@ -6084,7 +6566,17 @@ export const putResourceConfig: API.OperationMethod<
   PutResourceConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceType: 0,
+      SchemaVersionId: 0,
+      ResourceId: 0,
+      ResourceName: 0,
+      Configuration: 0,
+      Tags: 0,
+    },
+  },
   errors: [
     InsufficientPermissionsException,
     MaxActiveResourcesExceededException,
@@ -6118,7 +6610,7 @@ export const putRetentionConfiguration: API.OperationMethod<
   PutRetentionConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RetentionPeriodInDays: 0 } },
   errors: [
     InvalidParameterValueException,
     MaxNumberOfRetentionConfigurationsExceededException,
@@ -6159,7 +6651,10 @@ export const putServiceLinkedConfigurationRecorder: API.OperationMethod<
   PutServiceLinkedConfigurationRecorderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServicePrincipal: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     ConflictException,
     InsufficientPermissionsException,
@@ -6191,7 +6686,19 @@ export const putStoredQuery: API.OperationMethod<
   PutStoredQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      StoredQuery: {
+        QueryId: 0,
+        QueryArn: 0,
+        QueryName: 0,
+        Description: 0,
+        Expression: 0,
+      },
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     ResourceConcurrentModificationException,
     TooManyTagsException,
@@ -6228,7 +6735,15 @@ export const putThirdPartyServiceLinkedConfigurationRecorder: API.OperationMetho
   PutThirdPartyServiceLinkedConfigurationRecorderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ServicePrincipal: 0,
+      ConnectorArn: 0,
+      ScopeConfiguration: i_ScopeConfiguration,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     ConflictException,
     InsufficientPermissionsException,
@@ -6267,7 +6782,16 @@ export const selectAggregateResourceConfig: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   string
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Expression: 0,
+      ConfigurationAggregatorName: 0,
+      Limit: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     InvalidExpressionException,
     InvalidLimitException,
@@ -6305,7 +6829,10 @@ export const selectResourceConfig: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   string
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Expression: 0, Limit: 0, NextToken: 0 },
+  },
   errors: [
     InvalidExpressionException,
     InvalidLimitException,
@@ -6376,7 +6903,7 @@ export const startConfigRulesEvaluation: API.OperationMethod<
   StartConfigRulesEvaluationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConfigRuleNames: 0 } },
   errors: [
     InvalidParameterValueException,
     LimitExceededException,
@@ -6405,7 +6932,7 @@ export const startConfigurationRecorder: API.OperationMethod<
   StartConfigurationRecorderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConfigurationRecorderName: 0 } },
   errors: [
     NoAvailableDeliveryChannelException,
     NoSuchConfigurationRecorderException,
@@ -6432,7 +6959,10 @@ export const startRemediationExecution: API.OperationMethod<
   StartRemediationExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ConfigRuleName: 0, ResourceKeys: D.list(i_ResourceKey) },
+  },
   errors: [
     InsufficientPermissionsException,
     InvalidParameterValueException,
@@ -6467,7 +6997,21 @@ export const startResourceEvaluation: API.OperationMethod<
   StartResourceEvaluationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceDetails: {
+        ResourceId: 0,
+        ResourceType: 0,
+        ResourceConfiguration: 0,
+        ResourceConfigurationSchemaType: 0,
+      },
+      EvaluationContext: { EvaluationContextIdentifier: 0 },
+      EvaluationMode: 0,
+      EvaluationTimeout: 0,
+      ClientToken: 0,
+    },
+  },
   errors: [IdempotentParameterMismatch, InvalidParameterValueException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6487,7 +7031,7 @@ export const stopConfigurationRecorder: API.OperationMethod<
   StopConfigurationRecorderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConfigurationRecorderName: 0 } },
   errors: [NoSuchConfigurationRecorderException, UnmodifiableEntityException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6509,7 +7053,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     ResourceNotFoundException,
     TooManyTagsException,
@@ -6533,13 +7077,36 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "UntagResource",
 })) as any;
 
+const i_AggregateResourceIdentifier: D.LazyStruct = () => ({
+  SourceAccountId: 0,
+  SourceRegion: 0,
+  ResourceId: 0,
+  ResourceType: 0,
+  ResourceName: 0,
+});
+const i_ConformancePackInputParameter: D.LazyStruct = () => ({
+  ParameterName: 0,
+  ParameterValue: 0,
+});
+const i_RemediationExceptionResourceKey: D.LazyStruct = () => ({
+  ResourceType: 0,
+  ResourceId: 0,
+});
+const i_ResourceKey: D.LazyStruct = () => ({ resourceType: 0, resourceId: 0 });
+const i_ScopeConfiguration: D.LazyStruct = () => ({
+  scopeType: 0,
+  scopeValues: 0,
+  allRegions: 0,
+  includedRegions: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_AggregationAuthorization: D.LazyStruct = () => ({ CreationTime: D.ts });
 const o_BaseConfigurationItem: D.LazyStruct = () => ({
   configurationItemCaptureTime: D.ts,

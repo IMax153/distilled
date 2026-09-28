@@ -272,7 +272,13 @@ export const acceptConnectionProposal: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      attachPoint: i_AttachPoint,
+      activationKey: 0,
+      description: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { connection: o_Connection },
   },
   errors: [],
@@ -299,7 +305,15 @@ export const createConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      description: 0,
+      bandwidth: 0,
+      attachPoint: i_AttachPoint,
+      environmentId: 0,
+      remoteAccount: { identifier: 0 },
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { connection: o_Connection },
   },
   errors: [],
@@ -322,7 +336,7 @@ export const deleteConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { identifier: 0, clientToken: D.m({ idempotency: true }) },
     output: { connection: o_Connection },
   },
   errors: [],
@@ -341,7 +355,7 @@ export const describeConnectionProposal: API.OperationMethod<
   DescribeConnectionProposalError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { activationKey: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -358,7 +372,11 @@ export const getConnection: API.OperationMethod<
   GetConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { connection: o_Connection } },
+  descriptor: {
+    service: svc,
+    input: { identifier: 0 },
+    output: { connection: o_Connection },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -375,7 +393,7 @@ export const getEnvironment: API.OperationMethod<
   GetEnvironmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { id: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -393,7 +411,10 @@ export const listAttachPoints: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AttachPointDescriptor
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { environmentId: 0, maxResults: 0, nextToken: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -429,7 +450,17 @@ export const listConnections: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ConnectionSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      maxResults: 0,
+      nextToken: 0,
+      state: 0,
+      environmentId: 0,
+      provider: i_Provider,
+      attachPoint: i_AttachPoint,
+    },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -453,7 +484,10 @@ export const listEnvironments: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Environment
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { maxResults: 0, nextToken: 0, provider: i_Provider, location: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -476,7 +510,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -493,7 +527,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0, tags: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -510,7 +544,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0, tagKeys: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -529,7 +563,12 @@ export const updateConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      identifier: 0,
+      description: 0,
+      bandwidth: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { connection: o_Connection },
   },
   errors: [],
@@ -538,4 +577,9 @@ export const updateConnection: API.OperationMethod<
   operationName: "UpdateConnection",
 })) as any;
 
+const i_AttachPoint: D.LazyStruct = () => ({ directConnectGateway: 0, arn: 0 });
+const i_Provider: D.LazyStruct = () => ({
+  cloudServiceProvider: 0,
+  lastMileProvider: 0,
+});
 const o_Connection: D.LazyStruct = () => ({ activationKey: D.secret });

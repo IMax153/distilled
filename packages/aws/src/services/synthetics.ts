@@ -671,6 +671,7 @@ export const associateResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /group/{GroupIdentifier}/associate",
+    input: { GroupIdentifier: 0, ResourceArn: 0 },
     body: true,
   },
   errors: [
@@ -718,6 +719,25 @@ export const createCanary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /canary",
+    input: {
+      Name: 0,
+      Code: i_CanaryCodeInput,
+      ArtifactS3Location: 0,
+      ExecutionRoleArn: 0,
+      Schedule: i_CanaryScheduleInput,
+      RunConfig: i_CanaryRunConfigInput,
+      SuccessRetentionPeriodInDays: 0,
+      FailureRetentionPeriodInDays: 0,
+      RuntimeVersion: 0,
+      VpcConfig: i_VpcConfigInput,
+      ResourcesToReplicateTags: 0,
+      ProvisionedResourceCleanup: 0,
+      BrowserConfigs: D.list(i_BrowserConfig),
+      AddReplicaLocations: D.list(i_AddReplicaLocationInput),
+      Tags: 0,
+      ArtifactConfig: i_ArtifactConfigInput,
+      KmsKeyArn: 0,
+    },
     output: { Canary: o_Canary },
     body: true,
   },
@@ -764,6 +784,7 @@ export const createGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /group",
+    input: { Name: 0, Tags: 0 },
     output: { Group: o_Group },
     body: true,
   },
@@ -821,7 +842,7 @@ export const deleteCanary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /canary/{Name}",
-    input: { DeleteLambda: D.m({ query: "deleteLambda" }) },
+    input: { Name: 0, DeleteLambda: D.m({ query: "deleteLambda" }) },
   },
   errors: [
     ConflictException,
@@ -853,7 +874,11 @@ export const deleteGroup: API.OperationMethod<
   DeleteGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /group/{GroupIdentifier}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /group/{GroupIdentifier}",
+    input: { GroupIdentifier: 0 },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -893,6 +918,7 @@ export const describeCanaries: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /canaries",
+    input: { NextToken: 0, MaxResults: 0, Names: 0 },
     output: { Canaries: D.list(o_Canary) },
     body: true,
   },
@@ -934,6 +960,7 @@ export const describeCanariesLastRun: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /canaries/last-run",
+    input: { NextToken: 0, MaxResults: 0, Names: 0, BrowserType: 0 },
     output: { CanariesLastRun: D.list({ LastRun: o_CanaryRun }) },
     body: true,
   },
@@ -967,6 +994,7 @@ export const describeRuntimeVersions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /runtime-versions",
+    input: { NextToken: 0, MaxResults: 0 },
     output: {
       RuntimeVersions: D.list({ ReleaseDate: D.ts, DeprecationDate: D.ts }),
     },
@@ -1001,6 +1029,7 @@ export const disassociateResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /group/{GroupIdentifier}/disassociate",
+    input: { GroupIdentifier: 0, ResourceArn: 0 },
     body: true,
   },
   errors: [
@@ -1033,7 +1062,7 @@ export const getCanary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /canary/{Name}",
-    input: { DryRunId: D.m({ query: "dryRunId" }) },
+    input: { Name: 0, DryRunId: D.m({ query: "dryRunId" }) },
     output: { Canary: o_Canary },
   },
   errors: [
@@ -1064,6 +1093,7 @@ export const getCanaryRuns: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /canary/{Name}/runs",
+    input: { Name: 0, NextToken: 0, MaxResults: 0, DryRunId: 0, RunType: 0 },
     output: { CanaryRuns: D.list(o_CanaryRun) },
     body: true,
   },
@@ -1101,6 +1131,7 @@ export const getGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /group/{GroupIdentifier}",
+    input: { GroupIdentifier: 0 },
     output: { Group: o_Group },
   },
   errors: [
@@ -1133,6 +1164,7 @@ export const listAssociatedGroups: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /resource/{ResourceArn}/groups",
+    input: { NextToken: 0, MaxResults: 0, ResourceArn: 0 },
     body: true,
   },
   errors: [
@@ -1169,6 +1201,7 @@ export const listGroupResources: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /group/{GroupIdentifier}/resources",
+    input: { NextToken: 0, MaxResults: 0, GroupIdentifier: 0 },
     body: true,
   },
   errors: [
@@ -1202,7 +1235,12 @@ export const listGroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /groups", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /groups",
+    input: { NextToken: 0, MaxResults: 0 },
+    body: true,
+  },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1230,7 +1268,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -1260,7 +1302,11 @@ export const startCanary: API.OperationMethod<
   StartCanaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /canary/{Name}/start" },
+  descriptor: {
+    service: svc,
+    http: "POST /canary/{Name}/start",
+    input: { Name: 0 },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1291,6 +1337,22 @@ export const startCanaryDryRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /canary/{Name}/dry-run/start",
+    input: {
+      Name: 0,
+      Code: i_CanaryCodeInput,
+      RuntimeVersion: 0,
+      RunConfig: i_CanaryRunConfigInput,
+      VpcConfig: i_VpcConfigInput,
+      ExecutionRoleArn: 0,
+      SuccessRetentionPeriodInDays: 0,
+      FailureRetentionPeriodInDays: 0,
+      VisualReference: i_VisualReferenceInput,
+      ArtifactS3Location: 0,
+      ArtifactConfig: i_ArtifactConfigInput,
+      ProvisionedResourceCleanup: 0,
+      BrowserConfigs: D.list(i_BrowserConfig),
+      VisualReferences: D.list(i_VisualReferenceInput),
+    },
     body: true,
   },
   errors: [
@@ -1325,7 +1387,11 @@ export const stopCanary: API.OperationMethod<
   StopCanaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /canary/{Name}/stop" },
+  descriptor: {
+    service: svc,
+    http: "POST /canary/{Name}/stop",
+    input: { Name: 0 },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1368,7 +1434,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -1400,7 +1471,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     BadRequestException,
@@ -1442,7 +1513,32 @@ export const updateCanary: API.OperationMethod<
   UpdateCanaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /canary/{Name}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /canary/{Name}",
+    input: {
+      Name: 0,
+      Code: i_CanaryCodeInput,
+      ExecutionRoleArn: 0,
+      RuntimeVersion: 0,
+      Schedule: i_CanaryScheduleInput,
+      RunConfig: i_CanaryRunConfigInput,
+      SuccessRetentionPeriodInDays: 0,
+      FailureRetentionPeriodInDays: 0,
+      VpcConfig: i_VpcConfigInput,
+      VisualReference: i_VisualReferenceInput,
+      ArtifactS3Location: 0,
+      ArtifactConfig: i_ArtifactConfigInput,
+      ProvisionedResourceCleanup: 0,
+      DryRunId: 0,
+      VisualReferences: D.list(i_VisualReferenceInput),
+      BrowserConfigs: D.list(i_BrowserConfig),
+      AddReplicaLocations: D.list(i_AddReplicaLocationInput),
+      RemoveReplicaLocations: 0,
+      KmsKeyArn: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1456,6 +1552,46 @@ export const updateCanary: API.OperationMethod<
   operationName: "UpdateCanary",
 })) as any;
 
+const i_AddReplicaLocationInput: D.LazyStruct = () => ({
+  Location: 0,
+  VpcConfig: i_VpcConfigInput,
+  KmsKeyArn: 0,
+});
+const i_ArtifactConfigInput: D.LazyStruct = () => ({
+  S3Encryption: { EncryptionMode: 0, KmsKeyArn: 0 },
+});
+const i_BrowserConfig: D.LazyStruct = () => ({ BrowserType: 0 });
+const i_CanaryCodeInput: D.LazyStruct = () => ({
+  S3Bucket: 0,
+  S3Key: 0,
+  S3Version: 0,
+  ZipFile: 0,
+  Handler: 0,
+  BlueprintTypes: 0,
+  Dependencies: D.list({ Type: 0, Reference: 0 }),
+});
+const i_CanaryRunConfigInput: D.LazyStruct = () => ({
+  TimeoutInSeconds: 0,
+  MemoryInMB: 0,
+  ActiveTracing: 0,
+  EnvironmentVariables: 0,
+  EphemeralStorage: 0,
+});
+const i_CanaryScheduleInput: D.LazyStruct = () => ({
+  Expression: 0,
+  DurationInSeconds: 0,
+  RetryConfig: { MaxRetries: 0 },
+});
+const i_VisualReferenceInput: D.LazyStruct = () => ({
+  BaseScreenshots: D.list({ ScreenshotName: 0, IgnoreCoordinates: 0 }),
+  BaseCanaryRunId: 0,
+  BrowserType: 0,
+});
+const i_VpcConfigInput: D.LazyStruct = () => ({
+  SubnetIds: 0,
+  SecurityGroupIds: 0,
+  Ipv6AllowedForDualStack: 0,
+});
 const o_Canary: D.LazyStruct = () => ({
   Timeline: {
     Created: D.ts,

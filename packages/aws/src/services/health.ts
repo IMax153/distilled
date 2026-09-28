@@ -550,7 +550,10 @@ export const describeAffectedAccountsForOrganization: API.PaginatedOperationMeth
   Credentials | HttpClient.HttpClient,
   AccountId
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { eventArn: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [InvalidPaginationToken],
   protocol: AwsProtocol,
   retry: Retry,
@@ -588,7 +591,23 @@ export const describeAffectedEntities: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AffectedEntity
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { entities: D.list(o_AffectedEntity) } },
+  descriptor: {
+    service: svc,
+    input: {
+      filter: {
+        eventArns: 0,
+        entityArns: 0,
+        entityValues: 0,
+        lastUpdatedTimes: D.list(i_DateTimeRange),
+        tags: 0,
+        statusCodes: 0,
+      },
+      locale: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
+    output: { entities: D.list(o_AffectedEntity) },
+  },
   errors: [InvalidPaginationToken, UnsupportedLocale],
   protocol: AwsProtocol,
   retry: Retry,
@@ -629,7 +648,21 @@ export const describeAffectedEntitiesForOrganization: API.PaginatedOperationMeth
   Credentials | HttpClient.HttpClient,
   AffectedEntity
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { entities: D.list(o_AffectedEntity) } },
+  descriptor: {
+    service: svc,
+    input: {
+      organizationEntityFilters: D.list(i_EventAccountFilter),
+      locale: 0,
+      nextToken: 0,
+      maxResults: 0,
+      organizationEntityAccountFilters: D.list({
+        eventArn: 0,
+        awsAccountId: 0,
+        statusCodes: 0,
+      }),
+    },
+    output: { entities: D.list(o_AffectedEntity) },
+  },
   errors: [InvalidPaginationToken, UnsupportedLocale],
   protocol: AwsProtocol,
   retry: Retry,
@@ -652,7 +685,7 @@ export const describeEntityAggregates: API.OperationMethod<
   DescribeEntityAggregatesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { eventArns: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -669,7 +702,7 @@ export const describeEntityAggregatesForOrganization: API.OperationMethod<
   DescribeEntityAggregatesForOrganizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { eventArns: 0, awsAccountIds: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -693,7 +726,15 @@ export const describeEventAggregates: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   EventAggregate
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      filter: i_EventFilter,
+      aggregateField: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
+  },
   errors: [InvalidPaginationToken],
   protocol: AwsProtocol,
   retry: Retry,
@@ -727,6 +768,7 @@ export const describeEventDetails: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { eventArns: 0, locale: 0 },
     output: { successfulSet: D.list({ event: o_Event }) },
   },
   errors: [UnsupportedLocale],
@@ -776,6 +818,10 @@ export const describeEventDetailsForOrganization: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      organizationEventDetailFilters: D.list(i_EventAccountFilter),
+      locale: 0,
+    },
     output: { successfulSet: D.list({ event: o_Event }) },
   },
   errors: [UnsupportedLocale],
@@ -815,7 +861,11 @@ export const describeEvents: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Event
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { events: D.list(o_Event) } },
+  descriptor: {
+    service: svc,
+    input: { filter: i_EventFilter, nextToken: 0, maxResults: 0, locale: 0 },
+    output: { events: D.list(o_Event) },
+  },
   errors: [InvalidPaginationToken, UnsupportedLocale],
   protocol: AwsProtocol,
   retry: Retry,
@@ -866,6 +916,26 @@ export const describeEventsForOrganization: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      filter: {
+        actionabilities: 0,
+        eventTypeCodes: 0,
+        awsAccountIds: 0,
+        services: 0,
+        regions: 0,
+        startTime: i_DateTimeRange,
+        endTime: i_DateTimeRange,
+        lastUpdatedTime: i_DateTimeRange,
+        entityArns: 0,
+        entityValues: 0,
+        eventTypeCategories: 0,
+        eventStatusCodes: 0,
+        personas: 0,
+      },
+      nextToken: 0,
+      maxResults: 0,
+      locale: 0,
+    },
     output: {
       events: D.list({ startTime: D.ts, endTime: D.ts, lastUpdatedTime: D.ts }),
     },
@@ -902,7 +972,21 @@ export const describeEventTypes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   EventType
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      filter: {
+        eventTypeCodes: 0,
+        services: 0,
+        eventTypeCategories: 0,
+        actionabilities: 0,
+        personas: 0,
+      },
+      locale: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
+  },
   errors: [InvalidPaginationToken, UnsupportedLocale],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1004,6 +1088,28 @@ export const enableHealthServiceAccessForOrganization: API.OperationMethod<
   operationName: "EnableHealthServiceAccessForOrganization",
 })) as any;
 
+const i_DateTimeRange: D.LazyStruct = () => ({ from: 0, to: 0 });
+const i_EventAccountFilter: D.LazyStruct = () => ({
+  eventArn: 0,
+  awsAccountId: 0,
+});
+const i_EventFilter: D.LazyStruct = () => ({
+  actionabilities: 0,
+  eventArns: 0,
+  eventTypeCodes: 0,
+  services: 0,
+  regions: 0,
+  availabilityZones: 0,
+  startTimes: D.list(i_DateTimeRange),
+  endTimes: D.list(i_DateTimeRange),
+  lastUpdatedTimes: D.list(i_DateTimeRange),
+  entityArns: 0,
+  entityValues: 0,
+  eventTypeCategories: 0,
+  tags: 0,
+  eventStatusCodes: 0,
+  personas: 0,
+});
 const o_AffectedEntity: D.LazyStruct = () => ({ lastUpdatedTime: D.ts });
 const o_Event: D.LazyStruct = () => ({
   startTime: D.ts,

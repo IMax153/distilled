@@ -377,7 +377,22 @@ export const createIndex: API.OperationMethod<
   CreateIndexError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CreateIndex", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CreateIndex",
+    input: {
+      vectorBucketName: 0,
+      vectorBucketArn: 0,
+      indexName: 0,
+      dataType: 0,
+      dimension: 0,
+      distanceMetric: 0,
+      metadataConfiguration: { nonFilterableMetadataKeys: 0 },
+      encryptionConfiguration: i_EncryptionConfiguration,
+      tags: 0,
+    },
+    body: true,
+  },
   errors: [
     ConflictException,
     NotFoundException,
@@ -409,7 +424,16 @@ export const createVectorBucket: API.OperationMethod<
   CreateVectorBucketError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CreateVectorBucket", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CreateVectorBucket",
+    input: {
+      vectorBucketName: 0,
+      encryptionConfiguration: i_EncryptionConfiguration,
+      tags: 0,
+    },
+    body: true,
+  },
   errors: [
     ConflictException,
     ServiceQuotaExceededException,
@@ -437,7 +461,12 @@ export const deleteIndex: API.OperationMethod<
   DeleteIndexError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteIndex", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteIndex",
+    input: { vectorBucketName: 0, indexName: 0, indexArn: 0 },
+    body: true,
+  },
   errors: [NotFoundException, ServiceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -462,7 +491,12 @@ export const deleteVectorBucket: API.OperationMethod<
   DeleteVectorBucketError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteVectorBucket", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteVectorBucket",
+    input: { vectorBucketName: 0, vectorBucketArn: 0 },
+    body: true,
+  },
   errors: [ConflictException, NotFoundException, ServiceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -489,6 +523,7 @@ export const deleteVectorBucketPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteVectorBucketPolicy",
+    input: { vectorBucketName: 0, vectorBucketArn: 0 },
     body: true,
   },
   errors: [NotFoundException, ServiceUnavailableException],
@@ -519,7 +554,12 @@ export const deleteVectors: API.OperationMethod<
   DeleteVectorsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteVectors", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteVectors",
+    input: { vectorBucketName: 0, indexName: 0, indexArn: 0, keys: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     KmsDisabledException,
@@ -554,6 +594,7 @@ export const getIndex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetIndex",
+    input: { vectorBucketName: 0, indexName: 0, indexArn: 0 },
     output: { index: { creationTime: D.ts } },
     body: true,
   },
@@ -583,6 +624,7 @@ export const getVectorBucket: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetVectorBucket",
+    input: { vectorBucketName: 0, vectorBucketArn: 0 },
     output: { vectorBucket: { creationTime: D.ts } },
     body: true,
   },
@@ -609,7 +651,12 @@ export const getVectorBucketPolicy: API.OperationMethod<
   GetVectorBucketPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetVectorBucketPolicy", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetVectorBucketPolicy",
+    input: { vectorBucketName: 0, vectorBucketArn: 0 },
+    body: true,
+  },
   errors: [NotFoundException, ServiceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -637,7 +684,19 @@ export const getVectors: API.OperationMethod<
   GetVectorsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetVectors", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetVectors",
+    input: {
+      vectorBucketName: 0,
+      indexName: 0,
+      indexArn: 0,
+      keys: 0,
+      returnData: 0,
+      returnMetadata: 0,
+    },
+    body: true,
+  },
   errors: [
     KmsDisabledException,
     KmsInvalidKeyUsageException,
@@ -672,6 +731,13 @@ export const listIndexes: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListIndexes",
+    input: {
+      vectorBucketName: 0,
+      vectorBucketArn: 0,
+      maxResults: 0,
+      nextToken: 0,
+      prefix: 0,
+    },
     output: { indexes: D.list({ creationTime: D.ts }) },
     body: true,
   },
@@ -706,7 +772,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [NotFoundException, ServiceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -731,6 +801,7 @@ export const listVectorBuckets: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListVectorBuckets",
+    input: { maxResults: 0, nextToken: 0, prefix: 0 },
     output: { vectorBuckets: D.list({ creationTime: D.ts }) },
     body: true,
   },
@@ -771,7 +842,22 @@ export const listVectors: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ListOutputVector
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListVectors", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListVectors",
+    input: {
+      vectorBucketName: 0,
+      indexName: 0,
+      indexArn: 0,
+      maxResults: 0,
+      nextToken: 0,
+      segmentCount: 0,
+      segmentIndex: 0,
+      returnData: 0,
+      returnMetadata: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     NotFoundException,
@@ -805,7 +891,12 @@ export const putVectorBucketPolicy: API.OperationMethod<
   PutVectorBucketPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /PutVectorBucketPolicy", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /PutVectorBucketPolicy",
+    input: { vectorBucketName: 0, vectorBucketArn: 0, policy: 0 },
+    body: true,
+  },
   errors: [NotFoundException, ServiceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -839,7 +930,17 @@ export const putVectors: API.OperationMethod<
   PutVectorsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /PutVectors", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /PutVectors",
+    input: {
+      vectorBucketName: 0,
+      indexName: 0,
+      indexArn: 0,
+      vectors: D.list({ key: 0, data: i_VectorData, metadata: 0 }),
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     KmsDisabledException,
@@ -883,7 +984,22 @@ export const queryVectors: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   QueryOutputVector
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /QueryVectors", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /QueryVectors",
+    input: {
+      vectorBucketName: 0,
+      indexName: 0,
+      indexArn: 0,
+      topK: 0,
+      queryVector: i_VectorData,
+      filter: 0,
+      returnMetadata: 0,
+      returnDistance: 0,
+      nextToken: 0,
+    },
+    body: true,
+  },
   errors: [
     KmsDisabledException,
     KmsInvalidKeyUsageException,
@@ -922,7 +1038,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [ConflictException, NotFoundException, ServiceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -952,10 +1073,16 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [ConflictException, NotFoundException, ServiceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "UntagResource",
 })) as any;
+
+const i_EncryptionConfiguration: D.LazyStruct = () => ({
+  sseType: 0,
+  kmsKeyArn: 0,
+});
+const i_VectorData: D.LazyStruct = () => ({ float32: 0 });

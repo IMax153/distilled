@@ -1536,7 +1536,16 @@ export const createDevicePool: API.OperationMethod<
   CreateDevicePoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      projectArn: 0,
+      name: 0,
+      description: 0,
+      rules: D.list(i_Rule),
+      maxDevices: 0,
+    },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -1564,7 +1573,16 @@ export const createInstanceProfile: API.OperationMethod<
   CreateInstanceProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      packageCleanup: 0,
+      excludeAppPackagesFromCleanup: 0,
+      rebootAfterUse: 0,
+    },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -1591,7 +1609,23 @@ export const createNetworkProfile: API.OperationMethod<
   CreateNetworkProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      projectArn: 0,
+      name: 0,
+      description: 0,
+      type: 0,
+      uplinkBandwidthBits: 0,
+      downlinkBandwidthBits: 0,
+      uplinkDelayMs: 0,
+      downlinkDelayMs: 0,
+      uplinkJitterMs: 0,
+      downlinkJitterMs: 0,
+      uplinkLossPercent: 0,
+      downlinkLossPercent: 0,
+    },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -1619,7 +1653,17 @@ export const createProject: API.OperationMethod<
   CreateProjectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { project: o_Project } },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      defaultJobTimeoutMinutes: 0,
+      vpcConfig: i_VpcConfig,
+      environmentVariables: D.list(i_EnvironmentVariable),
+      executionRoleArn: 0,
+    },
+    output: { project: o_Project },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -1649,6 +1693,22 @@ export const createRemoteAccessSession: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      projectArn: 0,
+      deviceArn: 0,
+      appArn: 0,
+      instanceArn: 0,
+      name: 0,
+      configuration: {
+        auxiliaryApps: 0,
+        billingMethod: 0,
+        vpceConfigurationArns: 0,
+        deviceProxy: i_DeviceProxy,
+        parameters: 0,
+      },
+      interactionMode: 0,
+      skipAppResign: 0,
+    },
     output: { remoteAccessSession: o_RemoteAccessSession },
   },
   errors: [
@@ -1677,7 +1737,11 @@ export const createTestGridProject: API.OperationMethod<
   CreateTestGridProjectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { testGridProject: o_TestGridProject } },
+  descriptor: {
+    service: svc,
+    input: { name: 0, description: 0, vpcConfig: i_TestGridVpcConfig },
+    output: { testGridProject: o_TestGridProject },
+  },
   errors: [ArgumentException, InternalServiceException, LimitExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1699,7 +1763,11 @@ export const createTestGridUrl: API.OperationMethod<
   CreateTestGridUrlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { url: D.secret, expires: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { projectArn: 0, expiresInSeconds: 0 },
+    output: { url: D.secret, expires: D.ts },
+  },
   errors: [ArgumentException, InternalServiceException, NotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1721,7 +1789,11 @@ export const createUpload: API.OperationMethod<
   CreateUploadError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { upload: o_Upload } },
+  descriptor: {
+    service: svc,
+    input: { projectArn: 0, name: 0, type: 0, contentType: 0 },
+    output: { upload: o_Upload },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -1748,7 +1820,15 @@ export const createVPCEConfiguration: API.OperationMethod<
   CreateVPCEConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      vpceConfigurationName: 0,
+      vpceServiceName: 0,
+      serviceDnsName: 0,
+      vpceConfigurationDescription: 0,
+    },
+  },
   errors: [ArgumentException, LimitExceededException, ServiceAccountException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1771,7 +1851,7 @@ export const deleteDevicePool: API.OperationMethod<
   DeleteDevicePoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -1798,7 +1878,7 @@ export const deleteInstanceProfile: API.OperationMethod<
   DeleteInstanceProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -1825,7 +1905,7 @@ export const deleteNetworkProfile: API.OperationMethod<
   DeleteNetworkProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -1854,7 +1934,7 @@ export const deleteProject: API.OperationMethod<
   DeleteProjectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -1883,7 +1963,7 @@ export const deleteRemoteAccessSession: API.OperationMethod<
   DeleteRemoteAccessSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -1912,7 +1992,7 @@ export const deleteRun: API.OperationMethod<
   DeleteRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -1941,7 +2021,7 @@ export const deleteTestGridProject: API.OperationMethod<
   DeleteTestGridProjectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { projectArn: 0 } },
   errors: [
     ArgumentException,
     CannotDeleteException,
@@ -1968,7 +2048,7 @@ export const deleteUpload: API.OperationMethod<
   DeleteUploadError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -1995,7 +2075,7 @@ export const deleteVPCEConfiguration: API.OperationMethod<
   DeleteVPCEConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [
     ArgumentException,
     InvalidOperationException,
@@ -2023,7 +2103,7 @@ export const getAccountSettings: API.OperationMethod<
   GetAccountSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2050,7 +2130,7 @@ export const getDevice: API.OperationMethod<
   GetDeviceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2077,7 +2157,7 @@ export const getDeviceInstance: API.OperationMethod<
   GetDeviceInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2104,7 +2184,7 @@ export const getDevicePool: API.OperationMethod<
   GetDevicePoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2131,7 +2211,17 @@ export const getDevicePoolCompatibility: API.OperationMethod<
   GetDevicePoolCompatibilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      devicePoolArn: 0,
+      appArn: 0,
+      testType: 0,
+      test: i_ScheduleRunTest,
+      configuration: i_ScheduleRunConfiguration,
+      projectArn: 0,
+    },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2158,7 +2248,7 @@ export const getInstanceProfile: API.OperationMethod<
   GetInstanceProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2185,7 +2275,7 @@ export const getJob: API.OperationMethod<
   GetJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { job: o_Job } },
+  descriptor: { service: svc, input: { arn: 0 }, output: { job: o_Job } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2212,7 +2302,7 @@ export const getNetworkProfile: API.OperationMethod<
   GetNetworkProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2246,6 +2336,7 @@ export const getOfferingStatus: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0 },
     output: {
       current: D.map(o_OfferingStatus),
       nextPeriod: D.map(o_OfferingStatus),
@@ -2279,7 +2370,11 @@ export const getProject: API.OperationMethod<
   GetProjectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { project: o_Project } },
+  descriptor: {
+    service: svc,
+    input: { arn: 0 },
+    output: { project: o_Project },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2308,6 +2403,7 @@ export const getRemoteAccessSession: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { arn: 0 },
     output: { remoteAccessSession: o_RemoteAccessSession },
   },
   errors: [
@@ -2336,7 +2432,7 @@ export const getRun: API.OperationMethod<
   GetRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { run: o_Run } },
+  descriptor: { service: svc, input: { arn: 0 }, output: { run: o_Run } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2363,7 +2459,7 @@ export const getSuite: API.OperationMethod<
   GetSuiteError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { suite: o_Suite } },
+  descriptor: { service: svc, input: { arn: 0 }, output: { suite: o_Suite } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2390,7 +2486,7 @@ export const getTest: API.OperationMethod<
   GetTestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { test: o_Test } },
+  descriptor: { service: svc, input: { arn: 0 }, output: { test: o_Test } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2416,7 +2512,11 @@ export const getTestGridProject: API.OperationMethod<
   GetTestGridProjectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { testGridProject: o_TestGridProject } },
+  descriptor: {
+    service: svc,
+    input: { projectArn: 0 },
+    output: { testGridProject: o_TestGridProject },
+  },
   errors: [ArgumentException, InternalServiceException, NotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2442,7 +2542,11 @@ export const getTestGridSession: API.OperationMethod<
   GetTestGridSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { testGridSession: o_TestGridSession } },
+  descriptor: {
+    service: svc,
+    input: { projectArn: 0, sessionId: 0, sessionArn: 0 },
+    output: { testGridSession: o_TestGridSession },
+  },
   errors: [ArgumentException, InternalServiceException, NotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2464,7 +2568,7 @@ export const getUpload: API.OperationMethod<
   GetUploadError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { upload: o_Upload } },
+  descriptor: { service: svc, input: { arn: 0 }, output: { upload: o_Upload } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2491,7 +2595,7 @@ export const getVPCEConfiguration: API.OperationMethod<
   GetVPCEConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [ArgumentException, NotFoundException, ServiceAccountException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2515,7 +2619,11 @@ export const installToRemoteAccessSession: API.OperationMethod<
   InstallToRemoteAccessSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { appUpload: o_Upload } },
+  descriptor: {
+    service: svc,
+    input: { remoteAccessSessionArn: 0, appArn: 0 },
+    output: { appUpload: o_Upload },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2543,7 +2651,7 @@ export const listArtifacts: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Artifact
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0, type: 0, nextToken: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2576,7 +2684,7 @@ export const listDeviceInstances: API.OperationMethod<
   ListDeviceInstancesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { maxResults: 0, nextToken: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2604,7 +2712,7 @@ export const listDevicePools: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DevicePool
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0, type: 0, nextToken: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2637,7 +2745,10 @@ export const listDevices: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Device
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { arn: 0, nextToken: 0, filters: D.list(i_DeviceFilter) },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2669,7 +2780,7 @@ export const listInstanceProfiles: API.OperationMethod<
   ListInstanceProfilesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { maxResults: 0, nextToken: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2697,7 +2808,11 @@ export const listJobs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Job
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { jobs: D.list(o_Job) } },
+  descriptor: {
+    service: svc,
+    input: { arn: 0, nextToken: 0 },
+    output: { jobs: D.list(o_Job) },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2729,7 +2844,7 @@ export const listNetworkProfiles: API.OperationMethod<
   ListNetworkProfilesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0, type: 0, nextToken: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2759,7 +2874,7 @@ export const listOfferingPromotions: API.OperationMethod<
   ListOfferingPromotionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2792,7 +2907,7 @@ export const listOfferings: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Offering
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2832,6 +2947,7 @@ export const listOfferingTransactions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0 },
     output: { offeringTransactions: D.list(o_OfferingTransaction) },
   },
   errors: [
@@ -2867,7 +2983,11 @@ export const listProjects: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Project
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { projects: D.list(o_Project) } },
+  descriptor: {
+    service: svc,
+    input: { arn: 0, nextToken: 0 },
+    output: { projects: D.list(o_Project) },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2901,6 +3021,7 @@ export const listRemoteAccessSessions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { arn: 0, nextToken: 0 },
     output: { remoteAccessSessions: D.list(o_RemoteAccessSession) },
   },
   errors: [
@@ -2930,7 +3051,11 @@ export const listRuns: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Run
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { runs: D.list(o_Run) } },
+  descriptor: {
+    service: svc,
+    input: { arn: 0, nextToken: 0 },
+    output: { runs: D.list(o_Run) },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2965,7 +3090,7 @@ export const listSamples: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Sample
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0, nextToken: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -2998,7 +3123,11 @@ export const listSuites: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Suite
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { suites: D.list(o_Suite) } },
+  descriptor: {
+    service: svc,
+    input: { arn: 0, nextToken: 0 },
+    output: { suites: D.list(o_Suite) },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -3029,7 +3158,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [ArgumentException, NotFoundException, TagOperationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3052,6 +3181,7 @@ export const listTestGridProjects: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { maxResult: 0, nextToken: 0 },
     output: { testGridProjects: D.list(o_TestGridProject) },
   },
   errors: [ArgumentException, InternalServiceException],
@@ -3080,7 +3210,11 @@ export const listTestGridSessionActions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { actions: D.list({ started: D.ts }) } },
+  descriptor: {
+    service: svc,
+    input: { sessionArn: 0, maxResult: 0, nextToken: 0 },
+    output: { actions: D.list({ started: D.ts }) },
+  },
   errors: [ArgumentException, InternalServiceException, NotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3109,6 +3243,7 @@ export const listTestGridSessionArtifacts: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { sessionArn: 0, type: 0, maxResult: 0, nextToken: 0 },
     output: { artifacts: D.list({ url: D.secret }) },
   },
   errors: [ArgumentException, InternalServiceException, NotFoundException],
@@ -3139,6 +3274,16 @@ export const listTestGridSessions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      projectArn: 0,
+      status: 0,
+      creationTimeAfter: 0,
+      creationTimeBefore: 0,
+      endTimeAfter: 0,
+      endTimeBefore: 0,
+      maxResult: 0,
+      nextToken: 0,
+    },
     output: { testGridSessions: D.list(o_TestGridSession) },
   },
   errors: [ArgumentException, InternalServiceException, NotFoundException],
@@ -3168,7 +3313,11 @@ export const listTests: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Test
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { tests: D.list(o_Test) } },
+  descriptor: {
+    service: svc,
+    input: { arn: 0, nextToken: 0 },
+    output: { tests: D.list(o_Test) },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -3206,7 +3355,7 @@ export const listUniqueProblems: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0, nextToken: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -3239,7 +3388,11 @@ export const listUploads: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Upload
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { uploads: D.list(o_Upload) } },
+  descriptor: {
+    service: svc,
+    input: { arn: 0, type: 0, nextToken: 0 },
+    output: { uploads: D.list(o_Upload) },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -3270,7 +3423,7 @@ export const listVPCEConfigurations: API.OperationMethod<
   ListVPCEConfigurationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { maxResults: 0, nextToken: 0 } },
   errors: [ArgumentException, ServiceAccountException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3298,6 +3451,7 @@ export const purchaseOffering: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { offeringId: 0, quantity: 0, offeringPromotionId: 0 },
     output: { offeringTransaction: o_OfferingTransaction },
   },
   errors: [
@@ -3332,6 +3486,7 @@ export const renewOffering: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { offeringId: 0, quantity: 0 },
     output: { offeringTransaction: o_OfferingTransaction },
   },
   errors: [
@@ -3362,7 +3517,29 @@ export const scheduleRun: API.OperationMethod<
   ScheduleRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { run: o_Run } },
+  descriptor: {
+    service: svc,
+    input: {
+      projectArn: 0,
+      appArn: 0,
+      devicePoolArn: 0,
+      deviceSelectionConfiguration: {
+        filters: D.list(i_DeviceFilter),
+        maxDevices: 0,
+      },
+      name: 0,
+      test: i_ScheduleRunTest,
+      configuration: i_ScheduleRunConfiguration,
+      executionConfiguration: {
+        jobTimeoutMinutes: 0,
+        accountsCleanup: 0,
+        appPackagesCleanup: 0,
+        videoCapture: 0,
+        skipAppResign: 0,
+      },
+    },
+    output: { run: o_Run },
+  },
   errors: [
     ArgumentException,
     IdempotencyException,
@@ -3393,7 +3570,7 @@ export const stopJob: API.OperationMethod<
   StopJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { job: o_Job } },
+  descriptor: { service: svc, input: { arn: 0 }, output: { job: o_Job } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -3422,6 +3599,7 @@ export const stopRemoteAccessSession: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { arn: 0 },
     output: { remoteAccessSession: o_RemoteAccessSession },
   },
   errors: [
@@ -3453,7 +3631,7 @@ export const stopRun: API.OperationMethod<
   StopRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { run: o_Run } },
+  descriptor: { service: svc, input: { arn: 0 }, output: { run: o_Run } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -3483,7 +3661,10 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceARN: 0, Tags: D.list({ Key: 0, Value: 0 }) },
+  },
   errors: [
     ArgumentException,
     NotFoundException,
@@ -3510,7 +3691,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [ArgumentException, NotFoundException, TagOperationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3532,7 +3713,7 @@ export const updateDeviceInstance: API.OperationMethod<
   UpdateDeviceInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0, profileArn: 0, labels: 0 } },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -3561,7 +3742,17 @@ export const updateDevicePool: API.OperationMethod<
   UpdateDevicePoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      arn: 0,
+      name: 0,
+      description: 0,
+      rules: D.list(i_Rule),
+      maxDevices: 0,
+      clearMaxDevices: 0,
+    },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -3588,7 +3779,17 @@ export const updateInstanceProfile: API.OperationMethod<
   UpdateInstanceProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      arn: 0,
+      name: 0,
+      description: 0,
+      packageCleanup: 0,
+      excludeAppPackagesFromCleanup: 0,
+      rebootAfterUse: 0,
+    },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -3615,7 +3816,23 @@ export const updateNetworkProfile: API.OperationMethod<
   UpdateNetworkProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      arn: 0,
+      name: 0,
+      description: 0,
+      type: 0,
+      uplinkBandwidthBits: 0,
+      downlinkBandwidthBits: 0,
+      uplinkDelayMs: 0,
+      downlinkDelayMs: 0,
+      uplinkJitterMs: 0,
+      downlinkJitterMs: 0,
+      uplinkLossPercent: 0,
+      downlinkLossPercent: 0,
+    },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -3643,7 +3860,18 @@ export const updateProject: API.OperationMethod<
   UpdateProjectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { project: o_Project } },
+  descriptor: {
+    service: svc,
+    input: {
+      arn: 0,
+      name: 0,
+      defaultJobTimeoutMinutes: 0,
+      vpcConfig: i_VpcConfig,
+      environmentVariables: D.list(i_EnvironmentVariable),
+      executionRoleArn: 0,
+    },
+    output: { project: o_Project },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -3670,7 +3898,16 @@ export const updateTestGridProject: API.OperationMethod<
   UpdateTestGridProjectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { testGridProject: o_TestGridProject } },
+  descriptor: {
+    service: svc,
+    input: {
+      projectArn: 0,
+      name: 0,
+      description: 0,
+      vpcConfig: i_TestGridVpcConfig,
+    },
+    output: { testGridProject: o_TestGridProject },
+  },
   errors: [
     ArgumentException,
     InternalServiceException,
@@ -3697,7 +3934,11 @@ export const updateUpload: API.OperationMethod<
   UpdateUploadError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { upload: o_Upload } },
+  descriptor: {
+    service: svc,
+    input: { arn: 0, name: 0, contentType: 0, editContent: 0 },
+    output: { upload: o_Upload },
+  },
   errors: [
     ArgumentException,
     LimitExceededException,
@@ -3724,7 +3965,16 @@ export const updateVPCEConfiguration: API.OperationMethod<
   UpdateVPCEConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      arn: 0,
+      vpceConfigurationName: 0,
+      vpceServiceName: 0,
+      serviceDnsName: 0,
+      vpceConfigurationDescription: 0,
+    },
+  },
   errors: [
     ArgumentException,
     InvalidOperationException,
@@ -3736,6 +3986,46 @@ export const updateVPCEConfiguration: API.OperationMethod<
   operationName: "UpdateVPCEConfiguration",
 })) as any;
 
+const i_DeviceFilter: D.LazyStruct = () => ({
+  attribute: 0,
+  operator: 0,
+  values: 0,
+});
+const i_DeviceProxy: D.LazyStruct = () => ({ host: 0, port: 0 });
+const i_EnvironmentVariable: D.LazyStruct = () => ({ name: 0, value: 0 });
+const i_Rule: D.LazyStruct = () => ({ attribute: 0, operator: 0, value: 0 });
+const i_ScheduleRunConfiguration: D.LazyStruct = () => ({
+  extraDataPackageArn: 0,
+  networkProfileArn: 0,
+  locale: 0,
+  location: { latitude: 0, longitude: 0 },
+  vpceConfigurationArns: 0,
+  deviceProxy: i_DeviceProxy,
+  customerArtifactPaths: { iosPaths: 0, androidPaths: 0, deviceHostPaths: 0 },
+  radios: { wifi: 0, bluetooth: 0, nfc: 0, gps: 0 },
+  auxiliaryApps: 0,
+  billingMethod: 0,
+  environmentVariables: D.list(i_EnvironmentVariable),
+  executionRoleArn: 0,
+  insightsTypes: 0,
+});
+const i_ScheduleRunTest: D.LazyStruct = () => ({
+  type: 0,
+  testPackageArn: 0,
+  testSpecArn: 0,
+  filter: 0,
+  parameters: 0,
+});
+const i_TestGridVpcConfig: D.LazyStruct = () => ({
+  securityGroupIds: 0,
+  subnetIds: 0,
+  vpcId: 0,
+});
+const i_VpcConfig: D.LazyStruct = () => ({
+  securityGroupIds: 0,
+  subnetIds: 0,
+  vpcId: 0,
+});
 const o_Job: D.LazyStruct = () => ({
   created: D.ts,
   started: D.ts,

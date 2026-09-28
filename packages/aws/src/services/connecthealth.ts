@@ -570,6 +570,7 @@ export const activateSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/subscriptions/{subscriptionId}/activate",
+    input: { domainId: 0, subscriptionId: 0 },
     output: { subscription: o_SubscriptionDescription },
   },
   errors: [
@@ -596,6 +597,12 @@ export const createDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domain",
+    input: {
+      name: 0,
+      kmsKeyArn: 0,
+      webAppSetupConfiguration: { ehrRole: 0, idcInstanceId: 0, idcRegion: 0 },
+      tags: 0,
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -624,6 +631,7 @@ export const createSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/subscriptions",
+    input: { domainId: 0 },
     output: {
       createdAt: D.ts,
       lastUpdatedAt: D.ts,
@@ -661,6 +669,7 @@ export const deactivateSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/subscriptions/{subscriptionId}/deactivate",
+    input: { domainId: 0, subscriptionId: 0 },
     output: { subscription: o_SubscriptionDescription },
   },
   errors: [
@@ -684,7 +693,11 @@ export const deleteDomain: API.OperationMethod<
   DeleteDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /domain/{domainId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /domain/{domainId}",
+    input: { domainId: 0 },
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -704,6 +717,7 @@ export const getDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domain/{domainId}",
+    input: { domainId: 0 },
     output: { createdAt: D.ts },
   },
   errors: [ResourceNotFoundException],
@@ -731,6 +745,7 @@ export const getMedicalScribeListeningSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /medical-scribe-stream/domain/{domainId}/subscription/{subscriptionId}/session/{sessionId}",
+    input: { sessionId: 0, domainId: 0, subscriptionId: 0 },
     output: {
       medicalScribeListeningSessionDetails: {
         streamCreationTime: D.ts,
@@ -770,6 +785,7 @@ export const getPatientInsightsJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domain/{domainId}/patient-insights-job/{jobId}",
+    input: { domainId: 0, jobId: 0 },
     output: {
       creationTime: D.ts,
       updatedTime: D.ts,
@@ -814,6 +830,7 @@ export const getSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{domainId}/subscriptions/{subscriptionId}",
+    input: { domainId: 0, subscriptionId: 0 },
     output: { subscription: o_SubscriptionDescription },
   },
   errors: [
@@ -880,6 +897,7 @@ export const listSubscriptions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /domains/{domainId}/subscriptions",
     input: {
+      domainId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -912,7 +930,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -950,10 +972,28 @@ export const startMedicalScribeListeningSession: API.OperationMethod<
         payload: true,
         shape: D.events(
           {
-            audioEvent: 0,
-            binaryAudioEvent: 0,
-            sessionControlEvent: 0,
-            configurationEvent: 0,
+            audioEvent: { audioChunk: 0 },
+            binaryAudioEvent: { audioChunk: 0 },
+            sessionControlEvent: { type: 0 },
+            configurationEvent: {
+              postStreamActionSettings: {
+                outputS3Uri: 0,
+                clinicalNoteGenerationSettings: {
+                  noteTemplateSettings: {
+                    managedTemplate: { templateType: 0 },
+                    customTemplate: {
+                      templateType: 0,
+                      templateInstructions: D.list({
+                        sectionHeader: 0,
+                        sectionInstruction: 0,
+                      }),
+                    },
+                  },
+                },
+              },
+              channelDefinitions: D.list({ channelId: 0, participantRole: 0 }),
+              encounterContext: { unstructuredContext: 0 },
+            },
           },
           { binaryAudioEvent: "audioChunk" },
         ),
@@ -1014,7 +1054,19 @@ export const startPatientInsightsJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domain/{domainId}/patient-insights-job",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainId: 0,
+      patientContext: { patientId: 0, dateOfBirth: 0, pronouns: 0 },
+      insightsContext: { insightsType: 0 },
+      encounterContext: { encounterReason: 0 },
+      userContext: { role: 0, userId: 0, specialty: 0 },
+      inputDataConfig: {
+        fhirServer: { fhirEndpoint: 0, oauthToken: 0 },
+        s3Sources: D.list({ uri: 0 }),
+      },
+      outputDataConfig: { s3OutputPath: 0 },
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { creationTime: D.ts },
     body: true,
   },
@@ -1042,7 +1094,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1062,7 +1119,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [],
   protocol: AwsProtocol,

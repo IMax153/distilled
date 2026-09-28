@@ -721,6 +721,15 @@ export const createMicrovmAuthToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2025-09-09/microvms/{microvmIdentifier}/auth-token",
+    input: {
+      microvmIdentifier: 0,
+      expirationInMinutes: 0,
+      allowedPorts: D.list({
+        port: 0,
+        range: { startPort: 0, endPort: 0 },
+        allPorts: {},
+      }),
+    },
     output: { authToken: D.map(D.secret) },
     body: true,
   },
@@ -758,7 +767,23 @@ export const createMicrovmImage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2025-09-09/microvm-images",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      baseImageArn: 0,
+      baseImageVersion: 0,
+      buildRoleArn: 0,
+      description: 0,
+      codeArtifact: i_CodeArtifact,
+      logging: i_Logging,
+      egressNetworkConnectors: 0,
+      cpuConfigurations: D.list(i_CpuConfiguration),
+      resources: D.list(i_Resources),
+      additionalOsCapabilities: 0,
+      hooks: i_Hooks,
+      environmentVariables: 0,
+      name: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: {
       createdAt: D.ts,
       environmentVariables: D.map(D.secret),
@@ -800,6 +825,7 @@ export const createMicrovmShellAuthToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2025-09-09/microvms/{microvmIdentifier}/shell-auth-token",
+    input: { microvmIdentifier: 0, expirationInMinutes: 0 },
     output: { authToken: D.map(D.secret) },
     body: true,
   },
@@ -836,6 +862,7 @@ export const deleteMicrovmImage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2025-09-09/microvm-images/{imageIdentifier}",
+    input: { imageIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -870,6 +897,7 @@ export const deleteMicrovmImageVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2025-09-09/microvm-images/{imageIdentifier}/versions/{imageVersion}",
+    input: { imageIdentifier: 0, imageVersion: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -903,6 +931,7 @@ export const getMicrovm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2025-09-09/microvms/{microvmIdentifier}",
+    input: { microvmIdentifier: 0 },
     output: { startedAt: D.ts, terminatedAt: D.ts },
   },
   errors: [
@@ -936,6 +965,7 @@ export const getMicrovmImage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2025-09-09/microvm-images/{imageIdentifier}",
+    input: { imageIdentifier: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -969,6 +999,7 @@ export const getMicrovmImageBuild: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2025-09-09/microvm-images/{imageIdentifier}/versions/{imageVersion}/builds/{buildId}",
+    input: { imageIdentifier: 0, imageVersion: 0, buildId: 0 },
     output: { createdAt: D.ts },
   },
   errors: [
@@ -1002,6 +1033,7 @@ export const getMicrovmImageVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2025-09-09/microvm-images/{imageIdentifier}/versions/{imageVersion}",
+    input: { imageIdentifier: 0, imageVersion: 0 },
     output: {
       environmentVariables: D.map(D.secret),
       createdAt: D.ts,
@@ -1085,6 +1117,7 @@ export const listManagedMicrovmImageVersions: API.PaginatedOperationMethod<
     input: {
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      imageIdentifier: 0,
     },
     output: { items: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
   },
@@ -1129,6 +1162,8 @@ export const listMicrovmImageBuilds: API.PaginatedOperationMethod<
     input: {
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      imageIdentifier: 0,
+      imageVersion: 0,
       architecture: D.m({ query: "architecture" }),
       chipset: D.m({ query: "chipset" }),
       chipsetGeneration: D.m({ query: "chipsetGeneration" }),
@@ -1219,6 +1254,7 @@ export const listMicrovmImageVersions: API.PaginatedOperationMethod<
     input: {
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      imageIdentifier: 0,
     },
     output: {
       items: D.list({
@@ -1307,7 +1343,11 @@ export const listTags: API.OperationMethod<
   ListTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /2017-03-31/tags/{Resource}" },
+  descriptor: {
+    service: svc,
+    http: "GET /2017-03-31/tags/{Resource}",
+    input: { Resource: 0 },
+  },
   errors: [
     InvalidParameterValueException,
     ResourceNotFoundException,
@@ -1339,6 +1379,7 @@ export const resumeMicrovm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2025-09-09/microvms/{microvmIdentifier}/resume",
+    input: { microvmIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1375,7 +1416,22 @@ export const runMicrovm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2025-09-09/microvms",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      ingressNetworkConnectors: 0,
+      egressNetworkConnectors: 0,
+      imageIdentifier: 0,
+      imageVersion: 0,
+      executionRoleArn: 0,
+      idlePolicy: {
+        maxIdleDurationSeconds: 0,
+        suspendedDurationSeconds: 0,
+        autoResumeEnabled: 0,
+      },
+      logging: i_Logging,
+      runHookPayload: 0,
+      maximumDurationInSeconds: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { startedAt: D.ts, terminatedAt: D.ts },
     body: true,
   },
@@ -1414,6 +1470,7 @@ export const suspendMicrovm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2025-09-09/microvms/{microvmIdentifier}/suspend",
+    input: { microvmIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1447,6 +1504,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2017-03-31/tags/{Resource}",
+    input: { Resource: 0, Tags: 0 },
     body: true,
   },
   errors: [
@@ -1481,6 +1539,7 @@ export const terminateMicrovm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2025-09-09/microvms/{microvmIdentifier}",
+    input: { microvmIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1514,7 +1573,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2017-03-31/tags/{Resource}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { Resource: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InvalidParameterValueException,
@@ -1549,7 +1608,22 @@ export const updateMicrovmImage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2025-09-09/microvm-images/{imageIdentifier}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      baseImageArn: 0,
+      baseImageVersion: 0,
+      buildRoleArn: 0,
+      description: 0,
+      codeArtifact: i_CodeArtifact,
+      logging: i_Logging,
+      egressNetworkConnectors: 0,
+      cpuConfigurations: D.list(i_CpuConfiguration),
+      resources: D.list(i_Resources),
+      additionalOsCapabilities: 0,
+      hooks: i_Hooks,
+      environmentVariables: 0,
+      imageIdentifier: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: {
       createdAt: D.ts,
       environmentVariables: D.map(D.secret),
@@ -1591,6 +1665,7 @@ export const updateMicrovmImageVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /2025-09-09/microvm-images/{imageIdentifier}/versions/{imageVersion}",
+    input: { imageIdentifier: 0, imageVersion: 0, status: 0 },
     output: {
       environmentVariables: D.map(D.secret),
       createdAt: D.ts,
@@ -1610,3 +1685,30 @@ export const updateMicrovmImageVersion: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateMicrovmImageVersion",
 })) as any;
+
+const i_CodeArtifact: D.LazyStruct = () => ({ uri: 0 });
+const i_CpuConfiguration: D.LazyStruct = () => ({ architecture: 0 });
+const i_Hooks: D.LazyStruct = () => ({
+  port: 0,
+  microvmHooks: {
+    run: 0,
+    runTimeoutInSeconds: 0,
+    resume: 0,
+    resumeTimeoutInSeconds: 0,
+    suspend: 0,
+    suspendTimeoutInSeconds: 0,
+    terminate: 0,
+    terminateTimeoutInSeconds: 0,
+  },
+  microvmImageHooks: {
+    ready: 0,
+    readyTimeoutInSeconds: 0,
+    validate: 0,
+    validateTimeoutInSeconds: 0,
+  },
+});
+const i_Logging: D.LazyStruct = () => ({
+  disabled: {},
+  cloudWatch: { logGroup: 0, logStream: 0 },
+});
+const i_Resources: D.LazyStruct = () => ({ minimumMemoryInMiB: 0 });

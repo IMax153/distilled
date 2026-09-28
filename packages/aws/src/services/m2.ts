@@ -912,6 +912,7 @@ export const cancelBatchJobExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/batch-job-executions/{executionId}/cancel",
+    input: { applicationId: 0, executionId: 0, authSecretsManagerArn: 0 },
     body: true,
   },
   errors: [
@@ -948,7 +949,16 @@ export const createApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      engineType: 0,
+      definition: i_Definition,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+      kmsKeyId: 0,
+      roleArn: 0,
+    },
     body: true,
   },
   errors: [
@@ -985,7 +995,18 @@ export const createDataSetExportTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/dataset-export-task",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      applicationId: 0,
+      exportConfig: {
+        s3Location: 0,
+        dataSets: D.list({
+          datasetName: 0,
+          externalLocation: i_ExternalLocation,
+        }),
+      },
+      clientToken: D.m({ idempotency: true }),
+      kmsKeyId: 0,
+    },
     body: true,
   },
   errors: [
@@ -1023,7 +1044,39 @@ export const createDataSetImportTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/dataset-import-task",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      applicationId: 0,
+      importConfig: {
+        s3Location: 0,
+        dataSets: D.list({
+          dataSet: {
+            storageType: 0,
+            datasetName: 0,
+            datasetOrg: {
+              vsam: {
+                format: 0,
+                encoding: 0,
+                compressed: 0,
+                primaryKey: { name: 0, offset: 0, length: 0 },
+                alternateKeys: D.list({
+                  name: 0,
+                  offset: 0,
+                  length: 0,
+                  allowDuplicates: 0,
+                }),
+              },
+              gdg: { limit: 0, rollDisposition: 0 },
+              po: { format: 0, encoding: 0, memberFileExtensions: 0 },
+              ps: { format: 0, encoding: 0 },
+            },
+            relativePath: 0,
+            recordLength: { min: 0, max: 0 },
+          },
+          externalLocation: i_ExternalLocation,
+        }),
+      },
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1062,7 +1115,12 @@ export const createDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/deployments",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      environmentId: 0,
+      applicationId: 0,
+      applicationVersion: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1100,6 +1158,13 @@ export const createEnvironment: API.OperationMethod<
     service: svc,
     http: "POST /environments",
     input: {
+      name: 0,
+      instanceType: 0,
+      description: 0,
+      engineType: 0,
+      engineVersion: 0,
+      subnetIds: 0,
+      securityGroupIds: 0,
       storageConfigurations: D.list({
         efs: {
           fileSystemId: D.m({ wire: "file-system-id" }),
@@ -1110,7 +1175,13 @@ export const createEnvironment: API.OperationMethod<
           mountPoint: D.m({ wire: "mount-point" }),
         },
       }),
+      publiclyAccessible: 0,
+      highAvailabilityConfig: { desiredCapacity: 0 },
+      tags: 0,
+      preferredMaintenanceWindow: 0,
+      networkType: 0,
       clientToken: D.m({ idempotency: true }),
+      kmsKeyId: 0,
     },
     body: true,
   },
@@ -1143,7 +1214,11 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /applications/{applicationId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /applications/{applicationId}",
+    input: { applicationId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1179,6 +1254,7 @@ export const deleteApplicationFromEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{applicationId}/environment/{environmentId}",
+    input: { applicationId: 0, environmentId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1211,7 +1287,11 @@ export const deleteEnvironment: API.OperationMethod<
   DeleteEnvironmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /environments/{environmentId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /environments/{environmentId}",
+    input: { environmentId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1243,6 +1323,7 @@ export const getApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}",
+    input: { applicationId: 0 },
     output: {
       latestVersion: o_ApplicationVersionSummary,
       creationTime: D.ts,
@@ -1280,6 +1361,7 @@ export const getApplicationVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/versions/{applicationVersion}",
+    input: { applicationId: 0, applicationVersion: 0 },
     output: { creationTime: D.ts },
   },
   errors: [
@@ -1313,6 +1395,7 @@ export const getBatchJobExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/batch-job-executions/{executionId}",
+    input: { applicationId: 0, executionId: 0 },
     output: { startTime: D.ts, endTime: D.ts },
   },
   errors: [
@@ -1349,6 +1432,7 @@ export const getDataSetDetails: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/datasets/{dataSetName}",
+    input: { applicationId: 0, dataSetName: 0 },
     output: {
       creationTime: D.ts,
       lastUpdatedTime: D.ts,
@@ -1389,6 +1473,7 @@ export const getDataSetExportTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/dataset-export-tasks/{taskId}",
+    input: { applicationId: 0, taskId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1421,6 +1506,7 @@ export const getDataSetImportTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/dataset-import-tasks/{taskId}",
+    input: { applicationId: 0, taskId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1453,6 +1539,7 @@ export const getDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/deployments/{deploymentId}",
+    input: { deploymentId: 0, applicationId: 0 },
     output: { creationTime: D.ts },
   },
   errors: [
@@ -1486,6 +1573,7 @@ export const getEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /environments/{environmentId}",
+    input: { environmentId: 0 },
     output: {
       creationTime: D.ts,
       storageConfigurations: D.list({
@@ -1605,6 +1693,7 @@ export const listApplicationVersions: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      applicationId: 0,
     },
     output: { applicationVersions: D.list(o_ApplicationVersionSummary) },
   },
@@ -1651,6 +1740,7 @@ export const listBatchJobDefinitions: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      applicationId: 0,
       prefix: D.m({ query: "prefix" }),
     },
   },
@@ -1696,11 +1786,18 @@ export const listBatchJobExecutions: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      applicationId: 0,
       executionIds: D.m({ query: "executionIds" }),
       jobName: D.m({ query: "jobName" }),
       status: D.m({ query: "status" }),
-      startedAfter: D.m({ query: "startedAfter" }),
-      startedBefore: D.m({ query: "startedBefore" }),
+      startedAfter: D.m({
+        query: "startedAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      startedBefore: D.m({
+        query: "startedBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
     },
     output: { batchJobExecutions: D.list({ startTime: D.ts, endTime: D.ts }) },
   },
@@ -1742,7 +1839,11 @@ export const listBatchJobRestartPoints: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/batch-job-executions/{executionId}/steps",
-    input: { authSecretsManagerArn: D.m({ query: "authSecretsManagerArn" }) },
+    input: {
+      applicationId: 0,
+      executionId: 0,
+      authSecretsManagerArn: D.m({ query: "authSecretsManagerArn" }),
+    },
     output: { batchJobSteps: D.list({ stepCheckpointTime: D.ts }) },
   },
   errors: [
@@ -1781,6 +1882,7 @@ export const listDataSetExportHistory: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      applicationId: 0,
     },
   },
   errors: [
@@ -1824,6 +1926,7 @@ export const listDataSetImportHistory: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      applicationId: 0,
     },
   },
   errors: [
@@ -1870,6 +1973,7 @@ export const listDataSets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/datasets",
     input: {
+      applicationId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       prefix: D.m({ query: "prefix" }),
@@ -1929,6 +2033,7 @@ export const listDeployments: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      applicationId: 0,
     },
     output: { deployments: D.list({ creationTime: D.ts }) },
   },
@@ -2052,7 +2157,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2085,6 +2194,7 @@ export const startApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/start",
+    input: { applicationId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2120,6 +2230,31 @@ export const startBatchJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/batch-job",
+    input: {
+      applicationId: 0,
+      batchJobIdentifier: {
+        fileBatchJobIdentifier: { fileName: 0, folderPath: 0 },
+        scriptBatchJobIdentifier: { scriptName: 0 },
+        s3BatchJobIdentifier: {
+          bucket: 0,
+          keyPrefix: 0,
+          identifier: { fileName: 0, scriptName: 0 },
+        },
+        restartBatchJobIdentifier: {
+          executionId: 0,
+          jobStepRestartMarker: {
+            fromStep: 0,
+            fromProcStep: 0,
+            toStep: 0,
+            toProcStep: 0,
+            stepCheckpoint: 0,
+            skip: 0,
+          },
+        },
+      },
+      jobParams: 0,
+      authSecretsManagerArn: 0,
+    },
     body: true,
   },
   errors: [
@@ -2155,6 +2290,7 @@ export const stopApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/stop",
+    input: { applicationId: 0, forceStop: 0 },
     body: true,
   },
   errors: [
@@ -2187,7 +2323,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2220,7 +2361,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -2254,6 +2395,12 @@ export const updateApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /applications/{applicationId}",
+    input: {
+      applicationId: 0,
+      description: 0,
+      currentApplicationVersion: 0,
+      definition: i_Definition,
+    },
     body: true,
   },
   errors: [
@@ -2290,6 +2437,15 @@ export const updateEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /environments/{environmentId}",
+    input: {
+      environmentId: 0,
+      desiredCapacity: 0,
+      instanceType: 0,
+      engineVersion: 0,
+      preferredMaintenanceWindow: 0,
+      applyDuringMaintenanceWindow: 0,
+      forceUpdate: 0,
+    },
     body: true,
   },
   errors: [
@@ -2306,6 +2462,8 @@ export const updateEnvironment: API.OperationMethod<
   operationName: "UpdateEnvironment",
 })) as any;
 
+const i_Definition: D.LazyStruct = () => ({ s3Location: 0, content: 0 });
+const i_ExternalLocation: D.LazyStruct = () => ({ s3Location: 0 });
 const o_ApplicationVersionSummary: D.LazyStruct = () => ({
   creationTime: D.ts,
 });

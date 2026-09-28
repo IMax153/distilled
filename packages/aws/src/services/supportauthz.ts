@@ -304,7 +304,19 @@ export const createSupportPermit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /support-permits",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      permit: {
+        actions: { allActions: i_Unit, actions: 0 },
+        resources: { allResourcesInRegion: i_Unit, resources: 0 },
+        conditions: D.list({ allowAfter: 0, allowBefore: 0 }),
+      },
+      name: 0,
+      description: 0,
+      signingKeyInfo: { kmsKey: 0 },
+      supportCaseDisplayId: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { permit: o_Permit, createdAt: D.ts },
     body: true,
   },
@@ -340,6 +352,7 @@ export const deleteSupportPermit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /support-permits/{supportPermitIdentifier}",
+    input: { supportPermitIdentifier: 0 },
     output: { permit: o_Permit, createdAt: D.ts },
   },
   errors: [
@@ -370,7 +383,11 @@ export const getAction: API.OperationMethod<
   GetActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /actions/{action}" },
+  descriptor: {
+    service: svc,
+    http: "GET /actions/{action}",
+    input: { action: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -402,6 +419,7 @@ export const getSupportPermit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /support-permits/{supportPermitIdentifier}",
+    input: { supportPermitIdentifier: 0 },
     output: { permit: o_Permit, createdAt: D.ts },
   },
   errors: [
@@ -566,7 +584,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -599,6 +621,7 @@ export const rejectSupportPermitRequest: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /support-permit-requests/{requestArn}/reject",
+    input: { requestArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -629,7 +652,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -661,7 +689,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -675,6 +703,7 @@ export const untagResource: API.OperationMethod<
   operationName: "UntagResource",
 })) as any;
 
+const i_Unit: D.LazyStruct = () => ({});
 const o_Permit: D.LazyStruct = () => ({
   conditions: D.list({ allowAfter: D.ts, allowBefore: D.ts }),
 });

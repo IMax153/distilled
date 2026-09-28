@@ -1788,7 +1788,11 @@ export const addListenerCertificates: API.OperationMethod<
   AddListenerCertificatesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Certificates: D.list(o_Certificate) } },
+  descriptor: {
+    service: svc,
+    input: { ListenerArn: 0, Certificates: D.list(i_Certificate) },
+    output: { Certificates: D.list(o_Certificate) },
+  },
   errors: [
     CertificateNotFoundException,
     ListenerNotFoundException,
@@ -1822,7 +1826,7 @@ export const addTags: API.OperationMethod<
   AddTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArns: 0, Tags: D.list(i_Tag) } },
   errors: [
     DuplicateTagKeysException,
     ListenerNotFoundException,
@@ -1854,6 +1858,15 @@ export const addTrustStoreRevocations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TrustStoreArn: 0,
+      RevocationContents: D.list({
+        S3Bucket: 0,
+        S3Key: 0,
+        S3ObjectVersion: 0,
+        RevocationType: 0,
+      }),
+    },
     output: {
       TrustStoreRevocations: D.list({
         RevocationId: D.num,
@@ -1920,7 +1933,17 @@ export const createListener: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { DefaultActions: D.list(i_Action) },
+    input: {
+      LoadBalancerArn: 0,
+      Protocol: 0,
+      Port: 0,
+      SslPolicy: 0,
+      Certificates: D.list(i_Certificate),
+      DefaultActions: D.list(i_Action),
+      AlpnPolicy: 0,
+      Tags: D.list(i_Tag),
+      MutualAuthentication: i_MutualAuthenticationAttributes,
+    },
     output: { Listeners: D.list(o_Listener) },
   },
   errors: [
@@ -1990,6 +2013,19 @@ export const createLoadBalancer: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Name: 0,
+      Subnets: 0,
+      SubnetMappings: D.list(i_SubnetMapping),
+      SecurityGroups: 0,
+      Scheme: 0,
+      Tags: D.list(i_Tag),
+      Type: 0,
+      IpAddressType: 0,
+      CustomerOwnedIpv4Pool: 0,
+      EnablePrefixForIpv6SourceNat: 0,
+      IpamPools: i_IpamPools,
+    },
     output: { LoadBalancers: D.list(o_LoadBalancer) },
   },
   errors: [
@@ -2047,7 +2083,14 @@ export const createRule: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Actions: D.list(i_Action) },
+    input: {
+      ListenerArn: 0,
+      Conditions: D.list(i_RuleCondition),
+      Priority: 0,
+      Actions: D.list(i_Action),
+      Tags: D.list(i_Tag),
+      Transforms: D.list(i_RuleTransform),
+    },
     output: { Rules: D.list(o_Rule) },
   },
   errors: [
@@ -2101,7 +2144,30 @@ export const createTargetGroup: API.OperationMethod<
   CreateTargetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { TargetGroups: D.list(o_TargetGroup) } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Protocol: 0,
+      ProtocolVersion: 0,
+      Port: 0,
+      VpcId: 0,
+      HealthCheckProtocol: 0,
+      HealthCheckPort: 0,
+      HealthCheckEnabled: 0,
+      HealthCheckPath: 0,
+      HealthCheckIntervalSeconds: 0,
+      HealthCheckTimeoutSeconds: 0,
+      HealthyThresholdCount: 0,
+      UnhealthyThresholdCount: 0,
+      Matcher: i_Matcher,
+      TargetType: 0,
+      Tags: D.list(i_Tag),
+      IpAddressType: 0,
+      TargetControlPort: 0,
+    },
+    output: { TargetGroups: D.list(o_TargetGroup) },
+  },
   errors: [
     DuplicateTargetGroupNameException,
     InvalidConfigurationRequestException,
@@ -2132,7 +2198,17 @@ export const createTrustStore: API.OperationMethod<
   CreateTrustStoreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { TrustStores: D.list(o_TrustStore) } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      CaCertificatesBundleS3Bucket: 0,
+      CaCertificatesBundleS3Key: 0,
+      CaCertificatesBundleS3ObjectVersion: 0,
+      Tags: D.list(i_Tag),
+    },
+    output: { TrustStores: D.list(o_TrustStore) },
+  },
   errors: [
     CaCertificatesBundleNotFoundException,
     DuplicateTagKeysException,
@@ -2162,7 +2238,7 @@ export const deleteListener: API.OperationMethod<
   DeleteListenerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ListenerArn: 0 } },
   errors: [ListenerNotFoundException, ResourceInUseException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2191,7 +2267,7 @@ export const deleteLoadBalancer: API.OperationMethod<
   DeleteLoadBalancerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LoadBalancerArn: 0 } },
   errors: [
     LoadBalancerNotFoundException,
     OperationNotPermittedException,
@@ -2217,7 +2293,7 @@ export const deleteRule: API.OperationMethod<
   DeleteRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RuleArn: 0 } },
   errors: [OperationNotPermittedException, RuleNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2238,7 +2314,7 @@ export const deleteSharedTrustStoreAssociation: API.OperationMethod<
   DeleteSharedTrustStoreAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrustStoreArn: 0, ResourceArn: 0 } },
   errors: [
     DeleteAssociationSameAccountException,
     TrustStoreAssociationNotFoundException,
@@ -2264,7 +2340,7 @@ export const deleteTargetGroup: API.OperationMethod<
   DeleteTargetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TargetGroupArn: 0 } },
   errors: [ResourceInUseException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2284,7 +2360,7 @@ export const deleteTrustStore: API.OperationMethod<
   DeleteTrustStoreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrustStoreArn: 0 } },
   errors: [TrustStoreInUseException, TrustStoreNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2322,7 +2398,10 @@ export const deregisterTargets: API.OperationMethod<
   DeregisterTargetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TargetGroupArn: 0, Targets: D.list(i_TargetDescription) },
+  },
   errors: [InvalidTargetException, TargetGroupNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2352,7 +2431,11 @@ export const describeAccountLimits: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Limit
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Limits: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { Marker: 0, PageSize: 0 },
+    output: { Limits: D.list({}) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2378,6 +2461,7 @@ export const describeCapacityReservation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { LoadBalancerArn: 0 },
     output: {
       LastModifiedTime: D.ts,
       DecreaseRequestsRemaining: D.num,
@@ -2403,7 +2487,11 @@ export const describeListenerAttributes: API.OperationMethod<
   DescribeListenerAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Attributes: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { ListenerArn: 0 },
+    output: { Attributes: D.list({}) },
+  },
   errors: [ListenerNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2432,7 +2520,11 @@ export const describeListenerCertificates: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Certificate
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Certificates: D.list(o_Certificate) } },
+  descriptor: {
+    service: svc,
+    input: { ListenerArn: 0, Marker: 0, PageSize: 0 },
+    output: { Certificates: D.list(o_Certificate) },
+  },
   errors: [ListenerNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2461,7 +2553,11 @@ export const describeListeners: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Listener
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Listeners: D.list(o_Listener) } },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerArn: 0, ListenerArns: 0, Marker: 0, PageSize: 0 },
+    output: { Listeners: D.list(o_Listener) },
+  },
   errors: [
     ListenerNotFoundException,
     LoadBalancerNotFoundException,
@@ -2501,7 +2597,11 @@ export const describeLoadBalancerAttributes: API.OperationMethod<
   DescribeLoadBalancerAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Attributes: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerArn: 0 },
+    output: { Attributes: D.list({}) },
+  },
   errors: [LoadBalancerNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2523,6 +2623,7 @@ export const describeLoadBalancers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { LoadBalancerArns: 0, Names: 0, Marker: 0, PageSize: 0 },
     output: { LoadBalancers: D.list(o_LoadBalancer) },
   },
   errors: [LoadBalancerNotFoundException],
@@ -2552,7 +2653,11 @@ export const describeRules: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Rule
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Rules: D.list(o_Rule) } },
+  descriptor: {
+    service: svc,
+    input: { ListenerArn: 0, RuleArns: 0, Marker: 0, PageSize: 0 },
+    output: { Rules: D.list(o_Rule) },
+  },
   errors: [
     ListenerNotFoundException,
     RuleNotFoundException,
@@ -2585,6 +2690,7 @@ export const describeSSLPolicies: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Names: 0, Marker: 0, PageSize: 0, LoadBalancerType: 0 },
     output: {
       SslPolicies: D.list({
         SslProtocols: D.list(),
@@ -2619,6 +2725,7 @@ export const describeTags: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResourceArns: 0 },
     output: { TagDescriptions: D.list({ Tags: D.list({}) }) },
   },
   errors: [
@@ -2656,7 +2763,11 @@ export const describeTargetGroupAttributes: API.OperationMethod<
   DescribeTargetGroupAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Attributes: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { TargetGroupArn: 0 },
+    output: { Attributes: D.list({}) },
+  },
   errors: [TargetGroupNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2680,7 +2791,17 @@ export const describeTargetGroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TargetGroup
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { TargetGroups: D.list(o_TargetGroup) } },
+  descriptor: {
+    service: svc,
+    input: {
+      LoadBalancerArn: 0,
+      TargetGroupArns: 0,
+      Names: 0,
+      Marker: 0,
+      PageSize: 0,
+    },
+    output: { TargetGroups: D.list(o_TargetGroup) },
+  },
   errors: [LoadBalancerNotFoundException, TargetGroupNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2708,6 +2829,11 @@ export const describeTargetHealth: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TargetGroupArn: 0,
+      Targets: D.list(i_TargetDescription),
+      Include: 0,
+    },
     output: {
       TargetHealthDescriptions: D.list({
         Target: { Port: D.num },
@@ -2740,7 +2866,11 @@ export const describeTrustStoreAssociations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TrustStoreAssociation
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { TrustStoreAssociations: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { TrustStoreArn: 0, Marker: 0, PageSize: 0 },
+    output: { TrustStoreAssociations: D.list({}) },
+  },
   errors: [TrustStoreNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2770,6 +2900,7 @@ export const describeTrustStoreRevocations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { TrustStoreArn: 0, RevocationIds: 0, Marker: 0, PageSize: 0 },
     output: {
       TrustStoreRevocations: D.list({
         RevocationId: D.num,
@@ -2802,7 +2933,11 @@ export const describeTrustStores: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TrustStore
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { TrustStores: D.list(o_TrustStore) } },
+  descriptor: {
+    service: svc,
+    input: { TrustStoreArns: 0, Names: 0, Marker: 0, PageSize: 0 },
+    output: { TrustStores: D.list(o_TrustStore) },
+  },
   errors: [TrustStoreNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2825,7 +2960,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2847,7 +2982,7 @@ export const getTrustStoreCaCertificatesBundle: API.OperationMethod<
   GetTrustStoreCaCertificatesBundleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrustStoreArn: 0 } },
   errors: [TrustStoreNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2870,7 +3005,7 @@ export const getTrustStoreRevocationContent: API.OperationMethod<
   GetTrustStoreRevocationContentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrustStoreArn: 0, RevocationId: 0 } },
   errors: [RevocationIdNotFoundException, TrustStoreNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2901,6 +3036,11 @@ export const modifyCapacityReservation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      LoadBalancerArn: 0,
+      MinimumLoadBalancerCapacity: { CapacityUnits: 0 },
+      ResetCapacityReservation: 0,
+    },
     output: {
       LastModifiedTime: D.ts,
       DecreaseRequestsRemaining: D.num,
@@ -2933,7 +3073,11 @@ export const modifyIpPools: API.OperationMethod<
   ModifyIpPoolsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { IpamPools: {} } },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerArn: 0, IpamPools: i_IpamPools, RemoveIpamPools: 0 },
+    output: { IpamPools: {} },
+  },
   errors: [LoadBalancerNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2981,7 +3125,16 @@ export const modifyListener: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { DefaultActions: D.list(i_Action) },
+    input: {
+      ListenerArn: 0,
+      Port: 0,
+      Protocol: 0,
+      SslPolicy: 0,
+      Certificates: D.list(i_Certificate),
+      DefaultActions: D.list(i_Action),
+      AlpnPolicy: 0,
+      MutualAuthentication: i_MutualAuthenticationAttributes,
+    },
     output: { Listeners: D.list(o_Listener) },
   },
   errors: [
@@ -3023,7 +3176,11 @@ export const modifyListenerAttributes: API.OperationMethod<
   ModifyListenerAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Attributes: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { ListenerArn: 0, Attributes: D.list({ Key: 0, Value: 0 }) },
+    output: { Attributes: D.list({}) },
+  },
   errors: [InvalidConfigurationRequestException, ListenerNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3047,7 +3204,11 @@ export const modifyLoadBalancerAttributes: API.OperationMethod<
   ModifyLoadBalancerAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Attributes: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerArn: 0, Attributes: D.list({ Key: 0, Value: 0 }) },
+    output: { Attributes: D.list({}) },
+  },
   errors: [InvalidConfigurationRequestException, LoadBalancerNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3083,7 +3244,13 @@ export const modifyRule: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Actions: D.list(i_Action) },
+    input: {
+      RuleArn: 0,
+      Conditions: D.list(i_RuleCondition),
+      Actions: D.list(i_Action),
+      Transforms: D.list(i_RuleTransform),
+      ResetTransforms: 0,
+    },
     output: { Rules: D.list(o_Rule) },
   },
   errors: [
@@ -3118,7 +3285,22 @@ export const modifyTargetGroup: API.OperationMethod<
   ModifyTargetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { TargetGroups: D.list(o_TargetGroup) } },
+  descriptor: {
+    service: svc,
+    input: {
+      TargetGroupArn: 0,
+      HealthCheckProtocol: 0,
+      HealthCheckPort: 0,
+      HealthCheckPath: 0,
+      HealthCheckEnabled: 0,
+      HealthCheckIntervalSeconds: 0,
+      HealthCheckTimeoutSeconds: 0,
+      HealthyThresholdCount: 0,
+      UnhealthyThresholdCount: 0,
+      Matcher: i_Matcher,
+    },
+    output: { TargetGroups: D.list(o_TargetGroup) },
+  },
   errors: [InvalidConfigurationRequestException, TargetGroupNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3138,7 +3320,11 @@ export const modifyTargetGroupAttributes: API.OperationMethod<
   ModifyTargetGroupAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Attributes: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { TargetGroupArn: 0, Attributes: D.list({ Key: 0, Value: 0 }) },
+    output: { Attributes: D.list({}) },
+  },
   errors: [InvalidConfigurationRequestException, TargetGroupNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3159,7 +3345,16 @@ export const modifyTrustStore: API.OperationMethod<
   ModifyTrustStoreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { TrustStores: D.list(o_TrustStore) } },
+  descriptor: {
+    service: svc,
+    input: {
+      TrustStoreArn: 0,
+      CaCertificatesBundleS3Bucket: 0,
+      CaCertificatesBundleS3Key: 0,
+      CaCertificatesBundleS3ObjectVersion: 0,
+    },
+    output: { TrustStores: D.list(o_TrustStore) },
+  },
   errors: [
     CaCertificatesBundleNotFoundException,
     InvalidCaCertificatesBundleException,
@@ -3204,7 +3399,10 @@ export const registerTargets: API.OperationMethod<
   RegisterTargetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TargetGroupArn: 0, Targets: D.list(i_TargetDescription) },
+  },
   errors: [
     InvalidTargetException,
     TargetGroupNotFoundException,
@@ -3230,7 +3428,10 @@ export const removeListenerCertificates: API.OperationMethod<
   RemoveListenerCertificatesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ListenerArn: 0, Certificates: D.list(i_Certificate) },
+  },
   errors: [ListenerNotFoundException, OperationNotPermittedException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3256,7 +3457,7 @@ export const removeTags: API.OperationMethod<
   RemoveTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArns: 0, TagKeys: 0 } },
   errors: [
     ListenerNotFoundException,
     LoadBalancerNotFoundException,
@@ -3283,7 +3484,7 @@ export const removeTrustStoreRevocations: API.OperationMethod<
   RemoveTrustStoreRevocationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrustStoreArn: 0, RevocationIds: 0 } },
   errors: [RevocationIdNotFoundException, TrustStoreNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3304,7 +3505,7 @@ export const setIpAddressType: API.OperationMethod<
   SetIpAddressTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LoadBalancerArn: 0, IpAddressType: 0 } },
   errors: [
     InvalidConfigurationRequestException,
     InvalidSubnetException,
@@ -3332,7 +3533,11 @@ export const setRulePriorities: API.OperationMethod<
   SetRulePrioritiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Rules: D.list(o_Rule) } },
+  descriptor: {
+    service: svc,
+    input: { RulePriorities: D.list({ RuleArn: 0, Priority: 0 }) },
+    output: { Rules: D.list(o_Rule) },
+  },
   errors: [
     OperationNotPermittedException,
     PriorityInUseException,
@@ -3364,7 +3569,15 @@ export const setSecurityGroups: API.OperationMethod<
   SetSecurityGroupsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { SecurityGroupIds: D.list() } },
+  descriptor: {
+    service: svc,
+    input: {
+      LoadBalancerArn: 0,
+      SecurityGroups: 0,
+      EnforceSecurityGroupInboundRulesOnPrivateLinkTraffic: 0,
+    },
+    output: { SecurityGroupIds: D.list() },
+  },
   errors: [
     InvalidConfigurationRequestException,
     InvalidSecurityGroupException,
@@ -3397,6 +3610,13 @@ export const setSubnets: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      LoadBalancerArn: 0,
+      Subnets: 0,
+      SubnetMappings: D.list(i_SubnetMapping),
+      IpAddressType: 0,
+      EnablePrefixForIpv6SourceNat: 0,
+    },
     output: { AvailabilityZones: D.list(o_AvailabilityZone) },
   },
   errors: [
@@ -3414,8 +3634,91 @@ export const setSubnets: API.OperationMethod<
 })) as any;
 
 const i_Action: D.LazyStruct = () => ({
-  AuthenticateOidcConfig: { AuthenticationRequestExtraParams: D.map() },
-  AuthenticateCognitoConfig: { AuthenticationRequestExtraParams: D.map() },
+  Type: 0,
+  TargetGroupArn: 0,
+  AuthenticateOidcConfig: {
+    Issuer: 0,
+    AuthorizationEndpoint: 0,
+    TokenEndpoint: 0,
+    UserInfoEndpoint: 0,
+    ClientId: 0,
+    ClientSecret: 0,
+    SessionCookieName: 0,
+    Scope: 0,
+    SessionTimeout: 0,
+    AuthenticationRequestExtraParams: D.map(),
+    OnUnauthenticatedRequest: 0,
+    UseExistingClientSecret: 0,
+  },
+  AuthenticateCognitoConfig: {
+    UserPoolArn: 0,
+    UserPoolClientId: 0,
+    UserPoolDomain: 0,
+    SessionCookieName: 0,
+    Scope: 0,
+    SessionTimeout: 0,
+    AuthenticationRequestExtraParams: D.map(),
+    OnUnauthenticatedRequest: 0,
+  },
+  Order: 0,
+  RedirectConfig: {
+    Protocol: 0,
+    Port: 0,
+    Host: 0,
+    Path: 0,
+    Query: 0,
+    StatusCode: 0,
+  },
+  FixedResponseConfig: { MessageBody: 0, StatusCode: 0, ContentType: 0 },
+  ForwardConfig: {
+    TargetGroups: D.list({ TargetGroupArn: 0, Weight: 0 }),
+    TargetGroupStickinessConfig: { Enabled: 0, DurationSeconds: 0 },
+  },
+  JwtValidationConfig: {
+    JwksEndpoint: 0,
+    Issuer: 0,
+    AdditionalClaims: D.list({ Format: 0, Name: 0, Values: 0 }),
+  },
+});
+const i_Certificate: D.LazyStruct = () => ({ CertificateArn: 0, IsDefault: 0 });
+const i_IpamPools: D.LazyStruct = () => ({ Ipv4IpamPoolId: 0 });
+const i_Matcher: D.LazyStruct = () => ({ HttpCode: 0, GrpcCode: 0 });
+const i_MutualAuthenticationAttributes: D.LazyStruct = () => ({
+  Mode: 0,
+  TrustStoreArn: 0,
+  IgnoreClientCertificateExpiry: 0,
+  TrustStoreAssociationStatus: 0,
+  AdvertiseTrustStoreCaNames: 0,
+});
+const i_RuleCondition: D.LazyStruct = () => ({
+  Field: 0,
+  Values: 0,
+  HostHeaderConfig: { Values: 0, RegexValues: 0 },
+  PathPatternConfig: { Values: 0, RegexValues: 0 },
+  HttpHeaderConfig: { HttpHeaderName: 0, Values: 0, RegexValues: 0 },
+  QueryStringConfig: { Values: D.list({ Key: 0, Value: 0 }) },
+  HttpRequestMethodConfig: { Values: 0 },
+  SourceIpConfig: { Values: 0, IpAddressType: 0 },
+  RegexValues: 0,
+});
+const i_RuleTransform: D.LazyStruct = () => ({
+  Type: 0,
+  HostHeaderRewriteConfig: { Rewrites: D.list(i_RewriteConfig) },
+  UrlRewriteConfig: { Rewrites: D.list(i_RewriteConfig) },
+});
+const i_SubnetMapping: D.LazyStruct = () => ({
+  SubnetId: 0,
+  AllocationId: 0,
+  PrivateIPv4Address: 0,
+  IPv6Address: 0,
+  SourceNatIpv6Prefix: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_TargetDescription: D.LazyStruct = () => ({
+  Id: 0,
+  Port: 0,
+  AvailabilityZone: 0,
+  QuicServerId: 0,
 });
 const o_AvailabilityZone: D.LazyStruct = () => ({
   LoadBalancerAddresses: D.list({}),
@@ -3476,6 +3779,7 @@ const o_ZonalCapacityReservationState: D.LazyStruct = () => ({
   State: {},
   EffectiveCapacityUnits: D.num,
 });
+const i_RewriteConfig: D.LazyStruct = () => ({ Regex: 0, Replace: 0 });
 const o_Action: D.LazyStruct = () => ({
   AuthenticateOidcConfig: {
     ClientSecret: D.secret,

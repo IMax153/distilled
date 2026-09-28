@@ -908,7 +908,13 @@ export const addCustomRoutingEndpoints: API.OperationMethod<
   AddCustomRoutingEndpointsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EndpointConfigurations: D.list({ EndpointId: 0, AttachmentArn: 0 }),
+      EndpointGroupArn: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -957,7 +963,13 @@ export const addEndpoints: API.OperationMethod<
   AddEndpointsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EndpointConfigurations: D.list(i_EndpointConfiguration),
+      EndpointGroupArn: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     EndpointGroupNotFoundException,
@@ -995,7 +1007,11 @@ export const advertiseByoipCidr: API.OperationMethod<
   AdvertiseByoipCidrError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ByoipCidr: o_ByoipCidr } },
+  descriptor: {
+    service: svc,
+    input: { Cidr: 0 },
+    output: { ByoipCidr: o_ByoipCidr },
+  },
   errors: [
     AccessDeniedException,
     ByoipCidrNotFoundException,
@@ -1028,7 +1044,16 @@ export const allowCustomRoutingTraffic: API.OperationMethod<
   AllowCustomRoutingTrafficError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EndpointGroupArn: 0,
+      EndpointId: 0,
+      DestinationAddresses: 0,
+      DestinationPorts: 0,
+      AllowAllTrafficToEndpoint: 0,
+    },
+  },
   errors: [
     EndpointGroupNotFoundException,
     InternalServiceErrorException,
@@ -1062,7 +1087,14 @@ export const createAccelerator: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      IpAddressType: 0,
+      IpAddresses: 0,
+      Enabled: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
     output: { Accelerator: o_Accelerator },
   },
   errors: [
@@ -1114,7 +1146,13 @@ export const createCrossAccountAttachment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Principals: 0,
+      Resources: D.list(i_Resource),
+      IdempotencyToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
     output: { CrossAccountAttachment: o_Attachment },
   },
   errors: [
@@ -1157,7 +1195,14 @@ export const createCustomRoutingAccelerator: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      IpAddressType: 0,
+      IpAddresses: 0,
+      Enabled: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
     output: { Accelerator: o_CustomRoutingAccelerator },
   },
   errors: [
@@ -1195,7 +1240,16 @@ export const createCustomRoutingEndpointGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      ListenerArn: 0,
+      EndpointGroupRegion: 0,
+      DestinationConfigurations: D.list({
+        FromPort: 0,
+        ToPort: 0,
+        Protocols: 0,
+      }),
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AcceleratorNotFoundException,
@@ -1231,7 +1285,11 @@ export const createCustomRoutingListener: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      AcceleratorArn: 0,
+      PortRanges: D.list(i_PortRange),
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AcceleratorNotFoundException,
@@ -1270,7 +1328,19 @@ export const createEndpointGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      ListenerArn: 0,
+      EndpointGroupRegion: 0,
+      EndpointConfigurations: D.list(i_EndpointConfiguration),
+      TrafficDialPercentage: 0,
+      HealthCheckPort: 0,
+      HealthCheckProtocol: 0,
+      HealthCheckPath: 0,
+      HealthCheckIntervalSeconds: 0,
+      ThresholdCount: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+      PortOverrides: D.list(i_PortOverride),
+    },
   },
   errors: [
     AcceleratorNotFoundException,
@@ -1305,7 +1375,13 @@ export const createListener: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      AcceleratorArn: 0,
+      PortRanges: D.list(i_PortRange),
+      Protocol: 0,
+      ClientAffinity: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AcceleratorNotFoundException,
@@ -1348,7 +1424,7 @@ export const deleteAccelerator: API.OperationMethod<
   DeleteAcceleratorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AcceleratorArn: 0 } },
   errors: [
     AcceleratorNotDisabledException,
     AcceleratorNotFoundException,
@@ -1384,7 +1460,7 @@ export const deleteCrossAccountAttachment: API.OperationMethod<
   DeleteCrossAccountAttachmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AttachmentArn: 0 } },
   errors: [
     AccessDeniedException,
     AttachmentNotFoundException,
@@ -1426,7 +1502,7 @@ export const deleteCustomRoutingAccelerator: API.OperationMethod<
   DeleteCustomRoutingAcceleratorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AcceleratorArn: 0 } },
   errors: [
     AcceleratorNotDisabledException,
     AcceleratorNotFoundException,
@@ -1454,7 +1530,7 @@ export const deleteCustomRoutingEndpointGroup: API.OperationMethod<
   DeleteCustomRoutingEndpointGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EndpointGroupArn: 0 } },
   errors: [
     EndpointGroupNotFoundException,
     InternalServiceErrorException,
@@ -1480,7 +1556,7 @@ export const deleteCustomRoutingListener: API.OperationMethod<
   DeleteCustomRoutingListenerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ListenerArn: 0 } },
   errors: [
     AssociatedEndpointGroupFoundException,
     InternalServiceErrorException,
@@ -1506,7 +1582,7 @@ export const deleteEndpointGroup: API.OperationMethod<
   DeleteEndpointGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EndpointGroupArn: 0 } },
   errors: [
     EndpointGroupNotFoundException,
     InternalServiceErrorException,
@@ -1532,7 +1608,7 @@ export const deleteListener: API.OperationMethod<
   DeleteListenerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ListenerArn: 0 } },
   errors: [
     AssociatedEndpointGroupFoundException,
     InternalServiceErrorException,
@@ -1564,7 +1640,16 @@ export const denyCustomRoutingTraffic: API.OperationMethod<
   DenyCustomRoutingTrafficError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EndpointGroupArn: 0,
+      EndpointId: 0,
+      DestinationAddresses: 0,
+      DestinationPorts: 0,
+      DenyAllTrafficToEndpoint: 0,
+    },
+  },
   errors: [
     EndpointGroupNotFoundException,
     InternalServiceErrorException,
@@ -1598,7 +1683,11 @@ export const deprovisionByoipCidr: API.OperationMethod<
   DeprovisionByoipCidrError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ByoipCidr: o_ByoipCidr } },
+  descriptor: {
+    service: svc,
+    input: { Cidr: 0 },
+    output: { ByoipCidr: o_ByoipCidr },
+  },
   errors: [
     AccessDeniedException,
     ByoipCidrNotFoundException,
@@ -1625,7 +1714,11 @@ export const describeAccelerator: API.OperationMethod<
   DescribeAcceleratorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Accelerator: o_Accelerator } },
+  descriptor: {
+    service: svc,
+    input: { AcceleratorArn: 0 },
+    output: { Accelerator: o_Accelerator },
+  },
   errors: [
     AcceleratorNotFoundException,
     InternalServiceErrorException,
@@ -1650,7 +1743,7 @@ export const describeAcceleratorAttributes: API.OperationMethod<
   DescribeAcceleratorAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AcceleratorArn: 0 } },
   errors: [
     AcceleratorNotFoundException,
     InternalServiceErrorException,
@@ -1678,6 +1771,7 @@ export const describeCrossAccountAttachment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AttachmentArn: 0 },
     output: { CrossAccountAttachment: o_Attachment },
   },
   errors: [
@@ -1707,6 +1801,7 @@ export const describeCustomRoutingAccelerator: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AcceleratorArn: 0 },
     output: { Accelerator: o_CustomRoutingAccelerator },
   },
   errors: [
@@ -1733,7 +1828,7 @@ export const describeCustomRoutingAcceleratorAttributes: API.OperationMethod<
   DescribeCustomRoutingAcceleratorAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AcceleratorArn: 0 } },
   errors: [
     AcceleratorNotFoundException,
     InternalServiceErrorException,
@@ -1758,7 +1853,7 @@ export const describeCustomRoutingEndpointGroup: API.OperationMethod<
   DescribeCustomRoutingEndpointGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EndpointGroupArn: 0 } },
   errors: [
     EndpointGroupNotFoundException,
     InternalServiceErrorException,
@@ -1783,7 +1878,7 @@ export const describeCustomRoutingListener: API.OperationMethod<
   DescribeCustomRoutingListenerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ListenerArn: 0 } },
   errors: [
     InternalServiceErrorException,
     InvalidArgumentException,
@@ -1808,7 +1903,7 @@ export const describeEndpointGroup: API.OperationMethod<
   DescribeEndpointGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EndpointGroupArn: 0 } },
   errors: [
     EndpointGroupNotFoundException,
     InternalServiceErrorException,
@@ -1833,7 +1928,7 @@ export const describeListener: API.OperationMethod<
   DescribeListenerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ListenerArn: 0 } },
   errors: [
     InternalServiceErrorException,
     InvalidArgumentException,
@@ -1859,7 +1954,11 @@ export const listAccelerators: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Accelerator
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Accelerators: D.list(o_Accelerator) } },
+  descriptor: {
+    service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
+    output: { Accelerators: D.list(o_Accelerator) },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidArgumentException,
@@ -1893,7 +1992,11 @@ export const listByoipCidrs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ByoipCidr
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { ByoipCidrs: D.list(o_ByoipCidr) } },
+  descriptor: {
+    service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
+    output: { ByoipCidrs: D.list(o_ByoipCidr) },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -1929,6 +2032,7 @@ export const listCrossAccountAttachments: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
     output: { CrossAccountAttachments: D.list(o_Attachment) },
   },
   errors: [
@@ -1965,7 +2069,7 @@ export const listCrossAccountResourceAccounts: API.OperationMethod<
   ListCrossAccountResourceAccountsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [AccessDeniedException, InternalServiceErrorException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1989,7 +2093,15 @@ export const listCrossAccountResources: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   CrossAccountResource
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceleratorArn: 0,
+      ResourceOwnerAwsAccountId: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     AcceleratorNotFoundException,
     AccessDeniedException,
@@ -2025,6 +2137,7 @@ export const listCustomRoutingAccelerators: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
     output: { Accelerators: D.list(o_CustomRoutingAccelerator) },
   },
   errors: [
@@ -2059,7 +2172,10 @@ export const listCustomRoutingEndpointGroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   CustomRoutingEndpointGroup
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ListenerArn: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidArgumentException,
@@ -2093,7 +2209,10 @@ export const listCustomRoutingListeners: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   CustomRoutingListener
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AcceleratorArn: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AcceleratorNotFoundException,
     InternalServiceErrorException,
@@ -2138,7 +2257,15 @@ export const listCustomRoutingPortMappings: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   PortMapping
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceleratorArn: 0,
+      EndpointGroupArn: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     AcceleratorNotFoundException,
     EndpointGroupNotFoundException,
@@ -2176,7 +2303,15 @@ export const listCustomRoutingPortMappingsByDestination: API.PaginatedOperationM
   Credentials | HttpClient.HttpClient,
   DestinationPortMapping
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EndpointId: 0,
+      DestinationAddress: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     EndpointNotFoundException,
     InternalServiceErrorException,
@@ -2210,7 +2345,10 @@ export const listEndpointGroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   EndpointGroup
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ListenerArn: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidArgumentException,
@@ -2244,7 +2382,10 @@ export const listListeners: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Listener
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AcceleratorArn: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AcceleratorNotFoundException,
     InternalServiceErrorException,
@@ -2282,7 +2423,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     AcceleratorNotFoundException,
     AttachmentNotFoundException,
@@ -2318,7 +2459,11 @@ export const provisionByoipCidr: API.OperationMethod<
   ProvisionByoipCidrError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ByoipCidr: o_ByoipCidr } },
+  descriptor: {
+    service: svc,
+    input: { Cidr: 0, CidrAuthorizationContext: { Message: 0, Signature: 0 } },
+    output: { ByoipCidr: o_ByoipCidr },
+  },
   errors: [
     AccessDeniedException,
     IncorrectCidrStateException,
@@ -2348,7 +2493,7 @@ export const removeCustomRoutingEndpoints: API.OperationMethod<
   RemoveCustomRoutingEndpointsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EndpointIds: 0, EndpointGroupArn: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2391,7 +2536,16 @@ export const removeEndpoints: API.OperationMethod<
   RemoveEndpointsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EndpointIdentifiers: D.list({
+        EndpointId: 0,
+        ClientIPPreservationEnabled: 0,
+      }),
+      EndpointGroupArn: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     EndpointGroupNotFoundException,
@@ -2421,7 +2575,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     AcceleratorNotFoundException,
     InternalServiceErrorException,
@@ -2450,7 +2604,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     AcceleratorNotFoundException,
     InternalServiceErrorException,
@@ -2494,7 +2648,17 @@ export const updateAccelerator: API.OperationMethod<
   UpdateAcceleratorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Accelerator: o_Accelerator } },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceleratorArn: 0,
+      Name: 0,
+      IpAddressType: 0,
+      IpAddresses: 0,
+      Enabled: 0,
+    },
+    output: { Accelerator: o_Accelerator },
+  },
   errors: [
     AcceleratorNotFoundException,
     AccessDeniedException,
@@ -2524,7 +2688,15 @@ export const updateAcceleratorAttributes: API.OperationMethod<
   UpdateAcceleratorAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceleratorArn: 0,
+      FlowLogsEnabled: 0,
+      FlowLogsS3Bucket: 0,
+      FlowLogsS3Prefix: 0,
+    },
+  },
   errors: [
     AcceleratorNotFoundException,
     AccessDeniedException,
@@ -2562,6 +2734,14 @@ export const updateCrossAccountAttachment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AttachmentArn: 0,
+      Name: 0,
+      AddPrincipals: 0,
+      RemovePrincipals: 0,
+      AddResources: D.list(i_Resource),
+      RemoveResources: D.list(i_Resource),
+    },
     output: { CrossAccountAttachment: o_Attachment },
   },
   errors: [
@@ -2595,6 +2775,13 @@ export const updateCustomRoutingAccelerator: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AcceleratorArn: 0,
+      Name: 0,
+      IpAddressType: 0,
+      IpAddresses: 0,
+      Enabled: 0,
+    },
     output: { Accelerator: o_CustomRoutingAccelerator },
   },
   errors: [
@@ -2625,7 +2812,15 @@ export const updateCustomRoutingAcceleratorAttributes: API.OperationMethod<
   UpdateCustomRoutingAcceleratorAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceleratorArn: 0,
+      FlowLogsEnabled: 0,
+      FlowLogsS3Bucket: 0,
+      FlowLogsS3Prefix: 0,
+    },
+  },
   errors: [
     AcceleratorNotFoundException,
     AccessDeniedException,
@@ -2654,7 +2849,10 @@ export const updateCustomRoutingListener: API.OperationMethod<
   UpdateCustomRoutingListenerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ListenerArn: 0, PortRanges: D.list(i_PortRange) },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidArgumentException,
@@ -2683,7 +2881,20 @@ export const updateEndpointGroup: API.OperationMethod<
   UpdateEndpointGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EndpointGroupArn: 0,
+      EndpointConfigurations: D.list(i_EndpointConfiguration),
+      TrafficDialPercentage: 0,
+      HealthCheckPort: 0,
+      HealthCheckProtocol: 0,
+      HealthCheckPath: 0,
+      HealthCheckIntervalSeconds: 0,
+      ThresholdCount: 0,
+      PortOverrides: D.list(i_PortOverride),
+    },
+  },
   errors: [
     AccessDeniedException,
     EndpointGroupNotFoundException,
@@ -2712,7 +2923,15 @@ export const updateListener: API.OperationMethod<
   UpdateListenerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ListenerArn: 0,
+      PortRanges: D.list(i_PortRange),
+      Protocol: 0,
+      ClientAffinity: 0,
+    },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidArgumentException,
@@ -2749,7 +2968,11 @@ export const withdrawByoipCidr: API.OperationMethod<
   WithdrawByoipCidrError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ByoipCidr: o_ByoipCidr } },
+  descriptor: {
+    service: svc,
+    input: { Cidr: 0 },
+    output: { ByoipCidr: o_ByoipCidr },
+  },
   errors: [
     AccessDeniedException,
     ByoipCidrNotFoundException,
@@ -2762,6 +2985,19 @@ export const withdrawByoipCidr: API.OperationMethod<
   operationName: "WithdrawByoipCidr",
 })) as any;
 
+const i_EndpointConfiguration: D.LazyStruct = () => ({
+  EndpointId: 0,
+  Weight: 0,
+  ClientIPPreservationEnabled: 0,
+  AttachmentArn: 0,
+});
+const i_PortOverride: D.LazyStruct = () => ({
+  ListenerPort: 0,
+  EndpointPort: 0,
+});
+const i_PortRange: D.LazyStruct = () => ({ FromPort: 0, ToPort: 0 });
+const i_Resource: D.LazyStruct = () => ({ EndpointId: 0, Cidr: 0, Region: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Accelerator: D.LazyStruct = () => ({
   CreatedTime: D.ts,
   LastModifiedTime: D.ts,

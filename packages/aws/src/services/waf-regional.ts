@@ -1462,7 +1462,7 @@ export const associateWebACL: API.OperationMethod<
   AssociateWebACLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WebACLId: 0, ResourceArn: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -1518,7 +1518,11 @@ export const createByteMatchSet: API.OperationMethod<
   CreateByteMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ByteMatchSet: o_ByteMatchSet } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, ChangeToken: 0 },
+    output: { ByteMatchSet: o_ByteMatchSet },
+  },
   errors: [
     WAFDisallowedNameException,
     WAFInternalErrorException,
@@ -1572,7 +1576,7 @@ export const createGeoMatchSet: API.OperationMethod<
   CreateGeoMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, ChangeToken: 0 } },
   errors: [
     WAFDisallowedNameException,
     WAFInternalErrorException,
@@ -1631,7 +1635,7 @@ export const createIPSet: API.OperationMethod<
   CreateIPSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, ChangeToken: 0 } },
   errors: [
     WAFDisallowedNameException,
     WAFInternalErrorException,
@@ -1738,7 +1742,17 @@ export const createRateBasedRule: API.OperationMethod<
   CreateRateBasedRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      MetricName: 0,
+      RateKey: 0,
+      RateLimit: 0,
+      ChangeToken: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     WAFBadRequestException,
     WAFDisallowedNameException,
@@ -1795,7 +1809,7 @@ export const createRegexMatchSet: API.OperationMethod<
   CreateRegexMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, ChangeToken: 0 } },
   errors: [
     WAFDisallowedNameException,
     WAFInternalErrorException,
@@ -1844,7 +1858,7 @@ export const createRegexPatternSet: API.OperationMethod<
   CreateRegexPatternSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, ChangeToken: 0 } },
   errors: [
     WAFDisallowedNameException,
     WAFInternalErrorException,
@@ -1915,7 +1929,10 @@ export const createRule: API.OperationMethod<
   CreateRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, MetricName: 0, ChangeToken: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     WAFBadRequestException,
     WAFDisallowedNameException,
@@ -1967,7 +1984,10 @@ export const createRuleGroup: API.OperationMethod<
   CreateRuleGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, MetricName: 0, ChangeToken: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     WAFBadRequestException,
     WAFDisallowedNameException,
@@ -2025,7 +2045,7 @@ export const createSizeConstraintSet: API.OperationMethod<
   CreateSizeConstraintSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, ChangeToken: 0 } },
   errors: [
     WAFDisallowedNameException,
     WAFInternalErrorException,
@@ -2080,7 +2100,7 @@ export const createSqlInjectionMatchSet: API.OperationMethod<
   CreateSqlInjectionMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, ChangeToken: 0 } },
   errors: [
     WAFDisallowedNameException,
     WAFInternalErrorException,
@@ -2147,7 +2167,16 @@ export const createWebACL: API.OperationMethod<
   CreateWebACLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      MetricName: 0,
+      DefaultAction: i_WafAction,
+      ChangeToken: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     WAFBadRequestException,
     WAFDisallowedNameException,
@@ -2188,7 +2217,10 @@ export const createWebACLMigrationStack: API.OperationMethod<
   CreateWebACLMigrationStackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { WebACLId: 0, S3BucketName: 0, IgnoreUnsupportedType: 0 },
+  },
   errors: [
     WAFEntityMigrationException,
     WAFInternalErrorException,
@@ -2242,7 +2274,7 @@ export const createXssMatchSet: API.OperationMethod<
   CreateXssMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, ChangeToken: 0 } },
   errors: [
     WAFDisallowedNameException,
     WAFInternalErrorException,
@@ -2292,7 +2324,7 @@ export const deleteByteMatchSet: API.OperationMethod<
   DeleteByteMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ByteMatchSetId: 0, ChangeToken: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -2342,7 +2374,7 @@ export const deleteGeoMatchSet: API.OperationMethod<
   DeleteGeoMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GeoMatchSetId: 0, ChangeToken: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -2392,7 +2424,7 @@ export const deleteIPSet: API.OperationMethod<
   DeleteIPSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { IPSetId: 0, ChangeToken: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -2428,7 +2460,7 @@ export const deleteLoggingConfiguration: API.OperationMethod<
   DeleteLoggingConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFNonexistentItemException,
@@ -2462,7 +2494,7 @@ export const deletePermissionPolicy: API.OperationMethod<
   DeletePermissionPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFNonexistentItemException,
@@ -2515,7 +2547,7 @@ export const deleteRateBasedRule: API.OperationMethod<
   DeleteRateBasedRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RuleId: 0, ChangeToken: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -2567,7 +2599,7 @@ export const deleteRegexMatchSet: API.OperationMethod<
   DeleteRegexMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RegexMatchSetId: 0, ChangeToken: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -2606,7 +2638,7 @@ export const deleteRegexPatternSet: API.OperationMethod<
   DeleteRegexPatternSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RegexPatternSetId: 0, ChangeToken: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -2658,7 +2690,7 @@ export const deleteRule: API.OperationMethod<
   DeleteRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RuleId: 0, ChangeToken: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -2712,7 +2744,7 @@ export const deleteRuleGroup: API.OperationMethod<
   DeleteRuleGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RuleGroupId: 0, ChangeToken: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -2764,7 +2796,10 @@ export const deleteSizeConstraintSet: API.OperationMethod<
   DeleteSizeConstraintSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SizeConstraintSetId: 0, ChangeToken: 0 },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -2815,7 +2850,10 @@ export const deleteSqlInjectionMatchSet: API.OperationMethod<
   DeleteSqlInjectionMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SqlInjectionMatchSetId: 0, ChangeToken: 0 },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -2864,7 +2902,7 @@ export const deleteWebACL: API.OperationMethod<
   DeleteWebACLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WebACLId: 0, ChangeToken: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -2917,7 +2955,7 @@ export const deleteXssMatchSet: API.OperationMethod<
   DeleteXssMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { XssMatchSetId: 0, ChangeToken: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -2953,7 +2991,7 @@ export const disassociateWebACL: API.OperationMethod<
   DisassociateWebACLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -2986,7 +3024,11 @@ export const getByteMatchSet: API.OperationMethod<
   GetByteMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ByteMatchSet: o_ByteMatchSet } },
+  descriptor: {
+    service: svc,
+    input: { ByteMatchSetId: 0 },
+    output: { ByteMatchSet: o_ByteMatchSet },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -3022,7 +3064,7 @@ export const getChangeToken: API.OperationMethod<
   GetChangeTokenError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [WAFInternalErrorException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3057,7 +3099,7 @@ export const getChangeTokenStatus: API.OperationMethod<
   GetChangeTokenStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ChangeToken: 0 } },
   errors: [WAFInternalErrorException, WAFNonexistentItemException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3085,7 +3127,7 @@ export const getGeoMatchSet: API.OperationMethod<
   GetGeoMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GeoMatchSetId: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -3117,7 +3159,7 @@ export const getIPSet: API.OperationMethod<
   GetIPSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { IPSetId: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -3148,7 +3190,7 @@ export const getLoggingConfiguration: API.OperationMethod<
   GetLoggingConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [WAFInternalErrorException, WAFNonexistentItemException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3175,7 +3217,7 @@ export const getPermissionPolicy: API.OperationMethod<
   GetPermissionPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [WAFInternalErrorException, WAFNonexistentItemException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3205,7 +3247,7 @@ export const getRateBasedRule: API.OperationMethod<
   GetRateBasedRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RuleId: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -3240,7 +3282,7 @@ export const getRateBasedRuleManagedKeys: API.OperationMethod<
   GetRateBasedRuleManagedKeysError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RuleId: 0, NextMarker: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -3273,7 +3315,7 @@ export const getRegexMatchSet: API.OperationMethod<
   GetRegexMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RegexMatchSetId: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -3305,7 +3347,7 @@ export const getRegexPatternSet: API.OperationMethod<
   GetRegexPatternSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RegexPatternSetId: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -3337,7 +3379,7 @@ export const getRule: API.OperationMethod<
   GetRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RuleId: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -3370,7 +3412,7 @@ export const getRuleGroup: API.OperationMethod<
   GetRuleGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RuleGroupId: 0 } },
   errors: [WAFInternalErrorException, WAFNonexistentItemException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3403,6 +3445,12 @@ export const getSampledRequests: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      WebAclId: 0,
+      RuleId: 0,
+      TimeWindow: { StartTime: 0, EndTime: 0 },
+      MaxItems: 0,
+    },
     output: {
       SampledRequests: D.list({ Timestamp: D.ts }),
       TimeWindow: { StartTime: D.ts, EndTime: D.ts },
@@ -3435,7 +3483,7 @@ export const getSizeConstraintSet: API.OperationMethod<
   GetSizeConstraintSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SizeConstraintSetId: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -3467,7 +3515,7 @@ export const getSqlInjectionMatchSet: API.OperationMethod<
   GetSqlInjectionMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SqlInjectionMatchSetId: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -3499,7 +3547,7 @@ export const getWebACL: API.OperationMethod<
   GetWebACLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WebACLId: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -3533,7 +3581,7 @@ export const getWebACLForResource: API.OperationMethod<
   GetWebACLForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -3567,7 +3615,7 @@ export const getXssMatchSet: API.OperationMethod<
   GetXssMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { XssMatchSetId: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -3599,7 +3647,10 @@ export const listActivatedRulesInRuleGroup: API.OperationMethod<
   ListActivatedRulesInRuleGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { RuleGroupId: 0, NextMarker: 0, Limit: 0 },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidParameterException,
@@ -3630,7 +3681,7 @@ export const listByteMatchSets: API.OperationMethod<
   ListByteMatchSetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextMarker: 0, Limit: 0 } },
   errors: [WAFInternalErrorException, WAFInvalidAccountException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3657,7 +3708,7 @@ export const listGeoMatchSets: API.OperationMethod<
   ListGeoMatchSetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextMarker: 0, Limit: 0 } },
   errors: [WAFInternalErrorException, WAFInvalidAccountException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3684,7 +3735,7 @@ export const listIPSets: API.OperationMethod<
   ListIPSetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextMarker: 0, Limit: 0 } },
   errors: [WAFInternalErrorException, WAFInvalidAccountException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3712,7 +3763,7 @@ export const listLoggingConfigurations: API.OperationMethod<
   ListLoggingConfigurationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextMarker: 0, Limit: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidParameterException,
@@ -3743,7 +3794,7 @@ export const listRateBasedRules: API.OperationMethod<
   ListRateBasedRulesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextMarker: 0, Limit: 0 } },
   errors: [WAFInternalErrorException, WAFInvalidAccountException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3770,7 +3821,7 @@ export const listRegexMatchSets: API.OperationMethod<
   ListRegexMatchSetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextMarker: 0, Limit: 0 } },
   errors: [WAFInternalErrorException, WAFInvalidAccountException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3797,7 +3848,7 @@ export const listRegexPatternSets: API.OperationMethod<
   ListRegexPatternSetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextMarker: 0, Limit: 0 } },
   errors: [WAFInternalErrorException, WAFInvalidAccountException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3826,7 +3877,7 @@ export const listResourcesForWebACL: API.OperationMethod<
   ListResourcesForWebACLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WebACLId: 0, ResourceType: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -3855,7 +3906,7 @@ export const listRuleGroups: API.OperationMethod<
   ListRuleGroupsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextMarker: 0, Limit: 0 } },
   errors: [WAFInternalErrorException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3882,7 +3933,7 @@ export const listRules: API.OperationMethod<
   ListRulesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextMarker: 0, Limit: 0 } },
   errors: [WAFInternalErrorException, WAFInvalidAccountException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3909,7 +3960,7 @@ export const listSizeConstraintSets: API.OperationMethod<
   ListSizeConstraintSetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextMarker: 0, Limit: 0 } },
   errors: [WAFInternalErrorException, WAFInvalidAccountException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3936,7 +3987,7 @@ export const listSqlInjectionMatchSets: API.OperationMethod<
   ListSqlInjectionMatchSetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextMarker: 0, Limit: 0 } },
   errors: [WAFInternalErrorException, WAFInvalidAccountException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3963,7 +4014,7 @@ export const listSubscribedRuleGroups: API.OperationMethod<
   ListSubscribedRuleGroupsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextMarker: 0, Limit: 0 } },
   errors: [WAFInternalErrorException, WAFNonexistentItemException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3996,7 +4047,10 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NextMarker: 0, Limit: 0, ResourceARN: 0 },
+  },
   errors: [
     WAFBadRequestException,
     WAFInternalErrorException,
@@ -4030,7 +4084,7 @@ export const listWebACLs: API.OperationMethod<
   ListWebACLsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextMarker: 0, Limit: 0 } },
   errors: [WAFInternalErrorException, WAFInvalidAccountException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4057,7 +4111,7 @@ export const listXssMatchSets: API.OperationMethod<
   ListXssMatchSetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextMarker: 0, Limit: 0 } },
   errors: [WAFInternalErrorException, WAFInvalidAccountException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4100,7 +4154,16 @@ export const putLoggingConfiguration: API.OperationMethod<
   PutLoggingConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LoggingConfiguration: {
+        ResourceArn: 0,
+        LogDestinationConfigs: 0,
+        RedactedFields: D.list(i_FieldToMatch),
+      },
+    },
+  },
   errors: [
     WAFInternalErrorException,
     WAFNonexistentItemException,
@@ -4156,7 +4219,7 @@ export const putPermissionPolicy: API.OperationMethod<
   PutPermissionPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Policy: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidPermissionPolicyException,
@@ -4195,7 +4258,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [
     WAFBadRequestException,
     WAFInternalErrorException,
@@ -4232,7 +4295,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [
     WAFBadRequestException,
     WAFInternalErrorException,
@@ -4301,7 +4364,22 @@ export const updateByteMatchSet: API.OperationMethod<
   UpdateByteMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ByteMatchSetId: 0,
+      ChangeToken: 0,
+      Updates: D.list({
+        Action: 0,
+        ByteMatchTuple: {
+          FieldToMatch: i_FieldToMatch,
+          TargetString: 0,
+          TextTransformation: 0,
+          PositionalConstraint: 0,
+        },
+      }),
+    },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -4366,7 +4444,14 @@ export const updateGeoMatchSet: API.OperationMethod<
   UpdateGeoMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      GeoMatchSetId: 0,
+      ChangeToken: 0,
+      Updates: D.list({ Action: 0, GeoMatchConstraint: { Type: 0, Value: 0 } }),
+    },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -4466,7 +4551,14 @@ export const updateIPSet: API.OperationMethod<
   UpdateIPSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IPSetId: 0,
+      ChangeToken: 0,
+      Updates: D.list({ Action: 0, IPSetDescriptor: { Type: 0, Value: 0 } }),
+    },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -4547,7 +4639,15 @@ export const updateRateBasedRule: API.OperationMethod<
   UpdateRateBasedRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      RuleId: 0,
+      ChangeToken: 0,
+      Updates: D.list(i_RuleUpdate),
+      RateLimit: 0,
+    },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -4616,7 +4716,21 @@ export const updateRegexMatchSet: API.OperationMethod<
   UpdateRegexMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      RegexMatchSetId: 0,
+      Updates: D.list({
+        Action: 0,
+        RegexMatchTuple: {
+          FieldToMatch: i_FieldToMatch,
+          TextTransformation: 0,
+          RegexPatternSetId: 0,
+        },
+      }),
+      ChangeToken: 0,
+    },
+  },
   errors: [
     WAFDisallowedNameException,
     WAFInternalErrorException,
@@ -4685,7 +4799,14 @@ export const updateRegexPatternSet: API.OperationMethod<
   UpdateRegexPatternSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      RegexPatternSetId: 0,
+      Updates: D.list({ Action: 0, RegexPatternString: 0 }),
+      ChangeToken: 0,
+    },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -4761,7 +4882,10 @@ export const updateRule: API.OperationMethod<
   UpdateRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { RuleId: 0, ChangeToken: 0, Updates: D.list(i_RuleUpdate) },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -4824,7 +4948,14 @@ export const updateRuleGroup: API.OperationMethod<
   UpdateRuleGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      RuleGroupId: 0,
+      Updates: D.list({ Action: 0, ActivatedRule: i_ActivatedRule }),
+      ChangeToken: 0,
+    },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -4900,7 +5031,22 @@ export const updateSizeConstraintSet: API.OperationMethod<
   UpdateSizeConstraintSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SizeConstraintSetId: 0,
+      ChangeToken: 0,
+      Updates: D.list({
+        Action: 0,
+        SizeConstraint: {
+          FieldToMatch: i_FieldToMatch,
+          TextTransformation: 0,
+          ComparisonOperator: 0,
+          Size: 0,
+        },
+      }),
+    },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -4975,7 +5121,20 @@ export const updateSqlInjectionMatchSet: API.OperationMethod<
   UpdateSqlInjectionMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SqlInjectionMatchSetId: 0,
+      ChangeToken: 0,
+      Updates: D.list({
+        Action: 0,
+        SqlInjectionMatchTuple: {
+          FieldToMatch: i_FieldToMatch,
+          TextTransformation: 0,
+        },
+      }),
+    },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -5080,7 +5239,15 @@ export const updateWebACL: API.OperationMethod<
   UpdateWebACLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      WebACLId: 0,
+      ChangeToken: 0,
+      Updates: D.list({ Action: 0, ActivatedRule: i_ActivatedRule }),
+      DefaultAction: i_WafAction,
+    },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -5158,7 +5325,17 @@ export const updateXssMatchSet: API.OperationMethod<
   UpdateXssMatchSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      XssMatchSetId: 0,
+      ChangeToken: 0,
+      Updates: D.list({
+        Action: 0,
+        XssMatchTuple: { FieldToMatch: i_FieldToMatch, TextTransformation: 0 },
+      }),
+    },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidAccountException,
@@ -5174,6 +5351,21 @@ export const updateXssMatchSet: API.OperationMethod<
   operationName: "UpdateXssMatchSet",
 })) as any;
 
+const i_ActivatedRule: D.LazyStruct = () => ({
+  Priority: 0,
+  RuleId: 0,
+  Action: i_WafAction,
+  OverrideAction: { Type: 0 },
+  Type: 0,
+  ExcludedRules: D.list({ RuleId: 0 }),
+});
+const i_FieldToMatch: D.LazyStruct = () => ({ Type: 0, Data: 0 });
+const i_RuleUpdate: D.LazyStruct = () => ({
+  Action: 0,
+  Predicate: { Negated: 0, Type: 0, DataId: 0 },
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_WafAction: D.LazyStruct = () => ({ Type: 0 });
 const o_ByteMatchSet: D.LazyStruct = () => ({
   ByteMatchTuples: D.list({ TargetString: D.blob }),
 });

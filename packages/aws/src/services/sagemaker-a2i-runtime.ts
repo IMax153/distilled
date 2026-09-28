@@ -215,7 +215,11 @@ export const deleteHumanLoop: API.OperationMethod<
   DeleteHumanLoopError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /human-loops/{HumanLoopName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /human-loops/{HumanLoopName}",
+    input: { HumanLoopName: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -246,6 +250,7 @@ export const describeHumanLoop: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /human-loops/{HumanLoopName}",
+    input: { HumanLoopName: 0 },
     output: { CreationTime: D.ts },
   },
   errors: [
@@ -321,7 +326,17 @@ export const startHumanLoop: API.OperationMethod<
   StartHumanLoopError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /human-loops", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /human-loops",
+    input: {
+      HumanLoopName: 0,
+      FlowDefinitionArn: 0,
+      HumanLoopInput: { InputContent: 0 },
+      DataAttributes: { ContentClassifiers: 0 },
+    },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -349,7 +364,12 @@ export const stopHumanLoop: API.OperationMethod<
   StopHumanLoopError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /human-loops/stop", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /human-loops/stop",
+    input: { HumanLoopName: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,

@@ -593,6 +593,15 @@ export const batchExecuteStatement: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchExecute",
+    input: {
+      resourceArn: 0,
+      secretArn: 0,
+      sql: 0,
+      database: 0,
+      schema: 0,
+      parameterSets: D.list(D.list(i_SqlParameter)),
+      transactionId: 0,
+    },
     output: { updateResults: D.list({ generatedFields: D.list(o_Field) }) },
     body: true,
   },
@@ -650,7 +659,12 @@ export const beginTransaction: API.OperationMethod<
   BeginTransactionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /BeginTransaction", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /BeginTransaction",
+    input: { resourceArn: 0, secretArn: 0, database: 0, schema: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -699,7 +713,12 @@ export const commitTransaction: API.OperationMethod<
   CommitTransactionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CommitTransaction", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CommitTransaction",
+    input: { resourceArn: 0, secretArn: 0, transactionId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -743,6 +762,13 @@ export const executeSql: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ExecuteSql",
+    input: {
+      dbClusterOrInstanceArn: 0,
+      awsSecretStoreArn: 0,
+      sqlStatements: 0,
+      database: 0,
+      schema: 0,
+    },
     output: {
       sqlStatementResults: D.list({
         resultFrame: { records: D.list({ values: D.list(o_Value) }) },
@@ -796,6 +822,19 @@ export const executeStatement: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /Execute",
+    input: {
+      resourceArn: 0,
+      secretArn: 0,
+      sql: 0,
+      database: 0,
+      schema: 0,
+      parameters: D.list(i_SqlParameter),
+      transactionId: 0,
+      includeResultMetadata: 0,
+      continueAfterTimeout: 0,
+      resultSetOptions: { decimalReturnType: 0, longReturnType: 0 },
+      formatRecordsAs: 0,
+    },
     output: {
       records: D.list(D.list(o_Field)),
       generatedFields: D.list(o_Field),
@@ -851,7 +890,12 @@ export const rollbackTransaction: API.OperationMethod<
   RollbackTransactionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /RollbackTransaction", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /RollbackTransaction",
+    input: { resourceArn: 0, secretArn: 0, transactionId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -874,9 +918,29 @@ export const rollbackTransaction: API.OperationMethod<
   operationName: "RollbackTransaction",
 })) as any;
 
+const i_SqlParameter: D.LazyStruct = () => ({
+  name: 0,
+  value: {
+    isNull: 0,
+    booleanValue: 0,
+    longValue: 0,
+    doubleValue: 0,
+    stringValue: 0,
+    blobValue: 0,
+    arrayValue: i_ArrayValue,
+  },
+  typeHint: 0,
+});
 const o_Field: D.LazyStruct = () => ({ blobValue: D.blob });
 const o_Value: D.LazyStruct = () => ({
   blobValue: D.blob,
   arrayValues: D.list(o_Value),
   structValue: { attributes: D.list(o_Value) },
+});
+const i_ArrayValue: D.LazyStruct = () => ({
+  booleanValues: 0,
+  longValues: 0,
+  doubleValues: 0,
+  stringValues: 0,
+  arrayValues: D.list(i_ArrayValue),
 });

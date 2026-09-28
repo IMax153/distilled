@@ -4114,7 +4114,15 @@ export const associateAgentCollaborator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /agents/{agentId}/agentversions/{agentVersion}/agentcollaborators/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      agentId: 0,
+      agentVersion: 0,
+      agentDescriptor: i_AgentDescriptor,
+      collaboratorName: 0,
+      collaborationInstruction: 0,
+      relayConversationHistory: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { agentCollaborator: o_AgentCollaborator },
     body: true,
   },
@@ -4153,6 +4161,13 @@ export const associateAgentKnowledgeBase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /agents/{agentId}/agentversions/{agentVersion}/knowledgebases/",
+    input: {
+      agentId: 0,
+      agentVersion: 0,
+      knowledgeBaseId: 0,
+      description: 0,
+      knowledgeBaseState: 0,
+    },
     output: { agentKnowledgeBase: o_AgentKnowledgeBase },
     body: true,
   },
@@ -4206,7 +4221,23 @@ export const createAgent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /agents/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      agentName: 0,
+      clientToken: D.m({ idempotency: true }),
+      instruction: 0,
+      foundationModel: 0,
+      description: 0,
+      orchestrationType: 0,
+      customOrchestration: i_CustomOrchestration,
+      idleSessionTTLInSeconds: 0,
+      agentResourceRoleArn: 0,
+      customerEncryptionKeyArn: 0,
+      tags: 0,
+      promptOverrideConfiguration: i_PromptOverrideConfiguration,
+      guardrailConfiguration: i_GuardrailConfiguration,
+      memoryConfiguration: i_MemoryConfiguration,
+      agentCollaboration: 0,
+    },
     output: { agent: o_Agent },
     body: true,
   },
@@ -4250,7 +4281,19 @@ export const createAgentActionGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /agents/{agentId}/agentversions/{agentVersion}/actiongroups/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      agentId: 0,
+      agentVersion: 0,
+      actionGroupName: 0,
+      clientToken: D.m({ idempotency: true }),
+      description: 0,
+      parentActionGroupSignature: 0,
+      parentActionGroupSignatureParams: 0,
+      actionGroupExecutor: i_ActionGroupExecutor,
+      apiSchema: i_APISchema,
+      actionGroupState: 0,
+      functionSchema: i_FunctionSchema,
+    },
     output: { agentActionGroup: o_AgentActionGroup },
     body: true,
   },
@@ -4289,7 +4332,14 @@ export const createAgentAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /agents/{agentId}/agentaliases/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      agentId: 0,
+      agentAliasName: 0,
+      clientToken: D.m({ idempotency: true }),
+      description: 0,
+      routingConfiguration: D.list(i_AgentAliasRoutingConfigurationListItem),
+      tags: 0,
+    },
     output: { agentAlias: o_AgentAlias },
     body: true,
   },
@@ -4330,7 +4380,16 @@ export const createDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /knowledgebases/{knowledgeBaseId}/datasources/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      knowledgeBaseId: 0,
+      clientToken: D.m({ idempotency: true }),
+      name: 0,
+      description: 0,
+      dataSourceConfiguration: i_DataSourceConfiguration,
+      dataDeletionPolicy: 0,
+      serverSideEncryptionConfiguration: i_ServerSideEncryptionConfiguration,
+      vectorIngestionConfiguration: i_VectorIngestionConfiguration,
+    },
     output: { dataSource: o_DataSource },
     body: true,
   },
@@ -4368,7 +4427,15 @@ export const createFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /flows/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      executionRoleArn: 0,
+      customerEncryptionKeyArn: 0,
+      definition: i_FlowDefinition,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts, definition: o_FlowDefinition },
     body: true,
   },
@@ -4406,7 +4473,15 @@ export const createFlowAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /flows/{flowIdentifier}/aliases",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      routingConfiguration: D.list(i_FlowAliasRoutingConfigurationListItem),
+      concurrencyConfiguration: i_FlowAliasConcurrencyConfiguration,
+      flowIdentifier: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -4445,7 +4520,11 @@ export const createFlowVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /flows/{flowIdentifier}/versions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      flowIdentifier: 0,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { createdAt: D.ts, definition: o_FlowDefinition },
     body: true,
   },
@@ -4503,7 +4582,15 @@ export const createKnowledgeBase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /knowledgebases/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      name: 0,
+      description: 0,
+      roleArn: 0,
+      knowledgeBaseConfiguration: i_KnowledgeBaseConfiguration,
+      storageConfiguration: i_StorageConfiguration,
+      tags: 0,
+    },
     output: { knowledgeBase: o_KnowledgeBase },
     body: true,
   },
@@ -4540,7 +4627,15 @@ export const createPrompt: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prompts/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      customerEncryptionKeyArn: 0,
+      defaultVariant: 0,
+      variants: D.list(i_PromptVariant),
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: {
       variants: D.list(o_PromptVariant),
       createdAt: D.ts,
@@ -4582,7 +4677,12 @@ export const createPromptVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prompts/{promptIdentifier}/versions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      promptIdentifier: 0,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: {
       variants: D.list(o_PromptVariant),
       createdAt: D.ts,
@@ -4624,7 +4724,10 @@ export const deleteAgent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /agents/{agentId}/",
-    input: { skipResourceInUseCheck: D.m({ query: "skipResourceInUseCheck" }) },
+    input: {
+      agentId: 0,
+      skipResourceInUseCheck: D.m({ query: "skipResourceInUseCheck" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -4659,7 +4762,12 @@ export const deleteAgentActionGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /agents/{agentId}/agentversions/{agentVersion}/actiongroups/{actionGroupId}/",
-    input: { skipResourceInUseCheck: D.m({ query: "skipResourceInUseCheck" }) },
+    input: {
+      agentId: 0,
+      agentVersion: 0,
+      actionGroupId: 0,
+      skipResourceInUseCheck: D.m({ query: "skipResourceInUseCheck" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -4693,6 +4801,7 @@ export const deleteAgentAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /agents/{agentId}/agentaliases/{agentAliasId}/",
+    input: { agentId: 0, agentAliasId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4726,7 +4835,11 @@ export const deleteAgentVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /agents/{agentId}/agentversions/{agentVersion}/",
-    input: { skipResourceInUseCheck: D.m({ query: "skipResourceInUseCheck" }) },
+    input: {
+      agentId: 0,
+      agentVersion: 0,
+      skipResourceInUseCheck: D.m({ query: "skipResourceInUseCheck" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -4761,6 +4874,7 @@ export const deleteDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /knowledgebases/{knowledgeBaseId}/datasources/{dataSourceId}",
+    input: { knowledgeBaseId: 0, dataSourceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4795,7 +4909,10 @@ export const deleteFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /flows/{flowIdentifier}/",
-    input: { skipResourceInUseCheck: D.m({ query: "skipResourceInUseCheck" }) },
+    input: {
+      flowIdentifier: 0,
+      skipResourceInUseCheck: D.m({ query: "skipResourceInUseCheck" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -4830,6 +4947,7 @@ export const deleteFlowAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /flows/{flowIdentifier}/aliases/{aliasIdentifier}",
+    input: { flowIdentifier: 0, aliasIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4864,7 +4982,11 @@ export const deleteFlowVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /flows/{flowIdentifier}/versions/{flowVersion}/",
-    input: { skipResourceInUseCheck: D.m({ query: "skipResourceInUseCheck" }) },
+    input: {
+      flowIdentifier: 0,
+      flowVersion: 0,
+      skipResourceInUseCheck: D.m({ query: "skipResourceInUseCheck" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -4899,6 +5021,7 @@ export const deleteKnowledgeBase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /knowledgebases/{knowledgeBaseId}",
+    input: { knowledgeBaseId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4933,7 +5056,12 @@ export const deleteKnowledgeBaseDocuments: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgebases/{knowledgeBaseId}/datasources/{dataSourceId}/documents/deleteDocuments",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      knowledgeBaseId: 0,
+      dataSourceId: 0,
+      clientToken: D.m({ idempotency: true }),
+      documentIdentifiers: D.list(i_DocumentIdentifier),
+    },
     output: { documentDetails: D.list(o_KnowledgeBaseDocumentDetail) },
     body: true,
   },
@@ -4970,7 +5098,10 @@ export const deletePrompt: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prompts/{promptIdentifier}/",
-    input: { promptVersion: D.m({ query: "promptVersion" }) },
+    input: {
+      promptIdentifier: 0,
+      promptVersion: D.m({ query: "promptVersion" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -5005,7 +5136,10 @@ export const deleteResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /resourcepolicy/{resourceArn}",
-    input: { expectedRevisionId: D.m({ query: "expectedRevisionId" }) },
+    input: {
+      resourceArn: 0,
+      expectedRevisionId: D.m({ query: "expectedRevisionId" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -5040,6 +5174,7 @@ export const disassociateAgentCollaborator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /agents/{agentId}/agentversions/{agentVersion}/agentcollaborators/{collaboratorId}/",
+    input: { agentId: 0, agentVersion: 0, collaboratorId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5074,6 +5209,7 @@ export const disassociateAgentKnowledgeBase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /agents/{agentId}/agentversions/{agentVersion}/knowledgebases/{knowledgeBaseId}/",
+    input: { agentId: 0, agentVersion: 0, knowledgeBaseId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5107,6 +5243,7 @@ export const getAgent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /agents/{agentId}/",
+    input: { agentId: 0 },
     output: { agent: o_Agent },
   },
   errors: [
@@ -5140,6 +5277,7 @@ export const getAgentActionGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /agents/{agentId}/agentversions/{agentVersion}/actiongroups/{actionGroupId}/",
+    input: { agentId: 0, agentVersion: 0, actionGroupId: 0 },
     output: { agentActionGroup: o_AgentActionGroup },
   },
   errors: [
@@ -5173,6 +5311,7 @@ export const getAgentAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /agents/{agentId}/agentaliases/{agentAliasId}/",
+    input: { agentId: 0, agentAliasId: 0 },
     output: { agentAlias: o_AgentAlias },
   },
   errors: [
@@ -5206,6 +5345,7 @@ export const getAgentCollaborator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /agents/{agentId}/agentversions/{agentVersion}/agentcollaborators/{collaboratorId}/",
+    input: { agentId: 0, agentVersion: 0, collaboratorId: 0 },
     output: { agentCollaborator: o_AgentCollaborator },
   },
   errors: [
@@ -5239,6 +5379,7 @@ export const getAgentKnowledgeBase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /agents/{agentId}/agentversions/{agentVersion}/knowledgebases/{knowledgeBaseId}/",
+    input: { agentId: 0, agentVersion: 0, knowledgeBaseId: 0 },
     output: { agentKnowledgeBase: o_AgentKnowledgeBase },
   },
   errors: [
@@ -5272,6 +5413,7 @@ export const getAgentVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /agents/{agentId}/agentversions/{agentVersion}/",
+    input: { agentId: 0, agentVersion: 0 },
     output: {
       agentVersion: {
         instruction: D.secret,
@@ -5312,6 +5454,7 @@ export const getDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /knowledgebases/{knowledgeBaseId}/datasources/{dataSourceId}",
+    input: { knowledgeBaseId: 0, dataSourceId: 0 },
     output: { dataSource: o_DataSource },
   },
   errors: [
@@ -5345,7 +5488,7 @@ export const getFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /flows/{flowIdentifier}/",
-    input: { includedData: D.m({ query: "includedData" }) },
+    input: { flowIdentifier: 0, includedData: D.m({ query: "includedData" }) },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -5384,6 +5527,7 @@ export const getFlowAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /flows/{flowIdentifier}/aliases/{aliasIdentifier}",
+    input: { flowIdentifier: 0, aliasIdentifier: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -5417,7 +5561,11 @@ export const getFlowVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /flows/{flowIdentifier}/versions/{flowVersion}/",
-    input: { includedData: D.m({ query: "includedData" }) },
+    input: {
+      flowIdentifier: 0,
+      flowVersion: 0,
+      includedData: D.m({ query: "includedData" }),
+    },
     output: { createdAt: D.ts, definition: o_FlowDefinition },
   },
   errors: [
@@ -5451,6 +5599,7 @@ export const getIngestionJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /knowledgebases/{knowledgeBaseId}/datasources/{dataSourceId}/ingestionjobs/{ingestionJobId}",
+    input: { knowledgeBaseId: 0, dataSourceId: 0, ingestionJobId: 0 },
     output: { ingestionJob: o_IngestionJob },
   },
   errors: [
@@ -5484,6 +5633,7 @@ export const getKnowledgeBase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /knowledgebases/{knowledgeBaseId}",
+    input: { knowledgeBaseId: 0 },
     output: { knowledgeBase: o_KnowledgeBase },
   },
   errors: [
@@ -5518,6 +5668,11 @@ export const getKnowledgeBaseDocuments: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgebases/{knowledgeBaseId}/datasources/{dataSourceId}/documents/getDocuments",
+    input: {
+      knowledgeBaseId: 0,
+      dataSourceId: 0,
+      documentIdentifiers: D.list(i_DocumentIdentifier),
+    },
     output: { documentDetails: D.list(o_KnowledgeBaseDocumentDetail) },
     body: true,
   },
@@ -5554,6 +5709,7 @@ export const getPrompt: API.OperationMethod<
     service: svc,
     http: "GET /prompts/{promptIdentifier}/",
     input: {
+      promptIdentifier: 0,
       promptVersion: D.m({ query: "promptVersion" }),
       includedData: D.m({ query: "includedData" }),
     },
@@ -5591,7 +5747,11 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /resourcepolicy/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /resourcepolicy/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5624,7 +5784,42 @@ export const ingestKnowledgeBaseDocuments: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /knowledgebases/{knowledgeBaseId}/datasources/{dataSourceId}/documents",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      knowledgeBaseId: 0,
+      dataSourceId: 0,
+      clientToken: D.m({ idempotency: true }),
+      documents: D.list({
+        metadata: {
+          type: 0,
+          inlineAttributes: D.list({
+            key: 0,
+            value: {
+              type: 0,
+              numberValue: 0,
+              booleanValue: 0,
+              stringValue: 0,
+              stringListValue: 0,
+            },
+          }),
+          s3Location: i_CustomS3Location,
+          accessControlList: D.list({ name: 0, type: 0, access: 0 }),
+        },
+        content: {
+          dataSourceType: 0,
+          custom: {
+            customDocumentIdentifier: i_CustomDocumentIdentifier,
+            sourceType: 0,
+            s3Location: i_CustomS3Location,
+            inlineContent: {
+              type: 0,
+              byteContent: { mimeType: 0, data: 0 },
+              textContent: { data: 0 },
+            },
+          },
+          s3: { s3Location: i_S3Location },
+        },
+      }),
+    },
     output: { documentDetails: D.list(o_KnowledgeBaseDocumentDetail) },
     body: true,
   },
@@ -5661,6 +5856,7 @@ export const listAgentActionGroups: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /agents/{agentId}/agentversions/{agentVersion}/actiongroups/",
+    input: { agentId: 0, agentVersion: 0, maxResults: 0, nextToken: 0 },
     output: { actionGroupSummaries: D.list({ updatedAt: D.ts }) },
     body: true,
   },
@@ -5702,6 +5898,7 @@ export const listAgentAliases: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /agents/{agentId}/agentaliases/",
+    input: { agentId: 0, maxResults: 0, nextToken: 0 },
     output: {
       agentAliasSummaries: D.list({ createdAt: D.ts, updatedAt: D.ts }),
     },
@@ -5745,6 +5942,7 @@ export const listAgentCollaborators: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /agents/{agentId}/agentversions/{agentVersion}/agentcollaborators/",
+    input: { agentId: 0, agentVersion: 0, maxResults: 0, nextToken: 0 },
     output: {
       agentCollaboratorSummaries: D.list({
         collaborationInstruction: D.secret,
@@ -5792,6 +5990,7 @@ export const listAgentKnowledgeBases: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /agents/{agentId}/agentversions/{agentVersion}/knowledgebases/",
+    input: { agentId: 0, agentVersion: 0, maxResults: 0, nextToken: 0 },
     output: { agentKnowledgeBaseSummaries: D.list({ updatedAt: D.ts }) },
     body: true,
   },
@@ -5832,6 +6031,7 @@ export const listAgents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /agents/",
+    input: { maxResults: 0, nextToken: 0 },
     output: { agentSummaries: D.list({ updatedAt: D.ts }) },
     body: true,
   },
@@ -5872,6 +6072,7 @@ export const listAgentVersions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /agents/{agentId}/agentversions/",
+    input: { agentId: 0, maxResults: 0, nextToken: 0 },
     output: {
       agentVersionSummaries: D.list({ createdAt: D.ts, updatedAt: D.ts }),
     },
@@ -5915,6 +6116,7 @@ export const listDataSources: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgebases/{knowledgeBaseId}/datasources/",
+    input: { knowledgeBaseId: 0, maxResults: 0, nextToken: 0 },
     output: { dataSourceSummaries: D.list({ updatedAt: D.ts }) },
     body: true,
   },
@@ -5957,6 +6159,7 @@ export const listFlowAliases: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /flows/{flowIdentifier}/aliases",
     input: {
+      flowIdentifier: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -6045,6 +6248,7 @@ export const listFlowVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /flows/{flowIdentifier}/versions",
     input: {
+      flowIdentifier: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -6088,6 +6292,14 @@ export const listIngestionJobs: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgebases/{knowledgeBaseId}/datasources/{dataSourceId}/ingestionjobs/",
+    input: {
+      knowledgeBaseId: 0,
+      dataSourceId: 0,
+      filters: D.list({ attribute: 0, operator: 0, values: 0 }),
+      sortBy: { attribute: 0, order: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       ingestionJobSummaries: D.list({ startedAt: D.ts, updatedAt: D.ts }),
     },
@@ -6132,6 +6344,7 @@ export const listKnowledgeBaseDocuments: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgebases/{knowledgeBaseId}/datasources/{dataSourceId}/documents",
+    input: { knowledgeBaseId: 0, dataSourceId: 0, maxResults: 0, nextToken: 0 },
     output: { documentDetails: D.list(o_KnowledgeBaseDocumentDetail) },
     body: true,
   },
@@ -6173,6 +6386,7 @@ export const listKnowledgeBases: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgebases/",
+    input: { maxResults: 0, nextToken: 0 },
     output: { knowledgeBaseSummaries: D.list({ updatedAt: D.ts }) },
     body: true,
   },
@@ -6254,7 +6468,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -6288,6 +6506,7 @@ export const prepareAgent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /agents/{agentId}/",
+    input: { agentId: 0 },
     output: { preparedAt: D.ts },
   },
   errors: [
@@ -6322,7 +6541,11 @@ export const prepareFlow: API.OperationMethod<
   PrepareFlowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /flows/{flowIdentifier}/" },
+  descriptor: {
+    service: svc,
+    http: "POST /flows/{flowIdentifier}/",
+    input: { flowIdentifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -6357,6 +6580,7 @@ export const putResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /resourcepolicy/{resourceArn}",
+    input: { resourceArn: 0, policy: 0, expectedRevisionId: 0 },
     body: true,
   },
   errors: [
@@ -6393,7 +6617,12 @@ export const startIngestionJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /knowledgebases/{knowledgeBaseId}/datasources/{dataSourceId}/ingestionjobs/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      knowledgeBaseId: 0,
+      dataSourceId: 0,
+      clientToken: D.m({ idempotency: true }),
+      description: 0,
+    },
     output: { ingestionJob: o_IngestionJob },
     body: true,
   },
@@ -6431,6 +6660,7 @@ export const stopIngestionJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgebases/{knowledgeBaseId}/datasources/{dataSourceId}/ingestionjobs/{ingestionJobId}/stop",
+    input: { knowledgeBaseId: 0, dataSourceId: 0, ingestionJobId: 0 },
     output: { ingestionJob: o_IngestionJob },
   },
   errors: [
@@ -6463,7 +6693,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -6496,7 +6731,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -6531,6 +6766,22 @@ export const updateAgent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /agents/{agentId}/",
+    input: {
+      agentId: 0,
+      agentName: 0,
+      instruction: 0,
+      foundationModel: 0,
+      description: 0,
+      orchestrationType: 0,
+      customOrchestration: i_CustomOrchestration,
+      idleSessionTTLInSeconds: 0,
+      agentResourceRoleArn: 0,
+      customerEncryptionKeyArn: 0,
+      promptOverrideConfiguration: i_PromptOverrideConfiguration,
+      guardrailConfiguration: i_GuardrailConfiguration,
+      memoryConfiguration: i_MemoryConfiguration,
+      agentCollaboration: 0,
+    },
     output: { agent: o_Agent },
     body: true,
   },
@@ -6569,6 +6820,19 @@ export const updateAgentActionGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /agents/{agentId}/agentversions/{agentVersion}/actiongroups/{actionGroupId}/",
+    input: {
+      agentId: 0,
+      agentVersion: 0,
+      actionGroupId: 0,
+      actionGroupName: 0,
+      description: 0,
+      parentActionGroupSignature: 0,
+      parentActionGroupSignatureParams: 0,
+      actionGroupExecutor: i_ActionGroupExecutor,
+      actionGroupState: 0,
+      apiSchema: i_APISchema,
+      functionSchema: i_FunctionSchema,
+    },
     output: { agentActionGroup: o_AgentActionGroup },
     body: true,
   },
@@ -6607,6 +6871,14 @@ export const updateAgentAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /agents/{agentId}/agentaliases/{agentAliasId}/",
+    input: {
+      agentId: 0,
+      agentAliasId: 0,
+      agentAliasName: 0,
+      description: 0,
+      routingConfiguration: D.list(i_AgentAliasRoutingConfigurationListItem),
+      aliasInvocationState: 0,
+    },
     output: { agentAlias: o_AgentAlias },
     body: true,
   },
@@ -6645,6 +6917,15 @@ export const updateAgentCollaborator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /agents/{agentId}/agentversions/{agentVersion}/agentcollaborators/{collaboratorId}/",
+    input: {
+      agentId: 0,
+      agentVersion: 0,
+      collaboratorId: 0,
+      agentDescriptor: i_AgentDescriptor,
+      collaboratorName: 0,
+      collaborationInstruction: 0,
+      relayConversationHistory: 0,
+    },
     output: { agentCollaborator: o_AgentCollaborator },
     body: true,
   },
@@ -6682,6 +6963,13 @@ export const updateAgentKnowledgeBase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /agents/{agentId}/agentversions/{agentVersion}/knowledgebases/{knowledgeBaseId}/",
+    input: {
+      agentId: 0,
+      agentVersion: 0,
+      knowledgeBaseId: 0,
+      description: 0,
+      knowledgeBaseState: 0,
+    },
     output: { agentKnowledgeBase: o_AgentKnowledgeBase },
     body: true,
   },
@@ -6720,6 +7008,16 @@ export const updateDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /knowledgebases/{knowledgeBaseId}/datasources/{dataSourceId}",
+    input: {
+      knowledgeBaseId: 0,
+      dataSourceId: 0,
+      name: 0,
+      description: 0,
+      dataSourceConfiguration: i_DataSourceConfiguration,
+      dataDeletionPolicy: 0,
+      serverSideEncryptionConfiguration: i_ServerSideEncryptionConfiguration,
+      vectorIngestionConfiguration: i_VectorIngestionConfiguration,
+    },
     output: { dataSource: o_DataSource },
     body: true,
   },
@@ -6757,6 +7055,14 @@ export const updateFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /flows/{flowIdentifier}/",
+    input: {
+      name: 0,
+      description: 0,
+      executionRoleArn: 0,
+      customerEncryptionKeyArn: 0,
+      definition: i_FlowDefinition,
+      flowIdentifier: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts, definition: o_FlowDefinition },
     body: true,
   },
@@ -6795,6 +7101,14 @@ export const updateFlowAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /flows/{flowIdentifier}/aliases/{aliasIdentifier}",
+    input: {
+      name: 0,
+      description: 0,
+      routingConfiguration: D.list(i_FlowAliasRoutingConfigurationListItem),
+      concurrencyConfiguration: i_FlowAliasConcurrencyConfiguration,
+      flowIdentifier: 0,
+      aliasIdentifier: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -6842,6 +7156,14 @@ export const updateKnowledgeBase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /knowledgebases/{knowledgeBaseId}",
+    input: {
+      knowledgeBaseId: 0,
+      name: 0,
+      description: 0,
+      roleArn: 0,
+      knowledgeBaseConfiguration: i_KnowledgeBaseConfiguration,
+      storageConfiguration: i_StorageConfiguration,
+    },
     output: { knowledgeBase: o_KnowledgeBase },
     body: true,
   },
@@ -6879,6 +7201,14 @@ export const updatePrompt: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /prompts/{promptIdentifier}/",
+    input: {
+      name: 0,
+      description: 0,
+      customerEncryptionKeyArn: 0,
+      defaultVariant: 0,
+      variants: D.list(i_PromptVariant),
+      promptIdentifier: 0,
+    },
     output: {
       variants: D.list(o_PromptVariant),
       createdAt: D.ts,
@@ -6918,6 +7248,7 @@ export const validateFlowDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /flows/validate-definition",
+    input: { definition: i_FlowDefinition },
     output: { validations: D.list(o_FlowValidation) },
     body: true,
   },
@@ -6932,6 +7263,373 @@ export const validateFlowDefinition: API.OperationMethod<
   operationName: "ValidateFlowDefinition",
 })) as any;
 
+const i_APISchema: D.LazyStruct = () => ({
+  s3: { s3BucketName: 0, s3ObjectKey: 0 },
+  payload: 0,
+});
+const i_ActionGroupExecutor: D.LazyStruct = () => ({
+  lambda: 0,
+  customControl: 0,
+});
+const i_AgentAliasRoutingConfigurationListItem: D.LazyStruct = () => ({
+  agentVersion: 0,
+  provisionedThroughput: 0,
+});
+const i_AgentDescriptor: D.LazyStruct = () => ({ aliasArn: 0 });
+const i_CustomDocumentIdentifier: D.LazyStruct = () => ({ id: 0 });
+const i_CustomOrchestration: D.LazyStruct = () => ({ executor: { lambda: 0 } });
+const i_CustomS3Location: D.LazyStruct = () => ({
+  uri: 0,
+  bucketOwnerAccountId: 0,
+});
+const i_DataSourceConfiguration: D.LazyStruct = () => ({
+  type: 0,
+  managedKnowledgeBaseConnectorConfiguration: {
+    deletionProtectionConfiguration: {
+      deletionProtectionStatus: 0,
+      deletionProtectionThreshold: 0,
+    },
+    mediaExtractionConfiguration: {
+      imageExtractionConfiguration: { imageExtractionStatus: 0 },
+      audioExtractionConfiguration: { audioExtractionStatus: 0 },
+      videoExtractionConfiguration: { videoExtractionStatus: 0 },
+    },
+    connectorParameters: 0,
+    syncSchedule: {
+      daily: {},
+      weekly: { dayOfWeek: 0 },
+      monthly: { dayOfMonth: { dayNumber: 0, lastDayOfMonth: {} } },
+    },
+  },
+  s3Configuration: {
+    bucketArn: 0,
+    inclusionPrefixes: 0,
+    bucketOwnerAccountId: 0,
+  },
+  webConfiguration: {
+    sourceConfiguration: { urlConfiguration: { seedUrls: D.list({ url: 0 }) } },
+    crawlerConfiguration: {
+      crawlerLimits: { rateLimit: 0, maxPages: 0 },
+      inclusionFilters: 0,
+      exclusionFilters: 0,
+      scope: 0,
+      userAgent: 0,
+      userAgentHeader: 0,
+    },
+  },
+  confluenceConfiguration: {
+    sourceConfiguration: {
+      hostUrl: 0,
+      hostType: 0,
+      authType: 0,
+      credentialsSecretArn: 0,
+    },
+    crawlerConfiguration: { filterConfiguration: i_CrawlFilterConfiguration },
+  },
+  salesforceConfiguration: {
+    sourceConfiguration: { hostUrl: 0, authType: 0, credentialsSecretArn: 0 },
+    crawlerConfiguration: { filterConfiguration: i_CrawlFilterConfiguration },
+  },
+  sharePointConfiguration: {
+    sourceConfiguration: {
+      tenantId: 0,
+      domain: 0,
+      siteUrls: 0,
+      hostType: 0,
+      authType: 0,
+      credentialsSecretArn: 0,
+    },
+    crawlerConfiguration: { filterConfiguration: i_CrawlFilterConfiguration },
+  },
+});
+const i_DocumentIdentifier: D.LazyStruct = () => ({
+  dataSourceType: 0,
+  s3: i_S3Location,
+  custom: i_CustomDocumentIdentifier,
+});
+const i_FlowAliasConcurrencyConfiguration: D.LazyStruct = () => ({
+  type: 0,
+  maxConcurrency: 0,
+});
+const i_FlowAliasRoutingConfigurationListItem: D.LazyStruct = () => ({
+  flowVersion: 0,
+});
+const i_FlowDefinition: D.LazyStruct = () => ({
+  nodes: D.list({
+    name: 0,
+    type: 0,
+    configuration: {
+      input: {},
+      output: {},
+      knowledgeBase: {
+        knowledgeBaseId: 0,
+        modelId: 0,
+        guardrailConfiguration: i_GuardrailConfiguration,
+        numberOfResults: 0,
+        promptTemplate: i_KnowledgeBasePromptTemplate,
+        inferenceConfiguration: i_PromptInferenceConfiguration,
+        rerankingConfiguration: {
+          type: 0,
+          bedrockRerankingConfiguration: {
+            modelConfiguration: {
+              modelArn: 0,
+              additionalModelRequestFields: 0,
+            },
+            numberOfRerankedResults: 0,
+            metadataConfiguration: {
+              selectionMode: 0,
+              selectiveModeConfiguration: {
+                fieldsToInclude: D.list(i_FieldForReranking),
+                fieldsToExclude: D.list(i_FieldForReranking),
+              },
+            },
+          },
+        },
+        orchestrationConfiguration: {
+          promptTemplate: i_KnowledgeBasePromptTemplate,
+          inferenceConfig: i_PromptInferenceConfiguration,
+          additionalModelRequestFields: 0,
+          performanceConfig: { latency: 0 },
+        },
+      },
+      condition: { conditions: D.list(i_FlowCondition) },
+      lex: { botAliasArn: 0, localeId: 0 },
+      prompt: {
+        sourceConfiguration: {
+          resource: { promptArn: 0 },
+          inline: {
+            templateType: 0,
+            templateConfiguration: i_PromptTemplateConfiguration,
+            modelId: 0,
+            inferenceConfiguration: i_PromptInferenceConfiguration,
+            additionalModelRequestFields: 0,
+          },
+        },
+        guardrailConfiguration: i_GuardrailConfiguration,
+      },
+      lambdaFunction: { lambdaArn: 0 },
+      storage: { serviceConfiguration: { s3: { bucketName: 0 } } },
+      agent: { agentAliasArn: 0 },
+      retrieval: { serviceConfiguration: { s3: { bucketName: 0 } } },
+      iterator: {},
+      collector: {},
+      inlineCode: { code: 0, language: 0 },
+      loop: { definition: i_FlowDefinition },
+      loopInput: {},
+      loopController: { continueCondition: i_FlowCondition, maxIterations: 0 },
+    },
+    inputs: D.list({ name: 0, type: 0, expression: 0, category: 0 }),
+    outputs: D.list({ name: 0, type: 0 }),
+  }),
+  connections: D.list({
+    type: 0,
+    name: 0,
+    source: 0,
+    target: 0,
+    configuration: {
+      data: { sourceOutput: 0, targetInput: 0 },
+      conditional: { condition: 0 },
+    },
+  }),
+});
+const i_FunctionSchema: D.LazyStruct = () => ({
+  functions: D.list({
+    name: 0,
+    description: 0,
+    parameters: D.map({ description: 0, type: 0, required: 0 }),
+    requireConfirmation: 0,
+  }),
+});
+const i_GuardrailConfiguration: D.LazyStruct = () => ({
+  guardrailIdentifier: 0,
+  guardrailVersion: 0,
+});
+const i_KnowledgeBaseConfiguration: D.LazyStruct = () => ({
+  type: 0,
+  vectorKnowledgeBaseConfiguration: {
+    embeddingModelArn: 0,
+    embeddingModelConfiguration: i_EmbeddingModelConfiguration,
+    supplementalDataStorageConfiguration: {
+      storageLocations: D.list({ type: 0, s3Location: i_S3Location }),
+    },
+  },
+  managedKnowledgeBaseConfiguration: {
+    embeddingModelType: 0,
+    embeddingModelArn: 0,
+    embeddingModelConfiguration: i_EmbeddingModelConfiguration,
+    serverSideEncryptionConfiguration: i_ServerSideEncryptionConfiguration,
+  },
+  kendraKnowledgeBaseConfiguration: { kendraIndexArn: 0 },
+  sqlKnowledgeBaseConfiguration: {
+    type: 0,
+    redshiftConfiguration: {
+      storageConfigurations: D.list({
+        type: 0,
+        awsDataCatalogConfiguration: { tableNames: 0 },
+        redshiftConfiguration: { databaseName: 0 },
+      }),
+      queryEngineConfiguration: {
+        type: 0,
+        serverlessConfiguration: {
+          workgroupArn: 0,
+          authConfiguration: { type: 0, usernamePasswordSecretArn: 0 },
+        },
+        provisionedConfiguration: {
+          clusterIdentifier: 0,
+          authConfiguration: {
+            type: 0,
+            databaseUser: 0,
+            usernamePasswordSecretArn: 0,
+          },
+        },
+      },
+      queryGenerationConfiguration: {
+        executionTimeoutSeconds: 0,
+        generationContext: {
+          tables: D.list({
+            name: 0,
+            description: 0,
+            inclusion: 0,
+            columns: D.list({ name: 0, description: 0, inclusion: 0 }),
+          }),
+          curatedQueries: D.list({ naturalLanguage: 0, sql: 0 }),
+        },
+      },
+    },
+  },
+});
+const i_MemoryConfiguration: D.LazyStruct = () => ({
+  enabledMemoryTypes: 0,
+  storageDays: 0,
+  sessionSummaryConfiguration: { maxRecentSessions: 0 },
+});
+const i_PromptOverrideConfiguration: D.LazyStruct = () => ({
+  promptConfigurations: D.list({
+    promptType: 0,
+    promptCreationMode: 0,
+    promptState: 0,
+    basePromptTemplate: 0,
+    inferenceConfiguration: {
+      temperature: 0,
+      topP: 0,
+      topK: 0,
+      maximumLength: 0,
+      stopSequences: 0,
+    },
+    parserMode: 0,
+    foundationModel: 0,
+    additionalModelRequestFields: 0,
+  }),
+  overrideLambda: 0,
+});
+const i_PromptVariant: D.LazyStruct = () => ({
+  name: 0,
+  templateType: 0,
+  templateConfiguration: i_PromptTemplateConfiguration,
+  modelId: 0,
+  inferenceConfiguration: i_PromptInferenceConfiguration,
+  metadata: D.list({ key: 0, value: 0 }),
+  additionalModelRequestFields: 0,
+  genAiResource: { agent: { agentIdentifier: 0 } },
+});
+const i_S3Location: D.LazyStruct = () => ({ uri: 0 });
+const i_ServerSideEncryptionConfiguration: D.LazyStruct = () => ({
+  kmsKeyArn: 0,
+});
+const i_StorageConfiguration: D.LazyStruct = () => ({
+  type: 0,
+  opensearchServerlessConfiguration: {
+    collectionArn: 0,
+    vectorIndexName: 0,
+    fieldMapping: { vectorField: 0, textField: 0, metadataField: 0 },
+  },
+  opensearchManagedClusterConfiguration: {
+    domainEndpoint: 0,
+    domainArn: 0,
+    vectorIndexName: 0,
+    fieldMapping: { vectorField: 0, textField: 0, metadataField: 0 },
+  },
+  pineconeConfiguration: {
+    connectionString: 0,
+    credentialsSecretArn: 0,
+    namespace: 0,
+    fieldMapping: { textField: 0, metadataField: 0 },
+  },
+  redisEnterpriseCloudConfiguration: {
+    endpoint: 0,
+    vectorIndexName: 0,
+    credentialsSecretArn: 0,
+    fieldMapping: { vectorField: 0, textField: 0, metadataField: 0 },
+  },
+  rdsConfiguration: {
+    resourceArn: 0,
+    credentialsSecretArn: 0,
+    databaseName: 0,
+    tableName: 0,
+    fieldMapping: {
+      primaryKeyField: 0,
+      vectorField: 0,
+      textField: 0,
+      metadataField: 0,
+      customMetadataField: 0,
+    },
+  },
+  mongoDbAtlasConfiguration: {
+    endpoint: 0,
+    databaseName: 0,
+    collectionName: 0,
+    vectorIndexName: 0,
+    credentialsSecretArn: 0,
+    fieldMapping: { vectorField: 0, textField: 0, metadataField: 0 },
+    endpointServiceName: 0,
+    textIndexName: 0,
+  },
+  neptuneAnalyticsConfiguration: {
+    graphArn: 0,
+    fieldMapping: { textField: 0, metadataField: 0 },
+  },
+  s3VectorsConfiguration: { vectorBucketArn: 0, indexArn: 0, indexName: 0 },
+});
+const i_VectorIngestionConfiguration: D.LazyStruct = () => ({
+  chunkingConfiguration: {
+    chunkingStrategy: 0,
+    fixedSizeChunkingConfiguration: { maxTokens: 0, overlapPercentage: 0 },
+    hierarchicalChunkingConfiguration: {
+      levelConfigurations: D.list({ maxTokens: 0 }),
+      overlapTokens: 0,
+    },
+    semanticChunkingConfiguration: {
+      maxTokens: 0,
+      bufferSize: 0,
+      breakpointPercentileThreshold: 0,
+    },
+  },
+  customTransformationConfiguration: {
+    intermediateStorage: { s3Location: i_S3Location },
+    transformations: D.list({
+      transformationFunction: {
+        transformationLambdaConfiguration: { lambdaArn: 0 },
+      },
+      stepToApply: 0,
+    }),
+  },
+  parsingConfiguration: {
+    parsingStrategy: 0,
+    bedrockFoundationModelConfiguration: {
+      modelArn: 0,
+      parsingPrompt: { parsingPromptText: 0 },
+      parsingModality: 0,
+    },
+    bedrockDataAutomationConfiguration: { parsingModality: 0 },
+  },
+  contextEnrichmentConfiguration: {
+    type: 0,
+    bedrockFoundationModelConfiguration: {
+      enrichmentStrategyConfiguration: { method: 0 },
+      modelArn: 0,
+    },
+  },
+});
 const o_Agent: D.LazyStruct = () => ({
   instruction: D.secret,
   createdAt: D.ts,
@@ -7032,6 +7730,59 @@ const o_PromptVariant: D.LazyStruct = () => ({
   templateConfiguration: o_PromptTemplateConfiguration,
   metadata: D.list({ key: D.secret, value: D.secret }),
 });
+const i_CrawlFilterConfiguration: D.LazyStruct = () => ({
+  type: 0,
+  patternObjectFilter: {
+    filters: D.list({
+      objectType: 0,
+      inclusionFilters: 0,
+      exclusionFilters: 0,
+    }),
+  },
+});
+const i_EmbeddingModelConfiguration: D.LazyStruct = () => ({
+  bedrockEmbeddingModelConfiguration: {
+    dimensions: 0,
+    embeddingDataType: 0,
+    audio: D.list({ segmentationConfiguration: { fixedLengthDuration: 0 } }),
+    video: D.list({ segmentationConfiguration: { fixedLengthDuration: 0 } }),
+  },
+});
+const i_FieldForReranking: D.LazyStruct = () => ({ fieldName: 0 });
+const i_FlowCondition: D.LazyStruct = () => ({ name: 0, expression: 0 });
+const i_KnowledgeBasePromptTemplate: D.LazyStruct = () => ({
+  textPromptTemplate: 0,
+});
+const i_PromptInferenceConfiguration: D.LazyStruct = () => ({
+  text: { temperature: 0, topP: 0, maxTokens: 0, stopSequences: 0 },
+});
+const i_PromptTemplateConfiguration: D.LazyStruct = () => ({
+  text: {
+    text: 0,
+    cachePoint: i_CachePointBlock,
+    inputVariables: D.list(i_PromptInputVariable),
+  },
+  chat: {
+    messages: D.list({
+      role: 0,
+      content: D.list({ text: 0, cachePoint: i_CachePointBlock }),
+    }),
+    system: D.list({ text: 0, cachePoint: i_CachePointBlock }),
+    inputVariables: D.list(i_PromptInputVariable),
+    toolConfiguration: {
+      tools: D.list({
+        toolSpec: {
+          name: 0,
+          description: 0,
+          inputSchema: { json: 0 },
+          strict: 0,
+        },
+        cachePoint: i_CachePointBlock,
+      }),
+      toolChoice: { auto: {}, any: {}, tool: { name: 0 } },
+    },
+  },
+});
 const o_CrawlFilterConfiguration: D.LazyStruct = () => ({
   patternObjectFilter: {
     filters: D.list({
@@ -7048,3 +7799,5 @@ const o_KnowledgeBasePromptTemplate: D.LazyStruct = () => ({
 const o_PromptTemplateConfiguration: D.LazyStruct = () => ({
   text: { text: D.secret },
 });
+const i_CachePointBlock: D.LazyStruct = () => ({ type: 0 });
+const i_PromptInputVariable: D.LazyStruct = () => ({ name: 0 });

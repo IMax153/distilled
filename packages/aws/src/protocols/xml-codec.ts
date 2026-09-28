@@ -269,8 +269,8 @@ export const encodeXmlElement = (
 };
 
 /**
- * Serialize a structure's members. Modeled members come first in model
- * order (XML schemas validate element order); unmodeled keys follow.
+ * Serialize a structure's members in model order (XML schemas validate
+ * element order); keys the model doesn't have are dropped.
  */
 export const encodeXmlMembers = (
   value: Record<string, unknown>,
@@ -278,9 +278,7 @@ export const encodeXmlMembers = (
 ): { attrs: string; children: string } => {
   let attrs = "";
   let children = "";
-  const seen = new Set<string>();
   const one = (name: string, member: unknown) => {
-    seen.add(name);
     const item = value[name];
     if (item === undefined || item === null) return;
     const spec = specOf(member as never);
@@ -299,8 +297,10 @@ export const encodeXmlMembers = (
     children += encodeXmlElement(item, shape, wire);
   };
   if (struct !== undefined) {
+    // Closed structure: model order, unmodeled keys dropped
     for (const [name, member] of membersOf(struct)) one(name, member);
+  } else {
+    for (const name in value) one(name, undefined);
   }
-  for (const name in value) if (!seen.has(name)) one(name, undefined);
   return { attrs, children };
 };

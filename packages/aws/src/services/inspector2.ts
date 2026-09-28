@@ -3330,7 +3330,12 @@ export const associateMember: API.OperationMethod<
   AssociateMemberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /members/associate", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /members/associate",
+    input: { accountId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3364,6 +3369,12 @@ export const batchAssociateCodeSecurityScanConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /codesecurity/scan-configuration/batch/associate",
+    input: {
+      associateConfigurationRequests: D.list({
+        scanConfigurationArn: 0,
+        resource: i_CodeSecurityResource,
+      }),
+    },
     body: true,
   },
   errors: [
@@ -3400,6 +3411,12 @@ export const batchDisassociateCodeSecurityScanConfiguration: API.OperationMethod
   descriptor: {
     service: svc,
     http: "POST /codesecurity/scan-configuration/batch/disassociate",
+    input: {
+      disassociateConfigurationRequests: D.list({
+        scanConfigurationArn: 0,
+        resource: i_CodeSecurityResource,
+      }),
+    },
     body: true,
   },
   errors: [
@@ -3431,7 +3448,12 @@ export const batchGetAccountStatus: API.OperationMethod<
   BatchGetAccountStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /status/batch/get", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /status/batch/get",
+    input: { accountIds: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3460,7 +3482,12 @@ export const batchGetCodeSnippet: API.OperationMethod<
   BatchGetCodeSnippetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /codesnippet/batchget", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /codesnippet/batchget",
+    input: { findingArns: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3490,6 +3517,7 @@ export const batchGetFindingDetails: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /findings/details/batch/get",
+    input: { findingArns: 0 },
     output: {
       findingDetails: D.list({
         cisaData: o_CisaData,
@@ -3527,6 +3555,7 @@ export const batchGetFreeTrialInfo: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /freetrialinfo/batchget",
+    input: { accountIds: 0 },
     output: {
       accounts: D.list({ freeTrialInfo: D.list({ start: D.ts, end: D.ts }) }),
     },
@@ -3563,6 +3592,7 @@ export const batchGetMemberEc2DeepInspectionStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ec2deepinspectionstatus/member/batch/get",
+    input: { accountIds: 0 },
     body: true,
   },
   errors: [
@@ -3596,6 +3626,7 @@ export const batchUpdateMemberEc2DeepInspectionStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ec2deepinspectionstatus/member/batch/update",
+    input: { accountIds: D.list({ accountId: 0, activateDeepInspection: 0 }) },
     body: true,
   },
   errors: [
@@ -3625,7 +3656,12 @@ export const cancelFindingsReport: API.OperationMethod<
   CancelFindingsReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /reporting/cancel", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /reporting/cancel",
+    input: { reportId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3654,7 +3690,12 @@ export const cancelSbomExport: API.OperationMethod<
   CancelSbomExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /sbomexport/cancel", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /sbomexport/cancel",
+    input: { reportId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3685,6 +3726,13 @@ export const createCisScanConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cis/scan-configuration/create",
+    input: {
+      scanName: 0,
+      securityLevel: 0,
+      schedule: i_Schedule,
+      targets: { accountIds: 0, targetResourceTags: 0 },
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -3723,6 +3771,12 @@ export const createCodeSecurityIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /codesecurity/integration/create",
+    input: {
+      name: 0,
+      type: 0,
+      details: { gitlabSelfManaged: { instanceUrl: 0, accessToken: 0 } },
+      tags: 0,
+    },
     output: { authorizationUrl: D.secret },
     body: true,
   },
@@ -3759,6 +3813,13 @@ export const createCodeSecurityScanConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /codesecurity/scan-configuration/create",
+    input: {
+      name: 0,
+      level: 0,
+      configuration: i_CodeSecurityScanConfiguration,
+      scopeSettings: { projectSelectionScope: 0 },
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -3794,7 +3855,21 @@ export const createConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /connector/create",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      name: 0,
+      provider: 0,
+      description: 0,
+      providerDetail: {
+        azure: {
+          awsConfigConnectorArn: 0,
+          scopeConfiguration: i_AzureScopeConfigurationInput,
+          azureRegions: 0,
+          autoInstallVMScanner: 0,
+        },
+      },
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -3828,7 +3903,19 @@ export const createFilter: API.OperationMethod<
   CreateFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /filters/create", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /filters/create",
+    input: {
+      action: 0,
+      description: 0,
+      filterCriteria: i_FilterCriteria,
+      name: 0,
+      tags: 0,
+      reason: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -3860,7 +3947,16 @@ export const createFindingsReport: API.OperationMethod<
   CreateFindingsReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /reporting/create", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /reporting/create",
+    input: {
+      filterCriteria: i_FilterCriteria,
+      reportFormat: 0,
+      s3Destination: i_Destination,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3889,7 +3985,36 @@ export const createSbomExport: API.OperationMethod<
   CreateSbomExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /sbomexport/create", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /sbomexport/create",
+    input: {
+      resourceFilterCriteria: {
+        accountId: D.list(i_ResourceStringFilter),
+        resourceId: D.list(i_ResourceStringFilter),
+        resourceType: D.list(i_ResourceStringFilter),
+        ecrRepositoryName: D.list(i_ResourceStringFilter),
+        lambdaFunctionName: D.list(i_ResourceStringFilter),
+        ecrImageTags: D.list(i_ResourceStringFilter),
+        ec2InstanceTags: D.list(i_ResourceMapFilter),
+        lambdaFunctionTags: D.list(i_ResourceMapFilter),
+        cloudProvider: D.list(i_ResourceStringFilter),
+        cloudProviderAccountId: D.list(i_ResourceStringFilter),
+        cloudProviderOrgId: D.list(i_ResourceStringFilter),
+        cloudProviderRegion: D.list(i_ResourceStringFilter),
+        cloudVmInstanceTags: D.list(i_ResourceMapFilter),
+        cloudContainerImageTags: D.list(i_ResourceStringFilter),
+        cloudContainerRepositoryName: D.list(i_ResourceStringFilter),
+        cloudContainerRegistryName: D.list(i_ResourceStringFilter),
+        cloudServerlessFunctionName: D.list(i_ResourceStringFilter),
+        cloudServerlessFunctionRuntime: D.list(i_ResourceStringFilter),
+        cloudServerlessFunctionTags: D.list(i_ResourceMapFilter),
+      },
+      reportFormat: 0,
+      s3Destination: i_Destination,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3921,6 +4046,7 @@ export const deleteCisScanConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cis/scan-configuration/delete",
+    input: { scanConfigurationArn: 0 },
     body: true,
   },
   errors: [
@@ -3954,6 +4080,7 @@ export const deleteCodeSecurityIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /codesecurity/integration/delete",
+    input: { integrationArn: 0 },
     body: true,
   },
   errors: [
@@ -3987,6 +4114,7 @@ export const deleteCodeSecurityScanConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /codesecurity/scan-configuration/delete",
+    input: { scanConfigurationArn: 0 },
     body: true,
   },
   errors: [
@@ -4018,7 +4146,12 @@ export const deleteConnector: API.OperationMethod<
   DeleteConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /connector/delete", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /connector/delete",
+    input: { connectorArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4048,7 +4181,12 @@ export const deleteFilter: API.OperationMethod<
   DeleteFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /filters/delete", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /filters/delete",
+    input: { arn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4079,6 +4217,7 @@ export const describeOrganizationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /organizationconfiguration/describe",
+    input: {},
   },
   errors: [
     AccessDeniedException,
@@ -4108,7 +4247,12 @@ export const disable: API.OperationMethod<
   DisableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /disable", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /disable",
+    input: { accountIds: 0, resourceTypes: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4141,6 +4285,7 @@ export const disableDelegatedAdminAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delegatedadminaccounts/disable",
+    input: { delegatedAdminAccountId: 0 },
     body: true,
   },
   errors: [
@@ -4171,7 +4316,12 @@ export const disassociateMember: API.OperationMethod<
   DisassociateMemberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /members/disassociate", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /members/disassociate",
+    input: { accountId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4202,7 +4352,11 @@ export const enable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /enable",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      accountIds: 0,
+      resourceTypes: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -4237,7 +4391,10 @@ export const enableDelegatedAdminAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delegatedadminaccounts/enable",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      delegatedAdminAccountId: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -4269,7 +4426,12 @@ export const getCisScanReport: API.OperationMethod<
   GetCisScanReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /cis/scan/report/get", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /cis/scan/report/get",
+    input: { scanArn: 0, targetAccounts: 0, reportFormat: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4301,6 +4463,22 @@ export const getCisScanResultDetails: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cis/scan-result/details/get",
+    input: {
+      scanArn: 0,
+      targetResourceId: 0,
+      accountId: 0,
+      filterCriteria: {
+        findingStatusFilters: D.list({ comparison: 0, value: 0 }),
+        checkIdFilters: D.list(i_CisStringFilter),
+        titleFilters: D.list(i_CisStringFilter),
+        securityLevelFilters: D.list(i_CisSecurityLevelFilter),
+        findingArnFilters: D.list(i_CisStringFilter),
+      },
+      sortBy: 0,
+      sortOrder: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -4339,6 +4517,7 @@ export const getClustersForImage: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cluster/get",
+    input: { filter: { resourceId: 0 }, maxResults: 0, nextToken: 0 },
     output: {
       cluster: D.list({ clusterDetails: D.list({ lastInUse: D.ts }) }),
     },
@@ -4380,6 +4559,7 @@ export const getCodeSecurityIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /codesecurity/integration/get",
+    input: { integrationArn: 0, tags: 0 },
     output: { createdOn: D.ts, lastUpdateOn: D.ts, authorizationUrl: D.secret },
     body: true,
   },
@@ -4415,6 +4595,7 @@ export const getCodeSecurityScan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /codesecurity/scan/get",
+    input: { resource: i_CodeSecurityResource, scanId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -4450,6 +4631,7 @@ export const getCodeSecurityScanConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /codesecurity/scan-configuration/get",
+    input: { scanConfigurationArn: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
     body: true,
   },
@@ -4488,6 +4670,7 @@ export const getConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /configuration/get",
+    input: { accountId: 0 },
     output: {
       ecrConfiguration: { rescanDurationState: { updatedAt: D.ts } },
       ec2Configuration: { vmScannerState: { activatedAt: D.ts } },
@@ -4523,7 +4706,11 @@ export const getDelegatedAdminAccount: API.OperationMethod<
   GetDelegatedAdminAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /delegatedadminaccounts/get" },
+  descriptor: {
+    service: svc,
+    http: "POST /delegatedadminaccounts/get",
+    input: {},
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4555,6 +4742,7 @@ export const getEc2DeepInspectionConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ec2deepinspectionconfiguration/get",
+    input: {},
   },
   errors: [
     AccessDeniedException,
@@ -4622,6 +4810,7 @@ export const getFindingsReportStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /reporting/status/get",
+    input: { reportId: 0 },
     output: { filterCriteria: o_FilterCriteria },
     body: true,
   },
@@ -4656,6 +4845,7 @@ export const getMember: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /members/get",
+    input: { accountId: 0 },
     output: { member: o_Member },
     body: true,
   },
@@ -4687,7 +4877,12 @@ export const getSbomExport: API.OperationMethod<
   GetSbomExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /sbomexport/get", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /sbomexport/get",
+    input: { reportId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4720,6 +4915,7 @@ export const listAccountPermissions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accountpermissions/list",
+    input: { service: 0, maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [
@@ -4758,6 +4954,17 @@ export const listCisScanConfigurations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cis/scan-configuration/list",
+    input: {
+      filterCriteria: {
+        scanNameFilters: D.list(i_CisStringFilter),
+        targetResourceTagFilters: D.list(i_TagFilter),
+        scanConfigurationArnFilters: D.list(i_CisStringFilter),
+      },
+      sortBy: 0,
+      sortOrder: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -4796,6 +5003,21 @@ export const listCisScanResultsAggregatedByChecks: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cis/scan-result/check/list",
+    input: {
+      scanArn: 0,
+      filterCriteria: {
+        accountIdFilters: D.list(i_CisStringFilter),
+        checkIdFilters: D.list(i_CisStringFilter),
+        titleFilters: D.list(i_CisStringFilter),
+        platformFilters: D.list(i_CisStringFilter),
+        failedResourcesFilters: D.list(i_CisNumberFilter),
+        securityLevelFilters: D.list(i_CisSecurityLevelFilter),
+      },
+      sortBy: 0,
+      sortOrder: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -4834,6 +5056,24 @@ export const listCisScanResultsAggregatedByTargetResource: API.PaginatedOperatio
   descriptor: {
     service: svc,
     http: "POST /cis/scan-result/resource/list",
+    input: {
+      scanArn: 0,
+      filterCriteria: {
+        accountIdFilters: D.list(i_CisStringFilter),
+        statusFilters: D.list({ comparison: 0, value: 0 }),
+        checkIdFilters: D.list(i_CisStringFilter),
+        targetResourceIdFilters: D.list(i_CisStringFilter),
+        targetResourceTagFilters: D.list(i_TagFilter),
+        platformFilters: D.list(i_CisStringFilter),
+        targetStatusFilters: D.list({ comparison: 0, value: 0 }),
+        targetStatusReasonFilters: D.list({ comparison: 0, value: 0 }),
+        failedChecksFilters: D.list(i_CisNumberFilter),
+      },
+      sortBy: 0,
+      sortOrder: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -4872,6 +5112,28 @@ export const listCisScans: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cis/scan/list",
+    input: {
+      filterCriteria: {
+        scanNameFilters: D.list(i_CisStringFilter),
+        targetResourceTagFilters: D.list(i_TagFilter),
+        targetResourceIdFilters: D.list(i_CisStringFilter),
+        scanStatusFilters: D.list({ comparison: 0, value: 0 }),
+        scanAtFilters: D.list({
+          earliestScanStartTime: 0,
+          latestScanStartTime: 0,
+        }),
+        scanConfigurationArnFilters: D.list(i_CisStringFilter),
+        scanArnFilters: D.list(i_CisStringFilter),
+        scheduledByFilters: D.list(i_CisStringFilter),
+        failedChecksFilters: D.list(i_CisNumberFilter),
+        targetAccountIdFilters: D.list(i_CisStringFilter),
+      },
+      detailLevel: 0,
+      sortBy: 0,
+      sortOrder: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { scans: D.list({ scanDate: D.ts }) },
     body: true,
   },
@@ -4948,6 +5210,7 @@ export const listCodeSecurityScanConfigurationAssociations: API.OperationMethod<
     service: svc,
     http: "POST /codesecurity/scan-configuration/associations/list",
     input: {
+      scanConfigurationArn: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -5020,6 +5283,17 @@ export const listConnectors: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /connector/list",
+    input: {
+      maxResults: 0,
+      nextToken: 0,
+      filterCriteria: {
+        connectorArns: D.list({ comparison: 0, value: 0 }),
+        accounts: D.list(i_StringFilter),
+        awsConfigConnectorArns: D.list({ comparison: 0, value: 0 }),
+        connectorType: D.list({ comparison: 0, value: 0 }),
+        provider: D.list({ comparison: 0, value: 0 }),
+      },
+    },
     output: {
       items: D.list({
         health: { lastCheckedAt: D.ts },
@@ -5066,6 +5340,7 @@ export const listConnectorScanConfigurations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /connectorscanconfigurations/list",
+    input: { awsConfigConnectorArns: 0, maxResults: 0, nextToken: 0 },
     output: { nextToken: D.secret },
     body: true,
   },
@@ -5104,6 +5379,11 @@ export const listCoverage: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /coverage/list",
+    input: {
+      maxResults: 0,
+      nextToken: 0,
+      filterCriteria: i_CoverageFilterCriteria,
+    },
     output: {
       coveredResources: D.list({
         resourceMetadata: {
@@ -5146,6 +5426,11 @@ export const listCoverageStatistics: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /coverage/statistics/list",
+    input: {
+      filterCriteria: i_CoverageFilterCriteria,
+      groupBy: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -5178,6 +5463,7 @@ export const listDelegatedAdminAccounts: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delegatedadminaccounts/list",
+    input: { maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [
@@ -5216,6 +5502,7 @@ export const listFilters: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /filters/list",
+    input: { arns: 0, action: 0, nextToken: 0, maxResults: 0 },
     output: {
       filters: D.list({
         criteria: o_FilterCriteria,
@@ -5260,6 +5547,145 @@ export const listFindingAggregations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /findings/aggregation/list",
+    input: {
+      aggregationType: 0,
+      nextToken: 0,
+      maxResults: 0,
+      accountIds: D.list(i_StringFilter),
+      aggregationRequest: {
+        accountAggregation: {
+          findingType: 0,
+          resourceType: 0,
+          sortOrder: 0,
+          sortBy: 0,
+        },
+        amiAggregation: {
+          amis: D.list(i_StringFilter),
+          sortOrder: 0,
+          sortBy: 0,
+        },
+        awsEcrContainerAggregation: {
+          resourceIds: D.list(i_StringFilter),
+          imageShas: D.list(i_StringFilter),
+          repositories: D.list(i_StringFilter),
+          architectures: D.list(i_StringFilter),
+          imageTags: D.list(i_StringFilter),
+          sortOrder: 0,
+          sortBy: 0,
+          lastInUseAt: D.list(i_DateFilter),
+          inUseCount: D.list(i_NumberFilter),
+        },
+        ec2InstanceAggregation: {
+          amis: D.list(i_StringFilter),
+          operatingSystems: D.list(i_StringFilter),
+          instanceIds: D.list(i_StringFilter),
+          instanceTags: D.list(i_MapFilter),
+          sortOrder: 0,
+          sortBy: 0,
+        },
+        findingTypeAggregation: {
+          findingType: 0,
+          resourceType: 0,
+          sortOrder: 0,
+          sortBy: 0,
+        },
+        imageLayerAggregation: {
+          repositories: D.list(i_StringFilter),
+          resourceIds: D.list(i_StringFilter),
+          layerHashes: D.list(i_StringFilter),
+          cloudProviders: D.list(i_StringFilter),
+          cloudAccountIds: D.list(i_StringFilter),
+          cloudOrgIds: D.list(i_StringFilter),
+          cloudRegions: D.list(i_StringFilter),
+          cloudPartitions: D.list(i_StringFilter),
+          sortOrder: 0,
+          sortBy: 0,
+        },
+        packageAggregation: {
+          packageNames: D.list(i_StringFilter),
+          sortOrder: 0,
+          sortBy: 0,
+        },
+        repositoryAggregation: {
+          repositories: D.list(i_StringFilter),
+          sortOrder: 0,
+          sortBy: 0,
+        },
+        titleAggregation: {
+          titles: D.list(i_StringFilter),
+          vulnerabilityIds: D.list(i_StringFilter),
+          resourceType: 0,
+          findingType: 0,
+          sortOrder: 0,
+          sortBy: 0,
+        },
+        lambdaLayerAggregation: {
+          functionNames: D.list(i_StringFilter),
+          resourceIds: D.list(i_StringFilter),
+          layerArns: D.list(i_StringFilter),
+          sortOrder: 0,
+          sortBy: 0,
+        },
+        lambdaFunctionAggregation: {
+          resourceIds: D.list(i_StringFilter),
+          functionNames: D.list(i_StringFilter),
+          runtimes: D.list(i_StringFilter),
+          functionTags: D.list(i_MapFilter),
+          sortOrder: 0,
+          sortBy: 0,
+        },
+        codeRepositoryAggregation: {
+          projectNames: D.list(i_StringFilter),
+          providerTypes: D.list(i_StringFilter),
+          sortOrder: 0,
+          sortBy: 0,
+          resourceIds: D.list(i_StringFilter),
+        },
+        vmInstanceAggregation: {
+          resourceIds: D.list(i_StringFilter),
+          operatingSystems: D.list(i_StringFilter),
+          instanceTags: D.list(i_MapFilter),
+          vmImageReferences: D.list(i_StringFilter),
+          cloudProviders: D.list(i_StringFilter),
+          cloudPartitions: D.list(i_StringFilter),
+          cloudRegions: D.list(i_StringFilter),
+          cloudOrgIds: D.list(i_StringFilter),
+          cloudAccountIds: D.list(i_StringFilter),
+          sortOrder: 0,
+          sortBy: 0,
+        },
+        containerImageAggregation: {
+          resourceIds: D.list(i_StringFilter),
+          imageDigests: D.list(i_StringFilter),
+          repositories: D.list(i_StringFilter),
+          registries: D.list(i_StringFilter),
+          architectures: D.list(i_StringFilter),
+          imageTags: D.list(i_StringFilter),
+          cloudProviders: D.list(i_StringFilter),
+          cloudPartitions: D.list(i_StringFilter),
+          cloudRegions: D.list(i_StringFilter),
+          cloudOrgIds: D.list(i_StringFilter),
+          cloudAccountIds: D.list(i_StringFilter),
+          lastInUseAt: D.list(i_DateFilter),
+          inUseCount: D.list(i_NumberFilter),
+          sortOrder: 0,
+          sortBy: 0,
+        },
+        serverlessFunctionAggregation: {
+          resourceIds: D.list(i_StringFilter),
+          functionNames: D.list(i_StringFilter),
+          runtimes: D.list(i_StringFilter),
+          functionTags: D.list(i_MapFilter),
+          cloudProviders: D.list(i_StringFilter),
+          cloudPartitions: D.list(i_StringFilter),
+          cloudRegions: D.list(i_StringFilter),
+          cloudOrgIds: D.list(i_StringFilter),
+          cloudAccountIds: D.list(i_StringFilter),
+          sortOrder: 0,
+          sortBy: 0,
+        },
+      },
+    },
     output: {
       responses: D.list({
         awsEcrContainerAggregation: { lastInUseAt: D.ts },
@@ -5300,6 +5726,12 @@ export const listFindings: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /findings/list",
+    input: {
+      maxResults: 0,
+      nextToken: 0,
+      filterCriteria: i_FilterCriteria,
+      sortCriteria: { field: 0, sortOrder: 0 },
+    },
     output: {
       findings: D.list({
         firstObservedAt: D.ts,
@@ -5356,6 +5788,7 @@ export const listMembers: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /members/list",
+    input: { onlyAssociated: 0, maxResults: 0, nextToken: 0 },
     output: { members: D.list(o_Member) },
     body: true,
   },
@@ -5391,7 +5824,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -5419,7 +5856,12 @@ export const listUsageTotals: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   UsageTotal
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /usage/list", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /usage/list",
+    input: { maxResults: 0, nextToken: 0, accountIds: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5454,7 +5896,12 @@ export const resetEncryptionKey: API.OperationMethod<
   ResetEncryptionKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /encryptionkey/reset", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /encryptionkey/reset",
+    input: { scanType: 0, resourceType: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5486,6 +5933,7 @@ export const searchVulnerabilities: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /vulnerabilities/search",
+    input: { filterCriteria: { vulnerabilityIds: 0 }, nextToken: 0 },
     output: {
       vulnerabilities: D.list({
         cisaData: o_CisaData,
@@ -5531,7 +5979,12 @@ export const sendCisSessionHealth: API.OperationMethod<
   SendCisSessionHealthError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /cissession/health/send", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /cissession/health/send",
+    input: { scanJobId: 0, sessionToken: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5565,6 +6018,11 @@ export const sendCisSessionTelemetry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /cissession/telemetry/send",
+    input: {
+      scanJobId: 0,
+      sessionToken: 0,
+      messages: D.list({ ruleId: 0, status: 0, cisRuleDetails: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -5597,7 +6055,12 @@ export const startCisSession: API.OperationMethod<
   StartCisSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /cissession/start", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /cissession/start",
+    input: { scanJobId: 0, message: { sessionToken: 0 } },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5630,7 +6093,10 @@ export const startCodeSecurityScan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /codesecurity/scan/start",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      resource: i_CodeSecurityResource,
+    },
     body: true,
   },
   errors: [
@@ -5664,7 +6130,32 @@ export const stopCisSession: API.OperationMethod<
   StopCisSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /cissession/stop", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /cissession/stop",
+    input: {
+      scanJobId: 0,
+      sessionToken: 0,
+      message: {
+        status: 0,
+        reason: 0,
+        progress: {
+          totalChecks: 0,
+          successfulChecks: 0,
+          failedChecks: 0,
+          notEvaluatedChecks: 0,
+          unknownChecks: 0,
+          notApplicableChecks: 0,
+          informationalChecks: 0,
+          errorChecks: 0,
+        },
+        computePlatform: { vendor: 0, product: 0, version: 0 },
+        benchmarkVersion: 0,
+        benchmarkProfile: 0,
+      },
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5693,7 +6184,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     InternalServerException,
@@ -5724,7 +6220,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -5756,6 +6252,13 @@ export const updateCisScanConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cis/scan-configuration/update",
+    input: {
+      scanConfigurationArn: 0,
+      scanName: 0,
+      securityLevel: 0,
+      schedule: i_Schedule,
+      targets: { accountIds: 0, targetResourceTags: 0 },
+    },
     body: true,
   },
   errors: [
@@ -5795,6 +6298,13 @@ export const updateCodeSecurityIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /codesecurity/integration/update",
+    input: {
+      integrationArn: 0,
+      details: {
+        gitlabSelfManaged: { authCode: 0 },
+        github: { code: 0, installationId: 0 },
+      },
+    },
     body: true,
   },
   errors: [
@@ -5830,6 +6340,10 @@ export const updateCodeSecurityScanConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /codesecurity/scan-configuration/update",
+    input: {
+      scanConfigurationArn: 0,
+      configuration: i_CodeSecurityScanConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -5865,7 +6379,24 @@ export const updateConfiguration: API.OperationMethod<
   UpdateConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /configuration/update", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /configuration/update",
+    input: {
+      accountId: 0,
+      ecrConfiguration: {
+        rescanDuration: 0,
+        pullDateRescanDuration: 0,
+        pullDateRescanMode: 0,
+      },
+      ec2Configuration: { scanMode: 0, activateVMScanner: 0 },
+      updateConfigurationInheritance: {
+        ec2Configuration: 0,
+        ecrConfiguration: 0,
+      },
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5894,7 +6425,22 @@ export const updateConnector: API.OperationMethod<
   UpdateConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /connector/update", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /connector/update",
+    input: {
+      connectorArn: 0,
+      description: 0,
+      providerDetail: {
+        azure: {
+          azureRegions: 0,
+          scopeConfiguration: i_AzureScopeConfigurationInput,
+          autoInstallVMScanner: 0,
+        },
+      },
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5928,6 +6474,12 @@ export const updateConnectorScanConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /connectorscanconfiguration/update",
+    input: {
+      awsConfigConnectorArn: 0,
+      scanConfiguration: {
+        containerImageScanning: { pushDuration: 0, pullDuration: 0 },
+      },
+    },
     body: true,
   },
   errors: [
@@ -5961,6 +6513,7 @@ export const updateEc2DeepInspectionConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ec2deepinspectionconfiguration/update",
+    input: { activateDeepInspection: 0, packagePaths: 0 },
     body: true,
   },
   errors: [
@@ -5991,7 +6544,12 @@ export const updateEncryptionKey: API.OperationMethod<
   UpdateEncryptionKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /encryptionkey/update", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /encryptionkey/update",
+    input: { kmsKeyId: 0, scanType: 0, resourceType: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -6020,7 +6578,19 @@ export const updateFilter: API.OperationMethod<
   UpdateFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /filters/update", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /filters/update",
+    input: {
+      action: 0,
+      description: 0,
+      filterCriteria: i_FilterCriteria,
+      name: 0,
+      filterArn: 0,
+      reason: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -6051,6 +6621,15 @@ export const updateOrganizationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /organizationconfiguration/update",
+    input: {
+      autoEnable: {
+        ec2: 0,
+        ecr: 0,
+        lambda: 0,
+        lambdaCode: 0,
+        codeRepository: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -6083,6 +6662,7 @@ export const updateOrgEc2DeepInspectionConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ec2deepinspectionconfiguration/org/update",
+    input: { orgPackagePaths: 0 },
     body: true,
   },
   errors: [
@@ -6096,6 +6676,167 @@ export const updateOrgEc2DeepInspectionConfiguration: API.OperationMethod<
   operationName: "UpdateOrgEc2DeepInspectionConfiguration",
 })) as any;
 
+const i_AzureScopeConfigurationInput: D.LazyStruct = () => ({
+  vmScanning: i_ScopeConfigurationInput,
+  containerImageScanning: i_ScopeConfigurationInput,
+  serverlessScanning: i_ScopeConfigurationInput,
+});
+const i_CisNumberFilter: D.LazyStruct = () => ({
+  upperInclusive: 0,
+  lowerInclusive: 0,
+});
+const i_CisSecurityLevelFilter: D.LazyStruct = () => ({
+  comparison: 0,
+  value: 0,
+});
+const i_CisStringFilter: D.LazyStruct = () => ({ comparison: 0, value: 0 });
+const i_CodeSecurityResource: D.LazyStruct = () => ({ projectId: 0 });
+const i_CodeSecurityScanConfiguration: D.LazyStruct = () => ({
+  periodicScanConfiguration: { frequency: 0, frequencyExpression: 0 },
+  continuousIntegrationScanConfiguration: { supportedEvents: 0 },
+  ruleSetCategories: 0,
+});
+const i_CoverageFilterCriteria: D.LazyStruct = () => ({
+  scanStatusCode: D.list(i_CoverageStringFilter),
+  scanStatusReason: D.list(i_CoverageStringFilter),
+  accountId: D.list(i_CoverageStringFilter),
+  resourceId: D.list(i_CoverageStringFilter),
+  resourceType: D.list(i_CoverageStringFilter),
+  scanType: D.list(i_CoverageStringFilter),
+  ecrRepositoryName: D.list(i_CoverageStringFilter),
+  ecrImageTags: D.list(i_CoverageStringFilter),
+  ec2InstanceTags: D.list(i_CoverageMapFilter),
+  lambdaFunctionName: D.list(i_CoverageStringFilter),
+  lambdaFunctionTags: D.list(i_CoverageMapFilter),
+  lambdaFunctionRuntime: D.list(i_CoverageStringFilter),
+  lastScannedAt: D.list(i_CoverageDateFilter),
+  scanMode: D.list(i_CoverageStringFilter),
+  imagePulledAt: D.list(i_CoverageDateFilter),
+  ecrImageLastInUseAt: D.list(i_CoverageDateFilter),
+  ecrImageInUseCount: D.list({ upperInclusive: 0, lowerInclusive: 0 }),
+  codeRepositoryProjectName: D.list(i_CoverageStringFilter),
+  codeRepositoryProviderType: D.list(i_CoverageStringFilter),
+  codeRepositoryProviderTypeVisibility: D.list(i_CoverageStringFilter),
+  lastScannedCommitId: D.list(i_CoverageStringFilter),
+  cloudProvider: D.list(i_CoverageStringFilter),
+  cloudProviderAccountId: D.list(i_CoverageStringFilter),
+  cloudProviderRegion: D.list(i_CoverageStringFilter),
+  cloudVmInstanceTags: D.list(i_CoverageMapFilter),
+  cloudContainerImageTags: D.list(i_CoverageStringFilter),
+  cloudContainerRepositoryName: D.list(i_CoverageStringFilter),
+  cloudContainerRegistryName: D.list(i_CoverageStringFilter),
+  cloudServerlessFunctionName: D.list(i_CoverageStringFilter),
+  cloudServerlessFunctionRuntime: D.list(i_CoverageStringFilter),
+  cloudServerlessFunctionTags: D.list(i_CoverageMapFilter),
+  cloudProviderOrgId: D.list(i_CoverageStringFilter),
+});
+const i_DateFilter: D.LazyStruct = () => ({
+  startInclusive: 0,
+  endInclusive: 0,
+});
+const i_Destination: D.LazyStruct = () => ({
+  bucketName: 0,
+  keyPrefix: 0,
+  kmsKeyArn: 0,
+});
+const i_FilterCriteria: D.LazyStruct = () => ({
+  findingArn: D.list(i_StringFilter),
+  awsAccountId: D.list(i_StringFilter),
+  findingType: D.list(i_StringFilter),
+  severity: D.list(i_StringFilter),
+  firstObservedAt: D.list(i_DateFilter),
+  lastObservedAt: D.list(i_DateFilter),
+  updatedAt: D.list(i_DateFilter),
+  findingStatus: D.list(i_StringFilter),
+  title: D.list(i_StringFilter),
+  inspectorScore: D.list(i_NumberFilter),
+  resourceType: D.list(i_StringFilter),
+  resourceId: D.list(i_StringFilter),
+  resourceTags: D.list(i_MapFilter),
+  ec2InstanceImageId: D.list(i_StringFilter),
+  ec2InstanceVpcId: D.list(i_StringFilter),
+  ec2InstanceSubnetId: D.list(i_StringFilter),
+  ecrImagePushedAt: D.list(i_DateFilter),
+  ecrImageArchitecture: D.list(i_StringFilter),
+  ecrImageRegistry: D.list(i_StringFilter),
+  ecrImageRepositoryName: D.list(i_StringFilter),
+  ecrImageTags: D.list(i_StringFilter),
+  ecrImageHash: D.list(i_StringFilter),
+  ecrImageLastInUseAt: D.list(i_DateFilter),
+  ecrImageInUseCount: D.list(i_NumberFilter),
+  portRange: D.list({ beginInclusive: 0, endInclusive: 0 }),
+  networkProtocol: D.list(i_StringFilter),
+  componentId: D.list(i_StringFilter),
+  componentType: D.list(i_StringFilter),
+  vulnerabilityId: D.list(i_StringFilter),
+  vulnerabilitySource: D.list(i_StringFilter),
+  vendorSeverity: D.list(i_StringFilter),
+  vulnerablePackages: D.list({
+    name: i_StringFilter,
+    version: i_StringFilter,
+    epoch: i_NumberFilter,
+    release: i_StringFilter,
+    architecture: i_StringFilter,
+    sourceLayerHash: i_StringFilter,
+    sourceLambdaLayerArn: i_StringFilter,
+    filePath: i_StringFilter,
+  }),
+  relatedVulnerabilities: D.list(i_StringFilter),
+  fixAvailable: D.list(i_StringFilter),
+  lambdaFunctionName: D.list(i_StringFilter),
+  lambdaFunctionLayers: D.list(i_StringFilter),
+  lambdaFunctionRuntime: D.list(i_StringFilter),
+  lambdaFunctionLastModifiedAt: D.list(i_DateFilter),
+  lambdaFunctionExecutionRoleArn: D.list(i_StringFilter),
+  exploitAvailable: D.list(i_StringFilter),
+  codeVulnerabilityDetectorName: D.list(i_StringFilter),
+  codeVulnerabilityDetectorTags: D.list(i_StringFilter),
+  codeVulnerabilityFilePath: D.list(i_StringFilter),
+  epssScore: D.list(i_NumberFilter),
+  codeRepositoryProjectName: D.list(i_StringFilter),
+  codeRepositoryProviderType: D.list(i_StringFilter),
+  cloudProvider: D.list(i_StringFilter),
+  cloudProviderRegion: D.list(i_StringFilter),
+  cloudProviderAccountId: D.list(i_StringFilter),
+  cloudProviderOrgId: D.list(i_StringFilter),
+  cloudVmImageReference: D.list(i_StringFilter),
+  cloudVmNetworkId: D.list(i_StringFilter),
+  cloudVmSubnetIds: D.list(i_StringFilter),
+  cloudImageRepositoryName: D.list(i_StringFilter),
+  cloudImageRegistry: D.list(i_StringFilter),
+  cloudImageDigest: D.list(i_StringFilter),
+  cloudImageTags: D.list(i_StringFilter),
+  cloudImagePushedAt: D.list(i_DateFilter),
+  cloudImageArchitecture: D.list(i_StringFilter),
+  cloudImageLastInUseAt: D.list(i_DateFilter),
+  cloudImageInUseCount: D.list(i_NumberFilter),
+  cloudServerlessFunctionName: D.list(i_StringFilter),
+  cloudServerlessFunctionRuntime: D.list(i_StringFilter),
+  cloudServerlessFunctionLastModifiedAt: D.list(i_DateFilter),
+  cloudServerlessFunctionExecutionRole: D.list(i_StringFilter),
+});
+const i_MapFilter: D.LazyStruct = () => ({ comparison: 0, key: 0, value: 0 });
+const i_NumberFilter: D.LazyStruct = () => ({
+  upperInclusive: 0,
+  lowerInclusive: 0,
+});
+const i_ResourceMapFilter: D.LazyStruct = () => ({
+  comparison: 0,
+  key: 0,
+  value: 0,
+});
+const i_ResourceStringFilter: D.LazyStruct = () => ({
+  comparison: 0,
+  value: 0,
+});
+const i_Schedule: D.LazyStruct = () => ({
+  oneTime: {},
+  daily: { startTime: i_Time },
+  weekly: { startTime: i_Time, days: 0 },
+  monthly: { startTime: i_Time, day: 0 },
+});
+const i_StringFilter: D.LazyStruct = () => ({ comparison: 0, value: 0 });
+const i_TagFilter: D.LazyStruct = () => ({ comparison: 0, key: 0, value: 0 });
 const o_CisaData: D.LazyStruct = () => ({ dateAdded: D.ts, dateDue: D.ts });
 const o_ExploitObserved: D.LazyStruct = () => ({
   lastSeen: D.ts,
@@ -6113,6 +6854,24 @@ const o_FilterCriteria: D.LazyStruct = () => ({
   cloudServerlessFunctionLastModifiedAt: D.list(o_DateFilter),
 });
 const o_Member: D.LazyStruct = () => ({ updatedAt: D.ts });
+const i_CoverageDateFilter: D.LazyStruct = () => ({
+  startInclusive: 0,
+  endInclusive: 0,
+});
+const i_CoverageMapFilter: D.LazyStruct = () => ({
+  comparison: 0,
+  key: 0,
+  value: 0,
+});
+const i_CoverageStringFilter: D.LazyStruct = () => ({
+  comparison: 0,
+  value: 0,
+});
+const i_ScopeConfigurationInput: D.LazyStruct = () => ({
+  scopeType: 0,
+  scopeValues: 0,
+});
+const i_Time: D.LazyStruct = () => ({ timeOfDay: 0, timezone: 0 });
 const o_DateFilter: D.LazyStruct = () => ({
   startInclusive: D.ts,
   endInclusive: D.ts,

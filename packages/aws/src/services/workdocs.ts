@@ -1112,7 +1112,11 @@ export const abortDocumentVersionUpload: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /api/v1/documents/{DocumentId}/versions/{VersionId}",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      AuthenticationToken: D.m({ header: "Authentication" }),
+      DocumentId: 0,
+      VersionId: 0,
+    },
   },
   errors: [
     ConcurrentModificationException,
@@ -1148,7 +1152,10 @@ export const activateUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /api/v1/users/{UserId}/activation",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      UserId: 0,
+      AuthenticationToken: D.m({ header: "Authentication" }),
+    },
     output: { User: o_User },
   },
   errors: [
@@ -1184,7 +1191,12 @@ export const addResourcePermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /api/v1/resources/{ResourceId}/permissions",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      AuthenticationToken: D.m({ header: "Authentication" }),
+      ResourceId: 0,
+      Principals: D.list({ Id: 0, Type: 0, Role: 0 }),
+      NotificationOptions: { SendEmail: 0, EmailMessage: 0 },
+    },
     output: { ShareResults: D.list({ StatusMessage: D.secret }) },
     body: true,
   },
@@ -1222,7 +1234,16 @@ export const createComment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /api/v1/documents/{DocumentId}/versions/{VersionId}/comment",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      AuthenticationToken: D.m({ header: "Authentication" }),
+      DocumentId: 0,
+      VersionId: 0,
+      ParentId: 0,
+      ThreadId: 0,
+      Text: 0,
+      Visibility: 0,
+      NotifyCollaborators: 0,
+    },
     output: { Comment: o_Comment },
     body: true,
   },
@@ -1265,7 +1286,9 @@ export const createCustomMetadata: API.OperationMethod<
     http: "PUT /api/v1/resources/{ResourceId}/customMetadata",
     input: {
       AuthenticationToken: D.m({ header: "Authentication" }),
+      ResourceId: 0,
       VersionId: D.m({ query: "versionid" }),
+      CustomMetadata: 0,
     },
     body: true,
   },
@@ -1307,7 +1330,11 @@ export const createFolder: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /api/v1/folders",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      AuthenticationToken: D.m({ header: "Authentication" }),
+      Name: 0,
+      ParentFolderId: 0,
+    },
     output: { Metadata: o_FolderMetadata },
     body: true,
   },
@@ -1349,7 +1376,11 @@ export const createLabels: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /api/v1/resources/{ResourceId}/labels",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      ResourceId: 0,
+      Labels: 0,
+      AuthenticationToken: D.m({ header: "Authentication" }),
+    },
     body: true,
   },
   errors: [
@@ -1387,6 +1418,7 @@ export const createNotificationSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /api/v1/organizations/{OrganizationId}/subscriptions",
+    input: { OrganizationId: 0, Endpoint: 0, Protocol: 0, SubscriptionType: 0 },
     body: true,
   },
   errors: [
@@ -1420,7 +1452,17 @@ export const createUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /api/v1/users",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      OrganizationId: 0,
+      Username: 0,
+      EmailAddress: 0,
+      GivenName: 0,
+      Surname: 0,
+      Password: 0,
+      TimeZoneId: 0,
+      StorageRule: i_StorageRuleType,
+      AuthenticationToken: D.m({ header: "Authentication" }),
+    },
     output: { User: o_User },
     body: true,
   },
@@ -1456,7 +1498,10 @@ export const deactivateUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /api/v1/users/{UserId}/activation",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      UserId: 0,
+      AuthenticationToken: D.m({ header: "Authentication" }),
+    },
   },
   errors: [
     EntityNotExistsException,
@@ -1491,7 +1536,12 @@ export const deleteComment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /api/v1/documents/{DocumentId}/versions/{VersionId}/comment/{CommentId}",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      AuthenticationToken: D.m({ header: "Authentication" }),
+      DocumentId: 0,
+      VersionId: 0,
+      CommentId: 0,
+    },
   },
   errors: [
     DocumentLockedForCommentsException,
@@ -1529,6 +1579,7 @@ export const deleteCustomMetadata: API.OperationMethod<
     http: "DELETE /api/v1/resources/{ResourceId}/customMetadata",
     input: {
       AuthenticationToken: D.m({ header: "Authentication" }),
+      ResourceId: 0,
       VersionId: D.m({ query: "versionId" }),
       Keys: D.m({ query: "keys" }),
       DeleteAll: D.m({ query: "deleteAll" }),
@@ -1570,7 +1621,10 @@ export const deleteDocument: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /api/v1/documents/{DocumentId}",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      AuthenticationToken: D.m({ header: "Authentication" }),
+      DocumentId: 0,
+    },
   },
   errors: [
     ConcurrentModificationException,
@@ -1612,6 +1666,8 @@ export const deleteDocumentVersion: API.OperationMethod<
     http: "DELETE /api/v1/documentVersions/{DocumentId}/versions/{VersionId}",
     input: {
       AuthenticationToken: D.m({ header: "Authentication" }),
+      DocumentId: 0,
+      VersionId: 0,
       DeletePriorVersions: D.m({ query: "deletePriorVersions" }),
     },
   },
@@ -1653,7 +1709,10 @@ export const deleteFolder: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /api/v1/folders/{FolderId}",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      AuthenticationToken: D.m({ header: "Authentication" }),
+      FolderId: 0,
+    },
   },
   errors: [
     ConcurrentModificationException,
@@ -1692,7 +1751,10 @@ export const deleteFolderContents: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /api/v1/folders/{FolderId}/contents",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      AuthenticationToken: D.m({ header: "Authentication" }),
+      FolderId: 0,
+    },
   },
   errors: [
     ConflictingOperationException,
@@ -1729,6 +1791,7 @@ export const deleteLabels: API.OperationMethod<
     service: svc,
     http: "DELETE /api/v1/resources/{ResourceId}/labels",
     input: {
+      ResourceId: 0,
       AuthenticationToken: D.m({ header: "Authentication" }),
       Labels: D.m({ query: "labels" }),
       DeleteAll: D.m({ query: "deleteAll" }),
@@ -1765,6 +1828,7 @@ export const deleteNotificationSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /api/v1/organizations/{OrganizationId}/subscriptions/{SubscriptionId}",
+    input: { SubscriptionId: 0, OrganizationId: 0 },
   },
   errors: [
     EntityNotExistsException,
@@ -1798,7 +1862,10 @@ export const deleteUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /api/v1/users/{UserId}",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      AuthenticationToken: D.m({ header: "Authentication" }),
+      UserId: 0,
+    },
   },
   errors: [
     EntityNotExistsException,
@@ -1834,8 +1901,8 @@ export const describeActivities: API.PaginatedOperationMethod<
     http: "GET /api/v1/activities",
     input: {
       AuthenticationToken: D.m({ header: "Authentication" }),
-      StartTime: D.m({ query: "startTime" }),
-      EndTime: D.m({ query: "endTime" }),
+      StartTime: D.m({ query: "startTime", shape: D.tsAs("epoch-seconds") }),
+      EndTime: D.m({ query: "endTime", shape: D.tsAs("epoch-seconds") }),
       OrganizationId: D.m({ query: "organizationId" }),
       ActivityTypes: D.m({ query: "activityTypes" }),
       ResourceId: D.m({ query: "resourceId" }),
@@ -1896,6 +1963,8 @@ export const describeComments: API.PaginatedOperationMethod<
     http: "GET /api/v1/documents/{DocumentId}/versions/{VersionId}/comments",
     input: {
       AuthenticationToken: D.m({ header: "Authentication" }),
+      DocumentId: 0,
+      VersionId: 0,
       Limit: D.m({ query: "limit" }),
       Marker: D.m({ query: "marker" }),
     },
@@ -1947,6 +2016,7 @@ export const describeDocumentVersions: API.PaginatedOperationMethod<
     http: "GET /api/v1/documents/{DocumentId}/versions",
     input: {
       AuthenticationToken: D.m({ header: "Authentication" }),
+      DocumentId: 0,
       Marker: D.m({ query: "marker" }),
       Limit: D.m({ query: "limit" }),
       Include: D.m({ query: "include" }),
@@ -2004,6 +2074,7 @@ export const describeFolderContents: API.PaginatedOperationMethod<
     http: "GET /api/v1/folders/{FolderId}/contents",
     input: {
       AuthenticationToken: D.m({ header: "Authentication" }),
+      FolderId: 0,
       Sort: D.m({ query: "sort" }),
       Order: D.m({ query: "order" }),
       Limit: D.m({ query: "limit" }),
@@ -2097,7 +2168,11 @@ export const describeNotificationSubscriptions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "GET /api/v1/organizations/{OrganizationId}/subscriptions",
-    input: { Marker: D.m({ query: "marker" }), Limit: D.m({ query: "limit" }) },
+    input: {
+      OrganizationId: 0,
+      Marker: D.m({ query: "marker" }),
+      Limit: D.m({ query: "limit" }),
+    },
   },
   errors: [
     EntityNotExistsException,
@@ -2137,6 +2212,7 @@ export const describeResourcePermissions: API.PaginatedOperationMethod<
     http: "GET /api/v1/resources/{ResourceId}/permissions",
     input: {
       AuthenticationToken: D.m({ header: "Authentication" }),
+      ResourceId: 0,
       PrincipalId: D.m({ query: "principalId" }),
       Limit: D.m({ query: "limit" }),
       Marker: D.m({ query: "marker" }),
@@ -2339,6 +2415,7 @@ export const getDocument: API.OperationMethod<
     http: "GET /api/v1/documents/{DocumentId}",
     input: {
       AuthenticationToken: D.m({ header: "Authentication" }),
+      DocumentId: 0,
       IncludeCustomMetadata: D.m({ query: "includeCustomMetadata" }),
     },
     output: { Metadata: o_DocumentMetadata },
@@ -2384,6 +2461,7 @@ export const getDocumentPath: API.OperationMethod<
     http: "GET /api/v1/documents/{DocumentId}/path",
     input: {
       AuthenticationToken: D.m({ header: "Authentication" }),
+      DocumentId: 0,
       Limit: D.m({ query: "limit" }),
       Fields: D.m({ query: "fields" }),
       Marker: D.m({ query: "marker" }),
@@ -2425,6 +2503,8 @@ export const getDocumentVersion: API.OperationMethod<
     http: "GET /api/v1/documents/{DocumentId}/versions/{VersionId}",
     input: {
       AuthenticationToken: D.m({ header: "Authentication" }),
+      DocumentId: 0,
+      VersionId: 0,
       Fields: D.m({ query: "fields" }),
       IncludeCustomMetadata: D.m({ query: "includeCustomMetadata" }),
     },
@@ -2467,6 +2547,7 @@ export const getFolder: API.OperationMethod<
     http: "GET /api/v1/folders/{FolderId}",
     input: {
       AuthenticationToken: D.m({ header: "Authentication" }),
+      FolderId: 0,
       IncludeCustomMetadata: D.m({ query: "includeCustomMetadata" }),
     },
     output: { Metadata: o_FolderMetadata },
@@ -2512,6 +2593,7 @@ export const getFolderPath: API.OperationMethod<
     http: "GET /api/v1/folders/{FolderId}/path",
     input: {
       AuthenticationToken: D.m({ header: "Authentication" }),
+      FolderId: 0,
       Limit: D.m({ query: "limit" }),
       Fields: D.m({ query: "fields" }),
       Marker: D.m({ query: "marker" }),
@@ -2609,7 +2691,16 @@ export const initiateDocumentVersionUpload: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /api/v1/documents",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      AuthenticationToken: D.m({ header: "Authentication" }),
+      Id: 0,
+      Name: 0,
+      ContentCreatedTimestamp: 0,
+      ContentModifiedTimestamp: 0,
+      ContentType: 0,
+      DocumentSizeInBytes: 0,
+      ParentFolderId: 0,
+    },
     output: {
       Metadata: o_DocumentMetadata,
       UploadMetadata: { UploadUrl: D.secret },
@@ -2655,7 +2746,10 @@ export const removeAllResourcePermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /api/v1/resources/{ResourceId}/permissions",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      AuthenticationToken: D.m({ header: "Authentication" }),
+      ResourceId: 0,
+    },
   },
   errors: [
     FailedDependencyException,
@@ -2689,6 +2783,8 @@ export const removeResourcePermission: API.OperationMethod<
     http: "DELETE /api/v1/resources/{ResourceId}/permissions/{PrincipalId}",
     input: {
       AuthenticationToken: D.m({ header: "Authentication" }),
+      ResourceId: 0,
+      PrincipalId: 0,
       PrincipalType: D.m({ query: "type" }),
     },
   },
@@ -2725,7 +2821,10 @@ export const restoreDocumentVersions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /api/v1/documentVersions/restore/{DocumentId}",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      AuthenticationToken: D.m({ header: "Authentication" }),
+      DocumentId: 0,
+    },
   },
   errors: [
     ConcurrentModificationException,
@@ -2761,7 +2860,28 @@ export const searchResources: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /api/v1/search",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      AuthenticationToken: D.m({ header: "Authentication" }),
+      QueryText: 0,
+      QueryScopes: 0,
+      OrganizationId: 0,
+      AdditionalResponseFields: 0,
+      Filters: {
+        TextLocales: 0,
+        ContentCategories: 0,
+        ResourceTypes: 0,
+        Labels: 0,
+        Principals: D.list({ Id: 0, Roles: 0 }),
+        AncestorIds: 0,
+        SearchCollectionTypes: 0,
+        SizeRange: { StartValue: 0, EndValue: 0 },
+        CreatedRange: i_DateRangeType,
+        ModifiedRange: i_DateRangeType,
+      },
+      OrderBy: D.list({ Field: 0, Order: 0 }),
+      Limit: 0,
+      Marker: 0,
+    },
     output: {
       Items: D.list({
         WebUrl: D.secret,
@@ -2815,7 +2935,13 @@ export const updateDocument: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /api/v1/documents/{DocumentId}",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      AuthenticationToken: D.m({ header: "Authentication" }),
+      DocumentId: 0,
+      Name: 0,
+      ParentFolderId: 0,
+      ResourceState: 0,
+    },
     body: true,
   },
   errors: [
@@ -2861,7 +2987,12 @@ export const updateDocumentVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /api/v1/documents/{DocumentId}/versions/{VersionId}",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      AuthenticationToken: D.m({ header: "Authentication" }),
+      DocumentId: 0,
+      VersionId: 0,
+      VersionStatus: 0,
+    },
     body: true,
   },
   errors: [
@@ -2904,7 +3035,13 @@ export const updateFolder: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /api/v1/folders/{FolderId}",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      AuthenticationToken: D.m({ header: "Authentication" }),
+      FolderId: 0,
+      Name: 0,
+      ParentFolderId: 0,
+      ResourceState: 0,
+    },
     body: true,
   },
   errors: [
@@ -2948,7 +3085,17 @@ export const updateUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /api/v1/users/{UserId}",
-    input: { AuthenticationToken: D.m({ header: "Authentication" }) },
+    input: {
+      AuthenticationToken: D.m({ header: "Authentication" }),
+      UserId: 0,
+      GivenName: 0,
+      Surname: 0,
+      Type: 0,
+      StorageRule: i_StorageRuleType,
+      TimeZoneId: 0,
+      Locale: 0,
+      GrantPoweruserPrivileges: 0,
+    },
     output: { User: o_User },
     body: true,
   },
@@ -2968,6 +3115,11 @@ export const updateUser: API.OperationMethod<
   operationName: "UpdateUser",
 })) as any;
 
+const i_DateRangeType: D.LazyStruct = () => ({ StartValue: 0, EndValue: 0 });
+const i_StorageRuleType: D.LazyStruct = () => ({
+  StorageAllocatedInBytes: 0,
+  StorageType: 0,
+});
 const o_Comment: D.LazyStruct = () => ({
   Text: D.secret,
   Contributor: o_User,

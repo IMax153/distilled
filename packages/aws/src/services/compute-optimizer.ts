@@ -2162,7 +2162,14 @@ export const deleteRecommendationPreferences: API.OperationMethod<
   DeleteRecommendationPreferencesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      resourceType: 0,
+      scope: i_Scope,
+      recommendationPreferenceNames: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2204,6 +2211,12 @@ export const describeRecommendationExportJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      jobIds: 0,
+      filters: D.list({ name: 0, values: 0 }),
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       recommendationExportJobs: D.list({
         creationTimestamp: D.ts,
@@ -2258,7 +2271,18 @@ export const exportAutoScalingGroupRecommendations: API.OperationMethod<
   ExportAutoScalingGroupRecommendationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      accountIds: 0,
+      filters: D.list(i_Filter),
+      fieldsToExport: 0,
+      s3DestinationConfig: i_S3DestinationConfig,
+      fileFormat: 0,
+      includeMemberAccounts: 0,
+      recommendationPreferences: i_RecommendationPreferences,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2300,7 +2324,17 @@ export const exportEBSVolumeRecommendations: API.OperationMethod<
   ExportEBSVolumeRecommendationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      accountIds: 0,
+      filters: D.list(i_EBSFilter),
+      fieldsToExport: 0,
+      s3DestinationConfig: i_S3DestinationConfig,
+      fileFormat: 0,
+      includeMemberAccounts: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2342,7 +2376,18 @@ export const exportEC2InstanceRecommendations: API.OperationMethod<
   ExportEC2InstanceRecommendationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      accountIds: 0,
+      filters: D.list(i_Filter),
+      fieldsToExport: 0,
+      s3DestinationConfig: i_S3DestinationConfig,
+      fileFormat: 0,
+      includeMemberAccounts: 0,
+      recommendationPreferences: i_RecommendationPreferences,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2384,7 +2429,17 @@ export const exportECSServiceRecommendations: API.OperationMethod<
   ExportECSServiceRecommendationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      accountIds: 0,
+      filters: D.list(i_ECSServiceRecommendationFilter),
+      fieldsToExport: 0,
+      s3DestinationConfig: i_S3DestinationConfig,
+      fileFormat: 0,
+      includeMemberAccounts: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2426,7 +2481,17 @@ export const exportIdleRecommendations: API.OperationMethod<
   ExportIdleRecommendationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      accountIds: 0,
+      filters: D.list(i_IdleRecommendationFilter),
+      fieldsToExport: 0,
+      s3DestinationConfig: i_S3DestinationConfig,
+      fileFormat: 0,
+      includeMemberAccounts: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2468,7 +2533,17 @@ export const exportLambdaFunctionRecommendations: API.OperationMethod<
   ExportLambdaFunctionRecommendationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      accountIds: 0,
+      filters: D.list(i_LambdaFunctionRecommendationFilter),
+      fieldsToExport: 0,
+      s3DestinationConfig: i_S3DestinationConfig,
+      fileFormat: 0,
+      includeMemberAccounts: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2510,7 +2585,17 @@ export const exportLicenseRecommendations: API.OperationMethod<
   ExportLicenseRecommendationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      accountIds: 0,
+      filters: D.list(i_LicenseRecommendationFilter),
+      fieldsToExport: 0,
+      s3DestinationConfig: i_S3DestinationConfig,
+      fileFormat: 0,
+      includeMemberAccounts: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2552,7 +2637,18 @@ export const exportRDSDatabaseRecommendations: API.OperationMethod<
   ExportRDSDatabaseRecommendationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      accountIds: 0,
+      filters: D.list(i_RDSDBRecommendationFilter),
+      fieldsToExport: 0,
+      s3DestinationConfig: i_S3DestinationConfig,
+      fileFormat: 0,
+      includeMemberAccounts: 0,
+      recommendationPreferences: i_RecommendationPreferences,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2594,6 +2690,14 @@ export const getAutoScalingGroupRecommendations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      accountIds: 0,
+      autoScalingGroupArns: 0,
+      nextToken: 0,
+      maxResults: 0,
+      filters: D.list(i_Filter),
+      recommendationPreferences: i_RecommendationPreferences,
+    },
     output: {
       autoScalingGroupRecommendations: D.list({ lastRefreshTimestamp: D.ts }),
     },
@@ -2639,6 +2743,13 @@ export const getEBSVolumeRecommendations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      volumeArns: 0,
+      nextToken: 0,
+      maxResults: 0,
+      filters: D.list(i_EBSFilter),
+      accountIds: 0,
+    },
     output: { volumeRecommendations: D.list({ lastRefreshTimestamp: D.ts }) },
   },
   errors: [
@@ -2682,6 +2793,14 @@ export const getEC2InstanceRecommendations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      instanceArns: 0,
+      nextToken: 0,
+      maxResults: 0,
+      filters: D.list(i_Filter),
+      accountIds: 0,
+      recommendationPreferences: i_RecommendationPreferences,
+    },
     output: { instanceRecommendations: D.list({ lastRefreshTimestamp: D.ts }) },
   },
   errors: [
@@ -2726,6 +2845,14 @@ export const getEC2RecommendationProjectedMetrics: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      instanceArn: 0,
+      stat: 0,
+      period: 0,
+      startTime: 0,
+      endTime: 0,
+      recommendationPreferences: i_RecommendationPreferences,
+    },
     output: {
       recommendedOptionProjectedMetrics: D.list({
         projectedMetrics: D.list({ timestamps: D.list(D.ts) }),
@@ -2768,6 +2895,7 @@ export const getECSServiceRecommendationProjectedMetrics: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { serviceArn: 0, stat: 0, period: 0, startTime: 0, endTime: 0 },
     output: {
       recommendedOptionProjectedMetrics: D.list({
         projectedMetrics: D.list({ timestamps: D.list(D.ts) }),
@@ -2816,6 +2944,13 @@ export const getECSServiceRecommendations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      serviceArns: 0,
+      nextToken: 0,
+      maxResults: 0,
+      filters: D.list(i_ECSServiceRecommendationFilter),
+      accountIds: 0,
+    },
     output: {
       ecsServiceRecommendations: D.list({ lastRefreshTimestamp: D.ts }),
     },
@@ -2860,7 +2995,7 @@ export const getEffectiveRecommendationPreferences: API.OperationMethod<
   GetEffectiveRecommendationPreferencesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2898,7 +3033,11 @@ export const getEnrollmentStatus: API.OperationMethod<
   GetEnrollmentStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { lastUpdatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {},
+    output: { lastUpdatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2935,6 +3074,11 @@ export const getEnrollmentStatusesForOrganization: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      filters: D.list({ name: 0, values: 0 }),
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       accountEnrollmentStatuses: D.list({ lastUpdatedTimestamp: D.ts }),
     },
@@ -2982,6 +3126,14 @@ export const getIdleRecommendations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      resourceArns: 0,
+      nextToken: 0,
+      maxResults: 0,
+      filters: D.list(i_IdleRecommendationFilter),
+      accountIds: 0,
+      orderBy: { dimension: 0, order: 0 },
+    },
     output: { idleRecommendations: D.list({ lastRefreshTimestamp: D.ts }) },
   },
   errors: [
@@ -3026,6 +3178,13 @@ export const getLambdaFunctionRecommendations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      functionArns: 0,
+      accountIds: 0,
+      filters: D.list(i_LambdaFunctionRecommendationFilter),
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       lambdaFunctionRecommendations: D.list({ lastRefreshTimestamp: D.ts }),
     },
@@ -3077,6 +3236,13 @@ export const getLicenseRecommendations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      resourceArns: 0,
+      nextToken: 0,
+      maxResults: 0,
+      filters: D.list(i_LicenseRecommendationFilter),
+      accountIds: 0,
+    },
     output: { licenseRecommendations: D.list({ lastRefreshTimestamp: D.ts }) },
   },
   errors: [
@@ -3115,6 +3281,14 @@ export const getRDSDatabaseRecommendationProjectedMetrics: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      resourceArn: 0,
+      stat: 0,
+      period: 0,
+      startTime: 0,
+      endTime: 0,
+      recommendationPreferences: i_RecommendationPreferences,
+    },
     output: {
       recommendedOptionProjectedMetrics: D.list({
         projectedMetrics: D.list({ timestamps: D.list(D.ts) }),
@@ -3163,6 +3337,14 @@ export const getRDSDatabaseRecommendations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      resourceArns: 0,
+      nextToken: 0,
+      maxResults: 0,
+      filters: D.list(i_RDSDBRecommendationFilter),
+      accountIds: 0,
+      recommendationPreferences: i_RecommendationPreferences,
+    },
     output: { rdsDBRecommendations: D.list({ lastRefreshTimestamp: D.ts }) },
   },
   errors: [
@@ -3209,7 +3391,10 @@ export const getRecommendationPreferences: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RecommendationPreferencesDetail
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { resourceType: 0, scope: i_Scope, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3274,7 +3459,10 @@ export const getRecommendationSummaries: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RecommendationSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { accountIds: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3319,7 +3507,23 @@ export const putRecommendationPreferences: API.OperationMethod<
   PutRecommendationPreferencesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      resourceType: 0,
+      scope: i_Scope,
+      enhancedInfrastructureMetrics: 0,
+      inferredWorkloadTypes: 0,
+      externalMetricsPreference: { source: 0 },
+      lookBackPeriod: 0,
+      utilizationPreferences: D.list({
+        metricName: 0,
+        metricParameters: { threshold: 0, headroom: 0 },
+      }),
+      preferredResources: D.list({ name: 0, includeList: 0, excludeList: 0 }),
+      savingsEstimationMode: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3362,7 +3566,7 @@ export const updateEnrollmentStatus: API.OperationMethod<
   UpdateEnrollmentStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { status: 0, includeMemberAccounts: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3375,3 +3579,28 @@ export const updateEnrollmentStatus: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateEnrollmentStatus",
 })) as any;
+
+const i_EBSFilter: D.LazyStruct = () => ({ name: 0, values: 0 });
+const i_ECSServiceRecommendationFilter: D.LazyStruct = () => ({
+  name: 0,
+  values: 0,
+});
+const i_Filter: D.LazyStruct = () => ({ name: 0, values: 0 });
+const i_IdleRecommendationFilter: D.LazyStruct = () => ({ name: 0, values: 0 });
+const i_LambdaFunctionRecommendationFilter: D.LazyStruct = () => ({
+  name: 0,
+  values: 0,
+});
+const i_LicenseRecommendationFilter: D.LazyStruct = () => ({
+  name: 0,
+  values: 0,
+});
+const i_RDSDBRecommendationFilter: D.LazyStruct = () => ({
+  name: 0,
+  values: 0,
+});
+const i_RecommendationPreferences: D.LazyStruct = () => ({
+  cpuVendorArchitectures: 0,
+});
+const i_S3DestinationConfig: D.LazyStruct = () => ({ bucket: 0, keyPrefix: 0 });
+const i_Scope: D.LazyStruct = () => ({ name: 0, value: 0 });

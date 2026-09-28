@@ -435,7 +435,16 @@ export const createPerformanceAnalysisReport: API.OperationMethod<
   CreatePerformanceAnalysisReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ServiceType: 0,
+      Identifier: 0,
+      StartTime: 0,
+      EndTime: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidArgumentException,
@@ -460,7 +469,10 @@ export const deletePerformanceAnalysisReport: API.OperationMethod<
   DeletePerformanceAnalysisReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServiceType: 0, Identifier: 0, AnalysisReportId: 0 },
+  },
   errors: [
     InternalServiceError,
     InvalidArgumentException,
@@ -491,6 +503,20 @@ export const describeDimensionKeys: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ServiceType: 0,
+      Identifier: 0,
+      StartTime: 0,
+      EndTime: 0,
+      Metric: 0,
+      PeriodInSeconds: 0,
+      GroupBy: i_DimensionGroup,
+      AdditionalMetrics: 0,
+      PartitionBy: i_DimensionGroup,
+      Filter: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { AlignedStartTime: D.ts, AlignedEndTime: D.ts },
   },
   errors: [
@@ -525,7 +551,16 @@ export const getDimensionKeyDetails: API.OperationMethod<
   GetDimensionKeyDetailsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ServiceType: 0,
+      Identifier: 0,
+      Group: 0,
+      GroupIdentifier: 0,
+      RequestedDimensions: 0,
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidArgumentException,
@@ -555,6 +590,13 @@ export const getPerformanceAnalysisReport: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ServiceType: 0,
+      Identifier: 0,
+      AnalysisReportId: 0,
+      TextFormat: 0,
+      AcceptLanguage: 0,
+    },
     output: {
       AnalysisReport: {
         CreateTime: D.ts,
@@ -589,7 +631,7 @@ export const getResourceMetadata: API.OperationMethod<
   GetResourceMetadataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServiceType: 0, Identifier: 0 } },
   errors: [
     InternalServiceError,
     InvalidArgumentException,
@@ -622,6 +664,21 @@ export const getResourceMetrics: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ServiceType: 0,
+      Identifier: 0,
+      MetricQueries: D.list({
+        Metric: 0,
+        GroupBy: i_DimensionGroup,
+        Filter: 0,
+      }),
+      StartTime: 0,
+      EndTime: 0,
+      PeriodInSeconds: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      PeriodAlignment: 0,
+    },
     output: {
       AlignedStartTime: D.ts,
       AlignedEndTime: D.ts,
@@ -658,7 +715,17 @@ export const listAvailableResourceDimensions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ServiceType: 0,
+      Identifier: 0,
+      Metrics: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      AuthorizedActions: 0,
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidArgumentException,
@@ -689,7 +756,16 @@ export const listAvailableResourceMetrics: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ServiceType: 0,
+      Identifier: 0,
+      MetricTypes: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidArgumentException,
@@ -722,6 +798,14 @@ export const listPerformanceAnalysisReportRecommendations: API.PaginatedOperatio
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ServiceType: 0,
+      Identifier: 0,
+      AnalysisReportId: 0,
+      RecommendationIds: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { Recommendations: D.list(o_Recommendation) },
   },
   errors: [
@@ -757,6 +841,13 @@ export const listPerformanceAnalysisReports: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ServiceType: 0,
+      Identifier: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      ListTags: 0,
+    },
     output: {
       AnalysisReports: D.list({
         CreateTime: D.ts,
@@ -794,7 +885,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServiceType: 0, ResourceARN: 0 } },
   errors: [
     InternalServiceError,
     InvalidArgumentException,
@@ -819,7 +910,10 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServiceType: 0, ResourceARN: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     InternalServiceError,
     InvalidArgumentException,
@@ -844,7 +938,10 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServiceType: 0, ResourceARN: 0, TagKeys: 0 },
+  },
   errors: [
     InternalServiceError,
     InvalidArgumentException,
@@ -855,6 +952,12 @@ export const untagResource: API.OperationMethod<
   operationName: "UntagResource",
 })) as any;
 
+const i_DimensionGroup: D.LazyStruct = () => ({
+  Group: 0,
+  Dimensions: 0,
+  Limit: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Insight: D.LazyStruct = () => ({
   StartTime: D.ts,
   EndTime: D.ts,

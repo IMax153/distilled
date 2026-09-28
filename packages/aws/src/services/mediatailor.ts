@@ -1371,7 +1371,12 @@ export const configureLogsForChannel: API.OperationMethod<
   ConfigureLogsForChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /configureLogs/channel", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /configureLogs/channel",
+    input: { ChannelName: 0, LogTypes: 0 },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1391,6 +1396,16 @@ export const configureLogsForPlaybackConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /configureLogs/playbackConfiguration",
+    input: {
+      PercentEnabled: 0,
+      PlaybackConfigurationName: 0,
+      EnabledLoggingStrategies: 0,
+      AdsInteractionLog: { PublishOptInEventTypes: 0, ExcludeEventTypes: 0 },
+      ManifestServiceInteractionLog: {
+        PublishOptInEventTypes: 0,
+        ExcludeEventTypes: 0,
+      },
+    },
     body: true,
   },
   errors: [],
@@ -1412,7 +1427,16 @@ export const createChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /channel/{ChannelName}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: {
+      ChannelName: 0,
+      FillerSlate: i_SlateSource,
+      Outputs: D.list(i_RequestOutputItem),
+      PlaybackMode: 0,
+      Tags: D.m({ wire: "tags" }),
+      Tier: 0,
+      TimeShiftConfiguration: i_TimeShiftConfiguration,
+      Audiences: 0,
+    },
     output: {
       CreationTime: D.ts,
       LastModifiedTime: D.ts,
@@ -1439,7 +1463,12 @@ export const createLiveSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sourceLocation/{SourceLocationName}/liveSource/{LiveSourceName}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: {
+      HttpPackageConfigurations: D.list(i_HttpPackageConfiguration),
+      LiveSourceName: 0,
+      SourceLocationName: 0,
+      Tags: D.m({ wire: "tags" }),
+    },
     output: {
       CreationTime: D.ts,
       LastModifiedTime: D.ts,
@@ -1469,7 +1498,41 @@ export const createPrefetchSchedule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prefetchSchedule/{PlaybackConfigurationName}/{Name}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: {
+      Consumption: {
+        AvailMatchingCriteria: D.list(i_AvailMatchingCriteria),
+        EndTime: 0,
+        StartTime: 0,
+      },
+      Name: 0,
+      PlaybackConfigurationName: 0,
+      Retrieval: {
+        DynamicVariables: 0,
+        EndTime: 0,
+        StartTime: 0,
+        TrafficShapingType: 0,
+        TrafficShapingRetrievalWindow: i_TrafficShapingRetrievalWindow,
+        TrafficShapingTpsConfiguration: i_TrafficShapingTpsConfiguration,
+      },
+      RecurringPrefetchConfiguration: {
+        StartTime: 0,
+        EndTime: 0,
+        RecurringConsumption: {
+          RetrievedAdExpirationSeconds: 0,
+          AvailMatchingCriteria: D.list(i_AvailMatchingCriteria),
+        },
+        RecurringRetrieval: {
+          DynamicVariables: 0,
+          DelayAfterAvailEndSeconds: 0,
+          TrafficShapingType: 0,
+          TrafficShapingRetrievalWindow: i_TrafficShapingRetrievalWindow,
+          TrafficShapingTpsConfiguration: i_TrafficShapingTpsConfiguration,
+        },
+      },
+      ScheduleType: 0,
+      StreamId: 0,
+      Tags: D.m({ wire: "tags" }),
+    },
     output: {
       Consumption: o_PrefetchConsumption,
       Retrieval: o_PrefetchRetrieval,
@@ -1500,7 +1563,26 @@ export const createProgram: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /channel/{ChannelName}/program/{ProgramName}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: {
+      AdBreaks: D.list(i_AdBreak),
+      ChannelName: 0,
+      LiveSourceName: 0,
+      ProgramName: 0,
+      ScheduleConfiguration: {
+        Transition: {
+          DurationMillis: 0,
+          RelativePosition: 0,
+          RelativeProgram: 0,
+          ScheduledStartTimeMillis: 0,
+          Type: 0,
+        },
+        ClipRange: i_ClipRange,
+      },
+      SourceLocationName: 0,
+      VodSourceName: 0,
+      AudienceMedia: D.list(i_AudienceMedia),
+      Tags: D.m({ wire: "tags" }),
+    },
     output: {
       CreationTime: D.ts,
       ScheduledStartTime: D.ts,
@@ -1527,7 +1609,15 @@ export const createSourceLocation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sourceLocation/{SourceLocationName}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: {
+      AccessConfiguration: i_AccessConfiguration,
+      DefaultSegmentDeliveryConfiguration:
+        i_DefaultSegmentDeliveryConfiguration,
+      HttpConfiguration: i_HttpConfiguration,
+      SegmentDeliveryConfigurations: D.list(i_SegmentDeliveryConfiguration),
+      SourceLocationName: 0,
+      Tags: D.m({ wire: "tags" }),
+    },
     output: {
       CreationTime: D.ts,
       LastModifiedTime: D.ts,
@@ -1554,7 +1644,12 @@ export const createVodSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sourceLocation/{SourceLocationName}/vodSource/{VodSourceName}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: {
+      HttpPackageConfigurations: D.list(i_HttpPackageConfiguration),
+      SourceLocationName: 0,
+      Tags: D.m({ wire: "tags" }),
+      VodSourceName: 0,
+    },
     output: {
       CreationTime: D.ts,
       LastModifiedTime: D.ts,
@@ -1578,7 +1673,11 @@ export const deleteChannel: API.OperationMethod<
   DeleteChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /channel/{ChannelName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /channel/{ChannelName}",
+    input: { ChannelName: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1595,7 +1694,11 @@ export const deleteChannelPolicy: API.OperationMethod<
   DeleteChannelPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /channel/{ChannelName}/policy" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /channel/{ChannelName}/policy",
+    input: { ChannelName: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1612,7 +1715,11 @@ export const deleteFunction: API.OperationMethod<
   DeleteFunctionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /function/{FunctionId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /function/{FunctionId}",
+    input: { FunctionId: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1632,6 +1739,7 @@ export const deleteLiveSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /sourceLocation/{SourceLocationName}/liveSource/{LiveSourceName}",
+    input: { LiveSourceName: 0, SourceLocationName: 0 },
   },
   errors: [],
   protocol: AwsProtocol,
@@ -1649,7 +1757,11 @@ export const deletePlaybackConfiguration: API.OperationMethod<
   DeletePlaybackConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /playbackConfiguration/{Name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /playbackConfiguration/{Name}",
+    input: { Name: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1672,6 +1784,7 @@ export const deletePrefetchSchedule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prefetchSchedule/{PlaybackConfigurationName}/{Name}",
+    input: { Name: 0, PlaybackConfigurationName: 0 },
   },
   errors: [BadRequestException, PrefetchScheduleNotFound],
   protocol: AwsProtocol,
@@ -1695,6 +1808,7 @@ export const deleteProgram: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /channel/{ChannelName}/program/{ProgramName}",
+    input: { ChannelName: 0, ProgramName: 0 },
   },
   errors: [BadRequestException, ProgramNotFound],
   protocol: AwsProtocol,
@@ -1715,6 +1829,7 @@ export const deleteSourceLocation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /sourceLocation/{SourceLocationName}",
+    input: { SourceLocationName: 0 },
   },
   errors: [],
   protocol: AwsProtocol,
@@ -1735,6 +1850,7 @@ export const deleteVodSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /sourceLocation/{SourceLocationName}/vodSource/{VodSourceName}",
+    input: { SourceLocationName: 0, VodSourceName: 0 },
   },
   errors: [],
   protocol: AwsProtocol,
@@ -1755,6 +1871,7 @@ export const describeChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /channel/{ChannelName}",
+    input: { ChannelName: 0 },
     output: {
       CreationTime: D.ts,
       LastModifiedTime: D.ts,
@@ -1780,6 +1897,7 @@ export const describeLiveSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sourceLocation/{SourceLocationName}/liveSource/{LiveSourceName}",
+    input: { LiveSourceName: 0, SourceLocationName: 0 },
     output: {
       CreationTime: D.ts,
       LastModifiedTime: D.ts,
@@ -1808,6 +1926,7 @@ export const describeProgram: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /channel/{ChannelName}/program/{ProgramName}",
+    input: { ChannelName: 0, ProgramName: 0 },
     output: {
       CreationTime: D.ts,
       ScheduledStartTime: D.ts,
@@ -1833,6 +1952,7 @@ export const describeSourceLocation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sourceLocation/{SourceLocationName}",
+    input: { SourceLocationName: 0 },
     output: {
       CreationTime: D.ts,
       LastModifiedTime: D.ts,
@@ -1858,6 +1978,7 @@ export const describeVodSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sourceLocation/{SourceLocationName}/vodSource/{VodSourceName}",
+    input: { SourceLocationName: 0, VodSourceName: 0 },
     output: {
       CreationTime: D.ts,
       LastModifiedTime: D.ts,
@@ -1880,7 +2001,11 @@ export const getChannelPolicy: API.OperationMethod<
   GetChannelPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /channel/{ChannelName}/policy" },
+  descriptor: {
+    service: svc,
+    http: "GET /channel/{ChannelName}/policy",
+    input: { ChannelName: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1905,6 +2030,7 @@ export const getChannelSchedule: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /channel/{ChannelName}/schedule",
     input: {
+      ChannelName: 0,
       DurationMinutes: D.m({ query: "durationMinutes" }),
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
@@ -1942,6 +2068,7 @@ export const getFunction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /function/{FunctionId}",
+    input: { FunctionId: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
   },
   errors: [],
@@ -1965,6 +2092,7 @@ export const getPlaybackConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /playbackConfiguration/{Name}",
+    input: { Name: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
   },
   errors: [PlaybackConfigurationNotFound],
@@ -1989,6 +2117,7 @@ export const getPrefetchSchedule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prefetchSchedule/{PlaybackConfigurationName}/{Name}",
+    input: { Name: 0, PlaybackConfigurationName: 0 },
     output: {
       Consumption: o_PrefetchConsumption,
       Retrieval: o_PrefetchRetrieval,
@@ -2122,6 +2251,7 @@ export const listLiveSources: API.PaginatedOperationMethod<
     input: {
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
+      SourceLocationName: 0,
     },
     output: {
       Items: D.list({
@@ -2192,6 +2322,13 @@ export const listPrefetchSchedules: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prefetchSchedule/{PlaybackConfigurationName}",
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      PlaybackConfigurationName: 0,
+      ScheduleType: 0,
+      StreamId: 0,
+    },
     output: {
       Items: D.list({
         Consumption: o_PrefetchConsumption,
@@ -2265,6 +2402,7 @@ export const listTagsForResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
   },
   errors: [BadRequestException],
@@ -2290,6 +2428,7 @@ export const listVodSources: API.PaginatedOperationMethod<
     input: {
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
+      SourceLocationName: 0,
     },
     output: {
       Items: D.list({
@@ -2324,6 +2463,7 @@ export const putChannelPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /channel/{ChannelName}/policy",
+    input: { ChannelName: 0, Policy: 0 },
     body: true,
   },
   errors: [],
@@ -2345,7 +2485,35 @@ export const putFunction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /function/{FunctionId}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: {
+      FunctionId: 0,
+      FunctionType: 0,
+      Description: 0,
+      HttpRequestConfiguration: {
+        Runtime: 0,
+        Output: 0,
+        MethodType: 0,
+        RequestTimeoutMilliseconds: 0,
+        Url: 0,
+        Body: 0,
+        Headers: 0,
+      },
+      CustomOutputConfiguration: { Runtime: 0, Output: 0 },
+      ConcurrentExecutorConfiguration: {
+        Runtime: 0,
+        Output: 0,
+        FunctionList: D.list(i_FunctionRef),
+        TimeoutMilliseconds: 0,
+        MaxConcurrency: 0,
+      },
+      SequentialExecutorConfiguration: {
+        Runtime: 0,
+        Output: 0,
+        FunctionList: D.list(i_FunctionRef),
+        TimeoutMilliseconds: 0,
+      },
+      Tags: D.m({ wire: "tags" }),
+    },
     output: { Tags: D.m({ wire: "tags" }) },
     body: true,
   },
@@ -2368,7 +2536,46 @@ export const putPlaybackConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /playbackConfiguration",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: {
+      AdDecisionServerUrl: 0,
+      AvailSuppression: { Mode: 0, Value: 0, FillPolicy: 0 },
+      Bumper: { EndUrl: 0, StartUrl: 0 },
+      CdnConfiguration: { AdSegmentUrlPrefix: 0, ContentSegmentUrlPrefix: 0 },
+      ConfigurationAliases: 0,
+      DashConfiguration: { MpdLocation: 0, OriginManifestType: 0 },
+      InsertionMode: 0,
+      LivePreRollConfiguration: {
+        AdDecisionServerUrl: 0,
+        MaxDurationSeconds: 0,
+        AdDecisionServerConfiguration: {
+          VastResponse: { AdSequencingMode: 0 },
+        },
+      },
+      ManifestProcessingRules: { AdMarkerPassthrough: { Enabled: 0 } },
+      Name: 0,
+      PersonalizationThresholdSeconds: 0,
+      SlateAdUrl: 0,
+      Tags: D.m({ wire: "tags" }),
+      TranscodeProfileName: 0,
+      VideoContentSourceUrl: 0,
+      AdConditioningConfiguration: { StreamingMediaFileConditioning: 0 },
+      AdDecisionServerConfiguration: {
+        HttpRequest: { Method: 0, Body: 0, Headers: 0, CompressRequest: 0 },
+        VastResponse: { AdSequencingMode: 0 },
+      },
+      FunctionMapping: 0,
+      AdsPersonalizationTimeouts: {
+        AdsRequestTimeoutMilliseconds: 0,
+        LiveMaximumAdsPersonalizationTimeMilliseconds: 0,
+        VodMaximumAdsPersonalizationTimeMilliseconds: 0,
+        PrefetchAdsRequestTimeoutMilliseconds: 0,
+        PrefetchMaximumAdsPersonalizationTimeMilliseconds: 0,
+      },
+      AdsPersonalizationConcurrency: {
+        MaxConcurrentAdsRequests: 0,
+        EnableVodVastParallelization: 0,
+      },
+    },
     output: { Tags: D.m({ wire: "tags" }) },
     body: true,
   },
@@ -2391,7 +2598,11 @@ export const startChannel: API.OperationMethod<
   StartChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /channel/{ChannelName}/start" },
+  descriptor: {
+    service: svc,
+    http: "PUT /channel/{ChannelName}/start",
+    input: { ChannelName: 0 },
+  },
   errors: [BadRequestException, ChannelNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2411,7 +2622,11 @@ export const stopChannel: API.OperationMethod<
   StopChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /channel/{ChannelName}/stop" },
+  descriptor: {
+    service: svc,
+    http: "PUT /channel/{ChannelName}/stop",
+    input: { ChannelName: 0 },
+  },
   errors: [BadRequestException, ChannelNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2431,7 +2646,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags/{ResourceArn}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: { ResourceArn: 0, Tags: D.m({ wire: "tags" }) },
     body: true,
   },
   errors: [BadRequestException],
@@ -2453,7 +2668,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -2474,6 +2689,13 @@ export const updateChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /channel/{ChannelName}",
+    input: {
+      ChannelName: 0,
+      FillerSlate: i_SlateSource,
+      Outputs: D.list(i_RequestOutputItem),
+      TimeShiftConfiguration: i_TimeShiftConfiguration,
+      Audiences: 0,
+    },
     output: {
       CreationTime: D.ts,
       LastModifiedTime: D.ts,
@@ -2500,6 +2722,11 @@ export const updateLiveSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /sourceLocation/{SourceLocationName}/liveSource/{LiveSourceName}",
+    input: {
+      HttpPackageConfigurations: D.list(i_HttpPackageConfiguration),
+      LiveSourceName: 0,
+      SourceLocationName: 0,
+    },
     output: {
       CreationTime: D.ts,
       LastModifiedTime: D.ts,
@@ -2529,6 +2756,16 @@ export const updateProgram: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /channel/{ChannelName}/program/{ProgramName}",
+    input: {
+      AdBreaks: D.list(i_AdBreak),
+      ChannelName: 0,
+      ProgramName: 0,
+      ScheduleConfiguration: {
+        Transition: { ScheduledStartTimeMillis: 0, DurationMillis: 0 },
+        ClipRange: i_ClipRange,
+      },
+      AudienceMedia: D.list(i_AudienceMedia),
+    },
     output: {
       CreationTime: D.ts,
       ScheduledStartTime: D.ts,
@@ -2555,6 +2792,14 @@ export const updateSourceLocation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /sourceLocation/{SourceLocationName}",
+    input: {
+      AccessConfiguration: i_AccessConfiguration,
+      DefaultSegmentDeliveryConfiguration:
+        i_DefaultSegmentDeliveryConfiguration,
+      HttpConfiguration: i_HttpConfiguration,
+      SegmentDeliveryConfigurations: D.list(i_SegmentDeliveryConfiguration),
+      SourceLocationName: 0,
+    },
     output: {
       CreationTime: D.ts,
       LastModifiedTime: D.ts,
@@ -2581,6 +2826,11 @@ export const updateVodSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /sourceLocation/{SourceLocationName}/vodSource/{VodSourceName}",
+    input: {
+      HttpPackageConfigurations: D.list(i_HttpPackageConfiguration),
+      SourceLocationName: 0,
+      VodSourceName: 0,
+    },
     output: {
       CreationTime: D.ts,
       LastModifiedTime: D.ts,
@@ -2594,6 +2844,101 @@ export const updateVodSource: API.OperationMethod<
   operationName: "UpdateVodSource",
 })) as any;
 
+const i_AccessConfiguration: D.LazyStruct = () => ({
+  AccessType: 0,
+  SecretsManagerAccessTokenConfiguration: {
+    HeaderName: 0,
+    SecretArn: 0,
+    SecretStringKey: 0,
+  },
+});
+const i_AdBreak: D.LazyStruct = () => ({
+  MessageType: 0,
+  OffsetMillis: 0,
+  Slate: i_SlateSource,
+  SpliceInsertMessage: {
+    AvailNum: 0,
+    AvailsExpected: 0,
+    SpliceEventId: 0,
+    UniqueProgramId: 0,
+  },
+  TimeSignalMessage: {
+    SegmentationDescriptors: D.list({
+      SegmentationEventId: 0,
+      SegmentationUpidType: 0,
+      SegmentationUpid: 0,
+      SegmentationTypeId: 0,
+      SegmentNum: 0,
+      SegmentsExpected: 0,
+      SubSegmentNum: 0,
+      SubSegmentsExpected: 0,
+    }),
+  },
+  AdBreakMetadata: D.list({ Key: 0, Value: 0 }),
+});
+const i_AudienceMedia: D.LazyStruct = () => ({
+  Audience: 0,
+  AlternateMedia: D.list({
+    SourceLocationName: 0,
+    LiveSourceName: 0,
+    VodSourceName: 0,
+    ClipRange: i_ClipRange,
+    ScheduledStartTimeMillis: 0,
+    AdBreaks: D.list(i_AdBreak),
+    DurationMillis: 0,
+  }),
+});
+const i_AvailMatchingCriteria: D.LazyStruct = () => ({
+  DynamicVariable: 0,
+  Operator: 0,
+});
+const i_ClipRange: D.LazyStruct = () => ({
+  EndOffsetMillis: 0,
+  StartOffsetMillis: 0,
+});
+const i_DefaultSegmentDeliveryConfiguration: D.LazyStruct = () => ({
+  BaseUrl: 0,
+});
+const i_FunctionRef: D.LazyStruct = () => ({
+  RunCondition: 0,
+  FunctionId: 0,
+  Alias: 0,
+});
+const i_HttpConfiguration: D.LazyStruct = () => ({ BaseUrl: 0 });
+const i_HttpPackageConfiguration: D.LazyStruct = () => ({
+  Path: 0,
+  SourceGroup: 0,
+  Type: 0,
+});
+const i_RequestOutputItem: D.LazyStruct = () => ({
+  DashPlaylistSettings: {
+    ManifestWindowSeconds: 0,
+    MinBufferTimeSeconds: 0,
+    MinUpdatePeriodSeconds: 0,
+    SuggestedPresentationDelaySeconds: 0,
+  },
+  HlsPlaylistSettings: { ManifestWindowSeconds: 0, AdMarkupType: 0 },
+  ManifestName: 0,
+  SourceGroup: 0,
+});
+const i_SegmentDeliveryConfiguration: D.LazyStruct = () => ({
+  BaseUrl: 0,
+  Name: 0,
+});
+const i_SlateSource: D.LazyStruct = () => ({
+  SourceLocationName: 0,
+  VodSourceName: 0,
+});
+const i_TimeShiftConfiguration: D.LazyStruct = () => ({
+  MaxTimeDelaySeconds: 0,
+});
+const i_TrafficShapingRetrievalWindow: D.LazyStruct = () => ({
+  RetrievalWindowDurationSeconds: 0,
+});
+const i_TrafficShapingTpsConfiguration: D.LazyStruct = () => ({
+  PeakTps: 0,
+  PeakConcurrentUsers: 0,
+});
 const o_PrefetchConsumption: D.LazyStruct = () => ({
   EndTime: D.ts,
   StartTime: D.ts,

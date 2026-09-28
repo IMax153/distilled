@@ -1433,6 +1433,7 @@ export const associateSourceNetworkStack: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /AssociateSourceNetworkStack",
+    input: { sourceNetworkID: 0, cfnStackName: 0 },
     body: true,
   },
   errors: [
@@ -1470,6 +1471,7 @@ export const cancelRecoveryPlanExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CancelRecoveryPlanExecution",
+    input: { recoveryPlanExecutionArn: 0 },
     body: true,
   },
   errors: [
@@ -1507,6 +1509,7 @@ export const createExtendedSourceServer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateExtendedSourceServer",
+    input: { sourceServerArn: 0, tags: 0 },
     body: true,
   },
   errors: [
@@ -1543,6 +1546,18 @@ export const createLaunchConfigurationTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateLaunchConfigurationTemplate",
+    input: {
+      tags: 0,
+      launchDisposition: 0,
+      targetInstanceTypeRightSizingMethod: 0,
+      copyPrivateIp: 0,
+      copyTags: 0,
+      licensing: i_Licensing,
+      exportBucketArn: 0,
+      postLaunchEnabled: 0,
+      launchIntoSourceInstance: 0,
+      recoveryMode: 0,
+    },
     body: true,
   },
   errors: [
@@ -1579,7 +1594,12 @@ export const createRecoveryPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateRecoveryPlan",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1618,7 +1638,13 @@ export const createRecoveryPlanStep: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateRecoveryPlanStep",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      recoveryPlanArn: 0,
+      stepName: 0,
+      stepOrder: 0,
+      configuration: i_RecoveryPlanStepConfiguration,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1656,6 +1682,24 @@ export const createReplicationConfigurationTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateReplicationConfigurationTemplate",
+    input: {
+      stagingAreaSubnetId: 0,
+      associateDefaultSecurityGroup: 0,
+      replicationServersSecurityGroupsIDs: 0,
+      replicationServerInstanceType: 0,
+      useDedicatedReplicationServer: 0,
+      defaultLargeStagingDiskType: 0,
+      ebsEncryption: 0,
+      ebsEncryptionKeyArn: 0,
+      bandwidthThrottling: 0,
+      dataPlaneRouting: 0,
+      createPublicIP: 0,
+      stagingAreaTags: 0,
+      pitPolicy: D.list(i_PITPolicyRule),
+      tags: 0,
+      autoReplicateNewDisks: 0,
+      internetProtocol: 0,
+    },
     body: true,
   },
   errors: [
@@ -1689,7 +1733,12 @@ export const createSourceNetwork: API.OperationMethod<
   CreateSourceNetworkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CreateSourceNetwork", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CreateSourceNetwork",
+    input: { vpcID: 0, originAccountID: 0, originRegion: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1720,7 +1769,12 @@ export const deleteJob: API.OperationMethod<
   DeleteJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteJob", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteJob",
+    input: { jobID: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1749,7 +1803,12 @@ export const deleteLaunchAction: API.OperationMethod<
   DeleteLaunchActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteLaunchAction", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteLaunchAction",
+    input: { resourceId: 0, actionId: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1781,6 +1840,7 @@ export const deleteLaunchConfigurationTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteLaunchConfigurationTemplate",
+    input: { launchConfigurationTemplateID: 0 },
     body: true,
   },
   errors: [
@@ -1814,6 +1874,7 @@ export const deleteRecoveryInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteRecoveryInstance",
+    input: { recoveryInstanceID: 0 },
     body: true,
   },
   errors: [
@@ -1846,7 +1907,12 @@ export const deleteRecoveryPlan: API.OperationMethod<
   DeleteRecoveryPlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteRecoveryPlan", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteRecoveryPlan",
+    input: { recoveryPlanArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1882,6 +1948,7 @@ export const deleteRecoveryPlanExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteRecoveryPlanExecution",
+    input: { recoveryPlanExecutionArn: 0 },
     body: true,
   },
   errors: [
@@ -1919,6 +1986,7 @@ export const deleteRecoveryPlanStep: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteRecoveryPlanStep",
+    input: { recoveryPlanStepArn: 0 },
     body: true,
   },
   errors: [
@@ -1954,6 +2022,7 @@ export const deleteReplicationConfigurationTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteReplicationConfigurationTemplate",
+    input: { replicationConfigurationTemplateID: 0 },
     body: true,
   },
   errors: [
@@ -1984,7 +2053,12 @@ export const deleteSourceNetwork: API.OperationMethod<
   DeleteSourceNetworkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteSourceNetwork", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteSourceNetwork",
+    input: { sourceNetworkID: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -2013,7 +2087,12 @@ export const deleteSourceServer: API.OperationMethod<
   DeleteSourceServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteSourceServer", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteSourceServer",
+    input: { sourceServerID: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -2042,7 +2121,12 @@ export const describeJobLogItems: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   JobLog
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /DescribeJobLogItems", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DescribeJobLogItems",
+    input: { jobID: 0, maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ThrottlingException,
@@ -2076,7 +2160,16 @@ export const describeJobs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Job
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /DescribeJobs", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DescribeJobs",
+    input: {
+      filters: { jobIDs: 0, fromDate: 0, toDate: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ThrottlingException,
@@ -2114,6 +2207,7 @@ export const describeLaunchConfigurationTemplates: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DescribeLaunchConfigurationTemplates",
+    input: { launchConfigurationTemplateIDs: 0, maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [
@@ -2153,6 +2247,11 @@ export const describeRecoveryInstances: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DescribeRecoveryInstances",
+    input: {
+      filters: { recoveryInstanceIDs: 0, sourceServerIDs: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -2192,6 +2291,13 @@ export const describeRecoverySnapshots: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DescribeRecoverySnapshots",
+    input: {
+      sourceServerID: 0,
+      filters: { fromDateTime: 0, toDateTime: 0 },
+      order: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -2232,6 +2338,11 @@ export const describeReplicationConfigurationTemplates: API.PaginatedOperationMe
   descriptor: {
     service: svc,
     http: "POST /DescribeReplicationConfigurationTemplates",
+    input: {
+      replicationConfigurationTemplateIDs: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -2271,6 +2382,11 @@ export const describeSourceNetworks: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DescribeSourceNetworks",
+    input: {
+      filters: { sourceNetworkIDs: 0, originAccountID: 0, originRegion: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { items: D.list(o_SourceNetwork) },
     body: true,
   },
@@ -2307,7 +2423,16 @@ export const describeSourceServers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   SourceServer
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /DescribeSourceServers", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DescribeSourceServers",
+    input: {
+      filters: { sourceServerIDs: 0, hardwareId: 0, stagingAccountIDs: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ThrottlingException,
@@ -2345,6 +2470,7 @@ export const disconnectRecoveryInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DisconnectRecoveryInstance",
+    input: { recoveryInstanceID: 0 },
     body: true,
   },
   errors: [
@@ -2379,6 +2505,7 @@ export const disconnectSourceServer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DisconnectSourceServer",
+    input: { sourceServerID: 0 },
     body: true,
   },
   errors: [
@@ -2413,6 +2540,7 @@ export const exportSourceNetworkCfnTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ExportSourceNetworkCfnTemplate",
+    input: { sourceNetworkID: 0 },
     body: true,
   },
   errors: [
@@ -2446,6 +2574,7 @@ export const getFailbackReplicationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetFailbackReplicationConfiguration",
+    input: { recoveryInstanceID: 0 },
     body: true,
   },
   errors: [
@@ -2477,6 +2606,7 @@ export const getLaunchConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetLaunchConfiguration",
+    input: { sourceServerID: 0 },
     body: true,
   },
   errors: [
@@ -2507,7 +2637,12 @@ export const getRecoveryPlan: API.OperationMethod<
   GetRecoveryPlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetRecoveryPlan", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetRecoveryPlan",
+    input: { recoveryPlanArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2541,6 +2676,7 @@ export const getRecoveryPlanExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetRecoveryPlanExecution",
+    input: { recoveryPlanExecutionArn: 0 },
     body: true,
   },
   errors: [
@@ -2576,6 +2712,7 @@ export const getRecoveryPlanExecutionStep: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetRecoveryPlanExecutionStep",
+    input: { recoveryPlanExecutionStepArn: 0 },
     body: true,
   },
   errors: [
@@ -2608,7 +2745,12 @@ export const getRecoveryPlanStep: API.OperationMethod<
   GetRecoveryPlanStepError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetRecoveryPlanStep", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetRecoveryPlanStep",
+    input: { recoveryPlanStepArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2641,6 +2783,7 @@ export const getReplicationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetReplicationConfiguration",
+    input: { sourceServerID: 0 },
     body: true,
   },
   errors: [
@@ -2670,7 +2813,7 @@ export const initializeService: API.OperationMethod<
   InitializeServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /InitializeService" },
+  descriptor: { service: svc, http: "POST /InitializeService", input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2702,6 +2845,7 @@ export const listExtensibleSourceServers: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListExtensibleSourceServers",
+    input: { stagingAccountID: 0, maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [
@@ -2739,7 +2883,17 @@ export const listLaunchActions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   LaunchAction
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListLaunchActions", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListLaunchActions",
+    input: {
+      resourceId: 0,
+      filters: { actionIds: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -2778,6 +2932,7 @@ export const listRecoveryPlanExecutions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListRecoveryPlanExecutions",
+    input: { recoveryPlanArn: 0, status: 0, maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [
@@ -2819,6 +2974,12 @@ export const listRecoveryPlanExecutionSteps: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListRecoveryPlanExecutionSteps",
+    input: {
+      recoveryPlanExecutionArn: 0,
+      filter: { status: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -2857,7 +3018,12 @@ export const listRecoveryPlans: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RecoveryPlanSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListRecoveryPlans", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListRecoveryPlans",
+    input: { maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2894,7 +3060,12 @@ export const listRecoveryPlanSteps: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RecoveryPlanStep
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListRecoveryPlanSteps", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListRecoveryPlanSteps",
+    input: { recoveryPlanArn: 0, maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2973,7 +3144,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3003,7 +3178,24 @@ export const putLaunchAction: API.OperationMethod<
   PutLaunchActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /PutLaunchAction", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /PutLaunchAction",
+    input: {
+      resourceId: 0,
+      actionCode: 0,
+      order: 0,
+      actionId: 0,
+      optional: 0,
+      active: 0,
+      name: 0,
+      actionVersion: 0,
+      category: 0,
+      parameters: D.map({ value: 0, type: 0 }),
+      description: 0,
+    },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -3038,6 +3230,7 @@ export const reorderRecoveryPlanSteps: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ReorderRecoveryPlanSteps",
+    input: { recoveryPlanArn: 0, orderedStepArns: 0 },
     body: true,
   },
   errors: [
@@ -3070,7 +3263,12 @@ export const retryDataReplication: API.OperationMethod<
   RetryDataReplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /RetryDataReplication", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /RetryDataReplication",
+    input: { sourceServerID: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -3104,6 +3302,7 @@ export const retryRecoveryPlanExecutionStep: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /RetryRecoveryPlanExecutionStep",
+    input: { recoveryPlanExecutionStepArn: 0 },
     body: true,
   },
   errors: [
@@ -3138,7 +3337,12 @@ export const reverseReplication: API.OperationMethod<
   ReverseReplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /ReverseReplication", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ReverseReplication",
+    input: { recoveryInstanceID: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3170,7 +3374,12 @@ export const startFailbackLaunch: API.OperationMethod<
   StartFailbackLaunchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /StartFailbackLaunch", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /StartFailbackLaunch",
+    input: { recoveryInstanceIDs: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -3200,7 +3409,16 @@ export const startRecovery: API.OperationMethod<
   StartRecoveryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /StartRecovery", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /StartRecovery",
+    input: {
+      sourceServers: D.list({ sourceServerID: 0, recoverySnapshotID: 0 }),
+      isDrill: 0,
+      tags: 0,
+    },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -3235,7 +3453,13 @@ export const startRecoveryPlanExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /StartRecoveryPlanExecution",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      recoveryPlanArn: 0,
+      mode: 0,
+      clientToken: D.m({ idempotency: true }),
+      sourceServers: D.list({ sourceServerID: 0, recoverySnapshotID: 0 }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -3269,7 +3493,12 @@ export const startReplication: API.OperationMethod<
   StartReplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /StartReplication", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /StartReplication",
+    input: { sourceServerID: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -3302,6 +3531,11 @@ export const startSourceNetworkRecovery: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /StartSourceNetworkRecovery",
+    input: {
+      sourceNetworks: D.list({ sourceNetworkID: 0, cfnStackName: 0 }),
+      deployAsNew: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -3336,6 +3570,7 @@ export const startSourceNetworkReplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /StartSourceNetworkReplication",
+    input: { sourceNetworkID: 0 },
     output: { sourceNetwork: o_SourceNetwork },
     body: true,
   },
@@ -3366,7 +3601,12 @@ export const stopFailback: API.OperationMethod<
   StopFailbackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /StopFailback", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /StopFailback",
+    input: { recoveryInstanceID: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -3394,7 +3634,12 @@ export const stopReplication: API.OperationMethod<
   StopReplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /StopReplication", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /StopReplication",
+    input: { sourceServerID: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -3427,6 +3672,7 @@ export const stopSourceNetworkReplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /StopSourceNetworkReplication",
+    input: { sourceNetworkID: 0 },
     output: { sourceNetwork: o_SourceNetwork },
     body: true,
   },
@@ -3459,7 +3705,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3491,6 +3742,7 @@ export const terminateRecoveryInstances: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /TerminateRecoveryInstances",
+    input: { recoveryInstanceIDs: 0 },
     body: true,
   },
   errors: [
@@ -3524,7 +3776,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -3557,6 +3809,13 @@ export const updateFailbackReplicationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateFailbackReplicationConfiguration",
+    input: {
+      recoveryInstanceID: 0,
+      name: 0,
+      bandwidthThrottling: 0,
+      usePrivateIP: 0,
+      internetProtocol: 0,
+    },
     body: true,
   },
   errors: [
@@ -3591,6 +3850,18 @@ export const updateLaunchConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateLaunchConfiguration",
+    input: {
+      sourceServerID: 0,
+      name: 0,
+      launchDisposition: 0,
+      targetInstanceTypeRightSizingMethod: 0,
+      copyPrivateIp: 0,
+      copyTags: 0,
+      licensing: i_Licensing,
+      postLaunchEnabled: 0,
+      launchIntoInstanceProperties: { launchIntoEC2InstanceID: 0 },
+      recoveryMode: 0,
+    },
     body: true,
   },
   errors: [
@@ -3626,6 +3897,18 @@ export const updateLaunchConfigurationTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateLaunchConfigurationTemplate",
+    input: {
+      launchConfigurationTemplateID: 0,
+      launchDisposition: 0,
+      targetInstanceTypeRightSizingMethod: 0,
+      copyPrivateIp: 0,
+      copyTags: 0,
+      licensing: i_Licensing,
+      exportBucketArn: 0,
+      postLaunchEnabled: 0,
+      launchIntoSourceInstance: 0,
+      recoveryMode: 0,
+    },
     body: true,
   },
   errors: [
@@ -3659,7 +3942,12 @@ export const updateRecoveryPlan: API.OperationMethod<
   UpdateRecoveryPlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UpdateRecoveryPlan", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UpdateRecoveryPlan",
+    input: { recoveryPlanArn: 0, name: 0, description: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3695,6 +3983,12 @@ export const updateRecoveryPlanExecutionStep: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateRecoveryPlanExecutionStep",
+    input: {
+      recoveryPlanExecutionStepArn: 0,
+      status: 0,
+      servers: D.list(i_RecoveryPlanServer),
+      waitDurationMinutes: 0,
+    },
     body: true,
   },
   errors: [
@@ -3732,6 +4026,11 @@ export const updateRecoveryPlanStep: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateRecoveryPlanStep",
+    input: {
+      recoveryPlanStepArn: 0,
+      stepName: 0,
+      configuration: i_RecoveryPlanStepConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -3769,6 +4068,33 @@ export const updateReplicationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateReplicationConfiguration",
+    input: {
+      sourceServerID: 0,
+      name: 0,
+      stagingAreaSubnetId: 0,
+      associateDefaultSecurityGroup: 0,
+      replicationServersSecurityGroupsIDs: 0,
+      replicationServerInstanceType: 0,
+      useDedicatedReplicationServer: 0,
+      defaultLargeStagingDiskType: 0,
+      replicatedDisks: D.list({
+        deviceName: 0,
+        isBootDisk: 0,
+        stagingDiskType: 0,
+        iops: 0,
+        throughput: 0,
+        optimizedStagingDiskType: 0,
+      }),
+      ebsEncryption: 0,
+      ebsEncryptionKeyArn: 0,
+      bandwidthThrottling: 0,
+      dataPlaneRouting: 0,
+      createPublicIP: 0,
+      stagingAreaTags: 0,
+      pitPolicy: D.list(i_PITPolicyRule),
+      autoReplicateNewDisks: 0,
+      internetProtocol: 0,
+    },
     body: true,
   },
   errors: [
@@ -3805,6 +4131,25 @@ export const updateReplicationConfigurationTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateReplicationConfigurationTemplate",
+    input: {
+      replicationConfigurationTemplateID: 0,
+      arn: 0,
+      stagingAreaSubnetId: 0,
+      associateDefaultSecurityGroup: 0,
+      replicationServersSecurityGroupsIDs: 0,
+      replicationServerInstanceType: 0,
+      useDedicatedReplicationServer: 0,
+      defaultLargeStagingDiskType: 0,
+      ebsEncryption: 0,
+      ebsEncryptionKeyArn: 0,
+      bandwidthThrottling: 0,
+      dataPlaneRouting: 0,
+      createPublicIP: 0,
+      stagingAreaTags: 0,
+      pitPolicy: D.list(i_PITPolicyRule),
+      autoReplicateNewDisks: 0,
+      internetProtocol: 0,
+    },
     body: true,
   },
   errors: [
@@ -3820,6 +4165,22 @@ export const updateReplicationConfigurationTemplate: API.OperationMethod<
   operationName: "UpdateReplicationConfigurationTemplate",
 })) as any;
 
+const i_Licensing: D.LazyStruct = () => ({ osByol: 0 });
+const i_PITPolicyRule: D.LazyStruct = () => ({
+  ruleID: 0,
+  units: 0,
+  interval: 0,
+  retentionDuration: 0,
+  enabled: 0,
+});
+const i_RecoveryPlanServer: D.LazyStruct = () => ({
+  serverArn: 0,
+  impactLevel: 0,
+});
+const i_RecoveryPlanStepConfiguration: D.LazyStruct = () => ({
+  serverStepConfiguration: { servers: D.list(i_RecoveryPlanServer) },
+  waitStepConfiguration: { waitDurationMinutes: 0 },
+});
 const o_SourceNetwork: D.LazyStruct = () => ({
   replicationStatusDetails: D.secret,
   cfnStackName: D.secret,

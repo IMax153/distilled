@@ -1478,7 +1478,7 @@ export const associateDatasetKmsKey: API.OperationMethod<
   AssociateDatasetKmsKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DatasetIdentifier: 0, KmsKeyArn: 0 } },
   errors: [
     ConflictException,
     KmsAccessDeniedException,
@@ -1513,7 +1513,7 @@ export const deleteAlarmMuteRule: API.OperationMethod<
   DeleteAlarmMuteRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AlarmMuteRuleName: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1554,7 +1554,7 @@ export const deleteAlarms: API.OperationMethod<
   DeleteAlarmsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AlarmNames: 0 } },
   errors: [ResourceConflict, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1579,7 +1579,18 @@ export const deleteAnomalyDetector: API.OperationMethod<
   DeleteAnomalyDetectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AnomalyDetectorId: 0,
+      Namespace: 0,
+      MetricName: 0,
+      Dimensions: D.list(i_Dimension),
+      Stat: 0,
+      SingleMetricAnomalyDetector: i_SingleMetricAnomalyDetector,
+      MetricMathAnomalyDetector: i_MetricMathAnomalyDetector,
+    },
+  },
   errors: [
     InternalServiceFault,
     InvalidParameterCombinationException,
@@ -1608,7 +1619,7 @@ export const deleteDashboards: API.OperationMethod<
   DeleteDashboardsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DashboardNames: 0 } },
   errors: [
     ConflictException,
     InternalServiceFault,
@@ -1635,7 +1646,7 @@ export const deleteInsightRules: API.OperationMethod<
   DeleteInsightRulesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RuleNames: 0 } },
   errors: [InvalidParameterValueException, MissingRequiredParameterException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1656,7 +1667,7 @@ export const deleteMetricStream: API.OperationMethod<
   DeleteMetricStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     InternalServiceFault,
     InvalidParameterValueException,
@@ -1685,6 +1696,7 @@ export const describeAlarmContributors: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AlarmName: 0, NextToken: 0 },
     output: { AlarmContributors: D.list({ StateTransitionedTimestamp: D.ts }) },
   },
   errors: [InvalidNextToken, ResourceNotFoundException, ValidationException],
@@ -1715,6 +1727,17 @@ export const describeAlarmHistory: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AlarmName: 0,
+      AlarmContributorId: 0,
+      AlarmTypes: 0,
+      HistoryItemType: 0,
+      StartDate: 0,
+      EndDate: 0,
+      MaxRecords: 0,
+      NextToken: 0,
+      ScanBy: 0,
+    },
     output: { AlarmHistoryItems: D.list({ Timestamp: D.ts }) },
   },
   errors: [InvalidNextToken],
@@ -1748,6 +1771,17 @@ export const describeAlarms: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AlarmNames: 0,
+      AlarmNamePrefix: 0,
+      AlarmTypes: 0,
+      ChildrenOfAlarmName: 0,
+      ParentsOfAlarmName: 0,
+      StateValue: 0,
+      ActionPrefix: 0,
+      MaxRecords: 0,
+      NextToken: 0,
+    },
     output: {
       CompositeAlarms: D.list({
         AlarmConfigurationUpdatedTimestamp: D.ts,
@@ -1788,7 +1822,19 @@ export const describeAlarmsForMetric: API.OperationMethod<
   DescribeAlarmsForMetricError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { MetricAlarms: D.list(o_MetricAlarm) } },
+  descriptor: {
+    service: svc,
+    input: {
+      MetricName: 0,
+      Namespace: 0,
+      Statistic: 0,
+      ExtendedStatistic: 0,
+      Dimensions: D.list(i_Dimension),
+      Period: 0,
+      Unit: 0,
+    },
+    output: { MetricAlarms: D.list(o_MetricAlarm) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1818,6 +1864,15 @@ export const describeAnomalyDetectors: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AnomalyDetectorIds: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      Namespace: 0,
+      MetricName: 0,
+      Dimensions: D.list(i_Dimension),
+      AnomalyDetectorTypes: 0,
+    },
     output: {
       AnomalyDetectors: D.list({
         Configuration: {
@@ -1860,7 +1915,7 @@ export const describeInsightRules: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [InvalidNextToken, UnsupportedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1883,7 +1938,7 @@ export const disableAlarmActions: API.OperationMethod<
   DisableAlarmActionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AlarmNames: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1904,7 +1959,7 @@ export const disableInsightRules: API.OperationMethod<
   DisableInsightRulesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RuleNames: 0 } },
   errors: [InvalidParameterValueException, MissingRequiredParameterException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1957,7 +2012,7 @@ export const disassociateDatasetKmsKey: API.OperationMethod<
   DisassociateDatasetKmsKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DatasetIdentifier: 0 } },
   errors: [ConflictException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1974,7 +2029,7 @@ export const enableAlarmActions: API.OperationMethod<
   EnableAlarmActionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AlarmNames: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1996,7 +2051,7 @@ export const enableInsightRules: API.OperationMethod<
   EnableInsightRulesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RuleNames: 0 } },
   errors: [
     InvalidParameterValueException,
     LimitExceededException,
@@ -2039,6 +2094,7 @@ export const getAlarmMuteRule: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AlarmMuteRuleName: 0 },
     output: { StartDate: D.ts, ExpireDate: D.ts, LastUpdatedTimestamp: D.ts },
   },
   errors: [ResourceNotFoundException],
@@ -2065,7 +2121,7 @@ export const getDashboard: API.OperationMethod<
   GetDashboardError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DashboardName: 0 } },
   errors: [
     DashboardNotFoundError,
     InternalServiceFault,
@@ -2098,7 +2154,7 @@ export const getDataset: API.OperationMethod<
   GetDatasetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DatasetIdentifier: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2152,6 +2208,15 @@ export const getInsightRuleReport: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      RuleName: 0,
+      StartTime: 0,
+      EndTime: 0,
+      Period: 0,
+      MaxContributorCount: 0,
+      Metrics: 0,
+      OrderBy: 0,
+    },
     output: {
       Contributors: D.list({ Datapoints: D.list({ Timestamp: D.ts }) }),
       MetricDatapoints: D.list({ Timestamp: D.ts }),
@@ -2243,6 +2308,15 @@ export const getMetricData: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MetricDataQueries: D.list(i_MetricDataQuery),
+      StartTime: 0,
+      EndTime: 0,
+      NextToken: 0,
+      ScanBy: 0,
+      MaxDatapoints: 0,
+      LabelOptions: { Timezone: 0 },
+    },
     output: { MetricDataResults: D.list({ Timestamps: D.list(D.ts) }) },
   },
   errors: [InvalidNextToken],
@@ -2327,6 +2401,17 @@ export const getMetricStatistics: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Namespace: 0,
+      MetricName: 0,
+      Dimensions: D.list(i_Dimension),
+      StartTime: 0,
+      EndTime: 0,
+      Period: 0,
+      Statistics: 0,
+      ExtendedStatistics: 0,
+      Unit: 0,
+    },
     output: { Datapoints: D.list({ Timestamp: D.ts }) },
   },
   errors: [
@@ -2358,6 +2443,7 @@ export const getMetricStream: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0 },
     output: { CreationDate: D.ts, LastUpdateDate: D.ts },
   },
   errors: [
@@ -2396,7 +2482,11 @@ export const getMetricWidgetImage: API.OperationMethod<
   GetMetricWidgetImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { MetricWidgetImage: D.blob } },
+  descriptor: {
+    service: svc,
+    input: { MetricWidget: 0, OutputFormat: 0 },
+    output: { MetricWidgetImage: D.blob },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2415,7 +2505,7 @@ export const getOTelEnrichment: API.OperationMethod<
   GetOTelEnrichmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2450,6 +2540,7 @@ export const listAlarmMuteRules: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { AlarmName: 0, Statuses: 0, MaxRecords: 0, NextToken: 0 },
     output: {
       AlarmMuteRuleSummaries: D.list({
         ExpireDate: D.ts,
@@ -2492,6 +2583,7 @@ export const listDashboards: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DashboardNamePrefix: 0, NextToken: 0 },
     output: { DashboardEntries: D.list({ LastModified: D.ts }) },
   },
   errors: [InternalServiceFault, InvalidParameterValueException],
@@ -2521,7 +2613,10 @@ export const listManagedInsightRules: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceARN: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     InvalidNextToken,
     InvalidParameterValueException,
@@ -2564,7 +2659,18 @@ export const listMetrics: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Namespace: 0,
+      MetricName: 0,
+      Dimensions: D.list({ Name: 0, Value: 0 }),
+      NextToken: 0,
+      RecentlyActive: 0,
+      IncludeLinkedAccounts: 0,
+      OwningAccount: 0,
+    },
+  },
   errors: [InternalServiceFault, InvalidParameterValueException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2590,6 +2696,7 @@ export const listMetricStreams: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: { Entries: D.list({ CreationDate: D.ts, LastUpdateDate: D.ts }) },
   },
   errors: [
@@ -2623,7 +2730,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [
     InternalServiceFault,
     InvalidParameterValueException,
@@ -2676,7 +2783,18 @@ export const putAlarmMuteRule: API.OperationMethod<
   PutAlarmMuteRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      Rule: { Schedule: { Expression: 0, Duration: 0, Timezone: 0 } },
+      MuteTargets: { AlarmNames: 0 },
+      Tags: D.list(i_Tag),
+      StartDate: 0,
+      ExpireDate: 0,
+    },
+  },
   errors: [LimitExceededFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2707,7 +2825,22 @@ export const putAnomalyDetector: API.OperationMethod<
   PutAnomalyDetectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Namespace: 0,
+      MetricName: 0,
+      Dimensions: D.list(i_Dimension),
+      Stat: 0,
+      Configuration: {
+        ExcludedTimeRanges: D.list({ StartTime: 0, EndTime: 0 }),
+        MetricTimezone: 0,
+      },
+      MetricCharacteristics: { PeriodicSpikes: 0 },
+      SingleMetricAnomalyDetector: i_SingleMetricAnomalyDetector,
+      MetricMathAnomalyDetector: i_MetricMathAnomalyDetector,
+    },
+  },
   errors: [
     InternalServiceFault,
     InvalidParameterCombinationException,
@@ -2785,7 +2918,22 @@ export const putCompositeAlarm: API.OperationMethod<
   PutCompositeAlarmError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ActionsEnabled: 0,
+      AlarmActions: 0,
+      AlarmDescription: 0,
+      AlarmName: 0,
+      AlarmRule: 0,
+      InsufficientDataActions: 0,
+      OKActions: 0,
+      Tags: D.list(i_Tag),
+      ActionsSuppressor: 0,
+      ActionsSuppressorWaitPeriod: 0,
+      ActionsSuppressorExtensionPeriod: 0,
+    },
+  },
   errors: [LimitExceededFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2824,7 +2972,10 @@ export const putDashboard: API.OperationMethod<
   PutDashboardError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DashboardName: 0, DashboardBody: 0, Tags: D.list(i_Tag) },
+  },
   errors: [ConflictException, DashboardInvalidInputError, InternalServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2851,7 +3002,16 @@ export const putInsightRule: API.OperationMethod<
   PutInsightRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      RuleName: 0,
+      RuleState: 0,
+      RuleDefinition: 0,
+      Tags: D.list(i_Tag),
+      ApplyOnTransformedLogs: 0,
+    },
+  },
   errors: [
     InvalidParameterValueException,
     LimitExceededException,
@@ -2885,7 +3045,39 @@ export const putLogAlarm: API.OperationMethod<
   PutLogAlarmError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AlarmName: 0,
+      AlarmDescription: 0,
+      ScheduledQueryConfiguration: {
+        QueryString: 0,
+        LogGroupIdentifiers: 0,
+        QueryARN: 0,
+        ScheduledQueryRoleARN: 0,
+        ScheduleConfiguration: {
+          ScheduleExpression: 0,
+          StartTimeOffset: 0,
+          EndTimeOffset: 0,
+        },
+        AggregationExpression: 0,
+        Tags: D.list(i_Tag),
+      },
+      ActionLogLineCount: 0,
+      ActionLogLineRoleArn: 0,
+      ActionsEnabled: 0,
+      OKActions: 0,
+      AlarmActions: 0,
+      InsufficientDataActions: 0,
+      QueryResultsToEvaluate: 0,
+      QueryResultsToAlarm: 0,
+      Threshold: 0,
+      ComparisonOperator: 0,
+      TreatMissingData: 0,
+      Tags: D.list(i_Tag),
+      WarmUpConfiguration: i_WarmUpConfiguration,
+    },
+  },
   errors: [LimitExceededFault, ResourceConflict],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2912,7 +3104,16 @@ export const putManagedInsightRules: API.OperationMethod<
   PutManagedInsightRulesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ManagedRules: D.list({
+        TemplateName: 0,
+        ResourceARN: 0,
+        Tags: D.list(i_Tag),
+      }),
+    },
+  },
   errors: [InvalidParameterValueException, MissingRequiredParameterException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2977,7 +3178,39 @@ export const putMetricAlarm: API.OperationMethod<
   PutMetricAlarmError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AlarmName: 0,
+      AlarmDescription: 0,
+      ActionsEnabled: 0,
+      OKActions: 0,
+      AlarmActions: 0,
+      InsufficientDataActions: 0,
+      MetricName: 0,
+      Namespace: 0,
+      Statistic: 0,
+      ExtendedStatistic: 0,
+      Dimensions: D.list(i_Dimension),
+      Period: 0,
+      Unit: 0,
+      EvaluationPeriods: 0,
+      DatapointsToAlarm: 0,
+      Threshold: 0,
+      ComparisonOperator: 0,
+      TreatMissingData: 0,
+      EvaluateLowSampleCountPercentile: 0,
+      Metrics: D.list(i_MetricDataQuery),
+      Tags: D.list(i_Tag),
+      ThresholdMetricId: 0,
+      EvaluationWindow: { WallClockWindow: { Timezone: 0 }, SlidingWindow: {} },
+      WarmUpConfiguration: i_WarmUpConfiguration,
+      EvaluationCriteria: {
+        PromQLCriteria: { Query: 0, PendingPeriod: 0, RecoveryPeriod: 0 },
+      },
+      EvaluationInterval: 0,
+    },
+  },
   errors: [LimitExceededFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3051,7 +3284,18 @@ export const putMetricData: API.OperationMethod<
   PutMetricDataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Namespace: 0,
+      MetricData: D.list(i_MetricDatum),
+      EntityMetricData: D.list({
+        Entity: { KeyAttributes: 0, Attributes: 0 },
+        MetricData: D.list(i_MetricDatum),
+      }),
+      StrictEntityValidation: 0,
+    },
+  },
   errors: [
     InternalServiceFault,
     InvalidParameterCombinationException,
@@ -3113,7 +3357,23 @@ export const putMetricStream: API.OperationMethod<
   PutMetricStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      IncludeFilters: D.list(i_MetricStreamFilter),
+      ExcludeFilters: D.list(i_MetricStreamFilter),
+      FirehoseArn: 0,
+      RoleArn: 0,
+      OutputFormat: 0,
+      Tags: D.list(i_Tag),
+      StatisticsConfigurations: D.list({
+        IncludeMetrics: D.list({ Namespace: 0, MetricName: 0 }),
+        AdditionalStatistics: 0,
+      }),
+      IncludeLinkedAccountsMetrics: 0,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InternalServiceFault,
@@ -3157,7 +3417,10 @@ export const setAlarmState: API.OperationMethod<
   SetAlarmStateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AlarmName: 0, StateValue: 0, StateReason: 0, StateReasonData: 0 },
+  },
   errors: [InvalidFormatFault, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3178,7 +3441,7 @@ export const startMetricStreams: API.OperationMethod<
   StartMetricStreamsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Names: 0 } },
   errors: [
     InternalServiceFault,
     InvalidParameterValueException,
@@ -3206,7 +3469,7 @@ export const startOTelEnrichment: API.OperationMethod<
   StartOTelEnrichmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3227,7 +3490,7 @@ export const stopMetricStreams: API.OperationMethod<
   StopMetricStreamsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Names: 0 } },
   errors: [
     InternalServiceFault,
     InvalidParameterValueException,
@@ -3250,7 +3513,7 @@ export const stopOTelEnrichment: API.OperationMethod<
   StopOTelEnrichmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3290,7 +3553,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [
     ConcurrentModificationException,
     ConflictException,
@@ -3320,7 +3583,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [
     ConcurrentModificationException,
     ConflictException,
@@ -3333,6 +3596,51 @@ export const untagResource: API.OperationMethod<
   operationName: "UntagResource",
 })) as any;
 
+const i_Dimension: D.LazyStruct = () => ({ Name: 0, Value: 0 });
+const i_MetricDataQuery: D.LazyStruct = () => ({
+  Id: 0,
+  MetricStat: {
+    Metric: { Namespace: 0, MetricName: 0, Dimensions: D.list(i_Dimension) },
+    Period: 0,
+    Stat: 0,
+    Unit: 0,
+  },
+  Expression: 0,
+  Label: 0,
+  ReturnData: 0,
+  Period: 0,
+  AccountId: 0,
+});
+const i_MetricDatum: D.LazyStruct = () => ({
+  MetricName: 0,
+  Dimensions: D.list(i_Dimension),
+  Timestamp: 0,
+  Value: 0,
+  StatisticValues: { SampleCount: 0, Sum: 0, Minimum: 0, Maximum: 0 },
+  Values: 0,
+  Counts: 0,
+  Unit: 0,
+  StorageResolution: 0,
+});
+const i_MetricMathAnomalyDetector: D.LazyStruct = () => ({
+  MetricDataQueries: D.list(i_MetricDataQuery),
+});
+const i_MetricStreamFilter: D.LazyStruct = () => ({
+  Namespace: 0,
+  MetricNames: 0,
+});
+const i_SingleMetricAnomalyDetector: D.LazyStruct = () => ({
+  AccountId: 0,
+  Namespace: 0,
+  MetricName: 0,
+  Dimensions: D.list(i_Dimension),
+  Stat: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_WarmUpConfiguration: D.LazyStruct = () => ({
+  WarmUpPeriodDurationInMinutes: 0,
+  OnlyStartEvaluatingAfterWarmUpPeriodEnds: 0,
+});
 const o_MetricAlarm: D.LazyStruct = () => ({
   AlarmConfigurationUpdatedTimestamp: D.ts,
   StateUpdatedTimestamp: D.ts,

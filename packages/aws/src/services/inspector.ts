@@ -900,7 +900,10 @@ export const addAttributesToFindings: API.OperationMethod<
   AddAttributesToFindingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { findingArns: 0, attributes: D.list(i_Attribute) },
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -938,7 +941,10 @@ export const createAssessmentTarget: API.OperationMethod<
   CreateAssessmentTargetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { assessmentTargetName: 0, resourceGroupArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -973,7 +979,16 @@ export const createAssessmentTemplate: API.OperationMethod<
   CreateAssessmentTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      assessmentTargetArn: 0,
+      assessmentTemplateName: 0,
+      durationInSeconds: 0,
+      rulesPackageArns: 0,
+      userAttributesForFindings: D.list(i_Attribute),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -1006,7 +1021,7 @@ export const createExclusionsPreview: API.OperationMethod<
   CreateExclusionsPreviewError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { assessmentTemplateArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -1039,7 +1054,10 @@ export const createResourceGroup: API.OperationMethod<
   CreateResourceGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { resourceGroupTags: D.list({ key: 0, value: 0 }) },
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -1070,7 +1088,7 @@ export const deleteAssessmentRun: API.OperationMethod<
   DeleteAssessmentRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { assessmentRunArn: 0 } },
   errors: [
     AccessDeniedException,
     AssessmentRunInProgressException,
@@ -1102,7 +1120,7 @@ export const deleteAssessmentTarget: API.OperationMethod<
   DeleteAssessmentTargetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { assessmentTargetArn: 0 } },
   errors: [
     AccessDeniedException,
     AssessmentRunInProgressException,
@@ -1134,7 +1152,7 @@ export const deleteAssessmentTemplate: API.OperationMethod<
   DeleteAssessmentTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { assessmentTemplateArn: 0 } },
   errors: [
     AccessDeniedException,
     AssessmentRunInProgressException,
@@ -1164,6 +1182,7 @@ export const describeAssessmentRuns: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { assessmentRunArns: 0 },
     output: {
       assessmentRuns: D.list({
         createdAt: D.ts,
@@ -1197,6 +1216,7 @@ export const describeAssessmentTargets: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { assessmentTargetArns: 0 },
     output: { assessmentTargets: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
   },
   errors: [InternalException, InvalidInputException],
@@ -1221,6 +1241,7 @@ export const describeAssessmentTemplates: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { assessmentTemplateArns: 0 },
     output: { assessmentTemplates: D.list({ createdAt: D.ts }) },
   },
   errors: [InternalException, InvalidInputException],
@@ -1262,7 +1283,7 @@ export const describeExclusions: API.OperationMethod<
   DescribeExclusionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { exclusionArns: 0, locale: 0 } },
   errors: [InternalException, InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1284,6 +1305,7 @@ export const describeFindings: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { findingArns: 0, locale: 0 },
     output: { findings: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
   },
   errors: [InternalException, InvalidInputException],
@@ -1308,6 +1330,7 @@ export const describeResourceGroups: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { resourceGroupArns: 0 },
     output: { resourceGroups: D.list({ createdAt: D.ts }) },
   },
   errors: [InternalException, InvalidInputException],
@@ -1330,7 +1353,7 @@ export const describeRulesPackages: API.OperationMethod<
   DescribeRulesPackagesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { rulesPackageArns: 0, locale: 0 } },
   errors: [InternalException, InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1356,7 +1379,10 @@ export const getAssessmentReport: API.OperationMethod<
   GetAssessmentReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { assessmentRunArn: 0, reportFileFormat: 0, reportType: 0 },
+  },
   errors: [
     AccessDeniedException,
     AssessmentRunInProgressException,
@@ -1389,7 +1415,16 @@ export const getExclusionsPreview: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      assessmentTemplateArn: 0,
+      previewToken: 0,
+      nextToken: 0,
+      maxResults: 0,
+      locale: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -1422,7 +1457,7 @@ export const getTelemetryMetadata: API.OperationMethod<
   GetTelemetryMetadataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { assessmentRunArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -1451,7 +1486,15 @@ export const listAssessmentRunAgents: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      assessmentRunArn: 0,
+      filter: { agentHealths: 0, agentHealthCodes: 0 },
+      nextToken: 0,
+      maxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -1485,7 +1528,23 @@ export const listAssessmentRuns: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      assessmentTemplateArns: 0,
+      filter: {
+        namePattern: 0,
+        states: 0,
+        durationRange: i_DurationRange,
+        rulesPackageArns: 0,
+        startTimeRange: i_TimestampRange,
+        completionTimeRange: i_TimestampRange,
+        stateChangeTimeRange: i_TimestampRange,
+      },
+      nextToken: 0,
+      maxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -1519,7 +1578,14 @@ export const listAssessmentTargets: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      filter: { assessmentTargetNamePattern: 0 },
+      nextToken: 0,
+      maxResults: 0,
+    },
+  },
   errors: [AccessDeniedException, InternalException, InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1548,7 +1614,19 @@ export const listAssessmentTemplates: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      assessmentTargetArns: 0,
+      filter: {
+        namePattern: 0,
+        durationRange: i_DurationRange,
+        rulesPackageArns: 0,
+      },
+      nextToken: 0,
+      maxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -1584,6 +1662,7 @@ export const listEventSubscriptions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { resourceArn: 0, nextToken: 0, maxResults: 0 },
     output: {
       subscriptions: D.list({
         eventSubscriptions: D.list({ subscribedAt: D.ts }),
@@ -1622,7 +1701,10 @@ export const listExclusions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { assessmentRunArn: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -1656,7 +1738,24 @@ export const listFindings: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      assessmentRunArns: 0,
+      filter: {
+        agentIds: 0,
+        autoScalingGroups: 0,
+        ruleNames: 0,
+        severities: 0,
+        rulesPackageArns: 0,
+        attributes: D.list(i_Attribute),
+        userAttributes: D.list(i_Attribute),
+        creationTimeRange: i_TimestampRange,
+      },
+      nextToken: 0,
+      maxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -1688,7 +1787,7 @@ export const listRulesPackages: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0, maxResults: 0 } },
   errors: [AccessDeniedException, InternalException, InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1715,7 +1814,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -1745,7 +1844,10 @@ export const previewAgents: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { previewAgentsArn: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -1780,7 +1882,7 @@ export const registerCrossAccountAccessRole: API.OperationMethod<
   RegisterCrossAccountAccessRoleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { roleArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -1810,7 +1912,7 @@ export const removeAttributesFromFindings: API.OperationMethod<
   RemoveAttributesFromFindingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { findingArns: 0, attributeKeys: 0 } },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -1840,7 +1942,10 @@ export const setTagsForResource: API.OperationMethod<
   SetTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { resourceArn: 0, tags: D.list({ key: 0, value: 0 }) },
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -1874,7 +1979,10 @@ export const startAssessmentRun: API.OperationMethod<
   StartAssessmentRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { assessmentTemplateArn: 0, assessmentRunName: 0 },
+  },
   errors: [
     AccessDeniedException,
     AgentsAlreadyRunningAssessmentException,
@@ -1907,7 +2015,7 @@ export const stopAssessmentRun: API.OperationMethod<
   StopAssessmentRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { assessmentRunArn: 0, stopAction: 0 } },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -1938,7 +2046,10 @@ export const subscribeToEvent: API.OperationMethod<
   SubscribeToEventError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { resourceArn: 0, event: 0, topicArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -1969,7 +2080,10 @@ export const unsubscribeFromEvent: API.OperationMethod<
   UnsubscribeFromEventError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { resourceArn: 0, event: 0, topicArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -2002,7 +2116,14 @@ export const updateAssessmentTarget: API.OperationMethod<
   UpdateAssessmentTargetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      assessmentTargetArn: 0,
+      assessmentTargetName: 0,
+      resourceGroupArn: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -2014,3 +2135,7 @@ export const updateAssessmentTarget: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateAssessmentTarget",
 })) as any;
+
+const i_Attribute: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_DurationRange: D.LazyStruct = () => ({ minSeconds: 0, maxSeconds: 0 });
+const i_TimestampRange: D.LazyStruct = () => ({ beginDate: 0, endDate: 0 });

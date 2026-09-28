@@ -613,7 +613,7 @@ export const cancelQuery: API.OperationMethod<
   CancelQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { QueryId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -650,7 +650,47 @@ export const createScheduledQuery: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      QueryString: 0,
+      ScheduleConfiguration: { ScheduleExpression: 0 },
+      NotificationConfiguration: { SnsConfiguration: i_SnsConfiguration },
+      TargetConfiguration: {
+        TimestreamConfiguration: {
+          DatabaseName: 0,
+          TableName: 0,
+          TimeColumn: 0,
+          DimensionMappings: D.list({ Name: 0, DimensionValueType: 0 }),
+          MultiMeasureMappings: {
+            TargetMultiMeasureName: 0,
+            MultiMeasureAttributeMappings: D.list(
+              i_MultiMeasureAttributeMapping,
+            ),
+          },
+          MixedMeasureMappings: D.list({
+            MeasureName: 0,
+            SourceColumn: 0,
+            TargetMeasureName: 0,
+            MeasureValueType: 0,
+            MultiMeasureAttributeMappings: D.list(
+              i_MultiMeasureAttributeMapping,
+            ),
+          }),
+          MeasureNameColumn: 0,
+        },
+      },
+      ClientToken: D.m({ idempotency: true }),
+      ScheduledQueryExecutionRoleArn: 0,
+      Tags: D.list(i_Tag),
+      KmsKeyId: 0,
+      ErrorReportConfiguration: {
+        S3Configuration: {
+          BucketName: 0,
+          ObjectKeyPrefix: 0,
+          EncryptionOption: 0,
+        },
+      },
+    },
   },
   errors: [
     AccessDeniedException,
@@ -683,7 +723,7 @@ export const deleteScheduledQuery: API.OperationMethod<
   DeleteScheduledQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ScheduledQueryArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -714,7 +754,7 @@ export const describeAccountSettings: API.OperationMethod<
   DescribeAccountSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -756,7 +796,7 @@ export const describeEndpoints: API.OperationMethod<
   DescribeEndpointsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     InternalServerException,
     ThrottlingException,
@@ -787,6 +827,7 @@ export const describeScheduledQuery: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ScheduledQueryArn: 0 },
     output: {
       ScheduledQuery: {
         QueryString: D.secret,
@@ -832,7 +873,12 @@ export const executeScheduledQuery: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ScheduledQueryArn: 0,
+      InvocationTime: 0,
+      ClientToken: D.m({ idempotency: true }),
+      QueryInsights: { Mode: 0 },
+    },
   },
   errors: [
     AccessDeniedException,
@@ -867,6 +913,7 @@ export const listScheduledQueries: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
     output: {
       ScheduledQueries: D.list({
         CreationTime: D.ts,
@@ -909,7 +956,10 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Tag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceARN: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     InvalidEndpointException,
     ResourceNotFoundException,
@@ -945,7 +995,11 @@ export const prepareQuery: API.OperationMethod<
   PrepareQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { QueryString: D.secret } },
+  descriptor: {
+    service: svc,
+    input: { QueryString: 0, ValidateOnly: 0 },
+    output: { QueryString: D.secret },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1009,7 +1063,13 @@ export const query: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      QueryString: 0,
+      ClientToken: D.m({ idempotency: true }),
+      NextToken: 0,
+      MaxRows: 0,
+      QueryInsights: { Mode: 0 },
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1050,7 +1110,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [
     InvalidEndpointException,
     ResourceNotFoundException,
@@ -1078,7 +1138,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [
     InvalidEndpointException,
     ResourceNotFoundException,
@@ -1108,7 +1168,23 @@ export const updateAccountSettings: API.OperationMethod<
   UpdateAccountSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MaxQueryTCU: 0,
+      QueryPricingModel: 0,
+      QueryCompute: {
+        ComputeMode: 0,
+        ProvisionedCapacity: {
+          TargetQueryTCU: 0,
+          NotificationConfiguration: {
+            SnsConfiguration: i_SnsConfiguration,
+            RoleArn: 0,
+          },
+        },
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1138,7 +1214,7 @@ export const updateScheduledQuery: API.OperationMethod<
   UpdateScheduledQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ScheduledQueryArn: 0, State: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1152,6 +1228,13 @@ export const updateScheduledQuery: API.OperationMethod<
   operationName: "UpdateScheduledQuery",
 })) as any;
 
+const i_MultiMeasureAttributeMapping: D.LazyStruct = () => ({
+  SourceColumn: 0,
+  TargetMultiMeasureAttributeName: 0,
+  MeasureValueType: 0,
+});
+const i_SnsConfiguration: D.LazyStruct = () => ({ TopicArn: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_ScheduledQueryRunSummary: D.LazyStruct = () => ({
   InvocationTime: D.ts,
   TriggerTime: D.ts,

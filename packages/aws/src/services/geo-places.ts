@@ -1034,7 +1034,23 @@ export const autocomplete: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/autocomplete",
-    input: { Key: D.m({ query: "key" }) },
+    input: {
+      QueryText: 0,
+      MaxResults: 0,
+      BiasPosition: 0,
+      Filter: {
+        BoundingBox: 0,
+        Circle: i_FilterCircle,
+        IncludeCountries: 0,
+        IncludePlaceTypes: 0,
+      },
+      PostalCodeMode: 0,
+      AdditionalFeatures: 0,
+      Language: 0,
+      PoliticalView: 0,
+      IntendedUse: 0,
+      Key: D.m({ query: "key" }),
+    },
     output: {
       PricingBucket: D.m({ header: "x-amz-geo-pricing-bucket" }),
       ResultItems: D.list({
@@ -1097,7 +1113,30 @@ export const geocode: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/geocode",
-    input: { Key: D.m({ query: "key" }) },
+    input: {
+      QueryText: 0,
+      QueryComponents: {
+        Country: 0,
+        Region: 0,
+        SubRegion: 0,
+        Locality: 0,
+        District: 0,
+        Street: 0,
+        AddressNumber: 0,
+        PostalCode: 0,
+      },
+      MaxResults: 0,
+      BiasPosition: 0,
+      Filter: { IncludeCountries: 0, IncludePlaceTypes: 0 },
+      AdditionalFeatures: 0,
+      Language: 0,
+      PoliticalView: 0,
+      IntendedUse: 0,
+      Key: D.m({ query: "key" }),
+      PostalCodeMode: 0,
+      AddressTranslations: 0,
+      AddressNamesMode: 0,
+    },
     output: {
       PricingBucket: D.m({ header: "x-amz-geo-pricing-bucket" }),
       ResultItems: D.list({
@@ -1179,6 +1218,7 @@ export const getPlace: API.OperationMethod<
     service: svc,
     http: "GET /v2/place/{PlaceId}",
     input: {
+      PlaceId: 0,
       AdditionalFeatures: D.m({ query: "additional-features" }),
       Language: D.m({ query: "language" }),
       PoliticalView: D.m({ query: "political-view" }),
@@ -1240,7 +1280,19 @@ export const reverseGeocode: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/reverse-geocode",
-    input: { Key: D.m({ query: "key" }) },
+    input: {
+      QueryPosition: 0,
+      QueryRadius: 0,
+      MaxResults: 0,
+      Filter: { IncludePlaceTypes: 0 },
+      AdditionalFeatures: 0,
+      Language: 0,
+      PoliticalView: 0,
+      IntendedUse: 0,
+      Key: D.m({ query: "key" }),
+      Heading: 0,
+      AddressNamesMode: 0,
+    },
     output: {
       PricingBucket: D.m({ header: "x-amz-geo-pricing-bucket" }),
       ResultItems: D.list({
@@ -1291,7 +1343,27 @@ export const searchNearby: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/search-nearby",
-    input: { Key: D.m({ query: "key" }) },
+    input: {
+      QueryPosition: 0,
+      QueryRadius: 0,
+      MaxResults: 0,
+      Filter: {
+        BoundingBox: 0,
+        IncludeCountries: 0,
+        IncludeCategories: 0,
+        ExcludeCategories: 0,
+        IncludeBusinessChains: 0,
+        ExcludeBusinessChains: 0,
+        IncludeFoodTypes: 0,
+        ExcludeFoodTypes: 0,
+      },
+      AdditionalFeatures: 0,
+      Language: 0,
+      PoliticalView: 0,
+      IntendedUse: 0,
+      NextToken: 0,
+      Key: D.m({ query: "key" }),
+    },
     output: {
       PricingBucket: D.m({ header: "x-amz-geo-pricing-bucket" }),
       ResultItems: D.list({
@@ -1346,7 +1418,20 @@ export const searchText: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/search-text",
-    input: { Key: D.m({ query: "key" }) },
+    input: {
+      QueryText: 0,
+      QueryId: 0,
+      MaxResults: 0,
+      BiasPosition: 0,
+      Filter: { BoundingBox: 0, Circle: i_FilterCircle, IncludeCountries: 0 },
+      AdditionalFeatures: 0,
+      Language: 0,
+      PoliticalView: 0,
+      IntendedUse: 0,
+      NextToken: 0,
+      TravelMode: 0,
+      Key: D.m({ query: "key" }),
+    },
     output: {
       PricingBucket: D.m({ header: "x-amz-geo-pricing-bucket" }),
       ResultItems: D.list({
@@ -1401,7 +1486,19 @@ export const suggest: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/suggest",
-    input: { Key: D.m({ query: "key" }) },
+    input: {
+      QueryText: 0,
+      MaxResults: 0,
+      MaxQueryRefinements: 0,
+      BiasPosition: 0,
+      Filter: { BoundingBox: 0, Circle: i_FilterCircle, IncludeCountries: 0 },
+      AdditionalFeatures: 0,
+      Language: 0,
+      PoliticalView: 0,
+      IntendedUse: 0,
+      TravelMode: 0,
+      Key: D.m({ query: "key" }),
+    },
     output: {
       PricingBucket: D.m({ header: "x-amz-geo-pricing-bucket" }),
       ResultItems: D.list({
@@ -1445,6 +1542,7 @@ export const suggest: API.OperationMethod<
   operationName: "Suggest",
 })) as any;
 
+const i_FilterCircle: D.LazyStruct = () => ({ Center: 0, Radius: 0 });
 const o_AccessPoint: D.LazyStruct = () => ({ Label: D.secret });
 const o_AccessRestriction: D.LazyStruct = () => ({
   Categories: D.list(o_Category),

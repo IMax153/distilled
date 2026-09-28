@@ -1044,6 +1044,11 @@ export const createEncoderConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateEncoderConfiguration",
+    input: {
+      name: 0,
+      video: { width: 0, height: 0, framerate: 0, bitrate: 0 },
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1078,6 +1083,16 @@ export const createIngestConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateIngestConfiguration",
+    input: {
+      name: 0,
+      stageArn: 0,
+      userId: 0,
+      attributes: 0,
+      ingestProtocol: 0,
+      insecureIngest: 0,
+      redundantIngest: 0,
+      tags: 0,
+    },
     output: { ingestConfiguration: o_IngestConfiguration },
     body: true,
   },
@@ -1116,6 +1131,13 @@ export const createParticipantToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateParticipantToken",
+    input: {
+      stageArn: 0,
+      duration: 0,
+      userId: 0,
+      attributes: 0,
+      capabilities: 0,
+    },
     output: { participantToken: o_ParticipantToken },
     body: true,
   },
@@ -1150,6 +1172,18 @@ export const createStage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateStage",
+    input: {
+      name: 0,
+      participantTokenConfigurations: D.list({
+        duration: 0,
+        userId: 0,
+        attributes: 0,
+        capabilities: 0,
+      }),
+      tags: 0,
+      autoParticipantRecordingConfiguration:
+        i_AutoParticipantRecordingConfiguration,
+    },
     output: { participantTokens: D.list(o_ParticipantToken) },
     body: true,
   },
@@ -1188,6 +1222,7 @@ export const createStorageConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateStorageConfiguration",
+    input: { name: 0, s3: { bucketName: 0 }, tags: 0 },
     body: true,
   },
   errors: [
@@ -1225,6 +1260,7 @@ export const deleteEncoderConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteEncoderConfiguration",
+    input: { arn: 0 },
     body: true,
   },
   errors: [
@@ -1259,6 +1295,7 @@ export const deleteIngestConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteIngestConfiguration",
+    input: { arn: 0, force: 0 },
     body: true,
   },
   errors: [
@@ -1290,7 +1327,12 @@ export const deletePublicKey: API.OperationMethod<
   DeletePublicKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeletePublicKey", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeletePublicKey",
+    input: { arn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1322,7 +1364,12 @@ export const deleteStage: API.OperationMethod<
   DeleteStageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteStage", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteStage",
+    input: { arn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1360,6 +1407,7 @@ export const deleteStorageConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteStorageConfiguration",
+    input: { arn: 0 },
     body: true,
   },
   errors: [
@@ -1392,7 +1440,12 @@ export const disconnectParticipant: API.OperationMethod<
   DisconnectParticipantError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DisconnectParticipant", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DisconnectParticipant",
+    input: { stageArn: 0, participantId: 0, reason: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     PendingVerification,
@@ -1424,6 +1477,7 @@ export const getComposition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetComposition",
+    input: { arn: 0 },
     output: { composition: o_Composition },
     body: true,
   },
@@ -1460,6 +1514,7 @@ export const getEncoderConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetEncoderConfiguration",
+    input: { arn: 0 },
     body: true,
   },
   errors: [
@@ -1492,6 +1547,7 @@ export const getIngestConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetIngestConfiguration",
+    input: { arn: 0 },
     output: { ingestConfiguration: o_IngestConfiguration },
     body: true,
   },
@@ -1522,6 +1578,7 @@ export const getParticipant: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetParticipant",
+    input: { stageArn: 0, sessionId: 0, participantId: 0 },
     output: { participant: { firstJoinTime: D.ts } },
     body: true,
   },
@@ -1549,7 +1606,12 @@ export const getPublicKey: API.OperationMethod<
   GetPublicKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetPublicKey", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetPublicKey",
+    input: { arn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -1575,7 +1637,12 @@ export const getStage: API.OperationMethod<
   GetStageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetStage", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetStage",
+    input: { arn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -1604,6 +1671,7 @@ export const getStageSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetStageSession",
+    input: { stageArn: 0, sessionId: 0 },
     output: { stageSession: { startTime: D.ts, endTime: D.ts } },
     body: true,
   },
@@ -1637,6 +1705,7 @@ export const getStorageConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetStorageConfiguration",
+    input: { arn: 0 },
     body: true,
   },
   errors: [
@@ -1668,7 +1737,12 @@ export const importPublicKey: API.OperationMethod<
   ImportPublicKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /ImportPublicKey", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ImportPublicKey",
+    input: { publicKeyMaterial: 0, name: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1702,6 +1776,12 @@ export const listCompositions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListCompositions",
+    input: {
+      filterByStageArn: 0,
+      filterByEncoderConfigurationArn: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       compositions: D.list({
         destinations: D.list({ startTime: D.ts, endTime: D.ts }),
@@ -1749,6 +1829,7 @@ export const listEncoderConfigurations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListEncoderConfigurations",
+    input: { nextToken: 0, maxResults: 0 },
     body: true,
   },
   errors: [
@@ -1785,6 +1866,12 @@ export const listIngestConfigurations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListIngestConfigurations",
+    input: {
+      filterByStageArn: 0,
+      filterByState: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     body: true,
   },
   errors: [AccessDeniedException, ValidationException],
@@ -1817,6 +1904,13 @@ export const listParticipantEvents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListParticipantEvents",
+    input: {
+      stageArn: 0,
+      sessionId: 0,
+      participantId: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       events: D.list({
         eventTime: D.ts,
@@ -1854,6 +1948,7 @@ export const listParticipantReplicas: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListParticipantReplicas",
+    input: { sourceStageArn: 0, participantId: 0, nextToken: 0, maxResults: 0 },
     body: true,
   },
   errors: [AccessDeniedException, ValidationException],
@@ -1885,6 +1980,16 @@ export const listParticipants: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListParticipants",
+    input: {
+      stageArn: 0,
+      sessionId: 0,
+      filterByUserId: 0,
+      filterByPublished: 0,
+      filterByState: 0,
+      nextToken: 0,
+      maxResults: 0,
+      filterByRecordingState: 0,
+    },
     output: { participants: D.list({ firstJoinTime: D.ts }) },
     body: true,
   },
@@ -1913,7 +2018,12 @@ export const listPublicKeys: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   PublicKeySummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListPublicKeys", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListPublicKeys",
+    input: { nextToken: 0, maxResults: 0 },
+    body: true,
+  },
   errors: [AccessDeniedException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1943,7 +2053,12 @@ export const listStages: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListStages", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListStages",
+    input: { nextToken: 0, maxResults: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1977,6 +2092,7 @@ export const listStageSessions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListStageSessions",
+    input: { stageArn: 0, nextToken: 0, maxResults: 0 },
     output: { stageSessions: D.list({ startTime: D.ts, endTime: D.ts }) },
     body: true,
   },
@@ -2012,6 +2128,7 @@ export const listStorageConfigurations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListStorageConfigurations",
+    input: { nextToken: 0, maxResults: 0 },
     body: true,
   },
   errors: [
@@ -2046,7 +2163,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -2096,7 +2217,50 @@ export const startComposition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /StartComposition",
-    input: { idempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      stageArn: 0,
+      idempotencyToken: D.m({ idempotency: true }),
+      layout: {
+        grid: {
+          featuredParticipantAttribute: 0,
+          omitStoppedVideo: 0,
+          videoAspectRatio: 0,
+          videoFillMode: 0,
+          gridGap: 0,
+          participantOrderAttribute: 0,
+        },
+        pip: {
+          featuredParticipantAttribute: 0,
+          omitStoppedVideo: 0,
+          videoFillMode: 0,
+          gridGap: 0,
+          pipParticipantAttribute: 0,
+          pipBehavior: 0,
+          pipOffset: 0,
+          pipPosition: 0,
+          pipWidth: 0,
+          pipHeight: 0,
+          participantOrderAttribute: 0,
+        },
+      },
+      destinations: D.list({
+        name: 0,
+        channel: { channelArn: 0, encoderConfigurationArn: 0 },
+        s3: {
+          storageConfigurationArn: 0,
+          encoderConfigurationArns: 0,
+          recordingConfiguration: {
+            hlsConfiguration: { targetSegmentDurationSeconds: 0 },
+            format: 0,
+          },
+          thumbnailConfigurations: D.list({
+            targetIntervalSeconds: 0,
+            storage: 0,
+          }),
+        },
+      }),
+      tags: 0,
+    },
     output: { composition: o_Composition },
     body: true,
   },
@@ -2135,6 +2299,13 @@ export const startParticipantReplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /StartParticipantReplication",
+    input: {
+      sourceStageArn: 0,
+      destinationStageArn: 0,
+      participantId: 0,
+      reconnectWindowSeconds: 0,
+      attributes: 0,
+    },
     output: {
       accessControlAllowOrigin: D.m({ header: "Access-Control-Allow-Origin" }),
       accessControlExposeHeaders: D.m({
@@ -2180,7 +2351,12 @@ export const stopComposition: API.OperationMethod<
   StopCompositionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /StopComposition", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /StopComposition",
+    input: { arn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2212,6 +2388,7 @@ export const stopParticipantReplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /StopParticipantReplication",
+    input: { sourceStageArn: 0, destinationStageArn: 0, participantId: 0 },
     output: {
       accessControlAllowOrigin: D.m({ header: "Access-Control-Allow-Origin" }),
       accessControlExposeHeaders: D.m({
@@ -2251,7 +2428,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -2281,7 +2463,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -2313,6 +2495,7 @@ export const updateIngestConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateIngestConfiguration",
+    input: { arn: 0, stageArn: 0, redundantIngest: 0 },
     output: { ingestConfiguration: o_IngestConfiguration },
     body: true,
   },
@@ -2346,7 +2529,17 @@ export const updateStage: API.OperationMethod<
   UpdateStageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UpdateStage", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UpdateStage",
+    input: {
+      arn: 0,
+      name: 0,
+      autoParticipantRecordingConfiguration:
+        i_AutoParticipantRecordingConfiguration,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2361,6 +2554,18 @@ export const updateStage: API.OperationMethod<
   operationName: "UpdateStage",
 })) as any;
 
+const i_AutoParticipantRecordingConfiguration: D.LazyStruct = () => ({
+  storageConfigurationArn: 0,
+  mediaTypes: 0,
+  thumbnailConfiguration: {
+    targetIntervalSeconds: 0,
+    storage: 0,
+    recordingMode: 0,
+  },
+  recordingReconnectWindowSeconds: 0,
+  hlsConfiguration: { targetSegmentDurationSeconds: 0 },
+  recordParticipantReplicas: 0,
+});
 const o_Composition: D.LazyStruct = () => ({
   destinations: D.list({ startTime: D.ts, endTime: D.ts }),
   startTime: D.ts,

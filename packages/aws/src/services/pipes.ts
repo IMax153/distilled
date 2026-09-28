@@ -864,6 +864,77 @@ export const createPipe: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/pipes/{Name}",
+    input: {
+      Name: 0,
+      Description: 0,
+      DesiredState: 0,
+      Source: 0,
+      SourceParameters: {
+        FilterCriteria: i_FilterCriteria,
+        KinesisStreamParameters: {
+          BatchSize: 0,
+          DeadLetterConfig: i_DeadLetterConfig,
+          OnPartialBatchItemFailure: 0,
+          MaximumBatchingWindowInSeconds: 0,
+          MaximumRecordAgeInSeconds: 0,
+          MaximumRetryAttempts: 0,
+          ParallelizationFactor: 0,
+          StartingPosition: 0,
+          StartingPositionTimestamp: 0,
+        },
+        DynamoDBStreamParameters: {
+          BatchSize: 0,
+          DeadLetterConfig: i_DeadLetterConfig,
+          OnPartialBatchItemFailure: 0,
+          MaximumBatchingWindowInSeconds: 0,
+          MaximumRecordAgeInSeconds: 0,
+          MaximumRetryAttempts: 0,
+          ParallelizationFactor: 0,
+          StartingPosition: 0,
+        },
+        SqsQueueParameters: { BatchSize: 0, MaximumBatchingWindowInSeconds: 0 },
+        ActiveMQBrokerParameters: {
+          Credentials: i_MQBrokerAccessCredentials,
+          QueueName: 0,
+          BatchSize: 0,
+          MaximumBatchingWindowInSeconds: 0,
+        },
+        RabbitMQBrokerParameters: {
+          Credentials: i_MQBrokerAccessCredentials,
+          QueueName: 0,
+          VirtualHost: 0,
+          BatchSize: 0,
+          MaximumBatchingWindowInSeconds: 0,
+        },
+        ManagedStreamingKafkaParameters: {
+          TopicName: 0,
+          StartingPosition: 0,
+          BatchSize: 0,
+          MaximumBatchingWindowInSeconds: 0,
+          ConsumerGroupID: 0,
+          Credentials: i_MSKAccessCredentials,
+        },
+        SelfManagedKafkaParameters: {
+          TopicName: 0,
+          StartingPosition: 0,
+          AdditionalBootstrapServers: 0,
+          BatchSize: 0,
+          MaximumBatchingWindowInSeconds: 0,
+          ConsumerGroupID: 0,
+          Credentials: i_SelfManagedKafkaAccessConfigurationCredentials,
+          ServerRootCaCertificate: 0,
+          Vpc: i_SelfManagedKafkaAccessConfigurationVpc,
+        },
+      },
+      Enrichment: 0,
+      EnrichmentParameters: i_PipeEnrichmentParameters,
+      Target: 0,
+      TargetParameters: i_PipeTargetParameters,
+      RoleArn: 0,
+      Tags: 0,
+      LogConfiguration: i_PipeLogConfigurationParameters,
+      KmsKeyIdentifier: 0,
+    },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
     body: true,
   },
@@ -899,6 +970,7 @@ export const deletePipe: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/pipes/{Name}",
+    input: { Name: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [
@@ -931,6 +1003,7 @@ export const describePipe: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/pipes/{Name}",
+    input: { Name: 0 },
     output: {
       Description: D.secret,
       SourceParameters: {
@@ -1077,6 +1150,7 @@ export const listTagsForResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
     output: { tags: D.map(D.secret) },
   },
   errors: [InternalException, NotFoundException, ValidationException],
@@ -1104,6 +1178,7 @@ export const startPipe: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/pipes/{Name}/start",
+    input: { Name: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [
@@ -1137,6 +1212,7 @@ export const stopPipe: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/pipes/{Name}/stop",
+    input: { Name: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [
@@ -1178,7 +1254,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [InternalException, NotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1202,7 +1283,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [InternalException, NotFoundException, ValidationException],
   protocol: AwsProtocol,
@@ -1241,6 +1322,62 @@ export const updatePipe: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/pipes/{Name}",
+    input: {
+      Name: 0,
+      Description: 0,
+      DesiredState: 0,
+      SourceParameters: {
+        FilterCriteria: i_FilterCriteria,
+        KinesisStreamParameters: {
+          BatchSize: 0,
+          DeadLetterConfig: i_DeadLetterConfig,
+          OnPartialBatchItemFailure: 0,
+          MaximumBatchingWindowInSeconds: 0,
+          MaximumRecordAgeInSeconds: 0,
+          MaximumRetryAttempts: 0,
+          ParallelizationFactor: 0,
+        },
+        DynamoDBStreamParameters: {
+          BatchSize: 0,
+          DeadLetterConfig: i_DeadLetterConfig,
+          OnPartialBatchItemFailure: 0,
+          MaximumBatchingWindowInSeconds: 0,
+          MaximumRecordAgeInSeconds: 0,
+          MaximumRetryAttempts: 0,
+          ParallelizationFactor: 0,
+        },
+        SqsQueueParameters: { BatchSize: 0, MaximumBatchingWindowInSeconds: 0 },
+        ActiveMQBrokerParameters: {
+          Credentials: i_MQBrokerAccessCredentials,
+          BatchSize: 0,
+          MaximumBatchingWindowInSeconds: 0,
+        },
+        RabbitMQBrokerParameters: {
+          Credentials: i_MQBrokerAccessCredentials,
+          BatchSize: 0,
+          MaximumBatchingWindowInSeconds: 0,
+        },
+        ManagedStreamingKafkaParameters: {
+          BatchSize: 0,
+          Credentials: i_MSKAccessCredentials,
+          MaximumBatchingWindowInSeconds: 0,
+        },
+        SelfManagedKafkaParameters: {
+          BatchSize: 0,
+          MaximumBatchingWindowInSeconds: 0,
+          Credentials: i_SelfManagedKafkaAccessConfigurationCredentials,
+          ServerRootCaCertificate: 0,
+          Vpc: i_SelfManagedKafkaAccessConfigurationVpc,
+        },
+      },
+      Enrichment: 0,
+      EnrichmentParameters: i_PipeEnrichmentParameters,
+      Target: 0,
+      TargetParameters: i_PipeTargetParameters,
+      RoleArn: 0,
+      LogConfiguration: i_PipeLogConfigurationParameters,
+      KmsKeyIdentifier: 0,
+    },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
     body: true,
   },
@@ -1255,3 +1392,153 @@ export const updatePipe: API.OperationMethod<
   retry: Retry,
   operationName: "UpdatePipe",
 })) as any;
+
+const i_DeadLetterConfig: D.LazyStruct = () => ({ Arn: 0 });
+const i_FilterCriteria: D.LazyStruct = () => ({
+  Filters: D.list({ Pattern: 0 }),
+});
+const i_MQBrokerAccessCredentials: D.LazyStruct = () => ({ BasicAuth: 0 });
+const i_MSKAccessCredentials: D.LazyStruct = () => ({
+  SaslScram512Auth: 0,
+  ClientCertificateTlsAuth: 0,
+});
+const i_PipeEnrichmentParameters: D.LazyStruct = () => ({
+  InputTemplate: 0,
+  HttpParameters: {
+    PathParameterValues: 0,
+    HeaderParameters: 0,
+    QueryStringParameters: 0,
+  },
+});
+const i_PipeLogConfigurationParameters: D.LazyStruct = () => ({
+  S3LogDestination: {
+    BucketName: 0,
+    BucketOwner: 0,
+    OutputFormat: 0,
+    Prefix: 0,
+  },
+  FirehoseLogDestination: { DeliveryStreamArn: 0 },
+  CloudwatchLogsLogDestination: { LogGroupArn: 0 },
+  Level: 0,
+  IncludeExecutionData: 0,
+});
+const i_PipeTargetParameters: D.LazyStruct = () => ({
+  InputTemplate: 0,
+  LambdaFunctionParameters: { InvocationType: 0 },
+  StepFunctionStateMachineParameters: { InvocationType: 0 },
+  KinesisStreamParameters: { PartitionKey: 0 },
+  EcsTaskParameters: {
+    TaskDefinitionArn: 0,
+    TaskCount: 0,
+    LaunchType: 0,
+    NetworkConfiguration: {
+      awsvpcConfiguration: { Subnets: 0, SecurityGroups: 0, AssignPublicIp: 0 },
+    },
+    PlatformVersion: 0,
+    Group: 0,
+    CapacityProviderStrategy: D.list({
+      capacityProvider: 0,
+      weight: 0,
+      base: 0,
+    }),
+    EnableECSManagedTags: 0,
+    EnableExecuteCommand: 0,
+    PlacementConstraints: D.list({ type: 0, expression: 0 }),
+    PlacementStrategy: D.list({ type: 0, field: 0 }),
+    PropagateTags: 0,
+    ReferenceId: 0,
+    Overrides: {
+      ContainerOverrides: D.list({
+        Command: 0,
+        Cpu: 0,
+        Environment: D.list({ name: 0, value: 0 }),
+        EnvironmentFiles: D.list({ type: 0, value: 0 }),
+        Memory: 0,
+        MemoryReservation: 0,
+        Name: 0,
+        ResourceRequirements: D.list({ type: 0, value: 0 }),
+      }),
+      Cpu: 0,
+      EphemeralStorage: { sizeInGiB: 0 },
+      ExecutionRoleArn: 0,
+      InferenceAcceleratorOverrides: D.list({ deviceName: 0, deviceType: 0 }),
+      Memory: 0,
+      TaskRoleArn: 0,
+    },
+    Tags: D.list({ Key: 0, Value: 0 }),
+  },
+  BatchJobParameters: {
+    JobDefinition: 0,
+    JobName: 0,
+    ArrayProperties: { Size: 0 },
+    RetryStrategy: { Attempts: 0 },
+    ContainerOverrides: {
+      Command: 0,
+      Environment: D.list({ Name: 0, Value: 0 }),
+      InstanceType: 0,
+      ResourceRequirements: D.list({ Type: 0, Value: 0 }),
+    },
+    DependsOn: D.list({ JobId: 0, Type: 0 }),
+    Parameters: 0,
+  },
+  SqsQueueParameters: { MessageGroupId: 0, MessageDeduplicationId: 0 },
+  HttpParameters: {
+    PathParameterValues: 0,
+    HeaderParameters: 0,
+    QueryStringParameters: 0,
+  },
+  RedshiftDataParameters: {
+    SecretManagerArn: 0,
+    Database: 0,
+    DbUser: 0,
+    StatementName: 0,
+    WithEvent: 0,
+    Sqls: 0,
+  },
+  SageMakerPipelineParameters: {
+    PipelineParameterList: D.list({ Name: 0, Value: 0 }),
+  },
+  EventBridgeEventBusParameters: {
+    EndpointId: 0,
+    DetailType: 0,
+    Source: 0,
+    Resources: 0,
+    Time: 0,
+  },
+  CloudWatchLogsParameters: { LogStreamName: 0, Timestamp: 0 },
+  TimestreamParameters: {
+    TimeValue: 0,
+    EpochTimeUnit: 0,
+    TimeFieldType: 0,
+    TimestampFormat: 0,
+    VersionValue: 0,
+    DimensionMappings: D.list({
+      DimensionValue: 0,
+      DimensionValueType: 0,
+      DimensionName: 0,
+    }),
+    SingleMeasureMappings: D.list({
+      MeasureValue: 0,
+      MeasureValueType: 0,
+      MeasureName: 0,
+    }),
+    MultiMeasureMappings: D.list({
+      MultiMeasureName: 0,
+      MultiMeasureAttributeMappings: D.list({
+        MeasureValue: 0,
+        MeasureValueType: 0,
+        MultiMeasureAttributeName: 0,
+      }),
+    }),
+  },
+});
+const i_SelfManagedKafkaAccessConfigurationCredentials: D.LazyStruct = () => ({
+  BasicAuth: 0,
+  SaslScram512Auth: 0,
+  SaslScram256Auth: 0,
+  ClientCertificateTlsAuth: 0,
+});
+const i_SelfManagedKafkaAccessConfigurationVpc: D.LazyStruct = () => ({
+  Subnets: 0,
+  SecurityGroup: 0,
+});

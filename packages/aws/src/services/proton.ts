@@ -1508,6 +1508,7 @@ export const acceptEnvironmentAccountConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { id: 0 },
     output: { environmentAccountConnection: o_EnvironmentAccountConnection },
   },
   errors: [
@@ -1544,7 +1545,11 @@ export const cancelComponentDeployment: API.OperationMethod<
   CancelComponentDeploymentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { component: o_Component } },
+  descriptor: {
+    service: svc,
+    input: { componentName: 0 },
+    output: { component: o_Component },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1586,7 +1591,11 @@ export const cancelEnvironmentDeployment: API.OperationMethod<
   CancelEnvironmentDeploymentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { environment: o_Environment } },
+  descriptor: {
+    service: svc,
+    input: { environmentName: 0 },
+    output: { environment: o_Environment },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1631,7 +1640,11 @@ export const cancelServiceInstanceDeployment: API.OperationMethod<
   CancelServiceInstanceDeploymentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { serviceInstance: o_ServiceInstance } },
+  descriptor: {
+    service: svc,
+    input: { serviceInstanceName: 0, serviceName: 0 },
+    output: { serviceInstance: o_ServiceInstance },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1676,7 +1689,11 @@ export const cancelServicePipelineDeployment: API.OperationMethod<
   CancelServicePipelineDeploymentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { pipeline: o_ServicePipeline } },
+  descriptor: {
+    service: svc,
+    input: { serviceName: 0 },
+    output: { pipeline: o_ServicePipeline },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1714,7 +1731,18 @@ export const createComponent: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      serviceName: 0,
+      serviceInstanceName: 0,
+      environmentName: 0,
+      templateFile: 0,
+      manifest: 0,
+      serviceSpec: 0,
+      tags: D.list(i_Tag),
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { component: o_Component },
   },
   errors: [
@@ -1760,7 +1788,24 @@ export const createEnvironment: API.OperationMethod<
   CreateEnvironmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { environment: o_Environment } },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      templateName: 0,
+      templateMajorVersion: 0,
+      templateMinorVersion: 0,
+      description: 0,
+      spec: 0,
+      protonServiceRoleArn: 0,
+      environmentAccountConnectionId: 0,
+      tags: D.list(i_Tag),
+      provisioningRepository: i_RepositoryBranchInput,
+      componentRoleArn: 0,
+      codebuildRoleArn: 0,
+    },
+    output: { environment: o_Environment },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1799,7 +1844,15 @@ export const createEnvironmentAccountConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      managementAccountId: 0,
+      roleArn: 0,
+      environmentName: 0,
+      tags: D.list(i_Tag),
+      componentRoleArn: 0,
+      codebuildRoleArn: 0,
+    },
     output: { environmentAccountConnection: o_EnvironmentAccountConnection },
   },
   errors: [
@@ -1845,6 +1898,14 @@ export const createEnvironmentTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      name: 0,
+      displayName: 0,
+      description: 0,
+      encryptionKey: 0,
+      provisioning: 0,
+      tags: D.list(i_Tag),
+    },
     output: { environmentTemplate: o_EnvironmentTemplate },
   },
   errors: [
@@ -1882,7 +1943,14 @@ export const createEnvironmentTemplateVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      templateName: 0,
+      description: 0,
+      majorVersion: 0,
+      source: i_TemplateVersionSourceInput,
+      tags: D.list(i_Tag),
+    },
     output: { environmentTemplateVersion: o_EnvironmentTemplateVersion },
   },
   errors: [
@@ -1922,7 +1990,16 @@ export const createRepository: API.OperationMethod<
   CreateRepositoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      provider: 0,
+      name: 0,
+      connectionArn: 0,
+      encryptionKey: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1957,7 +2034,22 @@ export const createService: API.OperationMethod<
   CreateServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { service: o_Service } },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      templateName: 0,
+      templateMajorVersion: 0,
+      templateMinorVersion: 0,
+      spec: 0,
+      repositoryConnectionArn: 0,
+      repositoryId: 0,
+      branchName: 0,
+      tags: D.list(i_Tag),
+    },
+    output: { service: o_Service },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1991,7 +2083,15 @@ export const createServiceInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      serviceName: 0,
+      spec: 0,
+      templateMajorVersion: 0,
+      templateMinorVersion: 0,
+      tags: D.list(i_Tag),
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { serviceInstance: o_ServiceInstance },
   },
   errors: [
@@ -2024,7 +2124,16 @@ export const createServiceSyncConfig: API.OperationMethod<
   CreateServiceSyncConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      serviceName: 0,
+      repositoryProvider: 0,
+      repositoryName: 0,
+      branch: 0,
+      filePath: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2060,7 +2169,18 @@ export const createServiceTemplate: API.OperationMethod<
   CreateServiceTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { serviceTemplate: o_ServiceTemplate } },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      displayName: 0,
+      description: 0,
+      encryptionKey: 0,
+      pipelineProvisioning: 0,
+      tags: D.list(i_Tag),
+    },
+    output: { serviceTemplate: o_ServiceTemplate },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2096,7 +2216,18 @@ export const createServiceTemplateVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      templateName: 0,
+      description: 0,
+      majorVersion: 0,
+      source: i_TemplateVersionSourceInput,
+      compatibleEnvironmentTemplates: D.list(
+        i_CompatibleEnvironmentTemplateInput,
+      ),
+      tags: D.list(i_Tag),
+      supportedComponentSources: 0,
+    },
     output: { serviceTemplateVersion: o_ServiceTemplateVersion },
   },
   errors: [
@@ -2135,7 +2266,17 @@ export const createTemplateSyncConfig: API.OperationMethod<
   CreateTemplateSyncConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      templateName: 0,
+      templateType: 0,
+      repositoryProvider: 0,
+      repositoryName: 0,
+      branch: 0,
+      subdirectory: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2170,7 +2311,11 @@ export const deleteComponent: API.OperationMethod<
   DeleteComponentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { component: o_Component } },
+  descriptor: {
+    service: svc,
+    input: { name: 0 },
+    output: { component: o_Component },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2200,7 +2345,11 @@ export const deleteDeployment: API.OperationMethod<
   DeleteDeploymentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { deployment: o_Deployment } },
+  descriptor: {
+    service: svc,
+    input: { id: 0 },
+    output: { deployment: o_Deployment },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2230,7 +2379,11 @@ export const deleteEnvironment: API.OperationMethod<
   DeleteEnvironmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { environment: o_Environment } },
+  descriptor: {
+    service: svc,
+    input: { name: 0 },
+    output: { environment: o_Environment },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2270,6 +2423,7 @@ export const deleteEnvironmentAccountConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { id: 0 },
     output: { environmentAccountConnection: o_EnvironmentAccountConnection },
   },
   errors: [
@@ -2304,6 +2458,7 @@ export const deleteEnvironmentTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { name: 0 },
     output: { environmentTemplate: o_EnvironmentTemplate },
   },
   errors: [
@@ -2344,6 +2499,7 @@ export const deleteEnvironmentTemplateVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { templateName: 0, majorVersion: 0, minorVersion: 0 },
     output: { environmentTemplateVersion: o_EnvironmentTemplateVersion },
   },
   errors: [
@@ -2376,7 +2532,7 @@ export const deleteRepository: API.OperationMethod<
   DeleteRepositoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { provider: 0, name: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2414,7 +2570,11 @@ export const deleteService: API.OperationMethod<
   DeleteServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { service: o_Service } },
+  descriptor: {
+    service: svc,
+    input: { name: 0 },
+    output: { service: o_Service },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2445,7 +2605,7 @@ export const deleteServiceSyncConfig: API.OperationMethod<
   DeleteServiceSyncConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { serviceName: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2477,7 +2637,11 @@ export const deleteServiceTemplate: API.OperationMethod<
   DeleteServiceTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { serviceTemplate: o_ServiceTemplate } },
+  descriptor: {
+    service: svc,
+    input: { name: 0 },
+    output: { serviceTemplate: o_ServiceTemplate },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2519,6 +2683,7 @@ export const deleteServiceTemplateVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { templateName: 0, majorVersion: 0, minorVersion: 0 },
     output: { serviceTemplateVersion: o_ServiceTemplateVersion },
   },
   errors: [
@@ -2551,7 +2716,7 @@ export const deleteTemplateSyncConfig: API.OperationMethod<
   DeleteTemplateSyncConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { templateName: 0, templateType: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2581,7 +2746,7 @@ export const getAccountSettings: API.OperationMethod<
   GetAccountSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2614,7 +2779,11 @@ export const getComponent: API.OperationMethod<
   GetComponentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { component: o_Component } },
+  descriptor: {
+    service: svc,
+    input: { name: 0 },
+    output: { component: o_Component },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2643,7 +2812,17 @@ export const getDeployment: API.OperationMethod<
   GetDeploymentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { deployment: o_Deployment } },
+  descriptor: {
+    service: svc,
+    input: {
+      id: 0,
+      environmentName: 0,
+      serviceName: 0,
+      serviceInstanceName: 0,
+      componentName: 0,
+    },
+    output: { deployment: o_Deployment },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2672,7 +2851,11 @@ export const getEnvironment: API.OperationMethod<
   GetEnvironmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { environment: o_Environment } },
+  descriptor: {
+    service: svc,
+    input: { name: 0 },
+    output: { environment: o_Environment },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2706,6 +2889,7 @@ export const getEnvironmentAccountConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { id: 0 },
     output: { environmentAccountConnection: o_EnvironmentAccountConnection },
   },
   errors: [
@@ -2738,6 +2922,7 @@ export const getEnvironmentTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { name: 0 },
     output: { environmentTemplate: o_EnvironmentTemplate },
   },
   errors: [
@@ -2770,6 +2955,7 @@ export const getEnvironmentTemplateVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { templateName: 0, majorVersion: 0, minorVersion: 0 },
     output: { environmentTemplateVersion: o_EnvironmentTemplateVersion },
   },
   errors: [
@@ -2800,7 +2986,7 @@ export const getRepository: API.OperationMethod<
   GetRepositoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { provider: 0, name: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2838,6 +3024,7 @@ export const getRepositorySyncStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { repositoryName: 0, repositoryProvider: 0, branch: 0, syncType: 0 },
     output: { latestSync: { startedAt: D.ts, events: D.list({ time: D.ts }) } },
   },
   errors: [
@@ -2880,7 +3067,7 @@ export const getResourcesSummary: API.OperationMethod<
   GetResourcesSummaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2908,7 +3095,11 @@ export const getService: API.OperationMethod<
   GetServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { service: o_Service } },
+  descriptor: {
+    service: svc,
+    input: { name: 0 },
+    output: { service: o_Service },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2938,7 +3129,11 @@ export const getServiceInstance: API.OperationMethod<
   GetServiceInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { serviceInstance: o_ServiceInstance } },
+  descriptor: {
+    service: svc,
+    input: { name: 0, serviceName: 0 },
+    output: { serviceInstance: o_ServiceInstance },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2969,6 +3164,7 @@ export const getServiceInstanceSyncStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { serviceName: 0, serviceInstanceName: 0 },
     output: {
       latestSync: o_ResourceSyncAttempt,
       latestSuccessfulSync: o_ResourceSyncAttempt,
@@ -3004,6 +3200,7 @@ export const getServiceSyncBlockerSummary: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { serviceName: 0, serviceInstanceName: 0 },
     output: {
       serviceSyncBlockerSummary: { latestBlockers: D.list(o_SyncBlocker) },
     },
@@ -3036,7 +3233,7 @@ export const getServiceSyncConfig: API.OperationMethod<
   GetServiceSyncConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { serviceName: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3065,7 +3262,11 @@ export const getServiceTemplate: API.OperationMethod<
   GetServiceTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { serviceTemplate: o_ServiceTemplate } },
+  descriptor: {
+    service: svc,
+    input: { name: 0 },
+    output: { serviceTemplate: o_ServiceTemplate },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3096,6 +3297,7 @@ export const getServiceTemplateVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { templateName: 0, majorVersion: 0, minorVersion: 0 },
     output: { serviceTemplateVersion: o_ServiceTemplateVersion },
   },
   errors: [
@@ -3126,7 +3328,7 @@ export const getTemplateSyncConfig: API.OperationMethod<
   GetTemplateSyncConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { templateName: 0, templateType: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3157,6 +3359,7 @@ export const getTemplateSyncStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { templateName: 0, templateType: 0, templateVersion: 0 },
     output: {
       latestSync: o_ResourceSyncAttempt,
       latestSuccessfulSync: o_ResourceSyncAttempt,
@@ -3195,7 +3398,10 @@ export const listComponentOutputs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Output
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { componentName: 0, nextToken: 0, deploymentId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3234,7 +3440,7 @@ export const listComponentProvisionedResources: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ProvisionedResource
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { componentName: 0, nextToken: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3274,6 +3480,13 @@ export const listComponents: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      nextToken: 0,
+      environmentName: 0,
+      serviceName: 0,
+      serviceInstanceName: 0,
+      maxResults: 0,
+    },
     output: {
       components: D.list({
         createdAt: D.ts,
@@ -3320,6 +3533,14 @@ export const listDeployments: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      nextToken: 0,
+      environmentName: 0,
+      serviceName: 0,
+      serviceInstanceName: 0,
+      componentName: 0,
+      maxResults: 0,
+    },
     output: {
       deployments: D.list({
         targetResourceCreatedAt: D.ts,
@@ -3368,6 +3589,13 @@ export const listEnvironmentAccountConnections: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      requestedBy: 0,
+      environmentName: 0,
+      statuses: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       environmentAccountConnections: D.list({
         requestedAt: D.ts,
@@ -3409,7 +3637,10 @@ export const listEnvironmentOutputs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Output
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { environmentName: 0, nextToken: 0, deploymentId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3444,7 +3675,7 @@ export const listEnvironmentProvisionedResources: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ProvisionedResource
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { environmentName: 0, nextToken: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3481,6 +3712,11 @@ export const listEnvironments: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      nextToken: 0,
+      maxResults: 0,
+      environmentTemplates: D.list({ templateName: 0, majorVersion: 0 }),
+    },
     output: {
       environments: D.list({
         description: D.secret,
@@ -3527,6 +3763,7 @@ export const listEnvironmentTemplates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0 },
     output: {
       templates: D.list({
         createdAt: D.ts,
@@ -3572,6 +3809,7 @@ export const listEnvironmentTemplateVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0, templateName: 0, majorVersion: 0 },
     output: {
       templateVersions: D.list({
         statusMessage: D.secret,
@@ -3616,7 +3854,7 @@ export const listRepositories: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RepositorySummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0, maxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3651,7 +3889,15 @@ export const listRepositorySyncDefinitions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RepositorySyncDefinition
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      repositoryName: 0,
+      repositoryProvider: 0,
+      syncType: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3685,7 +3931,15 @@ export const listServiceInstanceOutputs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Output
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      serviceInstanceName: 0,
+      serviceName: 0,
+      nextToken: 0,
+      deploymentId: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3720,7 +3974,10 @@ export const listServiceInstanceProvisionedResources: API.PaginatedOperationMeth
   Credentials | HttpClient.HttpClient,
   ProvisionedResource
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { serviceName: 0, serviceInstanceName: 0, nextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3758,6 +4015,14 @@ export const listServiceInstances: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      serviceName: 0,
+      nextToken: 0,
+      maxResults: 0,
+      filters: D.list({ key: 0, value: 0 }),
+      sortBy: 0,
+      sortOrder: 0,
+    },
     output: {
       serviceInstances: D.list({
         createdAt: D.ts,
@@ -3802,7 +4067,10 @@ export const listServicePipelineOutputs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Output
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { serviceName: 0, nextToken: 0, deploymentId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3837,7 +4105,7 @@ export const listServicePipelineProvisionedResources: API.PaginatedOperationMeth
   Credentials | HttpClient.HttpClient,
   ProvisionedResource
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { serviceName: 0, nextToken: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3873,6 +4141,7 @@ export const listServices: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0 },
     output: {
       services: D.list({
         description: D.secret,
@@ -3917,6 +4186,7 @@ export const listServiceTemplates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0 },
     output: {
       templates: D.list({
         createdAt: D.ts,
@@ -3962,6 +4232,7 @@ export const listServiceTemplateVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0, templateName: 0, majorVersion: 0 },
     output: {
       templateVersions: D.list({
         statusMessage: D.secret,
@@ -4007,7 +4278,10 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Tag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { resourceArn: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4046,7 +4320,16 @@ export const notifyResourceDeploymentStatusChange: API.OperationMethod<
   NotifyResourceDeploymentStatusChangeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      resourceArn: 0,
+      status: 0,
+      outputs: D.list({ key: 0, valueString: 0 }),
+      deploymentId: 0,
+      statusMessage: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4088,6 +4371,7 @@ export const rejectEnvironmentAccountConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { id: 0 },
     output: { environmentAccountConnection: o_EnvironmentAccountConnection },
   },
   errors: [
@@ -4123,7 +4407,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4157,7 +4441,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4187,7 +4471,15 @@ export const updateAccountSettings: API.OperationMethod<
   UpdateAccountSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      pipelineServiceRoleArn: 0,
+      pipelineProvisioningRepository: i_RepositoryBranchInput,
+      deletePipelineProvisioningRepository: 0,
+      pipelineCodebuildRoleArn: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4229,7 +4521,16 @@ export const updateComponent: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      deploymentType: 0,
+      description: 0,
+      serviceName: 0,
+      serviceInstanceName: 0,
+      serviceSpec: 0,
+      templateFile: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { component: o_Component },
   },
   errors: [
@@ -4305,7 +4606,23 @@ export const updateEnvironment: API.OperationMethod<
   UpdateEnvironmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { environment: o_Environment } },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      spec: 0,
+      templateMajorVersion: 0,
+      templateMinorVersion: 0,
+      protonServiceRoleArn: 0,
+      deploymentType: 0,
+      environmentAccountConnectionId: 0,
+      provisioningRepository: i_RepositoryBranchInput,
+      componentRoleArn: 0,
+      codebuildRoleArn: 0,
+    },
+    output: { environment: o_Environment },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4341,6 +4658,7 @@ export const updateEnvironmentAccountConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { id: 0, roleArn: 0, componentRoleArn: 0, codebuildRoleArn: 0 },
     output: { environmentAccountConnection: o_EnvironmentAccountConnection },
   },
   errors: [
@@ -4375,6 +4693,7 @@ export const updateEnvironmentTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { name: 0, displayName: 0, description: 0 },
     output: { environmentTemplate: o_EnvironmentTemplate },
   },
   errors: [
@@ -4409,6 +4728,13 @@ export const updateEnvironmentTemplateVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      templateName: 0,
+      majorVersion: 0,
+      minorVersion: 0,
+      description: 0,
+      status: 0,
+    },
     output: { environmentTemplateVersion: o_EnvironmentTemplateVersion },
   },
   errors: [
@@ -4456,7 +4782,11 @@ export const updateService: API.OperationMethod<
   UpdateServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { service: o_Service } },
+  descriptor: {
+    service: svc,
+    input: { name: 0, description: 0, spec: 0 },
+    output: { service: o_Service },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4500,7 +4830,15 @@ export const updateServiceInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      serviceName: 0,
+      deploymentType: 0,
+      spec: 0,
+      templateMajorVersion: 0,
+      templateMinorVersion: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { serviceInstance: o_ServiceInstance },
   },
   errors: [
@@ -4560,7 +4898,17 @@ export const updateServicePipeline: API.OperationMethod<
   UpdateServicePipelineError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { pipeline: o_ServicePipeline } },
+  descriptor: {
+    service: svc,
+    input: {
+      serviceName: 0,
+      spec: 0,
+      deploymentType: 0,
+      templateMajorVersion: 0,
+      templateMinorVersion: 0,
+    },
+    output: { pipeline: o_ServicePipeline },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4591,7 +4939,11 @@ export const updateServiceSyncBlocker: API.OperationMethod<
   UpdateServiceSyncBlockerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { serviceSyncBlocker: o_SyncBlocker } },
+  descriptor: {
+    service: svc,
+    input: { id: 0, resolvedReason: 0 },
+    output: { serviceSyncBlocker: o_SyncBlocker },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4622,7 +4974,16 @@ export const updateServiceSyncConfig: API.OperationMethod<
   UpdateServiceSyncConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      serviceName: 0,
+      repositoryProvider: 0,
+      repositoryName: 0,
+      branch: 0,
+      filePath: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4653,7 +5014,11 @@ export const updateServiceTemplate: API.OperationMethod<
   UpdateServiceTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { serviceTemplate: o_ServiceTemplate } },
+  descriptor: {
+    service: svc,
+    input: { name: 0, displayName: 0, description: 0 },
+    output: { serviceTemplate: o_ServiceTemplate },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4686,6 +5051,17 @@ export const updateServiceTemplateVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      templateName: 0,
+      majorVersion: 0,
+      minorVersion: 0,
+      description: 0,
+      status: 0,
+      compatibleEnvironmentTemplates: D.list(
+        i_CompatibleEnvironmentTemplateInput,
+      ),
+      supportedComponentSources: 0,
+    },
     output: { serviceTemplateVersion: o_ServiceTemplateVersion },
   },
   errors: [
@@ -4720,7 +5096,17 @@ export const updateTemplateSyncConfig: API.OperationMethod<
   UpdateTemplateSyncConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      templateName: 0,
+      templateType: 0,
+      repositoryProvider: 0,
+      repositoryName: 0,
+      branch: 0,
+      subdirectory: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4734,6 +5120,19 @@ export const updateTemplateSyncConfig: API.OperationMethod<
   operationName: "UpdateTemplateSyncConfig",
 })) as any;
 
+const i_CompatibleEnvironmentTemplateInput: D.LazyStruct = () => ({
+  templateName: 0,
+  majorVersion: 0,
+});
+const i_RepositoryBranchInput: D.LazyStruct = () => ({
+  provider: 0,
+  name: 0,
+  branch: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_TemplateVersionSourceInput: D.LazyStruct = () => ({
+  s3: { bucket: 0, key: 0 },
+});
 const o_Component: D.LazyStruct = () => ({
   description: D.secret,
   createdAt: D.ts,

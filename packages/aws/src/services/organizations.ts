@@ -1490,7 +1490,11 @@ export const acceptHandshake: API.OperationMethod<
   AcceptHandshakeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Handshake: o_Handshake } },
+  descriptor: {
+    service: svc,
+    input: { HandshakeId: 0 },
+    output: { Handshake: o_Handshake },
+  },
   errors: [
     AccessDeniedException,
     AccessDeniedForDependencyException,
@@ -1565,7 +1569,7 @@ export const attachPolicy: API.OperationMethod<
   AttachPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PolicyId: 0, TargetId: 0 } },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -1611,7 +1615,11 @@ export const cancelHandshake: API.OperationMethod<
   CancelHandshakeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Handshake: o_Handshake } },
+  descriptor: {
+    service: svc,
+    input: { HandshakeId: 0 },
+    output: { Handshake: o_Handshake },
+  },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -1695,7 +1703,7 @@ export const closeAccount: API.OperationMethod<
   CloseAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AccountId: 0 } },
   errors: [
     AccessDeniedException,
     AccountAlreadyClosedException,
@@ -1805,6 +1813,13 @@ export const createAccount: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Email: 0,
+      AccountName: 0,
+      RoleName: 0,
+      IamUserAccessToBilling: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { CreateAccountStatus: o_CreateAccountStatus },
   },
   errors: [
@@ -1958,6 +1973,13 @@ export const createGovCloudAccount: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Email: 0,
+      AccountName: 0,
+      RoleName: 0,
+      IamUserAccessToBilling: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { CreateAccountStatus: o_CreateAccountStatus },
   },
   errors: [
@@ -2012,7 +2034,11 @@ export const createOrganization: API.OperationMethod<
   CreateOrganizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Organization: o_Organization } },
+  descriptor: {
+    service: svc,
+    input: { FeatureSet: 0 },
+    output: { Organization: o_Organization },
+  },
   errors: [
     AccessDeniedException,
     AccessDeniedForDependencyException,
@@ -2060,7 +2086,10 @@ export const createOrganizationalUnit: API.OperationMethod<
   CreateOrganizationalUnitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ParentId: 0, Name: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -2108,7 +2137,16 @@ export const createPolicy: API.OperationMethod<
   CreatePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Content: 0,
+      Description: 0,
+      Name: 0,
+      Type: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -2152,7 +2190,11 @@ export const declineHandshake: API.OperationMethod<
   DeclineHandshakeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Handshake: o_Handshake } },
+  descriptor: {
+    service: svc,
+    input: { HandshakeId: 0 },
+    output: { Handshake: o_Handshake },
+  },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -2231,7 +2273,7 @@ export const deleteOrganizationalUnit: API.OperationMethod<
   DeleteOrganizationalUnitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationalUnitId: 0 } },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -2271,7 +2313,7 @@ export const deletePolicy: API.OperationMethod<
   DeletePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PolicyId: 0 } },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -2359,7 +2401,7 @@ export const deregisterDelegatedAdministrator: API.OperationMethod<
   DeregisterDelegatedAdministratorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AccountId: 0, ServicePrincipal: 0 } },
   errors: [
     AccessDeniedException,
     AccountNotFoundException,
@@ -2396,7 +2438,11 @@ export const describeAccount: API.OperationMethod<
   DescribeAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Account: o_Account } },
+  descriptor: {
+    service: svc,
+    input: { AccountId: 0 },
+    output: { Account: o_Account },
+  },
   errors: [
     AccessDeniedException,
     AccountNotFoundException,
@@ -2432,6 +2478,7 @@ export const describeCreateAccountStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CreateAccountRequestId: 0 },
     output: { CreateAccountStatus: o_CreateAccountStatus },
   },
   errors: [
@@ -2482,6 +2529,7 @@ export const describeEffectivePolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { PolicyType: 0, TargetId: 0 },
     output: { EffectivePolicy: { LastUpdatedTimestamp: D.ts } },
   },
   errors: [
@@ -2523,7 +2571,11 @@ export const describeHandshake: API.OperationMethod<
   DescribeHandshakeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Handshake: o_Handshake } },
+  descriptor: {
+    service: svc,
+    input: { HandshakeId: 0 },
+    output: { Handshake: o_Handshake },
+  },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -2592,7 +2644,7 @@ export const describeOrganizationalUnit: API.OperationMethod<
   DescribeOrganizationalUnitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationalUnitId: 0 } },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -2626,7 +2678,7 @@ export const describePolicy: API.OperationMethod<
   DescribePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PolicyId: 0 } },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -2698,6 +2750,7 @@ export const describeResponsibilityTransfer: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Id: 0 },
     output: { ResponsibilityTransfer: o_ResponsibilityTransfer },
   },
   errors: [
@@ -2752,7 +2805,7 @@ export const detachPolicy: API.OperationMethod<
   DetachPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PolicyId: 0, TargetId: 0 } },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -2845,7 +2898,7 @@ export const disableAWSServiceAccess: API.OperationMethod<
   DisableAWSServiceAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServicePrincipal: 0 } },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -2896,7 +2949,7 @@ export const disablePolicyType: API.OperationMethod<
   DisablePolicyTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RootId: 0, PolicyType: 0 } },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -2961,7 +3014,7 @@ export const enableAllFeatures: API.OperationMethod<
   EnableAllFeaturesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Handshake: o_Handshake } },
+  descriptor: { service: svc, input: {}, output: { Handshake: o_Handshake } },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -3014,7 +3067,7 @@ export const enableAWSServiceAccess: API.OperationMethod<
   EnableAWSServiceAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServicePrincipal: 0 } },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -3066,7 +3119,7 @@ export const enablePolicyType: API.OperationMethod<
   EnablePolicyTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RootId: 0, PolicyType: 0 } },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -3122,7 +3175,11 @@ export const inviteAccountToOrganization: API.OperationMethod<
   InviteAccountToOrganizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Handshake: o_Handshake } },
+  descriptor: {
+    service: svc,
+    input: { Target: i_HandshakeParty, Notes: 0, Tags: D.list(i_Tag) },
+    output: { Handshake: o_Handshake },
+  },
   errors: [
     AccessDeniedException,
     AccountOwnerNotVerifiedException,
@@ -3166,7 +3223,18 @@ export const inviteOrganizationToTransferResponsibility: API.OperationMethod<
   InviteOrganizationToTransferResponsibilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Handshake: o_Handshake } },
+  descriptor: {
+    service: svc,
+    input: {
+      Type: 0,
+      Target: i_HandshakeParty,
+      Notes: 0,
+      StartTimestamp: 0,
+      SourceName: 0,
+      Tags: D.list(i_Tag),
+    },
+    output: { Handshake: o_Handshake },
+  },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -3298,7 +3366,11 @@ export const listAccounts: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Accounts: D.list(o_Account) } },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
+    output: { Accounts: D.list(o_Account) },
+  },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -3344,7 +3416,11 @@ export const listAccountsForParent: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Accounts: D.list(o_Account) } },
+  descriptor: {
+    service: svc,
+    input: { ParentId: 0, NextToken: 0, MaxResults: 0 },
+    output: { Accounts: D.list(o_Account) },
+  },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -3388,7 +3464,11 @@ export const listAccountsWithInvalidEffectivePolicy: API.PaginatedOperationMetho
   Credentials | HttpClient.HttpClient,
   Account
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Accounts: D.list(o_Account) } },
+  descriptor: {
+    service: svc,
+    input: { PolicyType: 0, NextToken: 0, MaxResults: 0 },
+    output: { Accounts: D.list(o_Account) },
+  },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -3439,6 +3519,7 @@ export const listAWSServiceAccessForOrganization: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: { EnabledServicePrincipals: D.list({ DateEnabled: D.ts }) },
   },
   errors: [
@@ -3486,7 +3567,10 @@ export const listChildren: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ParentId: 0, ChildType: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -3532,6 +3616,7 @@ export const listCreateAccountStatus: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { States: 0, NextToken: 0, MaxResults: 0 },
     output: { CreateAccountStatuses: D.list(o_CreateAccountStatus) },
   },
   errors: [
@@ -3576,6 +3661,7 @@ export const listDelegatedAdministrators: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ServicePrincipal: 0, NextToken: 0, MaxResults: 0 },
     output: {
       DelegatedAdministrators: D.list({
         Email: D.secret,
@@ -3631,6 +3717,7 @@ export const listDelegatedServicesForAccount: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { AccountId: 0, NextToken: 0, MaxResults: 0 },
     output: { DelegatedServices: D.list({ DelegationEnabledDate: D.ts }) },
   },
   errors: [
@@ -3679,7 +3766,11 @@ export const listEffectivePolicyValidationErrors: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   EffectivePolicyValidationError
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { EvaluationTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { AccountId: 0, PolicyType: 0, NextToken: 0, MaxResults: 0 },
+    output: { EvaluationTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     AccountNotFoundException,
@@ -3729,7 +3820,11 @@ export const listHandshakesForAccount: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Handshakes: D.list(o_Handshake) } },
+  descriptor: {
+    service: svc,
+    input: { Filter: i_HandshakeFilter, NextToken: 0, MaxResults: 0 },
+    output: { Handshakes: D.list(o_Handshake) },
+  },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -3775,7 +3870,11 @@ export const listHandshakesForOrganization: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Handshakes: D.list(o_Handshake) } },
+  descriptor: {
+    service: svc,
+    input: { Filter: i_HandshakeFilter, NextToken: 0, MaxResults: 0 },
+    output: { Handshakes: D.list(o_Handshake) },
+  },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -3820,6 +3919,7 @@ export const listInboundResponsibilityTransfers: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Type: 0, Id: 0, NextToken: 0, MaxResults: 0 },
     output: { ResponsibilityTransfers: D.list(o_ResponsibilityTransfer) },
   },
   errors: [
@@ -3861,7 +3961,10 @@ export const listOrganizationalUnitsForParent: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ParentId: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -3906,6 +4009,7 @@ export const listOutboundResponsibilityTransfers: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Type: 0, NextToken: 0, MaxResults: 0 },
     output: { ResponsibilityTransfers: D.list(o_ResponsibilityTransfer) },
   },
   errors: [
@@ -3950,7 +4054,10 @@ export const listParents: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ChildId: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -3993,7 +4100,10 @@ export const listPolicies: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Filter: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -4039,7 +4149,10 @@ export const listPoliciesForTarget: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TargetId: 0, Filter: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -4088,7 +4201,7 @@ export const listRoots: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -4136,7 +4249,7 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Tag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0, NextToken: 0 } },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -4181,7 +4294,10 @@ export const listTargetsForPolicy: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { PolicyId: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -4225,7 +4341,10 @@ export const moveAccount: API.OperationMethod<
   MoveAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AccountId: 0, SourceParentId: 0, DestinationParentId: 0 },
+  },
   errors: [
     AccessDeniedException,
     AccountNotFoundException,
@@ -4264,7 +4383,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Content: 0, Tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -4310,7 +4429,7 @@ export const registerDelegatedAdministrator: API.OperationMethod<
   RegisterDelegatedAdministratorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AccountId: 0, ServicePrincipal: 0 } },
   errors: [
     AccessDeniedException,
     AccountAlreadyRegisteredException,
@@ -4379,7 +4498,7 @@ export const removeAccountFromOrganization: API.OperationMethod<
   RemoveAccountFromOrganizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AccountId: 0 } },
   errors: [
     AccessDeniedException,
     AccountNotFoundException,
@@ -4427,7 +4546,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0, Tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -4475,6 +4594,7 @@ export const terminateResponsibilityTransfer: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Id: 0, EndTimestamp: 0 },
     output: { ResponsibilityTransfer: o_ResponsibilityTransfer },
   },
   errors: [
@@ -4526,7 +4646,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0, TagKeys: 0 } },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -4565,7 +4685,7 @@ export const updateOrganizationalUnit: API.OperationMethod<
   UpdateOrganizationalUnitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OrganizationalUnitId: 0, Name: 0 } },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -4608,7 +4728,10 @@ export const updatePolicy: API.OperationMethod<
   UpdatePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { PolicyId: 0, Name: 0, Description: 0, Content: 0 },
+  },
   errors: [
     AccessDeniedException,
     AWSOrganizationsNotInUseException,
@@ -4653,6 +4776,7 @@ export const updateResponsibilityTransfer: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Id: 0, Name: 0 },
     output: { ResponsibilityTransfer: o_ResponsibilityTransfer },
   },
   errors: [
@@ -4670,6 +4794,12 @@ export const updateResponsibilityTransfer: API.OperationMethod<
   operationName: "UpdateResponsibilityTransfer",
 })) as any;
 
+const i_HandshakeFilter: D.LazyStruct = () => ({
+  ActionType: 0,
+  ParentHandshakeId: 0,
+});
+const i_HandshakeParty: D.LazyStruct = () => ({ Id: 0, Type: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Account: D.LazyStruct = () => ({
   Email: D.secret,
   Name: D.secret,

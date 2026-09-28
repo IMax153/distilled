@@ -413,6 +413,7 @@ export const bulkPublish: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identitypools/{IdentityPoolId}/bulkpublish",
+    input: { IdentityPoolId: 0 },
   },
   errors: [
     AlreadyStreamedException,
@@ -452,6 +453,7 @@ export const deleteDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /identitypools/{IdentityPoolId}/identities/{IdentityId}/datasets/{DatasetName}",
+    input: { IdentityPoolId: 0, IdentityId: 0, DatasetName: 0 },
     output: { Dataset: o_Dataset },
   },
   errors: [
@@ -490,6 +492,7 @@ export const describeDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /identitypools/{IdentityPoolId}/identities/{IdentityId}/datasets/{DatasetName}",
+    input: { IdentityPoolId: 0, IdentityId: 0, DatasetName: 0 },
     output: { Dataset: o_Dataset },
   },
   errors: [
@@ -566,6 +569,7 @@ export const describeIdentityPoolUsage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /identitypools/{IdentityPoolId}",
+    input: { IdentityPoolId: 0 },
     output: { IdentityPoolUsage: o_IdentityPoolUsage },
   },
   errors: [
@@ -644,6 +648,7 @@ export const describeIdentityUsage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /identitypools/{IdentityPoolId}/identities/{IdentityId}",
+    input: { IdentityPoolId: 0, IdentityId: 0 },
     output: { IdentityUsage: { LastModifiedDate: D.ts } },
   },
   errors: [
@@ -678,6 +683,7 @@ export const getBulkPublishDetails: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identitypools/{IdentityPoolId}/getBulkPublishDetails",
+    input: { IdentityPoolId: 0 },
     output: { BulkPublishStartTime: D.ts, BulkPublishCompleteTime: D.ts },
   },
   errors: [
@@ -712,6 +718,7 @@ export const getCognitoEvents: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /identitypools/{IdentityPoolId}/events",
+    input: { IdentityPoolId: 0 },
   },
   errors: [
     InternalErrorException,
@@ -786,6 +793,7 @@ export const getIdentityPoolConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /identitypools/{IdentityPoolId}/configuration",
+    input: { IdentityPoolId: 0 },
   },
   errors: [
     InternalErrorException,
@@ -872,6 +880,8 @@ export const listDatasets: API.OperationMethod<
     service: svc,
     http: "GET /identitypools/{IdentityPoolId}/identities/{IdentityId}/datasets",
     input: {
+      IdentityPoolId: 0,
+      IdentityId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -1047,6 +1057,9 @@ export const listRecords: API.OperationMethod<
     service: svc,
     http: "GET /identitypools/{IdentityPoolId}/identities/{IdentityId}/datasets/{DatasetName}/records",
     input: {
+      IdentityPoolId: 0,
+      IdentityId: 0,
+      DatasetName: 0,
       LastSyncCount: D.m({ query: "lastSyncCount" }),
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
@@ -1126,6 +1139,7 @@ export const registerDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identitypools/{IdentityPoolId}/identity/{IdentityId}/device",
+    input: { IdentityPoolId: 0, IdentityId: 0, Platform: 0, Token: 0 },
     body: true,
   },
   errors: [
@@ -1162,6 +1176,7 @@ export const setCognitoEvents: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identitypools/{IdentityPoolId}/events",
+    input: { IdentityPoolId: 0, Events: 0 },
     body: true,
   },
   errors: [
@@ -1243,6 +1258,11 @@ export const setIdentityPoolConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identitypools/{IdentityPoolId}/configuration",
+    input: {
+      IdentityPoolId: 0,
+      PushSync: { ApplicationArns: 0, RoleArn: 0 },
+      CognitoStreams: { StreamName: 0, RoleArn: 0, StreamingStatus: 0 },
+    },
     body: true,
   },
   errors: [
@@ -1318,6 +1338,7 @@ export const subscribeToDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identitypools/{IdentityPoolId}/identities/{IdentityId}/datasets/{DatasetName}/subscriptions/{DeviceId}",
+    input: { IdentityPoolId: 0, IdentityId: 0, DatasetName: 0, DeviceId: 0 },
   },
   errors: [
     InternalErrorException,
@@ -1393,6 +1414,7 @@ export const unsubscribeFromDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /identitypools/{IdentityPoolId}/identities/{IdentityId}/datasets/{DatasetName}/subscriptions/{DeviceId}",
+    input: { IdentityPoolId: 0, IdentityId: 0, DatasetName: 0, DeviceId: 0 },
   },
   errors: [
     InternalErrorException,
@@ -1436,7 +1458,21 @@ export const updateRecords: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identitypools/{IdentityPoolId}/identities/{IdentityId}/datasets/{DatasetName}",
-    input: { ClientContext: D.m({ header: "x-amz-Client-Context" }) },
+    input: {
+      IdentityPoolId: 0,
+      IdentityId: 0,
+      DatasetName: 0,
+      DeviceId: 0,
+      RecordPatches: D.list({
+        Op: 0,
+        Key: 0,
+        Value: 0,
+        SyncCount: 0,
+        DeviceLastModifiedDate: 0,
+      }),
+      SyncSessionToken: 0,
+      ClientContext: D.m({ header: "x-amz-Client-Context" }),
+    },
     output: { Records: D.list(o_Record) },
     body: true,
   },

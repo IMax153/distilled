@@ -471,7 +471,20 @@ export const createWorkflow: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      ClientToken: D.m({ idempotency: true }),
+      DefinitionS3Location: i_DefinitionS3Location,
+      Code: i_Code,
+      RoleArn: 0,
+      Description: 0,
+      EncryptionConfiguration: { Type: 0, KmsKeyId: 0 },
+      LoggingConfiguration: i_LoggingConfiguration,
+      EngineVersion: 0,
+      NetworkConfiguration: i_NetworkConfiguration,
+      Tags: 0,
+      TriggerMode: 0,
+    },
     output: { CreatedAt: D.ts },
   },
   errors: [
@@ -505,7 +518,7 @@ export const deleteWorkflow: API.OperationMethod<
   DeleteWorkflowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WorkflowArn: 0, WorkflowVersion: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -538,6 +551,7 @@ export const getTaskInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { WorkflowArn: 0, TaskInstanceId: 0, RunId: 0 },
     output: { ModifiedAt: D.ts, EndedAt: D.ts, StartedAt: D.ts },
   },
   errors: [
@@ -572,6 +586,7 @@ export const getWorkflow: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { WorkflowArn: 0, WorkflowVersion: 0 },
     output: { CreatedAt: D.ts, ModifiedAt: D.ts, CodeSnapshottedAt: D.ts },
   },
   errors: [
@@ -606,6 +621,7 @@ export const getWorkflowRun: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { WorkflowArn: 0, RunId: 0 },
     output: {
       RunDetail: {
         StartedOn: D.ts,
@@ -645,7 +661,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -676,7 +692,10 @@ export const listTaskInstances: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TaskInstanceSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { WorkflowArn: 0, RunId: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -714,6 +733,7 @@ export const listWorkflowRuns: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0, WorkflowArn: 0, WorkflowVersion: 0 },
     output: {
       WorkflowRuns: D.list({
         RunDetailSummary: { CreatedOn: D.ts, StartedAt: D.ts, EndedAt: D.ts },
@@ -757,6 +777,7 @@ export const listWorkflows: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
     output: { Workflows: D.list({ CreatedAt: D.ts, ModifiedAt: D.ts }) },
   },
   errors: [
@@ -796,6 +817,7 @@ export const listWorkflowVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0, WorkflowArn: 0 },
     output: { WorkflowVersions: D.list({ CreatedAt: D.ts, ModifiedAt: D.ts }) },
   },
   errors: [
@@ -837,7 +859,12 @@ export const startWorkflowRun: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      WorkflowArn: 0,
+      ClientToken: D.m({ idempotency: true }),
+      OverrideParameters: 0,
+      WorkflowVersion: 0,
+    },
     output: { StartedAt: D.ts },
   },
   errors: [
@@ -872,7 +899,7 @@ export const stopWorkflowRun: API.OperationMethod<
   StopWorkflowRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WorkflowArn: 0, RunId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -903,7 +930,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -934,7 +961,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -967,7 +994,21 @@ export const updateWorkflow: API.OperationMethod<
   UpdateWorkflowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ModifiedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      WorkflowArn: 0,
+      DefinitionS3Location: i_DefinitionS3Location,
+      Code: i_Code,
+      RoleArn: 0,
+      Description: 0,
+      LoggingConfiguration: i_LoggingConfiguration,
+      EngineVersion: 0,
+      NetworkConfiguration: i_NetworkConfiguration,
+      TriggerMode: 0,
+    },
+    output: { ModifiedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -982,3 +1023,17 @@ export const updateWorkflow: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateWorkflow",
 })) as any;
+
+const i_Code: D.LazyStruct = () => ({
+  S3Location: { Bucket: 0, ObjectKey: 0, VersionId: 0 },
+});
+const i_DefinitionS3Location: D.LazyStruct = () => ({
+  Bucket: 0,
+  ObjectKey: 0,
+  VersionId: 0,
+});
+const i_LoggingConfiguration: D.LazyStruct = () => ({ LogGroupName: 0 });
+const i_NetworkConfiguration: D.LazyStruct = () => ({
+  SecurityGroupIds: 0,
+  SubnetIds: 0,
+});

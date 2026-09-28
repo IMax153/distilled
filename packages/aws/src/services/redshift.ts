@@ -3270,6 +3270,7 @@ export const acceptReservedNodeExchange: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ReservedNodeId: 0, TargetReservedNodeOfferingId: 0 },
     output: { ExchangedReservedNode: o_ReservedNode },
   },
   errors: [
@@ -3303,7 +3304,15 @@ export const addPartner: API.OperationMethod<
   AddPartnerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AccountId: 0,
+      ClusterIdentifier: 0,
+      DatabaseName: 0,
+      PartnerName: 0,
+    },
+  },
   errors: [
     ClusterNotFoundFault,
     PartnerNotFoundFault,
@@ -3332,6 +3341,13 @@ export const associateDataShareConsumer: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DataShareArn: 0,
+      AssociateEntireAccount: 0,
+      ConsumerArn: 0,
+      ConsumerRegion: 0,
+      AllowWrites: 0,
+    },
     output: {
       AllowPubliclyAccessibleConsumers: D.bool,
       DataShareAssociations: D.list(o_DataShareAssociation),
@@ -3378,6 +3394,12 @@ export const authorizeClusterSecurityGroupIngress: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ClusterSecurityGroupName: 0,
+      CIDRIP: 0,
+      EC2SecurityGroupName: 0,
+      EC2SecurityGroupOwnerId: 0,
+    },
     output: { ClusterSecurityGroup: o_ClusterSecurityGroup },
   },
   errors: [
@@ -3405,6 +3427,7 @@ export const authorizeDataShare: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DataShareArn: 0, ConsumerIdentifier: 0, AllowWrites: 0 },
     output: {
       AllowPubliclyAccessibleConsumers: D.bool,
       DataShareAssociations: D.list(o_DataShareAssociation),
@@ -3435,7 +3458,11 @@ export const authorizeEndpointAccess: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { VpcIds: D.list(0, { item: "VpcIdentifier" }) },
+    input: {
+      ClusterIdentifier: 0,
+      Account: 0,
+      VpcIds: D.list(0, { item: "VpcIdentifier" }),
+    },
     output: {
       AuthorizeTime: D.ts,
       AllowedAllVPCs: D.bool,
@@ -3479,7 +3506,16 @@ export const authorizeSnapshotAccess: API.OperationMethod<
   AuthorizeSnapshotAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Snapshot: o_Snapshot } },
+  descriptor: {
+    service: svc,
+    input: {
+      SnapshotIdentifier: 0,
+      SnapshotArn: 0,
+      SnapshotClusterIdentifier: 0,
+      AccountWithRestoreAccess: 0,
+    },
+    output: { Snapshot: o_Snapshot },
+  },
   errors: [
     AuthorizationAlreadyExistsFault,
     AuthorizationQuotaExceededFault,
@@ -3508,7 +3544,12 @@ export const batchDeleteClusterSnapshots: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Identifiers: D.list(0, { item: "DeleteClusterSnapshotMessage" }) },
+    input: {
+      Identifiers: D.list(
+        { SnapshotIdentifier: 0, SnapshotClusterIdentifier: 0 },
+        { item: "DeleteClusterSnapshotMessage" },
+      ),
+    },
     output: {
       Resources: D.list(0, { item: "String" }),
       Errors: D.list({}, { item: "SnapshotErrorMessage" }),
@@ -3535,7 +3576,11 @@ export const batchModifyClusterSnapshots: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { SnapshotIdentifierList: D.list(0, { item: "String" }) },
+    input: {
+      SnapshotIdentifierList: D.list(0, { item: "String" }),
+      ManualSnapshotRetentionPeriod: 0,
+      Force: 0,
+    },
     output: {
       Resources: D.list(0, { item: "String" }),
       Errors: D.list({}, { item: "SnapshotErrorMessage" }),
@@ -3567,6 +3612,7 @@ export const cancelResize: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ClusterIdentifier: 0 },
     output: {
       TargetNumberOfNodes: D.num,
       ImportTablesCompleted: D.list(),
@@ -3620,7 +3666,16 @@ export const copyClusterSnapshot: API.OperationMethod<
   CopyClusterSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Snapshot: o_Snapshot } },
+  descriptor: {
+    service: svc,
+    input: {
+      SourceSnapshotIdentifier: 0,
+      SourceSnapshotClusterIdentifier: 0,
+      TargetSnapshotIdentifier: 0,
+      ManualSnapshotRetentionPeriod: 0,
+    },
+    output: { Snapshot: o_Snapshot },
+  },
   errors: [
     ClusterNotFoundFault,
     ClusterSnapshotAlreadyExistsFault,
@@ -3648,7 +3703,10 @@ export const createAuthenticationProfile: API.OperationMethod<
   CreateAuthenticationProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AuthenticationProfileName: 0, AuthenticationProfileContent: 0 },
+  },
   errors: [
     AuthenticationProfileAlreadyExistsFault,
     AuthenticationProfileQuotaExceededFault,
@@ -3725,10 +3783,47 @@ export const createCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DBName: 0,
+      ClusterIdentifier: 0,
+      ClusterType: 0,
+      NodeType: 0,
+      MasterUsername: 0,
+      MasterUserPassword: 0,
       ClusterSecurityGroups: D.list(0, { item: "ClusterSecurityGroupName" }),
       VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
-      Tags: D.list(0, { item: "Tag" }),
+      ClusterSubnetGroupName: 0,
+      AvailabilityZone: 0,
+      PreferredMaintenanceWindow: 0,
+      ClusterParameterGroupName: 0,
+      AutomatedSnapshotRetentionPeriod: 0,
+      ManualSnapshotRetentionPeriod: 0,
+      Port: 0,
+      ClusterVersion: 0,
+      AllowVersionUpgrade: 0,
+      NumberOfNodes: 0,
+      PubliclyAccessible: 0,
+      Encrypted: 0,
+      HsmClientCertificateIdentifier: 0,
+      HsmConfigurationIdentifier: 0,
+      ElasticIp: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      KmsKeyId: 0,
+      EnhancedVpcRouting: 0,
+      AdditionalInfo: 0,
       IamRoles: D.list(0, { item: "IamRoleArn" }),
+      MaintenanceTrackName: 0,
+      SnapshotScheduleIdentifier: 0,
+      AvailabilityZoneRelocation: 0,
+      AquaConfigurationStatus: 0,
+      DefaultIamRoleArn: 0,
+      LoadSampleData: 0,
+      ManageMasterPassword: 0,
+      MasterPasswordSecretKmsKeyId: 0,
+      IpAddressType: 0,
+      MultiAZ: 0,
+      RedshiftIdcApplicationArn: 0,
+      CatalogName: 0,
+      ExtraComputeForAutomaticOptimization: 0,
     },
     output: { Cluster: o_Cluster },
   },
@@ -3793,7 +3888,12 @@ export const createClusterParameterGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      ParameterGroupName: 0,
+      ParameterGroupFamily: 0,
+      Description: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { ClusterParameterGroup: o_ClusterParameterGroup },
   },
   errors: [
@@ -3829,7 +3929,11 @@ export const createClusterSecurityGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      ClusterSecurityGroupName: 0,
+      Description: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { ClusterSecurityGroup: o_ClusterSecurityGroup },
   },
   errors: [
@@ -3868,7 +3972,12 @@ export const createClusterSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      SnapshotIdentifier: 0,
+      ClusterIdentifier: 0,
+      ManualSnapshotRetentionPeriod: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { Snapshot: o_Snapshot },
   },
   errors: [
@@ -3913,8 +4022,10 @@ export const createClusterSubnetGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ClusterSubnetGroupName: 0,
+      Description: 0,
       SubnetIds: D.list(0, { item: "SubnetIdentifier" }),
-      Tags: D.list(0, { item: "Tag" }),
+      Tags: D.list(i_Tag, { item: "Tag" }),
     },
     output: { ClusterSubnetGroup: o_ClusterSubnetGroup },
   },
@@ -3948,7 +4059,14 @@ export const createCustomDomainAssociation: API.OperationMethod<
   CreateCustomDomainAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CustomDomainName: 0,
+      CustomDomainCertificateArn: 0,
+      ClusterIdentifier: 0,
+    },
+  },
   errors: [
     ClusterNotFoundFault,
     CustomCnameAssociationFault,
@@ -3982,7 +4100,13 @@ export const createEndpointAccess: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }) },
+    input: {
+      ClusterIdentifier: 0,
+      ResourceOwner: 0,
+      EndpointName: 0,
+      SubnetGroupName: 0,
+      VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
+    },
     output: {
       EndpointCreateTime: D.ts,
       Port: D.num,
@@ -4050,9 +4174,14 @@ export const createEventSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      SubscriptionName: 0,
+      SnsTopicArn: 0,
+      SourceType: 0,
       SourceIds: D.list(0, { item: "SourceId" }),
       EventCategories: D.list(0, { item: "EventCategory" }),
-      Tags: D.list(0, { item: "Tag" }),
+      Severity: 0,
+      Enabled: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
     },
     output: { EventSubscription: o_EventSubscription },
   },
@@ -4099,7 +4228,10 @@ export const createHsmClientCertificate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      HsmClientCertificateIdentifier: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { HsmClientCertificate: o_HsmClientCertificate },
   },
   errors: [
@@ -4137,7 +4269,15 @@ export const createHsmConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      HsmConfigurationIdentifier: 0,
+      Description: 0,
+      HsmIpAddress: 0,
+      HsmPartitionName: 0,
+      HsmPartitionPassword: 0,
+      HsmServerPublicCertificate: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { HsmConfiguration: o_HsmConfiguration },
   },
   errors: [
@@ -4174,8 +4314,13 @@ export const createIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      TagList: D.list(0, { item: "Tag" }),
+      SourceArn: 0,
+      TargetArn: 0,
+      IntegrationName: 0,
+      KMSKeyId: 0,
+      TagList: D.list(i_Tag, { item: "Tag" }),
       AdditionalEncryptionContext: D.map(),
+      Description: 0,
     },
     output: {
       Errors: D.list({}, { item: "IntegrationError" }),
@@ -4217,7 +4362,12 @@ export const createQev2IdcApplication: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      IdcInstanceArn: 0,
+      Qev2IdcApplicationName: 0,
+      IdcDisplayName: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { Qev2IdcApplication: o_Qev2IdcApplication },
   },
   errors: [
@@ -4252,7 +4402,15 @@ export const createRedshiftIdcApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      Tags: D.list(0, { item: "Tag" }),
+      IdcInstanceArn: 0,
+      RedshiftIdcApplicationName: 0,
+      IdentityNamespace: 0,
+      IdcDisplayName: 0,
+      IamRoleArn: 0,
+      AuthorizedTokenIssuerList: D.list(i_AuthorizedTokenIssuer),
+      ServiceIntegrations: D.list(i_ServiceIntegrationsUnion),
+      ApplicationType: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
       SsoTagKeys: D.list(0, { item: "TagKey" }),
     },
     output: { RedshiftIdcApplication: o_RedshiftIdcApplication },
@@ -4293,6 +4451,16 @@ export const createScheduledAction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ScheduledActionName: 0,
+      TargetAction: i_ScheduledActionType,
+      Schedule: 0,
+      IamRole: 0,
+      ScheduledActionDescription: 0,
+      StartTime: 0,
+      EndTime: 0,
+      Enable: 0,
+    },
     output: {
       TargetAction: o_ScheduledActionType,
       NextInvocations: D.list(D.ts, { item: "ScheduledActionTime" }),
@@ -4340,7 +4508,11 @@ export const createSnapshotCopyGrant: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      SnapshotCopyGrantName: 0,
+      KmsKeyId: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { SnapshotCopyGrant: o_SnapshotCopyGrant },
   },
   errors: [
@@ -4377,7 +4549,11 @@ export const createSnapshotSchedule: API.OperationMethod<
     service: svc,
     input: {
       ScheduleDefinitions: D.list(0, { item: "ScheduleDefinition" }),
-      Tags: D.list(0, { item: "Tag" }),
+      ScheduleIdentifier: 0,
+      ScheduleDescription: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      DryRun: 0,
+      NextInvocations: 0,
     },
     output: {
       ScheduleDefinitions: D.list(0, { item: "ScheduleDefinition" }),
@@ -4421,7 +4597,10 @@ export const createTags: API.OperationMethod<
   CreateTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, input: { Tags: D.list(0, { item: "Tag" }) } },
+  descriptor: {
+    service: svc,
+    input: { ResourceName: 0, Tags: D.list(i_Tag, { item: "Tag" }) },
+  },
   errors: [
     InvalidClusterStateFault,
     InvalidTagFault,
@@ -4454,7 +4633,15 @@ export const createUsageLimit: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      ClusterIdentifier: 0,
+      FeatureType: 0,
+      LimitType: 0,
+      Amount: 0,
+      Period: 0,
+      BreachAction: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { Amount: D.num, Tags: D.list({}, { item: "Tag" }) },
   },
   errors: [
@@ -4483,6 +4670,7 @@ export const deauthorizeDataShare: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DataShareArn: 0, ConsumerIdentifier: 0 },
     output: {
       AllowPubliclyAccessibleConsumers: D.bool,
       DataShareAssociations: D.list(o_DataShareAssociation),
@@ -4507,7 +4695,7 @@ export const deleteAuthenticationProfile: API.OperationMethod<
   DeleteAuthenticationProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AuthenticationProfileName: 0 } },
   errors: [
     AuthenticationProfileNotFoundFault,
     InvalidAuthenticationProfileRequestFault,
@@ -4549,7 +4737,16 @@ export const deleteCluster: API.OperationMethod<
   DeleteClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterIdentifier: 0,
+      SkipFinalClusterSnapshot: 0,
+      FinalClusterSnapshotIdentifier: 0,
+      FinalClusterSnapshotRetentionPeriod: 0,
+    },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     ClusterNotFoundFault,
     ClusterSnapshotAlreadyExistsFault,
@@ -4578,7 +4775,7 @@ export const deleteClusterParameterGroup: API.OperationMethod<
   DeleteClusterParameterGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ParameterGroupName: 0 } },
   errors: [
     ClusterParameterGroupNotFoundFault,
     InvalidClusterParameterGroupStateFault,
@@ -4608,7 +4805,7 @@ export const deleteClusterSecurityGroup: API.OperationMethod<
   DeleteClusterSecurityGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ClusterSecurityGroupName: 0 } },
   errors: [
     ClusterSecurityGroupNotFoundFault,
     InvalidClusterSecurityGroupStateFault,
@@ -4638,7 +4835,11 @@ export const deleteClusterSnapshot: API.OperationMethod<
   DeleteClusterSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Snapshot: o_Snapshot } },
+  descriptor: {
+    service: svc,
+    input: { SnapshotIdentifier: 0, SnapshotClusterIdentifier: 0 },
+    output: { Snapshot: o_Snapshot },
+  },
   errors: [ClusterSnapshotNotFoundFault, InvalidClusterSnapshotStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4659,7 +4860,7 @@ export const deleteClusterSubnetGroup: API.OperationMethod<
   DeleteClusterSubnetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ClusterSubnetGroupName: 0 } },
   errors: [
     ClusterSubnetGroupNotFoundFault,
     InvalidClusterSubnetGroupStateFault,
@@ -4685,7 +4886,10 @@ export const deleteCustomDomainAssociation: API.OperationMethod<
   DeleteCustomDomainAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ClusterIdentifier: 0, CustomDomainName: 0 },
+  },
   errors: [
     ClusterNotFoundFault,
     CustomCnameAssociationFault,
@@ -4715,6 +4919,7 @@ export const deleteEndpointAccess: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { EndpointName: 0 },
     output: {
       EndpointCreateTime: D.ts,
       Port: D.num,
@@ -4747,7 +4952,7 @@ export const deleteEventSubscription: API.OperationMethod<
   DeleteEventSubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SubscriptionName: 0 } },
   errors: [InvalidSubscriptionStateFault, SubscriptionNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4767,7 +4972,7 @@ export const deleteHsmClientCertificate: API.OperationMethod<
   DeleteHsmClientCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { HsmClientCertificateIdentifier: 0 } },
   errors: [
     HsmClientCertificateNotFoundFault,
     InvalidHsmClientCertificateStateFault,
@@ -4790,7 +4995,7 @@ export const deleteHsmConfiguration: API.OperationMethod<
   DeleteHsmConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { HsmConfigurationIdentifier: 0 } },
   errors: [HsmConfigurationNotFoundFault, InvalidHsmConfigurationStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4814,6 +5019,7 @@ export const deleteIntegration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { IntegrationArn: 0 },
     output: {
       Errors: D.list({}, { item: "IntegrationError" }),
       CreateTime: D.ts,
@@ -4847,7 +5053,15 @@ export const deletePartner: API.OperationMethod<
   DeletePartnerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AccountId: 0,
+      ClusterIdentifier: 0,
+      DatabaseName: 0,
+      PartnerName: 0,
+    },
+  },
   errors: [
     ClusterNotFoundFault,
     PartnerNotFoundFault,
@@ -4874,7 +5088,7 @@ export const deleteQev2IdcApplication: API.OperationMethod<
   DeleteQev2IdcApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Qev2IdcApplicationArn: 0 } },
   errors: [
     DependentServiceAccessDeniedFault,
     DependentServiceUnavailableFault,
@@ -4901,7 +5115,7 @@ export const deleteRedshiftIdcApplication: API.OperationMethod<
   DeleteRedshiftIdcApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RedshiftIdcApplicationArn: 0 } },
   errors: [
     DependentServiceAccessDeniedFault,
     DependentServiceUnavailableFault,
@@ -4926,7 +5140,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [ResourceNotFoundFault, UnsupportedOperationFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4946,7 +5160,7 @@ export const deleteScheduledAction: API.OperationMethod<
   DeleteScheduledActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ScheduledActionName: 0 } },
   errors: [ScheduledActionNotFoundFault, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4966,7 +5180,7 @@ export const deleteSnapshotCopyGrant: API.OperationMethod<
   DeleteSnapshotCopyGrantError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SnapshotCopyGrantName: 0 } },
   errors: [InvalidSnapshotCopyGrantStateFault, SnapshotCopyGrantNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4986,7 +5200,7 @@ export const deleteSnapshotSchedule: API.OperationMethod<
   DeleteSnapshotScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ScheduleIdentifier: 0 } },
   errors: [
     InvalidClusterSnapshotScheduleStateFault,
     SnapshotScheduleNotFoundFault,
@@ -5012,7 +5226,7 @@ export const deleteTags: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TagKeys: D.list(0, { item: "TagKey" }) },
+    input: { ResourceName: 0, TagKeys: D.list(0, { item: "TagKey" }) },
   },
   errors: [InvalidTagFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
@@ -5033,7 +5247,7 @@ export const deleteUsageLimit: API.OperationMethod<
   DeleteUsageLimitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UsageLimitId: 0 } },
   errors: [UnsupportedOperationFault, UsageLimitNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5054,7 +5268,13 @@ export const deregisterNamespace: API.OperationMethod<
   DeregisterNamespaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      NamespaceIdentifier: i_NamespaceIdentifierUnion,
+      ConsumerIdentifiers: 0,
+    },
+  },
   errors: [
     ClusterNotFoundFault,
     InvalidClusterStateFault,
@@ -5104,7 +5324,11 @@ export const describeAuthenticationProfiles: API.OperationMethod<
   DescribeAuthenticationProfilesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AuthenticationProfiles: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { AuthenticationProfileName: 0 },
+    output: { AuthenticationProfiles: D.list({}) },
+  },
   errors: [
     AuthenticationProfileNotFoundFault,
     InvalidAuthenticationProfileRequestFault,
@@ -5130,6 +5354,7 @@ export const describeClusterDbRevisions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ClusterIdentifier: 0, MaxRecords: 0, Marker: 0 },
     output: {
       ClusterDbRevisions: D.list(
         {
@@ -5190,6 +5415,9 @@ export const describeClusterParameterGroups: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ParameterGroupName: 0,
+      MaxRecords: 0,
+      Marker: 0,
       TagKeys: D.list(0, { item: "TagKey" }),
       TagValues: D.list(0, { item: "TagValue" }),
     },
@@ -5238,6 +5466,7 @@ export const describeClusterParameters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ParameterGroupName: 0, Source: 0, MaxRecords: 0, Marker: 0 },
     output: { Parameters: D.list(o_Parameter, { item: "Parameter" }) },
   },
   errors: [ClusterParameterGroupNotFoundFault],
@@ -5283,6 +5512,9 @@ export const describeClusters: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ClusterIdentifier: 0,
+      MaxRecords: 0,
+      Marker: 0,
       TagKeys: D.list(0, { item: "TagKey" }),
       TagValues: D.list(0, { item: "TagValue" }),
     },
@@ -5333,6 +5565,9 @@ export const describeClusterSecurityGroups: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ClusterSecurityGroupName: 0,
+      MaxRecords: 0,
+      Marker: 0,
       TagKeys: D.list(0, { item: "TagKey" }),
       TagValues: D.list(0, { item: "TagValue" }),
     },
@@ -5387,9 +5622,22 @@ export const describeClusterSnapshots: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ClusterIdentifier: 0,
+      SnapshotIdentifier: 0,
+      SnapshotArn: 0,
+      SnapshotType: 0,
+      StartTime: 0,
+      EndTime: 0,
+      MaxRecords: 0,
+      Marker: 0,
+      OwnerAccount: 0,
       TagKeys: D.list(0, { item: "TagKey" }),
       TagValues: D.list(0, { item: "TagValue" }),
-      SortingEntities: D.list(0, { item: "SnapshotSortingEntity" }),
+      ClusterExists: 0,
+      SortingEntities: D.list(
+        { Attribute: 0, SortOrder: 0 },
+        { item: "SnapshotSortingEntity" },
+      ),
     },
     output: { Snapshots: D.list(o_Snapshot, { item: "Snapshot" }) },
   },
@@ -5439,6 +5687,9 @@ export const describeClusterSubnetGroups: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ClusterSubnetGroupName: 0,
+      MaxRecords: 0,
+      Marker: 0,
       TagKeys: D.list(0, { item: "TagKey" }),
       TagValues: D.list(0, { item: "TagValue" }),
     },
@@ -5476,6 +5727,7 @@ export const describeClusterTracks: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaintenanceTrackName: 0, MaxRecords: 0, Marker: 0 },
     output: {
       MaintenanceTracks: D.list(
         {
@@ -5518,6 +5770,12 @@ export const describeClusterVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ClusterVersion: 0,
+      ClusterParameterGroupFamily: 0,
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: { ClusterVersions: D.list({}, { item: "ClusterVersion" }) },
   },
   errors: [],
@@ -5548,6 +5806,12 @@ export const describeCustomDomainAssociations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CustomDomainName: 0,
+      CustomDomainCertificateArn: 0,
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       Associations: D.list(
         {
@@ -5585,7 +5849,11 @@ export const describeDataShares: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DataShare
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { DataShares: D.list(o_DataShare) } },
+  descriptor: {
+    service: svc,
+    input: { DataShareArn: 0, MaxRecords: 0, Marker: 0 },
+    output: { DataShares: D.list(o_DataShare) },
+  },
   errors: [InvalidDataShareFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5611,7 +5879,11 @@ export const describeDataSharesForConsumer: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DataShare
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { DataShares: D.list(o_DataShare) } },
+  descriptor: {
+    service: svc,
+    input: { ConsumerArn: 0, Status: 0, MaxRecords: 0, Marker: 0 },
+    output: { DataShares: D.list(o_DataShare) },
+  },
   errors: [InvalidNamespaceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5637,7 +5909,11 @@ export const describeDataSharesForProducer: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DataShare
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { DataShares: D.list(o_DataShare) } },
+  descriptor: {
+    service: svc,
+    input: { ProducerArn: 0, Status: 0, MaxRecords: 0, Marker: 0 },
+    output: { DataShares: D.list(o_DataShare) },
+  },
   errors: [InvalidNamespaceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5668,6 +5944,7 @@ export const describeDefaultClusterParameters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ParameterGroupFamily: 0, MaxRecords: 0, Marker: 0 },
     output: {
       DefaultClusterParameters: {
         Parameters: D.list(o_Parameter, { item: "Parameter" }),
@@ -5703,6 +5980,14 @@ export const describeEndpointAccess: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ClusterIdentifier: 0,
+      ResourceOwner: 0,
+      EndpointName: 0,
+      VpcId: 0,
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       EndpointAccessList: D.list({
         EndpointCreateTime: D.ts,
@@ -5744,6 +6029,13 @@ export const describeEndpointAuthorization: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ClusterIdentifier: 0,
+      Account: 0,
+      Grantee: 0,
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       EndpointAuthorizationList: D.list({
         AuthorizeTime: D.ts,
@@ -5779,6 +6071,7 @@ export const describeEventCategories: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SourceType: 0 },
     output: {
       EventCategoriesMapList: D.list(
         {
@@ -5813,6 +6106,15 @@ export const describeEvents: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      SourceIdentifier: 0,
+      SourceType: 0,
+      StartTime: 0,
+      EndTime: 0,
+      Duration: 0,
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       Events: D.list(
         { EventCategories: D.list(0, { item: "EventCategory" }), Date: D.ts },
@@ -5861,6 +6163,9 @@ export const describeEventSubscriptions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      SubscriptionName: 0,
+      MaxRecords: 0,
+      Marker: 0,
       TagKeys: D.list(0, { item: "TagKey" }),
       TagValues: D.list(0, { item: "TagValue" }),
     },
@@ -5910,6 +6215,9 @@ export const describeHsmClientCertificates: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      HsmClientCertificateIdentifier: 0,
+      MaxRecords: 0,
+      Marker: 0,
       TagKeys: D.list(0, { item: "TagKey" }),
       TagValues: D.list(0, { item: "TagValue" }),
     },
@@ -5960,6 +6268,9 @@ export const describeHsmConfigurations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      HsmConfigurationIdentifier: 0,
+      MaxRecords: 0,
+      Marker: 0,
       TagKeys: D.list(0, { item: "TagKey" }),
       TagValues: D.list(0, { item: "TagValue" }),
     },
@@ -5998,6 +6309,7 @@ export const describeInboundIntegrations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { IntegrationArn: 0, TargetArn: 0, MaxRecords: 0, Marker: 0 },
     output: {
       InboundIntegrations: D.list(
         { Errors: D.list({}, { item: "IntegrationError" }), CreateTime: D.ts },
@@ -6038,8 +6350,11 @@ export const describeIntegrations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      IntegrationArn: 0,
+      MaxRecords: 0,
+      Marker: 0,
       Filters: D.list(
-        { Values: D.list(0, { item: "Value" }) },
+        { Name: 0, Values: D.list(0, { item: "Value" }) },
         { item: "DescribeIntegrationsFilter" },
       ),
     },
@@ -6083,6 +6398,7 @@ export const describeLoggingStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ClusterIdentifier: 0 },
     output: {
       LoggingEnabled: D.bool,
       LastSuccessfulDeliveryTime: D.ts,
@@ -6118,15 +6434,24 @@ export const describeNodeConfigurationOptions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ActionType: 0,
+      ClusterIdentifier: 0,
+      SnapshotIdentifier: 0,
+      SnapshotArn: 0,
+      OwnerAccount: 0,
       Filters: D.m({
         wire: "Filter",
         shape: D.list(
           {
+            Name: 0,
+            Operator: 0,
             Values: D.m({ wire: "Value", shape: D.list(0, { item: "item" }) }),
           },
           { item: "NodeConfigurationOptionsFilter" },
         ),
       }),
+      Marker: 0,
+      MaxRecords: 0,
     },
     output: {
       NodeConfigurationOptionList: D.list(
@@ -6174,6 +6499,7 @@ export const describeOrderableClusterOptions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ClusterVersion: 0, NodeType: 0, MaxRecords: 0, Marker: 0 },
     output: {
       OrderableClusterOptions: D.list(
         {
@@ -6213,6 +6539,12 @@ export const describePartners: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AccountId: 0,
+      ClusterIdentifier: 0,
+      DatabaseName: 0,
+      PartnerName: 0,
+    },
     output: {
       PartnerIntegrationInfoList: D.list(
         { CreatedAt: D.ts, UpdatedAt: D.ts },
@@ -6248,6 +6580,7 @@ export const describeQev2IdcApplications: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Qev2IdcApplicationArn: 0, MaxRecords: 0, Marker: 0 },
     output: { Qev2IdcApplications: D.list(o_Qev2IdcApplication) },
   },
   errors: [
@@ -6285,6 +6618,7 @@ export const describeRedshiftIdcApplications: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { RedshiftIdcApplicationArn: 0, MaxRecords: 0, Marker: 0 },
     output: { RedshiftIdcApplications: D.list(o_RedshiftIdcApplication) },
   },
   errors: [
@@ -6322,6 +6656,12 @@ export const describeReservedNodeExchangeStatus: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ReservedNodeId: 0,
+      ReservedNodeExchangeRequestId: 0,
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       ReservedNodeExchangeStatusDetails: D.list(o_ReservedNodeExchangeStatus, {
         item: "ReservedNodeExchangeStatus",
@@ -6370,6 +6710,7 @@ export const describeReservedNodeOfferings: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ReservedNodeOfferingId: 0, MaxRecords: 0, Marker: 0 },
     output: {
       ReservedNodeOfferings: D.list(o_ReservedNodeOffering, {
         item: "ReservedNodeOffering",
@@ -6408,6 +6749,7 @@ export const describeReservedNodes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ReservedNodeId: 0, MaxRecords: 0, Marker: 0 },
     output: { ReservedNodes: D.list(o_ReservedNode, { item: "ReservedNode" }) },
   },
   errors: [DependentServiceUnavailableFault, ReservedNodeNotFoundFault],
@@ -6444,6 +6786,7 @@ export const describeResize: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ClusterIdentifier: 0 },
     output: {
       TargetNumberOfNodes: D.num,
       ImportTablesCompleted: D.list(),
@@ -6484,10 +6827,17 @@ export const describeScheduledActions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ScheduledActionName: 0,
+      TargetActionType: 0,
+      StartTime: 0,
+      EndTime: 0,
+      Active: 0,
       Filters: D.list(
-        { Values: D.list(0, { item: "item" }) },
+        { Name: 0, Values: D.list(0, { item: "item" }) },
         { item: "ScheduledActionFilter" },
       ),
+      Marker: 0,
+      MaxRecords: 0,
     },
     output: {
       ScheduledActions: D.list(
@@ -6535,6 +6885,9 @@ export const describeSnapshotCopyGrants: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      SnapshotCopyGrantName: 0,
+      MaxRecords: 0,
+      Marker: 0,
       TagKeys: D.list(0, { item: "TagKey" }),
       TagValues: D.list(0, { item: "TagValue" }),
     },
@@ -6570,8 +6923,12 @@ export const describeSnapshotSchedules: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ClusterIdentifier: 0,
+      ScheduleIdentifier: 0,
       TagKeys: D.list(0, { item: "TagKey" }),
       TagValues: D.list(0, { item: "TagValue" }),
+      Marker: 0,
+      MaxRecords: 0,
     },
     output: {
       SnapshotSchedules: D.list(
@@ -6645,6 +7002,12 @@ export const describeTableRestoreStatus: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ClusterIdentifier: 0,
+      TableRestoreRequestId: 0,
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       TableRestoreStatusDetails: D.list(o_TableRestoreStatus, {
         item: "TableRestoreStatus",
@@ -6702,6 +7065,10 @@ export const describeTags: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ResourceName: 0,
+      ResourceType: 0,
+      MaxRecords: 0,
+      Marker: 0,
       TagKeys: D.list(0, { item: "TagKey" }),
       TagValues: D.list(0, { item: "TagValue" }),
     },
@@ -6751,6 +7118,11 @@ export const describeUsageLimits: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      UsageLimitId: 0,
+      ClusterIdentifier: 0,
+      FeatureType: 0,
+      MaxRecords: 0,
+      Marker: 0,
       TagKeys: D.list(0, { item: "TagKey" }),
       TagValues: D.list(0, { item: "TagValue" }),
     },
@@ -6787,6 +7159,7 @@ export const disableLogging: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ClusterIdentifier: 0, LogDestinationType: 0, LogExports: 0 },
     output: {
       LoggingEnabled: D.bool,
       LastSuccessfulDeliveryTime: D.ts,
@@ -6826,7 +7199,11 @@ export const disableSnapshotCopy: API.OperationMethod<
   DisableSnapshotCopyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: { ClusterIdentifier: 0 },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     ClusterNotFoundFault,
     InvalidClusterStateFault,
@@ -6854,6 +7231,12 @@ export const disassociateDataShareConsumer: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DataShareArn: 0,
+      DisassociateEntireAccount: 0,
+      ConsumerArn: 0,
+      ConsumerRegion: 0,
+    },
     output: {
       AllowPubliclyAccessibleConsumers: D.bool,
       DataShareAssociations: D.list(o_DataShareAssociation),
@@ -6886,6 +7269,15 @@ export const enableLogging: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ClusterIdentifier: 0,
+      BucketName: 0,
+      S3KeyPrefix: 0,
+      LogDestinationType: 0,
+      LogExports: 0,
+      S3TableKmsKeyId: 0,
+      S3TableGranularity: 0,
+    },
     output: {
       LoggingEnabled: D.bool,
       LastSuccessfulDeliveryTime: D.ts,
@@ -6931,7 +7323,17 @@ export const enableSnapshotCopy: API.OperationMethod<
   EnableSnapshotCopyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterIdentifier: 0,
+      DestinationRegion: 0,
+      RetentionPeriod: 0,
+      SnapshotCopyGrantName: 0,
+      ManualSnapshotRetentionPeriod: 0,
+    },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     ClusterNotFoundFault,
     CopyToRegionDisabledFault,
@@ -6965,7 +7367,11 @@ export const failoverPrimaryCompute: API.OperationMethod<
   FailoverPrimaryComputeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: { ClusterIdentifier: 0 },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     ClusterNotFoundFault,
     InvalidClusterStateFault,
@@ -7016,7 +7422,15 @@ export const getClusterCredentials: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { DbGroups: D.list(0, { item: "DbGroup" }) },
+    input: {
+      DbUser: 0,
+      DbName: 0,
+      ClusterIdentifier: 0,
+      DurationSeconds: 0,
+      AutoCreate: 0,
+      DbGroups: D.list(0, { item: "DbGroup" }),
+      CustomDomainName: 0,
+    },
     output: { DbPassword: D.secret, Expiration: D.ts },
   },
   errors: [ClusterNotFoundFault, UnsupportedOperationFault],
@@ -7050,6 +7464,12 @@ export const getClusterCredentialsWithIAM: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DbName: 0,
+      ClusterIdentifier: 0,
+      DurationSeconds: 0,
+      CustomDomainName: 0,
+    },
     output: { DbPassword: D.secret, Expiration: D.ts, NextRefreshTime: D.ts },
   },
   errors: [ClusterNotFoundFault, UnsupportedOperationFault],
@@ -7124,6 +7544,13 @@ export const getReservedNodeExchangeConfigurationOptions: API.PaginatedOperation
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ActionType: 0,
+      ClusterIdentifier: 0,
+      SnapshotIdentifier: 0,
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       ReservedNodeConfigurationOptionList: D.list(
         {
@@ -7177,6 +7604,7 @@ export const getReservedNodeExchangeOfferings: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ReservedNodeId: 0, MaxRecords: 0, Marker: 0 },
     output: {
       ReservedNodeOfferings: D.list(o_ReservedNodeOffering, {
         item: "ReservedNodeOffering",
@@ -7216,7 +7644,11 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ResourcePolicy: {} } },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0 },
+    output: { ResourcePolicy: {} },
+  },
   errors: [
     InvalidPolicyFault,
     ResourceNotFoundFault,
@@ -7243,6 +7675,7 @@ export const listRecommendations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ClusterIdentifier: 0, NamespaceArn: 0, MaxRecords: 0, Marker: 0 },
     output: {
       Recommendations: D.list(
         {
@@ -7280,7 +7713,11 @@ export const modifyAquaConfiguration: API.OperationMethod<
   ModifyAquaConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AquaConfiguration: {} } },
+  descriptor: {
+    service: svc,
+    input: { ClusterIdentifier: 0, AquaConfigurationStatus: 0 },
+    output: { AquaConfiguration: {} },
+  },
   errors: [
     ClusterNotFoundFault,
     InvalidClusterStateFault,
@@ -7305,7 +7742,10 @@ export const modifyAuthenticationProfile: API.OperationMethod<
   ModifyAuthenticationProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AuthenticationProfileName: 0, AuthenticationProfileContent: 0 },
+  },
   errors: [
     AuthenticationProfileNotFoundFault,
     AuthenticationProfileQuotaExceededFault,
@@ -7380,8 +7820,36 @@ export const modifyCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ClusterIdentifier: 0,
+      ClusterType: 0,
+      NodeType: 0,
+      NumberOfNodes: 0,
       ClusterSecurityGroups: D.list(0, { item: "ClusterSecurityGroupName" }),
       VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
+      MasterUserPassword: 0,
+      ClusterParameterGroupName: 0,
+      AutomatedSnapshotRetentionPeriod: 0,
+      ManualSnapshotRetentionPeriod: 0,
+      PreferredMaintenanceWindow: 0,
+      ClusterVersion: 0,
+      AllowVersionUpgrade: 0,
+      HsmClientCertificateIdentifier: 0,
+      HsmConfigurationIdentifier: 0,
+      NewClusterIdentifier: 0,
+      PubliclyAccessible: 0,
+      ElasticIp: 0,
+      EnhancedVpcRouting: 0,
+      MaintenanceTrackName: 0,
+      Encrypted: 0,
+      KmsKeyId: 0,
+      AvailabilityZoneRelocation: 0,
+      AvailabilityZone: 0,
+      Port: 0,
+      ManageMasterPassword: 0,
+      MasterPasswordSecretKmsKeyId: 0,
+      IpAddressType: 0,
+      MultiAZ: 0,
+      ExtraComputeForAutomaticOptimization: 0,
     },
     output: { Cluster: o_Cluster },
   },
@@ -7430,7 +7898,11 @@ export const modifyClusterDbRevision: API.OperationMethod<
   ModifyClusterDbRevisionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: { ClusterIdentifier: 0, RevisionTarget: 0 },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     ClusterNotFoundFault,
     ClusterOnLatestRevisionFault,
@@ -7463,8 +7935,10 @@ export const modifyClusterIamRoles: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ClusterIdentifier: 0,
       AddIamRoles: D.list(0, { item: "IamRoleArn" }),
       RemoveIamRoles: D.list(0, { item: "IamRoleArn" }),
+      DefaultIamRoleArn: 0,
     },
     output: { Cluster: o_Cluster },
   },
@@ -7487,7 +7961,18 @@ export const modifyClusterMaintenance: API.OperationMethod<
   ModifyClusterMaintenanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterIdentifier: 0,
+      DeferMaintenance: 0,
+      DeferMaintenanceIdentifier: 0,
+      DeferMaintenanceStartTime: 0,
+      DeferMaintenanceEndTime: 0,
+      DeferMaintenanceDuration: 0,
+    },
+    output: { Cluster: o_Cluster },
+  },
   errors: [ClusterNotFoundFault, InvalidClusterStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -7513,7 +7998,10 @@ export const modifyClusterParameterGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Parameters: D.list(0, { item: "Parameter" }) },
+    input: {
+      ParameterGroupName: 0,
+      Parameters: D.list(i_Parameter, { item: "Parameter" }),
+    },
   },
   errors: [
     ClusterParameterGroupNotFoundFault,
@@ -7540,7 +8028,15 @@ export const modifyClusterSnapshot: API.OperationMethod<
   ModifyClusterSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Snapshot: o_Snapshot } },
+  descriptor: {
+    service: svc,
+    input: {
+      SnapshotIdentifier: 0,
+      ManualSnapshotRetentionPeriod: 0,
+      Force: 0,
+    },
+    output: { Snapshot: o_Snapshot },
+  },
   errors: [
     ClusterSnapshotNotFoundFault,
     InvalidClusterSnapshotStateFault,
@@ -7565,7 +8061,14 @@ export const modifyClusterSnapshotSchedule: API.OperationMethod<
   ModifyClusterSnapshotScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterIdentifier: 0,
+      ScheduleIdentifier: 0,
+      DisassociateSchedule: 0,
+    },
+  },
   errors: [
     ClusterNotFoundFault,
     InvalidClusterSnapshotScheduleStateFault,
@@ -7614,7 +8117,11 @@ export const modifyClusterSubnetGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { SubnetIds: D.list(0, { item: "SubnetIdentifier" }) },
+    input: {
+      ClusterSubnetGroupName: 0,
+      Description: 0,
+      SubnetIds: D.list(0, { item: "SubnetIdentifier" }),
+    },
     output: { ClusterSubnetGroup: o_ClusterSubnetGroup },
   },
   errors: [
@@ -7645,7 +8152,14 @@ export const modifyCustomDomainAssociation: API.OperationMethod<
   ModifyCustomDomainAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CustomDomainName: 0,
+      CustomDomainCertificateArn: 0,
+      ClusterIdentifier: 0,
+    },
+  },
   errors: [
     ClusterNotFoundFault,
     CustomCnameAssociationFault,
@@ -7676,7 +8190,10 @@ export const modifyEndpointAccess: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }) },
+    input: {
+      EndpointName: 0,
+      VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
+    },
     output: {
       EndpointCreateTime: D.ts,
       Port: D.num,
@@ -7720,8 +8237,13 @@ export const modifyEventSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      SubscriptionName: 0,
+      SnsTopicArn: 0,
+      SourceType: 0,
       SourceIds: D.list(0, { item: "SourceId" }),
       EventCategories: D.list(0, { item: "EventCategory" }),
+      Severity: 0,
+      Enabled: 0,
     },
     output: { EventSubscription: o_EventSubscription },
   },
@@ -7759,6 +8281,7 @@ export const modifyIntegration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { IntegrationArn: 0, Description: 0, IntegrationName: 0 },
     output: {
       Errors: D.list({}, { item: "IntegrationError" }),
       CreateTime: D.ts,
@@ -7796,7 +8319,17 @@ export const modifyLakehouseConfiguration: API.OperationMethod<
   ModifyLakehouseConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterIdentifier: 0,
+      LakehouseRegistration: 0,
+      CatalogName: 0,
+      LakehouseIdcRegistration: 0,
+      LakehouseIdcApplicationArn: 0,
+      DryRun: 0,
+    },
+  },
   errors: [
     ClusterNotFoundFault,
     DependentServiceAccessDeniedFault,
@@ -7828,6 +8361,7 @@ export const modifyQev2IdcApplication: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Qev2IdcApplicationArn: 0, IdcDisplayName: 0 },
     output: { Qev2IdcApplication: o_Qev2IdcApplication },
   },
   errors: [
@@ -7858,6 +8392,14 @@ export const modifyRedshiftIdcApplication: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      RedshiftIdcApplicationArn: 0,
+      IdentityNamespace: 0,
+      IamRoleArn: 0,
+      IdcDisplayName: 0,
+      AuthorizedTokenIssuerList: D.list(i_AuthorizedTokenIssuer),
+      ServiceIntegrations: D.list(i_ServiceIntegrationsUnion),
+    },
     output: { RedshiftIdcApplication: o_RedshiftIdcApplication },
   },
   errors: [
@@ -7891,6 +8433,16 @@ export const modifyScheduledAction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ScheduledActionName: 0,
+      TargetAction: i_ScheduledActionType,
+      Schedule: 0,
+      IamRole: 0,
+      ScheduledActionDescription: 0,
+      StartTime: 0,
+      EndTime: 0,
+      Enable: 0,
+    },
     output: {
       TargetAction: o_ScheduledActionType,
       NextInvocations: D.list(D.ts, { item: "ScheduledActionTime" }),
@@ -7934,7 +8486,11 @@ export const modifySnapshotCopyRetentionPeriod: API.OperationMethod<
   ModifySnapshotCopyRetentionPeriodError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: { ClusterIdentifier: 0, RetentionPeriod: 0, Manual: 0 },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     ClusterNotFoundFault,
     InvalidClusterStateFault,
@@ -7964,7 +8520,10 @@ export const modifySnapshotSchedule: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ScheduleDefinitions: D.list(0, { item: "ScheduleDefinition" }) },
+    input: {
+      ScheduleIdentifier: 0,
+      ScheduleDefinitions: D.list(0, { item: "ScheduleDefinition" }),
+    },
     output: {
       ScheduleDefinitions: D.list(0, { item: "ScheduleDefinition" }),
       Tags: D.list({}, { item: "Tag" }),
@@ -8000,6 +8559,7 @@ export const modifyUsageLimit: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UsageLimitId: 0, Amount: 0, BreachAction: 0 },
     output: { Amount: D.num, Tags: D.list({}, { item: "Tag" }) },
   },
   errors: [
@@ -8026,7 +8586,11 @@ export const pauseCluster: API.OperationMethod<
   PauseClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: { ClusterIdentifier: 0 },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     ClusterNotFoundFault,
     InvalidClusterStateFault,
@@ -8060,7 +8624,11 @@ export const purchaseReservedNodeOffering: API.OperationMethod<
   PurchaseReservedNodeOfferingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ReservedNode: o_ReservedNode } },
+  descriptor: {
+    service: svc,
+    input: { ReservedNodeOfferingId: 0, NodeCount: 0 },
+    output: { ReservedNode: o_ReservedNode },
+  },
   errors: [
     ReservedNodeAlreadyExistsFault,
     ReservedNodeOfferingNotFoundFault,
@@ -8087,7 +8655,11 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ResourcePolicy: {} } },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, Policy: 0 },
+    output: { ResourcePolicy: {} },
+  },
   errors: [
     ConflictPolicyUpdateFault,
     InvalidPolicyFault,
@@ -8119,7 +8691,11 @@ export const rebootCluster: API.OperationMethod<
   RebootClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: { ClusterIdentifier: 0 },
+    output: { Cluster: o_Cluster },
+  },
   errors: [ClusterNotFoundFault, InvalidClusterStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -8140,7 +8716,13 @@ export const registerNamespace: API.OperationMethod<
   RegisterNamespaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      NamespaceIdentifier: i_NamespaceIdentifierUnion,
+      ConsumerIdentifiers: 0,
+    },
+  },
   errors: [
     ClusterNotFoundFault,
     InvalidClusterStateFault,
@@ -8163,6 +8745,7 @@ export const rejectDataShare: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DataShareArn: 0 },
     output: {
       AllowPubliclyAccessibleConsumers: D.bool,
       DataShareAssociations: D.list(o_DataShareAssociation),
@@ -8192,7 +8775,11 @@ export const resetClusterParameterGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Parameters: D.list(0, { item: "Parameter" }) },
+    input: {
+      ParameterGroupName: 0,
+      ResetAllParameters: 0,
+      Parameters: D.list(i_Parameter, { item: "Parameter" }),
+    },
   },
   errors: [
     ClusterParameterGroupNotFoundFault,
@@ -8259,7 +8846,19 @@ export const resizeCluster: API.OperationMethod<
   ResizeClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterIdentifier: 0,
+      ClusterType: 0,
+      NodeType: 0,
+      NumberOfNodes: 0,
+      Classic: 0,
+      ReservedNodeId: 0,
+      TargetReservedNodeOfferingId: 0,
+    },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     ClusterNotFoundFault,
     DependentServiceUnavailableFault,
@@ -8361,9 +8960,45 @@ export const restoreFromClusterSnapshot: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ClusterIdentifier: 0,
+      SnapshotIdentifier: 0,
+      SnapshotArn: 0,
+      SnapshotClusterIdentifier: 0,
+      Port: 0,
+      AvailabilityZone: 0,
+      AllowVersionUpgrade: 0,
+      ClusterSubnetGroupName: 0,
+      PubliclyAccessible: 0,
+      OwnerAccount: 0,
+      HsmClientCertificateIdentifier: 0,
+      HsmConfigurationIdentifier: 0,
+      ElasticIp: 0,
+      ClusterParameterGroupName: 0,
       ClusterSecurityGroups: D.list(0, { item: "ClusterSecurityGroupName" }),
       VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
+      PreferredMaintenanceWindow: 0,
+      AutomatedSnapshotRetentionPeriod: 0,
+      ManualSnapshotRetentionPeriod: 0,
+      KmsKeyId: 0,
+      NodeType: 0,
+      EnhancedVpcRouting: 0,
+      AdditionalInfo: 0,
       IamRoles: D.list(0, { item: "IamRoleArn" }),
+      MaintenanceTrackName: 0,
+      SnapshotScheduleIdentifier: 0,
+      NumberOfNodes: 0,
+      AvailabilityZoneRelocation: 0,
+      AquaConfigurationStatus: 0,
+      DefaultIamRoleArn: 0,
+      ReservedNodeId: 0,
+      TargetReservedNodeOfferingId: 0,
+      Encrypted: 0,
+      ManageMasterPassword: 0,
+      MasterPasswordSecretKmsKeyId: 0,
+      IpAddressType: 0,
+      MultiAZ: 0,
+      CatalogName: 0,
+      RedshiftIdcApplicationArn: 0,
     },
     output: { Cluster: o_Cluster },
   },
@@ -8444,6 +9079,17 @@ export const restoreTableFromClusterSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ClusterIdentifier: 0,
+      SnapshotIdentifier: 0,
+      SourceDatabaseName: 0,
+      SourceSchemaName: 0,
+      SourceTableName: 0,
+      TargetDatabaseName: 0,
+      TargetSchemaName: 0,
+      NewTableName: 0,
+      EnableCaseSensitiveIdentifier: 0,
+    },
     output: { TableRestoreStatus: o_TableRestoreStatus },
   },
   errors: [
@@ -8475,7 +9121,11 @@ export const resumeCluster: API.OperationMethod<
   ResumeClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: { ClusterIdentifier: 0 },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     ClusterNotFoundFault,
     InsufficientClusterCapacityFault,
@@ -8507,6 +9157,12 @@ export const revokeClusterSecurityGroupIngress: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ClusterSecurityGroupName: 0,
+      CIDRIP: 0,
+      EC2SecurityGroupName: 0,
+      EC2SecurityGroupOwnerId: 0,
+    },
     output: { ClusterSecurityGroup: o_ClusterSecurityGroup },
   },
   errors: [
@@ -8539,7 +9195,12 @@ export const revokeEndpointAccess: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { VpcIds: D.list(0, { item: "VpcIdentifier" }) },
+    input: {
+      ClusterIdentifier: 0,
+      Account: 0,
+      VpcIds: D.list(0, { item: "VpcIdentifier" }),
+      Force: 0,
+    },
     output: {
       AuthorizeTime: D.ts,
       AllowedAllVPCs: D.bool,
@@ -8582,7 +9243,16 @@ export const revokeSnapshotAccess: API.OperationMethod<
   RevokeSnapshotAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Snapshot: o_Snapshot } },
+  descriptor: {
+    service: svc,
+    input: {
+      SnapshotIdentifier: 0,
+      SnapshotArn: 0,
+      SnapshotClusterIdentifier: 0,
+      AccountWithRestoreAccess: 0,
+    },
+    output: { Snapshot: o_Snapshot },
+  },
   errors: [
     AccessToSnapshotDeniedFault,
     AuthorizationNotFoundFault,
@@ -8609,7 +9279,11 @@ export const rotateEncryptionKey: API.OperationMethod<
   RotateEncryptionKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: { ClusterIdentifier: 0 },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     ClusterNotFoundFault,
     DependentServiceRequestThrottlingFault,
@@ -8636,7 +9310,17 @@ export const updatePartnerStatus: API.OperationMethod<
   UpdatePartnerStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AccountId: 0,
+      ClusterIdentifier: 0,
+      DatabaseName: 0,
+      PartnerName: 0,
+      Status: 0,
+      StatusMessage: 0,
+    },
+  },
   errors: [
     ClusterNotFoundFault,
     PartnerNotFoundFault,
@@ -8648,6 +9332,44 @@ export const updatePartnerStatus: API.OperationMethod<
   operationName: "UpdatePartnerStatus",
 })) as any;
 
+const i_AuthorizedTokenIssuer: D.LazyStruct = () => ({
+  TrustedTokenIssuerArn: 0,
+  AuthorizedAudiencesList: 0,
+});
+const i_NamespaceIdentifierUnion: D.LazyStruct = () => ({
+  ServerlessIdentifier: { NamespaceIdentifier: 0, WorkgroupIdentifier: 0 },
+  ProvisionedIdentifier: { ClusterIdentifier: 0 },
+});
+const i_Parameter: D.LazyStruct = () => ({
+  ParameterName: 0,
+  ParameterValue: 0,
+  Description: 0,
+  Source: 0,
+  DataType: 0,
+  AllowedValues: 0,
+  ApplyType: 0,
+  IsModifiable: 0,
+  MinimumEngineVersion: 0,
+});
+const i_ScheduledActionType: D.LazyStruct = () => ({
+  ResizeCluster: {
+    ClusterIdentifier: 0,
+    ClusterType: 0,
+    NodeType: 0,
+    NumberOfNodes: 0,
+    Classic: 0,
+    ReservedNodeId: 0,
+    TargetReservedNodeOfferingId: 0,
+  },
+  PauseCluster: { ClusterIdentifier: 0 },
+  ResumeCluster: { ClusterIdentifier: 0 },
+});
+const i_ServiceIntegrationsUnion: D.LazyStruct = () => ({
+  LakeFormation: D.list({ LakeFormationQuery: { Authorization: 0 } }),
+  S3AccessGrants: D.list({ ReadWriteAccess: { Authorization: 0 } }),
+  Redshift: D.list({ Connect: { Authorization: 0 } }),
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_AvailabilityZone: D.LazyStruct = () => ({
   SupportedPlatforms: D.list({}, { item: "SupportedPlatform" }),
 });

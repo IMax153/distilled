@@ -516,7 +516,14 @@ export const createKeyspace: API.OperationMethod<
   CreateKeyspaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      keyspaceName: 0,
+      tags: D.list(i_Tag),
+      replicationSpecification: i_ReplicationSpecification,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -550,7 +557,31 @@ export const createTable: API.OperationMethod<
   CreateTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      keyspaceName: 0,
+      tableName: 0,
+      schemaDefinition: {
+        allColumns: D.list(i_ColumnDefinition),
+        partitionKeys: D.list({ name: 0 }),
+        clusteringKeys: D.list({ name: 0, orderBy: 0 }),
+        staticColumns: D.list({ name: 0 }),
+      },
+      comment: { message: 0 },
+      capacitySpecification: i_CapacitySpecification,
+      encryptionSpecification: i_EncryptionSpecification,
+      pointInTimeRecovery: i_PointInTimeRecovery,
+      ttl: i_TimeToLive,
+      defaultTimeToLive: 0,
+      tags: D.list(i_Tag),
+      clientSideTimestamps: i_ClientSideTimestamps,
+      autoScalingSpecification: i_AutoScalingSpecification,
+      replicaSpecifications: D.list(i_ReplicaSpecification),
+      cdcSpecification: i_CdcSpecification,
+      warmThroughputSpecification: i_WarmThroughputSpecification,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -585,7 +616,14 @@ export const createType: API.OperationMethod<
   CreateTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      keyspaceName: 0,
+      typeName: 0,
+      fieldDefinitions: D.list({ name: 0, type: 0 }),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -616,7 +654,7 @@ export const deleteKeyspace: API.OperationMethod<
   DeleteKeyspaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { keyspaceName: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -647,7 +685,7 @@ export const deleteTable: API.OperationMethod<
   DeleteTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { keyspaceName: 0, tableName: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -680,7 +718,7 @@ export const deleteType: API.OperationMethod<
   DeleteTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { keyspaceName: 0, typeName: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -710,7 +748,7 @@ export const getKeyspace: API.OperationMethod<
   GetKeyspaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { keyspaceName: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -743,6 +781,7 @@ export const getTable: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { keyspaceName: 0, tableName: 0 },
     output: {
       creationTimestamp: D.ts,
       capacitySpecification: o_CapacitySpecificationSummary,
@@ -790,7 +829,7 @@ export const getTableAutoScalingSettings: API.OperationMethod<
   GetTableAutoScalingSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { keyspaceName: 0, tableName: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -821,7 +860,11 @@ export const getType: API.OperationMethod<
   GetTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { lastModifiedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { keyspaceName: 0, typeName: 0 },
+    output: { lastModifiedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -851,7 +894,7 @@ export const listKeyspaces: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   KeyspaceSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0, maxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -889,7 +932,10 @@ export const listTables: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TableSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { nextToken: 0, maxResults: 0, keyspaceName: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -927,7 +973,10 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Tag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { resourceArn: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -965,7 +1014,10 @@ export const listTypes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TypeName
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { nextToken: 0, maxResults: 0, keyspaceName: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1027,7 +1079,22 @@ export const restoreTable: API.OperationMethod<
   RestoreTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      sourceKeyspaceName: 0,
+      sourceTableName: 0,
+      targetKeyspaceName: 0,
+      targetTableName: 0,
+      restoreTimestamp: 0,
+      capacitySpecificationOverride: i_CapacitySpecification,
+      encryptionSpecificationOverride: i_EncryptionSpecification,
+      pointInTimeRecoveryOverride: i_PointInTimeRecovery,
+      tagsOverride: D.list(i_Tag),
+      autoScalingSpecification: i_AutoScalingSpecification,
+      replicaSpecifications: D.list(i_ReplicaSpecification),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1060,7 +1127,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1091,7 +1158,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1162,7 +1229,14 @@ export const updateKeyspace: API.OperationMethod<
   UpdateKeyspaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      keyspaceName: 0,
+      replicationSpecification: i_ReplicationSpecification,
+      clientSideTimestamps: i_ClientSideTimestamps,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1193,7 +1267,24 @@ export const updateTable: API.OperationMethod<
   UpdateTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      keyspaceName: 0,
+      tableName: 0,
+      addColumns: D.list(i_ColumnDefinition),
+      capacitySpecification: i_CapacitySpecification,
+      encryptionSpecification: i_EncryptionSpecification,
+      pointInTimeRecovery: i_PointInTimeRecovery,
+      ttl: i_TimeToLive,
+      defaultTimeToLive: 0,
+      clientSideTimestamps: i_ClientSideTimestamps,
+      autoScalingSpecification: i_AutoScalingSpecification,
+      replicaSpecifications: D.list(i_ReplicaSpecification),
+      cdcSpecification: i_CdcSpecification,
+      warmThroughputSpecification: i_WarmThroughputSpecification,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1207,6 +1298,56 @@ export const updateTable: API.OperationMethod<
   operationName: "UpdateTable",
 })) as any;
 
+const i_AutoScalingSpecification: D.LazyStruct = () => ({
+  writeCapacityAutoScaling: i_AutoScalingSettings,
+  readCapacityAutoScaling: i_AutoScalingSettings,
+});
+const i_CapacitySpecification: D.LazyStruct = () => ({
+  throughputMode: 0,
+  readCapacityUnits: 0,
+  writeCapacityUnits: 0,
+});
+const i_CdcSpecification: D.LazyStruct = () => ({
+  status: 0,
+  viewType: 0,
+  tags: D.list(i_Tag),
+  propagateTags: 0,
+});
+const i_ClientSideTimestamps: D.LazyStruct = () => ({ status: 0 });
+const i_ColumnDefinition: D.LazyStruct = () => ({ name: 0, type: 0 });
+const i_EncryptionSpecification: D.LazyStruct = () => ({
+  type: 0,
+  kmsKeyIdentifier: 0,
+});
+const i_PointInTimeRecovery: D.LazyStruct = () => ({ status: 0 });
+const i_ReplicaSpecification: D.LazyStruct = () => ({
+  region: 0,
+  readCapacityUnits: 0,
+  readCapacityAutoScaling: i_AutoScalingSettings,
+});
+const i_ReplicationSpecification: D.LazyStruct = () => ({
+  replicationStrategy: 0,
+  regionList: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_TimeToLive: D.LazyStruct = () => ({ status: 0 });
+const i_WarmThroughputSpecification: D.LazyStruct = () => ({
+  readUnitsPerSecond: 0,
+  writeUnitsPerSecond: 0,
+});
 const o_CapacitySpecificationSummary: D.LazyStruct = () => ({
   lastUpdateToPayPerRequestTimestamp: D.ts,
+});
+const i_AutoScalingSettings: D.LazyStruct = () => ({
+  autoScalingDisabled: 0,
+  minimumUnits: 0,
+  maximumUnits: 0,
+  scalingPolicy: {
+    targetTrackingScalingPolicyConfiguration: {
+      disableScaleIn: 0,
+      scaleInCooldown: 0,
+      scaleOutCooldown: 0,
+      targetValue: 0,
+    },
+  },
 });

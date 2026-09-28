@@ -2373,7 +2373,17 @@ export const addArtifact: API.OperationMethod<
   AddArtifactError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /AddArtifact", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /AddArtifact",
+    input: {
+      agentSpaceId: 0,
+      artifactContent: 0,
+      artifactType: 0,
+      fileName: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2407,6 +2417,16 @@ export const batchCreateSecurityRequirements: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchCreateSecurityRequirements",
+    input: {
+      packId: 0,
+      securityRequirements: D.list({
+        name: 0,
+        description: 0,
+        domain: 0,
+        evaluation: 0,
+        remediation: 0,
+      }),
+    },
     output: {
       securityRequirements: D.list({ createdAt: D.ts, updatedAt: D.ts }),
     },
@@ -2439,6 +2459,7 @@ export const batchDeleteCodeReviews: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchDeleteCodeReviews",
+    input: { codeReviewIds: 0, agentSpaceId: 0 },
     body: true,
   },
   errors: [],
@@ -2460,6 +2481,7 @@ export const batchDeletePentests: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchDeletePentests",
+    input: { pentestIds: 0, agentSpaceId: 0 },
     output: { deleted: D.list(o_Pentest) },
     body: true,
   },
@@ -2489,6 +2511,7 @@ export const batchDeleteSecurityRequirements: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchDeleteSecurityRequirements",
+    input: { packId: 0, securityRequirementNames: 0 },
     body: true,
   },
   errors: [
@@ -2517,6 +2540,7 @@ export const batchDeleteThreatModels: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchDeleteThreatModels",
+    input: { threatModelIds: 0, agentSpaceId: 0 },
     body: true,
   },
   errors: [],
@@ -2538,6 +2562,7 @@ export const batchGetAgentSpaces: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchGetAgentSpaces",
+    input: { agentSpaceIds: 0 },
     output: { agentSpaces: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
     body: true,
   },
@@ -2566,6 +2591,7 @@ export const batchGetArtifactMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchGetArtifactMetadata",
+    input: { agentSpaceId: 0, artifactIds: 0 },
     output: { artifactMetadataList: D.list({ updatedAt: D.ts }) },
     body: true,
   },
@@ -2594,6 +2620,7 @@ export const batchGetCodeReviewJobs: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchGetCodeReviewJobs",
+    input: { codeReviewJobIds: 0, agentSpaceId: 0 },
     output: {
       codeReviewJobs: D.list({
         steps: D.list(o_Step),
@@ -2623,6 +2650,7 @@ export const batchGetCodeReviewJobTasks: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchGetCodeReviewJobTasks",
+    input: { agentSpaceId: 0, codeReviewJobTaskIds: 0 },
     output: {
       codeReviewJobTasks: D.list({ createdAt: D.ts, updatedAt: D.ts }),
     },
@@ -2647,6 +2675,7 @@ export const batchGetCodeReviews: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchGetCodeReviews",
+    input: { codeReviewIds: 0, agentSpaceId: 0 },
     output: {
       codeReviews: D.list({
         assets: o_Assets,
@@ -2675,6 +2704,7 @@ export const batchGetFindings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchGetFindings",
+    input: { findingIds: 0, agentSpaceId: 0 },
     output: { findings: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
     body: true,
   },
@@ -2697,6 +2727,7 @@ export const batchGetPentestJobs: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchGetPentestJobs",
+    input: { pentestJobIds: 0, agentSpaceId: 0 },
     output: {
       pentestJobs: D.list({
         actors: D.list(o_Actor),
@@ -2728,6 +2759,7 @@ export const batchGetPentestJobTasks: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchGetPentestJobTasks",
+    input: { agentSpaceId: 0, taskIds: 0 },
     output: { tasks: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
     body: true,
   },
@@ -2750,6 +2782,7 @@ export const batchGetPentests: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchGetPentests",
+    input: { pentestIds: 0, agentSpaceId: 0 },
     output: { pentests: D.list(o_Pentest) },
     body: true,
   },
@@ -2778,6 +2811,7 @@ export const batchGetSecurityRequirements: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchGetSecurityRequirements",
+    input: { packId: 0, securityRequirementNames: 0 },
     output: {
       securityRequirements: D.list({ createdAt: D.ts, updatedAt: D.ts }),
     },
@@ -2808,6 +2842,7 @@ export const batchGetTargetDomains: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchGetTargetDomains",
+    input: { targetDomainIds: 0 },
     output: { targetDomains: D.list({ createdAt: D.ts, verifiedAt: D.ts }) },
     body: true,
   },
@@ -2830,6 +2865,7 @@ export const batchGetThreatModelJobs: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchGetThreatModelJobs",
+    input: { threatModelJobIds: 0, agentSpaceId: 0 },
     output: {
       threatModelJobs: D.list({
         createdAt: D.ts,
@@ -2859,6 +2895,7 @@ export const batchGetThreatModelJobTasks: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchGetThreatModelJobTasks",
+    input: { agentSpaceId: 0, threatModelJobTaskIds: 0 },
     output: {
       threatModelJobTasks: D.list({ createdAt: D.ts, updatedAt: D.ts }),
     },
@@ -2883,6 +2920,7 @@ export const batchGetThreatModels: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchGetThreatModels",
+    input: { threatModelIds: 0, agentSpaceId: 0 },
     output: {
       threatModels: D.list({
         assets: o_Assets,
@@ -2911,6 +2949,7 @@ export const batchGetThreats: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchGetThreats",
+    input: { threatIds: 0, agentSpaceId: 0 },
     output: { threats: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
     body: true,
   },
@@ -2940,6 +2979,16 @@ export const batchUpdateSecurityRequirements: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchUpdateSecurityRequirements",
+    input: {
+      packId: 0,
+      securityRequirements: D.list({
+        name: 0,
+        description: 0,
+        domain: 0,
+        evaluation: 0,
+        remediation: 0,
+      }),
+    },
     body: true,
   },
   errors: [
@@ -2968,6 +3017,15 @@ export const createAgentSpace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateAgentSpace",
+    input: {
+      name: 0,
+      description: 0,
+      awsResources: i_AWSResources,
+      targetDomainIds: 0,
+      codeReviewSettings: i_CodeReviewSettings,
+      kmsKeyId: 0,
+      tags: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -2987,7 +3045,12 @@ export const createApplication: API.OperationMethod<
   CreateApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CreateApplication", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CreateApplication",
+    input: { idcInstanceArn: 0, roleArn: 0, defaultKmsKeyId: 0, tags: 0 },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3007,6 +3070,16 @@ export const createCodeReview: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateCodeReview",
+    input: {
+      title: 0,
+      agentSpaceId: 0,
+      assets: i_Assets,
+      serviceRole: 0,
+      logConfig: i_CloudWatchLog,
+      codeRemediationStrategy: 0,
+      validationMode: 0,
+      maxTaskHours: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts, assets: o_Assets },
     body: true,
   },
@@ -3033,7 +3106,30 @@ export const createIntegration: API.OperationMethod<
   CreateIntegrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CreateIntegration", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CreateIntegration",
+    input: {
+      provider: 0,
+      input: {
+        github: {
+          code: 0,
+          state: 0,
+          organizationName: 0,
+          targetUrl: 0,
+          installationId: 0,
+        },
+        gitlab: { accessToken: 0, targetUrl: 0, tokenType: 0, groupId: 0 },
+        bitbucket: { installationId: 0, workspace: 0, code: 0, state: 0 },
+        confluence: { installationId: 0, code: 0, state: 0, siteUrl: 0 },
+      },
+      integrationDisplayName: 0,
+      kmsKeyId: 0,
+      tags: 0,
+      privateConnectionName: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3057,7 +3153,18 @@ export const createMembership: API.OperationMethod<
   CreateMembershipError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CreateMembership", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CreateMembership",
+    input: {
+      applicationId: 0,
+      agentSpaceId: 0,
+      membershipId: 0,
+      memberType: 0,
+      config: { user: { role: 0 } },
+    },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3077,6 +3184,19 @@ export const createPentest: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreatePentest",
+    input: {
+      title: 0,
+      agentSpaceId: 0,
+      assets: i_Assets,
+      excludeRiskTypes: 0,
+      serviceRole: 0,
+      logConfig: i_CloudWatchLog,
+      vpcConfig: i_VpcConfig,
+      networkTrafficConfig: i_NetworkTrafficConfig,
+      codeRemediationStrategy: 0,
+      disableManagedSkills: 0,
+      maxTaskHours: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts, assets: o_Assets },
     body: true,
   },
@@ -3106,6 +3226,24 @@ export const createPrivateConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreatePrivateConnection",
+    input: {
+      privateConnectionName: 0,
+      mode: {
+        serviceManaged: {
+          hostAddress: 0,
+          vpcId: 0,
+          subnetIds: 0,
+          securityGroupIds: 0,
+          ipAddressType: 0,
+          ipv4AddressesPerEni: 0,
+          portRanges: 0,
+          certificate: 0,
+          dnsResolution: 0,
+        },
+        selfManaged: { resourceConfigurationId: 0, certificate: 0 },
+      },
+      tags: 0,
+    },
     output: { certificateExpiryTime: D.ts },
     body: true,
   },
@@ -3142,6 +3280,7 @@ export const createSecurityRequirementPack: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateSecurityRequirementPack",
+    input: { name: 0, description: 0, status: 0, kmsKeyId: 0, tags: 0 },
     body: true,
   },
   errors: [
@@ -3170,6 +3309,7 @@ export const createTargetDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateTargetDomain",
+    input: { targetDomainName: 0, verificationMethod: 0, tags: 0 },
     output: { createdAt: D.ts, verifiedAt: D.ts },
     body: true,
   },
@@ -3192,6 +3332,24 @@ export const createThreat: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateThreat",
+    input: {
+      agentSpaceId: 0,
+      threatJobId: 0,
+      title: 0,
+      statement: 0,
+      severity: 0,
+      comments: 0,
+      stride: 0,
+      threatSource: 0,
+      prerequisites: 0,
+      threatAction: 0,
+      threatImpact: 0,
+      impactedGoal: 0,
+      impactedAssets: 0,
+      anchor: i_ThreatAnchorShape,
+      evidence: D.list(i_ThreatEvidenceShape),
+      recommendation: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -3214,6 +3372,21 @@ export const createThreatModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateThreatModel",
+    input: {
+      title: 0,
+      agentSpaceId: 0,
+      description: 0,
+      assets: i_Assets,
+      scopeDocs: D.list(i_DocumentInfo),
+      serviceRole: 0,
+      logConfig: i_CloudWatchLog,
+      reportDestination: {
+        integrationId: 0,
+        containerId: 0,
+        parentId: 0,
+        documentId: 0,
+      },
+    },
     output: { assets: o_Assets, createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -3233,7 +3406,12 @@ export const deleteAgentSpace: API.OperationMethod<
   DeleteAgentSpaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteAgentSpace", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteAgentSpace",
+    input: { agentSpaceId: 0 },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3250,7 +3428,12 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteApplication", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteApplication",
+    input: { applicationId: 0 },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3273,7 +3456,12 @@ export const deleteArtifact: API.OperationMethod<
   DeleteArtifactError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteArtifact", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteArtifact",
+    input: { agentSpaceId: 0, artifactId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3303,7 +3491,12 @@ export const deleteIntegration: API.OperationMethod<
   DeleteIntegrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteIntegration", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteIntegration",
+    input: { integrationId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3327,7 +3520,17 @@ export const deleteMembership: API.OperationMethod<
   DeleteMembershipError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteMembership", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteMembership",
+    input: {
+      applicationId: 0,
+      agentSpaceId: 0,
+      membershipId: 0,
+      memberType: 0,
+    },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3354,6 +3557,7 @@ export const deletePrivateConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeletePrivateConnection",
+    input: { privateConnectionName: 0 },
     output: { certificateExpiryTime: D.ts },
     body: true,
   },
@@ -3390,6 +3594,7 @@ export const deleteSecurityRequirementPack: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteSecurityRequirementPack",
+    input: { packId: 0 },
     body: true,
   },
   errors: [
@@ -3415,7 +3620,12 @@ export const deleteTargetDomain: API.OperationMethod<
   DeleteTargetDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteTargetDomain", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteTargetDomain",
+    input: { targetDomainId: 0 },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3441,6 +3651,7 @@ export const describePrivateConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DescribePrivateConnection",
+    input: { privateConnectionName: 0 },
     output: { certificateExpiryTime: D.ts },
     body: true,
   },
@@ -3466,7 +3677,12 @@ export const getApplication: API.OperationMethod<
   GetApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetApplication", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetApplication",
+    input: { applicationId: 0 },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3492,6 +3708,7 @@ export const getArtifact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetArtifact",
+    input: { agentSpaceId: 0, artifactId: 0 },
     output: { updatedAt: D.ts },
     body: true,
   },
@@ -3523,7 +3740,12 @@ export const getIntegration: API.OperationMethod<
   GetIntegrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetIntegration", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetIntegration",
+    input: { integrationId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3555,6 +3777,7 @@ export const getSecurityRequirementPack: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetSecurityRequirementPack",
+    input: { packId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -3591,6 +3814,10 @@ export const importSecurityRequirements: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ImportSecurityRequirements",
+    input: {
+      packId: 0,
+      input: { documents: D.list({ name: 0, format: 0, content: 0 }) },
+    },
     body: true,
   },
   errors: [
@@ -3627,6 +3854,7 @@ export const initiateProviderRegistration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /oauth2/provider/register",
+    input: { provider: 0 },
     body: true,
   },
   errors: [
@@ -3656,6 +3884,7 @@ export const listAgentSpaces: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListAgentSpaces",
+    input: { nextToken: 0, maxResults: 0 },
     output: {
       agentSpaceSummaries: D.list({ createdAt: D.ts, updatedAt: D.ts }),
     },
@@ -3684,7 +3913,12 @@ export const listApplications: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ApplicationSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListApplications", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListApplications",
+    input: { nextToken: 0, maxResults: 0 },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3714,7 +3948,12 @@ export const listArtifacts: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ArtifactSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListArtifacts", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListArtifacts",
+    input: { agentSpaceId: 0, nextToken: 0, maxResults: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3747,6 +3986,7 @@ export const listCodeReviewJobsForCodeReview: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListCodeReviewJobsForCodeReview",
+    input: { maxResults: 0, codeReviewId: 0, agentSpaceId: 0, nextToken: 0 },
     output: {
       codeReviewJobSummaries: D.list({ createdAt: D.ts, updatedAt: D.ts }),
     },
@@ -3778,6 +4018,14 @@ export const listCodeReviewJobTasks: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListCodeReviewJobTasks",
+    input: {
+      agentSpaceId: 0,
+      maxResults: 0,
+      codeReviewJobId: 0,
+      stepName: 0,
+      categoryName: 0,
+      nextToken: 0,
+    },
     output: {
       codeReviewJobTaskSummaries: D.list({ createdAt: D.ts, updatedAt: D.ts }),
     },
@@ -3809,6 +4057,7 @@ export const listCodeReviews: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListCodeReviews",
+    input: { maxResults: 0, nextToken: 0, agentSpaceId: 0 },
     output: {
       codeReviewSummaries: D.list({ createdAt: D.ts, updatedAt: D.ts }),
     },
@@ -3840,6 +4089,13 @@ export const listDiscoveredEndpoints: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListDiscoveredEndpoints",
+    input: {
+      maxResults: 0,
+      pentestJobId: 0,
+      agentSpaceId: 0,
+      prefix: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [],
@@ -3868,6 +4124,18 @@ export const listFindings: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListFindings",
+    input: {
+      maxResults: 0,
+      pentestJobId: 0,
+      codeReviewJobId: 0,
+      agentSpaceId: 0,
+      nextToken: 0,
+      riskType: 0,
+      riskLevel: 0,
+      status: 0,
+      confidence: 0,
+      name: 0,
+    },
     output: { findingsSummaries: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
     body: true,
   },
@@ -3903,6 +4171,13 @@ export const listIntegratedResources: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListIntegratedResources",
+    input: {
+      agentSpaceId: 0,
+      integrationId: 0,
+      resourceType: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -3940,7 +4215,16 @@ export const listIntegrations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   IntegrationSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListIntegrations", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListIntegrations",
+    input: {
+      filter: { provider: 0, providerType: 0 },
+      nextToken: 0,
+      maxResults: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3973,6 +4257,13 @@ export const listMemberships: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListMemberships",
+    input: {
+      applicationId: 0,
+      agentSpaceId: 0,
+      memberType: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       membershipSummaries: D.list({ createdAt: D.ts, updatedAt: D.ts }),
     },
@@ -4004,6 +4295,7 @@ export const listPentestJobsForPentest: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListPentestJobsForPentest",
+    input: { maxResults: 0, pentestId: 0, agentSpaceId: 0, nextToken: 0 },
     output: {
       pentestJobSummaries: D.list({ createdAt: D.ts, updatedAt: D.ts }),
     },
@@ -4035,6 +4327,14 @@ export const listPentestJobTasks: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListPentestJobTasks",
+    input: {
+      agentSpaceId: 0,
+      maxResults: 0,
+      pentestJobId: 0,
+      stepName: 0,
+      categoryName: 0,
+      nextToken: 0,
+    },
     output: { taskSummaries: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
     body: true,
   },
@@ -4064,6 +4364,7 @@ export const listPentests: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListPentests",
+    input: { maxResults: 0, nextToken: 0, agentSpaceId: 0 },
     output: { pentestSummaries: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
     body: true,
   },
@@ -4098,6 +4399,7 @@ export const listPrivateConnections: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListPrivateConnections",
+    input: { maxResults: 0, nextToken: 0 },
     output: { privateConnections: D.list({ certificateExpiryTime: D.ts }) },
     body: true,
   },
@@ -4137,6 +4439,11 @@ export const listSecurityRequirementPacks: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListSecurityRequirementPacks",
+    input: {
+      filter: { managementType: 0, status: 0 },
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       securityRequirementPackSummaries: D.list({
         createdAt: D.ts,
@@ -4182,6 +4489,7 @@ export const listSecurityRequirements: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListSecurityRequirements",
+    input: { packId: 0, nextToken: 0, maxResults: 0 },
     output: {
       securityRequirementSummaries: D.list({
         createdAt: D.ts,
@@ -4218,7 +4526,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4236,7 +4548,12 @@ export const listTargetDomains: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TargetDomainSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListTargetDomains", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListTargetDomains",
+    input: { nextToken: 0, maxResults: 0 },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4263,6 +4580,7 @@ export const listThreatModelJobs: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListThreatModelJobs",
+    input: { maxResults: 0, threatModelId: 0, agentSpaceId: 0, nextToken: 0 },
     output: {
       threatModelJobSummaries: D.list({ createdAt: D.ts, updatedAt: D.ts }),
     },
@@ -4294,6 +4612,12 @@ export const listThreatModelJobTasks: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListThreatModelJobTasks",
+    input: {
+      agentSpaceId: 0,
+      maxResults: 0,
+      threatModelJobId: 0,
+      nextToken: 0,
+    },
     output: {
       threatModelJobTaskSummaries: D.list({ createdAt: D.ts, updatedAt: D.ts }),
     },
@@ -4325,6 +4649,7 @@ export const listThreatModels: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListThreatModels",
+    input: { maxResults: 0, nextToken: 0, agentSpaceId: 0 },
     output: {
       threatModelSummaries: D.list({ createdAt: D.ts, updatedAt: D.ts }),
     },
@@ -4356,6 +4681,7 @@ export const listThreats: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListThreats",
+    input: { threatJobId: 0, agentSpaceId: 0, nextToken: 0, maxResults: 0 },
     output: { threats: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
     body: true,
   },
@@ -4381,7 +4707,17 @@ export const startCodeRemediation: API.OperationMethod<
   StartCodeRemediationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /StartCodeRemediation", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /StartCodeRemediation",
+    input: {
+      agentSpaceId: 0,
+      pentestJobId: 0,
+      codeReviewJobId: 0,
+      findingIds: 0,
+    },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4401,6 +4737,7 @@ export const startCodeReviewJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /StartCodeReviewJob",
+    input: { agentSpaceId: 0, codeReviewId: 0, diffSource: { s3Uri: 0 } },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -4423,6 +4760,7 @@ export const startPentestJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /StartPentestJob",
+    input: { agentSpaceId: 0, pentestId: 0, jobType: 0, selectedFindingIds: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -4445,6 +4783,7 @@ export const startThreatModelJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /StartThreatModelJob",
+    input: { agentSpaceId: 0, threatModelId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -4464,7 +4803,12 @@ export const stopCodeReviewJob: API.OperationMethod<
   StopCodeReviewJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /StopCodeReviewJob", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /StopCodeReviewJob",
+    input: { agentSpaceId: 0, codeReviewJobId: 0 },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4481,7 +4825,12 @@ export const stopPentestJob: API.OperationMethod<
   StopPentestJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /StopPentestJob", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /StopPentestJob",
+    input: { agentSpaceId: 0, pentestJobId: 0 },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4498,7 +4847,12 @@ export const stopThreatModelJob: API.OperationMethod<
   StopThreatModelJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /StopThreatModelJob", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /StopThreatModelJob",
+    input: { agentSpaceId: 0, threatModelJobId: 0 },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4515,7 +4869,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4535,7 +4894,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [],
   protocol: AwsProtocol,
@@ -4556,6 +4915,14 @@ export const updateAgentSpace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateAgentSpace",
+    input: {
+      agentSpaceId: 0,
+      name: 0,
+      description: 0,
+      awsResources: i_AWSResources,
+      targetDomainIds: 0,
+      codeReviewSettings: i_CodeReviewSettings,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -4575,7 +4942,12 @@ export const updateApplication: API.OperationMethod<
   UpdateApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UpdateApplication", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UpdateApplication",
+    input: { applicationId: 0, roleArn: 0, defaultKmsKeyId: 0 },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4595,6 +4967,17 @@ export const updateCodeReview: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateCodeReview",
+    input: {
+      codeReviewId: 0,
+      agentSpaceId: 0,
+      title: 0,
+      assets: i_Assets,
+      serviceRole: 0,
+      logConfig: i_CloudWatchLog,
+      codeRemediationStrategy: 0,
+      validationMode: 0,
+      maxTaskHours: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts, assets: o_Assets },
     body: true,
   },
@@ -4614,7 +4997,24 @@ export const updateFinding: API.OperationMethod<
   UpdateFindingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UpdateFinding", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UpdateFinding",
+    input: {
+      findingId: 0,
+      agentSpaceId: 0,
+      name: 0,
+      description: 0,
+      riskType: 0,
+      riskLevel: 0,
+      riskScore: 0,
+      attackScript: 0,
+      reasoning: 0,
+      status: 0,
+      customerNote: 0,
+    },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4641,6 +5041,34 @@ export const updateIntegratedResources: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateIntegratedResources",
+    input: {
+      agentSpaceId: 0,
+      integrationId: 0,
+      items: D.list({
+        resource: {
+          githubRepository: { name: 0, owner: 0 },
+          gitlabRepository: { name: 0, namespace: 0 },
+          bitbucketRepository: { name: 0, workspace: 0 },
+          confluenceDocument: {
+            name: 0,
+            spaceKey: 0,
+            pageId: 0,
+            title: 0,
+            spaceTitle: 0,
+          },
+        },
+        capabilities: {
+          github: { leaveComments: 0, remediateCode: 0 },
+          gitlab: { leaveComments: 0, remediateCode: 0 },
+          bitbucket: { leaveComments: 0, remediateCode: 0 },
+          confluence: {
+            fetchDocument: 0,
+            createDocument: 0,
+            updateDocument: 0,
+          },
+        },
+      }),
+    },
     body: true,
   },
   errors: [
@@ -4669,6 +5097,20 @@ export const updatePentest: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdatePentest",
+    input: {
+      pentestId: 0,
+      agentSpaceId: 0,
+      title: 0,
+      assets: i_Assets,
+      excludeRiskTypes: 0,
+      serviceRole: 0,
+      logConfig: i_CloudWatchLog,
+      vpcConfig: i_VpcConfig,
+      networkTrafficConfig: i_NetworkTrafficConfig,
+      codeRemediationStrategy: 0,
+      disableManagedSkills: 0,
+      maxTaskHours: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts, assets: o_Assets },
     body: true,
   },
@@ -4698,6 +5140,7 @@ export const updatePrivateConnectionCertificate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdatePrivateConnectionCertificate",
+    input: { privateConnectionName: 0, certificate: 0 },
     output: { certificateExpiryTime: D.ts },
     body: true,
   },
@@ -4734,6 +5177,7 @@ export const updateSecurityRequirementPack: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateSecurityRequirementPack",
+    input: { packId: 0, name: 0, description: 0, status: 0 },
     body: true,
   },
   errors: [
@@ -4762,6 +5206,7 @@ export const updateTargetDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateTargetDomain",
+    input: { targetDomainId: 0, verificationMethod: 0 },
     output: { createdAt: D.ts, verifiedAt: D.ts },
     body: true,
   },
@@ -4784,6 +5229,24 @@ export const updateThreat: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateThreat",
+    input: {
+      threatId: 0,
+      agentSpaceId: 0,
+      title: 0,
+      status: 0,
+      comments: 0,
+      statement: 0,
+      severity: 0,
+      threatSource: 0,
+      prerequisites: 0,
+      threatAction: 0,
+      threatImpact: 0,
+      impactedGoal: 0,
+      impactedAssets: 0,
+      anchor: i_ThreatAnchorShape,
+      evidence: D.list(i_ThreatEvidenceShape),
+      recommendation: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -4806,6 +5269,16 @@ export const updateThreatModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateThreatModel",
+    input: {
+      threatModelId: 0,
+      agentSpaceId: 0,
+      title: 0,
+      description: 0,
+      assets: i_Assets,
+      scopeDocs: D.list(i_DocumentInfo),
+      serviceRole: 0,
+      logConfig: i_CloudWatchLog,
+    },
     output: { assets: o_Assets, createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -4828,6 +5301,7 @@ export const verifyTargetDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /VerifyTargetDomain",
+    input: { targetDomainId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts, verifiedAt: D.ts },
     body: true,
   },
@@ -4837,6 +5311,60 @@ export const verifyTargetDomain: API.OperationMethod<
   operationName: "VerifyTargetDomain",
 })) as any;
 
+const i_AWSResources: D.LazyStruct = () => ({
+  vpcs: D.list(i_VpcConfig),
+  logGroups: 0,
+  s3Buckets: 0,
+  secretArns: 0,
+  lambdaFunctionArns: 0,
+  iamRoles: 0,
+});
+const i_Assets: D.LazyStruct = () => ({
+  endpoints: D.list({ uri: 0 }),
+  actors: D.list({
+    identifier: 0,
+    uris: 0,
+    authentication: { providerType: 0, value: 0 },
+    description: 0,
+    enableEmailMfa: 0,
+    mfaForwardingAddress: 0,
+  }),
+  documents: D.list(i_DocumentInfo),
+  sourceCode: D.list({ s3Location: 0 }),
+  integratedRepositories: D.list({
+    integrationId: 0,
+    providerResourceId: 0,
+    branch: 0,
+  }),
+  trustedCaCertificates: D.list({
+    source: { inlinePem: 0, artifactId: 0, s3Location: 0 },
+  }),
+});
+const i_CloudWatchLog: D.LazyStruct = () => ({ logGroup: 0, logStream: 0 });
+const i_CodeReviewSettings: D.LazyStruct = () => ({
+  controlsScanning: 0,
+  generalPurposeScanning: 0,
+});
+const i_DocumentInfo: D.LazyStruct = () => ({
+  s3Location: 0,
+  artifactId: 0,
+  integratedDocument: { integrationId: 0, resourceId: 0 },
+});
+const i_NetworkTrafficConfig: D.LazyStruct = () => ({
+  rules: D.list({ effect: 0, pattern: 0, networkTrafficRuleType: 0 }),
+  customHeaders: D.list({ name: 0, value: 0 }),
+});
+const i_ThreatAnchorShape: D.LazyStruct = () => ({
+  kind: 0,
+  id: 0,
+  packageId: 0,
+});
+const i_ThreatEvidenceShape: D.LazyStruct = () => ({ packageId: 0, path: 0 });
+const i_VpcConfig: D.LazyStruct = () => ({
+  vpcArn: 0,
+  securityGroupArns: 0,
+  subnetArns: 0,
+});
 const o_Actor: D.LazyStruct = () => ({ mfaForwardingAddress: D.secret });
 const o_Assets: D.LazyStruct = () => ({
   actors: D.list(o_Actor),

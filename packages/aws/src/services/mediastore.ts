@@ -292,7 +292,11 @@ export const createContainer: API.OperationMethod<
   CreateContainerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Container: o_Container } },
+  descriptor: {
+    service: svc,
+    input: { ContainerName: 0, Tags: D.list(i_Tag) },
+    output: { Container: o_Container },
+  },
   errors: [
     ContainerInUseException,
     InternalServerError,
@@ -319,7 +323,7 @@ export const deleteContainer: API.OperationMethod<
   DeleteContainerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContainerName: 0 } },
   errors: [
     ContainerInUseException,
     ContainerNotFoundException,
@@ -345,7 +349,7 @@ export const deleteContainerPolicy: API.OperationMethod<
   DeleteContainerPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContainerName: 0 } },
   errors: [
     ContainerInUseException,
     ContainerNotFoundException,
@@ -377,7 +381,7 @@ export const deleteCorsPolicy: API.OperationMethod<
   DeleteCorsPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContainerName: 0 } },
   errors: [
     ContainerInUseException,
     ContainerNotFoundException,
@@ -404,7 +408,7 @@ export const deleteLifecyclePolicy: API.OperationMethod<
   DeleteLifecyclePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContainerName: 0 } },
   errors: [
     ContainerInUseException,
     ContainerNotFoundException,
@@ -431,7 +435,7 @@ export const deleteMetricPolicy: API.OperationMethod<
   DeleteMetricPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContainerName: 0 } },
   errors: [
     ContainerInUseException,
     ContainerNotFoundException,
@@ -462,7 +466,11 @@ export const describeContainer: API.OperationMethod<
   DescribeContainerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Container: o_Container } },
+  descriptor: {
+    service: svc,
+    input: { ContainerName: 0 },
+    output: { Container: o_Container },
+  },
   errors: [ContainerNotFoundException, InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -486,7 +494,7 @@ export const getContainerPolicy: API.OperationMethod<
   GetContainerPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContainerName: 0 } },
   errors: [
     ContainerInUseException,
     ContainerNotFoundException,
@@ -518,7 +526,7 @@ export const getCorsPolicy: API.OperationMethod<
   GetCorsPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContainerName: 0 } },
   errors: [
     ContainerInUseException,
     ContainerNotFoundException,
@@ -545,7 +553,7 @@ export const getLifecyclePolicy: API.OperationMethod<
   GetLifecyclePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContainerName: 0 } },
   errors: [
     ContainerInUseException,
     ContainerNotFoundException,
@@ -572,7 +580,7 @@ export const getMetricPolicy: API.OperationMethod<
   GetMetricPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContainerName: 0 } },
   errors: [
     ContainerInUseException,
     ContainerNotFoundException,
@@ -605,7 +613,11 @@ export const listContainers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Containers: D.list(o_Container) } },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
+    output: { Containers: D.list(o_Container) },
+  },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -631,7 +643,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Resource: 0 } },
   errors: [
     ContainerInUseException,
     ContainerNotFoundException,
@@ -663,7 +675,7 @@ export const putContainerPolicy: API.OperationMethod<
   PutContainerPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContainerName: 0, Policy: 0 } },
   errors: [
     ContainerInUseException,
     ContainerNotFoundException,
@@ -700,7 +712,19 @@ export const putCorsPolicy: API.OperationMethod<
   PutCorsPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ContainerName: 0,
+      CorsPolicy: D.list({
+        AllowedOrigins: 0,
+        AllowedMethods: 0,
+        AllowedHeaders: 0,
+        MaxAgeSeconds: 0,
+        ExposeHeaders: 0,
+      }),
+    },
+  },
   errors: [
     ContainerInUseException,
     ContainerNotFoundException,
@@ -727,7 +751,7 @@ export const putLifecyclePolicy: API.OperationMethod<
   PutLifecyclePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContainerName: 0, LifecyclePolicy: 0 } },
   errors: [
     ContainerInUseException,
     ContainerNotFoundException,
@@ -752,7 +776,16 @@ export const putMetricPolicy: API.OperationMethod<
   PutMetricPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ContainerName: 0,
+      MetricPolicy: {
+        ContainerLevelMetrics: 0,
+        MetricPolicyRules: D.list({ ObjectGroup: 0, ObjectGroupName: 0 }),
+      },
+    },
+  },
   errors: [
     ContainerInUseException,
     ContainerNotFoundException,
@@ -777,7 +810,7 @@ export const startAccessLogging: API.OperationMethod<
   StartAccessLoggingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContainerName: 0 } },
   errors: [
     ContainerInUseException,
     ContainerNotFoundException,
@@ -802,7 +835,7 @@ export const stopAccessLogging: API.OperationMethod<
   StopAccessLoggingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContainerName: 0 } },
   errors: [
     ContainerInUseException,
     ContainerNotFoundException,
@@ -829,7 +862,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Resource: 0, Tags: D.list(i_Tag) } },
   errors: [
     ContainerInUseException,
     ContainerNotFoundException,
@@ -854,7 +887,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Resource: 0, TagKeys: 0 } },
   errors: [
     ContainerInUseException,
     ContainerNotFoundException,
@@ -865,4 +898,5 @@ export const untagResource: API.OperationMethod<
   operationName: "UntagResource",
 })) as any;
 
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Container: D.LazyStruct = () => ({ CreationTime: D.ts });

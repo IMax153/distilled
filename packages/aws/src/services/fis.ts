@@ -921,7 +921,41 @@ export const createExperimentTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /experimentTemplates",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      description: 0,
+      stopConditions: D.list({ source: 0, value: 0 }),
+      targets: D.map({
+        resourceType: 0,
+        resourceArns: 0,
+        resourceTags: 0,
+        filters: D.list(i_ExperimentTemplateTargetInputFilter),
+        selectionMode: 0,
+        parameters: 0,
+      }),
+      actions: D.map({
+        actionId: 0,
+        description: 0,
+        parameters: 0,
+        targets: 0,
+        startAfter: 0,
+      }),
+      roleArn: 0,
+      tags: 0,
+      logConfiguration: {
+        cloudWatchLogsConfiguration:
+          i_ExperimentTemplateCloudWatchLogsLogConfigurationInput,
+        s3Configuration: i_ExperimentTemplateS3LogConfigurationInput,
+        logSchemaVersion: 0,
+      },
+      experimentOptions: { accountTargeting: 0, emptyTargetResolutionMode: 0 },
+      experimentReportConfiguration: {
+        outputs: i_ExperimentTemplateReportConfigurationOutputsInput,
+        dataSources: i_ExperimentTemplateReportConfigurationDataSourcesInput,
+        preExperimentDuration: 0,
+        postExperimentDuration: 0,
+      },
+    },
     output: { experimentTemplate: o_ExperimentTemplate },
     body: true,
   },
@@ -957,7 +991,13 @@ export const createTargetAccountConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /experimentTemplates/{experimentTemplateId}/targetAccountConfigurations/{accountId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      experimentTemplateId: 0,
+      accountId: 0,
+      roleArn: 0,
+      description: 0,
+    },
     body: true,
   },
   errors: [
@@ -987,6 +1027,7 @@ export const deleteExperimentTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /experimentTemplates/{id}",
+    input: { id: 0 },
     output: { experimentTemplate: o_ExperimentTemplate },
   },
   errors: [ResourceNotFoundException, ValidationException],
@@ -1011,6 +1052,7 @@ export const deleteTargetAccountConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /experimentTemplates/{experimentTemplateId}/targetAccountConfigurations/{accountId}",
+    input: { experimentTemplateId: 0, accountId: 0 },
   },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
@@ -1031,7 +1073,7 @@ export const getAction: API.OperationMethod<
   GetActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /actions/{id}" },
+  descriptor: { service: svc, http: "GET /actions/{id}", input: { id: 0 } },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1054,6 +1096,7 @@ export const getExperiment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /experiments/{id}",
+    input: { id: 0 },
     output: { experiment: o_Experiment },
   },
   errors: [ResourceNotFoundException, ValidationException],
@@ -1078,6 +1121,7 @@ export const getExperimentTargetAccountConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /experiments/{experimentId}/targetAccountConfigurations/{accountId}",
+    input: { experimentId: 0, accountId: 0 },
   },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
@@ -1101,6 +1145,7 @@ export const getExperimentTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /experimentTemplates/{id}",
+    input: { id: 0 },
     output: { experimentTemplate: o_ExperimentTemplate },
   },
   errors: [ResourceNotFoundException, ValidationException],
@@ -1119,7 +1164,11 @@ export const getSafetyLever: API.OperationMethod<
   GetSafetyLeverError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /safetyLevers/{id}" },
+  descriptor: {
+    service: svc,
+    http: "GET /safetyLevers/{id}",
+    input: { id: 0 },
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1142,6 +1191,7 @@ export const getTargetAccountConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /experimentTemplates/{experimentTemplateId}/targetAccountConfigurations/{accountId}",
+    input: { experimentTemplateId: 0, accountId: 0 },
   },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
@@ -1162,7 +1212,11 @@ export const getTargetResourceType: API.OperationMethod<
   GetTargetResourceTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /targetResourceTypes/{resourceType}" },
+  descriptor: {
+    service: svc,
+    http: "GET /targetResourceTypes/{resourceType}",
+    input: { resourceType: 0 },
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1218,6 +1272,7 @@ export const listExperimentResolvedTargets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /experiments/{experimentId}/resolvedTargets",
     input: {
+      experimentId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
       targetName: D.m({ query: "targetName" }),
@@ -1284,7 +1339,7 @@ export const listExperimentTargetAccountConfigurations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /experiments/{experimentId}/targetAccountConfigurations",
-    input: { nextToken: D.m({ query: "nextToken" }) },
+    input: { experimentId: 0, nextToken: D.m({ query: "nextToken" }) },
   },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
@@ -1336,7 +1391,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1361,6 +1420,7 @@ export const listTargetAccountConfigurations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /experimentTemplates/{experimentTemplateId}/targetAccountConfigurations",
     input: {
+      experimentTemplateId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -1426,7 +1486,12 @@ export const startExperiment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /experiments",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      experimentTemplateId: 0,
+      experimentOptions: { actionsMode: 0 },
+      tags: 0,
+    },
     output: { experiment: o_Experiment },
     body: true,
   },
@@ -1457,6 +1522,7 @@ export const stopExperiment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /experiments/{id}",
+    input: { id: 0 },
     output: { experiment: o_Experiment },
   },
   errors: [ResourceNotFoundException, ValidationException],
@@ -1475,7 +1541,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1495,7 +1566,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [],
   protocol: AwsProtocol,
@@ -1520,6 +1591,40 @@ export const updateExperimentTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /experimentTemplates/{id}",
+    input: {
+      id: 0,
+      description: 0,
+      stopConditions: D.list({ source: 0, value: 0 }),
+      targets: D.map({
+        resourceType: 0,
+        resourceArns: 0,
+        resourceTags: 0,
+        filters: D.list(i_ExperimentTemplateTargetInputFilter),
+        selectionMode: 0,
+        parameters: 0,
+      }),
+      actions: D.map({
+        actionId: 0,
+        description: 0,
+        parameters: 0,
+        targets: 0,
+        startAfter: 0,
+      }),
+      roleArn: 0,
+      logConfiguration: {
+        cloudWatchLogsConfiguration:
+          i_ExperimentTemplateCloudWatchLogsLogConfigurationInput,
+        s3Configuration: i_ExperimentTemplateS3LogConfigurationInput,
+        logSchemaVersion: 0,
+      },
+      experimentOptions: { emptyTargetResolutionMode: 0 },
+      experimentReportConfiguration: {
+        outputs: i_ExperimentTemplateReportConfigurationOutputsInput,
+        dataSources: i_ExperimentTemplateReportConfigurationDataSourcesInput,
+        preExperimentDuration: 0,
+        postExperimentDuration: 0,
+      },
+    },
     output: { experimentTemplate: o_ExperimentTemplate },
     body: true,
   },
@@ -1550,6 +1655,7 @@ export const updateSafetyLeverState: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /safetyLevers/{id}/state",
+    input: { id: 0, state: { status: 0, reason: 0 } },
     body: true,
   },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
@@ -1574,6 +1680,12 @@ export const updateTargetAccountConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /experimentTemplates/{experimentTemplateId}/targetAccountConfigurations/{accountId}",
+    input: {
+      experimentTemplateId: 0,
+      accountId: 0,
+      roleArn: 0,
+      description: 0,
+    },
     body: true,
   },
   errors: [ResourceNotFoundException, ValidationException],
@@ -1582,6 +1694,20 @@ export const updateTargetAccountConfiguration: API.OperationMethod<
   operationName: "UpdateTargetAccountConfiguration",
 })) as any;
 
+const i_ExperimentTemplateCloudWatchLogsLogConfigurationInput: D.LazyStruct =
+  () => ({ logGroupArn: 0 });
+const i_ExperimentTemplateReportConfigurationDataSourcesInput: D.LazyStruct =
+  () => ({ cloudWatchDashboards: D.list({ dashboardIdentifier: 0 }) });
+const i_ExperimentTemplateReportConfigurationOutputsInput: D.LazyStruct =
+  () => ({ s3Configuration: { bucketName: 0, prefix: 0 } });
+const i_ExperimentTemplateS3LogConfigurationInput: D.LazyStruct = () => ({
+  bucketName: 0,
+  prefix: 0,
+});
+const i_ExperimentTemplateTargetInputFilter: D.LazyStruct = () => ({
+  path: 0,
+  values: 0,
+});
 const o_Experiment: D.LazyStruct = () => ({
   actions: D.map({ startTime: D.ts, endTime: D.ts }),
   creationTime: D.ts,

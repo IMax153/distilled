@@ -2615,6 +2615,7 @@ export const acceptInboundConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2021-01-01/opensearch/cc/inboundConnection/{ConnectionId}/accept",
+    input: { ConnectionId: 0 },
   },
   errors: [
     DisabledOperationException,
@@ -2649,6 +2650,12 @@ export const addDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/domain/{DomainName}/dataSource",
+    input: {
+      DomainName: 0,
+      Name: 0,
+      DataSourceType: i_DataSourceType,
+      Description: 0,
+    },
     body: true,
   },
   errors: [
@@ -2686,6 +2693,14 @@ export const addDirectQueryDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/directQueryDataSource",
+    input: {
+      DataSourceName: 0,
+      DataSourceType: i_DirectQueryDataSourceType,
+      Description: 0,
+      OpenSearchArns: 0,
+      DataSourceAccessPolicy: 0,
+      TagList: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -2720,7 +2735,12 @@ export const addTags: API.OperationMethod<
   AddTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /2021-01-01/tags", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /2021-01-01/tags",
+    input: { ARN: 0, TagList: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     BaseException,
     InternalException,
@@ -2754,6 +2774,12 @@ export const associatePackage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/packages/associate/{PackageID}/{DomainName}",
+    input: {
+      PackageID: 0,
+      DomainName: 0,
+      PrerequisitePackageIDList: 0,
+      AssociationConfiguration: i_PackageAssociationConfiguration,
+    },
     output: { DomainPackageDetails: o_DomainPackageDetails },
     body: true,
   },
@@ -2791,6 +2817,14 @@ export const associatePackages: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/packages/associateMultiple",
+    input: {
+      PackageList: D.list({
+        PackageID: 0,
+        PrerequisitePackageIDList: 0,
+        AssociationConfiguration: i_PackageAssociationConfiguration,
+      }),
+      DomainName: 0,
+    },
     output: { DomainPackageDetailsList: D.list(o_DomainPackageDetails) },
     body: true,
   },
@@ -2827,6 +2861,13 @@ export const attachDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/application/{id}/attachDataSource",
+    input: {
+      id: 0,
+      dataSourceArn: 0,
+      workspaceId: 0,
+      workspaceConfiguration: { name: 0, workspaceType: 0 },
+      clientToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -2863,6 +2904,12 @@ export const authorizeVpcEndpointAccess: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/domain/{DomainName}/authorizeVpcEndpointAccess",
+    input: {
+      DomainName: 0,
+      Account: 0,
+      Service: 0,
+      ServiceOptions: i_ServiceOptions,
+    },
     body: true,
   },
   errors: [
@@ -2897,6 +2944,7 @@ export const cancelDomainConfigChange: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/domain/{DomainName}/config/cancel",
+    input: { DomainName: 0, DryRun: 0 },
     body: true,
   },
   errors: [
@@ -2933,6 +2981,7 @@ export const cancelServiceSoftwareUpdate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/serviceSoftwareUpdate/cancel",
+    input: { DomainName: 0 },
     output: { ServiceSoftwareOptions: o_ServiceSoftwareOptions },
     body: true,
   },
@@ -2967,7 +3016,15 @@ export const createApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/application",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      name: 0,
+      dataSources: D.list(i_DataSource),
+      iamIdentityCenterOptions: i_IamIdentityCenterOptionsInput,
+      appConfigs: D.list(i_AppConfig),
+      tagList: D.list(i_Tag),
+      kmsKeyArn: 0,
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -3006,6 +3063,37 @@ export const createDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/domain",
+    input: {
+      DomainName: 0,
+      EngineVersion: 0,
+      ClusterConfig: i_ClusterConfig,
+      EBSOptions: i_EBSOptions,
+      AccessPolicies: 0,
+      IPAddressType: 0,
+      SnapshotOptions: i_SnapshotOptions,
+      VPCOptions: i_VPCOptions,
+      CognitoOptions: i_CognitoOptions,
+      EncryptionAtRestOptions: i_EncryptionAtRestOptions,
+      NodeToNodeEncryptionOptions: i_NodeToNodeEncryptionOptions,
+      AdvancedOptions: 0,
+      LogPublishingOptions: D.map(i_LogPublishingOption),
+      DomainEndpointOptions: i_DomainEndpointOptions,
+      AdvancedSecurityOptions: i_AdvancedSecurityOptionsInput,
+      IdentityCenterOptions: i_IdentityCenterOptionsInput,
+      TagList: D.list(i_Tag),
+      AutoTuneOptions: {
+        DesiredState: 0,
+        MaintenanceSchedules: D.list(i_AutoTuneMaintenanceSchedule),
+        UseOffPeakWindow: 0,
+      },
+      OffPeakWindowOptions: i_OffPeakWindowOptions,
+      SoftwareUpdateOptions: i_SoftwareUpdateOptions,
+      AIMLOptions: i_AIMLOptionsInput,
+      DeploymentStrategyOptions: i_DeploymentStrategyOptions,
+      AutomatedSnapshotPauseOptions: i_AutomatedSnapshotPauseRequestOptions,
+      UseCase: 0,
+      EngineMode: 0,
+    },
     output: { DomainStatus: o_DomainStatus },
     body: true,
   },
@@ -3045,6 +3133,7 @@ export const createIndex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/domain/{DomainName}/index",
+    input: { DomainName: 0, IndexName: 0, IndexSchema: 0 },
     body: true,
   },
   errors: [
@@ -3082,6 +3171,16 @@ export const createOutboundConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/cc/outboundConnection",
+    input: {
+      LocalDomainInfo: i_DomainInformationContainer,
+      RemoteDomainInfo: i_DomainInformationContainer,
+      ConnectionAlias: 0,
+      ConnectionMode: 0,
+      ConnectionProperties: {
+        Endpoint: 0,
+        CrossClusterSearch: { SkipUnavailable: 0 },
+      },
+    },
     body: true,
   },
   errors: [
@@ -3118,6 +3217,16 @@ export const createPackage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/packages",
+    input: {
+      PackageName: 0,
+      PackageType: 0,
+      PackageDescription: 0,
+      PackageSource: i_PackageSource,
+      PackageConfiguration: i_PackageConfiguration,
+      EngineVersion: 0,
+      PackageVendingOptions: { VendingEnabled: 0 },
+      PackageEncryptionOptions: i_PackageEncryptionOptions,
+    },
     output: { PackageDetails: o_PackageDetails },
     body: true,
   },
@@ -3155,6 +3264,7 @@ export const createVpcEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/vpcEndpoints",
+    input: { DomainArn: 0, VpcOptions: i_VPCOptions, ClientToken: 0 },
     body: true,
   },
   errors: [
@@ -3191,6 +3301,7 @@ export const deleteApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2021-01-01/opensearch/application/{id}",
+    input: { id: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3227,6 +3338,7 @@ export const deleteDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2021-01-01/opensearch/domain/{DomainName}/dataSource/{Name}",
+    input: { DomainName: 0, Name: 0 },
   },
   errors: [
     BaseException,
@@ -3261,6 +3373,7 @@ export const deleteDirectQueryDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2021-01-01/opensearch/directQueryDataSource/{DataSourceName}",
+    input: { DataSourceName: 0 },
   },
   errors: [
     BaseException,
@@ -3293,6 +3406,7 @@ export const deleteDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2021-01-01/opensearch/domain/{DomainName}",
+    input: { DomainName: 0 },
     output: { DomainStatus: o_DomainStatus },
   },
   errors: [
@@ -3323,6 +3437,7 @@ export const deleteInboundConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2021-01-01/opensearch/cc/inboundConnection/{ConnectionId}",
+    input: { ConnectionId: 0 },
   },
   errors: [DisabledOperationException, ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -3351,6 +3466,7 @@ export const deleteIndex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2021-01-01/opensearch/domain/{DomainName}/index/{IndexName}",
+    input: { DomainName: 0, IndexName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3383,6 +3499,7 @@ export const deleteOutboundConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2021-01-01/opensearch/cc/outboundConnection/{ConnectionId}",
+    input: { ConnectionId: 0 },
   },
   errors: [DisabledOperationException, ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -3411,6 +3528,7 @@ export const deletePackage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2021-01-01/packages/{PackageID}",
+    input: { PackageID: 0 },
     output: { PackageDetails: o_PackageDetails },
   },
   errors: [
@@ -3444,6 +3562,7 @@ export const deleteVpcEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2021-01-01/opensearch/vpcEndpoints/{VpcEndpointId}",
+    input: { VpcEndpointId: 0 },
   },
   errors: [
     BaseException,
@@ -3476,6 +3595,7 @@ export const deregisterCapability: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2021-01-01/opensearch/application/{applicationId}/capability/deregister/{capabilityName}",
+    input: { applicationId: 0, capabilityName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3509,6 +3629,7 @@ export const describeDataSourceAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/application/{id}/describeDataSourceAttachment",
+    input: { id: 0, dataSourceArn: 0 },
     body: true,
   },
   errors: [
@@ -3542,6 +3663,7 @@ export const describeDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-01-01/opensearch/domain/{DomainName}",
+    input: { DomainName: 0 },
     output: { DomainStatus: o_DomainStatus },
   },
   errors: [
@@ -3577,6 +3699,7 @@ export const describeDomainAutoTunes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2021-01-01/opensearch/domain/{DomainName}/autoTunes",
     input: {
+      DomainName: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -3621,7 +3744,7 @@ export const describeDomainChangeProgress: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-01-01/opensearch/domain/{DomainName}/progress",
-    input: { ChangeId: D.m({ query: "changeid" }) },
+    input: { DomainName: 0, ChangeId: D.m({ query: "changeid" }) },
     output: {
       ChangeProgressStatus: {
         StartTime: D.ts,
@@ -3659,6 +3782,7 @@ export const describeDomainConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-01-01/opensearch/domain/{DomainName}/config",
+    input: { DomainName: 0 },
     output: { DomainConfig: o_DomainConfig },
   },
   errors: [
@@ -3692,6 +3816,7 @@ export const describeDomainHealth: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-01-01/opensearch/domain/{DomainName}/health",
+    input: { DomainName: 0 },
   },
   errors: [
     BaseException,
@@ -3727,6 +3852,7 @@ export const describeDomainNodes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-01-01/opensearch/domain/{DomainName}/nodes",
+    input: { DomainName: 0 },
   },
   errors: [
     BaseException,
@@ -3759,6 +3885,7 @@ export const describeDomains: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/domain-info",
+    input: { DomainNames: 0 },
     output: { DomainStatusList: D.list(o_DomainStatus) },
     body: true,
   },
@@ -3789,6 +3916,7 @@ export const describeDryRunProgress: API.OperationMethod<
     service: svc,
     http: "GET /2021-01-01/opensearch/domain/{DomainName}/dryRun",
     input: {
+      DomainName: 0,
       DryRunId: D.m({ query: "dryRunId" }),
       LoadDryRunConfig: D.m({ query: "loadDryRunConfig" }),
     },
@@ -3824,6 +3952,7 @@ export const describeInboundConnections: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/cc/inboundConnection/search",
+    input: { Filters: D.list(i_Filter), MaxResults: 0, NextToken: 0 },
     body: true,
   },
   errors: [DisabledOperationException, InvalidPaginationTokenException],
@@ -3859,6 +3988,7 @@ export const describeInsightDetails: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/insight-details",
+    input: { Entity: i_InsightEntity, InsightId: 0, ShowHtmlContent: 0 },
     body: true,
   },
   errors: [
@@ -3895,7 +4025,11 @@ export const describeInstanceTypeLimits: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-01-01/opensearch/instanceTypeLimits/{EngineVersion}/{InstanceType}",
-    input: { DomainName: D.m({ query: "domainName" }) },
+    input: {
+      DomainName: D.m({ query: "domainName" }),
+      InstanceType: 0,
+      EngineVersion: 0,
+    },
   },
   errors: [
     BaseException,
@@ -3928,6 +4062,7 @@ export const describeOutboundConnections: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/cc/outboundConnection/search",
+    input: { Filters: D.list(i_Filter), MaxResults: 0, NextToken: 0 },
     body: true,
   },
   errors: [DisabledOperationException, InvalidPaginationTokenException],
@@ -3963,6 +4098,11 @@ export const describePackages: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/packages/describe",
+    input: {
+      Filters: D.list({ Name: 0, Value: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { PackageDetailsList: D.list(o_PackageDetails) },
     body: true,
   },
@@ -4088,6 +4228,7 @@ export const describeVpcEndpoints: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/vpcEndpoints/describe",
+    input: { VpcEndpointIds: 0 },
     body: true,
   },
   errors: [
@@ -4121,6 +4262,7 @@ export const detachDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/application/{id}/detachDataSource",
+    input: { id: 0, dataSourceArn: 0 },
     body: true,
   },
   errors: [
@@ -4160,6 +4302,7 @@ export const dissociatePackage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/packages/dissociate/{PackageID}/{DomainName}",
+    input: { PackageID: 0, DomainName: 0 },
     output: { DomainPackageDetails: o_DomainPackageDetails },
   },
   errors: [
@@ -4195,6 +4338,7 @@ export const dissociatePackages: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/packages/dissociateMultiple",
+    input: { PackageList: 0, DomainName: 0 },
     output: { DomainPackageDetailsList: D.list(o_DomainPackageDetails) },
     body: true,
   },
@@ -4231,6 +4375,7 @@ export const getApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-01-01/opensearch/application/{id}",
+    input: { id: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -4265,6 +4410,7 @@ export const getCapability: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-01-01/opensearch/application/{applicationId}/capability/{capabilityName}",
+    input: { applicationId: 0, capabilityName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4332,6 +4478,7 @@ export const getDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-01-01/opensearch/domain/{DomainName}/dataSource/{Name}",
+    input: { DomainName: 0, Name: 0 },
   },
   errors: [
     BaseException,
@@ -4367,6 +4514,7 @@ export const getDefaultApplicationSetting: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-01-01/opensearch/defaultApplicationSetting",
+    input: {},
   },
   errors: [
     AccessDeniedException,
@@ -4399,6 +4547,7 @@ export const getDirectQueryDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-01-01/opensearch/directQueryDataSource/{DataSourceName}",
+    input: { DataSourceName: 0 },
   },
   errors: [
     BaseException,
@@ -4431,7 +4580,7 @@ export const getDomainMaintenanceStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-01-01/opensearch/domain/{DomainName}/domainMaintenance",
-    input: { MaintenanceId: D.m({ query: "maintenanceId" }) },
+    input: { DomainName: 0, MaintenanceId: D.m({ query: "maintenanceId" }) },
     output: { CreatedAt: D.ts, UpdatedAt: D.ts },
   },
   errors: [
@@ -4467,6 +4616,7 @@ export const getIndex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-01-01/opensearch/domain/{DomainName}/index/{IndexName}",
+    input: { DomainName: 0, IndexName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4501,6 +4651,7 @@ export const getMigration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-01-01/opensearch/app-migrations/{migrationId}",
+    input: { migrationId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -4539,6 +4690,7 @@ export const getPackageVersionHistory: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2021-01-01/packages/{PackageID}/history",
     input: {
+      PackageID: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -4583,6 +4735,7 @@ export const getUpgradeHistory: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2021-01-01/opensearch/upgradeDomain/{DomainName}/history",
     input: {
+      DomainName: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -4625,6 +4778,7 @@ export const getUpgradeStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-01-01/opensearch/upgradeDomain/{DomainName}/status",
+    input: { DomainName: 0 },
   },
   errors: [
     BaseException,
@@ -4660,6 +4814,12 @@ export const insightFeedback: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/insight-feedback",
+    input: {
+      Entity: { Type: 0, Value: 0 },
+      InsightId: 0,
+      Thumbs: 0,
+      FeedbackText: 0,
+    },
     body: true,
   },
   errors: [
@@ -4743,6 +4903,7 @@ export const listDataSourceAttachments: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/application/{id}/listDataSourceAttachments",
+    input: { id: 0, nextToken: 0, maxResults: 0 },
     body: true,
   },
   errors: [
@@ -4779,6 +4940,7 @@ export const listDataSources: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-01-01/opensearch/domain/{DomainName}/dataSource",
+    input: { DomainName: 0 },
   },
   errors: [
     BaseException,
@@ -4848,6 +5010,7 @@ export const listDomainMaintenances: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2021-01-01/opensearch/domain/{DomainName}/domainMaintenances",
     input: {
+      DomainName: 0,
       Action: D.m({ query: "action" }),
       Status: D.m({ query: "status" }),
       MaxResults: D.m({ query: "maxResults" }),
@@ -4922,6 +5085,7 @@ export const listDomainsForPackage: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2021-01-01/packages/{PackageID}/domains",
     input: {
+      PackageID: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -4966,6 +5130,13 @@ export const listInsights: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/insights",
+    input: {
+      Entity: i_InsightEntity,
+      TimeRange: { From: 0, To: 0 },
+      SortOrder: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { Insights: D.list({ CreationTime: D.ts, UpdateTime: D.ts }) },
     body: true,
   },
@@ -5003,6 +5174,7 @@ export const listInstanceTypeDetails: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2021-01-01/opensearch/instanceTypeDetails/{EngineVersion}",
     input: {
+      EngineVersion: 0,
       DomainName: D.m({ query: "domainName" }),
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
@@ -5086,6 +5258,7 @@ export const listPackagesForDomain: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2021-01-01/domain/{DomainName}/packages",
     input: {
+      DomainName: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -5131,6 +5304,7 @@ export const listScheduledActions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2021-01-01/opensearch/domain/{DomainName}/scheduledActions",
     input: {
+      DomainName: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -5245,7 +5419,7 @@ export const listVpcEndpointAccess: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-01-01/opensearch/domain/{DomainName}/listVpcEndpointAccess",
-    input: { NextToken: D.m({ query: "nextToken" }) },
+    input: { DomainName: 0, NextToken: D.m({ query: "nextToken" }) },
   },
   errors: [
     BaseException,
@@ -5302,7 +5476,7 @@ export const listVpcEndpointsForDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2021-01-01/opensearch/domain/{DomainName}/vpcEndpoints",
-    input: { NextToken: D.m({ query: "nextToken" }) },
+    input: { DomainName: 0, NextToken: D.m({ query: "nextToken" }) },
   },
   errors: [
     BaseException,
@@ -5335,6 +5509,11 @@ export const purchaseReservedInstanceOffering: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/purchaseReservedInstanceOffering",
+    input: {
+      ReservedInstanceOfferingId: 0,
+      ReservationName: 0,
+      InstanceCount: 0,
+    },
     body: true,
   },
   errors: [
@@ -5373,6 +5552,7 @@ export const putDefaultApplicationSetting: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2021-01-01/opensearch/defaultApplicationSetting",
+    input: { applicationArn: 0, setAsDefault: 0 },
     body: true,
   },
   errors: [
@@ -5407,6 +5587,11 @@ export const registerCapability: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/application/{applicationId}/capability/register",
+    input: {
+      applicationId: 0,
+      capabilityName: 0,
+      capabilityConfig: { aiConfig: {} },
+    },
     body: true,
   },
   errors: [
@@ -5440,6 +5625,7 @@ export const rejectInboundConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2021-01-01/opensearch/cc/inboundConnection/{ConnectionId}/reject",
+    input: { ConnectionId: 0 },
   },
   errors: [DisabledOperationException, ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -5465,6 +5651,7 @@ export const removeTags: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/tags-removal",
+    input: { ARN: 0, TagKeys: 0 },
     body: true,
   },
   errors: [BaseException, InternalException, ValidationException],
@@ -5493,6 +5680,12 @@ export const revokeVpcEndpointAccess: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/domain/{DomainName}/revokeVpcEndpointAccess",
+    input: {
+      DomainName: 0,
+      Account: 0,
+      Service: 0,
+      ServiceOptions: i_ServiceOptions,
+    },
     body: true,
   },
   errors: [
@@ -5528,6 +5721,7 @@ export const rollbackServiceSoftwareUpdate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/serviceSoftwareUpdate/rollback",
+    input: { DomainName: 0 },
     body: true,
   },
   errors: [
@@ -5563,6 +5757,7 @@ export const startDomainMaintenance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/domain/{DomainName}/domainMaintenance",
+    input: { DomainName: 0, Action: 0, NodeId: 0 },
     body: true,
   },
   errors: [
@@ -5597,6 +5792,20 @@ export const startMigration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/app-migrations",
+    input: {
+      applicationId: 0,
+      migrationOptions: {
+        source: { datasourceArn: 0 },
+        workspace: { workspaceId: 0, createWorkspace: 0, name: 0, type: 0 },
+        exportOptions: {
+          types: 0,
+          objects: D.list({ type: 0, id: 0 }),
+          includeReferencesDeep: 0,
+        },
+        conflictResolution: 0,
+      },
+      clientToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -5632,6 +5841,7 @@ export const startServiceSoftwareUpdate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/serviceSoftwareUpdate/start",
+    input: { DomainName: 0, ScheduleAt: 0, DesiredStartTime: 0 },
     output: { ServiceSoftwareOptions: o_ServiceSoftwareOptions },
     body: true,
   },
@@ -5667,6 +5877,12 @@ export const updateApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2021-01-01/opensearch/application/{id}",
+    input: {
+      id: 0,
+      dataSources: D.list(i_DataSource),
+      appConfigs: D.list(i_AppConfig),
+      iamIdentityCenterOptions: i_IamIdentityCenterOptionsInput,
+    },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
     body: true,
   },
@@ -5706,6 +5922,13 @@ export const updateDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2021-01-01/opensearch/domain/{DomainName}/dataSource/{Name}",
+    input: {
+      DomainName: 0,
+      Name: 0,
+      DataSourceType: i_DataSourceType,
+      Description: 0,
+      Status: 0,
+    },
     body: true,
   },
   errors: [
@@ -5742,6 +5965,13 @@ export const updateDirectQueryDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2021-01-01/opensearch/directQueryDataSource/{DataSourceName}",
+    input: {
+      DataSourceName: 0,
+      DataSourceType: i_DirectQueryDataSourceType,
+      Description: 0,
+      OpenSearchArns: 0,
+      DataSourceAccessPolicy: 0,
+    },
     body: true,
   },
   errors: [
@@ -5778,6 +6008,38 @@ export const updateDomainConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/domain/{DomainName}/config",
+    input: {
+      DomainName: 0,
+      ClusterConfig: i_ClusterConfig,
+      EBSOptions: i_EBSOptions,
+      SnapshotOptions: i_SnapshotOptions,
+      VPCOptions: i_VPCOptions,
+      CognitoOptions: i_CognitoOptions,
+      AdvancedOptions: 0,
+      AccessPolicies: 0,
+      IPAddressType: 0,
+      LogPublishingOptions: D.map(i_LogPublishingOption),
+      EncryptionAtRestOptions: i_EncryptionAtRestOptions,
+      DomainEndpointOptions: i_DomainEndpointOptions,
+      NodeToNodeEncryptionOptions: i_NodeToNodeEncryptionOptions,
+      AdvancedSecurityOptions: i_AdvancedSecurityOptionsInput,
+      IdentityCenterOptions: i_IdentityCenterOptionsInput,
+      AutoTuneOptions: {
+        DesiredState: 0,
+        RollbackOnDisable: 0,
+        MaintenanceSchedules: D.list(i_AutoTuneMaintenanceSchedule),
+        UseOffPeakWindow: 0,
+      },
+      DryRun: 0,
+      DryRunMode: 0,
+      OffPeakWindowOptions: i_OffPeakWindowOptions,
+      SoftwareUpdateOptions: i_SoftwareUpdateOptions,
+      AIMLOptions: i_AIMLOptionsInput,
+      DeploymentStrategyOptions: i_DeploymentStrategyOptions,
+      AutomatedSnapshotPauseOptions: i_AutomatedSnapshotPauseRequestOptions,
+      UseCase: 0,
+      EngineMode: 0,
+    },
     output: { DomainConfig: o_DomainConfig },
     body: true,
   },
@@ -5815,6 +6077,7 @@ export const updateIndex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2021-01-01/opensearch/domain/{DomainName}/index/{IndexName}",
+    input: { DomainName: 0, IndexName: 0, IndexSchema: 0 },
     body: true,
   },
   errors: [
@@ -5853,6 +6116,14 @@ export const updatePackage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/packages/update",
+    input: {
+      PackageID: 0,
+      PackageSource: i_PackageSource,
+      PackageDescription: 0,
+      CommitMessage: 0,
+      PackageConfiguration: i_PackageConfiguration,
+      PackageEncryptionOptions: i_PackageEncryptionOptions,
+    },
     output: { PackageDetails: o_PackageDetails },
     body: true,
   },
@@ -5889,6 +6160,7 @@ export const updatePackageScope: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/packages/updateScope",
+    input: { PackageID: 0, Operation: 0, PackageUserList: 0 },
     body: true,
   },
   errors: [
@@ -5926,6 +6198,13 @@ export const updateScheduledAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2021-01-01/opensearch/domain/{DomainName}/scheduledAction/update",
+    input: {
+      DomainName: 0,
+      ActionID: 0,
+      ActionType: 0,
+      ScheduleAt: 0,
+      DesiredStartTime: 0,
+    },
     body: true,
   },
   errors: [
@@ -5962,6 +6241,7 @@ export const updateVpcEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/vpcEndpoints/update",
+    input: { VpcEndpointId: 0, VpcOptions: i_VPCOptions },
     body: true,
   },
   errors: [
@@ -5998,6 +6278,12 @@ export const upgradeDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2021-01-01/opensearch/upgradeDomain",
+    input: {
+      DomainName: 0,
+      TargetVersion: 0,
+      PerformCheckOnly: 0,
+      AdvancedOptions: 0,
+    },
     output: { ChangeProgressDetails: o_ChangeProgressDetails },
     body: true,
   },
@@ -6014,6 +6300,161 @@ export const upgradeDomain: API.OperationMethod<
   operationName: "UpgradeDomain",
 })) as any;
 
+const i_AIMLOptionsInput: D.LazyStruct = () => ({
+  NaturalLanguageQueryGenerationOptions: { DesiredState: 0 },
+  S3VectorsEngine: { Enabled: 0 },
+  ServerlessVectorAcceleration: { Enabled: 0 },
+});
+const i_AdvancedSecurityOptionsInput: D.LazyStruct = () => ({
+  Enabled: 0,
+  InternalUserDatabaseEnabled: 0,
+  MasterUserOptions: {
+    MasterUserARN: 0,
+    MasterUserName: 0,
+    MasterUserPassword: 0,
+  },
+  SAMLOptions: {
+    Enabled: 0,
+    Idp: { MetadataContent: 0, EntityId: 0 },
+    MasterUserName: 0,
+    MasterBackendRole: 0,
+    SubjectKey: 0,
+    RolesKey: 0,
+    SessionTimeoutMinutes: 0,
+  },
+  JWTOptions: {
+    Enabled: 0,
+    SubjectKey: 0,
+    RolesKey: 0,
+    JwksUrl: 0,
+    PublicKey: 0,
+  },
+  IAMFederationOptions: { Enabled: 0, SubjectKey: 0, RolesKey: 0 },
+  AnonymousAuthEnabled: 0,
+});
+const i_AppConfig: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_AutoTuneMaintenanceSchedule: D.LazyStruct = () => ({
+  StartAt: 0,
+  Duration: { Value: 0, Unit: 0 },
+  CronExpressionForRecurrence: 0,
+});
+const i_AutomatedSnapshotPauseRequestOptions: D.LazyStruct = () => ({
+  Enabled: 0,
+  StartTime: 0,
+  EndTime: 0,
+});
+const i_ClusterConfig: D.LazyStruct = () => ({
+  InstanceType: 0,
+  InstanceCount: 0,
+  DedicatedMasterEnabled: 0,
+  ZoneAwarenessEnabled: 0,
+  ZoneAwarenessConfig: { AvailabilityZoneCount: 0 },
+  DedicatedMasterType: 0,
+  DedicatedMasterCount: 0,
+  WarmEnabled: 0,
+  WarmType: 0,
+  WarmCount: 0,
+  ColdStorageOptions: { Enabled: 0 },
+  MultiAZWithStandbyEnabled: 0,
+  NodeOptions: D.list({
+    NodeType: 0,
+    NodeConfig: { Enabled: 0, Type: 0, Count: 0 },
+  }),
+});
+const i_CognitoOptions: D.LazyStruct = () => ({
+  Enabled: 0,
+  UserPoolId: 0,
+  IdentityPoolId: 0,
+  RoleArn: 0,
+});
+const i_DataSource: D.LazyStruct = () => ({
+  dataSourceArn: 0,
+  dataSourceDescription: 0,
+  iamRoleForDataSourceArn: 0,
+});
+const i_DataSourceType: D.LazyStruct = () => ({
+  S3GlueDataCatalog: { RoleArn: 0 },
+});
+const i_DeploymentStrategyOptions: D.LazyStruct = () => ({
+  DeploymentStrategy: 0,
+});
+const i_DirectQueryDataSourceType: D.LazyStruct = () => ({
+  CloudWatchLog: { RoleArn: 0 },
+  SecurityLake: { RoleArn: 0 },
+  Prometheus: { RoleArn: 0, WorkspaceArn: 0 },
+});
+const i_DomainEndpointOptions: D.LazyStruct = () => ({
+  EnforceHTTPS: 0,
+  TLSSecurityPolicy: 0,
+  CustomEndpointEnabled: 0,
+  CustomEndpoint: 0,
+  CustomEndpointCertificateArn: 0,
+});
+const i_DomainInformationContainer: D.LazyStruct = () => ({
+  AWSDomainInformation: { OwnerId: 0, DomainName: 0, Region: 0 },
+});
+const i_EBSOptions: D.LazyStruct = () => ({
+  EBSEnabled: 0,
+  VolumeType: 0,
+  VolumeSize: 0,
+  Iops: 0,
+  Throughput: 0,
+});
+const i_EncryptionAtRestOptions: D.LazyStruct = () => ({
+  Enabled: 0,
+  KmsKeyId: 0,
+});
+const i_Filter: D.LazyStruct = () => ({ Name: 0, Values: 0 });
+const i_IamIdentityCenterOptionsInput: D.LazyStruct = () => ({
+  enabled: 0,
+  iamIdentityCenterInstanceArn: 0,
+  iamRoleForIdentityCenterApplicationArn: 0,
+});
+const i_IdentityCenterOptionsInput: D.LazyStruct = () => ({
+  EnabledAPIAccess: 0,
+  IdentityCenterInstanceARN: 0,
+  IdentityCenterInstanceRegion: 0,
+  SubjectKey: 0,
+  RolesKey: 0,
+});
+const i_InsightEntity: D.LazyStruct = () => ({ Type: 0, Value: 0 });
+const i_LogPublishingOption: D.LazyStruct = () => ({
+  CloudWatchLogsLogGroupArn: 0,
+  Enabled: 0,
+});
+const i_NodeToNodeEncryptionOptions: D.LazyStruct = () => ({ Enabled: 0 });
+const i_OffPeakWindowOptions: D.LazyStruct = () => ({
+  Enabled: 0,
+  OffPeakWindow: { WindowStartTime: { Hours: 0, Minutes: 0 } },
+});
+const i_PackageAssociationConfiguration: D.LazyStruct = () => ({
+  KeyStoreAccessOption: { KeyAccessRoleArn: 0, KeyStoreAccessEnabled: 0 },
+});
+const i_PackageConfiguration: D.LazyStruct = () => ({
+  LicenseRequirement: 0,
+  LicenseFilepath: 0,
+  ConfigurationRequirement: 0,
+  RequiresRestartForConfigurationUpdate: 0,
+});
+const i_PackageEncryptionOptions: D.LazyStruct = () => ({
+  KmsKeyIdentifier: 0,
+  EncryptionEnabled: 0,
+});
+const i_PackageSource: D.LazyStruct = () => ({ S3BucketName: 0, S3Key: 0 });
+const i_ServiceOptions: D.LazyStruct = () => ({ SupportedRegions: 0 });
+const i_SnapshotOptions: D.LazyStruct = () => ({
+  AutomatedSnapshotStartHour: 0,
+});
+const i_SoftwareUpdateOptions: D.LazyStruct = () => ({
+  AutoSoftwareUpdateEnabled: 0,
+  UseLatestServiceSoftwareForBlueGreen: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_VPCOptions: D.LazyStruct = () => ({
+  SubnetIds: 0,
+  SecurityGroupIds: 0,
+  EgressEnabled: 0,
+});
 const o_ChangeProgressDetails: D.LazyStruct = () => ({
   StartTime: D.ts,
   LastUpdatedTime: D.ts,

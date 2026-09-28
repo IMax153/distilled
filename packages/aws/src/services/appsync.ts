@@ -1378,6 +1378,7 @@ export const associateApi: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/domainnames/{domainName}/apiassociation",
+    input: { domainName: 0, apiId: 0 },
     body: true,
   },
   errors: [
@@ -1412,6 +1413,12 @@ export const associateMergedGraphqlApi: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/sourceApis/{sourceApiIdentifier}/mergedApiAssociations",
+    input: {
+      sourceApiIdentifier: 0,
+      mergedApiIdentifier: 0,
+      description: 0,
+      sourceApiAssociationConfig: i_SourceApiAssociationConfig,
+    },
     output: { sourceApiAssociation: o_SourceApiAssociation },
     body: true,
   },
@@ -1449,6 +1456,12 @@ export const associateSourceGraphqlApi: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/mergedApis/{mergedApiIdentifier}/sourceApiAssociations",
+    input: {
+      mergedApiIdentifier: 0,
+      sourceApiIdentifier: 0,
+      description: 0,
+      sourceApiAssociationConfig: i_SourceApiAssociationConfig,
+    },
     output: { sourceApiAssociation: o_SourceApiAssociation },
     body: true,
   },
@@ -1486,6 +1499,7 @@ export const createApi: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/apis",
+    input: { name: 0, ownerContact: 0, tags: 0, eventConfig: i_EventConfig },
     output: { api: o_Api },
     body: true,
   },
@@ -1520,6 +1534,15 @@ export const createApiCache: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apis/{apiId}/ApiCaches",
+    input: {
+      apiId: 0,
+      ttl: 0,
+      transitEncryptionEnabled: 0,
+      atRestEncryptionEnabled: 0,
+      apiCachingBehavior: 0,
+      type: 0,
+      healthMetricsConfig: 0,
+    },
     body: true,
   },
   errors: [
@@ -1555,6 +1578,7 @@ export const createApiKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apis/{apiId}/apikeys",
+    input: { apiId: 0, description: 0, expires: 0 },
     body: true,
   },
   errors: [
@@ -1592,6 +1616,15 @@ export const createChannelNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/apis/{apiId}/channelNamespaces",
+    input: {
+      apiId: 0,
+      name: 0,
+      subscribeAuthModes: D.list(i_AuthMode),
+      publishAuthModes: D.list(i_AuthMode),
+      codeHandlers: 0,
+      tags: 0,
+      handlerConfigs: i_HandlerConfigs,
+    },
     output: { channelNamespace: o_ChannelNamespace },
     body: true,
   },
@@ -1628,6 +1661,21 @@ export const createDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apis/{apiId}/datasources",
+    input: {
+      apiId: 0,
+      name: 0,
+      description: 0,
+      type: 0,
+      serviceRoleArn: 0,
+      dynamodbConfig: i_DynamodbDataSourceConfig,
+      lambdaConfig: i_LambdaDataSourceConfig,
+      elasticsearchConfig: i_ElasticsearchDataSourceConfig,
+      openSearchServiceConfig: i_OpenSearchServiceDataSourceConfig,
+      httpConfig: i_HttpDataSourceConfig,
+      relationalDatabaseConfig: i_RelationalDatabaseDataSourceConfig,
+      eventBridgeConfig: i_EventBridgeDataSourceConfig,
+      metricsConfig: 0,
+    },
     body: true,
   },
   errors: [
@@ -1656,7 +1704,12 @@ export const createDomainName: API.OperationMethod<
   CreateDomainNameError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/domainnames", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/domainnames",
+    input: { domainName: 0, certificateArn: 0, description: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -1689,6 +1742,19 @@ export const createFunction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apis/{apiId}/functions",
+    input: {
+      apiId: 0,
+      name: 0,
+      description: 0,
+      dataSourceName: 0,
+      requestMappingTemplate: 0,
+      responseMappingTemplate: 0,
+      functionVersion: 0,
+      syncConfig: i_SyncConfig,
+      maxBatchSize: 0,
+      runtime: i_AppSyncRuntime,
+      code: 0,
+    },
     body: true,
   },
   errors: [
@@ -1720,7 +1786,32 @@ export const createGraphqlApi: API.OperationMethod<
   CreateGraphqlApiError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/apis", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/apis",
+    input: {
+      name: 0,
+      logConfig: i_LogConfig,
+      authenticationType: 0,
+      userPoolConfig: i_UserPoolConfig,
+      openIDConnectConfig: i_OpenIDConnectConfig,
+      tags: 0,
+      additionalAuthenticationProviders: D.list(
+        i_AdditionalAuthenticationProvider,
+      ),
+      xrayEnabled: 0,
+      lambdaAuthorizerConfig: i_LambdaAuthorizerConfig,
+      apiType: 0,
+      mergedApiExecutionRoleArn: 0,
+      visibility: 0,
+      ownerContact: 0,
+      introspectionConfig: 0,
+      queryDepthLimit: 0,
+      resolverCountLimit: 0,
+      enhancedMetricsConfig: i_EnhancedMetricsConfig,
+    },
+    body: true,
+  },
   errors: [
     ApiLimitExceededException,
     BadRequestException,
@@ -1756,6 +1847,22 @@ export const createResolver: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apis/{apiId}/types/{typeName}/resolvers",
+    input: {
+      apiId: 0,
+      typeName: 0,
+      fieldName: 0,
+      dataSourceName: 0,
+      requestMappingTemplate: 0,
+      responseMappingTemplate: 0,
+      kind: 0,
+      pipelineConfig: i_PipelineConfig,
+      syncConfig: i_SyncConfig,
+      cachingConfig: i_CachingConfig,
+      maxBatchSize: 0,
+      runtime: i_AppSyncRuntime,
+      code: 0,
+      metricsConfig: 0,
+    },
     body: true,
   },
   errors: [
@@ -1786,7 +1893,12 @@ export const createType: API.OperationMethod<
   CreateTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/apis/{apiId}/types", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/apis/{apiId}/types",
+    input: { apiId: 0, definition: 0, format: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ConcurrentModificationException,
@@ -1816,7 +1928,11 @@ export const deleteApi: API.OperationMethod<
   DeleteApiError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v2/apis/{apiId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v2/apis/{apiId}",
+    input: { apiId: 0 },
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -1846,7 +1962,11 @@ export const deleteApiCache: API.OperationMethod<
   DeleteApiCacheError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v1/apis/{apiId}/ApiCaches" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v1/apis/{apiId}/ApiCaches",
+    input: { apiId: 0 },
+  },
   errors: [
     BadRequestException,
     ConcurrentModificationException,
@@ -1874,7 +1994,11 @@ export const deleteApiKey: API.OperationMethod<
   DeleteApiKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v1/apis/{apiId}/apikeys/{id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v1/apis/{apiId}/apikeys/{id}",
+    input: { apiId: 0, id: 0 },
+  },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -1906,6 +2030,7 @@ export const deleteChannelNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/apis/{apiId}/channelNamespaces/{name}",
+    input: { apiId: 0, name: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1939,6 +2064,7 @@ export const deleteDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apis/{apiId}/datasources/{name}",
+    input: { apiId: 0, name: 0 },
   },
   errors: [
     BadRequestException,
@@ -1968,7 +2094,11 @@ export const deleteDomainName: API.OperationMethod<
   DeleteDomainNameError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v1/domainnames/{domainName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v1/domainnames/{domainName}",
+    input: { domainName: 0 },
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -2000,6 +2130,7 @@ export const deleteFunction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apis/{apiId}/functions/{functionId}",
+    input: { apiId: 0, functionId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2030,7 +2161,11 @@ export const deleteGraphqlApi: API.OperationMethod<
   DeleteGraphqlApiError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v1/apis/{apiId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v1/apis/{apiId}",
+    input: { apiId: 0 },
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -2063,6 +2198,7 @@ export const deleteResolver: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apis/{apiId}/types/{typeName}/resolvers/{fieldName}",
+    input: { apiId: 0, typeName: 0, fieldName: 0 },
   },
   errors: [
     BadRequestException,
@@ -2095,6 +2231,7 @@ export const deleteType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apis/{apiId}/types/{typeName}",
+    input: { apiId: 0, typeName: 0 },
   },
   errors: [
     BadRequestException,
@@ -2127,6 +2264,7 @@ export const disassociateApi: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/domainnames/{domainName}/apiassociation",
+    input: { domainName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2160,6 +2298,7 @@ export const disassociateMergedGraphqlApi: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/sourceApis/{sourceApiIdentifier}/mergedApiAssociations/{associationId}",
+    input: { sourceApiIdentifier: 0, associationId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2193,6 +2332,7 @@ export const disassociateSourceGraphqlApi: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/mergedApis/{mergedApiIdentifier}/sourceApiAssociations/{associationId}",
+    input: { mergedApiIdentifier: 0, associationId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2228,6 +2368,7 @@ export const evaluateCode: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/dataplane-evaluatecode",
+    input: { runtime: i_AppSyncRuntime, code: 0, context: 0, function: 0 },
     body: true,
   },
   errors: [
@@ -2265,6 +2406,7 @@ export const evaluateMappingTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/dataplane-evaluatetemplate",
+    input: { template: 0, context: 0 },
     body: true,
   },
   errors: [
@@ -2293,7 +2435,11 @@ export const flushApiCache: API.OperationMethod<
   FlushApiCacheError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v1/apis/{apiId}/FlushCache" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v1/apis/{apiId}/FlushCache",
+    input: { apiId: 0 },
+  },
   errors: [
     BadRequestException,
     ConcurrentModificationException,
@@ -2325,6 +2471,7 @@ export const getApi: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/apis/{apiId}",
+    input: { apiId: 0 },
     output: { api: o_Api },
   },
   errors: [
@@ -2357,6 +2504,7 @@ export const getApiAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/domainnames/{domainName}/apiassociation",
+    input: { domainName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2385,7 +2533,11 @@ export const getApiCache: API.OperationMethod<
   GetApiCacheError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/apis/{apiId}/ApiCaches" },
+  descriptor: {
+    service: svc,
+    http: "GET /v1/apis/{apiId}/ApiCaches",
+    input: { apiId: 0 },
+  },
   errors: [
     BadRequestException,
     ConcurrentModificationException,
@@ -2417,6 +2569,7 @@ export const getChannelNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/apis/{apiId}/channelNamespaces/{name}",
+    input: { apiId: 0, name: 0 },
     output: { channelNamespace: o_ChannelNamespace },
   },
   errors: [
@@ -2447,7 +2600,11 @@ export const getDataSource: API.OperationMethod<
   GetDataSourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/apis/{apiId}/datasources/{name}" },
+  descriptor: {
+    service: svc,
+    http: "GET /v1/apis/{apiId}/datasources/{name}",
+    input: { apiId: 0, name: 0 },
+  },
   errors: [
     BadRequestException,
     ConcurrentModificationException,
@@ -2480,6 +2637,7 @@ export const getDataSourceIntrospection: API.OperationMethod<
     service: svc,
     http: "GET /v1/datasources/introspections/{introspectionId}",
     input: {
+      introspectionId: 0,
       includeModelsSDL: D.m({ query: "includeModelsSDL" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -2506,7 +2664,11 @@ export const getDomainName: API.OperationMethod<
   GetDomainNameError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/domainnames/{domainName}" },
+  descriptor: {
+    service: svc,
+    http: "GET /v1/domainnames/{domainName}",
+    input: { domainName: 0 },
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -2535,6 +2697,7 @@ export const getFunction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apis/{apiId}/functions/{functionId}",
+    input: { apiId: 0, functionId: 0 },
   },
   errors: [
     ConcurrentModificationException,
@@ -2562,7 +2725,11 @@ export const getGraphqlApi: API.OperationMethod<
   GetGraphqlApiError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/apis/{apiId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /v1/apis/{apiId}",
+    input: { apiId: 0 },
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -2595,6 +2762,7 @@ export const getGraphqlApiEnvironmentVariables: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apis/{apiId}/environmentVariables",
+    input: { apiId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2627,10 +2795,11 @@ export const getIntrospectionSchema: API.OperationMethod<
     service: svc,
     http: "GET /v1/apis/{apiId}/schema",
     input: {
+      apiId: 0,
       format: D.m({ query: "format" }),
       includeDirectives: D.m({ query: "includeDirectives" }),
     },
-    output: { schema: D.m({ payload: true, shape: D.stream }) },
+    output: { schema: D.m({ payload: true, shape: D.blob }) },
   },
   errors: [
     GraphQLSchemaException,
@@ -2660,6 +2829,7 @@ export const getResolver: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apis/{apiId}/types/{typeName}/resolvers/{fieldName}",
+    input: { apiId: 0, typeName: 0, fieldName: 0 },
   },
   errors: [
     ConcurrentModificationException,
@@ -2686,7 +2856,11 @@ export const getSchemaCreationStatus: API.OperationMethod<
   GetSchemaCreationStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/apis/{apiId}/schemacreation" },
+  descriptor: {
+    service: svc,
+    http: "GET /v1/apis/{apiId}/schemacreation",
+    input: { apiId: 0 },
+  },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -2716,6 +2890,7 @@ export const getSourceApiAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/mergedApis/{mergedApiIdentifier}/sourceApiAssociations/{associationId}",
+    input: { mergedApiIdentifier: 0, associationId: 0 },
     output: { sourceApiAssociation: o_SourceApiAssociation },
   },
   errors: [
@@ -2748,7 +2923,7 @@ export const getType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apis/{apiId}/types/{typeName}",
-    input: { format: D.m({ query: "format" }) },
+    input: { apiId: 0, typeName: 0, format: D.m({ query: "format" }) },
   },
   errors: [
     BadRequestException,
@@ -2787,6 +2962,7 @@ export const listApiKeys: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/apis/{apiId}/apikeys",
     input: {
+      apiId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -2874,6 +3050,7 @@ export const listChannelNamespaces: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/apis/{apiId}/channelNamespaces",
     input: {
+      apiId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -2916,6 +3093,7 @@ export const listDataSources: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/apis/{apiId}/datasources",
     input: {
+      apiId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -2996,6 +3174,7 @@ export const listFunctions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/apis/{apiId}/functions",
     input: {
+      apiId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -3078,6 +3257,8 @@ export const listResolvers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/apis/{apiId}/types/{typeName}/resolvers",
     input: {
+      apiId: 0,
+      typeName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -3119,6 +3300,8 @@ export const listResolversByFunction: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/apis/{apiId}/functions/{functionId}/resolvers",
     input: {
+      apiId: 0,
+      functionId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -3160,6 +3343,7 @@ export const listSourceApiAssociations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/apis/{apiId}/sourceApiAssociations",
     input: {
+      apiId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -3198,7 +3382,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /v1/tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -3233,6 +3421,7 @@ export const listTypes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/apis/{apiId}/types",
     input: {
+      apiId: 0,
       format: D.m({ query: "format" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -3277,6 +3466,8 @@ export const listTypesByAssociation: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/mergedApis/{mergedApiIdentifier}/sourceApiAssociations/{associationId}/types",
     input: {
+      mergedApiIdentifier: 0,
+      associationId: 0,
       format: D.m({ query: "format" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -3356,6 +3547,7 @@ export const putGraphqlApiEnvironmentVariables: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/apis/{apiId}/environmentVariables",
+    input: { apiId: 0, environmentVariables: 0 },
     body: true,
   },
   errors: [
@@ -3390,6 +3582,9 @@ export const startDataSourceIntrospection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/datasources/introspections",
+    input: {
+      rdsDataApiConfig: { resourceArn: 0, secretArn: 0, databaseName: 0 },
+    },
     body: true,
   },
   errors: [
@@ -3425,6 +3620,7 @@ export const startSchemaCreation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apis/{apiId}/schemacreation",
+    input: { apiId: 0, definition: 0 },
     body: true,
   },
   errors: [
@@ -3459,6 +3655,7 @@ export const startSchemaMerge: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/mergedApis/{mergedApiIdentifier}/sourceApiAssociations/{associationId}/merge",
+    input: { associationId: 0, mergedApiIdentifier: 0 },
   },
   errors: [
     BadRequestException,
@@ -3489,7 +3686,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -3523,7 +3725,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -3558,6 +3760,7 @@ export const updateApi: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/apis/{apiId}",
+    input: { apiId: 0, name: 0, ownerContact: 0, eventConfig: i_EventConfig },
     output: { api: o_Api },
     body: true,
   },
@@ -3593,6 +3796,13 @@ export const updateApiCache: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apis/{apiId}/ApiCaches/update",
+    input: {
+      apiId: 0,
+      ttl: 0,
+      apiCachingBehavior: 0,
+      type: 0,
+      healthMetricsConfig: 0,
+    },
     body: true,
   },
   errors: [
@@ -3627,6 +3837,7 @@ export const updateApiKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apis/{apiId}/apikeys/{id}",
+    input: { apiId: 0, id: 0, description: 0, expires: 0 },
     body: true,
   },
   errors: [
@@ -3662,6 +3873,14 @@ export const updateChannelNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/apis/{apiId}/channelNamespaces/{name}",
+    input: {
+      apiId: 0,
+      name: 0,
+      subscribeAuthModes: D.list(i_AuthMode),
+      publishAuthModes: D.list(i_AuthMode),
+      codeHandlers: 0,
+      handlerConfigs: i_HandlerConfigs,
+    },
     output: { channelNamespace: o_ChannelNamespace },
     body: true,
   },
@@ -3697,6 +3916,21 @@ export const updateDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apis/{apiId}/datasources/{name}",
+    input: {
+      apiId: 0,
+      name: 0,
+      description: 0,
+      type: 0,
+      serviceRoleArn: 0,
+      dynamodbConfig: i_DynamodbDataSourceConfig,
+      lambdaConfig: i_LambdaDataSourceConfig,
+      elasticsearchConfig: i_ElasticsearchDataSourceConfig,
+      openSearchServiceConfig: i_OpenSearchServiceDataSourceConfig,
+      httpConfig: i_HttpDataSourceConfig,
+      relationalDatabaseConfig: i_RelationalDatabaseDataSourceConfig,
+      eventBridgeConfig: i_EventBridgeDataSourceConfig,
+      metricsConfig: 0,
+    },
     body: true,
   },
   errors: [
@@ -3730,6 +3964,7 @@ export const updateDomainName: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/domainnames/{domainName}",
+    input: { domainName: 0, description: 0 },
     body: true,
   },
   errors: [
@@ -3763,6 +3998,20 @@ export const updateFunction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apis/{apiId}/functions/{functionId}",
+    input: {
+      apiId: 0,
+      name: 0,
+      description: 0,
+      functionId: 0,
+      dataSourceName: 0,
+      requestMappingTemplate: 0,
+      responseMappingTemplate: 0,
+      functionVersion: 0,
+      syncConfig: i_SyncConfig,
+      maxBatchSize: 0,
+      runtime: i_AppSyncRuntime,
+      code: 0,
+    },
     body: true,
   },
   errors: [
@@ -3794,7 +4043,30 @@ export const updateGraphqlApi: API.OperationMethod<
   UpdateGraphqlApiError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/apis/{apiId}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/apis/{apiId}",
+    input: {
+      apiId: 0,
+      name: 0,
+      logConfig: i_LogConfig,
+      authenticationType: 0,
+      userPoolConfig: i_UserPoolConfig,
+      openIDConnectConfig: i_OpenIDConnectConfig,
+      additionalAuthenticationProviders: D.list(
+        i_AdditionalAuthenticationProvider,
+      ),
+      xrayEnabled: 0,
+      lambdaAuthorizerConfig: i_LambdaAuthorizerConfig,
+      mergedApiExecutionRoleArn: 0,
+      ownerContact: 0,
+      introspectionConfig: 0,
+      queryDepthLimit: 0,
+      resolverCountLimit: 0,
+      enhancedMetricsConfig: i_EnhancedMetricsConfig,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -3827,6 +4099,22 @@ export const updateResolver: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apis/{apiId}/types/{typeName}/resolvers/{fieldName}",
+    input: {
+      apiId: 0,
+      typeName: 0,
+      fieldName: 0,
+      dataSourceName: 0,
+      requestMappingTemplate: 0,
+      responseMappingTemplate: 0,
+      kind: 0,
+      pipelineConfig: i_PipelineConfig,
+      syncConfig: i_SyncConfig,
+      cachingConfig: i_CachingConfig,
+      maxBatchSize: 0,
+      runtime: i_AppSyncRuntime,
+      code: 0,
+      metricsConfig: 0,
+    },
     body: true,
   },
   errors: [
@@ -3860,6 +4148,12 @@ export const updateSourceApiAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/mergedApis/{mergedApiIdentifier}/sourceApiAssociations/{associationId}",
+    input: {
+      associationId: 0,
+      mergedApiIdentifier: 0,
+      description: 0,
+      sourceApiAssociationConfig: i_SourceApiAssociationConfig,
+    },
     output: { sourceApiAssociation: o_SourceApiAssociation },
     body: true,
   },
@@ -3894,6 +4188,7 @@ export const updateType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apis/{apiId}/types/{typeName}",
+    input: { apiId: 0, typeName: 0, definition: 0, format: 0 },
     body: true,
   },
   errors: [
@@ -3908,6 +4203,103 @@ export const updateType: API.OperationMethod<
   operationName: "UpdateType",
 })) as any;
 
+const i_AdditionalAuthenticationProvider: D.LazyStruct = () => ({
+  authenticationType: 0,
+  openIDConnectConfig: i_OpenIDConnectConfig,
+  userPoolConfig: { userPoolId: 0, awsRegion: 0, appIdClientRegex: 0 },
+  lambdaAuthorizerConfig: i_LambdaAuthorizerConfig,
+});
+const i_AppSyncRuntime: D.LazyStruct = () => ({ name: 0, runtimeVersion: 0 });
+const i_AuthMode: D.LazyStruct = () => ({ authType: 0 });
+const i_CachingConfig: D.LazyStruct = () => ({ ttl: 0, cachingKeys: 0 });
+const i_DynamodbDataSourceConfig: D.LazyStruct = () => ({
+  tableName: 0,
+  awsRegion: 0,
+  useCallerCredentials: 0,
+  deltaSyncConfig: {
+    baseTableTTL: 0,
+    deltaSyncTableName: 0,
+    deltaSyncTableTTL: 0,
+  },
+  versioned: 0,
+});
+const i_ElasticsearchDataSourceConfig: D.LazyStruct = () => ({
+  endpoint: 0,
+  awsRegion: 0,
+});
+const i_EnhancedMetricsConfig: D.LazyStruct = () => ({
+  resolverLevelMetricsBehavior: 0,
+  dataSourceLevelMetricsBehavior: 0,
+  operationLevelMetricsConfig: 0,
+});
+const i_EventBridgeDataSourceConfig: D.LazyStruct = () => ({ eventBusArn: 0 });
+const i_EventConfig: D.LazyStruct = () => ({
+  authProviders: D.list({
+    authType: 0,
+    cognitoConfig: { userPoolId: 0, awsRegion: 0, appIdClientRegex: 0 },
+    openIDConnectConfig: i_OpenIDConnectConfig,
+    lambdaAuthorizerConfig: i_LambdaAuthorizerConfig,
+  }),
+  connectionAuthModes: D.list(i_AuthMode),
+  defaultPublishAuthModes: D.list(i_AuthMode),
+  defaultSubscribeAuthModes: D.list(i_AuthMode),
+  logConfig: { logLevel: 0, cloudWatchLogsRoleArn: 0 },
+});
+const i_HandlerConfigs: D.LazyStruct = () => ({
+  onPublish: i_HandlerConfig,
+  onSubscribe: i_HandlerConfig,
+});
+const i_HttpDataSourceConfig: D.LazyStruct = () => ({
+  endpoint: 0,
+  authorizationConfig: {
+    authorizationType: 0,
+    awsIamConfig: { signingRegion: 0, signingServiceName: 0 },
+  },
+});
+const i_LambdaAuthorizerConfig: D.LazyStruct = () => ({
+  authorizerResultTtlInSeconds: 0,
+  authorizerUri: 0,
+  identityValidationExpression: 0,
+});
+const i_LambdaDataSourceConfig: D.LazyStruct = () => ({ lambdaFunctionArn: 0 });
+const i_LogConfig: D.LazyStruct = () => ({
+  fieldLogLevel: 0,
+  cloudWatchLogsRoleArn: 0,
+  excludeVerboseContent: 0,
+});
+const i_OpenIDConnectConfig: D.LazyStruct = () => ({
+  issuer: 0,
+  clientId: 0,
+  iatTTL: 0,
+  authTTL: 0,
+});
+const i_OpenSearchServiceDataSourceConfig: D.LazyStruct = () => ({
+  endpoint: 0,
+  awsRegion: 0,
+});
+const i_PipelineConfig: D.LazyStruct = () => ({ functions: 0 });
+const i_RelationalDatabaseDataSourceConfig: D.LazyStruct = () => ({
+  relationalDatabaseSourceType: 0,
+  rdsHttpEndpointConfig: {
+    awsRegion: 0,
+    dbClusterIdentifier: 0,
+    databaseName: 0,
+    schema: 0,
+    awsSecretStoreArn: 0,
+  },
+});
+const i_SourceApiAssociationConfig: D.LazyStruct = () => ({ mergeType: 0 });
+const i_SyncConfig: D.LazyStruct = () => ({
+  conflictHandler: 0,
+  conflictDetection: 0,
+  lambdaConflictHandlerConfig: { lambdaConflictHandlerArn: 0 },
+});
+const i_UserPoolConfig: D.LazyStruct = () => ({
+  userPoolId: 0,
+  awsRegion: 0,
+  defaultAction: 0,
+  appIdClientRegex: 0,
+});
 const o_Api: D.LazyStruct = () => ({ created: D.ts });
 const o_ChannelNamespace: D.LazyStruct = () => ({
   created: D.ts,
@@ -3915,4 +4307,8 @@ const o_ChannelNamespace: D.LazyStruct = () => ({
 });
 const o_SourceApiAssociation: D.LazyStruct = () => ({
   lastSuccessfulMergeDate: D.ts,
+});
+const i_HandlerConfig: D.LazyStruct = () => ({
+  behavior: 0,
+  integration: { dataSourceName: 0, lambdaConfig: { invokeType: 0 } },
 });

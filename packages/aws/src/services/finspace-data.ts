@@ -720,7 +720,11 @@ export const associateUserToPermissionGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /permission-group/{permissionGroupId}/users/{userId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      permissionGroupId: 0,
+      userId: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { statusCode: D.m({ status: true }) },
     body: true,
   },
@@ -758,7 +762,13 @@ export const createChangeset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datasets/{datasetId}/changesetsv2",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      datasetId: 0,
+      changeType: 0,
+      sourceParams: 0,
+      formatParams: 0,
+    },
     body: true,
   },
   errors: [
@@ -796,7 +806,19 @@ export const createDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datasetsv2",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      datasetTitle: 0,
+      kind: 0,
+      datasetDescription: 0,
+      ownerInfo: { name: 0, phoneNumber: 0, email: 0 },
+      permissionGroupParams: {
+        permissionGroupId: 0,
+        datasetPermissions: D.list({ permission: 0 }),
+      },
+      alias: 0,
+      schemaDefinition: i_SchemaUnion,
+    },
     body: true,
   },
   errors: [
@@ -833,7 +855,19 @@ export const createDataView: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datasets/{datasetId}/dataviewsv2",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      datasetId: 0,
+      autoUpdate: 0,
+      sortColumns: 0,
+      partitionColumns: 0,
+      asOfTimestamp: 0,
+      destinationTypeParams: {
+        destinationType: 0,
+        s3DestinationExportFileFormat: 0,
+        s3DestinationExportFileFormatOptions: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -869,7 +903,12 @@ export const createPermissionGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /permission-group",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      applicationPermissions: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -905,7 +944,15 @@ export const createUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /user",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      emailAddress: 0,
+      type: 0,
+      firstName: 0,
+      lastName: 0,
+      apiAccess: 0,
+      apiAccessPrincipalArn: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -942,7 +989,10 @@ export const deleteDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /datasetsv2/{datasetId}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+      datasetId: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -979,7 +1029,10 @@ export const deletePermissionGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /permission-group/{permissionGroupId}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      permissionGroupId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1015,7 +1068,7 @@ export const disableUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /user/{userId}/disable",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { userId: 0, clientToken: D.m({ idempotency: true }) },
     body: true,
   },
   errors: [
@@ -1051,7 +1104,11 @@ export const disassociateUserFromPermissionGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /permission-group/{permissionGroupId}/users/{userId}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      permissionGroupId: 0,
+      userId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
     output: { statusCode: D.m({ status: true }) },
   },
   errors: [
@@ -1088,7 +1145,7 @@ export const enableUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /user/{userId}/enable",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { userId: 0, clientToken: D.m({ idempotency: true }) },
     body: true,
   },
   errors: [
@@ -1125,6 +1182,7 @@ export const getChangeset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /datasets/{datasetId}/changesetsv2/{changesetId}",
+    input: { datasetId: 0, changesetId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1156,7 +1214,11 @@ export const getDataset: API.OperationMethod<
   GetDatasetError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /datasetsv2/{datasetId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /datasetsv2/{datasetId}",
+    input: { datasetId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1189,6 +1251,7 @@ export const getDataView: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /datasets/{datasetId}/dataviewsv2/{dataViewId}",
+    input: { dataViewId: 0, datasetId: 0 },
   },
   errors: [
     ConflictException,
@@ -1225,6 +1288,7 @@ export const getExternalDataViewAccessDetails: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datasets/{datasetId}/dataviewsv2/{dataViewId}/external-access-details",
+    input: { dataViewId: 0, datasetId: 0 },
     output: {
       credentials: { secretAccessKey: D.secret, sessionToken: D.secret },
     },
@@ -1260,6 +1324,7 @@ export const getPermissionGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /permission-group/{permissionGroupId}",
+    input: { permissionGroupId: 0 },
     output: { permissionGroup: o_PermissionGroup },
   },
   errors: [
@@ -1327,6 +1392,7 @@ export const getUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /user/{userId}",
+    input: { userId: 0 },
     output: { firstName: D.secret, lastName: D.secret, emailAddress: D.secret },
   },
   errors: [
@@ -1357,7 +1423,12 @@ export const getWorkingLocation: API.OperationMethod<
   GetWorkingLocationError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /workingLocationV1", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /workingLocationV1",
+    input: { locationType: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1391,6 +1462,7 @@ export const listChangesets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /datasets/{datasetId}/changesetsv2",
     input: {
+      datasetId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -1479,6 +1551,7 @@ export const listDataViews: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /datasets/{datasetId}/dataviewsv2",
     input: {
+      datasetId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1563,6 +1636,7 @@ export const listPermissionGroupsByUser: API.OperationMethod<
     service: svc,
     http: "GET /user/{userId}/permission-groups",
     input: {
+      userId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1648,6 +1722,7 @@ export const listUsersByPermissionGroup: API.OperationMethod<
     service: svc,
     http: "GET /permission-group/{permissionGroupId}/users",
     input: {
+      permissionGroupId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1691,7 +1766,7 @@ export const resetUserPassword: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /user/{userId}/password",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { userId: 0, clientToken: D.m({ idempotency: true }) },
     output: { temporaryPassword: D.secret },
     body: true,
   },
@@ -1728,7 +1803,13 @@ export const updateChangeset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /datasets/{datasetId}/changesetsv2/{changesetId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      datasetId: 0,
+      changesetId: 0,
+      sourceParams: 0,
+      formatParams: 0,
+    },
     body: true,
   },
   errors: [
@@ -1764,7 +1845,15 @@ export const updateDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /datasetsv2/{datasetId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      datasetId: 0,
+      datasetTitle: 0,
+      kind: 0,
+      datasetDescription: 0,
+      alias: 0,
+      schemaDefinition: i_SchemaUnion,
+    },
     body: true,
   },
   errors: [
@@ -1800,7 +1889,13 @@ export const updatePermissionGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /permission-group/{permissionGroupId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      permissionGroupId: 0,
+      name: 0,
+      description: 0,
+      applicationPermissions: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1836,7 +1931,15 @@ export const updateUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /user/{userId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      userId: 0,
+      type: 0,
+      firstName: 0,
+      lastName: 0,
+      apiAccess: 0,
+      apiAccessPrincipalArn: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1852,6 +1955,12 @@ export const updateUser: API.OperationMethod<
   operationName: "UpdateUser",
 })) as any;
 
+const i_SchemaUnion: D.LazyStruct = () => ({
+  tabularSchemaConfig: {
+    columns: D.list({ dataType: 0, columnName: 0, columnDescription: 0 }),
+    primaryKeyColumns: 0,
+  },
+});
 const o_PermissionGroup: D.LazyStruct = () => ({
   name: D.secret,
   description: D.secret,

@@ -228,6 +228,7 @@ export const approvePaidSubscription: API.OperationMethod<
     service: svc,
     http: "POST /v1/ApprovePaidSubscription",
     input: {
+      arn: 0,
       ifMatch: D.m({ header: "If-Match" }),
       clientToken: D.m({ idempotency: true }),
     },
@@ -273,6 +274,8 @@ export const associateResourcesToSubscription: API.OperationMethod<
     service: svc,
     http: "POST /v1/AssociateResourcesToSubscription",
     input: {
+      arn: 0,
+      resourceArns: 0,
       ifMatch: D.m({ header: "If-Match" }),
       clientToken: D.m({ idempotency: true }),
     },
@@ -320,6 +323,7 @@ export const cancelSubscription: API.OperationMethod<
     service: svc,
     http: "POST /v1/CancelSubscription",
     input: {
+      arn: 0,
       ifMatch: D.m({ header: "If-Match" }),
       clientToken: D.m({ idempotency: true }),
     },
@@ -365,6 +369,7 @@ export const cancelSubscriptionChange: API.OperationMethod<
     service: svc,
     http: "POST /v1/CancelSubscriptionChange",
     input: {
+      arn: 0,
       ifMatch: D.m({ header: "If-Match" }),
       clientToken: D.m({ idempotency: true }),
     },
@@ -412,7 +417,14 @@ export const createSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/CreateSubscription",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      planFamily: 0,
+      planTier: 0,
+      usageLevel: 0,
+      resourceArns: 0,
+      approvalMode: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: {
       subscription: D.m({ payload: true, shape: o_Subscription }),
       eTag: D.m({ header: "ETag" }),
@@ -456,6 +468,8 @@ export const disassociateResourcesFromSubscription: API.OperationMethod<
     service: svc,
     http: "POST /v1/DisassociateResourcesFromSubscription",
     input: {
+      arn: 0,
+      resourceArns: 0,
       ifMatch: D.m({ header: "If-Match" }),
       clientToken: D.m({ idempotency: true }),
     },
@@ -497,6 +511,7 @@ export const getSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/GetSubscription",
+    input: { arn: 0 },
     output: {
       subscription: D.m({ payload: true, shape: o_Subscription }),
       eTag: D.m({ header: "ETag" }),
@@ -535,6 +550,7 @@ export const listSubscriptions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/ListSubscriptions",
+    input: { nextToken: 0 },
     output: {
       subscriptionSummaries: D.list({
         scheduledChange: o_ScheduledChange,
@@ -587,6 +603,9 @@ export const updateSubscription: API.OperationMethod<
     service: svc,
     http: "POST /v1/UpdateSubscription",
     input: {
+      arn: 0,
+      planTier: 0,
+      usageLevel: 0,
       ifMatch: D.m({ header: "If-Match" }),
       clientToken: D.m({ idempotency: true }),
     },

@@ -765,7 +765,11 @@ export const addKeyReplicationRegions: API.OperationMethod<
   AddKeyReplicationRegionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Key: o_Key } },
+  descriptor: {
+    service: svc,
+    input: { KeyIdentifier: 0, ReplicationRegions: 0 },
+    output: { Key: o_Key },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -809,6 +813,7 @@ export const associateMpaTeam: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Action: 0, MpaTeamArn: 0, RequesterComment: 0 },
     output: { MpaTeamAssociation: o_MpaTeamAssociation },
   },
   errors: [
@@ -861,7 +866,7 @@ export const createAlias: API.OperationMethod<
   CreateAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AliasName: 0, KeyArn: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -916,7 +921,19 @@ export const createKey: API.OperationMethod<
   CreateKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Key: o_Key } },
+  descriptor: {
+    service: svc,
+    input: {
+      KeyAttributes: i_KeyAttributes,
+      KeyCheckValueAlgorithm: 0,
+      Exportable: 0,
+      Enabled: 0,
+      Tags: D.list(i_Tag),
+      DeriveKeyUsage: 0,
+      ReplicationRegions: 0,
+    },
+    output: { Key: o_Key },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -964,7 +981,7 @@ export const deleteAlias: API.OperationMethod<
   DeleteAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AliasName: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1011,7 +1028,11 @@ export const deleteKey: API.OperationMethod<
   DeleteKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Key: o_Key } },
+  descriptor: {
+    service: svc,
+    input: { KeyIdentifier: 0, DeleteKeyInDays: 0 },
+    output: { Key: o_Key },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1052,7 +1073,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1097,7 +1118,7 @@ export const disableDefaultKeyReplicationRegions: API.OperationMethod<
   DisableDefaultKeyReplicationRegionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ReplicationRegions: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1141,6 +1162,7 @@ export const disassociateMpaTeam: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Action: 0, RequesterComment: 0 },
     output: { MpaTeamAssociation: o_MpaTeamAssociation },
   },
   errors: [
@@ -1188,7 +1210,7 @@ export const enableDefaultKeyReplicationRegions: API.OperationMethod<
   EnableDefaultKeyReplicationRegionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ReplicationRegions: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1311,6 +1333,45 @@ export const exportKey: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      KeyMaterial: {
+        Tr31KeyBlock: {
+          WrappingKeyIdentifier: 0,
+          KeyBlockHeaders: i_KeyBlockHeaders,
+        },
+        Tr34KeyBlock: {
+          CertificateAuthorityPublicKeyIdentifier: 0,
+          WrappingKeyCertificate: 0,
+          ExportToken: 0,
+          SigningKeyIdentifier: 0,
+          SigningKeyCertificate: 0,
+          KeyBlockFormat: 0,
+          RandomNonce: 0,
+          KeyBlockHeaders: i_KeyBlockHeaders,
+        },
+        KeyCryptogram: {
+          CertificateAuthorityPublicKeyIdentifier: 0,
+          WrappingKeyCertificate: 0,
+          WrappingSpec: 0,
+        },
+        DiffieHellmanTr31KeyBlock: {
+          PrivateKeyIdentifier: 0,
+          CertificateAuthorityPublicKeyIdentifier: 0,
+          PublicKeyCertificate: 0,
+          DeriveKeyAlgorithm: 0,
+          KeyDerivationFunction: 0,
+          KeyDerivationHashAlgorithm: 0,
+          DerivationData: i_DiffieHellmanDerivationData,
+          KeyBlockHeaders: i_KeyBlockHeaders,
+        },
+        As2805KeyCryptogram: { WrappingKeyIdentifier: 0, As2805KeyVariant: 0 },
+      },
+      ExportKeyIdentifier: 0,
+      ExportAttributes: {
+        ExportDukptInitialKey: { KeySerialNumber: 0 },
+        KeyCheckValueAlgorithm: 0,
+      },
+    },
     output: { WrappedKey: { KeyMaterial: D.secret } },
   },
   errors: [
@@ -1356,7 +1417,7 @@ export const getAlias: API.OperationMethod<
   GetAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AliasName: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1387,7 +1448,23 @@ export const getCertificateSigningRequest: API.OperationMethod<
   GetCertificateSigningRequestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CertificateSigningRequest: D.secret } },
+  descriptor: {
+    service: svc,
+    input: {
+      KeyIdentifier: 0,
+      SigningAlgorithm: 0,
+      CertificateSubject: {
+        CommonName: 0,
+        OrganizationUnit: 0,
+        Organization: 0,
+        City: 0,
+        Country: 0,
+        StateOrProvince: 0,
+        EmailAddress: 0,
+      },
+    },
+    output: { CertificateSigningRequest: D.secret },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1429,7 +1506,7 @@ export const getDefaultKeyReplicationRegions: API.OperationMethod<
   GetDefaultKeyReplicationRegionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1471,7 +1548,11 @@ export const getKey: API.OperationMethod<
   GetKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Key: o_Key } },
+  descriptor: {
+    service: svc,
+    input: { KeyIdentifier: 0 },
+    output: { Key: o_Key },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1514,6 +1595,7 @@ export const getMpaTeamAssociation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Action: 0 },
     output: { MpaTeamAssociation: o_MpaTeamAssociation },
   },
   errors: [
@@ -1562,7 +1644,15 @@ export const getParametersForExport: API.OperationMethod<
   GetParametersForExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ParametersValidUntilTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      KeyMaterialType: 0,
+      SigningKeyAlgorithm: 0,
+      ReuseLastGeneratedToken: 0,
+    },
+    output: { ParametersValidUntilTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1609,7 +1699,15 @@ export const getParametersForImport: API.OperationMethod<
   GetParametersForImportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ParametersValidUntilTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      KeyMaterialType: 0,
+      WrappingKeyAlgorithm: 0,
+      ReuseLastGeneratedToken: 0,
+    },
+    output: { ParametersValidUntilTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1646,7 +1744,7 @@ export const getPublicKeyCertificate: API.OperationMethod<
   GetPublicKeyCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { KeyIdentifier: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1685,7 +1783,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1812,7 +1910,64 @@ export const importKey: API.OperationMethod<
   ImportKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Key: o_Key } },
+  descriptor: {
+    service: svc,
+    input: {
+      KeyMaterial: {
+        RootCertificatePublicKey: {
+          KeyAttributes: i_KeyAttributes,
+          PublicKeyCertificate: 0,
+        },
+        TrustedCertificatePublicKey: {
+          KeyAttributes: i_KeyAttributes,
+          PublicKeyCertificate: 0,
+          CertificateAuthorityPublicKeyIdentifier: 0,
+        },
+        Tr31KeyBlock: { WrappingKeyIdentifier: 0, WrappedKeyBlock: 0 },
+        Tr34KeyBlock: {
+          CertificateAuthorityPublicKeyIdentifier: 0,
+          SigningKeyCertificate: 0,
+          ImportToken: 0,
+          WrappingKeyIdentifier: 0,
+          WrappingKeyCertificate: 0,
+          WrappedKeyBlock: 0,
+          KeyBlockFormat: 0,
+          RandomNonce: 0,
+        },
+        KeyCryptogram: {
+          KeyAttributes: i_KeyAttributes,
+          Exportable: 0,
+          WrappedKeyCryptogram: 0,
+          ImportToken: 0,
+          WrappingSpec: 0,
+        },
+        DiffieHellmanTr31KeyBlock: {
+          PrivateKeyIdentifier: 0,
+          CertificateAuthorityPublicKeyIdentifier: 0,
+          PublicKeyCertificate: 0,
+          DeriveKeyAlgorithm: 0,
+          KeyDerivationFunction: 0,
+          KeyDerivationHashAlgorithm: 0,
+          DerivationData: i_DiffieHellmanDerivationData,
+          WrappedKeyBlock: 0,
+        },
+        As2805KeyCryptogram: {
+          As2805KeyVariant: 0,
+          KeyModesOfUse: i_KeyModesOfUse,
+          KeyAlgorithm: 0,
+          Exportable: 0,
+          WrappingKeyIdentifier: 0,
+          WrappedKeyCryptogram: 0,
+        },
+      },
+      KeyCheckValueAlgorithm: 0,
+      Enabled: 0,
+      Tags: D.list(i_Tag),
+      ReplicationRegions: 0,
+      RequesterComment: 0,
+    },
+    output: { Key: o_Key },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1860,7 +2015,10 @@ export const listAliases: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Alias
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { KeyArn: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1910,7 +2068,10 @@ export const listKeys: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   KeySummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { KeyState: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1958,7 +2119,10 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Tag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2010,7 +2174,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Policy: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2057,7 +2221,11 @@ export const removeKeyReplicationRegions: API.OperationMethod<
   RemoveKeyReplicationRegionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Key: o_Key } },
+  descriptor: {
+    service: svc,
+    input: { KeyIdentifier: 0, ReplicationRegions: 0 },
+    output: { Key: o_Key },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2103,7 +2271,11 @@ export const restoreKey: API.OperationMethod<
   RestoreKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Key: o_Key } },
+  descriptor: {
+    service: svc,
+    input: { KeyIdentifier: 0 },
+    output: { Key: o_Key },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2144,7 +2316,11 @@ export const startKeyUsage: API.OperationMethod<
   StartKeyUsageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Key: o_Key } },
+  descriptor: {
+    service: svc,
+    input: { KeyIdentifier: 0 },
+    output: { Key: o_Key },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2189,7 +2365,11 @@ export const stopKeyUsage: API.OperationMethod<
   StopKeyUsageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Key: o_Key } },
+  descriptor: {
+    service: svc,
+    input: { KeyIdentifier: 0 },
+    output: { Key: o_Key },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2236,7 +2416,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2280,7 +2460,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2325,7 +2505,7 @@ export const updateAlias: API.OperationMethod<
   UpdateAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AliasName: 0, KeyArn: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2340,6 +2520,33 @@ export const updateAlias: API.OperationMethod<
   operationName: "UpdateAlias",
 })) as any;
 
+const i_DiffieHellmanDerivationData: D.LazyStruct = () => ({
+  SharedInformation: 0,
+});
+const i_KeyAttributes: D.LazyStruct = () => ({
+  KeyUsage: 0,
+  KeyClass: 0,
+  KeyAlgorithm: 0,
+  KeyModesOfUse: i_KeyModesOfUse,
+});
+const i_KeyBlockHeaders: D.LazyStruct = () => ({
+  KeyModesOfUse: i_KeyModesOfUse,
+  KeyExportability: 0,
+  KeyVersion: 0,
+  OptionalBlocks: 0,
+});
+const i_KeyModesOfUse: D.LazyStruct = () => ({
+  Encrypt: 0,
+  Decrypt: 0,
+  Wrap: 0,
+  Unwrap: 0,
+  Generate: 0,
+  Sign: 0,
+  Verify: 0,
+  DeriveKey: 0,
+  NoRestrictions: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Key: D.LazyStruct = () => ({
   CreateTimestamp: D.ts,
   UsageStartTimestamp: D.ts,

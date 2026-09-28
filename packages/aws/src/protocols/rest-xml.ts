@@ -6,6 +6,7 @@
 
 import * as Effect from "effect/Effect";
 import {
+  decodeLeaf,
   Events,
   membersOf,
   shapeOf,
@@ -32,6 +33,7 @@ import {
 import {
   convertStreamingInput,
   readableToEffectStream,
+  readStreamAsBytes,
   readStreamAsText,
 } from "../util/stream.ts";
 import type { StreamingInputBody } from "../util/streaming-types.ts";
@@ -180,6 +182,18 @@ export const restXmlProtocol: Protocol = (
       }
       if (outputPayload !== undefined && payloadShape === "stream") {
         result[outputPayload.name] = readableToEffectStream(response.body);
+        return result;
+      }
+      // Non-streaming blob payload: the raw body bytes ARE the payload
+      if (
+        outputPayload !== undefined &&
+        (payloadShape === "blob" || payloadShape === "secretBlob")
+      ) {
+        const bytes = yield* readStreamAsBytes(response.body);
+        if (bytes.byteLength > 0) {
+          result[outputPayload.name] =
+            payloadShape === "blob" ? bytes : decodeLeaf("secretBlob", bytes);
+        }
         return result;
       }
 

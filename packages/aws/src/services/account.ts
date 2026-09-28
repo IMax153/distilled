@@ -332,6 +332,7 @@ export const acceptPrimaryEmailUpdate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /acceptPrimaryEmailUpdate",
+    input: { AccountId: 0, PrimaryEmail: 0, Otp: 0 },
     body: true,
   },
   errors: [
@@ -370,6 +371,7 @@ export const deleteAlternateContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /deleteAlternateContact",
+    input: { AlternateContactType: 0, AccountId: 0 },
     body: true,
   },
   errors: [
@@ -402,7 +404,12 @@ export const disableRegion: API.OperationMethod<
   DisableRegionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /disableRegion", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /disableRegion",
+    input: { AccountId: 0, RegionName: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -431,7 +438,12 @@ export const enableRegion: API.OperationMethod<
   EnableRegionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /enableRegion", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /enableRegion",
+    input: { AccountId: 0, RegionName: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -462,6 +474,7 @@ export const getAccountInformation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getAccountInformation",
+    input: { AccountId: 0 },
     output: { AccountName: D.secret, AccountCreatedDate: D.ts },
     body: true,
   },
@@ -499,6 +512,7 @@ export const getAlternateContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getAlternateContact",
+    input: { AlternateContactType: 0, AccountId: 0 },
     output: {
       AlternateContact: {
         Name: D.secret,
@@ -542,6 +556,7 @@ export const getContactInformation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getContactInformation",
+    input: { AccountId: 0 },
     output: {
       ContactInformation: {
         FullName: D.secret,
@@ -592,6 +607,7 @@ export const getGovCloudAccountInformation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getGovCloudAccountInformation",
+    input: { StandardAccountId: 0 },
     body: true,
   },
   errors: [
@@ -626,6 +642,7 @@ export const getPrimaryEmail: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getPrimaryEmail",
+    input: { AccountId: 0 },
     output: { PrimaryEmail: D.secret },
     body: true,
   },
@@ -660,6 +677,7 @@ export const getPrimaryEmailUpdateStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getPrimaryEmailUpdateStatus",
+    input: { AccountId: 0 },
     output: { UpdatedAt: D.ts },
     body: true,
   },
@@ -690,7 +708,12 @@ export const getRegionOptStatus: API.OperationMethod<
   GetRegionOptStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /getRegionOptStatus", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /getRegionOptStatus",
+    input: { AccountId: 0, RegionName: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -718,7 +741,17 @@ export const listRegions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Region
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /listRegions", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /listRegions",
+    input: {
+      AccountId: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      RegionOptStatusContains: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -751,7 +784,12 @@ export const putAccountName: API.OperationMethod<
   PutAccountNameError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /putAccountName", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /putAccountName",
+    input: { AccountName: 0, AccountId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -782,7 +820,19 @@ export const putAlternateContact: API.OperationMethod<
   PutAlternateContactError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /putAlternateContact", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /putAlternateContact",
+    input: {
+      Name: 0,
+      Title: 0,
+      EmailAddress: 0,
+      PhoneNumber: 0,
+      AlternateContactType: 0,
+      AccountId: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -811,7 +861,28 @@ export const putContactInformation: API.OperationMethod<
   PutContactInformationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /putContactInformation", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /putContactInformation",
+    input: {
+      ContactInformation: {
+        FullName: 0,
+        AddressLine1: 0,
+        AddressLine2: 0,
+        AddressLine3: 0,
+        City: 0,
+        StateOrRegion: 0,
+        DistrictOrCounty: 0,
+        PostalCode: 0,
+        CountryCode: 0,
+        PhoneNumber: 0,
+        CompanyName: 0,
+        WebsiteUrl: 0,
+      },
+      AccountId: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -843,6 +914,7 @@ export const startPrimaryEmailUpdate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /startPrimaryEmailUpdate",
+    input: { AccountId: 0, PrimaryEmail: 0 },
     body: true,
   },
   errors: [

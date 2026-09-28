@@ -2631,7 +2631,7 @@ export const acceptMarketplaceRegistration: API.OperationMethod<
   AcceptMarketplaceRegistrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { marketplaceRegistrationToken: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2661,7 +2661,10 @@ export const associateIamRoleToResource: API.OperationMethod<
   AssociateIamRoleToResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { iamRoleArn: 0, awsIntegration: 0, resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2693,7 +2696,10 @@ export const associateVirtualMachinesToExadbVmCluster: API.OperationMethod<
   AssociateVirtualMachinesToExadbVmClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { exadbVmClusterId: 0, desiredNodeCount: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2729,11 +2735,76 @@ export const createAutonomousDatabase: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      odbNetworkId: 0,
+      displayName: 0,
+      dbName: 0,
+      adminPassword: 0,
+      computeCount: 0,
+      dataStorageSizeInTBs: 0,
+      dataStorageSizeInGBs: 0,
+      dbWorkload: 0,
+      isAutoScalingEnabled: 0,
+      isAutoScalingForStorageEnabled: 0,
+      licenseModel: 0,
+      characterSet: 0,
+      ncharacterSet: 0,
+      dbVersion: 0,
+      databaseEdition: 0,
+      standbyAllowlistedIpsSource: 0,
+      autonomousMaintenanceScheduleType: 0,
+      backupRetentionPeriodInDays: 0,
+      byolComputeCountLimit: 0,
+      cpuCoreCount: 0,
+      customerContactsToSendToOCI: D.list(i_CustomerContact),
+      privateEndpointIp: 0,
+      privateEndpointLabel: 0,
+      resourcePoolLeaderId: 0,
+      resourcePoolSummary: i_ResourcePoolSummary,
+      scheduledOperations: D.list(i_ScheduledOperationDetails),
+      standbyAllowlistedIps: 0,
+      allowlistedIps: 0,
+      transportableTablespace: { ttsBundleUrl: 0 },
+      isBackupRetentionLocked: 0,
+      isLocalDataGuardEnabled: 0,
+      isMtlsConnectionRequired: 0,
+      dbToolsDetails: D.list(i_DatabaseTool),
+      source: 0,
       sourceConfiguration: {
-        pointInTimeRestore: { timestamp: D.tsAs("date-time") },
-        cloneToRefreshable: { timeOfAutoRefreshStart: D.tsAs("date-time") },
+        databaseClone: { sourceAutonomousDatabaseId: 0, cloneType: 0 },
+        restoreFromBackup: {
+          autonomousDatabaseBackupId: 0,
+          cloneType: 0,
+          cloneTableSpaceList: 0,
+        },
+        pointInTimeRestore: {
+          sourceAutonomousDatabaseId: 0,
+          cloneType: 0,
+          timestamp: D.tsAs("date-time"),
+          useLatestAvailableBackupTimestamp: 0,
+          cloneTableSpaceList: 0,
+        },
+        crossRegionDataGuard: { sourceAutonomousDatabaseArn: 0 },
+        crossRegionDisasterRecovery: {
+          sourceAutonomousDatabaseArn: 0,
+          remoteDisasterRecoveryType: 0,
+          isReplicateAutomaticBackups: 0,
+        },
+        cloneToRefreshable: {
+          sourceAutonomousDatabaseId: 0,
+          refreshableMode: 0,
+          autoRefreshFrequencyInSeconds: 0,
+          autoRefreshPointLagInSeconds: 0,
+          timeOfAutoRefreshStart: D.tsAs("date-time"),
+          openMode: 0,
+          cloneType: 0,
+        },
       },
+      encryptionKeyProvider: 0,
+      encryptionKeyConfiguration: i_EncryptionKeyConfigurationInput,
+      adminPasswordSource: 0,
+      adminPasswordSourceConfiguration: i_AdminPasswordSourceConfigurationInput,
       clientToken: D.m({ idempotency: true }),
+      tags: 0,
     },
   },
   errors: [
@@ -2770,7 +2841,13 @@ export const createAutonomousDatabaseBackup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      autonomousDatabaseId: 0,
+      displayName: 0,
+      retentionPeriodInDays: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2804,7 +2881,16 @@ export const createAutonomousDatabaseWallet: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      autonomousDatabaseId: 0,
+      walletType: 0,
+      password: 0,
+      passwordSource: 0,
+      passwordSourceConfiguration: {
+        customerManagedAwsSecret: i_CustomerManagedAwsSecretConfigurationInput,
+      },
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { autonomousDatabaseWalletFile: D.secretBlob },
   },
   errors: [
@@ -2839,7 +2925,25 @@ export const createCloudAutonomousVmCluster: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      cloudExadataInfrastructureId: 0,
+      odbNetworkId: 0,
+      displayName: 0,
+      clientToken: D.m({ idempotency: true }),
+      autonomousDataStorageSizeInTBs: 0,
+      cpuCoreCountPerNode: 0,
+      dbServers: 0,
+      description: 0,
+      isMtlsEnabledVmCluster: 0,
+      licenseModel: 0,
+      maintenanceWindow: i_MaintenanceWindow,
+      memoryPerOracleComputeUnitInGBs: 0,
+      scanListenerPortNonTls: 0,
+      scanListenerPortTls: 0,
+      tags: 0,
+      timeZone: 0,
+      totalContainerDatabases: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2874,7 +2978,20 @@ export const createCloudExadataInfrastructure: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      displayName: 0,
+      shape: 0,
+      availabilityZone: 0,
+      availabilityZoneId: 0,
+      tags: 0,
+      computeCount: 0,
+      customerContactsToSendToOCI: D.list(i_CustomerContact),
+      maintenanceWindow: i_MaintenanceWindow,
+      storageCount: 0,
+      clientToken: D.m({ idempotency: true }),
+      databaseServerType: 0,
+      storageServerType: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2909,7 +3026,29 @@ export const createCloudVmCluster: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      cloudExadataInfrastructureId: 0,
+      cpuCoreCount: 0,
+      displayName: 0,
+      giVersion: 0,
+      hostname: 0,
+      sshPublicKeys: 0,
+      odbNetworkId: 0,
+      clusterName: 0,
+      dataCollectionOptions: i_DataCollectionOptions,
+      dataStorageSizeInTBs: 0,
+      dbNodeStorageSizeInGBs: 0,
+      dbServers: 0,
+      tags: 0,
+      isLocalBackupEnabled: 0,
+      isSparseDiskgroupEnabled: 0,
+      licenseModel: 0,
+      memorySizeInGBs: 0,
+      systemVersion: 0,
+      timeZone: 0,
+      clientToken: D.m({ idempotency: true }),
+      scanListenerPortTcp: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2945,7 +3084,29 @@ export const createExadbVmCluster: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      displayName: 0,
+      enabledEcpuCount: 0,
+      exascaleDbStorageVaultId: 0,
+      gridImageId: 0,
+      hostname: 0,
+      nodeCount: 0,
+      odbNetworkId: 0,
+      shape: 0,
+      sshPublicKeys: 0,
+      totalEcpuCount: 0,
+      vmFileSystemStorageTotalSizeInGBs: 0,
+      clusterName: 0,
+      dataCollectionOptions: i_DataCollectionOptions,
+      licenseModel: 0,
+      scanListenerPortTcp: 0,
+      scanListenerPortTcpSsl: 0,
+      shapeAttribute: 0,
+      systemVersion: 0,
+      tags: 0,
+      timeZone: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2980,7 +3141,19 @@ export const createExascaleDbStorageVault: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      displayName: 0,
+      highCapacityDatabaseStorageTotalSizeInGBs: 0,
+      additionalFlashCacheInPercent: 0,
+      autoscaleLimitInGBs: 0,
+      availabilityZoneId: 0,
+      availabilityZone: 0,
+      description: 0,
+      isAutoscaleEnabled: 0,
+      tags: 0,
+      timeZone: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -3014,7 +3187,25 @@ export const createOdbNetwork: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      displayName: 0,
+      availabilityZone: 0,
+      availabilityZoneId: 0,
+      clientSubnetCidr: 0,
+      backupSubnetCidr: 0,
+      customDomainName: 0,
+      defaultDnsPrefix: 0,
+      clientToken: D.m({ idempotency: true }),
+      s3Access: 0,
+      zeroEtlAccess: 0,
+      stsAccess: 0,
+      kmsAccess: 0,
+      s3PolicyDocument: 0,
+      stsPolicyDocument: 0,
+      kmsPolicyDocument: 0,
+      crossRegionS3RestoreSourcesToEnable: 0,
+      tags: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -3050,7 +3241,15 @@ export const createOdbPeeringConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      odbNetworkId: 0,
+      peerNetworkId: 0,
+      displayName: 0,
+      peerNetworkCidrsToBeAdded: 0,
+      peerNetworkRouteTableIds: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -3082,7 +3281,7 @@ export const deleteAutonomousDatabase: API.OperationMethod<
   DeleteAutonomousDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { autonomousDatabaseId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3113,7 +3312,7 @@ export const deleteAutonomousDatabaseBackup: API.OperationMethod<
   DeleteAutonomousDatabaseBackupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { autonomousDatabaseBackupId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3143,7 +3342,7 @@ export const deleteCloudAutonomousVmCluster: API.OperationMethod<
   DeleteCloudAutonomousVmClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { cloudAutonomousVmClusterId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3173,7 +3372,7 @@ export const deleteCloudExadataInfrastructure: API.OperationMethod<
   DeleteCloudExadataInfrastructureError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { cloudExadataInfrastructureId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3203,7 +3402,7 @@ export const deleteCloudVmCluster: API.OperationMethod<
   DeleteCloudVmClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { cloudVmClusterId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3233,7 +3432,7 @@ export const deleteExadbVmCluster: API.OperationMethod<
   DeleteExadbVmClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { exadbVmClusterId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3264,7 +3463,7 @@ export const deleteExascaleDbStorageVault: API.OperationMethod<
   DeleteExascaleDbStorageVaultError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { exascaleDbStorageVaultId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3294,7 +3493,10 @@ export const deleteOdbNetwork: API.OperationMethod<
   DeleteOdbNetworkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { odbNetworkId: 0, deleteAssociatedResources: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3325,7 +3527,7 @@ export const deleteOdbPeeringConnection: API.OperationMethod<
   DeleteOdbPeeringConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { odbPeeringConnectionId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3355,7 +3557,10 @@ export const disassociateIamRoleFromResource: API.OperationMethod<
   DisassociateIamRoleFromResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { iamRoleArn: 0, awsIntegration: 0, resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3386,7 +3591,7 @@ export const disassociateVirtualMachinesFromExadbVmCluster: API.OperationMethod<
   DisassociateVirtualMachinesFromExadbVmClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { exadbVmClusterId: 0, dbNodeIds: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3417,7 +3622,10 @@ export const failoverAutonomousDatabase: API.OperationMethod<
   FailoverAutonomousDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { autonomousDatabaseId: 0, peerDbArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3449,6 +3657,7 @@ export const getAutonomousDatabase: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { autonomousDatabaseId: 0 },
     output: {
       autonomousDatabase: {
         customerContacts: D.list(o_CustomerContact),
@@ -3507,6 +3716,7 @@ export const getAutonomousDatabaseBackup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { autonomousDatabaseBackupId: 0 },
     output: {
       autonomousDatabaseBackup: {
         timeAvailableTill: D.ts,
@@ -3545,6 +3755,7 @@ export const getAutonomousDatabaseWalletDetails: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { autonomousDatabaseId: 0 },
     output: { autonomousDatabaseWalletDetails: { timeRotated: D.ts } },
   },
   errors: [
@@ -3577,6 +3788,7 @@ export const getCloudAutonomousVmCluster: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { cloudAutonomousVmClusterId: 0 },
     output: {
       cloudAutonomousVmCluster: {
         createdAt: D.ts,
@@ -3615,6 +3827,7 @@ export const getCloudExadataInfrastructure: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { cloudExadataInfrastructureId: 0 },
     output: {
       cloudExadataInfrastructure: {
         customerContactsToSendToOCI: D.list(o_CustomerContact),
@@ -3650,7 +3863,10 @@ export const getCloudExadataInfrastructureUnallocatedResources: API.OperationMet
   GetCloudExadataInfrastructureUnallocatedResourcesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { cloudExadataInfrastructureId: 0, dbServers: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3681,6 +3897,7 @@ export const getCloudVmCluster: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { cloudVmClusterId: 0 },
     output: {
       cloudVmCluster: { sshPublicKeys: D.list(D.secret), createdAt: D.ts },
     },
@@ -3713,7 +3930,11 @@ export const getDbNode: API.OperationMethod<
   GetDbNodeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { dbNode: { createdAt: D.ts } } },
+  descriptor: {
+    service: svc,
+    input: { cloudVmClusterId: 0, exadbVmClusterId: 0, dbNodeId: 0 },
+    output: { dbNode: { createdAt: D.ts } },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3742,7 +3963,11 @@ export const getDbServer: API.OperationMethod<
   GetDbServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { dbServer: { createdAt: D.ts } } },
+  descriptor: {
+    service: svc,
+    input: { cloudExadataInfrastructureId: 0, dbServerId: 0 },
+    output: { dbServer: { createdAt: D.ts } },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3771,7 +3996,11 @@ export const getExadbVmCluster: API.OperationMethod<
   GetExadbVmClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { exadbVmCluster: { createdAt: D.ts } } },
+  descriptor: {
+    service: svc,
+    input: { exadbVmClusterId: 0 },
+    output: { exadbVmCluster: { createdAt: D.ts } },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3802,6 +4031,7 @@ export const getExascaleDbStorageVault: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { exascaleDbStorageVaultId: 0 },
     output: { exascaleDbStorageVault: { createdAt: D.ts } },
   },
   errors: [
@@ -3831,7 +4061,7 @@ export const getOciOnboardingStatus: API.OperationMethod<
   GetOciOnboardingStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3859,7 +4089,11 @@ export const getOdbNetwork: API.OperationMethod<
   GetOdbNetworkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { odbNetwork: { createdAt: D.ts } } },
+  descriptor: {
+    service: svc,
+    input: { odbNetworkId: 0 },
+    output: { odbNetwork: { createdAt: D.ts } },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3890,6 +4124,7 @@ export const getOdbPeeringConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { odbPeeringConnectionId: 0 },
     output: { odbPeeringConnection: { createdAt: D.ts } },
   },
   errors: [
@@ -3919,7 +4154,13 @@ export const initializeService: API.OperationMethod<
   InitializeServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ociIdentityDomain: 0,
+      autonomousDatabaseOciAwsSecretsManagerIntegration: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3950,6 +4191,13 @@ export const listAutonomousDatabaseBackups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      maxResults: 0,
+      nextToken: 0,
+      autonomousDatabaseId: 0,
+      status: 0,
+      type: 0,
+    },
     output: {
       autonomousDatabaseBackups: D.list({
         timeAvailableTill: D.ts,
@@ -3992,7 +4240,10 @@ export const listAutonomousDatabaseCharacterSets: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AutonomousDatabaseCharacterSetSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { maxResults: 0, nextToken: 0, characterSetType: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4029,6 +4280,7 @@ export const listAutonomousDatabaseClones: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { maxResults: 0, nextToken: 0, autonomousDatabaseId: 0 },
     output: { autonomousDatabaseClones: D.list(o_AutonomousDatabaseSummary) },
   },
   errors: [
@@ -4066,7 +4318,10 @@ export const listAutonomousDatabasePeers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AutonomousDatabasePeerSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { maxResults: 0, nextToken: 0, autonomousDatabaseId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4103,6 +4358,7 @@ export const listAutonomousDatabases: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { maxResults: 0, nextToken: 0 },
     output: { autonomousDatabases: D.list(o_AutonomousDatabaseSummary) },
   },
   errors: [
@@ -4138,7 +4394,10 @@ export const listAutonomousDatabaseVersions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AutonomousDatabaseVersionSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { maxResults: 0, nextToken: 0, dbWorkload: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4173,7 +4432,10 @@ export const listAutonomousVirtualMachines: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AutonomousVirtualMachineSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { maxResults: 0, nextToken: 0, cloudAutonomousVmClusterId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4211,6 +4473,7 @@ export const listCloudAutonomousVmClusters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { maxResults: 0, nextToken: 0, cloudExadataInfrastructureId: 0 },
     output: {
       cloudAutonomousVmClusters: D.list({
         createdAt: D.ts,
@@ -4255,6 +4518,7 @@ export const listCloudExadataInfrastructures: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { maxResults: 0, nextToken: 0 },
     output: {
       cloudExadataInfrastructures: D.list({
         customerContactsToSendToOCI: D.list(o_CustomerContact),
@@ -4298,6 +4562,7 @@ export const listCloudVmClusters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { maxResults: 0, nextToken: 0, cloudExadataInfrastructureId: 0 },
     output: {
       cloudVmClusters: D.list({
         sshPublicKeys: D.list(D.secret),
@@ -4342,6 +4607,12 @@ export const listDbNodes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      maxResults: 0,
+      nextToken: 0,
+      cloudVmClusterId: 0,
+      exadbVmClusterId: 0,
+    },
     output: { dbNodes: D.list({ createdAt: D.ts }) },
   },
   errors: [
@@ -4381,6 +4652,7 @@ export const listDbServers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { cloudExadataInfrastructureId: 0, maxResults: 0, nextToken: 0 },
     output: { dbServers: D.list({ createdAt: D.ts }) },
   },
   errors: [
@@ -4417,7 +4689,16 @@ export const listDbSystemShapes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DbSystemShapeSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      maxResults: 0,
+      nextToken: 0,
+      availabilityZone: 0,
+      availabilityZoneId: 0,
+      shapeFamily: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4454,6 +4735,7 @@ export const listExadbVmClusters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { exascaleDbStorageVaultId: 0, maxResults: 0, nextToken: 0 },
     output: { exadbVmClusters: D.list({ createdAt: D.ts }) },
   },
   errors: [
@@ -4492,6 +4774,7 @@ export const listExascaleDbStorageVaults: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { maxResults: 0, nextToken: 0 },
     output: { exascaleDbStorageVaults: D.list({ createdAt: D.ts }) },
   },
   errors: [
@@ -4527,7 +4810,17 @@ export const listGiMinorVersions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   GiMinorVersionSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      giVersion: 0,
+      maxResults: 0,
+      nextToken: 0,
+      shapeFamily: 0,
+      availabilityZone: 0,
+      availabilityZoneId: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4561,7 +4854,10 @@ export const listGiVersions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   GiVersionSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { maxResults: 0, nextToken: 0, shape: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4597,6 +4893,7 @@ export const listOdbNetworks: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { maxResults: 0, nextToken: 0 },
     output: { odbNetworks: D.list({ createdAt: D.ts }) },
   },
   errors: [
@@ -4635,6 +4932,7 @@ export const listOdbPeeringConnections: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { maxResults: 0, nextToken: 0, odbNetworkId: 0 },
     output: { odbPeeringConnections: D.list({ createdAt: D.ts }) },
   },
   errors: [
@@ -4672,7 +4970,10 @@ export const listSystemVersions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   SystemVersionSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { maxResults: 0, nextToken: 0, giVersion: 0, shape: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4701,7 +5002,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4725,7 +5026,10 @@ export const rebootAutonomousDatabase: API.OperationMethod<
   RebootAutonomousDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { autonomousDatabaseId: 0, isOnlineReboot: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4755,7 +5059,10 @@ export const rebootDbNode: API.OperationMethod<
   RebootDbNodeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { cloudVmClusterId: 0, exadbVmClusterId: 0, dbNodeId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4785,7 +5092,10 @@ export const restoreAutonomousDatabase: API.OperationMethod<
   RestoreAutonomousDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, input: { timestamp: D.tsAs("date-time") } },
+  descriptor: {
+    service: svc,
+    input: { autonomousDatabaseId: 0, timestamp: D.tsAs("date-time") },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4816,7 +5126,7 @@ export const shrinkAutonomousDatabase: API.OperationMethod<
   ShrinkAutonomousDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { autonomousDatabaseId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4847,7 +5157,7 @@ export const startAutonomousDatabase: API.OperationMethod<
   StartAutonomousDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { autonomousDatabaseId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4877,7 +5187,10 @@ export const startDbNode: API.OperationMethod<
   StartDbNodeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { cloudVmClusterId: 0, exadbVmClusterId: 0, dbNodeId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4907,7 +5220,7 @@ export const stopAutonomousDatabase: API.OperationMethod<
   StopAutonomousDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { autonomousDatabaseId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4937,7 +5250,10 @@ export const stopDbNode: API.OperationMethod<
   StopDbNodeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { cloudVmClusterId: 0, exadbVmClusterId: 0, dbNodeId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4967,7 +5283,10 @@ export const switchoverAutonomousDatabase: API.OperationMethod<
   SwitchoverAutonomousDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { autonomousDatabaseId: 0, peerDbArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4994,7 +5313,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: 0 } },
   errors: [ResourceNotFoundException, ServiceQuotaExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5011,7 +5330,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5038,8 +5357,56 @@ export const updateAutonomousDatabase: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      longTermBackupSchedule: { timeOfBackup: D.tsAs("date-time") },
+      autonomousDatabaseId: 0,
+      adminPassword: 0,
+      computeCount: 0,
+      cpuCoreCount: 0,
+      dataStorageSizeInTBs: 0,
+      dataStorageSizeInGBs: 0,
+      displayName: 0,
+      dbName: 0,
+      dbVersion: 0,
+      dbWorkload: 0,
+      dbToolsDetails: D.list(i_DatabaseTool),
+      databaseEdition: 0,
+      licenseModel: 0,
+      isAutoScalingEnabled: 0,
+      isAutoScalingForStorageEnabled: 0,
+      isBackupRetentionLocked: 0,
+      isLocalDataGuardEnabled: 0,
+      isMtlsConnectionRequired: 0,
+      isRefreshableClone: 0,
+      isDisconnectPeer: 0,
+      backupRetentionPeriodInDays: 0,
+      byolComputeCountLimit: 0,
+      localAdgAutoFailoverMaxDataLossLimit: 0,
+      autonomousMaintenanceScheduleType: 0,
+      customerContactsToSendToOCI: D.list(i_CustomerContact),
+      scheduledOperations: D.list(i_ScheduledOperationDetails),
+      longTermBackupSchedule: {
+        isDisabled: 0,
+        repeatCadence: 0,
+        retentionPeriodInDays: 0,
+        timeOfBackup: D.tsAs("date-time"),
+      },
+      openMode: 0,
+      permissionLevel: 0,
+      refreshableMode: 0,
+      privateEndpointIp: 0,
+      privateEndpointLabel: 0,
+      peerDbId: 0,
+      resourcePoolLeaderId: 0,
+      resourcePoolSummary: i_ResourcePoolSummary,
+      standbyAllowlistedIpsSource: 0,
+      standbyAllowlistedIps: 0,
+      allowlistedIps: 0,
+      autoRefreshFrequencyInSeconds: 0,
+      autoRefreshPointLagInSeconds: 0,
       timeOfAutoRefreshStart: D.tsAs("date-time"),
+      encryptionKeyProvider: 0,
+      encryptionKeyConfiguration: i_EncryptionKeyConfigurationInput,
+      adminPasswordSource: 0,
+      adminPasswordSourceConfiguration: i_AdminPasswordSourceConfigurationInput,
     },
   },
   errors: [
@@ -5072,7 +5439,10 @@ export const updateAutonomousDatabaseBackup: API.OperationMethod<
   UpdateAutonomousDatabaseBackupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { autonomousDatabaseBackupId: 0, retentionPeriodInDays: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5103,7 +5473,13 @@ export const updateCloudExadataInfrastructure: API.OperationMethod<
   UpdateCloudExadataInfrastructureError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      cloudExadataInfrastructureId: 0,
+      maintenanceWindow: i_MaintenanceWindow,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5134,7 +5510,22 @@ export const updateExadbVmCluster: API.OperationMethod<
   UpdateExadbVmClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      exadbVmClusterId: 0,
+      dataCollectionOptions: i_DataCollectionOptions,
+      displayName: 0,
+      enabledEcpuCount: 0,
+      gridImageId: 0,
+      licenseModel: 0,
+      sshPublicKeys: 0,
+      systemVersion: 0,
+      totalEcpuCount: 0,
+      updateAction: 0,
+      vmFileSystemStorageTotalSizeInGBs: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5165,7 +5556,18 @@ export const updateExascaleDbStorageVault: API.OperationMethod<
   UpdateExascaleDbStorageVaultError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      exascaleDbStorageVaultId: 0,
+      additionalFlashCacheInPercent: 0,
+      autoscaleLimitInGBs: 0,
+      description: 0,
+      displayName: 0,
+      highCapacityDatabaseStorageTotalSizeInGBs: 0,
+      isAutoscaleEnabled: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5196,7 +5598,24 @@ export const updateOdbNetwork: API.OperationMethod<
   UpdateOdbNetworkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      odbNetworkId: 0,
+      displayName: 0,
+      peeredCidrsToBeAdded: 0,
+      peeredCidrsToBeRemoved: 0,
+      s3Access: 0,
+      zeroEtlAccess: 0,
+      stsAccess: 0,
+      kmsAccess: 0,
+      s3PolicyDocument: 0,
+      stsPolicyDocument: 0,
+      kmsPolicyDocument: 0,
+      crossRegionS3RestoreSourcesToEnable: 0,
+      crossRegionS3RestoreSourcesToDisable: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5227,7 +5646,15 @@ export const updateOdbPeeringConnection: API.OperationMethod<
   UpdateOdbPeeringConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      odbPeeringConnectionId: 0,
+      displayName: 0,
+      peerNetworkCidrsToBeAdded: 0,
+      peerNetworkCidrsToBeRemoved: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5241,6 +5668,54 @@ export const updateOdbPeeringConnection: API.OperationMethod<
   operationName: "UpdateOdbPeeringConnection",
 })) as any;
 
+const i_AdminPasswordSourceConfigurationInput: D.LazyStruct = () => ({
+  customerManagedAwsSecret: i_CustomerManagedAwsSecretConfigurationInput,
+});
+const i_CustomerContact: D.LazyStruct = () => ({ email: 0 });
+const i_CustomerManagedAwsSecretConfigurationInput: D.LazyStruct = () => ({
+  secretId: 0,
+  iamRoleArn: 0,
+  externalIdType: 0,
+});
+const i_DataCollectionOptions: D.LazyStruct = () => ({
+  isDiagnosticsEventsEnabled: 0,
+  isHealthMonitoringEnabled: 0,
+  isIncidentLogsEnabled: 0,
+});
+const i_DatabaseTool: D.LazyStruct = () => ({
+  isEnabled: 0,
+  name: 0,
+  computeCount: 0,
+  maxIdleTimeInMinutes: 0,
+});
+const i_EncryptionKeyConfigurationInput: D.LazyStruct = () => ({
+  awsEncryptionKey: { iamRoleArn: 0, externalIdType: 0, kmsKeyId: 0 },
+});
+const i_MaintenanceWindow: D.LazyStruct = () => ({
+  customActionTimeoutInMins: 0,
+  daysOfWeek: D.list(i_DayOfWeek),
+  hoursOfDay: 0,
+  isCustomActionTimeoutEnabled: 0,
+  leadTimeInWeeks: 0,
+  months: D.list({ name: 0 }),
+  patchingMode: 0,
+  preference: 0,
+  skipRu: 0,
+  weeksOfMonth: 0,
+});
+const i_ResourcePoolSummary: D.LazyStruct = () => ({
+  isDisabled: 0,
+  poolSize: 0,
+  poolStorageSizeInTBs: 0,
+  availableStorageCapacityInTBs: 0,
+  totalComputeCapacity: 0,
+  availableComputeCapacity: 0,
+});
+const i_ScheduledOperationDetails: D.LazyStruct = () => ({
+  dayOfWeek: i_DayOfWeek,
+  scheduledStartTime: 0,
+  scheduledStopTime: 0,
+});
 const o_AutonomousDatabaseSummary: D.LazyStruct = () => ({
   customerContacts: D.list(o_CustomerContact),
   standbyDb: o_DatabaseStandbySummary,
@@ -5277,3 +5752,4 @@ const o_DisasterRecoveryConfiguration: D.LazyStruct = () => ({
   timeSnapshotStandbyEnabledTill: D.ts,
 });
 const o_LongTermBackupSchedule: D.LazyStruct = () => ({ timeOfBackup: D.ts });
+const i_DayOfWeek: D.LazyStruct = () => ({ name: 0 });

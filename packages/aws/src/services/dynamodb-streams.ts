@@ -448,6 +448,12 @@ export const describeStream: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      StreamArn: 0,
+      Limit: 0,
+      ExclusiveStartShardId: 0,
+      ShardFilter: { Type: 0, ShardId: 0 },
+    },
     output: { StreamDescription: { CreationRequestDateTime: D.ts } },
   },
   errors: [InternalServerError, ResourceNotFoundException],
@@ -483,6 +489,7 @@ export const getRecords: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ShardIterator: 0, Limit: 0 },
     output: {
       Records: D.list({
         dynamodb: {
@@ -526,7 +533,15 @@ export const getShardIterator: API.OperationMethod<
   GetShardIteratorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      StreamArn: 0,
+      ShardId: 0,
+      ShardIteratorType: 0,
+      SequenceNumber: 0,
+    },
+  },
   errors: [
     InternalServerError,
     ResourceNotFoundException,
@@ -554,7 +569,10 @@ export const listStreams: API.OperationMethod<
   ListStreamsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TableName: 0, Limit: 0, ExclusiveStartStreamArn: 0 },
+  },
   errors: [InternalServerError, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,

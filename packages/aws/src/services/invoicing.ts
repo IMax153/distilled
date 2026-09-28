@@ -657,6 +657,7 @@ export const batchGetInvoiceProfile: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AccountIds: 0 },
     output: {
       Profiles: D.list({
         ReceiverEmail: D.secret,
@@ -693,7 +694,15 @@ export const createInvoiceUnit: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      InvoiceReceiver: 0,
+      Description: 0,
+      TaxInheritanceDisabled: 0,
+      Rule: i_InvoiceUnitRule,
+      ResourceTags: D.list(i_ResourceTag),
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -727,7 +736,23 @@ export const createProcurementPortalPreference: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ProcurementPortalName: 0,
+      BuyerDomain: 0,
+      BuyerIdentifier: 0,
+      SupplierDomain: 0,
+      SupplierIdentifier: 0,
+      Selector: i_ProcurementPortalPreferenceSelector,
+      ProcurementPortalSharedSecret: 0,
+      ProcurementPortalInstanceEndpoint: 0,
+      TestEnvPreference: i_TestEnvPreferenceInput,
+      EinvoiceDeliveryEnabled: 0,
+      EinvoiceDeliveryPreference: i_EinvoiceDeliveryPreference,
+      PurchaseOrderRetrievalEnabled: 0,
+      Contacts: D.list(i_Contact),
+      ResourceTags: D.list(i_ResourceTag),
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -760,7 +785,7 @@ export const deleteInvoiceUnit: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: { InvoiceUnitArn: 0, ClientToken: D.m({ idempotency: true }) },
   },
   errors: [
     AccessDeniedException,
@@ -795,7 +820,10 @@ export const deleteProcurementPortalPreference: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ProcurementPortalPreferenceArn: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -828,6 +856,7 @@ export const getInvoicePDF: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { InvoiceId: 0 },
     output: {
       InvoicePDF: {
         DocumentUrlExpirationDate: D.ts,
@@ -863,7 +892,11 @@ export const getInvoiceUnit: API.OperationMethod<
   GetInvoiceUnitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LastModified: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { InvoiceUnitArn: 0, AsOf: 0 },
+    output: { LastModified: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -898,6 +931,7 @@ export const getProcurementPortalPreference: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ProcurementPortalPreferenceArn: 0 },
     output: {
       ProcurementPortalPreference: {
         EinvoiceDeliveryPreference: { EinvoiceDeliveryActivationDate: D.ts },
@@ -939,6 +973,17 @@ export const listInvoiceSummaries: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Selector: { ResourceType: 0, Value: 0 },
+      Filter: {
+        TimeInterval: { StartDate: 0, EndDate: 0 },
+        BillingPeriod: { Month: 0, Year: 0 },
+        InvoicingEntity: 0,
+        ReceiverRole: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { InvoiceSummaries: D.list({ IssuedDate: D.ts, DueDate: D.ts }) },
   },
   errors: [
@@ -977,6 +1022,17 @@ export const listInvoiceUnits: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filters: {
+        Names: 0,
+        InvoiceReceivers: 0,
+        Accounts: 0,
+        BillSourceAccounts: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+      AsOf: 0,
+    },
     output: { InvoiceUnits: D.list({ LastModified: D.ts }) },
   },
   errors: [
@@ -1018,6 +1074,7 @@ export const listProcurementPortalPreferences: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: {
       ProcurementPortalPreferences: D.list({
         CreateDate: D.ts,
@@ -1060,7 +1117,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1095,7 +1152,18 @@ export const putProcurementPortalPreference: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ProcurementPortalPreferenceArn: 0,
+      Selector: i_ProcurementPortalPreferenceSelector,
+      ProcurementPortalSharedSecret: 0,
+      ProcurementPortalInstanceEndpoint: 0,
+      TestEnvPreference: i_TestEnvPreferenceInput,
+      EinvoiceDeliveryEnabled: 0,
+      EinvoiceDeliveryPreference: i_EinvoiceDeliveryPreference,
+      PurchaseOrderRetrievalEnabled: 0,
+      Contacts: D.list(i_Contact),
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1131,7 +1199,10 @@ export const sendProcurementPortalValidation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ProcurementPortalPreferenceArn: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1162,7 +1233,10 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, ResourceTags: D.list(i_ResourceTag) },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1192,7 +1266,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, ResourceTagKeys: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1223,7 +1297,13 @@ export const updateInvoiceUnit: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InvoiceUnitArn: 0,
+      Description: 0,
+      TaxInheritanceDisabled: 0,
+      Rule: i_InvoiceUnitRule,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1259,7 +1339,14 @@ export const updateProcurementPortalPreferenceStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ProcurementPortalPreferenceArn: 0,
+      EinvoiceDeliveryPreferenceStatus: 0,
+      EinvoiceDeliveryPreferenceStatusReason: 0,
+      PurchaseOrderRetrievalPreferenceStatus: 0,
+      PurchaseOrderRetrievalPreferenceStatusReason: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1295,7 +1382,11 @@ export const verifyProcurementPortalValidation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ProcurementPortalPreferenceArn: 0,
+      Code: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1308,3 +1399,33 @@ export const verifyProcurementPortalValidation: API.OperationMethod<
   retry: Retry,
   operationName: "VerifyProcurementPortalValidation",
 })) as any;
+
+const i_Contact: D.LazyStruct = () => ({ Name: 0, Email: 0 });
+const i_EinvoiceDeliveryPreference: D.LazyStruct = () => ({
+  EinvoiceDeliveryDocumentTypes: 0,
+  EinvoiceDeliveryAttachmentTypes: 0,
+  Protocol: 0,
+  PurchaseOrderDataSources: D.list({
+    EinvoiceDeliveryDocumentType: 0,
+    PurchaseOrderDataSourceType: 0,
+  }),
+  ConnectionTestingMethod: 0,
+  EinvoiceDeliveryActivationDate: 0,
+});
+const i_InvoiceUnitRule: D.LazyStruct = () => ({
+  LinkedAccounts: 0,
+  BillSourceAccounts: 0,
+});
+const i_ProcurementPortalPreferenceSelector: D.LazyStruct = () => ({
+  InvoiceUnitArns: 0,
+  SellerOfRecords: 0,
+});
+const i_ResourceTag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_TestEnvPreferenceInput: D.LazyStruct = () => ({
+  BuyerDomain: 0,
+  BuyerIdentifier: 0,
+  SupplierDomain: 0,
+  SupplierIdentifier: 0,
+  ProcurementPortalSharedSecret: 0,
+  ProcurementPortalInstanceEndpoint: 0,
+});

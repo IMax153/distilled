@@ -334,6 +334,18 @@ export const batchMeterUsage: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      UsageRecords: D.list({
+        Timestamp: 0,
+        CustomerIdentifier: 0,
+        Dimension: 0,
+        Quantity: 0,
+        UsageAllocations: D.list(i_UsageAllocation),
+        CustomerAWSAccountId: 0,
+        LicenseArn: 0,
+      }),
+      ProductCode: 0,
+    },
     output: {
       Results: D.list({ UsageRecord: o_UsageRecord }),
       UnprocessedRecords: D.list(o_UsageRecord),
@@ -418,7 +430,15 @@ export const meterUsage: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ProductCode: 0,
+      Timestamp: 0,
+      UsageDimension: 0,
+      UsageQuantity: 0,
+      DryRun: 0,
+      UsageAllocations: D.list(i_UsageAllocation),
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     CustomerNotEntitledException,
@@ -495,7 +515,11 @@ export const registerUsage: API.OperationMethod<
   RegisterUsageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { PublicKeyRotationTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ProductCode: 0, PublicKeyVersion: 0, Nonce: 0 },
+    output: { PublicKeyRotationTimestamp: D.ts },
+  },
   errors: [
     CustomerNotEntitledException,
     DisabledApiException,
@@ -544,7 +568,7 @@ export const resolveCustomer: API.OperationMethod<
   ResolveCustomerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RegistrationToken: 0 } },
   errors: [
     DisabledApiException,
     ExpiredTokenException,
@@ -557,4 +581,8 @@ export const resolveCustomer: API.OperationMethod<
   operationName: "ResolveCustomer",
 })) as any;
 
+const i_UsageAllocation: D.LazyStruct = () => ({
+  AllocatedUsageQuantity: 0,
+  Tags: D.list({ Key: 0, Value: 0 }),
+});
 const o_UsageRecord: D.LazyStruct = () => ({ Timestamp: D.ts });

@@ -533,7 +533,12 @@ export const associateDefaultView: API.OperationMethod<
   AssociateDefaultViewError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /AssociateDefaultView", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /AssociateDefaultView",
+    input: { ViewArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -565,6 +570,7 @@ export const batchGetView: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchGetView",
+    input: { ViewArns: 0 },
     output: { Views: D.list(o_View) },
     body: true,
   },
@@ -619,7 +625,7 @@ export const createIndex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateIndex",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: { ClientToken: D.m({ idempotency: true }), Tags: 0 },
     output: { CreatedAt: D.ts },
     body: true,
   },
@@ -654,6 +660,7 @@ export const createResourceExplorerSetup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateResourceExplorerSetup",
+    input: { RegionList: 0, AggregatorRegions: 0, ViewName: 0 },
     body: true,
   },
   errors: [
@@ -691,7 +698,14 @@ export const createView: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateView",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      ViewName: 0,
+      IncludedProperties: D.list(i_IncludedProperty),
+      Scope: 0,
+      Filters: i_SearchFilter,
+      Tags: 0,
+    },
     output: { View: o_View },
     body: true,
   },
@@ -730,6 +744,7 @@ export const deleteIndex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteIndex",
+    input: { Arn: 0 },
     output: { LastUpdatedAt: D.ts },
     body: true,
   },
@@ -764,6 +779,7 @@ export const deleteResourceExplorerSetup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteResourceExplorerSetup",
+    input: { RegionList: 0, DeleteInAllRegions: 0 },
     body: true,
   },
   errors: [
@@ -797,7 +813,12 @@ export const deleteView: API.OperationMethod<
   DeleteViewError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteView", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteView",
+    input: { ViewArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -954,6 +975,7 @@ export const getManagedView: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetManagedView",
+    input: { ManagedViewArn: 0 },
     output: { ManagedView: { LastUpdatedAt: D.ts } },
     body: true,
   },
@@ -990,6 +1012,7 @@ export const getResourceExplorerSetup: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetResourceExplorerSetup",
+    input: { TaskId: 0, MaxResults: 0, NextToken: 0 },
     output: { Regions: D.list({ View: { View: o_View } }) },
     body: true,
   },
@@ -1056,7 +1079,12 @@ export const getServiceView: API.OperationMethod<
   GetServiceViewError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetServiceView", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetServiceView",
+    input: { ServiceViewArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1089,6 +1117,7 @@ export const getView: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetView",
+    input: { ViewArn: 0 },
     output: { View: o_View },
     body: true,
   },
@@ -1121,7 +1150,12 @@ export const listIndexes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Index
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListIndexes", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListIndexes",
+    input: { Type: 0, Regions: 0, MaxResults: 0, NextToken: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1155,7 +1189,12 @@ export const listIndexesForMembers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   MemberIndex
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListIndexesForMembers", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListIndexesForMembers",
+    input: { AccountIdList: 0, MaxResults: 0, NextToken: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1190,7 +1229,12 @@ export const listManagedViews: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   string
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListManagedViews", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListManagedViews",
+    input: { MaxResults: 0, NextToken: 0, ServicePrincipal: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1230,6 +1274,7 @@ export const listResources: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListResources",
+    input: { Filters: i_SearchFilter, MaxResults: 0, ViewArn: 0, NextToken: 0 },
     output: { Resources: D.list(o_Resource) },
     body: true,
   },
@@ -1268,7 +1313,12 @@ export const listServiceIndexes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Index
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListServiceIndexes", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListServiceIndexes",
+    input: { Regions: 0, MaxResults: 0, NextToken: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1302,7 +1352,12 @@ export const listServiceViews: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   string
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListServiceViews", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListServiceViews",
+    input: { MaxResults: 0, NextToken: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1338,6 +1393,7 @@ export const listStreamingAccessForServices: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListStreamingAccessForServices",
+    input: { MaxResults: 0, NextToken: 0 },
     output: { StreamingAccessForServices: D.list({ CreatedAt: D.ts }) },
     body: true,
   },
@@ -1372,6 +1428,7 @@ export const listSupportedResourceTypes: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListSupportedResourceTypes",
+    input: { NextToken: 0, MaxResults: 0 },
     body: true,
   },
   errors: [
@@ -1408,7 +1465,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1440,7 +1501,12 @@ export const listViews: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   string
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListViews", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListViews",
+    input: { NextToken: 0, MaxResults: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1485,6 +1551,7 @@ export const search: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /Search",
+    input: { QueryString: 0, MaxResults: 0, ViewArn: 0, NextToken: 0 },
     output: { Resources: D.list(o_Resource) },
     body: true,
   },
@@ -1524,7 +1591,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1558,7 +1630,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1610,6 +1682,7 @@ export const updateIndexType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateIndexType",
+    input: { Arn: 0, Type: 0 },
     output: { LastUpdatedAt: D.ts },
     body: true,
   },
@@ -1647,6 +1720,11 @@ export const updateView: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateView",
+    input: {
+      ViewArn: 0,
+      IncludedProperties: D.list(i_IncludedProperty),
+      Filters: i_SearchFilter,
+    },
     output: { View: o_View },
     body: true,
   },
@@ -1663,6 +1741,8 @@ export const updateView: API.OperationMethod<
   operationName: "UpdateView",
 })) as any;
 
+const i_IncludedProperty: D.LazyStruct = () => ({ Name: 0 });
+const i_SearchFilter: D.LazyStruct = () => ({ FilterString: 0 });
 const o_Resource: D.LazyStruct = () => ({
   LastReportedAt: D.ts,
   Properties: D.list({ LastReportedAt: D.ts }),

@@ -1956,7 +1956,10 @@ export const attachInstances: API.OperationMethod<
   AttachInstancesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceIds: 0, AutoScalingGroupName: 0 },
+  },
   errors: [ResourceContentionFault, ServiceLinkedRoleFailure],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1996,7 +1999,10 @@ export const attachLoadBalancers: API.OperationMethod<
   AttachLoadBalancersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AutoScalingGroupName: 0, LoadBalancerNames: 0 },
+  },
   errors: [
     InstanceRefreshInProgressFault,
     ResourceContentionFault,
@@ -2049,7 +2055,10 @@ export const attachLoadBalancerTargetGroups: API.OperationMethod<
   AttachLoadBalancerTargetGroupsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AutoScalingGroupName: 0, TargetGroupARNs: 0 },
+  },
   errors: [
     InstanceRefreshInProgressFault,
     ResourceContentionFault,
@@ -2094,7 +2103,14 @@ export const attachTrafficSources: API.OperationMethod<
   AttachTrafficSourcesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AutoScalingGroupName: 0,
+      TrafficSources: D.list(i_TrafficSourceIdentifier),
+      SkipZonalShiftValidation: 0,
+    },
+  },
   errors: [
     InstanceRefreshInProgressFault,
     ResourceContentionFault,
@@ -2117,7 +2133,11 @@ export const batchDeleteScheduledAction: API.OperationMethod<
   BatchDeleteScheduledActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { FailedScheduledActions: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { AutoScalingGroupName: 0, ScheduledActionNames: 0 },
+    output: { FailedScheduledActions: D.list({}) },
+  },
   errors: [ResourceContentionFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2140,6 +2160,19 @@ export const batchPutScheduledUpdateGroupAction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AutoScalingGroupName: 0,
+      ScheduledUpdateGroupActions: D.list({
+        ScheduledActionName: 0,
+        StartTime: 0,
+        EndTime: 0,
+        Recurrence: 0,
+        MinSize: 0,
+        MaxSize: 0,
+        DesiredCapacity: 0,
+        TimeZone: 0,
+      }),
+    },
     output: { FailedScheduledUpdateGroupActions: D.list({}) },
   },
   errors: [AlreadyExistsFault, LimitExceededFault, ResourceContentionFault],
@@ -2171,7 +2204,10 @@ export const cancelInstanceRefresh: API.OperationMethod<
   CancelInstanceRefreshError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AutoScalingGroupName: 0, WaitForTransitioningInstances: 0 },
+  },
   errors: [
     ActiveInstanceRefreshNotFoundFault,
     LimitExceededFault,
@@ -2223,7 +2259,16 @@ export const completeLifecycleAction: API.OperationMethod<
   CompleteLifecycleActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LifecycleHookName: 0,
+      AutoScalingGroupName: 0,
+      LifecycleActionToken: 0,
+      LifecycleActionResult: 0,
+      InstanceId: 0,
+    },
+  },
   errors: [ResourceContentionFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2263,7 +2308,52 @@ export const createAutoScalingGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { MixedInstancesPolicy: i_MixedInstancesPolicy },
+    input: {
+      AutoScalingGroupName: 0,
+      LaunchConfigurationName: 0,
+      LaunchTemplate: i_LaunchTemplateSpecification,
+      MixedInstancesPolicy: i_MixedInstancesPolicy,
+      InstanceId: 0,
+      MinSize: 0,
+      MaxSize: 0,
+      DesiredCapacity: 0,
+      DefaultCooldown: 0,
+      AvailabilityZones: 0,
+      AvailabilityZoneIds: 0,
+      LoadBalancerNames: 0,
+      TargetGroupARNs: 0,
+      HealthCheckType: 0,
+      HealthCheckGracePeriod: 0,
+      PlacementGroup: 0,
+      VPCZoneIdentifier: 0,
+      TerminationPolicies: 0,
+      NewInstancesProtectedFromScaleIn: 0,
+      CapacityRebalance: 0,
+      LifecycleHookSpecificationList: D.list({
+        LifecycleHookName: 0,
+        LifecycleTransition: 0,
+        NotificationMetadata: 0,
+        HeartbeatTimeout: 0,
+        DefaultResult: 0,
+        NotificationTargetARN: 0,
+        RoleARN: 0,
+      }),
+      DeletionProtection: 0,
+      Tags: D.list(i_Tag),
+      ServiceLinkedRoleARN: 0,
+      MaxInstanceLifetime: 0,
+      Context: 0,
+      DesiredCapacityType: 0,
+      DefaultInstanceWarmup: 0,
+      TrafficSources: D.list(i_TrafficSourceIdentifier),
+      InstanceMaintenancePolicy: i_InstanceMaintenancePolicy,
+      AvailabilityZoneDistribution: i_AvailabilityZoneDistribution,
+      AvailabilityZoneImpairmentPolicy: i_AvailabilityZoneImpairmentPolicy,
+      SkipZonalShiftValidation: 0,
+      CapacityReservationSpecification: i_CapacityReservationSpecification,
+      InstanceLifecyclePolicy: i_InstanceLifecyclePolicy,
+      Operator: { Principal: 0 },
+    },
   },
   errors: [
     AlreadyExistsFault,
@@ -2303,7 +2393,47 @@ export const createLaunchConfiguration: API.OperationMethod<
   CreateLaunchConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LaunchConfigurationName: 0,
+      ImageId: 0,
+      KeyName: 0,
+      SecurityGroups: 0,
+      ClassicLinkVPCId: 0,
+      ClassicLinkVPCSecurityGroups: 0,
+      UserData: 0,
+      InstanceId: 0,
+      InstanceType: 0,
+      KernelId: 0,
+      RamdiskId: 0,
+      BlockDeviceMappings: D.list({
+        VirtualName: 0,
+        DeviceName: 0,
+        Ebs: {
+          SnapshotId: 0,
+          VolumeSize: 0,
+          VolumeType: 0,
+          DeleteOnTermination: 0,
+          Iops: 0,
+          Encrypted: 0,
+          Throughput: 0,
+        },
+        NoDevice: 0,
+      }),
+      InstanceMonitoring: { Enabled: 0 },
+      SpotPrice: 0,
+      IamInstanceProfile: 0,
+      EbsOptimized: 0,
+      AssociatePublicIpAddress: 0,
+      PlacementTenancy: 0,
+      MetadataOptions: {
+        HttpTokens: 0,
+        HttpPutResponseHopLimit: 0,
+        HttpEndpoint: 0,
+      },
+    },
+  },
   errors: [AlreadyExistsFault, LimitExceededFault, ResourceContentionFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2331,7 +2461,7 @@ export const createOrUpdateTags: API.OperationMethod<
   CreateOrUpdateTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Tags: D.list(i_Tag) } },
   errors: [
     AlreadyExistsFault,
     LimitExceededFault,
@@ -2378,7 +2508,10 @@ export const deleteAutoScalingGroup: API.OperationMethod<
   DeleteAutoScalingGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AutoScalingGroupName: 0, ForceDelete: 0 },
+  },
   errors: [
     ResourceContentionFault,
     ResourceInUseFault,
@@ -2405,7 +2538,7 @@ export const deleteLaunchConfiguration: API.OperationMethod<
   DeleteLaunchConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LaunchConfigurationName: 0 } },
   errors: [ResourceContentionFault, ResourceInUseFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2429,7 +2562,10 @@ export const deleteLifecycleHook: API.OperationMethod<
   DeleteLifecycleHookError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { LifecycleHookName: 0, AutoScalingGroupName: 0 },
+  },
   errors: [ResourceContentionFault, AutoScalingGroupNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2448,7 +2584,7 @@ export const deleteNotificationConfiguration: API.OperationMethod<
   DeleteNotificationConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AutoScalingGroupName: 0, TopicARN: 0 } },
   errors: [ResourceContentionFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2475,7 +2611,10 @@ export const deletePolicy: API.OperationMethod<
   DeletePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AutoScalingGroupName: 0, PolicyName: 0 },
+  },
   errors: [ResourceContentionFault, ServiceLinkedRoleFailure],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2495,7 +2634,10 @@ export const deleteScheduledAction: API.OperationMethod<
   DeleteScheduledActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AutoScalingGroupName: 0, ScheduledActionName: 0 },
+  },
   errors: [ResourceContentionFault, AutoScalingGroupNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2515,7 +2657,7 @@ export const deleteTags: API.OperationMethod<
   DeleteTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Tags: D.list(i_Tag) } },
   errors: [ResourceContentionFault, ResourceInUseFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2540,7 +2682,10 @@ export const deleteWarmPool: API.OperationMethod<
   DeleteWarmPoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AutoScalingGroupName: 0, ForceDelete: 0 },
+  },
   errors: [
     LimitExceededFault,
     ResourceContentionFault,
@@ -2635,6 +2780,13 @@ export const describeAutoScalingGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AutoScalingGroupNames: 0,
+      IncludeInstances: 0,
+      NextToken: 0,
+      MaxRecords: 0,
+      Filters: D.list(i_Filter),
+    },
     output: {
       AutoScalingGroups: D.list({
         LaunchTemplate: {},
@@ -2707,6 +2859,7 @@ export const describeAutoScalingInstances: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { InstanceIds: 0, MaxRecords: 0, NextToken: 0 },
     output: {
       AutoScalingInstances: D.list({
         LaunchTemplate: {},
@@ -2776,6 +2929,12 @@ export const describeInstanceRefreshes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AutoScalingGroupName: 0,
+      InstanceRefreshIds: 0,
+      NextToken: 0,
+      MaxRecords: 0,
+    },
     output: {
       InstanceRefreshes: D.list({
         StartTime: D.ts,
@@ -2834,6 +2993,7 @@ export const describeLaunchConfigurations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { LaunchConfigurationNames: 0, NextToken: 0, MaxRecords: 0 },
     output: {
       LaunchConfigurations: D.list({
         SecurityGroups: D.list(),
@@ -2883,6 +3043,7 @@ export const describeLifecycleHooks: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AutoScalingGroupName: 0, LifecycleHookNames: 0 },
     output: {
       LifecycleHooks: D.list({ HeartbeatTimeout: D.num, GlobalTimeout: D.num }),
     },
@@ -2965,7 +3126,11 @@ export const describeLoadBalancers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { LoadBalancers: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { AutoScalingGroupName: 0, NextToken: 0, MaxRecords: 0 },
+    output: { LoadBalancers: D.list({}) },
+  },
   errors: [InvalidNextToken, ResourceContentionFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3026,6 +3191,7 @@ export const describeLoadBalancerTargetGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { AutoScalingGroupName: 0, NextToken: 0, MaxRecords: 0 },
     output: { LoadBalancerTargetGroups: D.list({}) },
   },
   errors: [InvalidNextToken, ResourceContentionFault],
@@ -3078,6 +3244,7 @@ export const describeNotificationConfigurations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { AutoScalingGroupNames: 0, NextToken: 0, MaxRecords: 0 },
     output: { NotificationConfigurations: D.list({}) },
   },
   errors: [InvalidNextToken, ResourceContentionFault],
@@ -3109,6 +3276,13 @@ export const describePolicies: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AutoScalingGroupName: 0,
+      PolicyNames: 0,
+      PolicyTypes: 0,
+      NextToken: 0,
+      MaxRecords: 0,
+    },
     output: {
       ScalingPolicies: D.list({
         MinAdjustmentStep: D.num,
@@ -3181,7 +3355,18 @@ export const describeScalingActivities: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Activity
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Activities: D.list(o_Activity) } },
+  descriptor: {
+    service: svc,
+    input: {
+      ActivityIds: 0,
+      AutoScalingGroupName: 0,
+      IncludeDeletedGroups: 0,
+      MaxRecords: 0,
+      NextToken: 0,
+      Filters: D.list(i_Filter),
+    },
+    output: { Activities: D.list(o_Activity) },
+  },
   errors: [InvalidNextToken, ResourceContentionFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3235,6 +3420,14 @@ export const describeScheduledActions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AutoScalingGroupName: 0,
+      ScheduledActionNames: 0,
+      StartTime: 0,
+      EndTime: 0,
+      NextToken: 0,
+      MaxRecords: 0,
+    },
     output: {
       ScheduledUpdateGroupActions: D.list({
         Time: D.ts,
@@ -3283,7 +3476,11 @@ export const describeTags: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TagDescription
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Tags: D.list(o_TagDescription) } },
+  descriptor: {
+    service: svc,
+    input: { Filters: D.list(i_Filter), NextToken: 0, MaxRecords: 0 },
+    output: { Tags: D.list(o_TagDescription) },
+  },
   errors: [InvalidNextToken, ResourceContentionFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3339,7 +3536,16 @@ export const describeTrafficSources: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { TrafficSources: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: {
+      AutoScalingGroupName: 0,
+      TrafficSourceType: 0,
+      NextToken: 0,
+      MaxRecords: 0,
+    },
+    output: { TrafficSources: D.list({}) },
+  },
   errors: [InvalidNextToken, ResourceContentionFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3371,6 +3577,7 @@ export const describeWarmPool: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { AutoScalingGroupName: 0, MaxRecords: 0, NextToken: 0 },
     output: {
       WarmPoolConfiguration: o_WarmPoolConfiguration,
       Instances: D.list(o_Instance),
@@ -3411,7 +3618,15 @@ export const detachInstances: API.OperationMethod<
   DetachInstancesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Activities: D.list(o_Activity) } },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceIds: 0,
+      AutoScalingGroupName: 0,
+      ShouldDecrementDesiredCapacity: 0,
+    },
+    output: { Activities: D.list(o_Activity) },
+  },
   errors: [ResourceContentionFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3443,7 +3658,10 @@ export const detachLoadBalancers: API.OperationMethod<
   DetachLoadBalancersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AutoScalingGroupName: 0, LoadBalancerNames: 0 },
+  },
   errors: [ResourceContentionFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3479,7 +3697,10 @@ export const detachLoadBalancerTargetGroups: API.OperationMethod<
   DetachLoadBalancerTargetGroupsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AutoScalingGroupName: 0, TargetGroupARNs: 0 },
+  },
   errors: [ResourceContentionFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3502,7 +3723,13 @@ export const detachTrafficSources: API.OperationMethod<
   DetachTrafficSourcesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AutoScalingGroupName: 0,
+      TrafficSources: D.list(i_TrafficSourceIdentifier),
+    },
+  },
   errors: [ResourceContentionFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3521,7 +3748,7 @@ export const disableMetricsCollection: API.OperationMethod<
   DisableMetricsCollectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AutoScalingGroupName: 0, Metrics: 0 } },
   errors: [ResourceContentionFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3546,7 +3773,10 @@ export const enableMetricsCollection: API.OperationMethod<
   EnableMetricsCollectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AutoScalingGroupName: 0, Metrics: 0, Granularity: 0 },
+  },
   errors: [ResourceContentionFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3575,7 +3805,15 @@ export const enterStandby: API.OperationMethod<
   EnterStandbyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Activities: D.list(o_Activity) } },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceIds: 0,
+      AutoScalingGroupName: 0,
+      ShouldDecrementDesiredCapacity: 0,
+    },
+    output: { Activities: D.list(o_Activity) },
+  },
   errors: [ResourceContentionFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3596,7 +3834,16 @@ export const executePolicy: API.OperationMethod<
   ExecutePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AutoScalingGroupName: 0,
+      PolicyName: 0,
+      HonorCooldown: 0,
+      MetricValue: 0,
+      BreachThreshold: 0,
+    },
+  },
   errors: [ResourceContentionFault, ScalingActivityInProgressFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3620,7 +3867,11 @@ export const exitStandby: API.OperationMethod<
   ExitStandbyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Activities: D.list(o_Activity) } },
+  descriptor: {
+    service: svc,
+    input: { InstanceIds: 0, AutoScalingGroupName: 0 },
+    output: { Activities: D.list(o_Activity) },
+  },
   errors: [ResourceContentionFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3652,6 +3903,7 @@ export const getPredictiveScalingForecast: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AutoScalingGroupName: 0, PolicyName: 0, StartTime: 0, EndTime: 0 },
     output: {
       LoadForecast: D.list({
         Timestamps: D.list(D.ts),
@@ -3685,7 +3937,15 @@ export const launchInstances: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      AutoScalingGroupName: 0,
+      RequestedCapacity: 0,
+      ClientToken: D.m({ idempotency: true }),
+      AvailabilityZones: 0,
+      AvailabilityZoneIds: 0,
+      SubnetIds: 0,
+      RetryStrategy: 0,
+    },
     output: {
       Instances: D.list({ InstanceIds: D.list() }),
       Errors: D.list({}),
@@ -3753,7 +4013,19 @@ export const putLifecycleHook: API.OperationMethod<
   PutLifecycleHookError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LifecycleHookName: 0,
+      AutoScalingGroupName: 0,
+      LifecycleTransition: 0,
+      RoleARN: 0,
+      NotificationTargetARN: 0,
+      NotificationMetadata: 0,
+      HeartbeatTimeout: 0,
+      DefaultResult: 0,
+    },
+  },
   errors: [
     LimitExceededFault,
     ResourceContentionFault,
@@ -3789,7 +4061,10 @@ export const putNotificationConfiguration: API.OperationMethod<
   PutNotificationConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AutoScalingGroupName: 0, TopicARN: 0, NotificationTypes: 0 },
+  },
   errors: [
     LimitExceededFault,
     ResourceContentionFault,
@@ -3827,7 +4102,82 @@ export const putScalingPolicy: API.OperationMethod<
   PutScalingPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Alarms: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: {
+      AutoScalingGroupName: 0,
+      PolicyName: 0,
+      PolicyType: 0,
+      AdjustmentType: 0,
+      MinAdjustmentStep: 0,
+      MinAdjustmentMagnitude: 0,
+      ScalingAdjustment: 0,
+      Cooldown: 0,
+      MetricAggregationType: 0,
+      StepAdjustments: D.list({
+        MetricIntervalLowerBound: 0,
+        MetricIntervalUpperBound: 0,
+        ScalingAdjustment: 0,
+      }),
+      EstimatedInstanceWarmup: 0,
+      TargetTrackingConfiguration: {
+        PredefinedMetricSpecification: {
+          PredefinedMetricType: 0,
+          ResourceLabel: 0,
+        },
+        CustomizedMetricSpecification: {
+          MetricName: 0,
+          Namespace: 0,
+          Dimensions: D.list(i_MetricDimension),
+          Statistic: 0,
+          Unit: 0,
+          Period: 0,
+          Metrics: D.list({
+            Id: 0,
+            Expression: 0,
+            MetricStat: { Metric: i_Metric, Stat: 0, Unit: 0, Period: 0 },
+            Label: 0,
+            Period: 0,
+            ReturnData: 0,
+          }),
+        },
+        TargetValue: 0,
+        DisableScaleIn: 0,
+      },
+      Enabled: 0,
+      PredictiveScalingConfiguration: {
+        MetricSpecifications: D.list({
+          TargetValue: 0,
+          PredefinedMetricPairSpecification: {
+            PredefinedMetricType: 0,
+            ResourceLabel: 0,
+          },
+          PredefinedScalingMetricSpecification: {
+            PredefinedMetricType: 0,
+            ResourceLabel: 0,
+          },
+          PredefinedLoadMetricSpecification: {
+            PredefinedMetricType: 0,
+            ResourceLabel: 0,
+          },
+          CustomizedScalingMetricSpecification: {
+            MetricDataQueries: D.list(i_MetricDataQuery),
+          },
+          CustomizedLoadMetricSpecification: {
+            MetricDataQueries: D.list(i_MetricDataQuery),
+          },
+          CustomizedCapacityMetricSpecification: {
+            MetricDataQueries: D.list(i_MetricDataQuery),
+          },
+        }),
+        Mode: 0,
+        SchedulingBufferTime: 0,
+        MaxCapacityBreachBehavior: 0,
+        MaxCapacityBuffer: 0,
+      },
+    },
+    output: { Alarms: D.list({}) },
+  },
   errors: [
     LimitExceededFault,
     ResourceContentionFault,
@@ -3864,7 +4214,21 @@ export const putScheduledUpdateGroupAction: API.OperationMethod<
   PutScheduledUpdateGroupActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AutoScalingGroupName: 0,
+      ScheduledActionName: 0,
+      Time: 0,
+      StartTime: 0,
+      EndTime: 0,
+      Recurrence: 0,
+      MinSize: 0,
+      MaxSize: 0,
+      DesiredCapacity: 0,
+      TimeZone: 0,
+    },
+  },
   errors: [
     AlreadyExistsFault,
     LimitExceededFault,
@@ -3902,7 +4266,16 @@ export const putWarmPool: API.OperationMethod<
   PutWarmPoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AutoScalingGroupName: 0,
+      MaxGroupPreparedCapacity: 0,
+      MinSize: 0,
+      PoolState: 0,
+      InstanceReusePolicy: { ReuseOnScaleIn: 0 },
+    },
+  },
   errors: [
     InstanceRefreshInProgressFault,
     LimitExceededFault,
@@ -3954,7 +4327,15 @@ export const recordLifecycleActionHeartbeat: API.OperationMethod<
   RecordLifecycleActionHeartbeatError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LifecycleHookName: 0,
+      AutoScalingGroupName: 0,
+      LifecycleActionToken: 0,
+      InstanceId: 0,
+    },
+  },
   errors: [ResourceContentionFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3978,7 +4359,10 @@ export const resumeProcesses: API.OperationMethod<
   ResumeProcessesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AutoScalingGroupName: 0, ScalingProcesses: 0 },
+  },
   errors: [ResourceContentionFault, ResourceInUseFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4021,7 +4405,7 @@ export const rollbackInstanceRefresh: API.OperationMethod<
   RollbackInstanceRefreshError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AutoScalingGroupName: 0 } },
   errors: [
     ActiveInstanceRefreshNotFoundFault,
     IrreversibleInstanceRefreshFault,
@@ -4053,7 +4437,10 @@ export const setDesiredCapacity: API.OperationMethod<
   SetDesiredCapacityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AutoScalingGroupName: 0, DesiredCapacity: 0, HonorCooldown: 0 },
+  },
   errors: [ResourceContentionFault, ScalingActivityInProgressFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4074,7 +4461,10 @@ export const setInstanceHealth: API.OperationMethod<
   SetInstanceHealthError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceId: 0, HealthStatus: 0, ShouldRespectGracePeriod: 0 },
+  },
   errors: [ResourceContentionFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4102,7 +4492,10 @@ export const setInstanceProtection: API.OperationMethod<
   SetInstanceProtectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceIds: 0, AutoScalingGroupName: 0, ProtectedFromScaleIn: 0 },
+  },
   errors: [LimitExceededFault, ResourceContentionFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4152,7 +4545,25 @@ export const startInstanceRefresh: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      DesiredConfiguration: { MixedInstancesPolicy: i_MixedInstancesPolicy },
+      AutoScalingGroupName: 0,
+      Strategy: 0,
+      DesiredConfiguration: {
+        LaunchTemplate: i_LaunchTemplateSpecification,
+        MixedInstancesPolicy: i_MixedInstancesPolicy,
+      },
+      Preferences: {
+        MinHealthyPercentage: 0,
+        InstanceWarmup: 0,
+        CheckpointPercentages: 0,
+        CheckpointDelay: 0,
+        SkipMatching: 0,
+        AutoRollback: 0,
+        ScaleInProtectedInstances: 0,
+        StandbyInstances: 0,
+        AlarmSpecification: { Alarms: 0 },
+        MaxHealthyPercentage: 0,
+        BakeTime: 0,
+      },
     },
   },
   errors: [
@@ -4186,7 +4597,10 @@ export const suspendProcesses: API.OperationMethod<
   SuspendProcessesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AutoScalingGroupName: 0, ScalingProcesses: 0 },
+  },
   errors: [ResourceContentionFault, ResourceInUseFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4228,6 +4642,12 @@ export const terminateInstanceInAutoScalingGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      InstanceId: 0,
+      InstanceIds: 0,
+      AutoScalingGroupName: 0,
+      ShouldDecrementDesiredCapacity: 0,
+    },
     output: { Activity: o_Activity, Activities: D.list(o_Activity) },
   },
   errors: [ResourceContentionFault, ScalingActivityInProgressFault],
@@ -4292,7 +4712,37 @@ export const updateAutoScalingGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { MixedInstancesPolicy: i_MixedInstancesPolicy },
+    input: {
+      AutoScalingGroupName: 0,
+      LaunchConfigurationName: 0,
+      LaunchTemplate: i_LaunchTemplateSpecification,
+      MixedInstancesPolicy: i_MixedInstancesPolicy,
+      MinSize: 0,
+      MaxSize: 0,
+      DesiredCapacity: 0,
+      DefaultCooldown: 0,
+      AvailabilityZones: 0,
+      AvailabilityZoneIds: 0,
+      HealthCheckType: 0,
+      HealthCheckGracePeriod: 0,
+      PlacementGroup: 0,
+      VPCZoneIdentifier: 0,
+      TerminationPolicies: 0,
+      NewInstancesProtectedFromScaleIn: 0,
+      ServiceLinkedRoleARN: 0,
+      MaxInstanceLifetime: 0,
+      CapacityRebalance: 0,
+      Context: 0,
+      DesiredCapacityType: 0,
+      DefaultInstanceWarmup: 0,
+      InstanceMaintenancePolicy: i_InstanceMaintenancePolicy,
+      AvailabilityZoneDistribution: i_AvailabilityZoneDistribution,
+      AvailabilityZoneImpairmentPolicy: i_AvailabilityZoneImpairmentPolicy,
+      SkipZonalShiftValidation: 0,
+      CapacityReservationSpecification: i_CapacityReservationSpecification,
+      InstanceLifecyclePolicy: i_InstanceLifecyclePolicy,
+      DeletionProtection: 0,
+    },
   },
   errors: [
     ResourceContentionFault,
@@ -4304,21 +4754,110 @@ export const updateAutoScalingGroup: API.OperationMethod<
   operationName: "UpdateAutoScalingGroup",
 })) as any;
 
+const i_AvailabilityZoneDistribution: D.LazyStruct = () => ({
+  CapacityDistributionStrategy: 0,
+});
+const i_AvailabilityZoneImpairmentPolicy: D.LazyStruct = () => ({
+  ZonalShiftEnabled: 0,
+  ImpairedZoneHealthCheckBehavior: 0,
+});
+const i_CapacityReservationSpecification: D.LazyStruct = () => ({
+  CapacityReservationPreference: 0,
+  CapacityReservationTarget: {
+    CapacityReservationIds: 0,
+    CapacityReservationResourceGroupArns: 0,
+  },
+});
+const i_Filter: D.LazyStruct = () => ({ Name: 0, Values: 0 });
+const i_InstanceLifecyclePolicy: D.LazyStruct = () => ({
+  RetentionTriggers: { TerminateHookAbandon: 0 },
+});
+const i_InstanceMaintenancePolicy: D.LazyStruct = () => ({
+  MinHealthyPercentage: 0,
+  MaxHealthyPercentage: 0,
+});
+const i_LaunchTemplateSpecification: D.LazyStruct = () => ({
+  LaunchTemplateId: 0,
+  LaunchTemplateName: 0,
+  Version: 0,
+});
+const i_Metric: D.LazyStruct = () => ({
+  Namespace: 0,
+  MetricName: 0,
+  Dimensions: D.list(i_MetricDimension),
+});
+const i_MetricDataQuery: D.LazyStruct = () => ({
+  Id: 0,
+  Expression: 0,
+  MetricStat: { Metric: i_Metric, Stat: 0, Unit: 0 },
+  Label: 0,
+  ReturnData: 0,
+});
+const i_MetricDimension: D.LazyStruct = () => ({ Name: 0, Value: 0 });
 const i_MixedInstancesPolicy: D.LazyStruct = () => ({
   LaunchTemplate: {
+    LaunchTemplateSpecification: i_LaunchTemplateSpecification,
     Overrides: D.list({
+      InstanceType: 0,
+      WeightedCapacity: 0,
+      LaunchTemplateSpecification: i_LaunchTemplateSpecification,
       InstanceRequirements: {
+        VCpuCount: { Min: 0, Max: 0 },
+        MemoryMiB: { Min: 0, Max: 0 },
+        CpuManufacturers: 0,
+        MemoryGiBPerVCpu: { Min: 0, Max: 0 },
+        ExcludedInstanceTypes: 0,
+        InstanceGenerations: 0,
+        SpotMaxPricePercentageOverLowestPrice: 0,
+        MaxSpotPriceAsPercentageOfOptimalOnDemandPrice: 0,
+        OnDemandMaxPricePercentageOverLowestPrice: 0,
+        BareMetal: 0,
+        BurstablePerformance: 0,
+        RequireHibernateSupport: 0,
+        NetworkInterfaceCount: { Min: 0, Max: 0 },
+        LocalStorage: 0,
+        LocalStorageTypes: 0,
+        TotalLocalStorageGB: { Min: 0, Max: 0 },
+        BaselineEbsBandwidthMbps: { Min: 0, Max: 0 },
+        AcceleratorTypes: 0,
+        AcceleratorCount: { Min: 0, Max: 0 },
+        AcceleratorManufacturers: 0,
+        AcceleratorNames: 0,
+        AcceleratorTotalMemoryMiB: { Min: 0, Max: 0 },
+        NetworkBandwidthGbps: { Min: 0, Max: 0 },
+        AllowedInstanceTypes: 0,
         BaselinePerformanceFactors: {
           Cpu: {
             References: D.m({
               wire: "Reference",
-              shape: D.list(0, { item: "item" }),
+              shape: D.list({ InstanceFamily: 0 }, { item: "item" }),
             }),
           },
         },
       },
+      ImageId: 0,
     }),
   },
+  InstancesDistribution: {
+    OnDemandAllocationStrategy: 0,
+    OnDemandBaseCapacity: 0,
+    OnDemandPercentageAboveBaseCapacity: 0,
+    SpotAllocationStrategy: 0,
+    SpotInstancePools: 0,
+    SpotMaxPrice: 0,
+    DistributionSegments: D.list({ TargetCapacityTypes: 0 }),
+  },
+});
+const i_Tag: D.LazyStruct = () => ({
+  ResourceId: 0,
+  ResourceType: 0,
+  Key: 0,
+  Value: 0,
+  PropagateAtLaunch: 0,
+});
+const i_TrafficSourceIdentifier: D.LazyStruct = () => ({
+  Identifier: 0,
+  Type: 0,
 });
 const o_Activity: D.LazyStruct = () => ({
   StartTime: D.ts,

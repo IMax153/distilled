@@ -2312,6 +2312,7 @@ export const associateBackupVaultMpaApprovalTeam: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /backup-vaults/{BackupVaultName}/mpaApprovalTeam",
+    input: { BackupVaultName: 0, MpaApprovalTeamArn: 0, RequesterComment: 0 },
     body: true,
   },
   errors: [
@@ -2347,6 +2348,7 @@ export const cancelLegalHold: API.OperationMethod<
     service: svc,
     http: "DELETE /legal-holds/{LegalHoldId}",
     input: {
+      LegalHoldId: 0,
       CancelDescription: D.m({ query: "cancelDescription" }),
       RetainRecordInDays: D.m({ query: "retainRecordInDays" }),
     },
@@ -2390,6 +2392,13 @@ export const createBackupAccessPoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /backup-access-point/create",
+    input: {
+      AccessPointMetadata: 0,
+      AccessPointPolicy: 0,
+      Name: 0,
+      RecoveryPointArn: 0,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -2431,7 +2440,11 @@ export const createBackupPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /backup/plans",
-    input: { CreatorRequestId: D.m({ idempotency: true }) },
+    input: {
+      BackupPlan: i_BackupPlanInput,
+      BackupPlanTags: 0,
+      CreatorRequestId: D.m({ idempotency: true }),
+    },
     output: { CreationDate: D.ts },
     body: true,
   },
@@ -2467,7 +2480,27 @@ export const createBackupSelection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /backup/plans/{BackupPlanId}/selections",
-    input: { CreatorRequestId: D.m({ idempotency: true }) },
+    input: {
+      BackupPlanId: 0,
+      BackupSelection: {
+        SelectionName: 0,
+        IamRoleArn: 0,
+        Resources: 0,
+        ListOfTags: D.list({
+          ConditionType: 0,
+          ConditionKey: 0,
+          ConditionValue: 0,
+        }),
+        NotResources: 0,
+        Conditions: {
+          StringEquals: D.list(i_ConditionParameter),
+          StringNotEquals: D.list(i_ConditionParameter),
+          StringLike: D.list(i_ConditionParameter),
+          StringNotLike: D.list(i_ConditionParameter),
+        },
+      },
+      CreatorRequestId: D.m({ idempotency: true }),
+    },
     output: { CreationDate: D.ts },
     body: true,
   },
@@ -2507,7 +2540,12 @@ export const createBackupVault: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /backup-vaults/{BackupVaultName}",
-    input: { CreatorRequestId: D.m({ idempotency: true }) },
+    input: {
+      BackupVaultName: 0,
+      BackupVaultTags: 0,
+      EncryptionKeyArn: 0,
+      CreatorRequestId: D.m({ idempotency: true }),
+    },
     output: { CreationDate: D.ts },
     body: true,
   },
@@ -2545,7 +2583,13 @@ export const createFramework: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /audit/frameworks",
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      FrameworkName: 0,
+      FrameworkDescription: 0,
+      FrameworkControls: D.list(i_FrameworkControl),
+      IdempotencyToken: D.m({ idempotency: true }),
+      FrameworkTags: 0,
+    },
     body: true,
   },
   errors: [
@@ -2581,7 +2625,17 @@ export const createLegalHold: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /legal-holds",
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      Title: 0,
+      Description: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+      RecoveryPointSelection: {
+        VaultNames: 0,
+        ResourceIdentifiers: 0,
+        DateRange: { FromDate: 0, ToDate: 0 },
+      },
+      Tags: 0,
+    },
     output: {
       CreationDate: D.ts,
       RecoveryPointSelection: o_RecoveryPointSelection,
@@ -2626,7 +2680,14 @@ export const createLogicallyAirGappedBackupVault: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /logically-air-gapped-backup-vaults/{BackupVaultName}",
-    input: { CreatorRequestId: D.m({ idempotency: true }) },
+    input: {
+      BackupVaultName: 0,
+      BackupVaultTags: 0,
+      CreatorRequestId: D.m({ idempotency: true }),
+      MinRetentionDays: 0,
+      MaxRetentionDays: 0,
+      EncryptionKeyArn: 0,
+    },
     output: { CreationDate: D.ts },
     body: true,
   },
@@ -2666,7 +2727,14 @@ export const createReportPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /audit/report-plans",
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      ReportPlanName: 0,
+      ReportPlanDescription: 0,
+      ReportDeliveryChannel: i_ReportDeliveryChannel,
+      ReportSetting: i_ReportSetting,
+      ReportPlanTags: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
     output: { CreationTime: D.ts },
     body: true,
   },
@@ -2703,7 +2771,13 @@ export const createRestoreAccessBackupVault: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /restore-access-backup-vaults",
-    input: { CreatorRequestId: D.m({ idempotency: true }) },
+    input: {
+      SourceBackupVaultArn: 0,
+      BackupVaultName: 0,
+      BackupVaultTags: 0,
+      CreatorRequestId: D.m({ idempotency: true }),
+      RequesterComment: 0,
+    },
     output: { CreationDate: D.ts },
     body: true,
   },
@@ -2745,6 +2819,17 @@ export const createRestoreTestingPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /restore-testing/plans",
+    input: {
+      CreatorRequestId: 0,
+      RestoreTestingPlan: {
+        RecoveryPointSelection: i_RestoreTestingRecoveryPointSelection,
+        RestoreTestingPlanName: 0,
+        ScheduleExpression: 0,
+        ScheduleExpressionTimezone: 0,
+        StartWindowHours: 0,
+      },
+      Tags: 0,
+    },
     output: { CreationTime: D.ts },
     body: true,
   },
@@ -2800,6 +2885,19 @@ export const createRestoreTestingSelection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /restore-testing/plans/{RestoreTestingPlanName}/selections",
+    input: {
+      CreatorRequestId: 0,
+      RestoreTestingPlanName: 0,
+      RestoreTestingSelection: {
+        IamRoleArn: 0,
+        ProtectedResourceArns: 0,
+        ProtectedResourceConditions: i_ProtectedResourceConditions,
+        ProtectedResourceType: 0,
+        RestoreMetadataOverrides: 0,
+        RestoreTestingSelectionName: 0,
+        ValidationWindowHours: 0,
+      },
+    },
     output: { CreationTime: D.ts },
     body: true,
   },
@@ -2840,7 +2938,15 @@ export const createTieringConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /tiering-configurations",
-    input: { CreatorRequestId: D.m({ idempotency: true }) },
+    input: {
+      TieringConfiguration: {
+        TieringConfigurationName: 0,
+        BackupVaultName: 0,
+        ResourceSelection: D.list(i_ResourceSelection),
+      },
+      TieringConfigurationTags: 0,
+      CreatorRequestId: D.m({ idempotency: true }),
+    },
     output: { CreationTime: D.ts },
     body: true,
   },
@@ -2880,6 +2986,7 @@ export const deleteBackupAccessPoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /backup-access-point/delete/{AccessPointArn}",
+    input: { AccessPointArn: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -2914,6 +3021,7 @@ export const deleteBackupPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /backup/plans/{BackupPlanId}",
+    input: { BackupPlanId: 0 },
     output: { DeletionDate: D.ts },
   },
   errors: [
@@ -2947,6 +3055,7 @@ export const deleteBackupSelection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /backup/plans/{BackupPlanId}/selections/{SelectionId}",
+    input: { BackupPlanId: 0, SelectionId: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -2976,7 +3085,11 @@ export const deleteBackupVault: API.OperationMethod<
   DeleteBackupVaultError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /backup-vaults/{BackupVaultName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /backup-vaults/{BackupVaultName}",
+    input: { BackupVaultName: 0 },
+  },
   errors: [
     InvalidParameterValueException,
     InvalidRequestException,
@@ -3007,6 +3120,7 @@ export const deleteBackupVaultAccessPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /backup-vaults/{BackupVaultName}/access-policy",
+    input: { BackupVaultName: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -3044,6 +3158,7 @@ export const deleteBackupVaultLockConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /backup-vaults/{BackupVaultName}/vault-lock",
+    input: { BackupVaultName: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -3075,6 +3190,7 @@ export const deleteBackupVaultNotifications: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /backup-vaults/{BackupVaultName}/notification-configuration",
+    input: { BackupVaultName: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -3106,6 +3222,7 @@ export const deleteFramework: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /audit/frameworks/{FrameworkName}",
+    input: { FrameworkName: 0 },
   },
   errors: [
     ConflictException,
@@ -3154,6 +3271,7 @@ export const deleteRecoveryPoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /backup-vaults/{BackupVaultName}/recovery-points/{RecoveryPointArn}",
+    input: { BackupVaultName: 0, RecoveryPointArn: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -3187,6 +3305,7 @@ export const deleteReportPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /audit/report-plans/{ReportPlanName}",
+    input: { ReportPlanName: 0 },
   },
   errors: [
     ConflictException,
@@ -3219,6 +3338,7 @@ export const deleteRestoreTestingPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /restore-testing/plans/{RestoreTestingPlanName}",
+    input: { RestoreTestingPlanName: 0 },
   },
   errors: [InvalidRequestException, ServiceUnavailableException],
   protocol: AwsProtocol,
@@ -3246,6 +3366,7 @@ export const deleteRestoreTestingSelection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /restore-testing/plans/{RestoreTestingPlanName}/selections/{RestoreTestingSelectionName}",
+    input: { RestoreTestingPlanName: 0, RestoreTestingSelectionName: 0 },
   },
   errors: [ResourceNotFoundException, ServiceUnavailableException],
   protocol: AwsProtocol,
@@ -3271,6 +3392,7 @@ export const deleteTieringConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tiering-configurations/{TieringConfigurationName}",
+    input: { TieringConfigurationName: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -3306,6 +3428,7 @@ export const describeBackupAccessPoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /backup-access-point/{AccessPointArn}",
+    input: { AccessPointArn: 0 },
     output: { CreationTime: D.ts },
   },
   errors: [
@@ -3339,6 +3462,7 @@ export const describeBackupJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /backup-jobs/{BackupJobId}",
+    input: { BackupJobId: 0 },
     output: {
       CreationDate: D.ts,
       CompletionDate: D.ts,
@@ -3377,7 +3501,10 @@ export const describeBackupVault: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /backup-vaults/{BackupVaultName}",
-    input: { BackupVaultAccountId: D.m({ query: "backupVaultAccountId" }) },
+    input: {
+      BackupVaultName: 0,
+      BackupVaultAccountId: D.m({ query: "backupVaultAccountId" }),
+    },
     output: {
       CreationDate: D.ts,
       LockDate: D.ts,
@@ -3413,6 +3540,7 @@ export const describeCopyJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /copy-jobs/{CopyJobId}",
+    input: { CopyJobId: 0 },
     output: { CopyJob: o_CopyJob },
   },
   errors: [
@@ -3444,6 +3572,7 @@ export const describeFramework: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /audit/frameworks/{FrameworkName}",
+    input: { FrameworkName: 0 },
     output: { CreationTime: D.ts },
   },
   errors: [
@@ -3473,6 +3602,7 @@ export const describeGlobalSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /global-settings",
+    input: {},
     output: { LastUpdateTime: D.ts },
   },
   errors: [InvalidRequestException, ServiceUnavailableException],
@@ -3501,6 +3631,7 @@ export const describeProtectedResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /resources/{ResourceArn}",
+    input: { ResourceArn: 0 },
     output: {
       LastBackupTime: D.ts,
       LatestRestoreJobCreationDate: D.ts,
@@ -3537,7 +3668,11 @@ export const describeRecoveryPoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /backup-vaults/{BackupVaultName}/recovery-points/{RecoveryPointArn}",
-    input: { BackupVaultAccountId: D.m({ query: "backupVaultAccountId" }) },
+    input: {
+      BackupVaultName: 0,
+      RecoveryPointArn: 0,
+      BackupVaultAccountId: D.m({ query: "backupVaultAccountId" }),
+    },
     output: {
       CreationDate: D.ts,
       InitiationDate: D.ts,
@@ -3574,7 +3709,7 @@ export const describeRegionSettings: API.OperationMethod<
   DescribeRegionSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /account-settings" },
+  descriptor: { service: svc, http: "GET /account-settings", input: {} },
   errors: [ServiceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3599,6 +3734,7 @@ export const describeReportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /audit/report-jobs/{ReportJobId}",
+    input: { ReportJobId: 0 },
     output: { ReportJob: o_ReportJob },
   },
   errors: [
@@ -3629,6 +3765,7 @@ export const describeReportPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /audit/report-plans/{ReportPlanName}",
+    input: { ReportPlanName: 0 },
     output: { ReportPlan: o_ReportPlan },
   },
   errors: [
@@ -3661,6 +3798,7 @@ export const describeRestoreJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restore-jobs/{RestoreJobId}",
+    input: { RestoreJobId: 0 },
     output: {
       CreationDate: D.ts,
       CompletionDate: D.ts,
@@ -3697,6 +3835,7 @@ export const describeScanJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /scan/jobs/{ScanJobId}",
+    input: { ScanJobId: 0 },
     output: {
       CompletionDate: D.ts,
       ContinuousScanEndTime: D.ts,
@@ -3734,6 +3873,7 @@ export const disassociateBackupVaultMpaApprovalTeam: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backup-vaults/{BackupVaultName}/mpaApprovalTeam?delete",
+    input: { BackupVaultName: 0, RequesterComment: 0 },
     body: true,
   },
   errors: [
@@ -3772,6 +3912,7 @@ export const disassociateRecoveryPoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backup-vaults/{BackupVaultName}/recovery-points/{RecoveryPointArn}/disassociate",
+    input: { BackupVaultName: 0, RecoveryPointArn: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -3806,6 +3947,7 @@ export const disassociateRecoveryPointFromParent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /backup-vaults/{BackupVaultName}/recovery-points/{RecoveryPointArn}/parentAssociation",
+    input: { BackupVaultName: 0, RecoveryPointArn: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -3837,6 +3979,7 @@ export const exportBackupPlanTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /backup/plans/{BackupPlanId}/toTemplate",
+    input: { BackupPlanId: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -3869,6 +4012,7 @@ export const getBackupPlan: API.OperationMethod<
     service: svc,
     http: "GET /backup/plans/{BackupPlanId}",
     input: {
+      BackupPlanId: 0,
       VersionId: D.m({ query: "versionId" }),
       MaxScheduledRunsPreview: D.m({ query: "MaxScheduledRunsPreview" }),
     },
@@ -3909,6 +4053,7 @@ export const getBackupPlanFromJSON: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backup/template/json/toPlan",
+    input: { BackupPlanTemplateJson: 0 },
     body: true,
   },
   errors: [
@@ -3941,6 +4086,7 @@ export const getBackupPlanFromTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /backup/template/plans/{BackupPlanTemplateId}/toPlan",
+    input: { BackupPlanTemplateId: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -3972,6 +4118,7 @@ export const getBackupSelection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /backup/plans/{BackupPlanId}/selections/{SelectionId}",
+    input: { BackupPlanId: 0, SelectionId: 0 },
     output: { CreationDate: D.ts },
   },
   errors: [
@@ -4004,6 +4151,7 @@ export const getBackupVaultAccessPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /backup-vaults/{BackupVaultName}/access-policy",
+    input: { BackupVaultName: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -4034,6 +4182,7 @@ export const getBackupVaultNotifications: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /backup-vaults/{BackupVaultName}/notification-configuration",
+    input: { BackupVaultName: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -4065,6 +4214,7 @@ export const getLegalHold: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /legal-holds/{LegalHoldId}",
+    input: { LegalHoldId: 0 },
     output: {
       CreationDate: D.ts,
       CancellationDate: D.ts,
@@ -4104,7 +4254,10 @@ export const getPITRMalwareScanResults: API.OperationMethod<
     input: {
       RecoveryPointArn: D.m({ query: "RecoveryPointArn" }),
       BackupVaultName: D.m({ query: "BackupVaultName" }),
-      ScanEndTime: D.m({ query: "ScanEndTime" }),
+      ScanEndTime: D.m({
+        query: "ScanEndTime",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       MalwareScanner: D.m({ query: "MalwareScanner" }),
     },
     output: { ScanEndTime: D.ts, LastScanJobTime: D.ts },
@@ -4139,6 +4292,7 @@ export const getRecoveryPointIndexDetails: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /backup-vaults/{BackupVaultName}/recovery-points/{RecoveryPointArn}/index",
+    input: { BackupVaultName: 0, RecoveryPointArn: 0 },
     output: {
       IndexCreationDate: D.ts,
       IndexDeletionDate: D.ts,
@@ -4174,7 +4328,11 @@ export const getRecoveryPointRestoreMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /backup-vaults/{BackupVaultName}/recovery-points/{RecoveryPointArn}/restore-metadata",
-    input: { BackupVaultAccountId: D.m({ query: "backupVaultAccountId" }) },
+    input: {
+      BackupVaultName: 0,
+      RecoveryPointArn: 0,
+      BackupVaultAccountId: D.m({ query: "backupVaultAccountId" }),
+    },
   },
   errors: [
     InvalidParameterValueException,
@@ -4205,6 +4363,7 @@ export const getRestoreJobMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restore-jobs/{RestoreJobId}/metadata",
+    input: { RestoreJobId: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -4273,6 +4432,7 @@ export const getRestoreTestingPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restore-testing/plans/{RestoreTestingPlanName}",
+    input: { RestoreTestingPlanName: 0 },
     output: {
       RestoreTestingPlan: {
         CreationTime: D.ts,
@@ -4304,6 +4464,7 @@ export const getRestoreTestingSelection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restore-testing/plans/{RestoreTestingPlanName}/selections/{RestoreTestingSelectionName}",
+    input: { RestoreTestingPlanName: 0, RestoreTestingSelectionName: 0 },
     output: { RestoreTestingSelection: { CreationTime: D.ts } },
   },
   errors: [ResourceNotFoundException, ServiceUnavailableException],
@@ -4351,6 +4512,7 @@ export const getTieringConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tiering-configurations/{TieringConfigurationName}",
+    input: { TieringConfigurationName: 0 },
     output: {
       TieringConfiguration: { CreationTime: D.ts, LastUpdatedTime: D.ts },
     },
@@ -4424,6 +4586,7 @@ export const listBackupAccessPointsByRecoveryPoint: API.PaginatedOperationMethod
     input: {
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
+      RecoveryPointArn: 0,
     },
     output: { BackupAccessPoints: D.list(o_ListAccessPointsMember) },
   },
@@ -4460,6 +4623,7 @@ export const listBackupAccessPointsByResource: API.PaginatedOperationMethod<
     input: {
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
+      ResourceArn: 0,
     },
     output: { BackupAccessPoints: D.list(o_ListAccessPointsMember) },
   },
@@ -4499,12 +4663,24 @@ export const listBackupJobs: API.PaginatedOperationMethod<
       ByResourceArn: D.m({ query: "resourceArn" }),
       ByState: D.m({ query: "state" }),
       ByBackupVaultName: D.m({ query: "backupVaultName" }),
-      ByCreatedBefore: D.m({ query: "createdBefore" }),
-      ByCreatedAfter: D.m({ query: "createdAfter" }),
+      ByCreatedBefore: D.m({
+        query: "createdBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      ByCreatedAfter: D.m({
+        query: "createdAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       ByResourceType: D.m({ query: "resourceType" }),
       ByAccountId: D.m({ query: "accountId" }),
-      ByCompleteAfter: D.m({ query: "completeAfter" }),
-      ByCompleteBefore: D.m({ query: "completeBefore" }),
+      ByCompleteAfter: D.m({
+        query: "completeAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      ByCompleteBefore: D.m({
+        query: "completeBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       ByParentJobId: D.m({ query: "parentJobId" }),
       ByMessageCategory: D.m({ query: "messageCategory" }),
     },
@@ -4682,6 +4858,7 @@ export const listBackupPlanVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /backup/plans/{BackupPlanId}/versions",
     input: {
+      BackupPlanId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -4725,6 +4902,7 @@ export const listBackupSelections: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /backup/plans/{BackupPlanId}/selections",
     input: {
+      BackupPlanId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -4814,13 +4992,25 @@ export const listCopyJobs: API.PaginatedOperationMethod<
       MaxResults: D.m({ query: "maxResults" }),
       ByResourceArn: D.m({ query: "resourceArn" }),
       ByState: D.m({ query: "state" }),
-      ByCreatedBefore: D.m({ query: "createdBefore" }),
-      ByCreatedAfter: D.m({ query: "createdAfter" }),
+      ByCreatedBefore: D.m({
+        query: "createdBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      ByCreatedAfter: D.m({
+        query: "createdAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       ByResourceType: D.m({ query: "resourceType" }),
       ByDestinationVaultArn: D.m({ query: "destinationVaultArn" }),
       ByAccountId: D.m({ query: "accountId" }),
-      ByCompleteBefore: D.m({ query: "completeBefore" }),
-      ByCompleteAfter: D.m({ query: "completeAfter" }),
+      ByCompleteBefore: D.m({
+        query: "completeBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      ByCompleteAfter: D.m({
+        query: "completeAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       ByParentJobId: D.m({ query: "parentJobId" }),
       ByMessageCategory: D.m({ query: "messageCategory" }),
       BySourceRecoveryPointArn: D.m({ query: "sourceRecoveryPointArn" }),
@@ -4947,8 +5137,14 @@ export const listIndexedRecoveryPoints: API.PaginatedOperationMethod<
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
       SourceResourceArn: D.m({ query: "sourceResourceArn" }),
-      CreatedBefore: D.m({ query: "createdBefore" }),
-      CreatedAfter: D.m({ query: "createdAfter" }),
+      CreatedBefore: D.m({
+        query: "createdBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      CreatedAfter: D.m({
+        query: "createdAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       ResourceType: D.m({ query: "resourceType" }),
       IndexStatus: D.m({ query: "indexStatus" }),
     },
@@ -5069,6 +5265,7 @@ export const listProtectedResourcesByBackupVault: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /backup-vaults/{BackupVaultName}/resources",
     input: {
+      BackupVaultName: 0,
       BackupVaultAccountId: D.m({ query: "backupVaultAccountId" }),
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
@@ -5111,14 +5308,21 @@ export const listRecoveryPointsByBackupVault: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /backup-vaults/{BackupVaultName}/recovery-points",
     input: {
+      BackupVaultName: 0,
       BackupVaultAccountId: D.m({ query: "backupVaultAccountId" }),
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
       ByResourceArn: D.m({ query: "resourceArn" }),
       ByResourceType: D.m({ query: "resourceType" }),
       ByBackupPlanId: D.m({ query: "backupPlanId" }),
-      ByCreatedBefore: D.m({ query: "createdBefore" }),
-      ByCreatedAfter: D.m({ query: "createdAfter" }),
+      ByCreatedBefore: D.m({
+        query: "createdBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      ByCreatedAfter: D.m({
+        query: "createdAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       ByParentRecoveryPointArn: D.m({ query: "parentRecoveryPointArn" }),
     },
     output: {
@@ -5169,6 +5373,7 @@ export const listRecoveryPointsByLegalHold: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /legal-holds/{LegalHoldId}/recovery-points",
     input: {
+      LegalHoldId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -5213,6 +5418,7 @@ export const listRecoveryPointsByResource: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /resources/{ResourceArn}/recovery-points",
     input: {
+      ResourceArn: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
       ManagedByAWSBackupOnly: D.m({ query: "managedByAWSBackupOnly" }),
@@ -5261,8 +5467,14 @@ export const listReportJobs: API.PaginatedOperationMethod<
     http: "GET /audit/report-jobs",
     input: {
       ByReportPlanName: D.m({ query: "ReportPlanName" }),
-      ByCreationBefore: D.m({ query: "CreationBefore" }),
-      ByCreationAfter: D.m({ query: "CreationAfter" }),
+      ByCreationBefore: D.m({
+        query: "CreationBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      ByCreationAfter: D.m({
+        query: "CreationAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       ByStatus: D.m({ query: "Status" }),
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
@@ -5339,6 +5551,7 @@ export const listRestoreAccessBackupVaults: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /logically-air-gapped-backup-vaults/{BackupVaultName}/restore-access-backup-vaults",
     input: {
+      BackupVaultName: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -5392,11 +5605,23 @@ export const listRestoreJobs: API.PaginatedOperationMethod<
       MaxResults: D.m({ query: "maxResults" }),
       ByAccountId: D.m({ query: "accountId" }),
       ByResourceType: D.m({ query: "resourceType" }),
-      ByCreatedBefore: D.m({ query: "createdBefore" }),
-      ByCreatedAfter: D.m({ query: "createdAfter" }),
+      ByCreatedBefore: D.m({
+        query: "createdBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      ByCreatedAfter: D.m({
+        query: "createdAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       ByStatus: D.m({ query: "status" }),
-      ByCompleteBefore: D.m({ query: "completeBefore" }),
-      ByCompleteAfter: D.m({ query: "completeAfter" }),
+      ByCompleteBefore: D.m({
+        query: "completeBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      ByCompleteAfter: D.m({
+        query: "completeAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       ByRestoreTestingPlanArn: D.m({ query: "restoreTestingPlanArn" }),
       ByParentJobId: D.m({ query: "parentJobId" }),
     },
@@ -5444,12 +5669,15 @@ export const listRestoreJobsByProtectedResource: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /resources/{ResourceArn}/restore-jobs",
     input: {
+      ResourceArn: 0,
       ByStatus: D.m({ query: "status" }),
       ByRecoveryPointCreationDateAfter: D.m({
         query: "recoveryPointCreationDateAfter",
+        shape: D.tsAs("epoch-seconds"),
       }),
       ByRecoveryPointCreationDateBefore: D.m({
         query: "recoveryPointCreationDateBefore",
+        shape: D.tsAs("epoch-seconds"),
       }),
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
@@ -5582,6 +5810,7 @@ export const listRestoreTestingSelections: API.PaginatedOperationMethod<
     input: {
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
+      RestoreTestingPlanName: 0,
     },
     output: { RestoreTestingSelections: D.list({ CreationTime: D.ts }) },
   },
@@ -5621,8 +5850,14 @@ export const listScanJobs: API.PaginatedOperationMethod<
     input: {
       ByAccountId: D.m({ query: "ByAccountId" }),
       ByBackupVaultName: D.m({ query: "ByBackupVaultName" }),
-      ByCompleteAfter: D.m({ query: "ByCompleteAfter" }),
-      ByCompleteBefore: D.m({ query: "ByCompleteBefore" }),
+      ByCompleteAfter: D.m({
+        query: "ByCompleteAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      ByCompleteBefore: D.m({
+        query: "ByCompleteBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       ByMalwareScanner: D.m({ query: "ByMalwareScanner" }),
       ByRecoveryPointArn: D.m({ query: "ByRecoveryPointArn" }),
       ByResourceArn: D.m({ query: "ByResourceArn" }),
@@ -5728,6 +5963,7 @@ export const listTags: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /tags/{ResourceArn}",
     input: {
+      ResourceArn: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -5808,6 +6044,7 @@ export const putBackupVaultAccessPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /backup-vaults/{BackupVaultName}/access-policy",
+    input: { BackupVaultName: 0, Policy: 0 },
     body: true,
   },
   errors: [
@@ -5852,6 +6089,12 @@ export const putBackupVaultLockConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /backup-vaults/{BackupVaultName}/vault-lock",
+    input: {
+      BackupVaultName: 0,
+      MinRetentionDays: 0,
+      MaxRetentionDays: 0,
+      ChangeableForDays: 0,
+    },
     body: true,
   },
   errors: [
@@ -5884,6 +6127,7 @@ export const putBackupVaultNotifications: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /backup-vaults/{BackupVaultName}/notification-configuration",
+    input: { BackupVaultName: 0, SNSTopicArn: 0, BackupVaultEvents: 0 },
     body: true,
   },
   errors: [
@@ -5920,6 +6164,7 @@ export const putRestoreValidationResult: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /restore-jobs/{RestoreJobId}/validations",
+    input: { RestoreJobId: 0, ValidationStatus: 0, ValidationStatusMessage: 0 },
     body: true,
   },
   errors: [
@@ -5953,7 +6198,11 @@ export const revokeRestoreAccessBackupVault: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /logically-air-gapped-backup-vaults/{BackupVaultName}/restore-access-backup-vaults/{RestoreAccessBackupVaultArn}",
-    input: { RequesterComment: D.m({ query: "requesterComment" }) },
+    input: {
+      BackupVaultName: 0,
+      RestoreAccessBackupVaultArn: 0,
+      RequesterComment: D.m({ query: "requesterComment" }),
+    },
   },
   errors: [
     InvalidParameterValueException,
@@ -5987,7 +6236,19 @@ export const startBackupJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /backup-jobs",
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      BackupVaultName: 0,
+      LogicallyAirGappedBackupVaultArn: 0,
+      ResourceArn: 0,
+      IamRoleArn: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+      StartWindowMinutes: 0,
+      CompleteWindowMinutes: 0,
+      Lifecycle: i_Lifecycle,
+      RecoveryPointTags: 0,
+      BackupOptions: 0,
+      Index: 0,
+    },
     output: { CreationDate: D.ts },
     body: true,
   },
@@ -6030,7 +6291,14 @@ export const startCopyJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /copy-jobs",
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      RecoveryPointArn: 0,
+      SourceBackupVaultName: 0,
+      DestinationBackupVaultArn: 0,
+      IamRoleArn: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+      Lifecycle: i_Lifecycle,
+    },
     output: { CreationDate: D.ts },
     body: true,
   },
@@ -6065,7 +6333,7 @@ export const startReportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /audit/report-jobs/{ReportPlanName}",
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: { ReportPlanName: 0, IdempotencyToken: D.m({ idempotency: true }) },
     body: true,
   },
   errors: [
@@ -6098,7 +6366,14 @@ export const startRestoreJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /restore-jobs",
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      RecoveryPointArn: 0,
+      Metadata: 0,
+      IamRoleArn: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+      ResourceType: 0,
+      CopySourceTagsToRestoredResource: 0,
+    },
     body: true,
   },
   errors: [
@@ -6133,6 +6408,17 @@ export const startScanJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /scan/job",
+    input: {
+      BackupVaultName: 0,
+      ContinuousScanEndTime: 0,
+      IamRoleArn: 0,
+      IdempotencyToken: 0,
+      MalwareScanner: 0,
+      RecoveryPointArn: 0,
+      ScanBaseRecoveryPointArn: 0,
+      ScanMode: 0,
+      ScannerRoleArn: 0,
+    },
     output: { CreationDate: D.ts },
     body: true,
   },
@@ -6185,7 +6471,11 @@ export const stopBackupJob: API.OperationMethod<
   StopBackupJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /backup-jobs/{BackupJobId}" },
+  descriptor: {
+    service: svc,
+    http: "POST /backup-jobs/{BackupJobId}",
+    input: { BackupJobId: 0 },
+  },
   errors: [
     InvalidParameterValueException,
     InvalidRequestException,
@@ -6214,7 +6504,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     InvalidParameterValueException,
     LimitExceededException,
@@ -6247,7 +6542,12 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /untag/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /untag/{ResourceArn}",
+    input: { ResourceArn: 0, TagKeyList: 0 },
+    body: true,
+  },
   errors: [
     InvalidParameterValueException,
     MissingParameterValueException,
@@ -6277,6 +6577,7 @@ export const updateBackupPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backup/plans/{BackupPlanId}",
+    input: { BackupPlanId: 0, BackupPlan: i_BackupPlanInput },
     output: { CreationDate: D.ts },
     body: true,
   },
@@ -6312,7 +6613,12 @@ export const updateFramework: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /audit/frameworks/{FrameworkName}",
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      FrameworkName: 0,
+      FrameworkDescription: 0,
+      FrameworkControls: D.list(i_FrameworkControl),
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
     output: { CreationTime: D.ts },
     body: true,
   },
@@ -6345,7 +6651,12 @@ export const updateGlobalSettings: API.OperationMethod<
   UpdateGlobalSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /global-settings", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /global-settings",
+    input: { GlobalSettings: 0 },
+    body: true,
+  },
   errors: [
     InvalidParameterValueException,
     InvalidRequestException,
@@ -6378,6 +6689,7 @@ export const updateRecoveryPointIndexSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backup-vaults/{BackupVaultName}/recovery-points/{RecoveryPointArn}/index",
+    input: { BackupVaultName: 0, RecoveryPointArn: 0, IamRoleArn: 0, Index: 0 },
     body: true,
   },
   errors: [
@@ -6429,6 +6741,7 @@ export const updateRecoveryPointLifecycle: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backup-vaults/{BackupVaultName}/recovery-points/{RecoveryPointArn}",
+    input: { BackupVaultName: 0, RecoveryPointArn: 0, Lifecycle: i_Lifecycle },
     output: { CalculatedLifecycle: o_CalculatedLifecycle },
     body: true,
   },
@@ -6462,7 +6775,15 @@ export const updateRegionSettings: API.OperationMethod<
   UpdateRegionSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /account-settings", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /account-settings",
+    input: {
+      ResourceTypeOptInPreference: 0,
+      ResourceTypeManagementPreference: 0,
+    },
+    body: true,
+  },
   errors: [
     InvalidParameterValueException,
     MissingParameterValueException,
@@ -6492,7 +6813,13 @@ export const updateReportPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /audit/report-plans/{ReportPlanName}",
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      ReportPlanName: 0,
+      ReportPlanDescription: 0,
+      ReportDeliveryChannel: i_ReportDeliveryChannel,
+      ReportSetting: i_ReportSetting,
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
     output: { CreationTime: D.ts },
     body: true,
   },
@@ -6541,6 +6868,15 @@ export const updateRestoreTestingPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /restore-testing/plans/{RestoreTestingPlanName}",
+    input: {
+      RestoreTestingPlan: {
+        RecoveryPointSelection: i_RestoreTestingRecoveryPointSelection,
+        ScheduleExpression: 0,
+        ScheduleExpressionTimezone: 0,
+        StartWindowHours: 0,
+      },
+      RestoreTestingPlanName: 0,
+    },
     output: { CreationTime: D.ts, UpdateTime: D.ts },
     body: true,
   },
@@ -6580,6 +6916,17 @@ export const updateRestoreTestingSelection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /restore-testing/plans/{RestoreTestingPlanName}/selections/{RestoreTestingSelectionName}",
+    input: {
+      RestoreTestingPlanName: 0,
+      RestoreTestingSelection: {
+        IamRoleArn: 0,
+        ProtectedResourceArns: 0,
+        ProtectedResourceConditions: i_ProtectedResourceConditions,
+        RestoreMetadataOverrides: 0,
+        ValidationWindowHours: 0,
+      },
+      RestoreTestingSelectionName: 0,
+    },
     output: { CreationTime: D.ts, UpdateTime: D.ts },
     body: true,
   },
@@ -6626,6 +6973,13 @@ export const updateTieringConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /tiering-configurations/{TieringConfigurationName}",
+    input: {
+      TieringConfigurationName: 0,
+      TieringConfiguration: {
+        ResourceSelection: D.list(i_ResourceSelection),
+        BackupVaultName: 0,
+      },
+    },
     output: { CreationTime: D.ts, LastUpdatedTime: D.ts },
     body: true,
   },
@@ -6643,6 +6997,81 @@ export const updateTieringConfiguration: API.OperationMethod<
   operationName: "UpdateTieringConfiguration",
 })) as any;
 
+const i_BackupPlanInput: D.LazyStruct = () => ({
+  BackupPlanName: 0,
+  Rules: D.list({
+    RuleName: 0,
+    TargetBackupVaultName: 0,
+    TargetLogicallyAirGappedBackupVaultArn: 0,
+    ScheduleExpression: 0,
+    StartWindowMinutes: 0,
+    CompletionWindowMinutes: 0,
+    Lifecycle: i_Lifecycle,
+    RecoveryPointTags: 0,
+    CopyActions: D.list({
+      Lifecycle: i_Lifecycle,
+      DestinationBackupVaultArn: 0,
+    }),
+    EnableContinuousBackup: 0,
+    ScheduleExpressionTimezone: 0,
+    IndexActions: D.list({ ResourceTypes: 0 }),
+    ScanActions: D.list({ MalwareScanner: 0, ScanMode: 0 }),
+  }),
+  AdvancedBackupSettings: D.list({ ResourceType: 0, BackupOptions: 0 }),
+  ScanSettings: D.list({
+    MalwareScanner: 0,
+    ResourceTypes: 0,
+    ScannerRoleArn: 0,
+  }),
+});
+const i_ConditionParameter: D.LazyStruct = () => ({
+  ConditionKey: 0,
+  ConditionValue: 0,
+});
+const i_FrameworkControl: D.LazyStruct = () => ({
+  ControlName: 0,
+  ControlInputParameters: D.list({ ParameterName: 0, ParameterValue: 0 }),
+  ControlScope: {
+    ComplianceResourceIds: 0,
+    ComplianceResourceTypes: 0,
+    Tags: 0,
+  },
+});
+const i_Lifecycle: D.LazyStruct = () => ({
+  MoveToColdStorageAfterDays: 0,
+  DeleteAfterDays: 0,
+  OptInToArchiveForSupportedResources: 0,
+  DeleteAfterEvent: 0,
+});
+const i_ProtectedResourceConditions: D.LazyStruct = () => ({
+  StringEquals: D.list(i_KeyValue),
+  StringNotEquals: D.list(i_KeyValue),
+});
+const i_ReportDeliveryChannel: D.LazyStruct = () => ({
+  S3BucketName: 0,
+  S3KeyPrefix: 0,
+  Formats: 0,
+});
+const i_ReportSetting: D.LazyStruct = () => ({
+  ReportTemplate: 0,
+  FrameworkArns: 0,
+  NumberOfFrameworks: 0,
+  Accounts: 0,
+  OrganizationUnits: 0,
+  Regions: 0,
+});
+const i_ResourceSelection: D.LazyStruct = () => ({
+  Resources: 0,
+  TieringDownSettingsInDays: 0,
+  ResourceType: 0,
+});
+const i_RestoreTestingRecoveryPointSelection: D.LazyStruct = () => ({
+  Algorithm: 0,
+  ExcludeVaults: 0,
+  IncludeVaults: 0,
+  RecoveryPointTypes: 0,
+  SelectionWindowDays: 0,
+});
 const o_AggregatedScanResult: D.LazyStruct = () => ({ LastComputed: D.ts });
 const o_BackupPlansListMember: D.LazyStruct = () => ({
   CreationDate: D.ts,
@@ -6676,3 +7105,4 @@ const o_RestoreJobsListMember: D.LazyStruct = () => ({
   CompletionDate: D.ts,
   RecoveryPointCreationDate: D.ts,
 });
+const i_KeyValue: D.LazyStruct = () => ({ Key: 0, Value: 0 });

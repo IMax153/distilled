@@ -485,6 +485,10 @@ export const addNotificationChannels: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /profilingGroups/{profilingGroupName}/notificationConfiguration",
+    input: {
+      profilingGroupName: 0,
+      channels: D.list({ id: 0, uri: 0, eventPublishers: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -520,10 +524,12 @@ export const batchGetFrameMetricData: API.OperationMethod<
     service: svc,
     http: "POST /profilingGroups/{profilingGroupName}/frames/-/metrics",
     input: {
+      profilingGroupName: 0,
       startTime: D.m({ query: "startTime" }),
       endTime: D.m({ query: "endTime" }),
       period: D.m({ query: "period" }),
       targetResolution: D.m({ query: "targetResolution" }),
+      frameMetrics: D.list({ frameName: 0, type: 0, threadStates: 0 }),
     },
     output: {
       startTime: D.ts,
@@ -564,6 +570,7 @@ export const configureAgent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /profilingGroups/{profilingGroupName}/configureAgent",
+    input: { profilingGroupName: 0, fleetInstanceId: 0, metadata: 0 },
     output: { configuration: D.m({ payload: true }) },
     body: true,
   },
@@ -597,7 +604,13 @@ export const createProfilingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /profilingGroups",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      profilingGroupName: 0,
+      computePlatform: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+      agentOrchestrationConfig: i_AgentOrchestrationConfig,
+      tags: 0,
+    },
     output: {
       profilingGroup: D.m({
         payload: true,
@@ -637,6 +650,7 @@ export const deleteProfilingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /profilingGroups/{profilingGroupName}",
+    input: { profilingGroupName: 0 },
   },
   errors: [
     ConflictException,
@@ -671,6 +685,7 @@ export const describeProfilingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /profilingGroups/{profilingGroupName}",
+    input: { profilingGroupName: 0 },
     output: {
       profilingGroup: D.m({
         payload: true,
@@ -747,6 +762,7 @@ export const getNotificationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /profilingGroups/{profilingGroupName}/notificationConfiguration",
+    input: { profilingGroupName: 0 },
   },
   errors: [
     InternalServerException,
@@ -776,6 +792,7 @@ export const getPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /profilingGroups/{profilingGroupName}/policy",
+    input: { profilingGroupName: 0 },
   },
   errors: [
     InternalServerException,
@@ -845,6 +862,7 @@ export const getProfile: API.OperationMethod<
     service: svc,
     http: "GET /profilingGroups/{profilingGroupName}/profile",
     input: {
+      profilingGroupName: 0,
       startTime: D.m({ query: "startTime" }),
       period: D.m({ query: "period" }),
       endTime: D.m({ query: "endTime" }),
@@ -852,7 +870,7 @@ export const getProfile: API.OperationMethod<
       accept: D.m({ header: "Accept" }),
     },
     output: {
-      profile: D.m({ payload: true, shape: D.stream }),
+      profile: D.m({ payload: true, shape: D.blob }),
       contentType: D.m({ header: "Content-Type" }),
       contentEncoding: D.m({ header: "Content-Encoding" }),
     },
@@ -896,6 +914,7 @@ export const getRecommendations: API.OperationMethod<
     service: svc,
     http: "GET /internal/profilingGroups/{profilingGroupName}/recommendations",
     input: {
+      profilingGroupName: 0,
       startTime: D.m({ query: "startTime" }),
       endTime: D.m({ query: "endTime" }),
       locale: D.m({ query: "locale" }),
@@ -940,6 +959,7 @@ export const listFindingsReports: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /internal/profilingGroups/{profilingGroupName}/findingsReports",
     input: {
+      profilingGroupName: 0,
       startTime: D.m({ query: "startTime" }),
       endTime: D.m({ query: "endTime" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -985,6 +1005,7 @@ export const listProfileTimes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /profilingGroups/{profilingGroupName}/profileTimes",
     input: {
+      profilingGroupName: 0,
       startTime: D.m({ query: "startTime" }),
       endTime: D.m({ query: "endTime" }),
       period: D.m({ query: "period" }),
@@ -1064,7 +1085,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1098,7 +1123,8 @@ export const postAgentProfile: API.OperationMethod<
     service: svc,
     http: "POST /profilingGroups/{profilingGroupName}/agentProfile",
     input: {
-      agentProfile: D.m({ payload: true, shape: D.stream }),
+      profilingGroupName: 0,
+      agentProfile: D.m({ payload: true, shape: D.blob }),
       profileToken: D.m({ query: "profileToken", idempotency: true }),
       contentType: D.m({ header: "Content-Type" }),
     },
@@ -1152,6 +1178,12 @@ export const putPermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /profilingGroups/{profilingGroupName}/policy/{actionGroup}",
+    input: {
+      profilingGroupName: 0,
+      actionGroup: 0,
+      principals: 0,
+      revisionId: 0,
+    },
     body: true,
   },
   errors: [
@@ -1184,6 +1216,7 @@ export const removeNotificationChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /profilingGroups/{profilingGroupName}/notificationConfiguration/{channelId}",
+    input: { profilingGroupName: 0, channelId: 0 },
   },
   errors: [
     InternalServerException,
@@ -1223,7 +1256,11 @@ export const removePermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /profilingGroups/{profilingGroupName}/policy/{actionGroup}",
-    input: { revisionId: D.m({ query: "revisionId" }) },
+    input: {
+      profilingGroupName: 0,
+      actionGroup: 0,
+      revisionId: D.m({ query: "revisionId" }),
+    },
   },
   errors: [
     ConflictException,
@@ -1256,6 +1293,7 @@ export const submitFeedback: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /internal/profilingGroups/{profilingGroupName}/anomalies/{anomalyInstanceId}/feedback",
+    input: { profilingGroupName: 0, anomalyInstanceId: 0, type: 0, comment: 0 },
     body: true,
   },
   errors: [
@@ -1283,7 +1321,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1311,7 +1354,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -1342,6 +1385,10 @@ export const updateProfilingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /profilingGroups/{profilingGroupName}",
+    input: {
+      profilingGroupName: 0,
+      agentOrchestrationConfig: i_AgentOrchestrationConfig,
+    },
     output: {
       profilingGroup: D.m({
         payload: true,
@@ -1362,6 +1409,9 @@ export const updateProfilingGroup: API.OperationMethod<
   operationName: "UpdateProfilingGroup",
 })) as any;
 
+const i_AgentOrchestrationConfig: D.LazyStruct = () => ({
+  profilingEnabled: 0,
+});
 const o_FindingsReportSummary: D.LazyStruct = () => ({
   profileStartTime: D.ts,
   profileEndTime: D.ts,

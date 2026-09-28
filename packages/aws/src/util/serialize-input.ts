@@ -87,6 +87,8 @@ export function bindInputToRequest(
   for (const name in input) {
     const value = input[name];
     if (value === undefined) continue;
+    // Closed structure: keys the model doesn't have are dropped
+    if (struct !== undefined && !(name in struct)) continue;
     const member = struct?.[name];
     const spec = specOf(member as never);
     const format = timestampFormatOf(shapeOf(member as never));

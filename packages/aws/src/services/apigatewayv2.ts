@@ -2282,6 +2282,7 @@ export const createApiMapping: API.OperationMethod<
     input: {
       ApiId: D.m({ wire: "apiId" }),
       ApiMappingKey: D.m({ wire: "apiMappingKey" }),
+      DomainName: 0,
       Stage: D.m({ wire: "stage" }),
     },
     output: {
@@ -2322,6 +2323,7 @@ export const createAuthorizer: API.OperationMethod<
     service: svc,
     http: "POST /v2/apis/{ApiId}/authorizers",
     input: {
+      ApiId: 0,
       AuthorizerCredentialsArn: D.m({ wire: "authorizerCredentialsArn" }),
       AuthorizerPayloadFormatVersion: D.m({
         wire: "authorizerPayloadFormatVersion",
@@ -2396,6 +2398,7 @@ export const createDeployment: API.OperationMethod<
     service: svc,
     http: "POST /v2/apis/{ApiId}/deployments",
     input: {
+      ApiId: 0,
       Description: D.m({ wire: "description" }),
       StageName: D.m({ wire: "stageName" }),
     },
@@ -2502,6 +2505,7 @@ export const createIntegration: API.OperationMethod<
     service: svc,
     http: "POST /v2/apis/{ApiId}/integrations",
     input: {
+      ApiId: 0,
       ConnectionId: D.m({ wire: "connectionId" }),
       ConnectionType: D.m({ wire: "connectionType" }),
       ContentHandlingStrategy: D.m({ wire: "contentHandlingStrategy" }),
@@ -2576,7 +2580,9 @@ export const createIntegrationResponse: API.OperationMethod<
     service: svc,
     http: "POST /v2/apis/{ApiId}/integrations/{IntegrationId}/integrationresponses",
     input: {
+      ApiId: 0,
       ContentHandlingStrategy: D.m({ wire: "contentHandlingStrategy" }),
+      IntegrationId: 0,
       IntegrationResponseKey: D.m({ wire: "integrationResponseKey" }),
       ResponseParameters: D.m({ wire: "responseParameters" }),
       ResponseTemplates: D.m({ wire: "responseTemplates" }),
@@ -2622,6 +2628,7 @@ export const createModel: API.OperationMethod<
     service: svc,
     http: "POST /v2/apis/{ApiId}/models",
     input: {
+      ApiId: 0,
       ContentType: D.m({ wire: "contentType" }),
       Description: D.m({ wire: "description" }),
       Name: D.m({ wire: "name" }),
@@ -2772,6 +2779,7 @@ export const createProductPage: API.OperationMethod<
     http: "POST /v2/portalproducts/{PortalProductId}/productpages",
     input: {
       DisplayContent: D.m({ wire: "displayContent", shape: i_DisplayContent }),
+      PortalProductId: 0,
     },
     output: {
       DisplayContent: D.m({ wire: "displayContent", shape: o_DisplayContent }),
@@ -2815,6 +2823,7 @@ export const createProductRestEndpointPage: API.OperationMethod<
         wire: "displayContent",
         shape: i_EndpointDisplayContent,
       }),
+      PortalProductId: 0,
       RestEndpointIdentifier: D.m({
         wire: "restEndpointIdentifier",
         shape: {
@@ -2882,6 +2891,7 @@ export const createRoute: API.OperationMethod<
     service: svc,
     http: "POST /v2/apis/{ApiId}/routes",
     input: {
+      ApiId: 0,
       ApiKeyRequired: D.m({ wire: "apiKeyRequired" }),
       AuthorizationScopes: D.m({ wire: "authorizationScopes" }),
       AuthorizationType: D.m({ wire: "authorizationType" }),
@@ -2951,12 +2961,14 @@ export const createRouteResponse: API.OperationMethod<
     service: svc,
     http: "POST /v2/apis/{ApiId}/routes/{RouteId}/routeresponses",
     input: {
+      ApiId: 0,
       ModelSelectionExpression: D.m({ wire: "modelSelectionExpression" }),
       ResponseModels: D.m({ wire: "responseModels" }),
       ResponseParameters: D.m({
         wire: "responseParameters",
         shape: D.map(i_ParameterConstraints),
       }),
+      RouteId: 0,
       RouteResponseKey: D.m({ wire: "routeResponseKey" }),
     },
     output: {
@@ -3006,6 +3018,7 @@ export const createRoutingRule: API.OperationMethod<
         wire: "conditions",
         shape: D.list(i_RoutingRuleCondition),
       }),
+      DomainName: 0,
       DomainNameId: D.m({ query: "domainNameId" }),
       Priority: D.m({ wire: "priority" }),
     },
@@ -3055,6 +3068,7 @@ export const createStage: API.OperationMethod<
         wire: "accessLogSettings",
         shape: i_AccessLogSettings,
       }),
+      ApiId: 0,
       AutoDeploy: D.m({ wire: "autoDeploy" }),
       ClientCertificateId: D.m({ wire: "clientCertificateId" }),
       DefaultRouteSettings: D.m({
@@ -3166,6 +3180,7 @@ export const deleteAccessLogSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/apis/{ApiId}/stages/{StageName}/accesslogsettings",
+    input: { ApiId: 0, StageName: 0 },
   },
   errors: [NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3186,7 +3201,11 @@ export const deleteApi: API.OperationMethod<
   DeleteApiError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v2/apis/{ApiId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v2/apis/{ApiId}",
+    input: { ApiId: 0 },
+  },
   errors: [NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3210,6 +3229,7 @@ export const deleteApiMapping: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domainnames/{DomainName}/apimappings/{ApiMappingId}",
+    input: { ApiMappingId: 0, DomainName: 0 },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3233,6 +3253,7 @@ export const deleteAuthorizer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/apis/{ApiId}/authorizers/{AuthorizerId}",
+    input: { ApiId: 0, AuthorizerId: 0 },
   },
   errors: [NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3253,7 +3274,11 @@ export const deleteCorsConfiguration: API.OperationMethod<
   DeleteCorsConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v2/apis/{ApiId}/cors" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v2/apis/{ApiId}/cors",
+    input: { ApiId: 0 },
+  },
   errors: [NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3276,6 +3301,7 @@ export const deleteDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/apis/{ApiId}/deployments/{DeploymentId}",
+    input: { ApiId: 0, DeploymentId: 0 },
   },
   errors: [NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3296,7 +3322,11 @@ export const deleteDomainName: API.OperationMethod<
   DeleteDomainNameError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v2/domainnames/{DomainName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v2/domainnames/{DomainName}",
+    input: { DomainName: 0 },
+  },
   errors: [NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3319,6 +3349,7 @@ export const deleteIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/apis/{ApiId}/integrations/{IntegrationId}",
+    input: { ApiId: 0, IntegrationId: 0 },
   },
   errors: [NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3342,6 +3373,7 @@ export const deleteIntegrationResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/apis/{ApiId}/integrations/{IntegrationId}/integrationresponses/{IntegrationResponseId}",
+    input: { ApiId: 0, IntegrationId: 0, IntegrationResponseId: 0 },
   },
   errors: [NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3365,6 +3397,7 @@ export const deleteModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/apis/{ApiId}/models/{ModelId}",
+    input: { ApiId: 0, ModelId: 0 },
   },
   errors: [NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3386,7 +3419,11 @@ export const deletePortal: API.OperationMethod<
   DeletePortalError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v2/portals/{PortalId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v2/portals/{PortalId}",
+    input: { PortalId: 0 },
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -3415,6 +3452,7 @@ export const deletePortalProduct: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/portalproducts/{PortalProductId}",
+    input: { PortalProductId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3445,6 +3483,7 @@ export const deletePortalProductSharingPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/portalproducts/{PortalProductId}/sharingpolicy",
+    input: { PortalProductId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3475,6 +3514,7 @@ export const deleteProductPage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/portalproducts/{PortalProductId}/productpages/{ProductPageId}",
+    input: { PortalProductId: 0, ProductPageId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3505,6 +3545,7 @@ export const deleteProductRestEndpointPage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/portalproducts/{PortalProductId}/productrestendpointpages/{ProductRestEndpointPageId}",
+    input: { PortalProductId: 0, ProductRestEndpointPageId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3533,6 +3574,7 @@ export const deleteRoute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/apis/{ApiId}/routes/{RouteId}",
+    input: { ApiId: 0, RouteId: 0 },
   },
   errors: [NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3556,6 +3598,7 @@ export const deleteRouteRequestParameter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/apis/{ApiId}/routes/{RouteId}/requestparameters/{RequestParameterKey}",
+    input: { ApiId: 0, RequestParameterKey: 0, RouteId: 0 },
   },
   errors: [NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3579,6 +3622,7 @@ export const deleteRouteResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/apis/{ApiId}/routes/{RouteId}/routeresponses/{RouteResponseId}",
+    input: { ApiId: 0, RouteId: 0, RouteResponseId: 0 },
   },
   errors: [NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3602,6 +3646,7 @@ export const deleteRouteSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/apis/{ApiId}/stages/{StageName}/routesettings/{RouteKey}",
+    input: { ApiId: 0, RouteKey: 0, StageName: 0 },
   },
   errors: [NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3626,7 +3671,11 @@ export const deleteRoutingRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domainnames/{DomainName}/routingrules/{RoutingRuleId}",
-    input: { DomainNameId: D.m({ query: "domainNameId" }) },
+    input: {
+      DomainName: 0,
+      DomainNameId: D.m({ query: "domainNameId" }),
+      RoutingRuleId: 0,
+    },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3650,6 +3699,7 @@ export const deleteStage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/apis/{ApiId}/stages/{StageName}",
+    input: { ApiId: 0, StageName: 0 },
   },
   errors: [NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3670,7 +3720,11 @@ export const deleteVpcLink: API.OperationMethod<
   DeleteVpcLinkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v2/vpclinks/{VpcLinkId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v2/vpclinks/{VpcLinkId}",
+    input: { VpcLinkId: 0 },
+  },
   errors: [NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3693,7 +3747,11 @@ export const disablePortal: API.OperationMethod<
   DisablePortalError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v2/portals/{PortalId}/publish" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v2/portals/{PortalId}/publish",
+    input: { PortalId: 0 },
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -3724,12 +3782,14 @@ export const exportApi: API.OperationMethod<
     service: svc,
     http: "GET /v2/apis/{ApiId}/exports/{Specification}",
     input: {
+      ApiId: 0,
       ExportVersion: D.m({ query: "exportVersion" }),
       IncludeExtensions: D.m({ query: "includeExtensions" }),
       OutputType: D.m({ query: "outputType" }),
+      Specification: 0,
       StageName: D.m({ query: "stageName" }),
     },
-    output: { body: D.m({ payload: true, shape: D.stream }) },
+    output: { body: D.m({ payload: true, shape: D.blob }) },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3753,6 +3813,7 @@ export const getApi: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/apis/{ApiId}",
+    input: { ApiId: 0 },
     output: {
       ApiEndpoint: D.m({ wire: "apiEndpoint" }),
       ApiGatewayManaged: D.m({ wire: "apiGatewayManaged" }),
@@ -3796,6 +3857,7 @@ export const getApiMapping: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domainnames/{DomainName}/apimappings/{ApiMappingId}",
+    input: { ApiMappingId: 0, DomainName: 0 },
     output: {
       ApiId: D.m({ wire: "apiId" }),
       ApiMappingId: D.m({ wire: "apiMappingId" }),
@@ -3827,6 +3889,7 @@ export const getApiMappings: API.OperationMethod<
     service: svc,
     http: "GET /v2/domainnames/{DomainName}/apimappings",
     input: {
+      DomainName: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -3918,6 +3981,7 @@ export const getAuthorizer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/apis/{ApiId}/authorizers/{AuthorizerId}",
+    input: { ApiId: 0, AuthorizerId: 0 },
     output: {
       AuthorizerCredentialsArn: D.m({ wire: "authorizerCredentialsArn" }),
       AuthorizerId: D.m({ wire: "authorizerId" }),
@@ -3965,6 +4029,7 @@ export const getAuthorizers: API.OperationMethod<
     service: svc,
     http: "GET /v2/apis/{ApiId}/authorizers",
     input: {
+      ApiId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -4019,6 +4084,7 @@ export const getDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/apis/{ApiId}/deployments/{DeploymentId}",
+    input: { ApiId: 0, DeploymentId: 0 },
     output: {
       AutoDeployed: D.m({ wire: "autoDeployed" }),
       CreatedDate: D.m({ wire: "createdDate", shape: D.ts }),
@@ -4052,6 +4118,7 @@ export const getDeployments: API.OperationMethod<
     service: svc,
     http: "GET /v2/apis/{ApiId}/deployments",
     input: {
+      ApiId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -4092,6 +4159,7 @@ export const getDomainName: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domainnames/{DomainName}",
+    input: { DomainName: 0 },
     output: {
       ApiMappingSelectionExpression: D.m({
         wire: "apiMappingSelectionExpression",
@@ -4183,6 +4251,7 @@ export const getIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/apis/{ApiId}/integrations/{IntegrationId}",
+    input: { ApiId: 0, IntegrationId: 0 },
     output: {
       ApiGatewayManaged: D.m({ wire: "apiGatewayManaged" }),
       ConnectionId: D.m({ wire: "connectionId" }),
@@ -4230,6 +4299,7 @@ export const getIntegrationResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/apis/{ApiId}/integrations/{IntegrationId}/integrationresponses/{IntegrationResponseId}",
+    input: { ApiId: 0, IntegrationId: 0, IntegrationResponseId: 0 },
     output: {
       ContentHandlingStrategy: D.m({ wire: "contentHandlingStrategy" }),
       IntegrationResponseId: D.m({ wire: "integrationResponseId" }),
@@ -4263,6 +4333,8 @@ export const getIntegrationResponses: API.OperationMethod<
     service: svc,
     http: "GET /v2/apis/{ApiId}/integrations/{IntegrationId}/integrationresponses",
     input: {
+      ApiId: 0,
+      IntegrationId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -4307,6 +4379,7 @@ export const getIntegrations: API.OperationMethod<
     service: svc,
     http: "GET /v2/apis/{ApiId}/integrations",
     input: {
+      ApiId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -4365,6 +4438,7 @@ export const getModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/apis/{ApiId}/models/{ModelId}",
+    input: { ApiId: 0, ModelId: 0 },
     output: {
       ContentType: D.m({ wire: "contentType" }),
       Description: D.m({ wire: "description" }),
@@ -4397,6 +4471,7 @@ export const getModels: API.OperationMethod<
     service: svc,
     http: "GET /v2/apis/{ApiId}/models",
     input: {
+      ApiId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -4436,6 +4511,7 @@ export const getModelTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/apis/{ApiId}/models/{ModelId}/template",
+    input: { ApiId: 0, ModelId: 0 },
     output: { Value: D.m({ wire: "value" }) },
   },
   errors: [NotFoundException, TooManyRequestsException],
@@ -4462,6 +4538,7 @@ export const getPortal: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/portals/{PortalId}",
+    input: { PortalId: 0 },
     output: {
       Authorization: D.m({ wire: "authorization", shape: o_Authorization }),
       EndpointConfiguration: D.m({
@@ -4514,7 +4591,10 @@ export const getPortalProduct: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/portalproducts/{PortalProductId}",
-    input: { ResourceOwnerAccountId: D.m({ query: "resourceOwnerAccountId" }) },
+    input: {
+      PortalProductId: 0,
+      ResourceOwnerAccountId: D.m({ query: "resourceOwnerAccountId" }),
+    },
     output: {
       Description: D.m({ wire: "description" }),
       DisplayName: D.m({ wire: "displayName" }),
@@ -4554,6 +4634,7 @@ export const getPortalProductSharingPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/portalproducts/{PortalProductId}/sharingpolicy",
+    input: { PortalProductId: 0 },
     output: {
       PolicyDocument: D.m({ wire: "policyDocument" }),
       PortalProductId: D.m({ wire: "portalProductId" }),
@@ -4588,7 +4669,11 @@ export const getProductPage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/portalproducts/{PortalProductId}/productpages/{ProductPageId}",
-    input: { ResourceOwnerAccountId: D.m({ query: "resourceOwnerAccountId" }) },
+    input: {
+      PortalProductId: 0,
+      ProductPageId: 0,
+      ResourceOwnerAccountId: D.m({ query: "resourceOwnerAccountId" }),
+    },
     output: {
       DisplayContent: D.m({ wire: "displayContent", shape: o_DisplayContent }),
       LastModified: D.m({ wire: "lastModified", shape: D.ts }),
@@ -4627,6 +4712,8 @@ export const getProductRestEndpointPage: API.OperationMethod<
     http: "GET /v2/portalproducts/{PortalProductId}/productrestendpointpages/{ProductRestEndpointPageId}",
     input: {
       IncludeRawDisplayContent: D.m({ query: "includeRawDisplayContent" }),
+      PortalProductId: 0,
+      ProductRestEndpointPageId: 0,
       ResourceOwnerAccountId: D.m({ query: "resourceOwnerAccountId" }),
     },
     output: {
@@ -4677,6 +4764,7 @@ export const getRoute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/apis/{ApiId}/routes/{RouteId}",
+    input: { ApiId: 0, RouteId: 0 },
     output: {
       ApiGatewayManaged: D.m({ wire: "apiGatewayManaged" }),
       ApiKeyRequired: D.m({ wire: "apiKeyRequired" }),
@@ -4720,6 +4808,7 @@ export const getRouteResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/apis/{ApiId}/routes/{RouteId}/routeresponses/{RouteResponseId}",
+    input: { ApiId: 0, RouteId: 0, RouteResponseId: 0 },
     output: {
       ModelSelectionExpression: D.m({ wire: "modelSelectionExpression" }),
       ResponseModels: D.m({ wire: "responseModels" }),
@@ -4755,8 +4844,10 @@ export const getRouteResponses: API.OperationMethod<
     service: svc,
     http: "GET /v2/apis/{ApiId}/routes/{RouteId}/routeresponses",
     input: {
+      ApiId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
+      RouteId: 0,
     },
     output: {
       Items: D.m({
@@ -4799,6 +4890,7 @@ export const getRoutes: API.OperationMethod<
     service: svc,
     http: "GET /v2/apis/{ApiId}/routes",
     input: {
+      ApiId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -4852,7 +4944,11 @@ export const getRoutingRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domainnames/{DomainName}/routingrules/{RoutingRuleId}",
-    input: { DomainNameId: D.m({ query: "domainNameId" }) },
+    input: {
+      DomainName: 0,
+      DomainNameId: D.m({ query: "domainNameId" }),
+      RoutingRuleId: 0,
+    },
     output: {
       Actions: D.m({ wire: "actions", shape: D.list(o_RoutingRuleAction) }),
       Conditions: D.m({
@@ -4886,6 +4982,7 @@ export const getStage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/apis/{ApiId}/stages/{StageName}",
+    input: { ApiId: 0, StageName: 0 },
     output: {
       AccessLogSettings: D.m({
         wire: "accessLogSettings",
@@ -4936,6 +5033,7 @@ export const getStages: API.OperationMethod<
     service: svc,
     http: "GET /v2/apis/{ApiId}/stages",
     input: {
+      ApiId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -4997,6 +5095,7 @@ export const getTags: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
   },
   errors: [
@@ -5026,6 +5125,7 @@ export const getVpcLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/vpclinks/{VpcLinkId}",
+    input: { VpcLinkId: 0 },
     output: {
       CreatedDate: D.m({ wire: "createdDate", shape: D.ts }),
       Name: D.m({ wire: "name" }),
@@ -5271,6 +5371,7 @@ export const listProductPages: API.OperationMethod<
     input: {
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
+      PortalProductId: 0,
       ResourceOwnerAccountId: D.m({ query: "resourceOwnerAccountId" }),
     },
     output: {
@@ -5318,6 +5419,7 @@ export const listProductRestEndpointPages: API.OperationMethod<
     input: {
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
+      PortalProductId: 0,
       ResourceOwnerAccountId: D.m({ query: "resourceOwnerAccountId" }),
     },
     output: {
@@ -5376,6 +5478,7 @@ export const listRoutingRules: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domainnames/{DomainName}/routingrules",
     input: {
+      DomainName: 0,
       DomainNameId: D.m({ query: "domainNameId" }),
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
@@ -5425,7 +5528,11 @@ export const previewPortal: API.OperationMethod<
   PreviewPortalError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/portals/{PortalId}/preview" },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/portals/{PortalId}/preview",
+    input: { PortalId: 0 },
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -5457,7 +5564,7 @@ export const publishPortal: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/portals/{PortalId}/publish",
-    input: { Description: D.m({ wire: "description" }) },
+    input: { Description: D.m({ wire: "description" }), PortalId: 0 },
     body: true,
   },
   errors: [
@@ -5490,7 +5597,10 @@ export const putPortalProductSharingPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/portalproducts/{PortalProductId}/sharingpolicy",
-    input: { PolicyDocument: D.m({ wire: "policyDocument" }) },
+    input: {
+      PolicyDocument: D.m({ wire: "policyDocument" }),
+      PortalProductId: 0,
+    },
     body: true,
   },
   errors: [
@@ -5528,8 +5638,10 @@ export const putRoutingRule: API.OperationMethod<
         wire: "conditions",
         shape: D.list(i_RoutingRuleCondition),
       }),
+      DomainName: 0,
       DomainNameId: D.m({ query: "domainNameId" }),
       Priority: D.m({ wire: "priority" }),
+      RoutingRuleId: 0,
     },
     output: {
       Actions: D.m({ wire: "actions", shape: D.list(o_RoutingRuleAction) }),
@@ -5573,6 +5685,7 @@ export const reimportApi: API.OperationMethod<
     service: svc,
     http: "PUT /v2/apis/{ApiId}",
     input: {
+      ApiId: 0,
       Basepath: D.m({ query: "basepath" }),
       Body: D.m({ wire: "body" }),
       FailOnWarnings: D.m({ query: "failOnWarnings" }),
@@ -5625,6 +5738,7 @@ export const resetAuthorizersCache: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/apis/{ApiId}/stages/{StageName}/cache/authorizers",
+    input: { ApiId: 0, StageName: 0 },
   },
   errors: [NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -5650,7 +5764,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/tags/{ResourceArn}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: { ResourceArn: 0, Tags: D.m({ wire: "tags" }) },
     body: true,
   },
   errors: [
@@ -5682,7 +5796,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     BadRequestException,
@@ -5714,6 +5828,7 @@ export const updateApi: API.OperationMethod<
     service: svc,
     http: "PATCH /v2/apis/{ApiId}",
     input: {
+      ApiId: 0,
       ApiKeySelectionExpression: D.m({ wire: "apiKeySelectionExpression" }),
       CorsConfiguration: D.m({ wire: "corsConfiguration", shape: i_Cors }),
       CredentialsArn: D.m({ wire: "credentialsArn" }),
@@ -5779,7 +5894,9 @@ export const updateApiMapping: API.OperationMethod<
     http: "PATCH /v2/domainnames/{DomainName}/apimappings/{ApiMappingId}",
     input: {
       ApiId: D.m({ wire: "apiId" }),
+      ApiMappingId: 0,
       ApiMappingKey: D.m({ wire: "apiMappingKey" }),
+      DomainName: 0,
       Stage: D.m({ wire: "stage" }),
     },
     output: {
@@ -5820,7 +5937,9 @@ export const updateAuthorizer: API.OperationMethod<
     service: svc,
     http: "PATCH /v2/apis/{ApiId}/authorizers/{AuthorizerId}",
     input: {
+      ApiId: 0,
       AuthorizerCredentialsArn: D.m({ wire: "authorizerCredentialsArn" }),
+      AuthorizerId: 0,
       AuthorizerPayloadFormatVersion: D.m({
         wire: "authorizerPayloadFormatVersion",
       }),
@@ -5893,7 +6012,11 @@ export const updateDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/apis/{ApiId}/deployments/{DeploymentId}",
-    input: { Description: D.m({ wire: "description" }) },
+    input: {
+      ApiId: 0,
+      DeploymentId: 0,
+      Description: D.m({ wire: "description" }),
+    },
     output: {
       AutoDeployed: D.m({ wire: "autoDeployed" }),
       CreatedDate: D.m({ wire: "createdDate", shape: D.ts }),
@@ -5934,6 +6057,7 @@ export const updateDomainName: API.OperationMethod<
     service: svc,
     http: "PATCH /v2/domainnames/{DomainName}",
     input: {
+      DomainName: 0,
       DomainNameConfigurations: D.m({
         wire: "domainNameConfigurations",
         shape: D.list(i_DomainNameConfiguration),
@@ -5993,11 +6117,13 @@ export const updateIntegration: API.OperationMethod<
     service: svc,
     http: "PATCH /v2/apis/{ApiId}/integrations/{IntegrationId}",
     input: {
+      ApiId: 0,
       ConnectionId: D.m({ wire: "connectionId" }),
       ConnectionType: D.m({ wire: "connectionType" }),
       ContentHandlingStrategy: D.m({ wire: "contentHandlingStrategy" }),
       CredentialsArn: D.m({ wire: "credentialsArn" }),
       Description: D.m({ wire: "description" }),
+      IntegrationId: 0,
       IntegrationMethod: D.m({ wire: "integrationMethod" }),
       IntegrationSubtype: D.m({ wire: "integrationSubtype" }),
       IntegrationType: D.m({ wire: "integrationType" }),
@@ -6067,7 +6193,10 @@ export const updateIntegrationResponse: API.OperationMethod<
     service: svc,
     http: "PATCH /v2/apis/{ApiId}/integrations/{IntegrationId}/integrationresponses/{IntegrationResponseId}",
     input: {
+      ApiId: 0,
       ContentHandlingStrategy: D.m({ wire: "contentHandlingStrategy" }),
+      IntegrationId: 0,
+      IntegrationResponseId: 0,
       IntegrationResponseKey: D.m({ wire: "integrationResponseKey" }),
       ResponseParameters: D.m({ wire: "responseParameters" }),
       ResponseTemplates: D.m({ wire: "responseTemplates" }),
@@ -6113,8 +6242,10 @@ export const updateModel: API.OperationMethod<
     service: svc,
     http: "PATCH /v2/apis/{ApiId}/models/{ModelId}",
     input: {
+      ApiId: 0,
       ContentType: D.m({ wire: "contentType" }),
       Description: D.m({ wire: "description" }),
+      ModelId: 0,
       Name: D.m({ wire: "name" }),
       Schema: D.m({ wire: "schema" }),
     },
@@ -6166,6 +6297,7 @@ export const updatePortal: API.OperationMethod<
       IncludedPortalProductArns: D.m({ wire: "includedPortalProductArns" }),
       LogoUri: D.m({ wire: "logoUri" }),
       PortalContent: D.m({ wire: "portalContent", shape: i_PortalContent }),
+      PortalId: 0,
       RumAppMonitorName: D.m({ wire: "rumAppMonitorName" }),
     },
     output: {
@@ -6241,6 +6373,7 @@ export const updatePortalProduct: API.OperationMethod<
           ProductPageArns: D.m({ wire: "productPageArns" }),
         },
       }),
+      PortalProductId: 0,
     },
     output: {
       Description: D.m({ wire: "description" }),
@@ -6284,6 +6417,8 @@ export const updateProductPage: API.OperationMethod<
     http: "PATCH /v2/portalproducts/{PortalProductId}/productpages/{ProductPageId}",
     input: {
       DisplayContent: D.m({ wire: "displayContent", shape: i_DisplayContent }),
+      PortalProductId: 0,
+      ProductPageId: 0,
     },
     output: {
       DisplayContent: D.m({ wire: "displayContent", shape: o_DisplayContent }),
@@ -6327,6 +6462,8 @@ export const updateProductRestEndpointPage: API.OperationMethod<
         wire: "displayContent",
         shape: i_EndpointDisplayContent,
       }),
+      PortalProductId: 0,
+      ProductRestEndpointPageId: 0,
       TryItState: D.m({ wire: "tryItState" }),
     },
     output: {
@@ -6380,6 +6517,7 @@ export const updateRoute: API.OperationMethod<
     service: svc,
     http: "PATCH /v2/apis/{ApiId}/routes/{RouteId}",
     input: {
+      ApiId: 0,
       ApiKeyRequired: D.m({ wire: "apiKeyRequired" }),
       AuthorizationScopes: D.m({ wire: "authorizationScopes" }),
       AuthorizationType: D.m({ wire: "authorizationType" }),
@@ -6391,6 +6529,7 @@ export const updateRoute: API.OperationMethod<
         wire: "requestParameters",
         shape: D.map(i_ParameterConstraints),
       }),
+      RouteId: 0,
       RouteKey: D.m({ wire: "routeKey" }),
       RouteResponseSelectionExpression: D.m({
         wire: "routeResponseSelectionExpression",
@@ -6449,12 +6588,15 @@ export const updateRouteResponse: API.OperationMethod<
     service: svc,
     http: "PATCH /v2/apis/{ApiId}/routes/{RouteId}/routeresponses/{RouteResponseId}",
     input: {
+      ApiId: 0,
       ModelSelectionExpression: D.m({ wire: "modelSelectionExpression" }),
       ResponseModels: D.m({ wire: "responseModels" }),
       ResponseParameters: D.m({
         wire: "responseParameters",
         shape: D.map(i_ParameterConstraints),
       }),
+      RouteId: 0,
+      RouteResponseId: 0,
       RouteResponseKey: D.m({ wire: "routeResponseKey" }),
     },
     output: {
@@ -6503,6 +6645,7 @@ export const updateStage: API.OperationMethod<
         wire: "accessLogSettings",
         shape: i_AccessLogSettings,
       }),
+      ApiId: 0,
       AutoDeploy: D.m({ wire: "autoDeploy" }),
       ClientCertificateId: D.m({ wire: "clientCertificateId" }),
       DefaultRouteSettings: D.m({
@@ -6515,6 +6658,7 @@ export const updateStage: API.OperationMethod<
         wire: "routeSettings",
         shape: D.map(i_RouteSettings),
       }),
+      StageName: 0,
       StageVariables: D.m({ wire: "stageVariables" }),
     },
     output: {
@@ -6572,7 +6716,7 @@ export const updateVpcLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/vpclinks/{VpcLinkId}",
-    input: { Name: D.m({ wire: "name" }) },
+    input: { Name: D.m({ wire: "name" }), VpcLinkId: 0 },
     output: {
       CreatedDate: D.m({ wire: "createdDate", shape: D.ts }),
       Name: D.m({ wire: "name" }),
@@ -6605,7 +6749,7 @@ const i_Authorization: D.LazyStruct = () => ({
       UserPoolDomain: D.m({ wire: "userPoolDomain" }),
     },
   }),
-  None: D.m({ wire: "none" }),
+  None: D.m({ wire: "none", shape: i_None }),
 });
 const i_Cors: D.LazyStruct = () => ({
   AllowCredentials: D.m({ wire: "allowCredentials" }),
@@ -6645,10 +6789,10 @@ const i_EndpointConfigurationRequest: D.LazyStruct = () => ({
       DomainName: D.m({ wire: "domainName" }),
     },
   }),
-  None: D.m({ wire: "none" }),
+  None: D.m({ wire: "none", shape: i_None }),
 });
 const i_EndpointDisplayContent: D.LazyStruct = () => ({
-  None: D.m({ wire: "none" }),
+  None: D.m({ wire: "none", shape: i_None }),
   Overrides: D.m({
     wire: "overrides",
     shape: {
@@ -6886,3 +7030,4 @@ const o_StatusException: D.LazyStruct = () => ({
 const o_TlsConfig: D.LazyStruct = () => ({
   ServerNameToVerify: D.m({ wire: "serverNameToVerify" }),
 });
+const i_None: D.LazyStruct = () => ({});

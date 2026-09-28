@@ -1287,7 +1287,12 @@ export const batchDescribeEntities: API.OperationMethod<
   BatchDescribeEntitiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /BatchDescribeEntities", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /BatchDescribeEntities",
+    input: { EntityRequestList: D.list({ Catalog: 0, EntityId: 0 }) },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -1396,7 +1401,12 @@ export const describeAssessment: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ControlAssessment
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /DescribeAssessment", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DescribeAssessment",
+    input: { Catalog: 0, AssessmentIdentifier: 0, MaxResults: 0, NextToken: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -1549,7 +1559,22 @@ export const listAssessments: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AssessmentSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListAssessments", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListAssessments",
+    input: {
+      Catalog: 0,
+      FrameworkId: 0,
+      AssessmentTargetFilter: { EntityId: 0, ChangeSetId: 0 },
+      FrameworkFilters: {
+        AMISecurityFilters: { DeliveryOptionId: 0 },
+        ContainerSecurityFilters: { DeliveryOptionId: 0 },
+      },
+      MaxResults: 0,
+      NextToken: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -1589,7 +1614,18 @@ export const listChangeSets: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ChangeSetSummaryListItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListChangeSets", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListChangeSets",
+    input: {
+      Catalog: 0,
+      FilterList: D.list(i_Filter),
+      Sort: i_Sort,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -1624,7 +1660,109 @@ export const listEntities: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   EntitySummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListEntities", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListEntities",
+    input: {
+      Catalog: 0,
+      EntityType: 0,
+      FilterList: D.list(i_Filter),
+      Sort: i_Sort,
+      NextToken: 0,
+      MaxResults: 0,
+      OwnershipType: 0,
+      EntityTypeFilters: {
+        DataProductFilters: {
+          EntityId: { ValueList: 0 },
+          ProductTitle: { ValueList: 0, WildCardValue: 0 },
+          Visibility: { ValueList: 0 },
+          LastModifiedDate: { DateRange: { AfterValue: 0, BeforeValue: 0 } },
+        },
+        SaaSProductFilters: {
+          EntityId: { ValueList: 0 },
+          ProductTitle: { ValueList: 0, WildCardValue: 0 },
+          Visibility: { ValueList: 0 },
+          LastModifiedDate: { DateRange: { AfterValue: 0, BeforeValue: 0 } },
+        },
+        AmiProductFilters: {
+          EntityId: { ValueList: 0 },
+          LastModifiedDate: { DateRange: { AfterValue: 0, BeforeValue: 0 } },
+          ProductTitle: { ValueList: 0, WildCardValue: 0 },
+          Visibility: { ValueList: 0 },
+        },
+        OfferFilters: {
+          EntityId: { ValueList: 0 },
+          Name: { ValueList: 0, WildCardValue: 0 },
+          ProductId: { ValueList: 0 },
+          ResaleAuthorizationId: { ValueList: 0 },
+          ReleaseDate: { DateRange: { AfterValue: 0, BeforeValue: 0 } },
+          AvailabilityEndDate: { DateRange: { AfterValue: 0, BeforeValue: 0 } },
+          BuyerAccounts: { WildCardValue: 0 },
+          State: { ValueList: 0 },
+          Targeting: { ValueList: 0 },
+          LastModifiedDate: { DateRange: { AfterValue: 0, BeforeValue: 0 } },
+          OfferSetId: { ValueList: 0 },
+          TargetAgreementId: { ValueList: 0 },
+          TargetAgreementIntent: { ValueList: 0 },
+          CreatedBySource: { ValueList: 0 },
+        },
+        ContainerProductFilters: {
+          EntityId: { ValueList: 0 },
+          LastModifiedDate: { DateRange: { AfterValue: 0, BeforeValue: 0 } },
+          ProductTitle: { ValueList: 0, WildCardValue: 0 },
+          Visibility: { ValueList: 0 },
+        },
+        ResaleAuthorizationFilters: {
+          EntityId: { ValueList: 0 },
+          Name: { ValueList: 0, WildCardValue: 0 },
+          ProductId: { ValueList: 0, WildCardValue: 0 },
+          CreatedDate: {
+            DateRange: { AfterValue: 0, BeforeValue: 0 },
+            ValueList: 0,
+          },
+          AvailabilityEndDate: {
+            DateRange: { AfterValue: 0, BeforeValue: 0 },
+            ValueList: 0,
+          },
+          ManufacturerAccountId: { ValueList: 0, WildCardValue: 0 },
+          ProductName: { ValueList: 0, WildCardValue: 0 },
+          ManufacturerLegalName: { ValueList: 0, WildCardValue: 0 },
+          ResellerAccountID: { ValueList: 0, WildCardValue: 0 },
+          ResellerLegalName: { ValueList: 0, WildCardValue: 0 },
+          Status: { ValueList: 0 },
+          OfferExtendedStatus: { ValueList: 0 },
+          LastModifiedDate: { DateRange: { AfterValue: 0, BeforeValue: 0 } },
+          ResellerRole: { ValueList: 0 },
+        },
+        MachineLearningProductFilters: {
+          EntityId: { ValueList: 0 },
+          LastModifiedDate: { DateRange: { AfterValue: 0, BeforeValue: 0 } },
+          ProductTitle: { ValueList: 0, WildCardValue: 0 },
+          Visibility: { ValueList: 0 },
+        },
+        OfferSetFilters: {
+          EntityId: { ValueList: 0 },
+          Name: { ValueList: 0 },
+          State: { ValueList: 0 },
+          ReleaseDate: { DateRange: { AfterValue: 0, BeforeValue: 0 } },
+          AssociatedOfferIds: { ValueList: 0 },
+          SolutionId: { ValueList: 0 },
+          LastModifiedDate: { DateRange: { AfterValue: 0, BeforeValue: 0 } },
+        },
+      },
+      EntityTypeSort: {
+        DataProductSort: { SortBy: 0, SortOrder: 0 },
+        SaaSProductSort: { SortBy: 0, SortOrder: 0 },
+        AmiProductSort: { SortBy: 0, SortOrder: 0 },
+        OfferSort: { SortBy: 0, SortOrder: 0 },
+        ContainerProductSort: { SortBy: 0, SortOrder: 0 },
+        ResaleAuthorizationSort: { SortBy: 0, SortOrder: 0 },
+        MachineLearningProductSort: { SortBy: 0, SortOrder: 0 },
+        OfferSetSort: { SortBy: 0, SortOrder: 0 },
+      },
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -1659,7 +1797,12 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /ListTagsForResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListTagsForResource",
+    input: { ResourceArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -1689,7 +1832,12 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /PutResourcePolicy", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /PutResourcePolicy",
+    input: { ResourceArn: 0, Policy: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -1740,7 +1888,21 @@ export const startChangeSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /StartChangeSet",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      ChangeSet: D.list({
+        ChangeType: 0,
+        Entity: { Type: 0, Identifier: 0 },
+        EntityTags: D.list(i_Tag),
+        Details: 0,
+        DetailsDocument: 0,
+        ChangeName: 0,
+      }),
+      ChangeSetName: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      ChangeSetTags: D.list(i_Tag),
+      Intent: 0,
+    },
     body: true,
   },
   errors: [
@@ -1773,7 +1935,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /TagResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /TagResource",
+    input: { ResourceArn: 0, Tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -1802,7 +1969,12 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UntagResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UntagResource",
+    input: { ResourceArn: 0, TagKeys: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -1814,3 +1986,7 @@ export const untagResource: API.OperationMethod<
   retry: Retry,
   operationName: "UntagResource",
 })) as any;
+
+const i_Filter: D.LazyStruct = () => ({ Name: 0, ValueList: 0 });
+const i_Sort: D.LazyStruct = () => ({ SortBy: 0, SortOrder: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });

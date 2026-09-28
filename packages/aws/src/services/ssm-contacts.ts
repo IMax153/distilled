@@ -765,7 +765,17 @@ export const acceptPage: API.OperationMethod<
   AcceptPageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      PageId: 0,
+      ContactChannelId: 0,
+      AcceptType: 0,
+      Note: 0,
+      AcceptCode: 0,
+      AcceptCodeValidation: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -797,7 +807,10 @@ export const activateContactChannel: API.OperationMethod<
   ActivateContactChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ContactChannelId: 0, ActivationCode: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -834,7 +847,14 @@ export const createContact: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      Alias: 0,
+      DisplayName: 0,
+      Type: 0,
+      Plan: i_Plan,
+      Tags: D.list(i_Tag),
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -871,7 +891,14 @@ export const createContactChannel: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      ContactId: 0,
+      Name: 0,
+      Type: 0,
+      DeliveryAddress: i_ContactChannelAddress,
+      DeferActivation: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -906,7 +933,18 @@ export const createRotation: API.OperationMethod<
   CreateRotationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      ContactIds: 0,
+      StartTime: 0,
+      TimeZoneId: 0,
+      Recurrence: i_RecurrenceSettings,
+      Tags: D.list(i_Tag),
+      IdempotencyToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -941,7 +979,16 @@ export const createRotationOverride: API.OperationMethod<
   CreateRotationOverrideError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      RotationId: 0,
+      NewContactIds: 0,
+      StartTime: 0,
+      EndTime: 0,
+      IdempotencyToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -975,7 +1022,7 @@ export const deactivateContactChannel: API.OperationMethod<
   DeactivateContactChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContactChannelId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1011,7 +1058,7 @@ export const deleteContact: API.OperationMethod<
   DeleteContactError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContactId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1047,7 +1094,7 @@ export const deleteContactChannel: API.OperationMethod<
   DeleteContactChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContactChannelId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1081,7 +1128,7 @@ export const deleteRotation: API.OperationMethod<
   DeleteRotationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RotationId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1115,7 +1162,7 @@ export const deleteRotationOverride: API.OperationMethod<
   DeleteRotationOverrideError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RotationId: 0, RotationOverrideId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1149,7 +1196,11 @@ export const describeEngagement: API.OperationMethod<
   DescribeEngagementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { StartTime: D.ts, StopTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { EngagementId: 0 },
+    output: { StartTime: D.ts, StopTime: D.ts },
+  },
   errors: [
     AccessDeniedException,
     DataEncryptionException,
@@ -1184,6 +1235,7 @@ export const describePage: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { PageId: 0 },
     output: { SentTime: D.ts, ReadTime: D.ts, DeliveryTime: D.ts },
   },
   errors: [
@@ -1218,7 +1270,7 @@ export const getContact: API.OperationMethod<
   GetContactError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContactId: 0 } },
   errors: [
     AccessDeniedException,
     DataEncryptionException,
@@ -1251,7 +1303,7 @@ export const getContactChannel: API.OperationMethod<
   GetContactChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContactChannelId: 0 } },
   errors: [
     AccessDeniedException,
     DataEncryptionException,
@@ -1284,7 +1336,7 @@ export const getContactPolicy: API.OperationMethod<
   GetContactPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContactArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1316,7 +1368,11 @@ export const getRotation: API.OperationMethod<
   GetRotationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { StartTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { RotationId: 0 },
+    output: { StartTime: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1351,6 +1407,7 @@ export const getRotationOverride: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { RotationId: 0, RotationOverrideId: 0 },
     output: { StartTime: D.ts, EndTime: D.ts, CreateTime: D.ts },
   },
   errors: [
@@ -1386,7 +1443,10 @@ export const listContactChannels: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ContactChannel
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ContactId: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     DataEncryptionException,
@@ -1424,7 +1484,10 @@ export const listContacts: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Contact
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0, MaxResults: 0, AliasPrefix: 0, Type: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1462,6 +1525,12 @@ export const listEngagements: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      IncidentId: 0,
+      TimeRangeValue: { StartTime: 0, EndTime: 0 },
+    },
     output: { Engagements: D.list({ StartTime: D.ts, StopTime: D.ts }) },
   },
   errors: [
@@ -1502,6 +1571,7 @@ export const listPageReceipts: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { PageId: 0, NextToken: 0, MaxResults: 0 },
     output: { Receipts: D.list({ ReceiptTime: D.ts }) },
   },
   errors: [
@@ -1545,7 +1615,7 @@ export const listPageResolutions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ResolutionContact
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, PageId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1582,7 +1652,11 @@ export const listPagesByContact: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Page
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Pages: D.list(o_Page) } },
+  descriptor: {
+    service: svc,
+    input: { ContactId: 0, NextToken: 0, MaxResults: 0 },
+    output: { Pages: D.list(o_Page) },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1620,7 +1694,11 @@ export const listPagesByEngagement: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Page
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Pages: D.list(o_Page) } },
+  descriptor: {
+    service: svc,
+    input: { EngagementId: 0, NextToken: 0, MaxResults: 0 },
+    output: { Pages: D.list(o_Page) },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1661,6 +1739,17 @@ export const listPreviewRotationShifts: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      RotationStartTime: 0,
+      StartTime: 0,
+      EndTime: 0,
+      Members: 0,
+      TimeZoneId: 0,
+      Recurrence: i_RecurrenceSettings,
+      Overrides: D.list({ NewMembers: 0, StartTime: 0, EndTime: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { RotationShifts: D.list(o_RotationShift) },
   },
   errors: [
@@ -1702,6 +1791,13 @@ export const listRotationOverrides: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      RotationId: 0,
+      StartTime: 0,
+      EndTime: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       RotationOverrides: D.list({
         StartTime: D.ts,
@@ -1750,6 +1846,7 @@ export const listRotations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { RotationNamePrefix: 0, NextToken: 0, MaxResults: 0 },
     output: { Rotations: D.list({ StartTime: D.ts }) },
   },
   errors: [
@@ -1793,6 +1890,13 @@ export const listRotationShifts: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      RotationId: 0,
+      StartTime: 0,
+      EndTime: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { RotationShifts: D.list(o_RotationShift) },
   },
   errors: [
@@ -1833,7 +1937,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1867,7 +1971,7 @@ export const putContactPolicy: API.OperationMethod<
   PutContactPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContactArn: 0, Policy: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1903,7 +2007,7 @@ export const sendActivationCode: API.OperationMethod<
   SendActivationCodeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContactChannelId: 0 } },
   errors: [
     AccessDeniedException,
     DataEncryptionException,
@@ -1940,7 +2044,16 @@ export const startEngagement: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      ContactId: 0,
+      Sender: 0,
+      Subject: 0,
+      Content: 0,
+      PublicSubject: 0,
+      PublicContent: 0,
+      IncidentId: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1974,7 +2087,7 @@ export const stopEngagement: API.OperationMethod<
   StopEngagementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EngagementId: 0, Reason: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2007,7 +2120,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2039,7 +2152,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2072,7 +2185,10 @@ export const updateContact: API.OperationMethod<
   UpdateContactError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ContactId: 0, DisplayName: 0, Plan: i_Plan },
+  },
   errors: [
     AccessDeniedException,
     DataEncryptionException,
@@ -2107,7 +2223,14 @@ export const updateContactChannel: API.OperationMethod<
   UpdateContactChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ContactChannelId: 0,
+      Name: 0,
+      DeliveryAddress: i_ContactChannelAddress,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2142,7 +2265,16 @@ export const updateRotation: API.OperationMethod<
   UpdateRotationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      RotationId: 0,
+      ContactIds: 0,
+      StartTime: 0,
+      TimeZoneId: 0,
+      Recurrence: i_RecurrenceSettings,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2158,6 +2290,26 @@ export const updateRotation: API.OperationMethod<
   operationName: "UpdateRotation",
 })) as any;
 
+const i_ContactChannelAddress: D.LazyStruct = () => ({ SimpleAddress: 0 });
+const i_Plan: D.LazyStruct = () => ({
+  Stages: D.list({
+    DurationInMinutes: 0,
+    Targets: D.list({
+      ChannelTargetInfo: { ContactChannelId: 0, RetryIntervalInMinutes: 0 },
+      ContactTargetInfo: { ContactId: 0, IsEssential: 0 },
+    }),
+  }),
+  RotationIds: 0,
+});
+const i_RecurrenceSettings: D.LazyStruct = () => ({
+  MonthlySettings: D.list({ DayOfMonth: 0, HandOffTime: i_HandOffTime }),
+  WeeklySettings: D.list({ DayOfWeek: 0, HandOffTime: i_HandOffTime }),
+  DailySettings: D.list(i_HandOffTime),
+  NumberOfOnCalls: 0,
+  ShiftCoverages: D.map(D.list({ Start: i_HandOffTime, End: i_HandOffTime })),
+  RecurrenceMultiplier: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Page: D.LazyStruct = () => ({
   SentTime: D.ts,
   DeliveryTime: D.ts,
@@ -2167,3 +2319,4 @@ const o_RotationShift: D.LazyStruct = () => ({
   StartTime: D.ts,
   EndTime: D.ts,
 });
+const i_HandOffTime: D.LazyStruct = () => ({ HourOfDay: 0, MinuteOfHour: 0 });

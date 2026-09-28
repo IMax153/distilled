@@ -282,6 +282,7 @@ export const getDataAutomationStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { invocationArn: 0 },
     output: { jobSubmissionTime: D.ts, jobCompletionTime: D.ts },
   },
   errors: [
@@ -312,7 +313,17 @@ export const invokeDataAutomation: API.OperationMethod<
   InvokeDataAutomationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      inputConfiguration: { bytes: 0, s3Uri: 0 },
+      dataAutomationConfiguration: i_DataAutomationConfiguration,
+      blueprints: D.list(i_Blueprint),
+      dataAutomationProfileArn: 0,
+      encryptionConfiguration: i_EncryptionConfiguration,
+      outputConfiguration: i_OutputConfiguration,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -343,7 +354,28 @@ export const invokeDataAutomationAsync: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      inputConfiguration: {
+        s3Uri: 0,
+        assetProcessingConfiguration: {
+          video: {
+            segmentConfiguration: {
+              timestampSegment: { startTimeMillis: 0, endTimeMillis: 0 },
+            },
+          },
+        },
+      },
+      outputConfiguration: i_OutputConfiguration,
+      dataAutomationConfiguration: i_DataAutomationConfiguration,
+      encryptionConfiguration: i_EncryptionConfiguration,
+      notificationConfiguration: {
+        eventBridgeConfiguration: { eventBridgeEnabled: 0 },
+      },
+      blueprints: D.list(i_Blueprint),
+      dataAutomationProfileArn: 0,
+      tags: D.list(i_Tag),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -373,7 +405,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceARN: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -403,7 +435,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceARN: 0, tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -433,7 +465,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceARN: 0, tagKeys: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -445,3 +477,19 @@ export const untagResource: API.OperationMethod<
   retry: Retry,
   operationName: "UntagResource",
 })) as any;
+
+const i_Blueprint: D.LazyStruct = () => ({
+  blueprintArn: 0,
+  version: 0,
+  stage: 0,
+});
+const i_DataAutomationConfiguration: D.LazyStruct = () => ({
+  dataAutomationProjectArn: 0,
+  stage: 0,
+});
+const i_EncryptionConfiguration: D.LazyStruct = () => ({
+  kmsKeyId: 0,
+  kmsEncryptionContext: 0,
+});
+const i_OutputConfiguration: D.LazyStruct = () => ({ s3Uri: 0 });
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });

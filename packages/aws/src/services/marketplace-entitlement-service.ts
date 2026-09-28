@@ -189,6 +189,7 @@ export const getEntitlements: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ProductCode: 0, Filter: 0, NextToken: 0, MaxResults: 0 },
     output: { Entitlements: D.list({ ExpirationDate: D.ts }) },
   },
   errors: [

@@ -294,7 +294,13 @@ export const createNetworkConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2026-04-04/network-connectors",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Configuration: i_NetworkConnectorConfiguration,
+      OperatorRole: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -330,6 +336,7 @@ export const deleteNetworkConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2026-04-04/network-connectors/{Identifier}",
+    input: { Identifier: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -363,6 +370,7 @@ export const getNetworkConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2026-04-04/network-connectors/{Identifier}",
+    input: { Identifier: 0 },
     output: { LastModified: D.ts },
   },
   errors: [
@@ -440,7 +448,12 @@ export const updateNetworkConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2026-04-04/network-connectors/{Identifier}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Identifier: 0,
+      Configuration: i_NetworkConnectorConfiguration,
+      OperatorRole: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { LastModified: D.ts },
     body: true,
   },
@@ -455,3 +468,12 @@ export const updateNetworkConnector: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateNetworkConnector",
 })) as any;
+
+const i_NetworkConnectorConfiguration: D.LazyStruct = () => ({
+  VpcEgressConfiguration: {
+    SubnetIds: 0,
+    SecurityGroupIds: 0,
+    NetworkProtocol: 0,
+    AssociatedComputeResourceTypes: 0,
+  },
+});

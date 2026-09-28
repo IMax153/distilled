@@ -3378,7 +3378,18 @@ export const batchCreateMemoryRecords: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memories/{memoryId}/memoryRecords/batchCreate",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      memoryId: 0,
+      records: D.list({
+        requestIdentifier: 0,
+        namespaces: 0,
+        content: i_MemoryContent,
+        timestamp: 0,
+        memoryStrategyId: 0,
+        metadata: D.map(i_MemoryRecordMetadataValue),
+      }),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -3414,6 +3425,10 @@ export const batchDeleteMemoryRecords: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memories/{memoryId}/memoryRecords/batchDelete",
+    input: {
+      memoryId: 0,
+      records: D.list({ memoryRecordId: 0, namespace: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -3449,6 +3464,18 @@ export const batchUpdateMemoryRecords: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memories/{memoryId}/memoryRecords/batchUpdate",
+    input: {
+      memoryId: 0,
+      records: D.list({
+        memoryRecordId: 0,
+        timestamp: 0,
+        content: i_MemoryContent,
+        namespaces: 0,
+        sourceNamespaces: 0,
+        memoryStrategyId: 0,
+        metadata: D.map(i_MemoryRecordMetadataValue),
+      }),
+    },
     body: true,
   },
   errors: [
@@ -3484,6 +3511,7 @@ export const completeResourceTokenAuth: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/CompleteResourceTokenAuth",
+    input: { userIdentifier: { userToken: 0, userId: 0 }, sessionUri: 0 },
     body: true,
   },
   errors: [
@@ -3520,7 +3548,18 @@ export const createABTest: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ab-tests",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      gatewayArn: 0,
+      variants: D.list(i_Variant),
+      gatewayFilter: i_GatewayFilter,
+      evaluationConfig: i_ABTestEvaluationConfig,
+      roleArn: 0,
+      enableOnCreate: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -3564,7 +3603,22 @@ export const createEvent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memories/{memoryId}/events",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      memoryId: 0,
+      actorId: 0,
+      sessionId: 0,
+      eventTimestamp: 0,
+      payload: D.list({
+        conversational: i_Conversational,
+        blob: 0,
+        json: i_MemoryJsonData,
+      }),
+      branch: { rootEventId: 0, name: 0 },
+      clientToken: D.m({ idempotency: true }),
+      metadata: D.map(i_MetadataValue),
+      extractionMode: 0,
+      extractionConfig: i_ExtractionConfig,
+    },
     output: { event: o_Event },
     body: true,
   },
@@ -3610,6 +3664,28 @@ export const createPaymentInstrument: API.OperationMethod<
       agentName: D.m({
         header: "X-Amzn-Bedrock-AgentCore-Payments-Agent-Name",
       }),
+      paymentManagerArn: 0,
+      paymentConnectorId: 0,
+      paymentInstrumentType: 0,
+      paymentInstrumentDetails: {
+        embeddedCryptoWallet: {
+          network: 0,
+          linkedAccounts: D.list({
+            email: { emailAddress: 0 },
+            sms: { phoneNumber: 0 },
+            developerJwt: { kid: 0, sub: 0 },
+            oAuth2: {
+              google: i_OAuth2Authentication,
+              apple: i_OAuth2Authentication,
+              x: i_OAuth2Authentication,
+              telegram: i_OAuth2Authentication,
+              github: i_OAuth2Authentication,
+            },
+          }),
+          walletAddress: 0,
+          redirectUrl: 0,
+        },
+      },
       clientToken: D.m({ idempotency: true }),
     },
     output: { paymentInstrument: o_PaymentInstrument },
@@ -3656,6 +3732,9 @@ export const createPaymentSession: API.OperationMethod<
       agentName: D.m({
         header: "X-Amzn-Bedrock-AgentCore-Payments-Agent-Name",
       }),
+      paymentManagerArn: 0,
+      limits: { maxSpendAmount: { value: 0, currency: 0 } },
+      expiryTimeInMinutes: 0,
       clientToken: D.m({ idempotency: true }),
     },
     output: { paymentSession: o_PaymentSession },
@@ -3693,7 +3772,11 @@ export const deleteABTest: API.OperationMethod<
   DeleteABTestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /ab-tests/{abTestId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /ab-tests/{abTestId}",
+    input: { abTestId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3729,6 +3812,7 @@ export const deleteBatchEvaluation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /evaluations/batch-evaluate/{batchEvaluationId}",
+    input: { batchEvaluationId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3763,6 +3847,7 @@ export const deleteCapacityProviderSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /capacity-providers/{capacityProviderId}/sessions/{sessionId}",
+    input: { capacityProviderId: 0, sessionId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3799,6 +3884,7 @@ export const deleteEvent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /memories/{memoryId}/actor/{actorId}/sessions/{sessionId}/events/{eventId}",
+    input: { memoryId: 0, sessionId: 0, eventId: 0, actorId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3837,7 +3923,11 @@ export const deleteMemoryRecord: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /memories/{memoryId}/memoryRecords/{memoryRecordId}",
-    input: { namespace: D.m({ query: "namespace" }) },
+    input: {
+      memoryId: 0,
+      memoryRecordId: 0,
+      namespace: D.m({ query: "namespace" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -3874,6 +3964,9 @@ export const deletePaymentInstrument: API.OperationMethod<
     http: "POST /payments/deletePaymentInstrument",
     input: {
       userId: D.m({ header: "X-Amzn-Bedrock-AgentCore-Payments-User-Id" }),
+      paymentManagerArn: 0,
+      paymentConnectorId: 0,
+      paymentInstrumentId: 0,
     },
     body: true,
   },
@@ -3910,6 +4003,8 @@ export const deletePaymentSession: API.OperationMethod<
     http: "POST /payments/deletePaymentSession",
     input: {
       userId: D.m({ header: "X-Amzn-Bedrock-AgentCore-Payments-User-Id" }),
+      paymentManagerArn: 0,
+      paymentSessionId: 0,
     },
     body: true,
   },
@@ -3945,6 +4040,7 @@ export const deleteRecommendation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /recommendations/{recommendationId}",
+    input: { recommendationId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3982,6 +4078,17 @@ export const evaluate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /evaluations/evaluate/{evaluatorId}",
+    input: {
+      evaluatorId: 0,
+      evaluationInput: { sessionSpans: 0 },
+      evaluationTarget: { spanIds: 0, traceIds: 0 },
+      evaluationReferenceInputs: D.list({
+        context: { spanContext: { sessionId: 0, traceId: 0, spanId: 0 } },
+        expectedResponse: i_EvaluationContent,
+        assertions: D.list(i_EvaluationContent),
+        expectedTrajectory: i_EvaluationExpectedTrajectory,
+      }),
+    },
     output: { evaluationResults: D.list({ explanation: D.secret }) },
     body: true,
   },
@@ -4021,6 +4128,7 @@ export const getABTest: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /ab-tests/{abTestId}",
+    input: { abTestId: 0 },
     output: {
       startedAt: D.ts,
       stoppedAt: D.ts,
@@ -4070,6 +4178,7 @@ export const getAgentCard: API.OperationMethod<
         header: "X-Amzn-Bedrock-AgentCore-Runtime-Session-Id",
         idempotency: true,
       }),
+      agentRuntimeArn: 0,
       qualifier: D.m({ query: "qualifier" }),
     },
     output: {
@@ -4115,6 +4224,7 @@ export const getBatchEvaluation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /evaluations/batch-evaluate/{batchEvaluationId}",
+    input: { batchEvaluationId: 0 },
     output: {
       createdAt: D.ts,
       dataSourceConfig: {
@@ -4166,7 +4276,7 @@ export const getBrowserSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /browsers/{browserIdentifier}/sessions/get",
-    input: { sessionId: D.m({ query: "sessionId" }) },
+    input: { browserIdentifier: 0, sessionId: D.m({ query: "sessionId" }) },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -4210,7 +4320,10 @@ export const getCodeInterpreterSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /code-interpreters/{codeInterpreterIdentifier}/sessions/get",
-    input: { sessionId: D.m({ query: "sessionId" }) },
+    input: {
+      codeInterpreterIdentifier: 0,
+      sessionId: D.m({ query: "sessionId" }),
+    },
     output: { createdAt: D.ts },
   },
   errors: [
@@ -4248,6 +4361,7 @@ export const getEvent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memories/{memoryId}/actor/{actorId}/sessions/{sessionId}/events/{eventId}",
+    input: { memoryId: 0, sessionId: 0, actorId: 0, eventId: 0 },
     output: { event: o_Event },
   },
   errors: [
@@ -4287,7 +4401,11 @@ export const getMemoryRecord: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memories/{memoryId}/memoryRecord/{memoryRecordId}",
-    input: { namespace: D.m({ query: "namespace" }) },
+    input: {
+      memoryId: 0,
+      memoryRecordId: 0,
+      namespace: D.m({ query: "namespace" }),
+    },
     output: {
       memoryRecord: {
         content: o_MemoryContent,
@@ -4334,6 +4452,9 @@ export const getPaymentInstrument: API.OperationMethod<
       agentName: D.m({
         header: "X-Amzn-Bedrock-AgentCore-Payments-Agent-Name",
       }),
+      paymentManagerArn: 0,
+      paymentConnectorId: 0,
+      paymentInstrumentId: 0,
     },
     output: { paymentInstrument: o_PaymentInstrument },
     body: true,
@@ -4374,6 +4495,11 @@ export const getPaymentInstrumentBalance: API.OperationMethod<
       agentName: D.m({
         header: "X-Amzn-Bedrock-AgentCore-Payments-Agent-Name",
       }),
+      paymentManagerArn: 0,
+      paymentConnectorId: 0,
+      paymentInstrumentId: 0,
+      chain: 0,
+      token: 0,
     },
     body: true,
   },
@@ -4413,6 +4539,8 @@ export const getPaymentSession: API.OperationMethod<
       agentName: D.m({
         header: "X-Amzn-Bedrock-AgentCore-Payments-Agent-Name",
       }),
+      paymentManagerArn: 0,
+      paymentSessionId: 0,
     },
     output: { paymentSession: o_PaymentSession },
     body: true,
@@ -4448,6 +4576,7 @@ export const getRecommendation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /recommendations/{recommendationId}",
+    input: { recommendationId: 0 },
     output: {
       recommendationConfig: o_RecommendationConfig,
       createdAt: D.ts,
@@ -4492,6 +4621,7 @@ export const getResourceApiKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/api-key",
+    input: { workloadIdentityToken: 0, resourceCredentialProviderName: 0 },
     output: { apiKey: D.secret },
     body: true,
   },
@@ -4528,6 +4658,19 @@ export const getResourceOauth2Token: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/oauth2/token",
+    input: {
+      workloadIdentityToken: 0,
+      resourceCredentialProviderName: 0,
+      scopes: 0,
+      oauth2Flow: 0,
+      sessionUri: 0,
+      resourceOauth2ReturnUrl: 0,
+      forceAuthentication: 0,
+      customParameters: 0,
+      customState: 0,
+      resources: 0,
+      audiences: 0,
+    },
     output: { authorizationUrl: D.secret, accessToken: D.secret },
     body: true,
   },
@@ -4564,6 +4707,25 @@ export const getResourcePaymentToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/payment/token",
+    input: {
+      workloadIdentityToken: 0,
+      resourceCredentialProviderName: 0,
+      paymentTokenRequest: {
+        coinbaseCdpTokenRequest: {
+          requestMethod: 0,
+          requestHost: 0,
+          requestPath: 0,
+          includeWalletAuthToken: 0,
+          requestBody: 0,
+        },
+        stripePrivyTokenRequest: {
+          requestHost: 0,
+          requestPath: 0,
+          requestBody: 0,
+          includeAuthorizationSignature: 0,
+        },
+      },
+    },
     output: {
       paymentTokenResponse: {
         coinbaseCdpTokenResponse: {
@@ -4611,6 +4773,7 @@ export const getWorkloadAccessToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/GetWorkloadAccessToken",
+    input: { workloadName: 0 },
     output: { workloadAccessToken: D.secret },
     body: true,
   },
@@ -4647,6 +4810,7 @@ export const getWorkloadAccessTokenForJWT: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/GetWorkloadAccessTokenForJWT",
+    input: { workloadName: 0, userToken: 0 },
     output: { workloadAccessToken: D.secret },
     body: true,
   },
@@ -4683,6 +4847,7 @@ export const getWorkloadAccessTokenForUserId: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/GetWorkloadAccessTokenForUserId",
+    input: { workloadName: 0, userId: 0 },
     output: { workloadAccessToken: D.secret },
     body: true,
   },
@@ -4721,7 +4886,23 @@ export const ingestData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memories/{memoryId}/ingest",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      memoryId: 0,
+      source: {
+        inline: {
+          payload: D.list({
+            conversational: i_Conversational,
+            json: i_MemoryJsonData,
+          }),
+        },
+      },
+      contentTimestamp: 0,
+      actorId: 0,
+      sessionId: 0,
+      extractionConfig: i_ExtractionConfig,
+      metadata: D.map(i_MetadataValue),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -4787,9 +4968,10 @@ export const invokeAgentRuntime: API.OperationMethod<
       traceParent: D.m({ header: "traceparent" }),
       traceState: D.m({ header: "tracestate" }),
       baggage: D.m({ header: "baggage" }),
+      agentRuntimeArn: 0,
       qualifier: D.m({ query: "qualifier" }),
       accountId: D.m({ query: "accountId" }),
-      payload: D.m({ payload: true, shape: D.stream }),
+      payload: D.m({ payload: true, shape: D.blob }),
     },
     output: {
       runtimeSessionId: D.m({
@@ -4858,9 +5040,10 @@ export const invokeAgentRuntimeCommand: API.OperationMethod<
       traceParent: D.m({ header: "traceparent" }),
       traceState: D.m({ header: "tracestate" }),
       baggage: D.m({ header: "baggage" }),
+      agentRuntimeArn: 0,
       qualifier: D.m({ query: "qualifier" }),
       accountId: D.m({ query: "accountId" }),
-      body: D.m({ payload: true }),
+      body: D.m({ payload: true, shape: { command: 0, timeout: 0 } }),
     },
     output: {
       runtimeSessionId: D.m({
@@ -4932,7 +5115,20 @@ export const invokeBrowser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /browsers/{browserIdentifier}/sessions/invoke",
-    input: { sessionId: D.m({ header: "x-amzn-browser-session-id" }) },
+    input: {
+      browserIdentifier: 0,
+      sessionId: D.m({ header: "x-amzn-browser-session-id" }),
+      action: {
+        mouseClick: { x: 0, y: 0, button: 0, clickCount: 0 },
+        mouseMove: { x: 0, y: 0 },
+        mouseDrag: { endX: 0, endY: 0, startX: 0, startY: 0, button: 0 },
+        mouseScroll: { x: 0, y: 0, deltaX: 0, deltaY: 0 },
+        keyType: { text: 0 },
+        keyPress: { key: 0, presses: 0 },
+        keyShortcut: { keys: 0 },
+        screenshot: { format: 0 },
+      },
+    },
     output: {
       result: { screenshot: { data: D.blob } },
       sessionId: D.m({ header: "x-amzn-browser-session-id" }),
@@ -4984,9 +5180,23 @@ export const invokeCodeInterpreter: API.OperationMethod<
     service: svc,
     http: "POST /code-interpreters/{codeInterpreterIdentifier}/tools/invoke",
     input: {
+      codeInterpreterIdentifier: 0,
       sessionId: D.m({ header: "x-amzn-code-interpreter-session-id" }),
       traceId: D.m({ header: "X-Amzn-Trace-Id" }),
       traceParent: D.m({ header: "traceparent" }),
+      name: 0,
+      arguments: {
+        code: 0,
+        language: 0,
+        clearContext: 0,
+        command: 0,
+        path: 0,
+        paths: 0,
+        content: D.list({ path: 0, text: 0, blob: 0 }),
+        directoryPath: 0,
+        taskId: 0,
+        runtime: 0,
+      },
     },
     output: {
       sessionId: D.m({ header: "x-amzn-code-interpreter-session-id" }),
@@ -5056,6 +5266,96 @@ export const invokeHarness: API.OperationMethod<
       traceState: D.m({ header: "tracestate" }),
       traceId: D.m({ header: "X-Amzn-Trace-Id" }),
       baggage: D.m({ header: "baggage" }),
+      messages: D.list({
+        role: 0,
+        content: D.list({
+          text: 0,
+          toolUse: { name: 0, toolUseId: 0, input: 0, type: 0, serverName: 0 },
+          toolResult: {
+            toolUseId: 0,
+            content: D.list({ text: 0, json: 0 }),
+            status: 0,
+            type: 0,
+          },
+          reasoningContent: {
+            reasoningText: { text: 0, signature: 0 },
+            redactedContent: 0,
+          },
+        }),
+      }),
+      model: {
+        bedrockModelConfig: {
+          modelId: 0,
+          maxTokens: 0,
+          temperature: 0,
+          topP: 0,
+          apiFormat: 0,
+          additionalParams: 0,
+        },
+        openAiModelConfig: {
+          modelId: 0,
+          apiKeyArn: 0,
+          maxTokens: 0,
+          temperature: 0,
+          topP: 0,
+          apiFormat: 0,
+          additionalParams: 0,
+        },
+        geminiModelConfig: {
+          modelId: 0,
+          apiKeyArn: 0,
+          maxTokens: 0,
+          temperature: 0,
+          topP: 0,
+          topK: 0,
+          additionalParams: 0,
+        },
+        liteLlmModelConfig: {
+          modelId: 0,
+          apiKeyArn: 0,
+          apiBase: 0,
+          maxTokens: 0,
+          temperature: 0,
+          topP: 0,
+          additionalParams: 0,
+        },
+      },
+      systemPrompt: D.list({ text: 0 }),
+      tools: D.list({
+        type: 0,
+        name: 0,
+        config: {
+          remoteMcp: { url: 0, headers: 0 },
+          agentCoreBrowser: { browserArn: 0 },
+          agentCoreGateway: {
+            gatewayArn: 0,
+            outboundAuth: {
+              awsIam: i_Unit,
+              none: i_Unit,
+              oauth: {
+                providerArn: 0,
+                scopes: 0,
+                customParameters: 0,
+                grantType: 0,
+                defaultReturnUrl: 0,
+              },
+            },
+          },
+          inlineFunction: { description: 0, inputSchema: 0 },
+          agentCoreCodeInterpreter: { codeInterpreterArn: 0 },
+        },
+      }),
+      skills: D.list({
+        path: 0,
+        s3: { uri: 0 },
+        git: { url: 0, path: 0, auth: { credentialArn: 0, username: 0 } },
+        awsSkills: { paths: 0 },
+      }),
+      allowedTools: 0,
+      maxIterations: 0,
+      maxTokens: 0,
+      timeoutSeconds: 0,
+      actorId: 0,
     },
     output: {
       stream: D.m({
@@ -5165,6 +5465,7 @@ export const listActors: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memories/{memoryId}/actors",
+    input: { memoryId: 0, maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [
@@ -5260,6 +5561,7 @@ export const listBrowserSessions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /browsers/{browserIdentifier}/sessions/list",
+    input: { browserIdentifier: 0, maxResults: 0, nextToken: 0, status: 0 },
     output: { items: D.list({ createdAt: D.ts, lastUpdatedAt: D.ts }) },
     body: true,
   },
@@ -5304,6 +5606,12 @@ export const listCodeInterpreterSessions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /code-interpreters/{codeInterpreterIdentifier}/sessions/list",
+    input: {
+      codeInterpreterIdentifier: 0,
+      maxResults: 0,
+      nextToken: 0,
+      status: 0,
+    },
     output: { items: D.list({ createdAt: D.ts, lastUpdatedAt: D.ts }) },
     body: true,
   },
@@ -5343,6 +5651,22 @@ export const listEvents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memories/{memoryId}/actor/{actorId}/sessions/{sessionId}",
+    input: {
+      memoryId: 0,
+      sessionId: 0,
+      actorId: 0,
+      includePayloads: 0,
+      filter: {
+        branch: { name: 0, includeParentBranches: 0 },
+        eventMetadata: D.list({
+          left: { metadataKey: 0 },
+          operator: 0,
+          right: { metadataValue: i_MetadataValue },
+        }),
+      },
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { events: D.list(o_Event) },
     body: true,
   },
@@ -5389,6 +5713,12 @@ export const listMemoryExtractionJobs: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memories/{memoryId}/extractionJobs",
+    input: {
+      memoryId: 0,
+      maxResults: 0,
+      filter: { strategyId: 0, sessionId: 0, actorId: 0, status: 0 },
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -5434,6 +5764,15 @@ export const listMemoryRecords: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memories/{memoryId}/memoryRecords",
+    input: {
+      memoryId: 0,
+      namespace: 0,
+      namespacePath: 0,
+      memoryStrategyId: 0,
+      maxResults: 0,
+      nextToken: 0,
+      metadataFilters: D.list(i_MemoryMetadataFilterExpression),
+    },
     output: { memoryRecordSummaries: D.list(o_MemoryRecordSummary) },
     body: true,
   },
@@ -5481,6 +5820,10 @@ export const listPaymentInstruments: API.PaginatedOperationMethod<
       agentName: D.m({
         header: "X-Amzn-Bedrock-AgentCore-Payments-Agent-Name",
       }),
+      paymentManagerArn: 0,
+      paymentConnectorId: 0,
+      nextToken: 0,
+      maxResults: 0,
     },
     output: {
       paymentInstruments: D.list({ createdAt: D.ts, updatedAt: D.ts }),
@@ -5528,6 +5871,9 @@ export const listPaymentSessions: API.PaginatedOperationMethod<
       agentName: D.m({
         header: "X-Amzn-Bedrock-AgentCore-Payments-Agent-Name",
       }),
+      paymentManagerArn: 0,
+      nextToken: 0,
+      maxResults: 0,
     },
     output: { paymentSessions: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
     body: true,
@@ -5620,6 +5966,13 @@ export const listSessions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memories/{memoryId}/actor/{actorId}/sessions",
+    input: {
+      memoryId: 0,
+      actorId: 0,
+      maxResults: 0,
+      nextToken: 0,
+      filter: { eventFilter: 0 },
+    },
     output: { sessionSummaries: D.list({ createdAt: D.ts }) },
     body: true,
   },
@@ -5670,6 +6023,14 @@ export const processPayment: API.OperationMethod<
       agentName: D.m({
         header: "X-Amzn-Bedrock-AgentCore-Payments-Agent-Name",
       }),
+      paymentManagerArn: 0,
+      paymentSessionId: 0,
+      paymentInstrumentId: 0,
+      paymentType: 0,
+      paymentInput: {
+        cryptoX402: { version: 0, payload: 0, permit2AllowanceLimit: 0 },
+        mpp: { version: 0, wwwAuthenticateHeaders: 0, buyerPaysGasFees: 0 },
+      },
       clientToken: D.m({ idempotency: true }),
     },
     output: {
@@ -5718,6 +6079,19 @@ export const retrieveMemoryRecords: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memories/{memoryId}/retrieve",
+    input: {
+      memoryId: 0,
+      namespace: 0,
+      namespacePath: 0,
+      searchCriteria: {
+        searchQuery: 0,
+        memoryStrategyId: 0,
+        topK: 0,
+        metadataFilters: D.list(i_MemoryMetadataFilterExpression),
+      },
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { memoryRecordSummaries: D.list(o_MemoryRecordSummary) },
     body: true,
   },
@@ -5774,6 +6148,9 @@ export const saveBrowserSessionProfile: API.OperationMethod<
     input: {
       traceId: D.m({ header: "X-Amzn-Trace-Id" }),
       traceParent: D.m({ header: "traceparent" }),
+      profileIdentifier: 0,
+      browserIdentifier: 0,
+      sessionId: 0,
       clientToken: D.m({ idempotency: true }),
     },
     output: { lastUpdatedAt: D.ts },
@@ -5812,6 +6189,7 @@ export const searchRegistryRecords: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /registry-records/search",
+    input: { searchQuery: 0, registryIds: 0, maxResults: 0, filters: 0 },
     output: {
       registryRecords: D.list({
         description: D.secret,
@@ -5856,11 +6234,41 @@ export const startBatchEvaluation: API.OperationMethod<
     service: svc,
     http: "POST /evaluations/batch-evaluate",
     input: {
+      batchEvaluationName: 0,
+      evaluators: D.list({ evaluatorId: 0 }),
+      insights: D.list({ insightId: 0 }),
       dataSourceConfig: {
-        cloudWatchLogs: { filterConfig: { timeRange: i_SessionFilterConfig } },
-        onlineEvaluationConfigSource: { timeRange: i_SessionFilterConfig },
+        cloudWatchLogs: {
+          serviceNames: 0,
+          logGroupNames: 0,
+          filterConfig: { sessionIds: 0, timeRange: i_SessionFilterConfig },
+        },
+        onlineEvaluationConfigSource: {
+          onlineEvaluationConfigArn: 0,
+          timeRange: i_SessionFilterConfig,
+        },
       },
       clientToken: D.m({ idempotency: true }),
+      evaluationMetadata: {
+        sessionMetadata: D.list({
+          sessionId: 0,
+          testScenarioId: 0,
+          groundTruth: {
+            inline: {
+              assertions: D.list(i_EvaluationContent),
+              expectedTrajectory: i_EvaluationExpectedTrajectory,
+              turns: D.list({
+                input: { prompt: 0 },
+                expectedResponse: i_EvaluationContent,
+              }),
+            },
+          },
+          metadata: 0,
+        }),
+      },
+      tags: 0,
+      kmsKeyArn: 0,
+      description: 0,
     },
     output: { createdAt: D.ts },
     body: true,
@@ -5917,6 +6325,26 @@ export const startBrowserSession: API.OperationMethod<
     input: {
       traceId: D.m({ header: "X-Amzn-Trace-Id" }),
       traceParent: D.m({ header: "traceparent" }),
+      browserIdentifier: 0,
+      name: 0,
+      sessionTimeoutSeconds: 0,
+      viewPort: { width: 0, height: 0 },
+      extensions: D.list({ location: i_ResourceLocation }),
+      profileConfiguration: { profileIdentifier: 0 },
+      proxyConfiguration: {
+        proxies: D.list({
+          externalProxy: {
+            server: 0,
+            port: 0,
+            domainPatterns: 0,
+            credentials: { basicAuth: { secretArn: 0 } },
+          },
+        }),
+        bypass: { domainPatterns: 0 },
+      },
+      enterprisePolicies: D.list({ location: i_ResourceLocation, type: 0 }),
+      certificates: D.list(i_Certificate),
+      filesystemConfigurations: D.list(i_ToolsFileSystemConfiguration),
       clientToken: D.m({ idempotency: true }),
     },
     output: { createdAt: D.ts },
@@ -5970,6 +6398,11 @@ export const startCodeInterpreterSession: API.OperationMethod<
     input: {
       traceId: D.m({ header: "X-Amzn-Trace-Id" }),
       traceParent: D.m({ header: "traceparent" }),
+      codeInterpreterIdentifier: 0,
+      name: 0,
+      sessionTimeoutSeconds: 0,
+      certificates: D.list(i_Certificate),
+      filesystemConfigurations: D.list(i_ToolsFileSystemConfiguration),
       clientToken: D.m({ idempotency: true }),
     },
     output: { createdAt: D.ts },
@@ -6011,7 +6444,11 @@ export const startMemoryExtractionJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memories/{memoryId}/extractionJobs/start",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      memoryId: 0,
+      extractionJob: { jobId: 0 },
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -6048,13 +6485,39 @@ export const startRecommendation: API.OperationMethod<
     service: svc,
     http: "POST /recommendations",
     input: {
+      name: 0,
+      description: 0,
+      type: 0,
       recommendationConfig: {
-        systemPromptRecommendationConfig: { agentTraces: i_AgentTracesConfig },
+        systemPromptRecommendationConfig: {
+          systemPrompt: {
+            text: 0,
+            configurationBundle: {
+              bundleArn: 0,
+              versionId: 0,
+              systemPromptJsonPath: 0,
+            },
+          },
+          agentTraces: i_AgentTracesConfig,
+          evaluationConfig: { evaluators: D.list({ evaluatorArn: 0 }) },
+        },
         toolDescriptionRecommendationConfig: {
+          toolDescription: {
+            toolDescriptionText: {
+              tools: D.list({ toolName: 0, toolDescription: { text: 0 } }),
+            },
+            configurationBundle: {
+              bundleArn: 0,
+              versionId: 0,
+              tools: D.list({ toolName: 0, toolDescriptionJsonPath: 0 }),
+            },
+          },
           agentTraces: i_AgentTracesConfig,
         },
       },
+      kmsKeyArn: 0,
       clientToken: D.m({ idempotency: true }),
+      tags: 0,
     },
     output: {
       recommendationConfig: o_RecommendationConfig,
@@ -6097,6 +6560,7 @@ export const stopBatchEvaluation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /evaluations/batch-evaluate/{batchEvaluationId}/stop",
+    input: { batchEvaluationId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -6144,6 +6608,7 @@ export const stopBrowserSession: API.OperationMethod<
     input: {
       traceId: D.m({ header: "X-Amzn-Trace-Id" }),
       traceParent: D.m({ header: "traceparent" }),
+      browserIdentifier: 0,
       sessionId: D.m({ query: "sessionId" }),
       clientToken: D.m({ idempotency: true }),
     },
@@ -6196,6 +6661,7 @@ export const stopCodeInterpreterSession: API.OperationMethod<
     input: {
       traceId: D.m({ header: "X-Amzn-Trace-Id" }),
       traceParent: D.m({ header: "traceparent" }),
+      codeInterpreterIdentifier: 0,
       sessionId: D.m({ query: "sessionId" }),
       clientToken: D.m({ idempotency: true }),
     },
@@ -6244,6 +6710,7 @@ export const stopRuntimeSession: API.OperationMethod<
       runtimeSessionId: D.m({
         header: "X-Amzn-Bedrock-AgentCore-Runtime-Session-Id",
       }),
+      agentRuntimeArn: 0,
       qualifier: D.m({ query: "qualifier" }),
       clientToken: D.m({ idempotency: true }),
     },
@@ -6294,7 +6761,17 @@ export const updateABTest: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /ab-tests/{abTestId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      abTestId: 0,
+      clientToken: D.m({ idempotency: true }),
+      name: 0,
+      description: 0,
+      variants: D.list(i_Variant),
+      gatewayFilter: i_GatewayFilter,
+      evaluationConfig: i_ABTestEvaluationConfig,
+      roleArn: 0,
+      executionStatus: 0,
+    },
     output: { updatedAt: D.ts },
     body: true,
   },
@@ -6335,7 +6812,9 @@ export const updateBrowserStream: API.OperationMethod<
     service: svc,
     http: "PUT /browsers/{browserIdentifier}/sessions/streams/update",
     input: {
+      browserIdentifier: 0,
       sessionId: D.m({ query: "sessionId" }),
+      streamUpdate: { automationStreamUpdate: { streamStatus: 0 } },
       clientToken: D.m({ idempotency: true }),
     },
     output: { updatedAt: D.ts },
@@ -6355,20 +6834,86 @@ export const updateBrowserStream: API.OperationMethod<
   operationName: "UpdateBrowserStream",
 })) as any;
 
+const i_ABTestEvaluationConfig: D.LazyStruct = () => ({
+  onlineEvaluationConfigArn: 0,
+  perVariantOnlineEvaluationConfig: D.list({
+    name: 0,
+    onlineEvaluationConfigArn: 0,
+  }),
+});
 const i_AgentTracesConfig: D.LazyStruct = () => ({
+  sessionSpans: 0,
   cloudwatchLogs: {
+    logGroupArns: 0,
+    serviceNames: 0,
     startTime: D.tsAs("date-time"),
     endTime: D.tsAs("date-time"),
+    rule: {
+      filters: D.list({
+        key: 0,
+        operator: 0,
+        value: { stringValue: 0, doubleValue: 0, booleanValue: 0 },
+      }),
+    },
   },
+  batchEvaluation: { batchEvaluationArn: 0 },
   onlineEvaluation: {
+    onlineEvaluationConfigArn: 0,
     startTime: D.tsAs("date-time"),
     endTime: D.tsAs("date-time"),
   },
+});
+const i_Certificate: D.LazyStruct = () => ({
+  location: { secretsManager: { secretArn: 0 } },
+});
+const i_Conversational: D.LazyStruct = () => ({
+  content: { text: 0 },
+  role: 0,
+});
+const i_EvaluationContent: D.LazyStruct = () => ({ text: 0 });
+const i_EvaluationExpectedTrajectory: D.LazyStruct = () => ({ toolNames: 0 });
+const i_ExtractionConfig: D.LazyStruct = () => ({ namespaceVariables: 0 });
+const i_GatewayFilter: D.LazyStruct = () => ({ targetPaths: 0 });
+const i_MemoryContent: D.LazyStruct = () => ({ text: 0 });
+const i_MemoryJsonData: D.LazyStruct = () => ({ content: 0 });
+const i_MemoryMetadataFilterExpression: D.LazyStruct = () => ({
+  left: { metadataKey: 0 },
+  operator: 0,
+  right: { metadataValue: i_MemoryRecordMetadataValue },
+});
+const i_MemoryRecordMetadataValue: D.LazyStruct = () => ({
+  stringValue: 0,
+  stringListValue: 0,
+  numberValue: 0,
+  dateTimeValue: 0,
+});
+const i_MetadataValue: D.LazyStruct = () => ({ stringValue: 0 });
+const i_OAuth2Authentication: D.LazyStruct = () => ({
+  sub: 0,
+  emailAddress: 0,
+  name: 0,
+  username: 0,
+});
+const i_ResourceLocation: D.LazyStruct = () => ({
+  s3: { bucket: 0, prefix: 0, versionId: 0 },
 });
 const i_SessionFilterConfig: D.LazyStruct = () => ({
   startTime: D.tsAs("date-time"),
   endTime: D.tsAs("date-time"),
 });
+const i_ToolsFileSystemConfiguration: D.LazyStruct = () => ({
+  s3FilesConfiguration: { accessPointArn: 0, mountPath: 0, fileSystemArn: 0 },
+  efsConfiguration: { accessPointArn: 0, mountPath: 0, fileSystemArn: 0 },
+});
+const i_Variant: D.LazyStruct = () => ({
+  name: 0,
+  weight: 0,
+  variantConfiguration: {
+    configurationBundle: { bundleArn: 0, bundleVersion: 0 },
+    target: { name: 0 },
+  },
+});
+const i_Unit: D.LazyStruct = () => ({});
 const o_Event: D.LazyStruct = () => ({
   eventTimestamp: D.ts,
   payload: D.list({ conversational: { content: { text: D.secret } } }),

@@ -1514,6 +1514,7 @@ export const acceptResourceGroupingRecommendations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accept-resource-grouping-recommendations",
+    input: { appArn: 0, entries: D.list({ groupingRecommendationId: 0 }) },
     body: true,
   },
   errors: [
@@ -1554,6 +1555,24 @@ export const addDraftAppVersionResourceMappings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /add-draft-app-version-resource-mappings",
+    input: {
+      appArn: 0,
+      resourceMappings: D.list({
+        resourceName: 0,
+        logicalStackName: 0,
+        appRegistryAppName: 0,
+        resourceGroupName: 0,
+        mappingType: 0,
+        physicalResourceId: {
+          identifier: 0,
+          type: 0,
+          awsRegion: 0,
+          awsAccountId: 0,
+        },
+        terraformSourceName: 0,
+        eksSourceName: 0,
+      }),
+    },
     body: true,
   },
   errors: [
@@ -1589,6 +1608,17 @@ export const batchUpdateRecommendationStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /batch-update-recommendation-status",
+    input: {
+      appArn: 0,
+      requestEntries: D.list({
+        entryId: 0,
+        referenceId: 0,
+        item: { resourceId: 0, targetAccountId: 0, targetRegion: 0 },
+        excluded: 0,
+        appComponentId: 0,
+        excludeReason: 0,
+      }),
+    },
     body: true,
   },
   errors: [
@@ -1635,7 +1665,17 @@ export const createApp: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /create-app",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      policyArn: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+      assessmentSchedule: 0,
+      permissionModel: i_PermissionModel,
+      eventSubscriptions: D.list(i_EventSubscription),
+      awsApplicationArn: 0,
+    },
     output: { app: o_App },
     body: true,
   },
@@ -1678,7 +1718,14 @@ export const createAppVersionAppComponent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /create-app-version-app-component",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      appArn: 0,
+      id: 0,
+      name: 0,
+      type: 0,
+      additionalInfo: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1727,7 +1774,18 @@ export const createAppVersionResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /create-app-version-resource",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      appArn: 0,
+      resourceName: 0,
+      logicalResourceId: i_LogicalResourceId,
+      physicalResourceId: 0,
+      awsRegion: 0,
+      awsAccountId: 0,
+      resourceType: 0,
+      appComponents: 0,
+      additionalInfo: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1765,7 +1823,16 @@ export const createRecommendationTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /create-recommendation-template",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      recommendationIds: 0,
+      format: 0,
+      recommendationTypes: 0,
+      assessmentArn: 0,
+      name: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+      bucketName: 0,
+    },
     output: { recommendationTemplate: o_RecommendationTemplate },
     body: true,
   },
@@ -1811,7 +1878,15 @@ export const createResiliencyPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /create-resiliency-policy",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      policyName: 0,
+      policyDescription: 0,
+      dataLocationConstraint: 0,
+      tier: 0,
+      policy: D.map(i_FailurePolicy),
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { policy: o_ResiliencyPolicy },
     body: true,
   },
@@ -1848,7 +1923,11 @@ export const deleteApp: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-app",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      appArn: 0,
+      forceDelete: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1884,7 +1963,7 @@ export const deleteAppAssessment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-app-assessment",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { assessmentArn: 0, clientToken: D.m({ idempotency: true }) },
     body: true,
   },
   errors: [
@@ -1921,7 +2000,13 @@ export const deleteAppInputSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-app-input-source",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      appArn: 0,
+      sourceArn: 0,
+      terraformSource: i_TerraformSource,
+      clientToken: D.m({ idempotency: true }),
+      eksSourceClusterNamespace: { eksClusterArn: 0, namespace: 0 },
+    },
     body: true,
   },
   errors: [
@@ -1964,7 +2049,7 @@ export const deleteAppVersionAppComponent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-app-version-app-component",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { appArn: 0, id: 0, clientToken: D.m({ idempotency: true }) },
     body: true,
   },
   errors: [
@@ -2009,7 +2094,15 @@ export const deleteAppVersionResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-app-version-resource",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      appArn: 0,
+      resourceName: 0,
+      logicalResourceId: i_LogicalResourceId,
+      physicalResourceId: 0,
+      awsRegion: 0,
+      awsAccountId: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2045,7 +2138,10 @@ export const deleteRecommendationTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-recommendation-template",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      recommendationTemplateArn: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2080,7 +2176,7 @@ export const deleteResiliencyPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-resiliency-policy",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { policyArn: 0, clientToken: D.m({ idempotency: true }) },
     body: true,
   },
   errors: [
@@ -2115,6 +2211,7 @@ export const describeApp: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-app",
+    input: { appArn: 0 },
     output: { app: o_App },
     body: true,
   },
@@ -2149,6 +2246,7 @@ export const describeAppAssessment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-app-assessment",
+    input: { assessmentArn: 0 },
     output: { assessment: o_AppAssessment },
     body: true,
   },
@@ -2180,7 +2278,12 @@ export const describeAppVersion: API.OperationMethod<
   DescribeAppVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /describe-app-version", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /describe-app-version",
+    input: { appArn: 0, appVersion: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2213,6 +2316,7 @@ export const describeAppVersionAppComponent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-app-version-app-component",
+    input: { appArn: 0, appVersion: 0, id: 0 },
     body: true,
   },
   errors: [
@@ -2257,6 +2361,15 @@ export const describeAppVersionResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-app-version-resource",
+    input: {
+      appArn: 0,
+      appVersion: 0,
+      resourceName: 0,
+      logicalResourceId: i_LogicalResourceId,
+      physicalResourceId: 0,
+      awsRegion: 0,
+      awsAccountId: 0,
+    },
     body: true,
   },
   errors: [
@@ -2293,6 +2406,7 @@ export const describeAppVersionResourcesResolutionStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-app-version-resources-resolution-status",
+    input: { appArn: 0, appVersion: 0, resolutionId: 0 },
     body: true,
   },
   errors: [
@@ -2326,6 +2440,7 @@ export const describeAppVersionTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-app-version-template",
+    input: { appArn: 0, appVersion: 0 },
     body: true,
   },
   errors: [
@@ -2365,6 +2480,7 @@ export const describeDraftAppVersionResourcesImportStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-draft-app-version-resources-import-status",
+    input: { appArn: 0 },
     output: { statusChangeTime: D.ts },
     body: true,
   },
@@ -2399,6 +2515,7 @@ export const describeMetricsExport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-metrics-export",
+    input: { metricsExportId: 0 },
     body: true,
   },
   errors: [
@@ -2434,6 +2551,7 @@ export const describeResiliencyPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-resiliency-policy",
+    input: { policyArn: 0 },
     output: { policy: o_ResiliencyPolicy },
     body: true,
   },
@@ -2468,6 +2586,7 @@ export const describeResourceGroupingRecommendationTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-resource-grouping-recommendation-task",
+    input: { appArn: 0, groupingId: 0 },
     body: true,
   },
   errors: [
@@ -2505,6 +2624,13 @@ export const importResourcesToDraftAppVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /import-resources-to-draft-app-version",
+    input: {
+      appArn: 0,
+      sourceArns: 0,
+      terraformSources: D.list(i_TerraformSource),
+      importStrategy: 0,
+      eksSources: D.list({ eksClusterArn: 0, namespaces: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -2541,6 +2667,7 @@ export const listAlarmRecommendations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-alarm-recommendations",
+    input: { assessmentArn: 0, nextToken: 0, maxResults: 0 },
     body: true,
   },
   errors: [
@@ -2580,6 +2707,7 @@ export const listAppAssessmentComplianceDrifts: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-app-assessment-compliance-drifts",
+    input: { assessmentArn: 0, nextToken: 0, maxResults: 0 },
     body: true,
   },
   errors: [
@@ -2618,6 +2746,7 @@ export const listAppAssessmentResourceDrifts: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-app-assessment-resource-drifts",
+    input: { assessmentArn: 0, nextToken: 0, maxResults: 0 },
     body: true,
   },
   errors: [
@@ -2707,6 +2836,7 @@ export const listAppComponentCompliances: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-app-component-compliances",
+    input: { nextToken: 0, maxResults: 0, assessmentArn: 0 },
     body: true,
   },
   errors: [
@@ -2746,6 +2876,7 @@ export const listAppComponentRecommendations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-app-component-recommendations",
+    input: { assessmentArn: 0, nextToken: 0, maxResults: 0 },
     body: true,
   },
   errors: [
@@ -2787,6 +2918,7 @@ export const listAppInputSources: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-app-input-sources",
+    input: { appArn: 0, appVersion: 0, nextToken: 0, maxResults: 0 },
     body: true,
   },
   errors: [
@@ -2837,8 +2969,14 @@ export const listApps: API.PaginatedOperationMethod<
       maxResults: D.m({ query: "maxResults" }),
       name: D.m({ query: "name" }),
       appArn: D.m({ query: "appArn" }),
-      fromLastAssessmentTime: D.m({ query: "fromLastAssessmentTime" }),
-      toLastAssessmentTime: D.m({ query: "toLastAssessmentTime" }),
+      fromLastAssessmentTime: D.m({
+        query: "fromLastAssessmentTime",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      toLastAssessmentTime: D.m({
+        query: "toLastAssessmentTime",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       reverseOrder: D.m({ query: "reverseOrder" }),
       awsApplicationArn: D.m({ query: "awsApplicationArn" }),
     },
@@ -2886,6 +3024,7 @@ export const listAppVersionAppComponents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-app-version-app-components",
+    input: { appArn: 0, appVersion: 0, nextToken: 0, maxResults: 0 },
     body: true,
   },
   errors: [
@@ -2928,6 +3067,7 @@ export const listAppVersionResourceMappings: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-app-version-resource-mappings",
+    input: { appArn: 0, appVersion: 0, nextToken: 0, maxResults: 0 },
     body: true,
   },
   errors: [
@@ -2968,6 +3108,13 @@ export const listAppVersionResources: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-app-version-resources",
+    input: {
+      appArn: 0,
+      appVersion: 0,
+      resolutionId: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -3007,6 +3154,7 @@ export const listAppVersions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-app-versions",
+    input: { appArn: 0, nextToken: 0, maxResults: 0, startTime: 0, endTime: 0 },
     output: { appVersions: D.list({ creationTime: D.ts }) },
     body: true,
   },
@@ -3042,7 +3190,19 @@ export const listMetrics: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   String255[]
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /list-metrics", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /list-metrics",
+    input: {
+      nextToken: 0,
+      maxResults: 0,
+      fields: D.list({ name: 0, aggregation: 0 }),
+      dataSource: 0,
+      conditions: D.list({ field: 0, operator: 0, value: 0 }),
+      sorts: D.list({ field: 0, ascending: 0 }),
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3216,6 +3376,7 @@ export const listSopRecommendations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-sop-recommendations",
+    input: { nextToken: 0, maxResults: 0, assessmentArn: 0 },
     body: true,
   },
   errors: [
@@ -3296,7 +3457,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3330,6 +3495,7 @@ export const listTestRecommendations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-test-recommendations",
+    input: { nextToken: 0, maxResults: 0, assessmentArn: 0 },
     body: true,
   },
   errors: [
@@ -3373,6 +3539,13 @@ export const listUnsupportedAppVersionResources: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-unsupported-app-version-resources",
+    input: {
+      appArn: 0,
+      appVersion: 0,
+      resolutionId: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -3410,7 +3583,12 @@ export const publishAppVersion: API.OperationMethod<
   PublishAppVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /publish-app-version", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /publish-app-version",
+    input: { appArn: 0, versionName: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3445,6 +3623,7 @@ export const putDraftAppVersionTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /put-draft-app-version-template",
+    input: { appArn: 0, appTemplateBody: 0 },
     body: true,
   },
   errors: [
@@ -3479,6 +3658,10 @@ export const rejectResourceGroupingRecommendations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /reject-resource-grouping-recommendations",
+    input: {
+      appArn: 0,
+      entries: D.list({ groupingRecommendationId: 0, rejectionReason: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -3513,6 +3696,15 @@ export const removeDraftAppVersionResourceMappings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /remove-draft-app-version-resource-mappings",
+    input: {
+      appArn: 0,
+      resourceNames: 0,
+      logicalStackNames: 0,
+      appRegistryAppNames: 0,
+      resourceGroupNames: 0,
+      terraformSourceNames: 0,
+      eksSourceNames: 0,
+    },
     body: true,
   },
   errors: [
@@ -3548,6 +3740,7 @@ export const resolveAppVersionResources: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /resolve-app-version-resources",
+    input: { appArn: 0, appVersion: 0 },
     body: true,
   },
   errors: [
@@ -3584,7 +3777,13 @@ export const startAppAssessment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /start-app-assessment",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      appArn: 0,
+      appVersion: 0,
+      assessmentName: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { assessment: o_AppAssessment },
     body: true,
   },
@@ -3622,7 +3821,7 @@ export const startMetricsExport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /start-metrics-export",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { bucketName: 0, clientToken: D.m({ idempotency: true }) },
     body: true,
   },
   errors: [
@@ -3658,6 +3857,7 @@ export const startResourceGroupingRecommendationTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /start-resource-grouping-recommendation-task",
+    input: { appArn: 0 },
     body: true,
   },
   errors: [
@@ -3689,7 +3889,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3721,7 +3926,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -3755,6 +3960,15 @@ export const updateApp: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /update-app",
+    input: {
+      appArn: 0,
+      description: 0,
+      policyArn: 0,
+      clearResiliencyPolicyArn: 0,
+      assessmentSchedule: 0,
+      permissionModel: i_PermissionModel,
+      eventSubscriptions: D.list(i_EventSubscription),
+    },
     output: { app: o_App },
     body: true,
   },
@@ -3792,7 +4006,12 @@ export const updateAppVersion: API.OperationMethod<
   UpdateAppVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /update-app-version", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /update-app-version",
+    input: { appArn: 0, additionalInfo: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3830,6 +4049,7 @@ export const updateAppVersionAppComponent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /update-app-version-app-component",
+    input: { appArn: 0, id: 0, name: 0, type: 0, additionalInfo: 0 },
     body: true,
   },
   errors: [
@@ -3875,6 +4095,18 @@ export const updateAppVersionResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /update-app-version-resource",
+    input: {
+      appArn: 0,
+      resourceName: 0,
+      logicalResourceId: i_LogicalResourceId,
+      physicalResourceId: 0,
+      awsRegion: 0,
+      awsAccountId: 0,
+      resourceType: 0,
+      appComponents: 0,
+      additionalInfo: 0,
+      excluded: 0,
+    },
     body: true,
   },
   errors: [
@@ -3919,6 +4151,14 @@ export const updateResiliencyPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /update-resiliency-policy",
+    input: {
+      policyArn: 0,
+      policyName: 0,
+      policyDescription: 0,
+      dataLocationConstraint: 0,
+      tier: 0,
+      policy: D.map(i_FailurePolicy),
+    },
     output: { policy: o_ResiliencyPolicy },
     body: true,
   },
@@ -3935,6 +4175,25 @@ export const updateResiliencyPolicy: API.OperationMethod<
   operationName: "UpdateResiliencyPolicy",
 })) as any;
 
+const i_EventSubscription: D.LazyStruct = () => ({
+  name: 0,
+  eventType: 0,
+  snsTopicArn: 0,
+});
+const i_FailurePolicy: D.LazyStruct = () => ({ rtoInSecs: 0, rpoInSecs: 0 });
+const i_LogicalResourceId: D.LazyStruct = () => ({
+  identifier: 0,
+  logicalStackName: 0,
+  resourceGroupName: 0,
+  terraformSourceName: 0,
+  eksSourceName: 0,
+});
+const i_PermissionModel: D.LazyStruct = () => ({
+  type: 0,
+  invokerRoleName: 0,
+  crossAccountRoleArns: 0,
+});
+const i_TerraformSource: D.LazyStruct = () => ({ s3StateFileUrl: 0 });
 const o_App: D.LazyStruct = () => ({
   creationTime: D.ts,
   lastAppComplianceEvaluationTime: D.ts,

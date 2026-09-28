@@ -428,6 +428,7 @@ export const createCliToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clitoken/{Name}",
+    input: { Name: 0 },
     output: { CliToken: D.secret },
   },
   errors: [ResourceNotFoundException],
@@ -451,7 +452,38 @@ export const createEnvironment: API.OperationMethod<
   CreateEnvironmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /environments/{Name}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /environments/{Name}",
+    input: {
+      Name: 0,
+      ExecutionRoleArn: 0,
+      SourceBucketArn: 0,
+      DagS3Path: 0,
+      NetworkConfiguration: { SubnetIds: 0, SecurityGroupIds: 0 },
+      PluginsS3Path: 0,
+      PluginsS3ObjectVersion: 0,
+      RequirementsS3Path: 0,
+      RequirementsS3ObjectVersion: 0,
+      StartupScriptS3Path: 0,
+      StartupScriptS3ObjectVersion: 0,
+      AirflowConfigurationOptions: 0,
+      EnvironmentClass: 0,
+      MaxWorkers: 0,
+      KmsKey: 0,
+      AirflowVersion: 0,
+      LoggingConfiguration: i_LoggingConfigurationInput,
+      WeeklyMaintenanceWindowStart: 0,
+      Tags: 0,
+      WebserverAccessMode: 0,
+      MinWorkers: 0,
+      Schedulers: 0,
+      EndpointManagement: 0,
+      MinWebservers: 0,
+      MaxWebservers: 0,
+    },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ServiceUnavailableException,
@@ -481,6 +513,7 @@ export const createWebLoginToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /webtoken/{Name}",
+    input: { Name: 0 },
     output: { WebToken: D.secret },
   },
   errors: [
@@ -510,7 +543,11 @@ export const deleteEnvironment: API.OperationMethod<
   DeleteEnvironmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /environments/{Name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /environments/{Name}",
+    input: { Name: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -540,6 +577,7 @@ export const getEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /environments/{Name}",
+    input: { Name: 0 },
     output: {
       Environment: {
         CreatedAt: D.ts,
@@ -576,7 +614,12 @@ export const invokeRestApi: API.OperationMethod<
   InvokeRestApiError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /restapi/{Name}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /restapi/{Name}",
+    input: { Name: 0, Path: 0, Method: 0, QueryParameters: 0, Body: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -640,7 +683,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -668,6 +715,17 @@ export const publishMetrics: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /metrics/environments/{EnvironmentName}",
+    input: {
+      EnvironmentName: 0,
+      MetricData: D.list({
+        MetricName: 0,
+        Timestamp: 0,
+        Dimensions: D.list({ Name: 0, Value: 0 }),
+        Value: 0,
+        Unit: 0,
+        StatisticValues: { SampleCount: 0, Sum: 0, Minimum: 0, Maximum: 0 },
+      }),
+    },
     body: true,
   },
   errors: [InternalServerException, ValidationException],
@@ -691,7 +749,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -720,7 +783,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -748,7 +811,36 @@ export const updateEnvironment: API.OperationMethod<
   UpdateEnvironmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /environments/{Name}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /environments/{Name}",
+    input: {
+      Name: 0,
+      ExecutionRoleArn: 0,
+      AirflowConfigurationOptions: 0,
+      AirflowVersion: 0,
+      DagS3Path: 0,
+      EnvironmentClass: 0,
+      LoggingConfiguration: i_LoggingConfigurationInput,
+      MaxWorkers: 0,
+      MinWorkers: 0,
+      MaxWebservers: 0,
+      MinWebservers: 0,
+      WorkerReplacementStrategy: 0,
+      NetworkConfiguration: { SecurityGroupIds: 0 },
+      PluginsS3Path: 0,
+      PluginsS3ObjectVersion: 0,
+      RequirementsS3Path: 0,
+      RequirementsS3ObjectVersion: 0,
+      Schedulers: 0,
+      SourceBucketArn: 0,
+      StartupScriptS3Path: 0,
+      StartupScriptS3ObjectVersion: 0,
+      WebserverAccessMode: 0,
+      WeeklyMaintenanceWindowStart: 0,
+    },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -760,3 +852,15 @@ export const updateEnvironment: API.OperationMethod<
   operationName: "UpdateEnvironment",
   endpointHostPrefix: "api.",
 })) as any;
+
+const i_LoggingConfigurationInput: D.LazyStruct = () => ({
+  DagProcessingLogs: i_ModuleLoggingConfigurationInput,
+  SchedulerLogs: i_ModuleLoggingConfigurationInput,
+  WebserverLogs: i_ModuleLoggingConfigurationInput,
+  WorkerLogs: i_ModuleLoggingConfigurationInput,
+  TaskLogs: i_ModuleLoggingConfigurationInput,
+});
+const i_ModuleLoggingConfigurationInput: D.LazyStruct = () => ({
+  Enabled: 0,
+  LogLevel: 0,
+});

@@ -470,7 +470,14 @@ export const createAct: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workflow-definitions/{workflowDefinitionName}/workflow-runs/{workflowRunId}/sessions/{sessionId}/acts",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workflowDefinitionName: 0,
+      workflowRunId: 0,
+      sessionId: 0,
+      task: 0,
+      toolSpecs: D.list({ name: 0, description: 0, inputSchema: { json: 0 } }),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -508,7 +515,11 @@ export const createSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workflow-definitions/{workflowDefinitionName}/workflow-runs/{workflowRunId}/sessions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workflowDefinitionName: 0,
+      workflowRunId: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -545,7 +556,12 @@ export const createWorkflowDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workflow-definitions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      exportConfig: { s3BucketName: 0, s3KeyPrefix: 0 },
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -581,7 +597,13 @@ export const createWorkflowRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workflow-definitions/{workflowDefinitionName}/workflow-runs",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workflowDefinitionName: 0,
+      modelId: 0,
+      clientToken: D.m({ idempotency: true }),
+      logGroupName: 0,
+      clientInfo: { compatibilityVersion: 0, sdkVersion: 0 },
+    },
     body: true,
   },
   errors: [
@@ -617,6 +639,7 @@ export const deleteWorkflowDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workflow-definitions/{workflowDefinitionName}",
+    input: { workflowDefinitionName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -651,6 +674,7 @@ export const deleteWorkflowRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workflow-definitions/{workflowDefinitionName}/workflow-runs/{workflowRunId}",
+    input: { workflowDefinitionName: 0, workflowRunId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -684,6 +708,7 @@ export const getWorkflowDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workflow-definitions/{workflowDefinitionName}",
+    input: { workflowDefinitionName: 0 },
     output: { createdAt: D.ts, description: D.secret },
   },
   errors: [
@@ -718,6 +743,7 @@ export const getWorkflowRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workflow-definitions/{workflowDefinitionName}/workflow-runs/{workflowRunId}",
+    input: { workflowDefinitionName: 0, workflowRunId: 0 },
     output: { startedAt: D.ts, endedAt: D.ts },
   },
   errors: [
@@ -754,6 +780,14 @@ export const invokeActStep: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workflow-definitions/{workflowDefinitionName}/workflow-runs/{workflowRunId}/sessions/{sessionId}/acts/{actId}/invoke-step/",
+    input: {
+      workflowDefinitionName: 0,
+      workflowRunId: 0,
+      sessionId: 0,
+      actId: 0,
+      callResults: D.list({ callId: 0, content: D.list({ text: 0 }) }),
+      previousStepId: 0,
+    },
     body: true,
   },
   errors: [
@@ -792,10 +826,12 @@ export const listActs: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /workflow-definitions/{workflowDefinitionName}/acts",
     input: {
+      workflowDefinitionName: 0,
       workflowRunId: D.m({ query: "workflowRunId" }),
       sessionId: D.m({ query: "sessionId" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      sortOrder: 0,
     },
     output: { actSummaries: D.list({ startedAt: D.ts, endedAt: D.ts }) },
     body: true,
@@ -868,8 +904,11 @@ export const listSessions: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /workflow-definitions/{workflowDefinitionName}/workflow-runs/{workflowRunId}",
     input: {
+      workflowDefinitionName: 0,
+      workflowRunId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      sortOrder: 0,
     },
     body: true,
   },
@@ -914,6 +953,7 @@ export const listWorkflowDefinitions: API.PaginatedOperationMethod<
     input: {
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      sortOrder: 0,
     },
     output: { workflowDefinitionSummaries: D.list({ createdAt: D.ts }) },
     body: true,
@@ -957,8 +997,10 @@ export const listWorkflowRuns: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /workflow-definitions/{workflowDefinitionName}/workflow-runs",
     input: {
+      workflowDefinitionName: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      sortOrder: 0,
     },
     output: {
       workflowRunSummaries: D.list({ startedAt: D.ts, endedAt: D.ts }),
@@ -1004,6 +1046,14 @@ export const updateAct: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workflow-definitions/{workflowDefinitionName}/workflow-runs/{workflowRunId}/sessions/{sessionId}/acts/{actId}",
+    input: {
+      workflowDefinitionName: 0,
+      workflowRunId: 0,
+      sessionId: 0,
+      actId: 0,
+      status: 0,
+      error: { message: 0, type: 0 },
+    },
     body: true,
   },
   errors: [
@@ -1039,6 +1089,7 @@ export const updateWorkflowRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workflow-definitions/{workflowDefinitionName}/workflow-runs/{workflowRunId}",
+    input: { workflowDefinitionName: 0, workflowRunId: 0, status: 0 },
     body: true,
   },
   errors: [

@@ -179,7 +179,16 @@ export const queryForecast: API.OperationMethod<
   QueryForecastError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ForecastArn: 0,
+      StartDate: 0,
+      EndDate: 0,
+      Filters: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     InvalidInputException,
     InvalidNextTokenException,
@@ -208,7 +217,16 @@ export const queryWhatIfForecast: API.OperationMethod<
   QueryWhatIfForecastError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      WhatIfForecastArn: 0,
+      StartDate: 0,
+      EndDate: 0,
+      Filters: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     InvalidInputException,
     InvalidNextTokenException,

@@ -445,7 +445,15 @@ export const createCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cluster",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      deletionProtectionEnabled: 0,
+      kmsEncryptionKey: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+      multiRegionProperties: i_MultiRegionProperties,
+      policy: 0,
+      bypassPolicyLockoutSafetyCheck: 0,
+    },
     output: { creationTime: D.ts },
     body: true,
   },
@@ -497,7 +505,14 @@ export const createStream: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /stream/{clusterIdentifier}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clusterIdentifier: 0,
+      targetDefinition: { kinesis: { streamArn: 0, roleArn: 0 } },
+      ordering: 0,
+      format: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { creationTime: D.ts },
     body: true,
   },
@@ -528,7 +543,10 @@ export const deleteCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /cluster/{identifier}",
-    input: { clientToken: D.m({ query: "client-token", idempotency: true }) },
+    input: {
+      identifier: 0,
+      clientToken: D.m({ query: "client-token", idempotency: true }),
+    },
     output: { creationTime: D.ts },
   },
   errors: [ConflictException, ResourceNotFoundException],
@@ -555,6 +573,7 @@ export const deleteClusterPolicy: API.OperationMethod<
     service: svc,
     http: "DELETE /cluster/{identifier}/policy",
     input: {
+      identifier: 0,
       expectedPolicyVersion: D.m({ query: "expected-policy-version" }),
       clientToken: D.m({ query: "client-token", idempotency: true }),
     },
@@ -581,7 +600,11 @@ export const deleteStream: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /stream/{clusterIdentifier}/{streamIdentifier}",
-    input: { clientToken: D.m({ query: "client-token", idempotency: true }) },
+    input: {
+      clusterIdentifier: 0,
+      streamIdentifier: 0,
+      clientToken: D.m({ query: "client-token", idempotency: true }),
+    },
     output: { creationTime: D.ts },
   },
   errors: [ConflictException, ResourceNotFoundException],
@@ -603,6 +626,7 @@ export const getCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /cluster/{identifier}",
+    input: { identifier: 0 },
     output: { creationTime: D.ts },
   },
   errors: [ResourceNotFoundException],
@@ -624,7 +648,11 @@ export const getClusterPolicy: API.OperationMethod<
   GetClusterPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /cluster/{identifier}/policy" },
+  descriptor: {
+    service: svc,
+    http: "GET /cluster/{identifier}/policy",
+    input: { identifier: 0 },
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -644,6 +672,7 @@ export const getStream: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /stream/{clusterIdentifier}/{streamIdentifier}",
+    input: { clusterIdentifier: 0, streamIdentifier: 0 },
     output: { creationTime: D.ts, statusReason: { updatedAt: D.ts } },
   },
   errors: [ResourceNotFoundException],
@@ -670,6 +699,7 @@ export const getVpcEndpointServiceName: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /clusters/{identifier}/vpc-endpoint-service-name",
+    input: { identifier: 0 },
   },
   errors: [
     InternalServerException,
@@ -728,6 +758,7 @@ export const listStreams: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /stream/{clusterIdentifier}",
     input: {
+      clusterIdentifier: 0,
       maxResults: D.m({ query: "max-results" }),
       nextToken: D.m({ query: "next-token" }),
     },
@@ -755,7 +786,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -779,7 +814,13 @@ export const putClusterPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cluster/{identifier}/policy",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      identifier: 0,
+      policy: 0,
+      bypassPolicyLockoutSafetyCheck: 0,
+      expectedPolicyVersion: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
@@ -801,7 +842,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [ResourceNotFoundException, ServiceQuotaExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -821,7 +867,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -900,7 +946,13 @@ export const updateCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cluster/{identifier}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      identifier: 0,
+      deletionProtectionEnabled: 0,
+      kmsEncryptionKey: 0,
+      clientToken: D.m({ idempotency: true }),
+      multiRegionProperties: i_MultiRegionProperties,
+    },
     output: { creationTime: D.ts },
     body: true,
   },
@@ -909,3 +961,8 @@ export const updateCluster: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateCluster",
 })) as any;
+
+const i_MultiRegionProperties: D.LazyStruct = () => ({
+  witnessRegion: 0,
+  clusters: 0,
+});

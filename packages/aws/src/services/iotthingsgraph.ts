@@ -631,7 +631,10 @@ export const associateEntityToThing: API.OperationMethod<
   AssociateEntityToThingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { thingName: 0, entityId: 0, namespaceVersion: 0 },
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -661,7 +664,11 @@ export const createFlowTemplate: API.OperationMethod<
   CreateFlowTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { summary: o_FlowTemplateSummary } },
+  descriptor: {
+    service: svc,
+    input: { definition: i_DefinitionDocument, compatibleNamespaceVersion: 0 },
+    output: { summary: o_FlowTemplateSummary },
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -702,7 +709,19 @@ export const createSystemInstance: API.OperationMethod<
   CreateSystemInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { summary: o_SystemInstanceSummary } },
+  descriptor: {
+    service: svc,
+    input: {
+      tags: D.list(i_Tag),
+      definition: i_DefinitionDocument,
+      target: 0,
+      greengrassGroupName: 0,
+      s3BucketName: 0,
+      metricsConfiguration: { cloudMetricEnabled: 0, metricRuleRoleArn: 0 },
+      flowActionsRoleArn: 0,
+    },
+    output: { summary: o_SystemInstanceSummary },
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -731,7 +750,11 @@ export const createSystemTemplate: API.OperationMethod<
   CreateSystemTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { summary: o_SystemTemplateSummary } },
+  descriptor: {
+    service: svc,
+    input: { definition: i_DefinitionDocument, compatibleNamespaceVersion: 0 },
+    output: { summary: o_SystemTemplateSummary },
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -759,7 +782,7 @@ export const deleteFlowTemplate: API.OperationMethod<
   DeleteFlowTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { id: 0 } },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -785,7 +808,7 @@ export const deleteNamespace: API.OperationMethod<
   DeleteNamespaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [InternalFailureException, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -810,7 +833,7 @@ export const deleteSystemInstance: API.OperationMethod<
   DeleteSystemInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { id: 0 } },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -838,7 +861,7 @@ export const deleteSystemTemplate: API.OperationMethod<
   DeleteSystemTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { id: 0 } },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -878,7 +901,11 @@ export const deploySystemInstance: API.OperationMethod<
   DeploySystemInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { summary: o_SystemInstanceSummary } },
+  descriptor: {
+    service: svc,
+    input: { id: 0 },
+    output: { summary: o_SystemInstanceSummary },
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -906,7 +933,7 @@ export const deprecateFlowTemplate: API.OperationMethod<
   DeprecateFlowTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { id: 0 } },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -933,7 +960,7 @@ export const deprecateSystemTemplate: API.OperationMethod<
   DeprecateSystemTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { id: 0 } },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -960,7 +987,7 @@ export const describeNamespace: API.OperationMethod<
   DescribeNamespaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { namespaceName: 0 } },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -988,7 +1015,7 @@ export const dissociateEntityFromThing: API.OperationMethod<
   DissociateEntityFromThingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { thingName: 0, entityType: 0 } },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -1038,6 +1065,7 @@ export const getEntities: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ids: 0, namespaceVersion: 0 },
     output: { descriptions: D.list(o_EntityDescription) },
   },
   errors: [
@@ -1068,6 +1096,7 @@ export const getFlowTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { id: 0, revisionNumber: 0 },
     output: { description: { summary: o_FlowTemplateSummary } },
   },
   errors: [
@@ -1100,6 +1129,7 @@ export const getFlowTemplateRevisions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { id: 0, nextToken: 0, maxResults: 0 },
     output: { summaries: D.list(o_FlowTemplateSummary) },
   },
   errors: [
@@ -1133,7 +1163,7 @@ export const getNamespaceDeletionStatus: API.OperationMethod<
   GetNamespaceDeletionStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -1161,6 +1191,7 @@ export const getSystemInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { id: 0 },
     output: { description: { summary: o_SystemInstanceSummary } },
   },
   errors: [
@@ -1191,6 +1222,7 @@ export const getSystemTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { id: 0, revisionNumber: 0 },
     output: { description: { summary: o_SystemTemplateSummary } },
   },
   errors: [
@@ -1223,6 +1255,7 @@ export const getSystemTemplateRevisions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { id: 0, nextToken: 0, maxResults: 0 },
     output: { summaries: D.list(o_SystemTemplateSummary) },
   },
   errors: [
@@ -1257,7 +1290,11 @@ export const getUploadStatus: API.OperationMethod<
   GetUploadStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createdDate: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { uploadId: 0 },
+    output: { createdDate: D.ts },
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -1287,6 +1324,7 @@ export const listFlowExecutionMessages: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { flowExecutionId: 0, nextToken: 0, maxResults: 0 },
     output: { messages: D.list({ timestamp: D.ts }) },
   },
   errors: [
@@ -1322,7 +1360,10 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Tag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { maxResults: 0, resourceArn: 0, nextToken: 0 },
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -1357,6 +1398,13 @@ export const searchEntities: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      entityTypes: 0,
+      filters: D.list({ name: 0, value: 0 }),
+      nextToken: 0,
+      maxResults: 0,
+      namespaceVersion: 0,
+    },
     output: { descriptions: D.list(o_EntityDescription) },
   },
   errors: [
@@ -1393,6 +1441,14 @@ export const searchFlowExecutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      systemInstanceId: 0,
+      flowExecutionId: 0,
+      startTime: 0,
+      endTime: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { summaries: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
   },
   errors: [
@@ -1429,6 +1485,11 @@ export const searchFlowTemplates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      filters: D.list({ name: 0, value: 0 }),
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { summaries: D.list(o_FlowTemplateSummary) },
   },
   errors: [
@@ -1464,6 +1525,11 @@ export const searchSystemInstances: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      filters: D.list({ name: 0, value: 0 }),
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { summaries: D.list(o_SystemInstanceSummary) },
   },
   errors: [
@@ -1499,6 +1565,11 @@ export const searchSystemTemplates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      filters: D.list({ name: 0, value: 0 }),
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { summaries: D.list(o_SystemTemplateSummary) },
   },
   errors: [
@@ -1538,7 +1609,10 @@ export const searchThings: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Thing
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { entityId: 0, nextToken: 0, maxResults: 0, namespaceVersion: 0 },
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -1571,7 +1645,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: D.list(i_Tag) } },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -1599,7 +1673,11 @@ export const undeploySystemInstance: API.OperationMethod<
   UndeploySystemInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { summary: o_SystemInstanceSummary } },
+  descriptor: {
+    service: svc,
+    input: { id: 0 },
+    output: { summary: o_SystemInstanceSummary },
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -1627,7 +1705,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -1655,7 +1733,15 @@ export const updateFlowTemplate: API.OperationMethod<
   UpdateFlowTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { summary: o_FlowTemplateSummary } },
+  descriptor: {
+    service: svc,
+    input: {
+      id: 0,
+      definition: i_DefinitionDocument,
+      compatibleNamespaceVersion: 0,
+    },
+    output: { summary: o_FlowTemplateSummary },
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -1682,7 +1768,15 @@ export const updateSystemTemplate: API.OperationMethod<
   UpdateSystemTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { summary: o_SystemTemplateSummary } },
+  descriptor: {
+    service: svc,
+    input: {
+      id: 0,
+      definition: i_DefinitionDocument,
+      compatibleNamespaceVersion: 0,
+    },
+    output: { summary: o_SystemTemplateSummary },
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -1720,7 +1814,14 @@ export const uploadEntityDefinitions: API.OperationMethod<
   UploadEntityDefinitionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      document: i_DefinitionDocument,
+      syncWithPublicNamespace: 0,
+      deprecateExistingEntities: 0,
+    },
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -1731,6 +1832,8 @@ export const uploadEntityDefinitions: API.OperationMethod<
   operationName: "UploadEntityDefinitions",
 })) as any;
 
+const i_DefinitionDocument: D.LazyStruct = () => ({ language: 0, text: 0 });
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
 const o_EntityDescription: D.LazyStruct = () => ({ createdAt: D.ts });
 const o_FlowTemplateSummary: D.LazyStruct = () => ({ createdAt: D.ts });
 const o_SystemInstanceSummary: D.LazyStruct = () => ({

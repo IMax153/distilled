@@ -1204,6 +1204,19 @@ export const batchPutPropertyValues: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/entity-properties",
+    input: {
+      workspaceId: 0,
+      entries: D.list({
+        entityPropertyReference: {
+          componentName: 0,
+          componentPath: 0,
+          externalIdProperty: 0,
+          entityId: 0,
+          propertyName: 0,
+        },
+        propertyValues: D.list({ timestamp: 0, value: i_DataValue, time: 0 }),
+      }),
+    },
     output: {
       errorEntries: D.list({
         errors: D.list({ entry: { propertyValues: D.list(o_PropertyValue) } }),
@@ -1243,6 +1256,7 @@ export const cancelMetadataTransferJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /metadata-transfer-jobs/{metadataTransferJobId}/cancel",
+    input: { metadataTransferJobId: 0 },
     output: { updateDateTime: D.ts },
   },
   errors: [
@@ -1279,6 +1293,19 @@ export const createComponentType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/component-types/{componentTypeId}",
+    input: {
+      workspaceId: 0,
+      isSingleton: 0,
+      componentTypeId: 0,
+      description: 0,
+      propertyDefinitions: D.map(i_PropertyDefinitionRequest),
+      extendsFrom: 0,
+      functions: D.map(i_FunctionRequest),
+      tags: 0,
+      propertyGroups: D.map(i_PropertyGroupRequest),
+      componentTypeName: 0,
+      compositeComponentTypes: D.map(i_CompositeComponentTypeRequest),
+    },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -1316,6 +1343,25 @@ export const createEntity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/entities",
+    input: {
+      workspaceId: 0,
+      entityId: 0,
+      entityName: 0,
+      description: 0,
+      components: D.map({
+        description: 0,
+        componentTypeId: 0,
+        properties: D.map(i_PropertyRequest),
+        propertyGroups: D.map(i_ComponentPropertyGroupRequest),
+      }),
+      compositeComponents: D.map({
+        description: 0,
+        properties: D.map(i_PropertyRequest),
+        propertyGroups: D.map(i_ComponentPropertyGroupRequest),
+      }),
+      parentEntityId: 0,
+      tags: 0,
+    },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -1354,6 +1400,42 @@ export const createMetadataTransferJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /metadata-transfer-jobs",
+    input: {
+      metadataTransferJobId: 0,
+      description: 0,
+      sources: D.list({
+        type: 0,
+        s3Configuration: { location: 0 },
+        iotSiteWiseConfiguration: {
+          filters: D.list({
+            filterByAssetModel: {
+              assetModelId: 0,
+              assetModelExternalId: 0,
+              includeOffspring: 0,
+              includeAssets: 0,
+            },
+            filterByAsset: {
+              assetId: 0,
+              assetExternalId: 0,
+              includeOffspring: 0,
+              includeAssetModel: 0,
+            },
+          }),
+        },
+        iotTwinMakerConfiguration: {
+          workspace: 0,
+          filters: D.list({
+            filterByComponentType: { componentTypeId: 0 },
+            filterByEntity: { entityId: 0 },
+          }),
+        },
+      }),
+      destination: {
+        type: 0,
+        s3Configuration: { location: 0 },
+        iotTwinMakerConfiguration: { workspace: 0 },
+      },
+    },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -1392,6 +1474,15 @@ export const createScene: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/scenes",
+    input: {
+      workspaceId: 0,
+      sceneId: 0,
+      contentLocation: 0,
+      description: 0,
+      capabilities: 0,
+      tags: 0,
+      sceneMetadata: 0,
+    },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -1429,6 +1520,7 @@ export const createSyncJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/sync-jobs/{syncSource}",
+    input: { workspaceId: 0, syncSource: 0, syncRole: 0, tags: 0 },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -1466,6 +1558,7 @@ export const createWorkspace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}",
+    input: { workspaceId: 0, description: 0, s3Location: 0, role: 0, tags: 0 },
     output: { creationDateTime: D.ts },
     body: true,
   },
@@ -1502,6 +1595,7 @@ export const deleteComponentType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{workspaceId}/component-types/{componentTypeId}",
+    input: { workspaceId: 0, componentTypeId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1535,7 +1629,11 @@ export const deleteEntity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{workspaceId}/entities/{entityId}",
-    input: { isRecursive: D.m({ query: "isRecursive" }) },
+    input: {
+      workspaceId: 0,
+      entityId: 0,
+      isRecursive: D.m({ query: "isRecursive" }),
+    },
   },
   errors: [
     InternalServerException,
@@ -1569,6 +1667,7 @@ export const deleteScene: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{workspaceId}/scenes/{sceneId}",
+    input: { workspaceId: 0, sceneId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1603,6 +1702,7 @@ export const deleteSyncJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{workspaceId}/sync-jobs/{syncSource}",
+    input: { workspaceId: 0, syncSource: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1634,7 +1734,11 @@ export const deleteWorkspace: API.OperationMethod<
   DeleteWorkspaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /workspaces/{workspaceId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /workspaces/{workspaceId}",
+    input: { workspaceId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1670,7 +1774,12 @@ export const executeQuery: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /queries/execution", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /queries/execution",
+    input: { workspaceId: 0, queryStatement: 0, maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1709,6 +1818,7 @@ export const getComponentType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceId}/component-types/{componentTypeId}",
+    input: { workspaceId: 0, componentTypeId: 0 },
     output: { creationDateTime: D.ts, updateDateTime: D.ts },
   },
   errors: [
@@ -1743,6 +1853,7 @@ export const getEntity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceId}/entities/{entityId}",
+    input: { workspaceId: 0, entityId: 0 },
     output: { creationDateTime: D.ts, updateDateTime: D.ts },
   },
   errors: [
@@ -1777,6 +1888,7 @@ export const getMetadataTransferJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /metadata-transfer-jobs/{metadataTransferJobId}",
+    input: { metadataTransferJobId: 0 },
     output: { creationDateTime: D.ts, updateDateTime: D.ts },
   },
   errors: [
@@ -1810,6 +1922,7 @@ export const getPricingPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /pricingplan",
+    input: {},
     output: {
       currentPricingPlan: o_PricingPlan,
       pendingPricingPlan: o_PricingPlan,
@@ -1852,6 +1965,21 @@ export const getPropertyValue: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/entity-properties/value",
+    input: {
+      componentName: 0,
+      componentPath: 0,
+      componentTypeId: 0,
+      entityId: 0,
+      selectedProperties: 0,
+      workspaceId: 0,
+      maxResults: 0,
+      nextToken: 0,
+      propertyGroupName: 0,
+      tabularConditions: {
+        orderBy: D.list({ order: 0, propertyName: 0 }),
+        propertyFilters: D.list(i_PropertyFilter),
+      },
+    },
     body: true,
   },
   errors: [
@@ -1901,6 +2029,23 @@ export const getPropertyValueHistory: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/entity-properties/history",
+    input: {
+      workspaceId: 0,
+      entityId: 0,
+      componentName: 0,
+      componentPath: 0,
+      componentTypeId: 0,
+      selectedProperties: 0,
+      propertyFilters: D.list(i_PropertyFilter),
+      startDateTime: 0,
+      endDateTime: 0,
+      interpolation: { interpolationType: 0, intervalInSeconds: 0 },
+      nextToken: 0,
+      maxResults: 0,
+      orderByTime: 0,
+      startTime: 0,
+      endTime: 0,
+    },
     output: { propertyValues: D.list({ values: D.list(o_PropertyValue) }) },
     body: true,
   },
@@ -1943,6 +2088,7 @@ export const getScene: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceId}/scenes/{sceneId}",
+    input: { workspaceId: 0, sceneId: 0 },
     output: { creationDateTime: D.ts, updateDateTime: D.ts },
   },
   errors: [
@@ -1978,7 +2124,7 @@ export const getSyncJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sync-jobs/{syncSource}",
-    input: { workspaceId: D.m({ query: "workspace" }) },
+    input: { syncSource: 0, workspaceId: D.m({ query: "workspace" }) },
     output: { creationDateTime: D.ts, updateDateTime: D.ts },
   },
   errors: [
@@ -2014,6 +2160,7 @@ export const getWorkspace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceId}",
+    input: { workspaceId: 0 },
     output: { creationDateTime: D.ts, updateDateTime: D.ts },
   },
   errors: [
@@ -2049,6 +2196,13 @@ export const listComponents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/entities/{entityId}/components-list",
+    input: {
+      workspaceId: 0,
+      entityId: 0,
+      componentPath: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -2088,6 +2242,12 @@ export const listComponentTypes: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/component-types-list",
+    input: {
+      workspaceId: 0,
+      filters: D.list({ extendsFrom: 0, namespace: 0, isAbstract: 0 }),
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       componentTypeSummaries: D.list({
         creationDateTime: D.ts,
@@ -2132,6 +2292,12 @@ export const listEntities: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/entities-list",
+    input: {
+      workspaceId: 0,
+      filters: D.list({ parentEntityId: 0, componentTypeId: 0, externalId: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       entitySummaries: D.list({ creationDateTime: D.ts, updateDateTime: D.ts }),
     },
@@ -2173,6 +2339,13 @@ export const listMetadataTransferJobs: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /metadata-transfer-jobs-list",
+    input: {
+      sourceType: 0,
+      destinationType: 0,
+      filters: D.list({ workspaceId: 0, state: 0 }),
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       metadataTransferJobSummaries: D.list({
         creationDateTime: D.ts,
@@ -2218,6 +2391,14 @@ export const listProperties: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/properties-list",
+    input: {
+      workspaceId: 0,
+      componentName: 0,
+      componentPath: 0,
+      entityId: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -2257,6 +2438,7 @@ export const listScenes: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/scenes-list",
+    input: { workspaceId: 0, maxResults: 0, nextToken: 0 },
     output: {
       sceneSummaries: D.list({ creationDateTime: D.ts, updateDateTime: D.ts }),
     },
@@ -2299,6 +2481,7 @@ export const listSyncJobs: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/sync-jobs-list",
+    input: { workspaceId: 0, maxResults: 0, nextToken: 0 },
     output: {
       syncJobSummaries: D.list({
         creationDateTime: D.ts,
@@ -2345,6 +2528,18 @@ export const listSyncResources: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/sync-jobs/{syncSource}/resources-list",
+    input: {
+      workspaceId: 0,
+      syncSource: 0,
+      filters: D.list({
+        state: 0,
+        resourceType: 0,
+        resourceId: 0,
+        externalId: 0,
+      }),
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { syncResources: D.list({ updateDateTime: D.ts }) },
     body: true,
   },
@@ -2379,7 +2574,12 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags-list", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags-list",
+    input: { resourceARN: 0, maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [AccessDeniedException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2406,6 +2606,7 @@ export const listWorkspaces: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces-list",
+    input: { maxResults: 0, nextToken: 0 },
     output: {
       workspaceSummaries: D.list({
         creationDateTime: D.ts,
@@ -2445,7 +2646,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags",
+    input: { resourceARN: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -2505,6 +2711,18 @@ export const updateComponentType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workspaces/{workspaceId}/component-types/{componentTypeId}",
+    input: {
+      workspaceId: 0,
+      isSingleton: 0,
+      componentTypeId: 0,
+      description: 0,
+      propertyDefinitions: D.map(i_PropertyDefinitionRequest),
+      extendsFrom: 0,
+      functions: D.map(i_FunctionRequest),
+      propertyGroups: D.map(i_PropertyGroupRequest),
+      componentTypeName: 0,
+      compositeComponentTypes: D.map(i_CompositeComponentTypeRequest),
+    },
     body: true,
   },
   errors: [
@@ -2542,6 +2760,26 @@ export const updateEntity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workspaces/{workspaceId}/entities/{entityId}",
+    input: {
+      workspaceId: 0,
+      entityId: 0,
+      entityName: 0,
+      description: 0,
+      componentUpdates: D.map({
+        updateType: 0,
+        description: 0,
+        componentTypeId: 0,
+        propertyUpdates: D.map(i_PropertyRequest),
+        propertyGroupUpdates: D.map(i_ComponentPropertyGroupRequest),
+      }),
+      compositeComponentUpdates: D.map({
+        updateType: 0,
+        description: 0,
+        propertyUpdates: D.map(i_PropertyRequest),
+        propertyGroupUpdates: D.map(i_ComponentPropertyGroupRequest),
+      }),
+      parentEntityUpdate: { updateType: 0, parentEntityId: 0 },
+    },
     output: { updateDateTime: D.ts },
     body: true,
   },
@@ -2578,6 +2816,7 @@ export const updatePricingPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /pricingplan",
+    input: { pricingMode: 0, bundleNames: 0 },
     output: {
       currentPricingPlan: o_PricingPlan,
       pendingPricingPlan: o_PricingPlan,
@@ -2615,6 +2854,14 @@ export const updateScene: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workspaces/{workspaceId}/scenes/{sceneId}",
+    input: {
+      workspaceId: 0,
+      sceneId: 0,
+      contentLocation: 0,
+      description: 0,
+      capabilities: 0,
+      sceneMetadata: 0,
+    },
     output: { updateDateTime: D.ts },
     body: true,
   },
@@ -2651,6 +2898,7 @@ export const updateWorkspace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workspaces/{workspaceId}",
+    input: { workspaceId: 0, description: 0, role: 0, s3Location: 0 },
     output: { updateDateTime: D.ts },
     body: true,
   },
@@ -2668,8 +2916,63 @@ export const updateWorkspace: API.OperationMethod<
   endpointHostPrefix: "api.",
 })) as any;
 
+const i_ComponentPropertyGroupRequest: D.LazyStruct = () => ({
+  groupType: 0,
+  propertyNames: 0,
+  updateType: 0,
+});
+const i_CompositeComponentTypeRequest: D.LazyStruct = () => ({
+  componentTypeId: 0,
+});
+const i_DataValue: D.LazyStruct = () => ({
+  booleanValue: 0,
+  doubleValue: 0,
+  integerValue: 0,
+  longValue: 0,
+  stringValue: 0,
+  listValue: D.list(i_DataValue),
+  mapValue: D.map(i_DataValue),
+  relationshipValue: { targetEntityId: 0, targetComponentName: 0 },
+  expression: 0,
+});
+const i_FunctionRequest: D.LazyStruct = () => ({
+  requiredProperties: 0,
+  scope: 0,
+  implementedBy: { lambda: { arn: 0 }, isNative: 0 },
+});
+const i_PropertyDefinitionRequest: D.LazyStruct = () => ({
+  dataType: i_DataType,
+  isRequiredInEntity: 0,
+  isExternalId: 0,
+  isStoredExternally: 0,
+  isTimeSeries: 0,
+  defaultValue: i_DataValue,
+  configuration: 0,
+  displayName: 0,
+});
+const i_PropertyFilter: D.LazyStruct = () => ({
+  propertyName: 0,
+  operator: 0,
+  value: i_DataValue,
+});
+const i_PropertyGroupRequest: D.LazyStruct = () => ({
+  groupType: 0,
+  propertyNames: 0,
+});
+const i_PropertyRequest: D.LazyStruct = () => ({
+  definition: i_PropertyDefinitionRequest,
+  value: i_DataValue,
+  updateType: 0,
+});
 const o_PricingPlan: D.LazyStruct = () => ({
   effectiveDateTime: D.ts,
   updateDateTime: D.ts,
 });
 const o_PropertyValue: D.LazyStruct = () => ({ timestamp: D.ts });
+const i_DataType: D.LazyStruct = () => ({
+  type: 0,
+  nestedType: i_DataType,
+  allowedValues: D.list(i_DataValue),
+  unitOfMeasure: 0,
+  relationship: { targetComponentTypeId: 0, relationshipType: 0 },
+});

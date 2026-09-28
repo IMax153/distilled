@@ -1490,6 +1490,16 @@ export const batchUpdateRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /services/{serviceIdentifier}/listeners/{listenerIdentifier}/rules",
+    input: {
+      serviceIdentifier: 0,
+      listenerIdentifier: 0,
+      rules: D.list({
+        ruleIdentifier: 0,
+        match: i_RuleMatch,
+        priority: 0,
+        action: i_RuleAction,
+      }),
+    },
     body: true,
   },
   errors: [
@@ -1525,7 +1535,13 @@ export const createAccessLogSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accesslogsubscriptions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      resourceIdentifier: 0,
+      destinationArn: 0,
+      serviceNetworkLogType: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1562,7 +1578,15 @@ export const createListener: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /services/{serviceIdentifier}/listeners",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      serviceIdentifier: 0,
+      name: 0,
+      protocol: 0,
+      port: 0,
+      defaultAction: i_RuleAction,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1600,7 +1624,21 @@ export const createResourceConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /resourceconfigurations",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      type: 0,
+      portRanges: 0,
+      protocol: 0,
+      resourceGatewayIdentifier: 0,
+      resourceConfigurationGroupIdentifier: 0,
+      resourceConfigurationDefinition: i_ResourceConfigurationDefinition,
+      allowAssociationToShareableServiceNetwork: 0,
+      customDomainName: 0,
+      groupDomain: 0,
+      domainVerificationIdentifier: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -1639,7 +1677,17 @@ export const createResourceGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /resourcegateways",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      name: 0,
+      vpcIdentifier: 0,
+      subnetIds: 0,
+      securityGroupIds: 0,
+      ipAddressType: 0,
+      ipv4AddressesPerEni: 0,
+      resourceConfigDnsResolution: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1677,7 +1725,16 @@ export const createRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /services/{serviceIdentifier}/listeners/{listenerIdentifier}/rules",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      serviceIdentifier: 0,
+      listenerIdentifier: 0,
+      name: 0,
+      match: i_RuleMatch,
+      priority: 0,
+      action: i_RuleAction,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1717,7 +1774,15 @@ export const createService: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /services",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      name: 0,
+      tags: 0,
+      customDomainName: 0,
+      certificateArn: 0,
+      authType: 0,
+      idleTimeoutSeconds: 0,
+    },
     body: true,
   },
   errors: [
@@ -1757,7 +1822,13 @@ export const createServiceNetwork: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /servicenetworks",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      name: 0,
+      authType: 0,
+      tags: 0,
+      sharingConfig: { enabled: 0 },
+    },
     body: true,
   },
   errors: [
@@ -1795,7 +1866,13 @@ export const createServiceNetworkResourceAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /servicenetworkresourceassociations",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      resourceConfigurationIdentifier: 0,
+      serviceNetworkIdentifier: 0,
+      privateDnsEnabled: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1839,7 +1916,12 @@ export const createServiceNetworkServiceAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /servicenetworkserviceassociations",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      serviceIdentifier: 0,
+      serviceNetworkIdentifier: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1883,7 +1965,15 @@ export const createServiceNetworkVpcAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /servicenetworkvpcassociations",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      serviceNetworkIdentifier: 0,
+      vpcIdentifier: 0,
+      privateDnsEnabled: 0,
+      securityGroupIds: 0,
+      tags: 0,
+      dnsOptions: i_DnsOptions,
+    },
     body: true,
   },
   errors: [
@@ -1923,7 +2013,21 @@ export const createTargetGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /targetgroups",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      type: 0,
+      config: {
+        port: 0,
+        protocol: 0,
+        protocolVersion: 0,
+        ipAddressType: 0,
+        vpcIdentifier: 0,
+        healthCheck: i_HealthCheckConfig,
+        lambdaEventStructureVersion: 0,
+      },
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1959,6 +2063,7 @@ export const deleteAccessLogSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accesslogsubscriptions/{accessLogSubscriptionIdentifier}",
+    input: { accessLogSubscriptionIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1988,7 +2093,11 @@ export const deleteAuthPolicy: API.OperationMethod<
   DeleteAuthPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /authpolicy/{resourceIdentifier}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /authpolicy/{resourceIdentifier}",
+    input: { resourceIdentifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2020,6 +2129,7 @@ export const deleteDomainVerification: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domainverifications/{domainVerificationIdentifier}",
+    input: { domainVerificationIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2053,6 +2163,7 @@ export const deleteListener: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /services/{serviceIdentifier}/listeners/{listenerIdentifier}",
+    input: { serviceIdentifier: 0, listenerIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2087,6 +2198,7 @@ export const deleteResourceConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /resourceconfigurations/{resourceConfigurationIdentifier}",
+    input: { resourceConfigurationIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2120,6 +2232,7 @@ export const deleteResourceEndpointAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /resourceendpointassociations/{resourceEndpointAssociationIdentifier}",
+    input: { resourceEndpointAssociationIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2153,6 +2266,7 @@ export const deleteResourceGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /resourcegateways/{resourceGatewayIdentifier}",
+    input: { resourceGatewayIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2183,7 +2297,11 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /resourcepolicy/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /resourcepolicy/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2218,6 +2336,7 @@ export const deleteRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /services/{serviceIdentifier}/listeners/{listenerIdentifier}/rules/{ruleIdentifier}",
+    input: { serviceIdentifier: 0, listenerIdentifier: 0, ruleIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2249,7 +2368,11 @@ export const deleteService: API.OperationMethod<
   DeleteServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /services/{serviceIdentifier}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /services/{serviceIdentifier}",
+    input: { serviceIdentifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2283,6 +2406,7 @@ export const deleteServiceNetwork: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /servicenetworks/{serviceNetworkIdentifier}",
+    input: { serviceNetworkIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2317,6 +2441,7 @@ export const deleteServiceNetworkResourceAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /servicenetworkresourceassociations/{serviceNetworkResourceAssociationIdentifier}",
+    input: { serviceNetworkResourceAssociationIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2351,6 +2476,7 @@ export const deleteServiceNetworkServiceAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /servicenetworkserviceassociations/{serviceNetworkServiceAssociationIdentifier}",
+    input: { serviceNetworkServiceAssociationIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2385,6 +2511,7 @@ export const deleteServiceNetworkVpcAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /servicenetworkvpcassociations/{serviceNetworkVpcAssociationIdentifier}",
+    input: { serviceNetworkVpcAssociationIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2418,6 +2545,7 @@ export const deleteTargetGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /targetgroups/{targetGroupIdentifier}",
+    input: { targetGroupIdentifier: 0 },
   },
   errors: [
     ConflictException,
@@ -2451,6 +2579,7 @@ export const deregisterTargets: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /targetgroups/{targetGroupIdentifier}/deregistertargets",
+    input: { targetGroupIdentifier: 0, targets: D.list(i_Target) },
     body: true,
   },
   errors: [
@@ -2485,6 +2614,7 @@ export const getAccessLogSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accesslogsubscriptions/{accessLogSubscriptionIdentifier}",
+    input: { accessLogSubscriptionIdentifier: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -2518,6 +2648,7 @@ export const getAuthPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /authpolicy/{resourceIdentifier}",
+    input: { resourceIdentifier: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -2551,6 +2682,7 @@ export const getDomainVerification: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domainverifications/{domainVerificationIdentifier}",
+    input: { domainVerificationIdentifier: 0 },
     output: { createdAt: D.ts, lastVerifiedTime: D.ts },
   },
   errors: [
@@ -2584,6 +2716,7 @@ export const getListener: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /services/{serviceIdentifier}/listeners/{listenerIdentifier}",
+    input: { serviceIdentifier: 0, listenerIdentifier: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -2617,6 +2750,7 @@ export const getResourceConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /resourceconfigurations/{resourceConfigurationIdentifier}",
+    input: { resourceConfigurationIdentifier: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -2650,6 +2784,7 @@ export const getResourceGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /resourcegateways/{resourceGatewayIdentifier}",
+    input: { resourceGatewayIdentifier: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -2680,7 +2815,11 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /resourcepolicy/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /resourcepolicy/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2712,6 +2851,7 @@ export const getRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /services/{serviceIdentifier}/listeners/{listenerIdentifier}/rules/{ruleIdentifier}",
+    input: { serviceIdentifier: 0, listenerIdentifier: 0, ruleIdentifier: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -2745,6 +2885,7 @@ export const getService: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /services/{serviceIdentifier}",
+    input: { serviceIdentifier: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -2778,6 +2919,7 @@ export const getServiceNetwork: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /servicenetworks/{serviceNetworkIdentifier}",
+    input: { serviceNetworkIdentifier: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -2811,6 +2953,7 @@ export const getServiceNetworkResourceAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /servicenetworkresourceassociations/{serviceNetworkResourceAssociationIdentifier}",
+    input: { serviceNetworkResourceAssociationIdentifier: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -2844,6 +2987,7 @@ export const getServiceNetworkServiceAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /servicenetworkserviceassociations/{serviceNetworkServiceAssociationIdentifier}",
+    input: { serviceNetworkServiceAssociationIdentifier: 0 },
     output: { createdAt: D.ts },
   },
   errors: [
@@ -2877,6 +3021,7 @@ export const getServiceNetworkVpcAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /servicenetworkvpcassociations/{serviceNetworkVpcAssociationIdentifier}",
+    input: { serviceNetworkVpcAssociationIdentifier: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -2910,6 +3055,7 @@ export const getTargetGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /targetgroups/{targetGroupIdentifier}",
+    input: { targetGroupIdentifier: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -3034,6 +3180,7 @@ export const listListeners: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /services/{serviceIdentifier}/listeners",
     input: {
+      serviceIdentifier: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -3219,6 +3366,8 @@ export const listRules: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /services/{serviceIdentifier}/listeners/{listenerIdentifier}/rules",
     input: {
+      serviceIdentifier: 0,
+      listenerIdentifier: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -3521,7 +3670,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3598,8 +3751,10 @@ export const listTargets: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /targetgroups/{targetGroupIdentifier}/listtargets",
     input: {
+      targetGroupIdentifier: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      targets: D.list(i_Target),
     },
     body: true,
   },
@@ -3642,6 +3797,7 @@ export const putAuthPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /authpolicy/{resourceIdentifier}",
+    input: { resourceIdentifier: 0, policy: 0 },
     body: true,
   },
   errors: [
@@ -3675,6 +3831,7 @@ export const putResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /resourcepolicy/{resourceArn}",
+    input: { resourceArn: 0, policy: 0 },
     body: true,
   },
   errors: [
@@ -3710,6 +3867,7 @@ export const registerTargets: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /targetgroups/{targetGroupIdentifier}/registertargets",
+    input: { targetGroupIdentifier: 0, targets: D.list(i_Target) },
     body: true,
   },
   errors: [
@@ -3746,7 +3904,7 @@ export const startDomainVerification: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domainverifications",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { clientToken: D.m({ idempotency: true }), domainName: 0, tags: 0 },
     body: true,
   },
   errors: [
@@ -3778,7 +3936,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3809,7 +3972,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -3842,6 +4005,7 @@ export const updateAccessLogSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /accesslogsubscriptions/{accessLogSubscriptionIdentifier}",
+    input: { accessLogSubscriptionIdentifier: 0, destinationArn: 0 },
     body: true,
   },
   errors: [
@@ -3878,6 +4042,11 @@ export const updateListener: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /services/{serviceIdentifier}/listeners/{listenerIdentifier}",
+    input: {
+      serviceIdentifier: 0,
+      listenerIdentifier: 0,
+      defaultAction: i_RuleAction,
+    },
     body: true,
   },
   errors: [
@@ -3914,6 +4083,12 @@ export const updateResourceConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /resourceconfigurations/{resourceConfigurationIdentifier}",
+    input: {
+      resourceConfigurationIdentifier: 0,
+      resourceConfigurationDefinition: i_ResourceConfigurationDefinition,
+      allowAssociationToShareableServiceNetwork: 0,
+      portRanges: 0,
+    },
     body: true,
   },
   errors: [
@@ -3949,6 +4124,7 @@ export const updateResourceGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /resourcegateways/{resourceGatewayIdentifier}",
+    input: { resourceGatewayIdentifier: 0, securityGroupIds: 0 },
     body: true,
   },
   errors: [
@@ -3985,6 +4161,14 @@ export const updateRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /services/{serviceIdentifier}/listeners/{listenerIdentifier}/rules/{ruleIdentifier}",
+    input: {
+      serviceIdentifier: 0,
+      listenerIdentifier: 0,
+      ruleIdentifier: 0,
+      match: i_RuleMatch,
+      priority: 0,
+      action: i_RuleAction,
+    },
     body: true,
   },
   errors: [
@@ -4022,6 +4206,12 @@ export const updateService: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /services/{serviceIdentifier}",
+    input: {
+      serviceIdentifier: 0,
+      certificateArn: 0,
+      authType: 0,
+      idleTimeoutSeconds: 0,
+    },
     body: true,
   },
   errors: [
@@ -4058,6 +4248,7 @@ export const updateServiceNetwork: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /servicenetworks/{serviceNetworkIdentifier}",
+    input: { serviceNetworkIdentifier: 0, authType: 0 },
     body: true,
   },
   errors: [
@@ -4093,6 +4284,12 @@ export const updateServiceNetworkVpcAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /servicenetworkvpcassociations/{serviceNetworkVpcAssociationIdentifier}",
+    input: {
+      serviceNetworkVpcAssociationIdentifier: 0,
+      securityGroupIds: 0,
+      privateDnsEnabled: 0,
+      dnsOptions: i_DnsOptions,
+    },
     body: true,
   },
   errors: [
@@ -4129,6 +4326,7 @@ export const updateTargetGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /targetgroups/{targetGroupIdentifier}",
+    input: { targetGroupIdentifier: 0, healthCheck: i_HealthCheckConfig },
     body: true,
   },
   errors: [
@@ -4144,3 +4342,41 @@ export const updateTargetGroup: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateTargetGroup",
 })) as any;
+
+const i_DnsOptions: D.LazyStruct = () => ({
+  privateDnsPreference: 0,
+  privateDnsSpecifiedDomains: 0,
+});
+const i_HealthCheckConfig: D.LazyStruct = () => ({
+  enabled: 0,
+  protocol: 0,
+  protocolVersion: 0,
+  port: 0,
+  path: 0,
+  healthCheckIntervalSeconds: 0,
+  healthCheckTimeoutSeconds: 0,
+  healthyThresholdCount: 0,
+  unhealthyThresholdCount: 0,
+  matcher: { httpCode: 0 },
+});
+const i_ResourceConfigurationDefinition: D.LazyStruct = () => ({
+  dnsResource: { domainName: 0, ipAddressType: 0 },
+  ipResource: { ipAddress: 0 },
+  arnResource: { arn: 0 },
+});
+const i_RuleAction: D.LazyStruct = () => ({
+  forward: { targetGroups: D.list({ targetGroupIdentifier: 0, weight: 0 }) },
+  fixedResponse: { statusCode: 0 },
+});
+const i_RuleMatch: D.LazyStruct = () => ({
+  httpMatch: {
+    method: 0,
+    pathMatch: { match: { exact: 0, prefix: 0 }, caseSensitive: 0 },
+    headerMatches: D.list({
+      name: 0,
+      match: { exact: 0, prefix: 0, contains: 0 },
+      caseSensitive: 0,
+    }),
+  },
+});
+const i_Target: D.LazyStruct = () => ({ id: 0, port: 0 });

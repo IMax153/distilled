@@ -2349,7 +2349,12 @@ export const associateOriginationIdentity: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      PoolId: 0,
+      OriginationIdentity: 0,
+      IsoCountryCode: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2382,7 +2387,10 @@ export const associateProtectConfiguration: API.OperationMethod<
   AssociateProtectConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ProtectConfigurationId: 0, ConfigurationSetName: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2412,7 +2420,7 @@ export const carrierLookup: API.OperationMethod<
   CarrierLookupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PhoneNumber: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2448,7 +2456,11 @@ export const createConfigurationSet: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ConfigurationSetName: 0,
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { CreatedTimestamp: D.ts },
   },
   errors: [
@@ -2490,7 +2502,15 @@ export const createEventDestination: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ConfigurationSetName: 0,
+      EventDestinationName: 0,
+      MatchingEventTypes: 0,
+      CloudWatchLogsDestination: i_CloudWatchLogsDestination,
+      KinesisFirehoseDestination: i_KinesisFirehoseDestination,
+      SnsDestination: i_SnsDestination,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2526,7 +2546,17 @@ export const createNotifyConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      DisplayName: 0,
+      UseCase: 0,
+      DefaultTemplateId: 0,
+      PoolId: 0,
+      EnabledCountries: 0,
+      EnabledChannels: 0,
+      DeletionProtectionEnabled: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
     output: { CreatedTimestamp: D.ts },
   },
   errors: [
@@ -2566,7 +2596,11 @@ export const createOptOutList: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      OptOutListName: 0,
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { CreatedTimestamp: D.ts },
   },
   errors: [
@@ -2606,7 +2640,14 @@ export const createPool: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      OriginationIdentity: 0,
+      IsoCountryCode: 0,
+      MessageType: 0,
+      DeletionProtectionEnabled: 0,
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { CreatedTimestamp: D.ts },
   },
   errors: [
@@ -2642,7 +2683,11 @@ export const createProtectConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      DeletionProtectionEnabled: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { CreatedTimestamp: D.ts },
   },
   errors: [
@@ -2678,7 +2723,12 @@ export const createRcsAgent: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      DeletionProtectionEnabled: 0,
+      OptOutListName: 0,
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { CreatedTimestamp: D.ts },
   },
   errors: [
@@ -2714,7 +2764,11 @@ export const createRegistration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      RegistrationType: 0,
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { CreatedTimestamp: D.ts },
   },
   errors: [
@@ -2748,7 +2802,7 @@ export const createRegistrationAssociation: API.OperationMethod<
   CreateRegistrationAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RegistrationId: 0, ResourceId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2784,7 +2838,12 @@ export const createRegistrationAttachment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      AttachmentBody: 0,
+      AttachmentUrl: 0,
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { CreatedTimestamp: D.ts },
   },
   errors: [
@@ -2820,6 +2879,7 @@ export const createRegistrationVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { RegistrationId: 0 },
     output: {
       RegistrationVersionStatusHistory: o_RegistrationVersionStatusHistory,
     },
@@ -2858,7 +2918,12 @@ export const createVerifiedDestinationNumber: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      DestinationPhoneNumber: 0,
+      RcsAgentId: 0,
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { CreatedTimestamp: D.ts },
   },
   errors: [
@@ -2891,7 +2956,7 @@ export const deleteAccountDefaultProtectConfiguration: API.OperationMethod<
   DeleteAccountDefaultProtectConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2922,7 +2987,11 @@ export const deleteConfigurationSet: API.OperationMethod<
   DeleteConfigurationSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ConfigurationSetName: 0 },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2953,7 +3022,7 @@ export const deleteDefaultMessageType: API.OperationMethod<
   DeleteDefaultMessageTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConfigurationSetName: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2984,7 +3053,7 @@ export const deleteDefaultSenderId: API.OperationMethod<
   DeleteDefaultSenderIdError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConfigurationSetName: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3015,7 +3084,10 @@ export const deleteEventDestination: API.OperationMethod<
   DeleteEventDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ConfigurationSetName: 0, EventDestinationName: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3049,7 +3121,7 @@ export const deleteKeyword: API.OperationMethod<
   DeleteKeywordError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OriginationIdentity: 0, Keyword: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3078,7 +3150,7 @@ export const deleteMediaMessageSpendLimitOverride: API.OperationMethod<
   DeleteMediaMessageSpendLimitOverrideError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3109,7 +3181,11 @@ export const deleteNotifyConfiguration: API.OperationMethod<
   DeleteNotifyConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { NotifyConfigurationId: 0 },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3138,7 +3214,7 @@ export const deleteNotifyMessageSpendLimitOverride: API.OperationMethod<
   DeleteNotifyMessageSpendLimitOverrideError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3171,7 +3247,11 @@ export const deleteOptedOutNumber: API.OperationMethod<
   DeleteOptedOutNumberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { OptedOutTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { OptOutListName: 0, OptedOutNumber: 0 },
+    output: { OptedOutTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3204,7 +3284,11 @@ export const deleteOptOutList: API.OperationMethod<
   DeleteOptOutListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { OptOutListName: 0 },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3239,7 +3323,11 @@ export const deletePool: API.OperationMethod<
   DeletePoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { PoolId: 0 },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3270,7 +3358,11 @@ export const deleteProtectConfiguration: API.OperationMethod<
   DeleteProtectConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ProtectConfigurationId: 0 },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3302,6 +3394,7 @@ export const deleteProtectConfigurationRuleSetNumberOverride: API.OperationMetho
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ProtectConfigurationId: 0, DestinationPhoneNumber: 0 },
     output: { CreatedTimestamp: D.ts, ExpirationTimestamp: D.ts },
   },
   errors: [
@@ -3333,7 +3426,11 @@ export const deleteRcsAgent: API.OperationMethod<
   DeleteRcsAgentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { RcsAgentId: 0 },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3362,7 +3459,7 @@ export const deleteRcsMessageSpendLimitOverride: API.OperationMethod<
   DeleteRcsMessageSpendLimitOverrideError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3391,7 +3488,11 @@ export const deleteRegistration: API.OperationMethod<
   DeleteRegistrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { RegistrationId: 0 },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3422,7 +3523,11 @@ export const deleteRegistrationAttachment: API.OperationMethod<
   DeleteRegistrationAttachmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { RegistrationAttachmentId: 0 },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3453,7 +3558,7 @@ export const deleteRegistrationFieldValue: API.OperationMethod<
   DeleteRegistrationFieldValueError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RegistrationId: 0, FieldPath: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3483,7 +3588,11 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0 },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3511,7 +3620,7 @@ export const deleteTextMessageSpendLimitOverride: API.OperationMethod<
   DeleteTextMessageSpendLimitOverrideError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3540,7 +3649,11 @@ export const deleteVerifiedDestinationNumber: API.OperationMethod<
   DeleteVerifiedDestinationNumberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { VerifiedDestinationNumberId: 0 },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3569,7 +3682,7 @@ export const deleteVoiceMessageSpendLimitOverride: API.OperationMethod<
   DeleteVoiceMessageSpendLimitOverrideError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3599,7 +3712,7 @@ export const describeAccountAttributes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AccountAttribute
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3635,7 +3748,7 @@ export const describeAccountLimits: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AccountLimit
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3676,6 +3789,12 @@ export const describeConfigurationSets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ConfigurationSetNames: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { ConfigurationSets: D.list({ CreatedTimestamp: D.ts }) },
   },
   errors: [
@@ -3717,7 +3836,16 @@ export const describeKeywords: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   KeywordInformation
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OriginationIdentity: 0,
+      Keywords: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3759,6 +3887,12 @@ export const describeNotifyConfigurations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NotifyConfigurationIds: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { NotifyConfigurations: D.list({ CreatedTimestamp: D.ts }) },
   },
   errors: [
@@ -3802,6 +3936,12 @@ export const describeNotifyTemplates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TemplateIds: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { NotifyTemplates: D.list({ CreatedTimestamp: D.ts }) },
   },
   errors: [
@@ -3845,6 +3985,13 @@ export const describeOptedOutNumbers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      OptOutListName: 0,
+      OptedOutNumbers: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { OptedOutNumbers: D.list({ OptedOutTimestamp: D.ts }) },
   },
   errors: [
@@ -3888,6 +4035,7 @@ export const describeOptOutLists: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { OptOutListNames: 0, NextToken: 0, MaxResults: 0, Owner: 0 },
     output: { OptOutLists: D.list({ CreatedTimestamp: D.ts }) },
   },
   errors: [
@@ -3931,6 +4079,13 @@ export const describePhoneNumbers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      PhoneNumberIds: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+      Owner: 0,
+    },
     output: { PhoneNumbers: D.list({ CreatedTimestamp: D.ts }) },
   },
   errors: [
@@ -3976,6 +4131,13 @@ export const describePools: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      PoolIds: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+      Owner: 0,
+    },
     output: { Pools: D.list({ CreatedTimestamp: D.ts }) },
   },
   errors: [
@@ -4015,6 +4177,12 @@ export const describeProtectConfigurations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ProtectConfigurationIds: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { ProtectConfigurations: D.list({ CreatedTimestamp: D.ts }) },
   },
   errors: [
@@ -4052,7 +4220,16 @@ export const describeRcsAgentCountryLaunchStatus: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   CountryLaunchStatusInformation
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      RcsAgentId: 0,
+      IsoCountryCodes: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4092,6 +4269,13 @@ export const describeRcsAgents: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      RcsAgentIds: 0,
+      Owner: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { RcsAgents: D.list({ CreatedTimestamp: D.ts }) },
   },
   errors: [
@@ -4131,6 +4315,12 @@ export const describeRegistrationAttachments: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      RegistrationAttachmentIds: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { RegistrationAttachments: D.list({ CreatedTimestamp: D.ts }) },
   },
   errors: [
@@ -4167,7 +4357,16 @@ export const describeRegistrationFieldDefinitions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RegistrationFieldDefinition
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      RegistrationType: 0,
+      SectionPath: 0,
+      FieldPaths: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4202,7 +4401,17 @@ export const describeRegistrationFieldValues: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RegistrationFieldValueInformation
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      RegistrationId: 0,
+      VersionNumber: 0,
+      SectionPath: 0,
+      FieldPaths: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4240,6 +4449,12 @@ export const describeRegistrations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      RegistrationIds: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { Registrations: D.list({ CreatedTimestamp: D.ts }) },
   },
   errors: [
@@ -4276,7 +4491,15 @@ export const describeRegistrationSectionDefinitions: API.PaginatedOperationMetho
   Credentials | HttpClient.HttpClient,
   RegistrationSectionDefinition
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      RegistrationType: 0,
+      SectionPaths: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4310,7 +4533,15 @@ export const describeRegistrationTypeDefinitions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RegistrationTypeDefinition
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      RegistrationTypes: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4347,6 +4578,13 @@ export const describeRegistrationVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      RegistrationId: 0,
+      VersionNumbers: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       RegistrationVersions: D.list({
         RegistrationVersionStatusHistory: o_RegistrationVersionStatusHistory,
@@ -4392,7 +4630,16 @@ export const describeSenderIds: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   SenderIdInformation
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SenderIds: D.list({ SenderId: 0, IsoCountryCode: 0 }),
+      Filters: D.list({ Name: 0, Values: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+      Owner: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4429,7 +4676,7 @@ export const describeSpendLimits: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   SpendLimit
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4466,6 +4713,13 @@ export const describeVerifiedDestinationNumbers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      VerifiedDestinationNumberIds: 0,
+      DestinationPhoneNumbers: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { VerifiedDestinationNumbers: D.list({ CreatedTimestamp: D.ts }) },
   },
   errors: [
@@ -4507,7 +4761,12 @@ export const disassociateOriginationIdentity: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      PoolId: 0,
+      OriginationIdentity: 0,
+      IsoCountryCode: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -4539,7 +4798,10 @@ export const disassociateProtectConfiguration: API.OperationMethod<
   DisassociateProtectConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ProtectConfigurationId: 0, ConfigurationSetName: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4572,6 +4834,7 @@ export const discardRegistrationVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { RegistrationId: 0 },
     output: {
       RegistrationVersionStatusHistory: o_RegistrationVersionStatusHistory,
     },
@@ -4605,7 +4868,10 @@ export const getProtectConfigurationCountryRuleSet: API.OperationMethod<
   GetProtectConfigurationCountryRuleSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ProtectConfigurationId: 0, NumberCapability: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4634,7 +4900,11 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0 },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4663,7 +4933,10 @@ export const listNotifyCountries: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   NotifyCountryInformation
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Channels: 0, UseCases: 0, Tier: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4700,7 +4973,15 @@ export const listPoolOriginationIdentities: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   OriginationIdentityMetadata
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      PoolId: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4738,6 +5019,12 @@ export const listProtectConfigurationRuleSetNumberOverrides: API.PaginatedOperat
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ProtectConfigurationId: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       RuleSetNumberOverrides: D.list({
         CreatedTimestamp: D.ts,
@@ -4780,7 +5067,15 @@ export const listRegistrationAssociations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RegistrationAssociationMetadata
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      RegistrationId: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4815,7 +5110,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4850,7 +5145,15 @@ export const putKeyword: API.OperationMethod<
   PutKeywordError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OriginationIdentity: 0,
+      Keyword: 0,
+      KeywordMessage: 0,
+      KeywordAction: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4883,7 +5186,10 @@ export const putMessageFeedback: API.OperationMethod<
   PutMessageFeedbackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MessageId: 0, MessageFeedbackStatus: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4914,7 +5220,11 @@ export const putOptedOutNumber: API.OperationMethod<
   PutOptedOutNumberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { OptedOutTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { OptOutListName: 0, OptedOutNumber: 0 },
+    output: { OptedOutTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4947,7 +5257,13 @@ export const putProtectConfigurationRuleSetNumberOverride: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      ProtectConfigurationId: 0,
+      DestinationPhoneNumber: 0,
+      Action: 0,
+      ExpirationTimestamp: 0,
+    },
     output: { CreatedTimestamp: D.ts, ExpirationTimestamp: D.ts },
   },
   errors: [
@@ -4981,7 +5297,16 @@ export const putRegistrationFieldValue: API.OperationMethod<
   PutRegistrationFieldValueError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      RegistrationId: 0,
+      FieldPath: 0,
+      SelectChoices: 0,
+      TextValue: 0,
+      RegistrationAttachmentId: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5011,7 +5336,11 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, Policy: 0 },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5043,7 +5372,11 @@ export const releasePhoneNumber: API.OperationMethod<
   ReleasePhoneNumberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { PhoneNumberId: 0 },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5074,7 +5407,7 @@ export const releaseSenderId: API.OperationMethod<
   ReleaseSenderIdError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SenderId: 0, IsoCountryCode: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5108,7 +5441,19 @@ export const requestPhoneNumber: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      IsoCountryCode: 0,
+      MessageType: 0,
+      NumberCapabilities: 0,
+      NumberType: 0,
+      OptOutListName: 0,
+      PoolId: 0,
+      RegistrationId: 0,
+      InternationalSendingEnabled: 0,
+      DeletionProtectionEnabled: 0,
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { CreatedTimestamp: D.ts },
   },
   errors: [
@@ -5144,7 +5489,14 @@ export const requestSenderId: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      SenderId: 0,
+      IsoCountryCode: 0,
+      MessageTypes: 0,
+      DeletionProtectionEnabled: 0,
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -5177,7 +5529,18 @@ export const sendDestinationNumberVerificationCode: API.OperationMethod<
   SendDestinationNumberVerificationCodeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      VerifiedDestinationNumberId: 0,
+      VerificationChannel: 0,
+      LanguageCode: 0,
+      OriginationIdentity: 0,
+      ConfigurationSetName: 0,
+      Context: 0,
+      DestinationCountryParameters: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5210,7 +5573,22 @@ export const sendMediaMessage: API.OperationMethod<
   SendMediaMessageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DestinationPhoneNumber: 0,
+      OriginationIdentity: 0,
+      MessageBody: 0,
+      MediaUrls: 0,
+      ConfigurationSetName: 0,
+      MaxPrice: 0,
+      TimeToLive: 0,
+      Context: 0,
+      DryRun: 0,
+      ProtectConfigurationId: 0,
+      MessageFeedbackEnabled: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5243,7 +5621,20 @@ export const sendNotifyTextMessage: API.OperationMethod<
   SendNotifyTextMessageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      NotifyConfigurationId: 0,
+      DestinationPhoneNumber: 0,
+      TemplateId: 0,
+      TemplateVariables: 0,
+      TimeToLive: 0,
+      Context: 0,
+      ConfigurationSetName: 0,
+      DryRun: 0,
+      MessageFeedbackEnabled: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5276,7 +5667,21 @@ export const sendNotifyVoiceMessage: API.OperationMethod<
   SendNotifyVoiceMessageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      NotifyConfigurationId: 0,
+      DestinationPhoneNumber: 0,
+      TemplateId: 0,
+      TemplateVariables: 0,
+      VoiceId: 0,
+      TimeToLive: 0,
+      Context: 0,
+      ConfigurationSetName: 0,
+      DryRun: 0,
+      MessageFeedbackEnabled: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5309,7 +5714,53 @@ export const sendRcsMessage: API.OperationMethod<
   SendRcsMessageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DestinationPhoneNumber: 0,
+      OriginationIdentity: 0,
+      RcsMessageContent: {
+        Content: {
+          TextMessage: { Body: 0 },
+          FileMessage: { FileUrl: 0, ThumbnailUrl: 0 },
+          RichCard: {
+            CardOrientation: 0,
+            ThumbnailImageAlignment: 0,
+            CardContent: {
+              Title: 0,
+              Description: 0,
+              Media: { FileUrl: 0, ThumbnailUrl: 0, Height: 0 },
+              Suggestions: D.list(i_RcsSuggestedAction),
+            },
+          },
+          Carousel: {
+            CardWidth: 0,
+            CardContents: D.list({
+              Title: 0,
+              Description: 0,
+              Media: { FileUrl: 0, ThumbnailUrl: 0, Height: 0 },
+              Suggestions: D.list(i_RcsSuggestedAction),
+            }),
+          },
+        },
+        Suggestions: D.list(i_RcsSuggestedAction),
+      },
+      TimeToLive: 0,
+      MessageTrafficType: 0,
+      FallbackConfiguration: {
+        Channel: 0,
+        MessageBody: 0,
+        MediaUrls: 0,
+        OriginationIdentity: 0,
+      },
+      ProtectConfigurationId: 0,
+      ConfigurationSetName: 0,
+      MaxPrice: 0,
+      DryRun: 0,
+      Context: 0,
+      MessageFeedbackEnabled: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5344,7 +5795,24 @@ export const sendTextMessage: API.OperationMethod<
   SendTextMessageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DestinationPhoneNumber: 0,
+      OriginationIdentity: 0,
+      MessageBody: 0,
+      MessageType: 0,
+      Keyword: 0,
+      ConfigurationSetName: 0,
+      MaxPrice: 0,
+      TimeToLive: 0,
+      Context: 0,
+      DestinationCountryParameters: 0,
+      DryRun: 0,
+      ProtectConfigurationId: 0,
+      MessageFeedbackEnabled: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5377,7 +5845,23 @@ export const sendVoiceMessage: API.OperationMethod<
   SendVoiceMessageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DestinationPhoneNumber: 0,
+      OriginationIdentity: 0,
+      MessageBody: 0,
+      MessageBodyTextType: 0,
+      VoiceId: 0,
+      ConfigurationSetName: 0,
+      MaxPricePerMinute: 0,
+      TimeToLive: 0,
+      Context: 0,
+      DryRun: 0,
+      ProtectConfigurationId: 0,
+      MessageFeedbackEnabled: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5408,7 +5892,7 @@ export const setAccountDefaultProtectConfiguration: API.OperationMethod<
   SetAccountDefaultProtectConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ProtectConfigurationId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5437,7 +5921,10 @@ export const setDefaultMessageFeedbackEnabled: API.OperationMethod<
   SetDefaultMessageFeedbackEnabledError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ConfigurationSetName: 0, MessageFeedbackEnabled: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5468,7 +5955,10 @@ export const setDefaultMessageType: API.OperationMethod<
   SetDefaultMessageTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ConfigurationSetName: 0, MessageType: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5499,7 +5989,7 @@ export const setDefaultSenderId: API.OperationMethod<
   SetDefaultSenderIdError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConfigurationSetName: 0, SenderId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5527,7 +6017,7 @@ export const setMediaMessageSpendLimitOverride: API.OperationMethod<
   SetMediaMessageSpendLimitOverrideError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MonthlyLimit: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5554,7 +6044,7 @@ export const setNotifyMessageSpendLimitOverride: API.OperationMethod<
   SetNotifyMessageSpendLimitOverrideError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MonthlyLimit: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5581,7 +6071,7 @@ export const setRcsMessageSpendLimitOverride: API.OperationMethod<
   SetRcsMessageSpendLimitOverrideError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MonthlyLimit: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5608,7 +6098,7 @@ export const setTextMessageSpendLimitOverride: API.OperationMethod<
   SetTextMessageSpendLimitOverrideError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MonthlyLimit: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5635,7 +6125,7 @@ export const setVoiceMessageSpendLimitOverride: API.OperationMethod<
   SetVoiceMessageSpendLimitOverrideError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MonthlyLimit: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5666,6 +6156,7 @@ export const submitRegistrationVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { RegistrationId: 0, AwsReview: 0 },
     output: {
       RegistrationVersionStatusHistory: o_RegistrationVersionStatusHistory,
     },
@@ -5700,7 +6191,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5730,7 +6221,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5762,7 +6253,18 @@ export const updateEventDestination: API.OperationMethod<
   UpdateEventDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConfigurationSetName: 0,
+      EventDestinationName: 0,
+      Enabled: 0,
+      MatchingEventTypes: 0,
+      CloudWatchLogsDestination: i_CloudWatchLogsDestination,
+      KinesisFirehoseDestination: i_KinesisFirehoseDestination,
+      SnsDestination: i_SnsDestination,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5793,7 +6295,18 @@ export const updateNotifyConfiguration: API.OperationMethod<
   UpdateNotifyConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      NotifyConfigurationId: 0,
+      DefaultTemplateId: 0,
+      PoolId: 0,
+      EnabledCountries: 0,
+      EnabledChannels: 0,
+      DeletionProtectionEnabled: 0,
+    },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5826,7 +6339,20 @@ export const updatePhoneNumber: API.OperationMethod<
   UpdatePhoneNumberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      PhoneNumberId: 0,
+      TwoWayEnabled: 0,
+      TwoWayChannelArn: 0,
+      TwoWayChannelRole: 0,
+      SelfManagedOptOutsEnabled: 0,
+      OptOutListName: 0,
+      InternationalSendingEnabled: 0,
+      DeletionProtectionEnabled: 0,
+    },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5857,7 +6383,20 @@ export const updatePool: API.OperationMethod<
   UpdatePoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      PoolId: 0,
+      TwoWayEnabled: 0,
+      TwoWayChannelArn: 0,
+      TwoWayChannelRole: 0,
+      SelfManagedOptOutsEnabled: 0,
+      OptOutListName: 0,
+      SharedRoutesEnabled: 0,
+      DeletionProtectionEnabled: 0,
+    },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5887,7 +6426,11 @@ export const updateProtectConfiguration: API.OperationMethod<
   UpdateProtectConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ProtectConfigurationId: 0, DeletionProtectionEnabled: 0 },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5916,7 +6459,14 @@ export const updateProtectConfigurationCountryRuleSet: API.OperationMethod<
   UpdateProtectConfigurationCountryRuleSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProtectConfigurationId: 0,
+      NumberCapability: 0,
+      CountryRuleSetUpdates: D.map({ ProtectStatus: 0 }),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5946,7 +6496,23 @@ export const updateRcsAgent: API.OperationMethod<
   UpdateRcsAgentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      RcsAgentId: 0,
+      DeletionProtectionEnabled: 0,
+      OptOutListName: 0,
+      SelfManagedOptOutsEnabled: 0,
+      TwoWayChannelArn: 0,
+      TwoWayChannelRole: 0,
+      TwoWayEnabled: 0,
+      TwoWayMediaS3BucketName: 0,
+      TwoWayMediaS3KeyPrefix: 0,
+      TwoWayMediaS3Role: 0,
+      TwoWayRcsEventsEnabled: 0,
+    },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5976,7 +6542,10 @@ export const updateSenderId: API.OperationMethod<
   UpdateSenderIdError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SenderId: 0, IsoCountryCode: 0, DeletionProtectionEnabled: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -6006,7 +6575,11 @@ export const verifyDestinationNumber: API.OperationMethod<
   VerifyDestinationNumberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { VerifiedDestinationNumberId: 0, VerificationCode: 0 },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -6020,6 +6593,43 @@ export const verifyDestinationNumber: API.OperationMethod<
   operationName: "VerifyDestinationNumber",
 })) as any;
 
+const i_CloudWatchLogsDestination: D.LazyStruct = () => ({
+  IamRoleArn: 0,
+  LogGroupArn: 0,
+});
+const i_KinesisFirehoseDestination: D.LazyStruct = () => ({
+  IamRoleArn: 0,
+  DeliveryStreamArn: 0,
+});
+const i_RcsSuggestedAction: D.LazyStruct = () => ({
+  Reply: { Text: 0, PostbackData: 0 },
+  OpenUrl: {
+    Text: 0,
+    PostbackData: 0,
+    Url: 0,
+    Application: 0,
+    WebviewViewMode: 0,
+  },
+  DialPhone: { Text: 0, PostbackData: 0, PhoneNumber: 0 },
+  ShowLocation: {
+    Text: 0,
+    PostbackData: 0,
+    Latitude: 0,
+    Longitude: 0,
+    Label: 0,
+  },
+  RequestLocation: { Text: 0, PostbackData: 0 },
+  CreateCalendarEvent: {
+    Text: 0,
+    PostbackData: 0,
+    Title: 0,
+    StartTime: 0,
+    EndTime: 0,
+    Description: 0,
+  },
+});
+const i_SnsDestination: D.LazyStruct = () => ({ TopicArn: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_RegistrationVersionStatusHistory: D.LazyStruct = () => ({
   DraftTimestamp: D.ts,
   SubmittedTimestamp: D.ts,

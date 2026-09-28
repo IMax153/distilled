@@ -282,7 +282,19 @@ export const batchGetRecord: API.OperationMethod<
   BatchGetRecordError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /BatchGetRecord", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /BatchGetRecord",
+    input: {
+      Identifiers: D.list({
+        FeatureGroupName: 0,
+        RecordIdentifiersValueAsString: 0,
+        FeatureNames: 0,
+      }),
+      ExpirationTimeResponse: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessForbidden,
     InternalFailure,
@@ -317,7 +329,20 @@ export const batchWriteRecord: API.OperationMethod<
   BatchWriteRecordError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /BatchWriteRecord", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /BatchWriteRecord",
+    input: {
+      Entries: D.list({
+        FeatureGroupName: 0,
+        Record: D.list(i_FeatureValue),
+        TargetStores: 0,
+        TtlDuration: i_TtlDuration,
+      }),
+      TtlDuration: i_TtlDuration,
+    },
+    body: true,
+  },
   errors: [
     AccessForbidden,
     InternalFailure,
@@ -380,6 +405,7 @@ export const deleteRecord: API.OperationMethod<
     service: svc,
     http: "DELETE /FeatureGroup/{FeatureGroupName}",
     input: {
+      FeatureGroupName: 0,
       RecordIdentifierValueAsString: D.m({
         query: "RecordIdentifierValueAsString",
       }),
@@ -423,6 +449,7 @@ export const getRecord: API.OperationMethod<
     service: svc,
     http: "GET /FeatureGroup/{FeatureGroupName}",
     input: {
+      FeatureGroupName: 0,
       RecordIdentifierValueAsString: D.m({
         query: "RecordIdentifierValueAsString",
       }),
@@ -465,6 +492,12 @@ export const listRecords: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /FeatureGroup/{FeatureGroupName}/ListRecords",
+    input: {
+      FeatureGroupName: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      IncludeSoftDeletedRecords: 0,
+    },
     body: true,
   },
   errors: [
@@ -522,6 +555,12 @@ export const putRecord: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /FeatureGroup/{FeatureGroupName}",
+    input: {
+      FeatureGroupName: 0,
+      Record: D.list(i_FeatureValue),
+      TargetStores: 0,
+      TtlDuration: i_TtlDuration,
+    },
     body: true,
   },
   errors: [
@@ -535,3 +574,10 @@ export const putRecord: API.OperationMethod<
   retry: Retry,
   operationName: "PutRecord",
 })) as any;
+
+const i_FeatureValue: D.LazyStruct = () => ({
+  FeatureName: 0,
+  ValueAsString: 0,
+  ValueAsStringList: 0,
+});
+const i_TtlDuration: D.LazyStruct = () => ({ Unit: 0, Value: 0 });

@@ -164,6 +164,7 @@ export const putAuditEvents: API.OperationMethod<
     service: svc,
     http: "POST /PutAuditEvents",
     input: {
+      auditEvents: D.list({ id: 0, eventData: 0, eventDataChecksum: 0 }),
       channelArn: D.m({ query: "channelArn" }),
       externalId: D.m({ query: "externalId" }),
     },

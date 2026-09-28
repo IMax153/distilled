@@ -2398,6 +2398,17 @@ export const associatePermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/policy",
+    input: {
+      applicationId: 0,
+      statementId: 0,
+      actions: 0,
+      conditions: D.list({
+        conditionOperator: 0,
+        conditionKey: 0,
+        conditionValues: 0,
+      }),
+      principal: 0,
+    },
     body: true,
   },
   errors: [
@@ -2436,6 +2447,12 @@ export const batchDeleteDocument: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/indices/{indexId}/documents/delete",
+    input: {
+      applicationId: 0,
+      indexId: 0,
+      documents: D.list({ documentId: 0 }),
+      dataSourceSyncId: 0,
+    },
     body: true,
   },
   errors: [
@@ -2482,6 +2499,31 @@ export const batchPutDocument: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/indices/{indexId}/documents",
+    input: {
+      applicationId: 0,
+      indexId: 0,
+      documents: D.list({
+        id: 0,
+        attributes: D.list(i_DocumentAttribute),
+        content: { blob: 0, s3: i_S3 },
+        contentType: 0,
+        title: 0,
+        accessConfiguration: {
+          accessControls: D.list({
+            principals: D.list({
+              user: { id: 0, access: 0, membershipType: 0 },
+              group: { name: 0, access: 0, membershipType: 0 },
+            }),
+            memberRelation: 0,
+          }),
+          memberRelation: 0,
+        },
+        documentEnrichmentConfiguration: i_DocumentEnrichmentConfiguration,
+        mediaExtractionConfiguration: i_MediaExtractionConfiguration,
+      }),
+      roleArn: 0,
+      dataSourceSyncId: 0,
+    },
     body: true,
   },
   errors: [
@@ -2517,6 +2559,7 @@ export const cancelSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{applicationId}/subscriptions/{subscriptionId}",
+    input: { applicationId: 0, subscriptionId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2553,6 +2596,7 @@ export const chat: API.OperationMethod<
     service: svc,
     http: "POST /applications/{applicationId}/conversations",
     input: {
+      applicationId: 0,
       userId: D.m({ query: "userId" }),
       userGroups: D.m({ query: "userGroups" }),
       conversationId: D.m({ query: "conversationId" }),
@@ -2561,12 +2605,20 @@ export const chat: API.OperationMethod<
       inputStream: D.m({
         payload: true,
         shape: D.events({
-          configurationEvent: 0,
-          textEvent: 0,
-          attachmentEvent: 0,
-          actionExecutionEvent: 0,
-          endOfInputEvent: 0,
-          authChallengeResponseEvent: 0,
+          configurationEvent: {
+            chatMode: 0,
+            chatModeConfiguration: i_ChatModeConfiguration,
+            attributeFilter: i_AttributeFilter,
+          },
+          textEvent: { userMessage: 0 },
+          attachmentEvent: { attachment: i_AttachmentInput },
+          actionExecutionEvent: {
+            pluginId: 0,
+            payload: D.map(i_ActionExecutionPayloadField),
+            payloadFieldNameSeparator: 0,
+          },
+          endOfInputEvent: {},
+          authChallengeResponseEvent: { responseMap: 0 },
         }),
       }),
     },
@@ -2621,8 +2673,22 @@ export const chatSync: API.OperationMethod<
     service: svc,
     http: "POST /applications/{applicationId}/conversations?sync",
     input: {
+      applicationId: 0,
       userId: D.m({ query: "userId" }),
       userGroups: D.m({ query: "userGroups" }),
+      userMessage: 0,
+      attachments: D.list(i_AttachmentInput),
+      actionExecution: {
+        pluginId: 0,
+        payload: D.map(i_ActionExecutionPayloadField),
+        payloadFieldNameSeparator: 0,
+      },
+      authChallengeResponse: { responseMap: 0 },
+      conversationId: 0,
+      parentMessageId: 0,
+      attributeFilter: i_AttributeFilter,
+      chatMode: 0,
+      chatModeConfiguration: i_ChatModeConfiguration,
       clientToken: D.m({ idempotency: true }),
     },
     output: { sourceAttributions: D.list(o_SourceAttribution) },
@@ -2662,7 +2728,13 @@ export const checkDocumentAccess: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/index/{indexId}/users/{userId}/documents/{documentId}/check-document-access",
-    input: { dataSourceId: D.m({ query: "dataSourceId" }) },
+    input: {
+      applicationId: 0,
+      indexId: 0,
+      userId: 0,
+      documentId: 0,
+      dataSourceId: D.m({ query: "dataSourceId" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2696,6 +2768,11 @@ export const createAnonymousWebExperienceUrl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/experiences/{webExperienceId}/anonymous-url",
+    input: {
+      applicationId: 0,
+      webExperienceId: 0,
+      sessionDurationInMinutes: 0,
+    },
     body: true,
   },
   errors: [
@@ -2738,7 +2815,22 @@ export const createApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      displayName: 0,
+      roleArn: 0,
+      identityType: 0,
+      iamIdentityProviderArn: 0,
+      identityCenterInstanceArn: 0,
+      clientIdsForOIDC: 0,
+      description: 0,
+      encryptionConfiguration: { kmsKeyId: 0 },
+      tags: D.list(i_Tag),
+      clientToken: D.m({ idempotency: true }),
+      attachmentsConfiguration: i_AttachmentsConfiguration,
+      qAppsConfiguration: i_QAppsConfiguration,
+      personalizationConfiguration: i_PersonalizationConfiguration,
+      quickSightConfiguration: { clientNamespace: 0 },
+    },
     body: true,
   },
   errors: [
@@ -2776,7 +2868,13 @@ export const createChatResponseConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/chatresponseconfigurations",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      applicationId: 0,
+      displayName: 0,
+      clientToken: D.m({ idempotency: true }),
+      responseConfigurations: D.map(i_ResponseConfiguration),
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -2814,7 +2912,15 @@ export const createDataAccessor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/dataaccessors",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      applicationId: 0,
+      principal: 0,
+      actionConfigurations: D.list(i_ActionConfiguration),
+      clientToken: D.m({ idempotency: true }),
+      displayName: 0,
+      authenticationDetail: i_DataAccessorAuthenticationDetail,
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -2854,7 +2960,20 @@ export const createDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/indices/{indexId}/datasources",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      applicationId: 0,
+      indexId: 0,
+      displayName: 0,
+      configuration: 0,
+      vpcConfiguration: i_DataSourceVpcConfiguration,
+      description: 0,
+      tags: D.list(i_Tag),
+      syncSchedule: 0,
+      roleArn: 0,
+      clientToken: D.m({ idempotency: true }),
+      documentEnrichmentConfiguration: i_DocumentEnrichmentConfiguration,
+      mediaExtractionConfiguration: i_MediaExtractionConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -2896,7 +3015,15 @@ export const createIndex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/indices",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      applicationId: 0,
+      displayName: 0,
+      description: 0,
+      type: 0,
+      tags: D.list(i_Tag),
+      capacityConfiguration: i_IndexCapacityConfiguration,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2934,7 +3061,16 @@ export const createPlugin: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/plugins",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      applicationId: 0,
+      displayName: 0,
+      type: 0,
+      authConfiguration: i_PluginAuthConfiguration,
+      serverUrl: 0,
+      customPluginConfiguration: i_CustomPluginConfiguration,
+      tags: D.list(i_Tag),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2972,7 +3108,15 @@ export const createRetriever: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/retrievers",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      applicationId: 0,
+      type: 0,
+      displayName: 0,
+      configuration: i_RetrieverConfiguration,
+      roleArn: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -3013,7 +3157,12 @@ export const createSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/subscriptions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      applicationId: 0,
+      principal: { user: 0, group: 0 },
+      type: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -3050,7 +3199,12 @@ export const createUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/users",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      applicationId: 0,
+      userId: 0,
+      userAliases: D.list(i_UserAlias),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -3088,7 +3242,20 @@ export const createWebExperience: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/experiences",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      applicationId: 0,
+      title: 0,
+      subtitle: 0,
+      welcomeMessage: 0,
+      samplePromptsControlMode: 0,
+      origins: 0,
+      roleArn: 0,
+      tags: D.list(i_Tag),
+      clientToken: D.m({ idempotency: true }),
+      identityProviderConfiguration: i_IdentityProviderConfiguration,
+      browserExtensionConfiguration: i_BrowserExtensionConfiguration,
+      customizationConfiguration: i_CustomizationConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -3122,7 +3289,11 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /applications/{applicationId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /applications/{applicationId}",
+    input: { applicationId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3156,7 +3327,12 @@ export const deleteAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{applicationId}/conversations/{conversationId}/attachments/{attachmentId}",
-    input: { userId: D.m({ query: "userId" }) },
+    input: {
+      applicationId: 0,
+      conversationId: 0,
+      attachmentId: 0,
+      userId: D.m({ query: "userId" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -3190,6 +3366,7 @@ export const deleteChatControlsConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{applicationId}/chatcontrols",
+    input: { applicationId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3223,6 +3400,7 @@ export const deleteChatResponseConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{applicationId}/chatresponseconfigurations/{chatResponseConfigurationId}",
+    input: { applicationId: 0, chatResponseConfigurationId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3258,7 +3436,11 @@ export const deleteConversation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{applicationId}/conversations/{conversationId}",
-    input: { userId: D.m({ query: "userId" }) },
+    input: {
+      conversationId: 0,
+      applicationId: 0,
+      userId: D.m({ query: "userId" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -3294,6 +3476,7 @@ export const deleteDataAccessor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{applicationId}/dataaccessors/{dataAccessorId}",
+    input: { applicationId: 0, dataAccessorId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3328,6 +3511,7 @@ export const deleteDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{applicationId}/indices/{indexId}/datasources/{dataSourceId}",
+    input: { applicationId: 0, indexId: 0, dataSourceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3364,7 +3548,12 @@ export const deleteGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{applicationId}/indices/{indexId}/groups/{groupName}",
-    input: { dataSourceId: D.m({ query: "dataSourceId" }) },
+    input: {
+      applicationId: 0,
+      indexId: 0,
+      groupName: 0,
+      dataSourceId: D.m({ query: "dataSourceId" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -3399,6 +3588,7 @@ export const deleteIndex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{applicationId}/indices/{indexId}",
+    input: { applicationId: 0, indexId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3433,6 +3623,7 @@ export const deletePlugin: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{applicationId}/plugins/{pluginId}",
+    input: { applicationId: 0, pluginId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3467,6 +3658,7 @@ export const deleteRetriever: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{applicationId}/retrievers/{retrieverId}",
+    input: { applicationId: 0, retrieverId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3501,6 +3693,7 @@ export const deleteUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{applicationId}/users/{userId}",
+    input: { applicationId: 0, userId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3535,6 +3728,7 @@ export const deleteWebExperience: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{applicationId}/experiences/{webExperienceId}",
+    input: { applicationId: 0, webExperienceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3569,6 +3763,7 @@ export const disassociatePermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{applicationId}/policy/{statementId}",
+    input: { applicationId: 0, statementId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3602,6 +3797,7 @@ export const getApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}",
+    input: { applicationId: 0 },
     output: {
       encryptionConfiguration: { kmsKeyId: D.secret },
       createdAt: D.ts,
@@ -3641,6 +3837,7 @@ export const getChatControlsConfiguration: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/chatcontrols",
     input: {
+      applicationId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -3682,6 +3879,7 @@ export const getChatResponseConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/chatresponseconfigurations/{chatResponseConfigurationId}",
+    input: { applicationId: 0, chatResponseConfigurationId: 0 },
     output: {
       createdAt: D.ts,
       inUseConfiguration: o_ChatResponseConfigurationDetail,
@@ -3719,6 +3917,7 @@ export const getDataAccessor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/dataaccessors/{dataAccessorId}",
+    input: { applicationId: 0, dataAccessorId: 0 },
     output: {
       displayName: D.secret,
       actionConfigurations: D.list({
@@ -3759,6 +3958,7 @@ export const getDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/indices/{indexId}/datasources/{dataSourceId}",
+    input: { applicationId: 0, indexId: 0, dataSourceId: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -3804,7 +4004,10 @@ export const getDocumentContent: API.OperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/index/{indexId}/documents/{documentId}/content",
     input: {
+      applicationId: 0,
+      indexId: 0,
       dataSourceId: D.m({ query: "dataSourceId" }),
+      documentId: 0,
       outputFormat: D.m({ query: "outputFormat" }),
     },
   },
@@ -3840,7 +4043,12 @@ export const getGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/indices/{indexId}/groups/{groupName}",
-    input: { dataSourceId: D.m({ query: "dataSourceId" }) },
+    input: {
+      applicationId: 0,
+      indexId: 0,
+      groupName: 0,
+      dataSourceId: D.m({ query: "dataSourceId" }),
+    },
     output: {
       status: o_GroupStatusDetail,
       statusHistory: D.list(o_GroupStatusDetail),
@@ -3878,6 +4086,7 @@ export const getIndex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/indices/{indexId}",
+    input: { applicationId: 0, indexId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -3915,6 +4124,7 @@ export const getMedia: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/conversations/{conversationId}/messages/{messageId}/media/{mediaId}",
+    input: { applicationId: 0, conversationId: 0, messageId: 0, mediaId: 0 },
     output: { mediaBytes: D.blob },
   },
   errors: [
@@ -3950,6 +4160,7 @@ export const getPlugin: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/plugins/{pluginId}",
+    input: { applicationId: 0, pluginId: 0 },
     output: {
       customPluginConfiguration: { apiSchema: { payload: D.secret } },
       createdAt: D.ts,
@@ -3987,6 +4198,7 @@ export const getPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/policy",
+    input: { applicationId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4019,6 +4231,7 @@ export const getRetriever: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/retrievers/{retrieverId}",
+    input: { applicationId: 0, retrieverId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -4053,6 +4266,7 @@ export const getUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/users/{userId}",
+    input: { applicationId: 0, userId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4086,6 +4300,7 @@ export const getWebExperience: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{applicationId}/experiences/{webExperienceId}",
+    input: { applicationId: 0, webExperienceId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -4166,6 +4381,7 @@ export const listAttachments: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/attachments",
     input: {
+      applicationId: 0,
       conversationId: D.m({ query: "conversationId" }),
       userId: D.m({ query: "userId" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -4213,6 +4429,7 @@ export const listChatResponseConfigurations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/chatresponseconfigurations",
     input: {
+      applicationId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -4260,6 +4477,7 @@ export const listConversations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/conversations",
     input: {
+      applicationId: 0,
       userId: D.m({ query: "userId" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -4306,6 +4524,7 @@ export const listDataAccessors: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/dataaccessors",
     input: {
+      applicationId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -4356,6 +4575,8 @@ export const listDataSources: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/indices/{indexId}/datasources",
     input: {
+      applicationId: 0,
+      indexId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -4401,10 +4622,13 @@ export const listDataSourceSyncJobs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/indices/{indexId}/datasources/{dataSourceId}/syncjobs",
     input: {
+      dataSourceId: 0,
+      applicationId: 0,
+      indexId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
-      startTime: D.m({ query: "startTime" }),
-      endTime: D.m({ query: "endTime" }),
+      startTime: D.m({ query: "startTime", shape: D.tsAs("epoch-seconds") }),
+      endTime: D.m({ query: "endTime", shape: D.tsAs("epoch-seconds") }),
       statusFilter: D.m({ query: "syncStatus" }),
     },
     output: { history: D.list({ startTime: D.ts, endTime: D.ts }) },
@@ -4449,6 +4673,8 @@ export const listDocuments: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/index/{indexId}/documents",
     input: {
+      applicationId: 0,
+      indexId: 0,
       dataSourceIds: D.m({ query: "dataSourceIds" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -4497,7 +4723,12 @@ export const listGroups: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/indices/{indexId}/groups",
     input: {
-      updatedEarlierThan: D.m({ query: "updatedEarlierThan" }),
+      applicationId: 0,
+      indexId: 0,
+      updatedEarlierThan: D.m({
+        query: "updatedEarlierThan",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       dataSourceId: D.m({ query: "dataSourceId" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -4543,6 +4774,7 @@ export const listIndices: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/indices",
     input: {
+      applicationId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -4588,6 +4820,8 @@ export const listMessages: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/conversations/{conversationId}",
     input: {
+      conversationId: 0,
+      applicationId: 0,
       userId: D.m({ query: "userId" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -4639,6 +4873,8 @@ export const listPluginActions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/plugins/{pluginId}/actions",
     input: {
+      applicationId: 0,
+      pluginId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -4682,6 +4918,7 @@ export const listPlugins: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/plugins",
     input: {
+      applicationId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -4725,6 +4962,7 @@ export const listPluginTypeActions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /pluginTypes/{pluginType}/actions",
     input: {
+      pluginType: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -4808,6 +5046,7 @@ export const listRetrievers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/retrievers",
     input: {
+      applicationId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -4852,6 +5091,7 @@ export const listSubscriptions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/subscriptions",
     input: {
+      applicationId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -4891,7 +5131,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/tags/{resourceARN}" },
+  descriptor: {
+    service: svc,
+    http: "GET /v1/tags/{resourceARN}",
+    input: { resourceARN: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4925,6 +5169,7 @@ export const listWebExperiences: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{applicationId}/experiences",
     input: {
+      applicationId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -4967,7 +5212,19 @@ export const putFeedback: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/conversations/{conversationId}/messages/{messageId}/feedback",
-    input: { userId: D.m({ query: "userId" }) },
+    input: {
+      applicationId: 0,
+      userId: D.m({ query: "userId" }),
+      conversationId: 0,
+      messageId: 0,
+      messageCopiedAt: 0,
+      messageUsefulness: {
+        usefulness: 0,
+        reason: 0,
+        comment: 0,
+        submittedAt: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -5007,6 +5264,19 @@ export const putGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /applications/{applicationId}/indices/{indexId}/groups",
+    input: {
+      applicationId: 0,
+      indexId: 0,
+      groupName: 0,
+      dataSourceId: 0,
+      type: 0,
+      groupMembers: {
+        memberGroups: D.list({ groupName: 0, type: 0 }),
+        memberUsers: D.list({ userId: 0, type: 0 }),
+        s3PathForGroupMembers: i_S3,
+      },
+      roleArn: 0,
+    },
     body: true,
   },
   errors: [
@@ -5044,6 +5314,14 @@ export const searchRelevantContent: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/relevant-content",
+    input: {
+      applicationId: 0,
+      queryText: 0,
+      contentSource: { retriever: { retrieverId: 0 } },
+      attributeFilter: i_AttributeFilter,
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       relevantContent: D.list({
         documentAttributes: D.list(o_DocumentAttribute),
@@ -5091,6 +5369,7 @@ export const startDataSourceSyncJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/indices/{indexId}/datasources/{dataSourceId}/startsync",
+    input: { dataSourceId: 0, applicationId: 0, indexId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5126,6 +5405,7 @@ export const stopDataSourceSyncJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{applicationId}/indices/{indexId}/datasources/{dataSourceId}/stopsync",
+    input: { dataSourceId: 0, applicationId: 0, indexId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5157,7 +5437,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/tags/{resourceARN}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/tags/{resourceARN}",
+    input: { resourceARN: 0, tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5190,7 +5475,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/tags/{resourceARN}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceARN: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -5228,6 +5513,20 @@ export const updateApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /applications/{applicationId}",
+    input: {
+      applicationId: 0,
+      identityCenterInstanceArn: 0,
+      displayName: 0,
+      description: 0,
+      roleArn: 0,
+      attachmentsConfiguration: i_AttachmentsConfiguration,
+      qAppsConfiguration: i_QAppsConfiguration,
+      personalizationConfiguration: i_PersonalizationConfiguration,
+      autoSubscriptionConfiguration: {
+        autoSubscribe: 0,
+        defaultSubscriptionType: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -5264,7 +5563,21 @@ export const updateChatControlsConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /applications/{applicationId}/chatcontrols",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      applicationId: 0,
+      clientToken: D.m({ idempotency: true }),
+      responseScope: 0,
+      orchestrationConfiguration: { control: 0 },
+      blockedPhrasesConfigurationUpdate: {
+        blockedPhrasesToCreateOrUpdate: 0,
+        blockedPhrasesToDelete: 0,
+        systemMessageOverride: 0,
+      },
+      topicConfigurationsToCreateOrUpdate: D.list(i_TopicConfiguration),
+      topicConfigurationsToDelete: D.list(i_TopicConfiguration),
+      creatorModeConfiguration: { creatorModeControl: 0 },
+      hallucinationReductionConfiguration: { hallucinationReductionControl: 0 },
+    },
     body: true,
   },
   errors: [
@@ -5301,7 +5614,13 @@ export const updateChatResponseConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /applications/{applicationId}/chatresponseconfigurations/{chatResponseConfigurationId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      applicationId: 0,
+      chatResponseConfigurationId: 0,
+      displayName: 0,
+      responseConfigurations: D.map(i_ResponseConfiguration),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -5337,6 +5656,13 @@ export const updateDataAccessor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /applications/{applicationId}/dataaccessors/{dataAccessorId}",
+    input: {
+      applicationId: 0,
+      dataAccessorId: 0,
+      actionConfigurations: D.list(i_ActionConfiguration),
+      authenticationDetail: i_DataAccessorAuthenticationDetail,
+      displayName: 0,
+    },
     body: true,
   },
   errors: [
@@ -5372,6 +5698,19 @@ export const updateDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /applications/{applicationId}/indices/{indexId}/datasources/{dataSourceId}",
+    input: {
+      applicationId: 0,
+      indexId: 0,
+      dataSourceId: 0,
+      displayName: 0,
+      configuration: 0,
+      vpcConfiguration: i_DataSourceVpcConfiguration,
+      description: 0,
+      syncSchedule: 0,
+      roleArn: 0,
+      documentEnrichmentConfiguration: i_DocumentEnrichmentConfiguration,
+      mediaExtractionConfiguration: i_MediaExtractionConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -5408,6 +5747,14 @@ export const updateIndex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /applications/{applicationId}/indices/{indexId}",
+    input: {
+      applicationId: 0,
+      indexId: 0,
+      displayName: 0,
+      description: 0,
+      capacityConfiguration: i_IndexCapacityConfiguration,
+      documentAttributeConfigurations: D.list({ name: 0, type: 0, search: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -5445,6 +5792,15 @@ export const updatePlugin: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /applications/{applicationId}/plugins/{pluginId}",
+    input: {
+      applicationId: 0,
+      pluginId: 0,
+      displayName: 0,
+      state: 0,
+      serverUrl: 0,
+      customPluginConfiguration: i_CustomPluginConfiguration,
+      authConfiguration: i_PluginAuthConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -5482,6 +5838,13 @@ export const updateRetriever: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /applications/{applicationId}/retrievers/{retrieverId}",
+    input: {
+      applicationId: 0,
+      retrieverId: 0,
+      configuration: i_RetrieverConfiguration,
+      displayName: 0,
+      roleArn: 0,
+    },
     body: true,
   },
   errors: [
@@ -5518,6 +5881,7 @@ export const updateSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /applications/{applicationId}/subscriptions/{subscriptionId}",
+    input: { applicationId: 0, subscriptionId: 0, type: 0 },
     body: true,
   },
   errors: [
@@ -5554,6 +5918,12 @@ export const updateUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /applications/{applicationId}/users/{userId}",
+    input: {
+      applicationId: 0,
+      userId: 0,
+      userAliasesToUpdate: D.list(i_UserAlias),
+      userAliasesToDelete: D.list(i_UserAlias),
+    },
     body: true,
   },
   errors: [
@@ -5590,6 +5960,27 @@ export const updateWebExperience: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /applications/{applicationId}/experiences/{webExperienceId}",
+    input: {
+      applicationId: 0,
+      webExperienceId: 0,
+      roleArn: 0,
+      authenticationConfiguration: {
+        samlConfiguration: {
+          metadataXML: 0,
+          roleArn: 0,
+          userIdAttribute: 0,
+          userGroupAttribute: 0,
+        },
+      },
+      title: 0,
+      subtitle: 0,
+      welcomeMessage: 0,
+      samplePromptsControlMode: 0,
+      identityProviderConfiguration: i_IdentityProviderConfiguration,
+      origins: 0,
+      browserExtensionConfiguration: i_BrowserExtensionConfiguration,
+      customizationConfiguration: i_CustomizationConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -5605,6 +5996,149 @@ export const updateWebExperience: API.OperationMethod<
   operationName: "UpdateWebExperience",
 })) as any;
 
+const i_ActionConfiguration: D.LazyStruct = () => ({
+  action: 0,
+  filterConfiguration: { documentAttributeFilter: i_AttributeFilter },
+});
+const i_ActionExecutionPayloadField: D.LazyStruct = () => ({ value: 0 });
+const i_AttachmentInput: D.LazyStruct = () => ({
+  data: 0,
+  name: 0,
+  copyFrom: { conversation: { conversationId: 0, attachmentId: 0 } },
+});
+const i_AttachmentsConfiguration: D.LazyStruct = () => ({
+  attachmentsControlMode: 0,
+});
+const i_AttributeFilter: D.LazyStruct = () => ({
+  andAllFilters: D.list(i_AttributeFilter),
+  orAllFilters: D.list(i_AttributeFilter),
+  notFilter: i_AttributeFilter,
+  equalsTo: i_DocumentAttribute,
+  containsAll: i_DocumentAttribute,
+  containsAny: i_DocumentAttribute,
+  greaterThan: i_DocumentAttribute,
+  greaterThanOrEquals: i_DocumentAttribute,
+  lessThan: i_DocumentAttribute,
+  lessThanOrEquals: i_DocumentAttribute,
+});
+const i_BrowserExtensionConfiguration: D.LazyStruct = () => ({
+  enabledBrowserExtensions: 0,
+});
+const i_ChatModeConfiguration: D.LazyStruct = () => ({
+  pluginConfiguration: { pluginId: 0 },
+});
+const i_CustomPluginConfiguration: D.LazyStruct = () => ({
+  description: 0,
+  apiSchemaType: 0,
+  apiSchema: { payload: 0, s3: i_S3 },
+});
+const i_CustomizationConfiguration: D.LazyStruct = () => ({
+  customCSSUrl: 0,
+  logoUrl: 0,
+  fontUrl: 0,
+  faviconUrl: 0,
+});
+const i_DataAccessorAuthenticationDetail: D.LazyStruct = () => ({
+  authenticationType: 0,
+  authenticationConfiguration: {
+    idcTrustedTokenIssuerConfiguration: { idcTrustedTokenIssuerArn: 0 },
+  },
+  externalIds: 0,
+});
+const i_DataSourceVpcConfiguration: D.LazyStruct = () => ({
+  subnetIds: 0,
+  securityGroupIds: 0,
+});
+const i_DocumentAttribute: D.LazyStruct = () => ({
+  name: 0,
+  value: i_DocumentAttributeValue,
+});
+const i_DocumentEnrichmentConfiguration: D.LazyStruct = () => ({
+  inlineConfigurations: D.list({
+    condition: i_DocumentAttributeCondition,
+    target: {
+      key: 0,
+      value: i_DocumentAttributeValue,
+      attributeValueOperator: 0,
+    },
+    documentContentOperator: 0,
+  }),
+  preExtractionHookConfiguration: i_HookConfiguration,
+  postExtractionHookConfiguration: i_HookConfiguration,
+});
+const i_IdentityProviderConfiguration: D.LazyStruct = () => ({
+  samlConfiguration: { authenticationUrl: 0 },
+  openIDConnectConfiguration: { secretsArn: 0, secretsRole: 0 },
+});
+const i_IndexCapacityConfiguration: D.LazyStruct = () => ({ units: 0 });
+const i_MediaExtractionConfiguration: D.LazyStruct = () => ({
+  imageExtractionConfiguration: { imageExtractionStatus: 0 },
+  audioExtractionConfiguration: { audioExtractionStatus: 0 },
+  videoExtractionConfiguration: { videoExtractionStatus: 0 },
+});
+const i_PersonalizationConfiguration: D.LazyStruct = () => ({
+  personalizationControlMode: 0,
+});
+const i_PluginAuthConfiguration: D.LazyStruct = () => ({
+  basicAuthConfiguration: { secretArn: 0, roleArn: 0 },
+  oAuth2ClientCredentialConfiguration: {
+    secretArn: 0,
+    roleArn: 0,
+    authorizationUrl: 0,
+    tokenUrl: 0,
+  },
+  noAuthConfiguration: {},
+  idcAuthConfiguration: { idcApplicationArn: 0, roleArn: 0 },
+});
+const i_QAppsConfiguration: D.LazyStruct = () => ({ qAppsControlMode: 0 });
+const i_ResponseConfiguration: D.LazyStruct = () => ({
+  instructionCollection: {
+    responseLength: 0,
+    targetAudience: 0,
+    perspective: 0,
+    outputStyle: 0,
+    identity: 0,
+    tone: 0,
+    customInstructions: 0,
+    examples: 0,
+  },
+});
+const i_RetrieverConfiguration: D.LazyStruct = () => ({
+  nativeIndexConfiguration: {
+    indexId: 0,
+    version: 0,
+    boostingOverride: D.map({
+      numberConfiguration: { boostingLevel: 0, boostingType: 0 },
+      stringConfiguration: { boostingLevel: 0, attributeValueBoosting: 0 },
+      dateConfiguration: { boostingLevel: 0, boostingDurationInSeconds: 0 },
+      stringListConfiguration: { boostingLevel: 0 },
+    }),
+  },
+  kendraIndexConfiguration: { indexId: 0 },
+});
+const i_S3: D.LazyStruct = () => ({ bucket: 0, key: 0 });
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_TopicConfiguration: D.LazyStruct = () => ({
+  name: 0,
+  description: 0,
+  exampleChatMessages: 0,
+  rules: D.list({
+    includedUsersAndGroups: i_UsersAndGroups,
+    excludedUsersAndGroups: i_UsersAndGroups,
+    ruleType: 0,
+    ruleConfiguration: {
+      contentBlockerRule: { systemMessageOverride: 0 },
+      contentRetrievalRule: {
+        eligibleDataSources: D.list({ indexId: 0, dataSourceId: 0 }),
+      },
+    },
+  }),
+});
+const i_UserAlias: D.LazyStruct = () => ({
+  indexId: 0,
+  dataSourceId: 0,
+  userId: 0,
+});
 const o_AttributeFilter: D.LazyStruct = () => ({
   andAllFilters: D.list(o_AttributeFilter),
   orAllFilters: D.list(o_AttributeFilter),
@@ -5632,3 +6166,21 @@ const o_HookConfiguration: D.LazyStruct = () => ({
   invocationCondition: o_DocumentAttributeCondition,
 });
 const o_SourceAttribution: D.LazyStruct = () => ({ updatedAt: D.ts });
+const i_DocumentAttributeCondition: D.LazyStruct = () => ({
+  key: 0,
+  operator: 0,
+  value: i_DocumentAttributeValue,
+});
+const i_DocumentAttributeValue: D.LazyStruct = () => ({
+  stringValue: 0,
+  stringListValue: 0,
+  longValue: 0,
+  dateValue: 0,
+});
+const i_HookConfiguration: D.LazyStruct = () => ({
+  invocationCondition: i_DocumentAttributeCondition,
+  lambdaArn: 0,
+  s3BucketName: 0,
+  roleArn: 0,
+});
+const i_UsersAndGroups: D.LazyStruct = () => ({ userIds: 0, userGroups: 0 });

@@ -1249,7 +1249,7 @@ export const associateAdminAccount: API.OperationMethod<
   AssociateAdminAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AdminAccount: 0 } },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -1277,7 +1277,7 @@ export const associateThirdPartyFirewall: API.OperationMethod<
   AssociateThirdPartyFirewallError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ThirdPartyFirewall: 0 } },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -1305,7 +1305,7 @@ export const batchAssociateResource: API.OperationMethod<
   BatchAssociateResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceSetIdentifier: 0, Items: 0 } },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -1333,7 +1333,7 @@ export const batchDisassociateResource: API.OperationMethod<
   BatchDisassociateResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceSetIdentifier: 0, Items: 0 } },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -1359,7 +1359,7 @@ export const deleteAppsList: API.OperationMethod<
   DeleteAppsListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ListId: 0 } },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -1385,7 +1385,7 @@ export const deleteNotificationChannel: API.OperationMethod<
   DeleteNotificationChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -1412,7 +1412,10 @@ export const deletePolicy: API.OperationMethod<
   DeletePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { PolicyId: 0, DeleteAllPolicyResources: 0 },
+  },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -1439,7 +1442,7 @@ export const deleteProtocolsList: API.OperationMethod<
   DeleteProtocolsListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ListId: 0 } },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -1465,7 +1468,7 @@ export const deleteResourceSet: API.OperationMethod<
   DeleteResourceSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Identifier: 0 } },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -1493,7 +1496,7 @@ export const disassociateAdminAccount: API.OperationMethod<
   DisassociateAdminAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -1519,7 +1522,7 @@ export const disassociateThirdPartyFirewall: API.OperationMethod<
   DisassociateThirdPartyFirewallError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ThirdPartyFirewall: 0 } },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -1546,7 +1549,7 @@ export const getAdminAccount: API.OperationMethod<
   GetAdminAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -1573,7 +1576,7 @@ export const getAdminScope: API.OperationMethod<
   GetAdminScopeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AdminAccount: 0 } },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -1600,7 +1603,11 @@ export const getAppsList: API.OperationMethod<
   GetAppsListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AppsList: o_AppsListData } },
+  descriptor: {
+    service: svc,
+    input: { ListId: 0, DefaultList: 0 },
+    output: { AppsList: o_AppsListData },
+  },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -1631,6 +1638,7 @@ export const getComplianceDetail: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { PolicyId: 0, MemberAccount: 0 },
     output: { PolicyComplianceDetail: { ExpiredAt: D.ts } },
   },
   errors: [
@@ -1660,7 +1668,7 @@ export const getNotificationChannel: API.OperationMethod<
   GetNotificationChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -1686,7 +1694,7 @@ export const getPolicy: API.OperationMethod<
   GetPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PolicyId: 0 } },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -1713,7 +1721,17 @@ export const getProtectionStatus: API.OperationMethod<
   GetProtectionStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      PolicyId: 0,
+      MemberAccountId: 0,
+      StartTime: 0,
+      EndTime: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -1738,7 +1756,11 @@ export const getProtocolsList: API.OperationMethod<
   GetProtocolsListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ProtocolsList: o_ProtocolsListData } },
+  descriptor: {
+    service: svc,
+    input: { ListId: 0, DefaultList: 0 },
+    output: { ProtocolsList: o_ProtocolsListData },
+  },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -1764,7 +1786,11 @@ export const getResourceSet: API.OperationMethod<
   GetResourceSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ResourceSet: o_ResourceSet } },
+  descriptor: {
+    service: svc,
+    input: { Identifier: 0 },
+    output: { ResourceSet: o_ResourceSet },
+  },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -1791,7 +1817,7 @@ export const getThirdPartyFirewallAssociationStatus: API.OperationMethod<
   GetThirdPartyFirewallAssociationStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ThirdPartyFirewall: 0 } },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -1817,7 +1843,10 @@ export const getViolationDetails: API.OperationMethod<
   GetViolationDetailsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { PolicyId: 0, MemberAccount: 0, ResourceId: 0, ResourceType: 0 },
+  },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -1846,7 +1875,7 @@ export const listAdminAccountsForOrganization: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AdminAccountSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -1879,7 +1908,7 @@ export const listAdminsManagingAccount: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AWSAccountId
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -1912,7 +1941,10 @@ export const listAppsLists: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AppsListDataSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DefaultLists: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -1948,6 +1980,7 @@ export const listComplianceStatus: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { PolicyId: 0, NextToken: 0, MaxResults: 0 },
     output: { PolicyComplianceStatusList: D.list({ LastUpdated: D.ts }) },
   },
   errors: [InternalErrorException, ResourceNotFoundException],
@@ -1976,7 +2009,15 @@ export const listDiscoveredResources: API.OperationMethod<
   ListDiscoveredResourcesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MemberAccountIds: 0,
+      ResourceType: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -2004,7 +2045,7 @@ export const listMemberAccounts: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AWSAccountId
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [InternalErrorException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2033,7 +2074,7 @@ export const listPolicies: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   PolicySummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -2066,7 +2107,10 @@ export const listProtocolsLists: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ProtocolsListDataSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DefaultLists: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -2098,7 +2142,10 @@ export const listResourceSetResources: API.OperationMethod<
   ListResourceSetResourcesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Identifier: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -2126,6 +2173,7 @@ export const listResourceSets: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: { ResourceSets: D.list({ LastUpdateTime: D.ts }) },
   },
   errors: [
@@ -2153,7 +2201,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -2181,7 +2229,10 @@ export const listThirdPartyFirewallFirewallPolicies: API.PaginatedOperationMetho
   Credentials | HttpClient.HttpClient,
   ThirdPartyFirewallFirewallPolicy
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ThirdPartyFirewall: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -2215,7 +2266,26 @@ export const putAdminAccount: API.OperationMethod<
   PutAdminAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AdminAccount: 0,
+      AdminScope: {
+        AccountScope: {
+          Accounts: 0,
+          AllAccountsEnabled: 0,
+          ExcludeSpecifiedAccounts: 0,
+        },
+        OrganizationalUnitScope: {
+          OrganizationalUnits: 0,
+          AllOrganizationalUnitsEnabled: 0,
+          ExcludeSpecifiedOrganizationalUnits: 0,
+        },
+        RegionScope: { Regions: 0, AllRegionsEnabled: 0 },
+        PolicyTypeScope: { PolicyTypes: 0, AllPolicyTypesEnabled: 0 },
+      },
+    },
+  },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -2243,7 +2313,22 @@ export const putAppsList: API.OperationMethod<
   PutAppsListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AppsList: o_AppsListData } },
+  descriptor: {
+    service: svc,
+    input: {
+      AppsList: {
+        ListId: 0,
+        ListName: 0,
+        ListUpdateToken: 0,
+        CreateTime: 0,
+        LastUpdateTime: 0,
+        AppsList: D.list(i_App),
+        PreviousAppsList: D.map(D.list(i_App)),
+      },
+      TagList: D.list(i_Tag),
+    },
+    output: { AppsList: o_AppsListData },
+  },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -2274,7 +2359,7 @@ export const putNotificationChannel: API.OperationMethod<
   PutNotificationChannelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SnsTopicArn: 0, SnsRoleName: 0 } },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -2339,7 +2424,45 @@ export const putPolicy: API.OperationMethod<
   PutPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Policy: {
+        PolicyId: 0,
+        PolicyName: 0,
+        PolicyUpdateToken: 0,
+        SecurityServicePolicyData: {
+          Type: 0,
+          ManagedServiceData: 0,
+          PolicyOption: {
+            NetworkFirewallPolicy: { FirewallDeploymentModel: 0 },
+            ThirdPartyFirewallPolicy: { FirewallDeploymentModel: 0 },
+            NetworkAclCommonPolicy: {
+              NetworkAclEntrySet: {
+                FirstEntries: D.list(i_NetworkAclEntry),
+                ForceRemediateForFirstEntries: 0,
+                LastEntries: D.list(i_NetworkAclEntry),
+                ForceRemediateForLastEntries: 0,
+              },
+            },
+          },
+        },
+        ResourceType: 0,
+        ResourceTypeList: 0,
+        ResourceTags: D.list({ Key: 0, Value: 0 }),
+        ExcludeResourceTags: 0,
+        RemediationEnabled: 0,
+        DeleteUnusedFMManagedResources: 0,
+        IncludeMap: 0,
+        ExcludeMap: 0,
+        ResourceSetIds: 0,
+        PolicyDescription: 0,
+        PolicyStatus: 0,
+        ResourceTagLogicalOperator: 0,
+      },
+      TagList: D.list(i_Tag),
+    },
+  },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -2369,7 +2492,22 @@ export const putProtocolsList: API.OperationMethod<
   PutProtocolsListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ProtocolsList: o_ProtocolsListData } },
+  descriptor: {
+    service: svc,
+    input: {
+      ProtocolsList: {
+        ListId: 0,
+        ListName: 0,
+        ListUpdateToken: 0,
+        CreateTime: 0,
+        LastUpdateTime: 0,
+        ProtocolsList: 0,
+        PreviousProtocolsList: 0,
+      },
+      TagList: D.list(i_Tag),
+    },
+    output: { ProtocolsList: o_ProtocolsListData },
+  },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -2399,7 +2537,22 @@ export const putResourceSet: API.OperationMethod<
   PutResourceSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ResourceSet: o_ResourceSet } },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceSet: {
+        Id: 0,
+        Name: 0,
+        Description: 0,
+        UpdateToken: 0,
+        ResourceTypeList: 0,
+        LastUpdateTime: 0,
+        ResourceSetStatus: 0,
+      },
+      TagList: D.list(i_Tag),
+    },
+    output: { ResourceSet: o_ResourceSet },
+  },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -2427,7 +2580,10 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, TagList: D.list(i_Tag) },
+  },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -2455,7 +2611,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     InternalErrorException,
     InvalidInputException,
@@ -2467,6 +2623,17 @@ export const untagResource: API.OperationMethod<
   operationName: "UntagResource",
 })) as any;
 
+const i_App: D.LazyStruct = () => ({ AppName: 0, Protocol: 0, Port: 0 });
+const i_NetworkAclEntry: D.LazyStruct = () => ({
+  IcmpTypeCode: { Code: 0, Type: 0 },
+  Protocol: 0,
+  PortRange: { From: 0, To: 0 },
+  CidrBlock: 0,
+  Ipv6CidrBlock: 0,
+  RuleAction: 0,
+  Egress: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_AppsListData: D.LazyStruct = () => ({
   CreateTime: D.ts,
   LastUpdateTime: D.ts,

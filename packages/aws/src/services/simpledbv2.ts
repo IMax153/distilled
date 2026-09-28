@@ -221,6 +221,7 @@ export const getExport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/GetExport",
+    input: { exportArn: 0 },
     output: { requestedAt: D.ts, exportDataCutoffTime: D.ts },
     body: true,
   },
@@ -248,6 +249,7 @@ export const listExports: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/ListExports",
+    input: { domainName: 0, maxResults: 0, nextToken: 0 },
     output: { exportSummaries: D.list({ requestedAt: D.ts }) },
     body: true,
   },
@@ -286,7 +288,15 @@ export const startDomainExport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/StartDomainExport",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      domainName: 0,
+      s3Bucket: 0,
+      s3KeyPrefix: 0,
+      s3SseAlgorithm: 0,
+      s3SseKmsKeyId: 0,
+      s3BucketOwner: 0,
+    },
     output: { requestedAt: D.ts },
     body: true,
   },

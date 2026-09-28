@@ -494,7 +494,16 @@ export const createMonitor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v20210603/Monitors",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      MonitorName: 0,
+      Resources: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: 0,
+      MaxCityNetworksToMonitor: 0,
+      InternetMeasurementsLogDelivery: i_InternetMeasurementsLogDelivery,
+      TrafficPercentageToMonitor: 0,
+      HealthEventsConfig: i_HealthEventsConfig,
+    },
     body: true,
   },
   errors: [
@@ -529,6 +538,7 @@ export const deleteMonitor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v20210603/Monitors/{MonitorName}",
+    input: { MonitorName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -566,7 +576,11 @@ export const getHealthEvent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v20210603/Monitors/{MonitorName}/HealthEvents/{EventId}",
-    input: { LinkedAccountId: D.m({ query: "LinkedAccountId" }) },
+    input: {
+      MonitorName: 0,
+      EventId: 0,
+      LinkedAccountId: D.m({ query: "LinkedAccountId" }),
+    },
     output: {
       StartedAt: D.ts,
       EndedAt: D.ts,
@@ -609,6 +623,7 @@ export const getInternetEvent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v20210603/InternetEvents/{EventId}",
+    input: { EventId: 0 },
     output: { StartedAt: D.ts, EndedAt: D.ts },
   },
   errors: [
@@ -642,7 +657,10 @@ export const getMonitor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v20210603/Monitors/{MonitorName}",
-    input: { LinkedAccountId: D.m({ query: "LinkedAccountId" }) },
+    input: {
+      MonitorName: 0,
+      LinkedAccountId: D.m({ query: "LinkedAccountId" }),
+    },
     output: { CreatedAt: D.ts, ModifiedAt: D.ts },
   },
   errors: [
@@ -683,6 +701,8 @@ export const getQueryResults: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v20210603/Monitors/{MonitorName}/Queries/{QueryId}/Results",
     input: {
+      MonitorName: 0,
+      QueryId: 0,
       NextToken: D.m({ query: "NextToken" }),
       MaxResults: D.m({ query: "MaxResults" }),
     },
@@ -734,6 +754,7 @@ export const getQueryStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v20210603/Monitors/{MonitorName}/Queries/{QueryId}/Status",
+    input: { MonitorName: 0, QueryId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -770,6 +791,7 @@ export const listHealthEvents: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v20210603/Monitors/{MonitorName}/HealthEvents",
     input: {
+      MonitorName: 0,
       StartTime: D.m({ query: "StartTime" }),
       EndTime: D.m({ query: "EndTime" }),
       NextToken: D.m({ query: "NextToken" }),
@@ -917,7 +939,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -955,7 +981,14 @@ export const startQuery: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v20210603/Monitors/{MonitorName}/Queries",
-    input: { StartTime: D.tsAs("date-time"), EndTime: D.tsAs("date-time") },
+    input: {
+      MonitorName: 0,
+      StartTime: D.tsAs("date-time"),
+      EndTime: D.tsAs("date-time"),
+      QueryType: 0,
+      FilterParameters: D.list({ Field: 0, Operator: 0, Values: 0 }),
+      LinkedAccountId: 0,
+    },
     body: true,
   },
   errors: [
@@ -989,6 +1022,7 @@ export const stopQuery: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v20210603/Monitors/{MonitorName}/Queries/{QueryId}",
+    input: { MonitorName: 0, QueryId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1020,7 +1054,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -1052,7 +1091,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1090,7 +1129,17 @@ export const updateMonitor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v20210603/Monitors/{MonitorName}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      MonitorName: 0,
+      ResourcesToAdd: 0,
+      ResourcesToRemove: 0,
+      Status: 0,
+      ClientToken: D.m({ idempotency: true }),
+      MaxCityNetworksToMonitor: 0,
+      InternetMeasurementsLogDelivery: i_InternetMeasurementsLogDelivery,
+      TrafficPercentageToMonitor: 0,
+      HealthEventsConfig: i_HealthEventsConfig,
+    },
     body: true,
   },
   errors: [
@@ -1105,3 +1154,18 @@ export const updateMonitor: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateMonitor",
 })) as any;
+
+const i_HealthEventsConfig: D.LazyStruct = () => ({
+  AvailabilityScoreThreshold: 0,
+  PerformanceScoreThreshold: 0,
+  AvailabilityLocalHealthEventsConfig: i_LocalHealthEventsConfig,
+  PerformanceLocalHealthEventsConfig: i_LocalHealthEventsConfig,
+});
+const i_InternetMeasurementsLogDelivery: D.LazyStruct = () => ({
+  S3Config: { BucketName: 0, BucketPrefix: 0, LogDeliveryStatus: 0 },
+});
+const i_LocalHealthEventsConfig: D.LazyStruct = () => ({
+  Status: 0,
+  HealthScoreThreshold: 0,
+  MinTrafficImpact: 0,
+});

@@ -754,7 +754,14 @@ export const addTags: API.OperationMethod<
   AddTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Tags: D.list({ Key: 0, Value: 0 }),
+      ResourceId: 0,
+      ResourceType: 0,
+    },
+  },
   errors: [
     InternalServerException,
     InvalidInputException,
@@ -790,7 +797,16 @@ export const createBatchPrediction: API.OperationMethod<
   CreateBatchPredictionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      BatchPredictionId: 0,
+      BatchPredictionName: 0,
+      MLModelId: 0,
+      BatchPredictionDataSourceId: 0,
+      OutputUri: 0,
+    },
+  },
   errors: [
     IdempotentParameterMismatchException,
     InternalServerException,
@@ -823,7 +839,28 @@ export const createDataSourceFromRDS: API.OperationMethod<
   CreateDataSourceFromRDSError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DataSourceId: 0,
+      DataSourceName: 0,
+      RDSData: {
+        DatabaseInformation: { InstanceIdentifier: 0, DatabaseName: 0 },
+        SelectSqlQuery: 0,
+        DatabaseCredentials: { Username: 0, Password: 0 },
+        S3StagingLocation: 0,
+        DataRearrangement: 0,
+        DataSchema: 0,
+        DataSchemaUri: 0,
+        ResourceRole: 0,
+        ServiceRole: 0,
+        SubnetId: 0,
+        SecurityGroupIds: 0,
+      },
+      RoleARN: 0,
+      ComputeStatistics: 0,
+    },
+  },
   errors: [
     IdempotentParameterMismatchException,
     InternalServerException,
@@ -877,7 +914,24 @@ export const createDataSourceFromRedshift: API.OperationMethod<
   CreateDataSourceFromRedshiftError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DataSourceId: 0,
+      DataSourceName: 0,
+      DataSpec: {
+        DatabaseInformation: { DatabaseName: 0, ClusterIdentifier: 0 },
+        SelectSqlQuery: 0,
+        DatabaseCredentials: { Username: 0, Password: 0 },
+        S3StagingLocation: 0,
+        DataRearrangement: 0,
+        DataSchema: 0,
+        DataSchemaUri: 0,
+      },
+      RoleARN: 0,
+      ComputeStatistics: 0,
+    },
+  },
   errors: [
     IdempotentParameterMismatchException,
     InternalServerException,
@@ -932,7 +986,20 @@ export const createDataSourceFromS3: API.OperationMethod<
   CreateDataSourceFromS3Error,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DataSourceId: 0,
+      DataSourceName: 0,
+      DataSpec: {
+        DataLocationS3: 0,
+        DataRearrangement: 0,
+        DataSchema: 0,
+        DataSchemaLocationS3: 0,
+      },
+      ComputeStatistics: 0,
+    },
+  },
   errors: [
     IdempotentParameterMismatchException,
     InternalServerException,
@@ -966,7 +1033,15 @@ export const createEvaluation: API.OperationMethod<
   CreateEvaluationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EvaluationId: 0,
+      EvaluationName: 0,
+      MLModelId: 0,
+      EvaluationDataSourceId: 0,
+    },
+  },
   errors: [
     IdempotentParameterMismatchException,
     InternalServerException,
@@ -1010,7 +1085,18 @@ export const createMLModel: API.OperationMethod<
   CreateMLModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MLModelId: 0,
+      MLModelName: 0,
+      MLModelType: 0,
+      Parameters: 0,
+      TrainingDataSourceId: 0,
+      Recipe: 0,
+      RecipeUri: 0,
+    },
+  },
   errors: [
     IdempotentParameterMismatchException,
     InternalServerException,
@@ -1037,6 +1123,7 @@ export const createRealtimeEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { MLModelId: 0 },
     output: { RealtimeEndpointInfo: o_RealtimeEndpointInfo },
   },
   errors: [
@@ -1068,7 +1155,7 @@ export const deleteBatchPrediction: API.OperationMethod<
   DeleteBatchPredictionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { BatchPredictionId: 0 } },
   errors: [
     InternalServerException,
     InvalidInputException,
@@ -1097,7 +1184,7 @@ export const deleteDataSource: API.OperationMethod<
   DeleteDataSourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DataSourceId: 0 } },
   errors: [
     InternalServerException,
     InvalidInputException,
@@ -1127,7 +1214,7 @@ export const deleteEvaluation: API.OperationMethod<
   DeleteEvaluationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EvaluationId: 0 } },
   errors: [
     InternalServerException,
     InvalidInputException,
@@ -1157,7 +1244,7 @@ export const deleteMLModel: API.OperationMethod<
   DeleteMLModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MLModelId: 0 } },
   errors: [
     InternalServerException,
     InvalidInputException,
@@ -1184,6 +1271,7 @@ export const deleteRealtimeEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { MLModelId: 0 },
     output: { RealtimeEndpointInfo: o_RealtimeEndpointInfo },
   },
   errors: [
@@ -1213,7 +1301,10 @@ export const deleteTags: API.OperationMethod<
   DeleteTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TagKeys: 0, ResourceId: 0, ResourceType: 0 },
+  },
   errors: [
     InternalServerException,
     InvalidInputException,
@@ -1241,6 +1332,19 @@ export const describeBatchPredictions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      FilterVariable: 0,
+      EQ: 0,
+      GT: 0,
+      LT: 0,
+      GE: 0,
+      LE: 0,
+      NE: 0,
+      Prefix: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      Limit: 0,
+    },
     output: {
       Results: D.list({
         CreatedAt: D.ts,
@@ -1278,6 +1382,19 @@ export const describeDataSources: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      FilterVariable: 0,
+      EQ: 0,
+      GT: 0,
+      LT: 0,
+      GE: 0,
+      LE: 0,
+      NE: 0,
+      Prefix: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      Limit: 0,
+    },
     output: {
       Results: D.list({
         CreatedAt: D.ts,
@@ -1315,6 +1432,19 @@ export const describeEvaluations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      FilterVariable: 0,
+      EQ: 0,
+      GT: 0,
+      LT: 0,
+      GE: 0,
+      LE: 0,
+      NE: 0,
+      Prefix: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      Limit: 0,
+    },
     output: {
       Results: D.list({
         CreatedAt: D.ts,
@@ -1352,6 +1482,19 @@ export const describeMLModels: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      FilterVariable: 0,
+      EQ: 0,
+      GT: 0,
+      LT: 0,
+      GE: 0,
+      LE: 0,
+      NE: 0,
+      Prefix: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      Limit: 0,
+    },
     output: {
       Results: D.list({
         CreatedAt: D.ts,
@@ -1389,7 +1532,7 @@ export const describeTags: API.OperationMethod<
   DescribeTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0, ResourceType: 0 } },
   errors: [
     InternalServerException,
     InvalidInputException,
@@ -1417,6 +1560,7 @@ export const getBatchPrediction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { BatchPredictionId: 0 },
     output: {
       CreatedAt: D.ts,
       LastUpdatedAt: D.ts,
@@ -1453,6 +1597,7 @@ export const getDataSource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DataSourceId: 0, Verbose: 0 },
     output: {
       CreatedAt: D.ts,
       LastUpdatedAt: D.ts,
@@ -1486,6 +1631,7 @@ export const getEvaluation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { EvaluationId: 0 },
     output: {
       CreatedAt: D.ts,
       LastUpdatedAt: D.ts,
@@ -1521,6 +1667,7 @@ export const getMLModel: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { MLModelId: 0, Verbose: 0 },
     output: {
       CreatedAt: D.ts,
       LastUpdatedAt: D.ts,
@@ -1559,7 +1706,10 @@ export const predict: API.OperationMethod<
   PredictError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MLModelId: 0, Record: 0, PredictEndpoint: 0 },
+  },
   errors: [
     InternalServerException,
     InvalidInputException,
@@ -1588,7 +1738,10 @@ export const updateBatchPrediction: API.OperationMethod<
   UpdateBatchPredictionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { BatchPredictionId: 0, BatchPredictionName: 0 },
+  },
   errors: [
     InternalServerException,
     InvalidInputException,
@@ -1615,7 +1768,7 @@ export const updateDataSource: API.OperationMethod<
   UpdateDataSourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DataSourceId: 0, DataSourceName: 0 } },
   errors: [
     InternalServerException,
     InvalidInputException,
@@ -1642,7 +1795,7 @@ export const updateEvaluation: API.OperationMethod<
   UpdateEvaluationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EvaluationId: 0, EvaluationName: 0 } },
   errors: [
     InternalServerException,
     InvalidInputException,
@@ -1669,7 +1822,10 @@ export const updateMLModel: API.OperationMethod<
   UpdateMLModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MLModelId: 0, MLModelName: 0, ScoreThreshold: 0 },
+  },
   errors: [
     InternalServerException,
     InvalidInputException,

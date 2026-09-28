@@ -656,7 +656,12 @@ export const acceptInvitation: API.OperationMethod<
   AcceptInvitationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /invitation", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /invitation",
+    input: { GraphArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -687,6 +692,7 @@ export const batchGetGraphMemberDatasources: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /graph/datasources/get",
+    input: { GraphArn: 0, AccountIds: 0 },
     output: { MemberDatasources: D.list(o_MembershipDatasources) },
     body: true,
   },
@@ -719,6 +725,7 @@ export const batchGetMembershipDatasources: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /membership/datasources/get",
+    input: { GraphArns: 0 },
     output: { MembershipDatasources: D.list(o_MembershipDatasources) },
     body: true,
   },
@@ -759,7 +766,12 @@ export const createGraph: API.OperationMethod<
   CreateGraphError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /graph", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /graph",
+    input: { Tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -820,6 +832,12 @@ export const createMembers: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /graph/members",
+    input: {
+      GraphArn: 0,
+      Message: 0,
+      DisableEmailNotification: 0,
+      Accounts: D.list({ AccountId: 0, EmailAddress: 0 }),
+    },
     output: { Members: D.list(o_MemberDetail) },
     body: true,
   },
@@ -854,7 +872,12 @@ export const deleteGraph: API.OperationMethod<
   DeleteGraphError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /graph/removal", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /graph/removal",
+    input: { GraphArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -897,7 +920,12 @@ export const deleteMembers: API.OperationMethod<
   DeleteMembersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /graph/members/removal", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /graph/members/removal",
+    input: { GraphArn: 0, AccountIds: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -932,6 +960,7 @@ export const describeOrganizationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /orgs/describeOrganizationConfiguration",
+    input: { GraphArn: 0 },
     body: true,
   },
   errors: [
@@ -1002,7 +1031,12 @@ export const disassociateMembership: API.OperationMethod<
   DisassociateMembershipError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /membership/removal", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /membership/removal",
+    input: { GraphArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1048,6 +1082,7 @@ export const enableOrganizationAdminAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /orgs/enableAdminAccount",
+    input: { AccountId: 0 },
     body: true,
   },
   errors: [
@@ -1080,6 +1115,7 @@ export const getInvestigation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /investigations/getInvestigation",
+    input: { GraphArn: 0, InvestigationId: 0 },
     output: { CreatedTime: D.ts, ScopeStartTime: D.ts, ScopeEndTime: D.ts },
     body: true,
   },
@@ -1114,6 +1150,7 @@ export const getMembers: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /graph/members/get",
+    input: { GraphArn: 0, AccountIds: 0 },
     output: { MemberDetails: D.list(o_MemberDetail) },
     body: true,
   },
@@ -1147,6 +1184,7 @@ export const listDatasourcePackages: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /graph/datasources/list",
+    input: { GraphArn: 0, NextToken: 0, MaxResults: 0 },
     output: {
       DatasourcePackages: D.map({
         LastIngestStateChange: D.map(o_TimestampForCollection),
@@ -1192,6 +1230,7 @@ export const listGraphs: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /graphs/list",
+    input: { NextToken: 0, MaxResults: 0 },
     output: { GraphList: D.list({ CreatedTime: D.ts }) },
     body: true,
   },
@@ -1225,6 +1264,13 @@ export const listIndicators: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /investigations/listIndicators",
+    input: {
+      GraphArn: 0,
+      InvestigationId: 0,
+      IndicatorType: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -1264,12 +1310,20 @@ export const listInvestigations: API.OperationMethod<
     service: svc,
     http: "POST /investigations/listInvestigations",
     input: {
+      GraphArn: 0,
+      NextToken: 0,
+      MaxResults: 0,
       FilterCriteria: {
+        Severity: i_StringFilter,
+        Status: i_StringFilter,
+        State: i_StringFilter,
+        EntityArn: i_StringFilter,
         CreatedTime: {
           StartInclusive: D.tsAs("date-time"),
           EndInclusive: D.tsAs("date-time"),
         },
       },
+      SortCriteria: { Field: 0, SortOrder: 0 },
     },
     output: { InvestigationDetails: D.list({ CreatedTime: D.ts }) },
     body: true,
@@ -1311,6 +1365,7 @@ export const listInvitations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /invitations/list",
+    input: { NextToken: 0, MaxResults: 0 },
     output: { Invitations: D.list(o_MemberDetail) },
     body: true,
   },
@@ -1351,6 +1406,7 @@ export const listMembers: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /graph/members/list",
+    input: { GraphArn: 0, NextToken: 0, MaxResults: 0 },
     output: { MemberDetails: D.list(o_MemberDetail) },
     body: true,
   },
@@ -1390,6 +1446,7 @@ export const listOrganizationAdminAccounts: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /orgs/adminAccountslist",
+    input: { NextToken: 0, MaxResults: 0 },
     output: { Administrators: D.list({ DelegationTime: D.ts }) },
     body: true,
   },
@@ -1424,7 +1481,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1458,7 +1519,12 @@ export const rejectInvitation: API.OperationMethod<
   RejectInvitationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /invitation/removal", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /invitation/removal",
+    input: { GraphArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1491,6 +1557,8 @@ export const startInvestigation: API.OperationMethod<
     service: svc,
     http: "POST /investigations/startInvestigation",
     input: {
+      GraphArn: 0,
+      EntityArn: 0,
       ScopeStartTime: D.tsAs("date-time"),
       ScopeEndTime: D.tsAs("date-time"),
     },
@@ -1537,6 +1605,7 @@ export const startMonitoringMember: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /graph/member/monitoringstate",
+    input: { GraphArn: 0, AccountId: 0 },
     body: true,
   },
   errors: [
@@ -1567,7 +1636,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1597,7 +1671,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1629,6 +1703,7 @@ export const updateDatasourcePackages: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /graph/datasources/update",
+    input: { GraphArn: 0, DatasourcePackages: 0 },
     body: true,
   },
   errors: [
@@ -1662,6 +1737,7 @@ export const updateInvestigationState: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /investigations/updateInvestigationState",
+    input: { GraphArn: 0, InvestigationId: 0, State: 0 },
     body: true,
   },
   errors: [
@@ -1696,6 +1772,7 @@ export const updateOrganizationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /orgs/updateOrganizationConfiguration",
+    input: { GraphArn: 0, AutoEnable: 0 },
     body: true,
   },
   errors: [
@@ -1709,6 +1786,7 @@ export const updateOrganizationConfiguration: API.OperationMethod<
   operationName: "UpdateOrganizationConfiguration",
 })) as any;
 
+const i_StringFilter: D.LazyStruct = () => ({ Value: 0 });
 const o_MemberDetail: D.LazyStruct = () => ({
   EmailAddress: D.secret,
   InvitedTime: D.ts,

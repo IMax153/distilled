@@ -602,6 +602,12 @@ export const batchGetSecretValue: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      SecretIdList: 0,
+      Filters: D.list(i_Filter),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       SecretValues: D.list({
         SecretBinary: D.secretBlob,
@@ -662,7 +668,7 @@ export const cancelRotateSecret: API.OperationMethod<
   CancelRotateSecretError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SecretId: 0 } },
   errors: [
     InternalServiceError,
     InvalidParameterException,
@@ -751,7 +757,18 @@ export const createSecret: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      Description: 0,
+      KmsKeyId: 0,
+      SecretBinary: 0,
+      SecretString: 0,
+      Tags: D.list(i_Tag),
+      AddReplicaRegions: D.list(i_ReplicaRegionType),
+      ForceOverwriteReplicaSecret: 0,
+      Type: 0,
+    },
     output: { ReplicationStatus: D.list(o_ReplicationStatusType) },
   },
   errors: [
@@ -795,7 +812,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SecretId: 0 } },
   errors: [
     InternalServiceError,
     InvalidParameterException,
@@ -859,7 +876,15 @@ export const deleteSecret: API.OperationMethod<
   DeleteSecretError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DeletionDate: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      SecretId: 0,
+      RecoveryWindowInDays: 0,
+      ForceDeleteWithoutRecovery: 0,
+    },
+    output: { DeletionDate: D.ts },
+  },
   errors: [
     InternalServiceError,
     InvalidParameterException,
@@ -896,6 +921,7 @@ export const describeSecret: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SecretId: 0 },
     output: {
       LastRotatedDate: D.ts,
       LastChangedDate: D.ts,
@@ -943,7 +969,20 @@ export const getRandomPassword: API.OperationMethod<
   GetRandomPasswordError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { RandomPassword: D.secret } },
+  descriptor: {
+    service: svc,
+    input: {
+      PasswordLength: 0,
+      ExcludeCharacters: 0,
+      ExcludeNumbers: 0,
+      ExcludePunctuation: 0,
+      ExcludeUppercase: 0,
+      ExcludeLowercase: 0,
+      IncludeSpace: 0,
+      RequireEachIncludedType: 0,
+    },
+    output: { RandomPassword: D.secret },
+  },
   errors: [
     InternalServiceError,
     InvalidParameterException,
@@ -978,7 +1017,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SecretId: 0 } },
   errors: [
     InternalServiceError,
     InvalidParameterException,
@@ -1029,6 +1068,7 @@ export const getSecretValue: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SecretId: 0, VersionId: 0, VersionStage: 0 },
     output: {
       SecretBinary: D.secretBlob,
       SecretString: D.secret,
@@ -1087,6 +1127,14 @@ export const listSecrets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      IncludePlannedDeletion: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list(i_Filter),
+      SortOrder: 0,
+      SortBy: 0,
+    },
     output: {
       SecretList: D.list({
         LastRotatedDate: D.ts,
@@ -1144,6 +1192,7 @@ export const listSecretVersionIds: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { SecretId: 0, MaxResults: 0, NextToken: 0, IncludeDeprecated: 0 },
     output: { Versions: D.list({ LastAccessedDate: D.ts, CreatedDate: D.ts }) },
   },
   errors: [
@@ -1190,7 +1239,10 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SecretId: 0, ResourcePolicy: 0, BlockPublicPolicy: 0 },
+  },
   errors: [
     InternalServiceError,
     InvalidParameterException,
@@ -1262,7 +1314,14 @@ export const putSecretValue: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      SecretId: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      SecretBinary: 0,
+      SecretString: 0,
+      VersionStages: 0,
+      RotationToken: 0,
+    },
   },
   errors: [
     DecryptionFailure,
@@ -1306,6 +1365,7 @@ export const removeRegionsFromReplication: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SecretId: 0, RemoveReplicaRegions: 0 },
     output: { ReplicationStatus: D.list(o_ReplicationStatusType) },
   },
   errors: [
@@ -1349,6 +1409,11 @@ export const replicateSecretToRegions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      SecretId: 0,
+      AddReplicaRegions: D.list(i_ReplicaRegionType),
+      ForceOverwriteReplicaSecret: 0,
+    },
     output: { ReplicationStatus: D.list(o_ReplicationStatusType) },
   },
   errors: [
@@ -1386,7 +1451,7 @@ export const restoreSecret: API.OperationMethod<
   RestoreSecretError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SecretId: 0 } },
   errors: [
     InternalServiceError,
     InvalidParameterException,
@@ -1440,7 +1505,19 @@ export const rotateSecret: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      SecretId: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      RotationLambdaARN: 0,
+      RotationRules: {
+        AutomaticallyAfterDays: 0,
+        Duration: 0,
+        ScheduleExpression: 0,
+      },
+      ExternalSecretRotationMetadata: D.list({ Key: 0, Value: 0 }),
+      ExternalSecretRotationRoleArn: 0,
+      RotateImmediately: 0,
+    },
   },
   errors: [
     InternalServiceError,
@@ -1480,7 +1557,7 @@ export const stopReplicationToReplica: API.OperationMethod<
   StopReplicationToReplicaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SecretId: 0 } },
   errors: [
     InternalServiceError,
     InvalidParameterException,
@@ -1525,7 +1602,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SecretId: 0, Tags: D.list(i_Tag) } },
   errors: [
     InternalServiceError,
     InvalidParameterException,
@@ -1568,7 +1645,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SecretId: 0, TagKeys: 0 } },
   errors: [
     InternalServiceError,
     InvalidParameterException,
@@ -1647,7 +1724,15 @@ export const updateSecret: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      SecretId: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      Description: 0,
+      KmsKeyId: 0,
+      SecretBinary: 0,
+      SecretString: 0,
+      Type: 0,
+    },
   },
   errors: [
     DecryptionFailure,
@@ -1709,7 +1794,15 @@ export const updateSecretVersionStage: API.OperationMethod<
   UpdateSecretVersionStageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SecretId: 0,
+      VersionStage: 0,
+      RemoveFromVersionId: 0,
+      MoveToVersionId: 0,
+    },
+  },
   errors: [
     InternalServiceError,
     InvalidParameterException,
@@ -1758,7 +1851,7 @@ export const validateResourcePolicy: API.OperationMethod<
   ValidateResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SecretId: 0, ResourcePolicy: 0 } },
   errors: [
     InternalServiceError,
     InvalidParameterException,
@@ -1771,6 +1864,9 @@ export const validateResourcePolicy: API.OperationMethod<
   operationName: "ValidateResourcePolicy",
 })) as any;
 
+const i_Filter: D.LazyStruct = () => ({ Key: 0, Values: 0 });
+const i_ReplicaRegionType: D.LazyStruct = () => ({ Region: 0, KmsKeyId: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_ReplicationStatusType: D.LazyStruct = () => ({
   LastAccessedDate: D.ts,
 });

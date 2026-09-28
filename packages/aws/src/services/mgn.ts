@@ -1995,7 +1995,12 @@ export const archiveApplication: API.OperationMethod<
   ArchiveApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /ArchiveApplication", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ArchiveApplication",
+    input: { applicationID: 0, accountID: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -2022,7 +2027,12 @@ export const archiveWave: API.OperationMethod<
   ArchiveWaveError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /ArchiveWave", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ArchiveWave",
+    input: { waveID: 0, accountID: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -2049,7 +2059,12 @@ export const associateApplications: API.OperationMethod<
   AssociateApplicationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /AssociateApplications", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /AssociateApplications",
+    input: { waveID: 0, applicationIDs: 0, accountID: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -2079,6 +2094,7 @@ export const associateSourceServers: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /AssociateSourceServers",
+    input: { applicationID: 0, sourceServerIDs: 0, accountID: 0 },
     body: true,
   },
   errors: [
@@ -2110,6 +2126,7 @@ export const changeServerLifeCycleState: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ChangeServerLifeCycleState",
+    input: { sourceServerID: 0, lifeCycle: { state: 0 }, accountID: 0 },
     output: { launchedInstance: o_LaunchedInstance },
     body: true,
   },
@@ -2138,7 +2155,12 @@ export const createApplication: API.OperationMethod<
   CreateApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CreateApplication", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CreateApplication",
+    input: { name: 0, description: 0, tags: 0, accountID: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     ServiceQuotaExceededException,
@@ -2162,7 +2184,17 @@ export const createConnector: API.OperationMethod<
   CreateConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CreateConnector", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CreateConnector",
+    input: {
+      name: 0,
+      ssmInstanceID: 0,
+      tags: 0,
+      ssmCommandConfig: i_ConnectorSsmCommandConfig,
+    },
+    body: true,
+  },
   errors: [UninitializedAccountException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2186,6 +2218,24 @@ export const createLaunchConfigurationTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateLaunchConfigurationTemplate",
+    input: {
+      postLaunchActions: i_PostLaunchActions,
+      enableMapAutoTagging: 0,
+      mapAutoTaggingMpeID: 0,
+      tags: 0,
+      launchDisposition: 0,
+      targetInstanceTypeRightSizingMethod: 0,
+      copyPrivateIp: 0,
+      associatePublicIpAddress: 0,
+      copyTags: 0,
+      licensing: i_Licensing,
+      bootMode: 0,
+      smallVolumeMaxSize: 0,
+      smallVolumeConf: i_LaunchTemplateDiskConf,
+      largeVolumeConf: i_LaunchTemplateDiskConf,
+      enableParametersEncryption: 0,
+      parametersEncryptionKey: 0,
+    },
     body: true,
   },
   errors: [
@@ -2214,6 +2264,21 @@ export const createNetworkMigrationDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/CreateNetworkMigrationDefinition",
+    input: {
+      name: 0,
+      description: 0,
+      sourceConfigurations: D.list(i_SourceConfiguration),
+      targetS3Configuration: { s3Bucket: 0, s3BucketOwner: 0 },
+      targetNetwork: {
+        topology: 0,
+        inboundCidr: 0,
+        outboundCidr: 0,
+        inspectionCidr: 0,
+      },
+      targetDeployment: 0,
+      tags: 0,
+      scopeTags: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -2240,6 +2305,25 @@ export const createReplicationConfigurationTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateReplicationConfigurationTemplate",
+    input: {
+      stagingAreaSubnetId: 0,
+      associateDefaultSecurityGroup: 0,
+      replicationServersSecurityGroupsIDs: 0,
+      replicationServerInstanceType: 0,
+      useDedicatedReplicationServer: 0,
+      defaultLargeStagingDiskType: 0,
+      ebsEncryption: 0,
+      ebsEncryptionKeyArn: 0,
+      bandwidthThrottling: 0,
+      dataPlaneRouting: 0,
+      createPublicIP: 0,
+      stagingAreaTags: 0,
+      useFipsEndpoint: 0,
+      tags: 0,
+      internetProtocol: 0,
+      storeSnapshotOnLocalZone: 0,
+      storageConfiguration: i_StorageConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -2266,7 +2350,12 @@ export const createWave: API.OperationMethod<
   CreateWaveError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CreateWave", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CreateWave",
+    input: { name: 0, description: 0, tags: 0, accountID: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     ServiceQuotaExceededException,
@@ -2291,7 +2380,12 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteApplication", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteApplication",
+    input: { applicationID: 0, accountID: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -2316,7 +2410,12 @@ export const deleteConnector: API.OperationMethod<
   DeleteConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteConnector", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteConnector",
+    input: { connectorID: 0 },
+    body: true,
+  },
   errors: [
     ResourceNotFoundException,
     UninitializedAccountException,
@@ -2341,7 +2440,12 @@ export const deleteJob: API.OperationMethod<
   DeleteJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteJob", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteJob",
+    input: { jobID: 0, accountID: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -2369,6 +2473,7 @@ export const deleteLaunchConfigurationTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteLaunchConfigurationTemplate",
+    input: { launchConfigurationTemplateID: 0 },
     body: true,
   },
   errors: [
@@ -2398,6 +2503,7 @@ export const deleteNetworkMigrationDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/DeleteNetworkMigrationDefinition",
+    input: { networkMigrationDefinitionID: 0 },
     body: true,
   },
   errors: [AccessDeniedException, ConflictException, ResourceNotFoundException],
@@ -2423,6 +2529,7 @@ export const deleteReplicationConfigurationTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteReplicationConfigurationTemplate",
+    input: { replicationConfigurationTemplateID: 0 },
     body: true,
   },
   errors: [
@@ -2449,7 +2556,12 @@ export const deleteSourceServer: API.OperationMethod<
   DeleteSourceServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteSourceServer", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteSourceServer",
+    input: { sourceServerID: 0, accountID: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -2474,7 +2586,12 @@ export const deleteVcenterClient: API.OperationMethod<
   DeleteVcenterClientError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteVcenterClient", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteVcenterClient",
+    input: { vcenterClientID: 0 },
+    body: true,
+  },
   errors: [
     ResourceNotFoundException,
     UninitializedAccountException,
@@ -2499,7 +2616,12 @@ export const deleteWave: API.OperationMethod<
   DeleteWaveError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteWave", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteWave",
+    input: { waveID: 0, accountID: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -2524,7 +2646,12 @@ export const describeJobLogItems: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   JobLog
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /DescribeJobLogItems", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DescribeJobLogItems",
+    input: { jobID: 0, maxResults: 0, nextToken: 0, accountID: 0 },
+    body: true,
+  },
   errors: [UninitializedAccountException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2551,7 +2678,17 @@ export const describeJobs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Job
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /DescribeJobs", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DescribeJobs",
+    input: {
+      filters: { jobIDs: 0, fromDate: 0, toDate: 0 },
+      maxResults: 0,
+      nextToken: 0,
+      accountID: 0,
+    },
+    body: true,
+  },
   errors: [UninitializedAccountException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2582,6 +2719,7 @@ export const describeLaunchConfigurationTemplates: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DescribeLaunchConfigurationTemplates",
+    input: { launchConfigurationTemplateIDs: 0, maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [
@@ -2618,6 +2756,11 @@ export const describeReplicationConfigurationTemplates: API.PaginatedOperationMe
   descriptor: {
     service: svc,
     http: "POST /DescribeReplicationConfigurationTemplates",
+    input: {
+      replicationConfigurationTemplateIDs: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -2653,6 +2796,18 @@ export const describeSourceServers: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DescribeSourceServers",
+    input: {
+      filters: {
+        sourceServerIDs: 0,
+        isArchived: 0,
+        replicationTypes: 0,
+        lifeCycleStates: 0,
+        applicationIDs: 0,
+      },
+      maxResults: 0,
+      nextToken: 0,
+      accountID: 0,
+    },
     output: { items: D.list({ launchedInstance: o_LaunchedInstance }) },
     body: true,
   },
@@ -2724,6 +2879,7 @@ export const disassociateApplications: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DisassociateApplications",
+    input: { waveID: 0, applicationIDs: 0, accountID: 0 },
     body: true,
   },
   errors: [
@@ -2753,6 +2909,7 @@ export const disassociateSourceServers: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DisassociateSourceServers",
+    input: { applicationID: 0, sourceServerIDs: 0, accountID: 0 },
     body: true,
   },
   errors: [
@@ -2782,6 +2939,7 @@ export const disconnectFromService: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DisconnectFromService",
+    input: { sourceServerID: 0, accountID: 0 },
     output: { launchedInstance: o_LaunchedInstance },
     body: true,
   },
@@ -2813,6 +2971,7 @@ export const finalizeCutover: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /FinalizeCutover",
+    input: { sourceServerID: 0, accountID: 0 },
     output: { launchedInstance: o_LaunchedInstance },
     body: true,
   },
@@ -2843,6 +3002,7 @@ export const getLaunchConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetLaunchConfiguration",
+    input: { sourceServerID: 0, accountID: 0 },
     body: true,
   },
   errors: [ResourceNotFoundException, UninitializedAccountException],
@@ -2867,6 +3027,7 @@ export const getNetworkMigrationDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/GetNetworkMigrationDefinition",
+    input: { networkMigrationDefinitionID: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -2893,6 +3054,12 @@ export const getNetworkMigrationMapperSegmentConstruct: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/GetNetworkMigrationMapperSegmentConstruct",
+    input: {
+      networkMigrationDefinitionID: 0,
+      networkMigrationExecutionID: 0,
+      segmentID: 0,
+      constructID: 0,
+    },
     output: { construct: o_NetworkMigrationMapperSegmentConstruct },
     body: true,
   },
@@ -2922,6 +3089,7 @@ export const getReplicationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetReplicationConfiguration",
+    input: { sourceServerID: 0, accountID: 0 },
     body: true,
   },
   errors: [ResourceNotFoundException, UninitializedAccountException],
@@ -2943,7 +3111,7 @@ export const initializeService: API.OperationMethod<
   InitializeServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /InitializeService" },
+  descriptor: { service: svc, http: "POST /InitializeService", input: {} },
   errors: [AccessDeniedException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2963,7 +3131,17 @@ export const listApplications: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Application
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListApplications", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListApplications",
+    input: {
+      filters: { applicationIDs: 0, isArchived: 0, waveIDs: 0 },
+      maxResults: 0,
+      nextToken: 0,
+      accountID: 0,
+    },
+    body: true,
+  },
   errors: [UninitializedAccountException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2990,7 +3168,12 @@ export const listConnectors: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Connector
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListConnectors", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListConnectors",
+    input: { filters: { connectorIDs: 0 }, maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [UninitializedAccountException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3017,7 +3200,12 @@ export const listExportErrors: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ExportTaskError
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListExportErrors", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListExportErrors",
+    input: { exportID: 0, maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [UninitializedAccountException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3041,7 +3229,12 @@ export const listExports: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ExportTask
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListExports", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListExports",
+    input: { filters: { exportIDs: 0 }, maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [UninitializedAccountException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3068,7 +3261,12 @@ export const listImportErrors: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ImportTaskError
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListImportErrors", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListImportErrors",
+    input: { importID: 0, maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [UninitializedAccountException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3095,6 +3293,7 @@ export const listImportFileEnrichments: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/ListImportFileEnrichments",
+    input: { filters: { jobIDs: 0 }, maxResults: 0, nextToken: 0 },
     output: { items: D.list({ createdAt: D.ts, endedAt: D.ts }) },
     body: true,
   },
@@ -3124,7 +3323,12 @@ export const listImports: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ImportTask
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListImports", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListImports",
+    input: { filters: { importIDs: 0 }, maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [UninitializedAccountException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3151,7 +3355,12 @@ export const listManagedAccounts: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ManagedAccount
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListManagedAccounts", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListManagedAccounts",
+    input: { maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [UninitializedAccountException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3183,6 +3392,13 @@ export const listNetworkMigrationAnalyses: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/ListNetworkMigrationAnalyses",
+    input: {
+      networkMigrationExecutionID: 0,
+      networkMigrationDefinitionID: 0,
+      filters: { jobIDs: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { items: D.list({ createdAt: D.ts, endedAt: D.ts }) },
     body: true,
   },
@@ -3222,6 +3438,13 @@ export const listNetworkMigrationAnalysisResults: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/ListNetworkMigrationAnalysisResults",
+    input: {
+      networkMigrationExecutionID: 0,
+      networkMigrationDefinitionID: 0,
+      filters: { vpcIDs: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -3260,6 +3483,13 @@ export const listNetworkMigrationCodeGenerations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/ListNetworkMigrationCodeGenerations",
+    input: {
+      networkMigrationExecutionID: 0,
+      networkMigrationDefinitionID: 0,
+      filters: { jobIDs: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { items: D.list({ createdAt: D.ts, endedAt: D.ts }) },
     body: true,
   },
@@ -3299,6 +3529,13 @@ export const listNetworkMigrationCodeGenerationSegments: API.PaginatedOperationM
   descriptor: {
     service: svc,
     http: "POST /network-migration/ListNetworkMigrationCodeGenerationSegments",
+    input: {
+      networkMigrationExecutionID: 0,
+      networkMigrationDefinitionID: 0,
+      filters: { segmentIDs: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       items: D.list({
         artifacts: D.list({ createdAt: D.ts }),
@@ -3340,6 +3577,11 @@ export const listNetworkMigrationDefinitions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/ListNetworkMigrationDefinitions",
+    input: {
+      filters: { networkMigrationDefinitionIDs: 0 },
+      nextToken: 0,
+      maxResults: 0,
+    },
     body: true,
   },
   errors: [AccessDeniedException],
@@ -3373,6 +3615,12 @@ export const listNetworkMigrationDeployedStacks: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/ListNetworkMigrationDeployedStacks",
+    input: {
+      networkMigrationExecutionID: 0,
+      networkMigrationDefinitionID: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -3411,6 +3659,13 @@ export const listNetworkMigrationDeployments: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/ListNetworkMigrationDeployments",
+    input: {
+      networkMigrationExecutionID: 0,
+      networkMigrationDefinitionID: 0,
+      filters: { jobIDs: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { items: D.list({ createdAt: D.ts, endedAt: D.ts }) },
     body: true,
   },
@@ -3448,6 +3703,15 @@ export const listNetworkMigrationExecutions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/ListNetworkMigrationExecutions",
+    input: {
+      networkMigrationDefinitionID: 0,
+      filters: {
+        networkMigrationExecutionIDs: 0,
+        networkMigrationExecutionStatuses: 0,
+      },
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { items: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
     body: true,
   },
@@ -3482,6 +3746,14 @@ export const listNetworkMigrationMapperSegmentConstructs: API.PaginatedOperation
   descriptor: {
     service: svc,
     http: "POST /network-migration/ListNetworkMigrationMapperSegmentConstructs",
+    input: {
+      networkMigrationExecutionID: 0,
+      networkMigrationDefinitionID: 0,
+      segmentID: 0,
+      filters: { constructIDs: 0, constructTypes: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { items: D.list(o_NetworkMigrationMapperSegmentConstruct) },
     body: true,
   },
@@ -3521,6 +3793,13 @@ export const listNetworkMigrationMapperSegments: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/ListNetworkMigrationMapperSegments",
+    input: {
+      networkMigrationExecutionID: 0,
+      networkMigrationDefinitionID: 0,
+      filters: { segmentIDs: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { items: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
     body: true,
   },
@@ -3560,6 +3839,13 @@ export const listNetworkMigrationMappings: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/ListNetworkMigrationMappings",
+    input: {
+      networkMigrationExecutionID: 0,
+      networkMigrationDefinitionID: 0,
+      filters: { jobIDs: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { items: D.list({ createdAt: D.ts, endedAt: D.ts }) },
     body: true,
   },
@@ -3599,6 +3885,13 @@ export const listNetworkMigrationMappingUpdates: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/ListNetworkMigrationMappingUpdates",
+    input: {
+      networkMigrationExecutionID: 0,
+      networkMigrationDefinitionID: 0,
+      filters: { jobIDs: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { items: D.list({ createdAt: D.ts, endedAt: D.ts }) },
     body: true,
   },
@@ -3636,6 +3929,13 @@ export const listSourceServerActions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListSourceServerActions",
+    input: {
+      sourceServerID: 0,
+      filters: { actionIDs: 0 },
+      maxResults: 0,
+      nextToken: 0,
+      accountID: 0,
+    },
     body: true,
   },
   errors: [ResourceNotFoundException, UninitializedAccountException],
@@ -3666,7 +3966,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3693,7 +3997,17 @@ export const listTemplateActions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TemplateActionDocument
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListTemplateActions", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListTemplateActions",
+    input: {
+      launchConfigurationTemplateID: 0,
+      filters: { actionIDs: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
+    body: true,
+  },
   errors: [ResourceNotFoundException, UninitializedAccountException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3717,7 +4031,17 @@ export const listWaves: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Wave
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListWaves", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListWaves",
+    input: {
+      filters: { waveIDs: 0, isArchived: 0 },
+      maxResults: 0,
+      nextToken: 0,
+      accountID: 0,
+    },
+    body: true,
+  },
   errors: [UninitializedAccountException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3747,6 +4071,7 @@ export const markAsArchived: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /MarkAsArchived",
+    input: { sourceServerID: 0, accountID: 0 },
     output: { launchedInstance: o_LaunchedInstance },
     body: true,
   },
@@ -3779,6 +4104,7 @@ export const pauseReplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /PauseReplication",
+    input: { sourceServerID: 0, accountID: 0 },
     output: { launchedInstance: o_LaunchedInstance },
     body: true,
   },
@@ -3809,7 +4135,27 @@ export const putSourceServerAction: API.OperationMethod<
   PutSourceServerActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /PutSourceServerAction", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /PutSourceServerAction",
+    input: {
+      sourceServerID: 0,
+      actionName: 0,
+      documentIdentifier: 0,
+      order: 0,
+      actionID: 0,
+      documentVersion: 0,
+      active: 0,
+      timeoutSeconds: 0,
+      mustSucceedForCutover: 0,
+      parameters: D.map(D.list(i_SsmParameterStoreParameter)),
+      externalParameters: D.map(i_SsmExternalParameter),
+      description: 0,
+      category: 0,
+      accountID: 0,
+    },
+    body: true,
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -3836,7 +4182,27 @@ export const putTemplateAction: API.OperationMethod<
   PutTemplateActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /PutTemplateAction", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /PutTemplateAction",
+    input: {
+      launchConfigurationTemplateID: 0,
+      actionName: 0,
+      documentIdentifier: 0,
+      order: 0,
+      actionID: 0,
+      documentVersion: 0,
+      active: 0,
+      timeoutSeconds: 0,
+      mustSucceedForCutover: 0,
+      parameters: D.map(D.list(i_SsmParameterStoreParameter)),
+      operatingSystem: 0,
+      externalParameters: D.map(i_SsmExternalParameter),
+      description: 0,
+      category: 0,
+    },
+    body: true,
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -3865,6 +4231,7 @@ export const removeSourceServerAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /RemoveSourceServerAction",
+    input: { sourceServerID: 0, actionID: 0, accountID: 0 },
     body: true,
   },
   errors: [
@@ -3891,7 +4258,12 @@ export const removeTemplateAction: API.OperationMethod<
   RemoveTemplateActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /RemoveTemplateAction", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /RemoveTemplateAction",
+    input: { launchConfigurationTemplateID: 0, actionID: 0 },
+    body: true,
+  },
   errors: [
     ResourceNotFoundException,
     UninitializedAccountException,
@@ -3921,6 +4293,7 @@ export const resumeReplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ResumeReplication",
+    input: { sourceServerID: 0, accountID: 0 },
     output: { launchedInstance: o_LaunchedInstance },
     body: true,
   },
@@ -3953,6 +4326,7 @@ export const retryDataReplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /RetryDataReplication",
+    input: { sourceServerID: 0, accountID: 0 },
     output: { launchedInstance: o_LaunchedInstance },
     body: true,
   },
@@ -3980,7 +4354,12 @@ export const startCutover: API.OperationMethod<
   StartCutoverError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /StartCutover", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /StartCutover",
+    input: { sourceServerIDs: 0, tags: 0, accountID: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     UninitializedAccountException,
@@ -4005,7 +4384,12 @@ export const startExport: API.OperationMethod<
   StartExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /StartExport", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /StartExport",
+    input: { s3Bucket: 0, s3Key: 0, s3BucketOwner: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     ServiceQuotaExceededException,
     UninitializedAccountException,
@@ -4035,7 +4419,11 @@ export const startImport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /StartImport",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      s3BucketSource: { s3Bucket: 0, s3Key: 0, s3BucketOwner: 0 },
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -4069,7 +4457,12 @@ export const startImportFileEnrichment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/StartImportFileEnrichment",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      s3BucketSource: { s3Bucket: 0, s3BucketOwner: 0, s3Key: 0 },
+      s3BucketTarget: { s3Bucket: 0, s3BucketOwner: 0, s3Key: 0 },
+      ipAssignmentStrategy: 0,
+    },
     body: true,
   },
   errors: [
@@ -4104,6 +4497,7 @@ export const startNetworkMigrationAnalysis: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/StartNetworkMigrationAnalysis",
+    input: { networkMigrationExecutionID: 0, networkMigrationDefinitionID: 0 },
     body: true,
   },
   errors: [
@@ -4139,6 +4533,11 @@ export const startNetworkMigrationCodeGeneration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/StartNetworkMigrationCodeGeneration",
+    input: {
+      networkMigrationExecutionID: 0,
+      networkMigrationDefinitionID: 0,
+      codeGenerationOutputFormatTypes: 0,
+    },
     body: true,
   },
   errors: [
@@ -4174,6 +4573,7 @@ export const startNetworkMigrationDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/StartNetworkMigrationDeployment",
+    input: { networkMigrationExecutionID: 0, networkMigrationDefinitionID: 0 },
     body: true,
   },
   errors: [
@@ -4209,6 +4609,11 @@ export const startNetworkMigrationMapping: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/StartNetworkMigrationMapping",
+    input: {
+      networkMigrationExecutionID: 0,
+      networkMigrationDefinitionID: 0,
+      securityGroupMappingStrategy: 0,
+    },
     body: true,
   },
   errors: [
@@ -4244,6 +4649,22 @@ export const startNetworkMigrationMappingUpdate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/StartNetworkMigrationMappingUpdate",
+    input: {
+      networkMigrationExecutionID: 0,
+      networkMigrationDefinitionID: 0,
+      constructs: D.list({
+        segmentID: 0,
+        constructID: 0,
+        constructType: 0,
+        operation: {
+          merge: { mergeConstructs: D.list({ segmentID: 0, constructID: 0 }) },
+          split: { splitConstructs: D.list({ cidrBlock: 0 }) },
+          delete: {},
+          update: { name: 0, excluded: 0, properties: 0 },
+        },
+      }),
+      segments: D.list({ segmentID: 0, targetAccount: 0, scopeTags: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -4278,6 +4699,7 @@ export const startReplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /StartReplication",
+    input: { sourceServerID: 0, accountID: 0 },
     output: { launchedInstance: o_LaunchedInstance },
     body: true,
   },
@@ -4307,7 +4729,12 @@ export const startTest: API.OperationMethod<
   StartTestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /StartTest", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /StartTest",
+    input: { sourceServerIDs: 0, tags: 0, accountID: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     UninitializedAccountException,
@@ -4337,6 +4764,7 @@ export const stopReplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /StopReplication",
+    input: { sourceServerID: 0, accountID: 0 },
     output: { launchedInstance: o_LaunchedInstance },
     body: true,
   },
@@ -4368,7 +4796,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4398,6 +4831,7 @@ export const terminateTargetInstances: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /TerminateTargetInstances",
+    input: { sourceServerIDs: 0, tags: 0, accountID: 0 },
     body: true,
   },
   errors: [
@@ -4424,7 +4858,12 @@ export const unarchiveApplication: API.OperationMethod<
   UnarchiveApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UnarchiveApplication", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UnarchiveApplication",
+    input: { applicationID: 0, accountID: 0 },
+    body: true,
+  },
   errors: [
     ResourceNotFoundException,
     ServiceQuotaExceededException,
@@ -4449,7 +4888,12 @@ export const unarchiveWave: API.OperationMethod<
   UnarchiveWaveError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UnarchiveWave", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UnarchiveWave",
+    input: { waveID: 0, accountID: 0 },
+    body: true,
+  },
   errors: [
     ResourceNotFoundException,
     ServiceQuotaExceededException,
@@ -4479,7 +4923,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -4507,7 +4951,12 @@ export const updateApplication: API.OperationMethod<
   UpdateApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UpdateApplication", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UpdateApplication",
+    input: { applicationID: 0, name: 0, description: 0, accountID: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -4532,7 +4981,16 @@ export const updateConnector: API.OperationMethod<
   UpdateConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UpdateConnector", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UpdateConnector",
+    input: {
+      connectorID: 0,
+      name: 0,
+      ssmCommandConfig: i_ConnectorSsmCommandConfig,
+    },
+    body: true,
+  },
   errors: [
     ResourceNotFoundException,
     UninitializedAccountException,
@@ -4563,6 +5021,20 @@ export const updateLaunchConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateLaunchConfiguration",
+    input: {
+      sourceServerID: 0,
+      name: 0,
+      launchDisposition: 0,
+      targetInstanceTypeRightSizingMethod: 0,
+      copyPrivateIp: 0,
+      copyTags: 0,
+      licensing: i_Licensing,
+      bootMode: 0,
+      postLaunchActions: i_PostLaunchActions,
+      enableMapAutoTagging: 0,
+      mapAutoTaggingMpeID: 0,
+      accountID: 0,
+    },
     body: true,
   },
   errors: [
@@ -4594,6 +5066,24 @@ export const updateLaunchConfigurationTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateLaunchConfigurationTemplate",
+    input: {
+      launchConfigurationTemplateID: 0,
+      postLaunchActions: i_PostLaunchActions,
+      enableMapAutoTagging: 0,
+      mapAutoTaggingMpeID: 0,
+      launchDisposition: 0,
+      targetInstanceTypeRightSizingMethod: 0,
+      copyPrivateIp: 0,
+      associatePublicIpAddress: 0,
+      copyTags: 0,
+      licensing: i_Licensing,
+      bootMode: 0,
+      smallVolumeMaxSize: 0,
+      smallVolumeConf: i_LaunchTemplateDiskConf,
+      largeVolumeConf: i_LaunchTemplateDiskConf,
+      enableParametersEncryption: 0,
+      parametersEncryptionKey: 0,
+    },
     body: true,
   },
   errors: [
@@ -4624,6 +5114,21 @@ export const updateNetworkMigrationDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/UpdateNetworkMigrationDefinition",
+    input: {
+      networkMigrationDefinitionID: 0,
+      name: 0,
+      description: 0,
+      sourceConfigurations: D.list(i_SourceConfiguration),
+      targetS3Configuration: { s3Bucket: 0, s3BucketOwner: 0 },
+      targetNetwork: {
+        topology: 0,
+        inboundCidr: 0,
+        outboundCidr: 0,
+        inspectionCidr: 0,
+      },
+      targetDeployment: 0,
+      scopeTags: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -4654,6 +5159,12 @@ export const updateNetworkMigrationMapperSegment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-migration/UpdateNetworkMigrationMapperSegment",
+    input: {
+      networkMigrationDefinitionID: 0,
+      networkMigrationExecutionID: 0,
+      segmentID: 0,
+      scopeTags: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -4686,6 +5197,34 @@ export const updateReplicationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateReplicationConfiguration",
+    input: {
+      sourceServerID: 0,
+      name: 0,
+      stagingAreaSubnetId: 0,
+      associateDefaultSecurityGroup: 0,
+      replicationServersSecurityGroupsIDs: 0,
+      replicationServerInstanceType: 0,
+      useDedicatedReplicationServer: 0,
+      defaultLargeStagingDiskType: 0,
+      replicatedDisks: D.list({
+        deviceName: 0,
+        isBootDisk: 0,
+        stagingDiskType: 0,
+        iops: 0,
+        throughput: 0,
+      }),
+      ebsEncryption: 0,
+      ebsEncryptionKeyArn: 0,
+      bandwidthThrottling: 0,
+      dataPlaneRouting: 0,
+      createPublicIP: 0,
+      stagingAreaTags: 0,
+      useFipsEndpoint: 0,
+      accountID: 0,
+      internetProtocol: 0,
+      storeSnapshotOnLocalZone: 0,
+      storageConfiguration: i_StorageConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -4718,6 +5257,26 @@ export const updateReplicationConfigurationTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateReplicationConfigurationTemplate",
+    input: {
+      replicationConfigurationTemplateID: 0,
+      arn: 0,
+      stagingAreaSubnetId: 0,
+      associateDefaultSecurityGroup: 0,
+      replicationServersSecurityGroupsIDs: 0,
+      replicationServerInstanceType: 0,
+      useDedicatedReplicationServer: 0,
+      defaultLargeStagingDiskType: 0,
+      ebsEncryption: 0,
+      ebsEncryptionKeyArn: 0,
+      bandwidthThrottling: 0,
+      dataPlaneRouting: 0,
+      createPublicIP: 0,
+      stagingAreaTags: 0,
+      useFipsEndpoint: 0,
+      internetProtocol: 0,
+      storeSnapshotOnLocalZone: 0,
+      storageConfiguration: i_StorageConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -4748,6 +5307,14 @@ export const updateSourceServer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateSourceServer",
+    input: {
+      accountID: 0,
+      sourceServerID: 0,
+      connectorAction: { credentialsSecretArn: 0, connectorArn: 0 },
+      userProvidedID: 0,
+      fqdnForActionFramework: 0,
+      platform: 0,
+    },
     output: { launchedInstance: o_LaunchedInstance },
     body: true,
   },
@@ -4781,6 +5348,7 @@ export const updateSourceServerReplicationType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateSourceServerReplicationType",
+    input: { sourceServerID: 0, replicationType: 0, accountID: 0 },
     output: { launchedInstance: o_LaunchedInstance },
     body: true,
   },
@@ -4809,7 +5377,12 @@ export const updateWave: API.OperationMethod<
   UpdateWaveError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UpdateWave", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UpdateWave",
+    input: { waveID: 0, name: 0, description: 0, accountID: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -4820,6 +5393,48 @@ export const updateWave: API.OperationMethod<
   operationName: "UpdateWave",
 })) as any;
 
+const i_ConnectorSsmCommandConfig: D.LazyStruct = () => ({
+  s3OutputEnabled: 0,
+  outputS3BucketName: 0,
+  cloudWatchOutputEnabled: 0,
+  cloudWatchLogGroupName: 0,
+});
+const i_LaunchTemplateDiskConf: D.LazyStruct = () => ({
+  volumeType: 0,
+  iops: 0,
+  throughput: 0,
+});
+const i_Licensing: D.LazyStruct = () => ({ osByol: 0 });
+const i_PostLaunchActions: D.LazyStruct = () => ({
+  deployment: 0,
+  s3LogBucket: 0,
+  s3OutputKeyPrefix: 0,
+  cloudWatchLogGroupName: 0,
+  ssmDocuments: D.list({
+    actionName: 0,
+    ssmDocumentName: 0,
+    timeoutSeconds: 0,
+    mustSucceedForCutover: 0,
+    parameters: D.map(D.list(i_SsmParameterStoreParameter)),
+    externalParameters: D.map(i_SsmExternalParameter),
+  }),
+});
+const i_SourceConfiguration: D.LazyStruct = () => ({
+  sourceEnvironment: 0,
+  sourceS3Configuration: { s3Bucket: 0, s3BucketOwner: 0, s3Key: 0 },
+});
+const i_SsmExternalParameter: D.LazyStruct = () => ({ dynamicPath: 0 });
+const i_SsmParameterStoreParameter: D.LazyStruct = () => ({
+  parameterType: 0,
+  parameterName: 0,
+});
+const i_StorageConfiguration: D.LazyStruct = () => ({
+  storageType: 0,
+  fsxOntapConfiguration: {
+    storageVirtualMachineId: 0,
+    credentialsSecretArn: 0,
+  },
+});
 const o_LaunchedInstance: D.LazyStruct = () => ({
   lastKnownChecks: D.list({ checkedAt: D.ts }),
 });

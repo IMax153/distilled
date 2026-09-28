@@ -537,6 +537,8 @@ export const createApplicationVersion: API.OperationMethod<
     service: svc,
     http: "PUT /applications/{ApplicationId}/versions/{SemanticVersion}",
     input: {
+      ApplicationId: 0,
+      SemanticVersion: 0,
       SourceCodeArchiveUrl: D.m({ wire: "sourceCodeArchiveUrl" }),
       SourceCodeUrl: D.m({ wire: "sourceCodeUrl" }),
       TemplateBody: D.m({ wire: "templateBody" }),
@@ -589,6 +591,7 @@ export const createCloudFormationChangeSet: API.OperationMethod<
     service: svc,
     http: "POST /applications/{ApplicationId}/changesets",
     input: {
+      ApplicationId: 0,
       Capabilities: D.m({ wire: "capabilities" }),
       ChangeSetName: D.m({ wire: "changeSetName" }),
       ClientToken: D.m({ wire: "clientToken" }),
@@ -664,7 +667,10 @@ export const createCloudFormationTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{ApplicationId}/templates",
-    input: { SemanticVersion: D.m({ wire: "semanticVersion" }) },
+    input: {
+      ApplicationId: 0,
+      SemanticVersion: D.m({ wire: "semanticVersion" }),
+    },
     output: {
       ApplicationId: D.m({ wire: "applicationId" }),
       CreationTime: D.m({ wire: "creationTime" }),
@@ -705,7 +711,11 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /applications/{ApplicationId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /applications/{ApplicationId}",
+    input: { ApplicationId: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -738,7 +748,10 @@ export const getApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{ApplicationId}",
-    input: { SemanticVersion: D.m({ query: "semanticVersion" }) },
+    input: {
+      ApplicationId: 0,
+      SemanticVersion: D.m({ query: "semanticVersion" }),
+    },
     output: {
       ApplicationId: D.m({ wire: "applicationId" }),
       Author: D.m({ wire: "author" }),
@@ -786,6 +799,7 @@ export const getApplicationPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{ApplicationId}/policy",
+    input: { ApplicationId: 0 },
     output: {
       Statements: D.m({
         wire: "statements",
@@ -824,6 +838,7 @@ export const getCloudFormationTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{ApplicationId}/templates/{TemplateId}",
+    input: { ApplicationId: 0, TemplateId: 0 },
     output: {
       ApplicationId: D.m({ wire: "applicationId" }),
       CreationTime: D.m({ wire: "creationTime" }),
@@ -867,6 +882,7 @@ export const listApplicationDependencies: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{ApplicationId}/dependencies",
     input: {
+      ApplicationId: 0,
       MaxItems: D.m({ query: "maxItems" }),
       NextToken: D.m({ query: "nextToken" }),
       SemanticVersion: D.m({ query: "semanticVersion" }),
@@ -976,6 +992,7 @@ export const listApplicationVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{ApplicationId}/versions",
     input: {
+      ApplicationId: 0,
       MaxItems: D.m({ query: "maxItems" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -1032,6 +1049,7 @@ export const putApplicationPolicy: API.OperationMethod<
     service: svc,
     http: "PUT /applications/{ApplicationId}/policy",
     input: {
+      ApplicationId: 0,
       Statements: D.m({
         wire: "statements",
         shape: D.list({
@@ -1083,7 +1101,10 @@ export const unshareApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{ApplicationId}/unshare",
-    input: { OrganizationId: D.m({ wire: "organizationId" }) },
+    input: {
+      ApplicationId: 0,
+      OrganizationId: D.m({ wire: "organizationId" }),
+    },
     body: true,
   },
   errors: [
@@ -1119,6 +1140,7 @@ export const updateApplication: API.OperationMethod<
     service: svc,
     http: "PATCH /applications/{ApplicationId}",
     input: {
+      ApplicationId: 0,
       Author: D.m({ wire: "author" }),
       Description: D.m({ wire: "description" }),
       HomePageUrl: D.m({ wire: "homePageUrl" }),

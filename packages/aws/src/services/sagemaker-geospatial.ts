@@ -800,7 +800,11 @@ export const deleteEarthObservationJob: API.OperationMethod<
   DeleteEarthObservationJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /earth-observation-jobs/{Arn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /earth-observation-jobs/{Arn}",
+    input: { Arn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -831,7 +835,11 @@ export const deleteVectorEnrichmentJob: API.OperationMethod<
   DeleteVectorEnrichmentJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /vector-enrichment-jobs/{Arn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /vector-enrichment-jobs/{Arn}",
+    input: { Arn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -866,7 +874,13 @@ export const exportEarthObservationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /export-earth-observation-job",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Arn: 0,
+      ClientToken: D.m({ idempotency: true }),
+      ExecutionRoleArn: 0,
+      OutputConfig: { S3Data: { S3Uri: 0, KmsKeyId: 0 } },
+      ExportSourceImages: 0,
+    },
     output: { CreationTime: D.ts },
     body: true,
   },
@@ -905,7 +919,12 @@ export const exportVectorEnrichmentJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /export-vector-enrichment-jobs",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Arn: 0,
+      ClientToken: D.m({ idempotency: true }),
+      ExecutionRoleArn: 0,
+      OutputConfig: { S3Data: i_VectorEnrichmentJobS3Data },
+    },
     output: { CreationTime: D.ts },
     body: true,
   },
@@ -942,6 +961,7 @@ export const getEarthObservationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /earth-observation-jobs/{Arn}",
+    input: { Arn: 0 },
     output: { CreationTime: D.ts, InputConfig: o_InputConfigOutput },
   },
   errors: [
@@ -972,7 +992,11 @@ export const getRasterDataCollection: API.OperationMethod<
   GetRasterDataCollectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /raster-data-collection/{Arn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /raster-data-collection/{Arn}",
+    input: { Arn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1005,6 +1029,9 @@ export const getTile: API.OperationMethod<
     service: svc,
     http: "GET /tile/{z}/{x}/{y}",
     input: {
+      x: 0,
+      y: 0,
+      z: 0,
       ImageAssets: D.m({ query: "ImageAssets" }),
       Target: D.m({ query: "Target" }),
       Arn: D.m({ query: "Arn" }),
@@ -1048,6 +1075,7 @@ export const getVectorEnrichmentJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /vector-enrichment-jobs/{Arn}",
+    input: { Arn: 0 },
     output: { CreationTime: D.ts },
   },
   errors: [
@@ -1082,6 +1110,13 @@ export const listEarthObservationJobs: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-earth-observation-jobs",
+    input: {
+      StatusEquals: 0,
+      SortOrder: 0,
+      SortBy: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       EarthObservationJobSummaries: D.list({ CreationTime: D.ts }),
       NextToken: D.secret,
@@ -1164,7 +1199,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1197,6 +1236,13 @@ export const listVectorEnrichmentJobs: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-vector-enrichment-jobs",
+    input: {
+      StatusEquals: 0,
+      SortOrder: 0,
+      SortBy: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       VectorEnrichmentJobSummaries: D.list({ CreationTime: D.ts }),
       NextToken: D.secret,
@@ -1240,6 +1286,16 @@ export const searchRasterDataCollection: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-raster-data-collection",
+    input: {
+      Arn: 0,
+      RasterDataCollectionQuery: {
+        TimeRangeFilter: i_TimeRangeFilterInput,
+        AreaOfInterest: i_AreaOfInterest,
+        PropertyFilters: i_PropertyFilters,
+        BandFilter: 0,
+      },
+      NextToken: 0,
+    },
     output: { NextToken: D.secret, Items: D.list({ DateTime: D.ts }) },
     body: true,
   },
@@ -1277,7 +1333,54 @@ export const startEarthObservationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /earth-observation-jobs",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      ClientToken: D.m({ idempotency: true }),
+      KmsKeyId: 0,
+      InputConfig: {
+        PreviousEarthObservationJobArn: 0,
+        RasterDataCollectionQuery: {
+          RasterDataCollectionArn: 0,
+          TimeRangeFilter: i_TimeRangeFilterInput,
+          AreaOfInterest: i_AreaOfInterest,
+          PropertyFilters: i_PropertyFilters,
+        },
+      },
+      JobConfig: {
+        BandMathConfig: {
+          PredefinedIndices: 0,
+          CustomIndices: {
+            Operations: D.list({ Name: 0, Equation: 0, OutputType: 0 }),
+          },
+        },
+        ResamplingConfig: {
+          OutputResolution: { UserDefined: i_UserDefined },
+          AlgorithmName: 0,
+          TargetBands: 0,
+        },
+        TemporalStatisticsConfig: { GroupBy: 0, Statistics: 0, TargetBands: 0 },
+        CloudRemovalConfig: {
+          AlgorithmName: 0,
+          InterpolationValue: 0,
+          TargetBands: 0,
+        },
+        ZonalStatisticsConfig: {
+          ZoneS3Path: 0,
+          Statistics: 0,
+          TargetBands: 0,
+          ZoneS3PathKmsKeyId: 0,
+        },
+        GeoMosaicConfig: { AlgorithmName: 0, TargetBands: 0 },
+        StackConfig: {
+          OutputResolution: { Predefined: 0, UserDefined: i_UserDefined },
+          TargetBands: 0,
+        },
+        CloudMaskingConfig: {},
+        LandCoverSegmentationConfig: {},
+      },
+      ExecutionRoleArn: 0,
+      Tags: 0,
+    },
     output: { CreationTime: D.ts, InputConfig: o_InputConfigOutput },
     body: true,
   },
@@ -1316,7 +1419,26 @@ export const startVectorEnrichmentJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /vector-enrichment-jobs",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      ClientToken: D.m({ idempotency: true }),
+      KmsKeyId: 0,
+      InputConfig: {
+        DocumentType: 0,
+        DataSourceConfig: { S3Data: i_VectorEnrichmentJobS3Data },
+      },
+      JobConfig: {
+        ReverseGeocodingConfig: { YAttributeName: 0, XAttributeName: 0 },
+        MapMatchingConfig: {
+          IdAttributeName: 0,
+          YAttributeName: 0,
+          XAttributeName: 0,
+          TimestampAttributeName: 0,
+        },
+      },
+      ExecutionRoleArn: 0,
+      Tags: 0,
+    },
     output: { CreationTime: D.ts },
     body: true,
   },
@@ -1354,6 +1476,7 @@ export const stopEarthObservationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /earth-observation-jobs/stop",
+    input: { Arn: 0 },
     body: true,
   },
   errors: [
@@ -1389,6 +1512,7 @@ export const stopVectorEnrichmentJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /vector-enrichment-jobs/stop",
+    input: { Arn: 0 },
     body: true,
   },
   errors: [
@@ -1420,7 +1544,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1452,7 +1581,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1466,6 +1595,34 @@ export const untagResource: API.OperationMethod<
   operationName: "UntagResource",
 })) as any;
 
+const i_AreaOfInterest: D.LazyStruct = () => ({
+  AreaOfInterestGeometry: {
+    PolygonGeometry: { Coordinates: 0 },
+    MultiPolygonGeometry: { Coordinates: 0 },
+  },
+});
+const i_PropertyFilters: D.LazyStruct = () => ({
+  Properties: D.list({
+    Property: {
+      EoCloudCover: { LowerBound: 0, UpperBound: 0 },
+      ViewOffNadir: { LowerBound: 0, UpperBound: 0 },
+      ViewSunAzimuth: { LowerBound: 0, UpperBound: 0 },
+      ViewSunElevation: { LowerBound: 0, UpperBound: 0 },
+      Platform: { Value: 0, ComparisonOperator: 0 },
+      LandsatCloudCoverLand: { LowerBound: 0, UpperBound: 0 },
+    },
+  }),
+  LogicalOperator: 0,
+});
+const i_TimeRangeFilterInput: D.LazyStruct = () => ({
+  StartTime: 0,
+  EndTime: 0,
+});
+const i_UserDefined: D.LazyStruct = () => ({ Value: 0, Unit: 0 });
+const i_VectorEnrichmentJobS3Data: D.LazyStruct = () => ({
+  S3Uri: 0,
+  KmsKeyId: 0,
+});
 const o_InputConfigOutput: D.LazyStruct = () => ({
   RasterDataCollectionQuery: {
     TimeRangeFilter: { StartTime: D.ts, EndTime: D.ts },

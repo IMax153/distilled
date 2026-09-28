@@ -1319,7 +1319,10 @@ export const approvePlanExecutionStep: API.OperationMethod<
   ApprovePlanExecutionStepError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { planArn: 0, executionId: 0, stepName: 0, approval: 0, comment: 0 },
+  },
   errors: [AccessDeniedException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1341,7 +1344,10 @@ export const cancelPlanExecution: API.OperationMethod<
   CancelPlanExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { planArn: 0, executionId: 0, comment: 0 },
+  },
   errors: [AccessDeniedException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1362,6 +1368,20 @@ export const createPlan: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      description: 0,
+      workflows: D.list(i_Workflow),
+      executionRole: 0,
+      recoveryTimeObjectiveMinutes: 0,
+      associatedAlarms: D.map(i_AssociatedAlarm),
+      triggers: D.list(i_Trigger),
+      reportConfiguration: i_ReportConfiguration,
+      name: 0,
+      regions: 0,
+      recoveryApproach: 0,
+      primaryRegion: 0,
+      tags: 0,
+    },
     output: { plan: o_Plan },
     staticContext: { UseControlPlaneEndpoint: { value: true } },
   },
@@ -1388,6 +1408,7 @@ export const deletePlan: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { arn: 0 },
     staticContext: { UseControlPlaneEndpoint: { value: true } },
   },
   errors: [IllegalStateException, ResourceNotFoundException],
@@ -1408,6 +1429,7 @@ export const getPlan: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { arn: 0 },
     output: { plan: o_Plan },
     staticContext: { UseControlPlaneEndpoint: { value: true } },
   },
@@ -1433,6 +1455,7 @@ export const getPlanEvaluationStatus: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { planArn: 0, maxResults: 0, nextToken: 0 },
     output: {
       lastEvaluationTime: D.ts,
       warnings: D.list({ warningUpdatedTime: D.ts }),
@@ -1466,6 +1489,7 @@ export const getPlanExecution: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { planArn: 0, executionId: 0, maxResults: 0, nextToken: 0 },
     output: {
       updatedAt: D.ts,
       startTime: D.ts,
@@ -1500,7 +1524,7 @@ export const getPlanInRegion: API.OperationMethod<
   GetPlanInRegionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { plan: o_Plan } },
+  descriptor: { service: svc, input: { arn: 0 }, output: { plan: o_Plan } },
   errors: [AccessDeniedException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1521,7 +1545,11 @@ export const listPlanExecutionEvents: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ExecutionEvent
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { items: D.list({ timestamp: D.ts }) } },
+  descriptor: {
+    service: svc,
+    input: { planArn: 0, executionId: 0, maxResults: 0, nextToken: 0, name: 0 },
+    output: { items: D.list({ timestamp: D.ts }) },
+  },
   errors: [AccessDeniedException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1550,6 +1578,7 @@ export const listPlanExecutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { planArn: 0, maxResults: 0, nextToken: 0, state: 0 },
     output: {
       items: D.list({ updatedAt: D.ts, startTime: D.ts, endTime: D.ts }),
     },
@@ -1579,6 +1608,7 @@ export const listPlans: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { maxResults: 0, nextToken: 0 },
     output: { plans: D.list(o_AbbreviatedPlan) },
     staticContext: { UseControlPlaneEndpoint: { value: true } },
   },
@@ -1605,7 +1635,11 @@ export const listPlansInRegion: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AbbreviatedPlan
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { plans: D.list(o_AbbreviatedPlan) } },
+  descriptor: {
+    service: svc,
+    input: { maxResults: 0, nextToken: 0 },
+    output: { plans: D.list(o_AbbreviatedPlan) },
+  },
   errors: [AccessDeniedException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1636,6 +1670,13 @@ export const listRoute53HealthChecks: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      arn: 0,
+      hostedZoneId: 0,
+      recordName: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     staticContext: { UseControlPlaneEndpoint: { value: true } },
   },
   errors: [
@@ -1671,7 +1712,16 @@ export const listRoute53HealthChecksInRegion: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Route53HealthCheck
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      arn: 0,
+      hostedZoneId: 0,
+      recordName: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     IllegalArgumentException,
@@ -1704,6 +1754,7 @@ export const listTagsForResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { arn: 0 },
     staticContext: { UseControlPlaneEndpoint: { value: true } },
   },
   errors: [InternalServerException, ResourceNotFoundException],
@@ -1732,7 +1783,16 @@ export const startPlanExecution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      planArn: 0,
+      targetRegion: 0,
+      action: 0,
+      mode: 0,
+      comment: 0,
+      latestVersion: 0,
+      recoveryExecutionId: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1761,6 +1821,7 @@ export const tagResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { arn: 0, tags: 0 },
     staticContext: { UseControlPlaneEndpoint: { value: true } },
   },
   errors: [InternalServerException, ResourceNotFoundException],
@@ -1784,6 +1845,7 @@ export const untagResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { arn: 0, resourceTagKeys: 0 },
     staticContext: { UseControlPlaneEndpoint: { value: true } },
   },
   errors: [InternalServerException, ResourceNotFoundException],
@@ -1804,6 +1866,16 @@ export const updatePlan: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      arn: 0,
+      description: 0,
+      workflows: D.list(i_Workflow),
+      executionRole: 0,
+      recoveryTimeObjectiveMinutes: 0,
+      associatedAlarms: D.map(i_AssociatedAlarm),
+      triggers: D.list(i_Trigger),
+      reportConfiguration: i_ReportConfiguration,
+    },
     output: { plan: o_Plan },
     staticContext: { UseControlPlaneEndpoint: { value: true } },
   },
@@ -1827,7 +1899,10 @@ export const updatePlanExecution: API.OperationMethod<
   UpdatePlanExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { planArn: 0, executionId: 0, action: 0, comment: 0 },
+  },
   errors: [
     AccessDeniedException,
     IllegalStateException,
@@ -1851,12 +1926,182 @@ export const updatePlanExecutionStep: API.OperationMethod<
   UpdatePlanExecutionStepError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      planArn: 0,
+      executionId: 0,
+      comment: 0,
+      stepName: 0,
+      actionToTake: 0,
+    },
+  },
   errors: [AccessDeniedException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "UpdatePlanExecutionStep",
 })) as any;
 
+const i_AssociatedAlarm: D.LazyStruct = () => ({
+  crossAccountRole: 0,
+  externalId: 0,
+  resourceIdentifier: 0,
+  alarmType: 0,
+});
+const i_ReportConfiguration: D.LazyStruct = () => ({
+  reportOutput: D.list({ s3Configuration: { bucketPath: 0, bucketOwner: 0 } }),
+});
+const i_Trigger: D.LazyStruct = () => ({
+  description: 0,
+  targetRegion: 0,
+  action: 0,
+  conditions: D.list({ associatedAlarmName: 0, condition: 0 }),
+  minDelayMinutesBetweenExecutions: 0,
+});
+const i_Workflow: D.LazyStruct = () => ({
+  steps: D.list(i_Step),
+  workflowTargetAction: 0,
+  workflowTargetRegion: 0,
+  workflowDescription: 0,
+});
 const o_AbbreviatedPlan: D.LazyStruct = () => ({ updatedAt: D.ts });
 const o_Plan: D.LazyStruct = () => ({ updatedAt: D.ts });
+const i_Step: D.LazyStruct = () => ({
+  name: 0,
+  description: 0,
+  executionBlockConfiguration: {
+    customActionLambdaConfig: {
+      timeoutMinutes: 0,
+      lambdas: D.list({ crossAccountRole: 0, externalId: 0, arn: 0 }),
+      retryIntervalMinutes: 0,
+      regionToRun: 0,
+      ungraceful: { behavior: 0 },
+    },
+    ec2AsgCapacityIncreaseConfig: {
+      timeoutMinutes: 0,
+      asgs: D.list({ crossAccountRole: 0, externalId: 0, arn: 0 }),
+      ungraceful: { minimumSuccessPercentage: 0 },
+      targetPercent: 0,
+      capacityMonitoringApproach: 0,
+    },
+    executionApprovalConfig: { timeoutMinutes: 0, approvalRole: 0 },
+    arcRoutingControlConfig: {
+      timeoutMinutes: 0,
+      crossAccountRole: 0,
+      externalId: 0,
+      regionAndRoutingControls: D.map(
+        D.list({ routingControlArn: 0, state: 0 }),
+      ),
+    },
+    globalAuroraConfig: {
+      timeoutMinutes: 0,
+      crossAccountRole: 0,
+      externalId: 0,
+      behavior: 0,
+      ungraceful: { ungraceful: 0 },
+      globalClusterIdentifier: 0,
+      databaseClusterArns: 0,
+    },
+    parallelConfig: { steps: D.list(i_Step) },
+    regionSwitchPlanConfig: { crossAccountRole: 0, externalId: 0, arn: 0 },
+    ecsCapacityIncreaseConfig: {
+      timeoutMinutes: 0,
+      services: D.list({
+        crossAccountRole: 0,
+        externalId: 0,
+        clusterArn: 0,
+        serviceArn: 0,
+      }),
+      ungraceful: { minimumSuccessPercentage: 0 },
+      targetPercent: 0,
+      capacityMonitoringApproach: 0,
+    },
+    eksResourceScalingConfig: {
+      timeoutMinutes: 0,
+      kubernetesResourceType: { apiVersion: 0, kind: 0 },
+      scalingResources: D.list(
+        D.map(D.map({ namespace: 0, name: 0, hpaName: 0 })),
+      ),
+      eksClusters: D.list({
+        crossAccountRole: 0,
+        externalId: 0,
+        clusterArn: 0,
+      }),
+      ungraceful: { minimumSuccessPercentage: 0 },
+      targetPercent: 0,
+      capacityMonitoringApproach: 0,
+    },
+    route53HealthCheckConfig: {
+      timeoutMinutes: 0,
+      crossAccountRole: 0,
+      externalId: 0,
+      hostedZoneId: 0,
+      recordName: 0,
+      recordSets: D.list({ recordSetIdentifier: 0, region: 0 }),
+    },
+    documentDbConfig: {
+      timeoutMinutes: 0,
+      crossAccountRole: 0,
+      externalId: 0,
+      behavior: 0,
+      ungraceful: { ungraceful: 0 },
+      globalClusterIdentifier: 0,
+      databaseClusterArns: 0,
+    },
+    rdsPromoteReadReplicaConfig: {
+      timeoutMinutes: 0,
+      crossAccountRole: 0,
+      externalId: 0,
+      dbInstanceArnMap: 0,
+    },
+    rdsCreateCrossRegionReadReplicaConfig: {
+      timeoutMinutes: 0,
+      crossAccountRole: 0,
+      externalId: 0,
+      dbInstanceArnMap: 0,
+    },
+    lambdaEventSourceMappingConfig: {
+      timeoutMinutes: 0,
+      action: 0,
+      regionEventSourceMappings: D.map({
+        crossAccountRole: 0,
+        externalId: 0,
+        arn: 0,
+      }),
+      ungraceful: { behavior: 0 },
+    },
+    auroraServerlessScalingConfig: {
+      timeoutMinutes: 0,
+      crossAccountRole: 0,
+      externalId: 0,
+      globalClusterIdentifier: 0,
+      regionDatabaseClusterArns: 0,
+      targetPercent: 0,
+    },
+    auroraProvisionedScalingConfig: {
+      timeoutMinutes: 0,
+      crossAccountRole: 0,
+      externalId: 0,
+      globalClusterIdentifier: 0,
+      regionDatabaseClusterArns: 0,
+      instanceArns: 0,
+    },
+    neptuneGlobalDatabaseConfig: {
+      timeoutMinutes: 0,
+      crossAccountRole: 0,
+      externalId: 0,
+      behavior: 0,
+      ungraceful: { ungraceful: 0 },
+      globalClusterIdentifier: 0,
+      regionDatabaseClusterArns: 0,
+    },
+    rdsSwitchoverReadReplicaConfig: {
+      timeoutMinutes: 0,
+      crossAccountRole: 0,
+      externalId: 0,
+      dbInstanceArnMap: 0,
+      ungraceful: { ungraceful: 0 },
+    },
+  },
+  executionBlockType: 0,
+});

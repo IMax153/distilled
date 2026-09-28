@@ -372,7 +372,20 @@ export const createMonitor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /monitors",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      monitorName: 0,
+      probes: D.list({
+        sourceArn: 0,
+        destination: 0,
+        destinationPort: 0,
+        protocol: 0,
+        packetSize: 0,
+        probeTags: 0,
+      }),
+      aggregationPeriod: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -412,7 +425,19 @@ export const createProbe: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /monitors/{monitorName}/probes",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      monitorName: 0,
+      probe: {
+        sourceArn: 0,
+        destination: 0,
+        destinationPort: 0,
+        protocol: 0,
+        packetSize: 0,
+        tags: 0,
+      },
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { createdAt: D.ts, modifiedAt: D.ts },
     body: true,
   },
@@ -448,7 +473,11 @@ export const deleteMonitor: API.OperationMethod<
   DeleteMonitorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /monitors/{monitorName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /monitors/{monitorName}",
+    input: { monitorName: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -487,6 +516,7 @@ export const deleteProbe: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /monitors/{monitorName}/probes/{probeId}",
+    input: { monitorName: 0, probeId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -523,6 +553,7 @@ export const getMonitor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /monitors/{monitorName}",
+    input: { monitorName: 0 },
     output: {
       probes: D.list({ createdAt: D.ts, modifiedAt: D.ts }),
       createdAt: D.ts,
@@ -563,6 +594,7 @@ export const getProbe: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /monitors/{monitorName}/probes/{probeId}",
+    input: { monitorName: 0, probeId: 0 },
     output: { createdAt: D.ts, modifiedAt: D.ts },
   },
   errors: [
@@ -636,7 +668,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -667,7 +703,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -701,7 +742,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -739,6 +780,7 @@ export const updateMonitor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /monitors/{monitorName}",
+    input: { monitorName: 0, aggregationPeriod: 0 },
     body: true,
   },
   errors: [
@@ -794,6 +836,15 @@ export const updateProbe: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /monitors/{monitorName}/probes/{probeId}",
+    input: {
+      monitorName: 0,
+      probeId: 0,
+      state: 0,
+      destination: 0,
+      destinationPort: 0,
+      protocol: 0,
+      packetSize: 0,
+    },
     output: { createdAt: D.ts, modifiedAt: D.ts },
     body: true,
   },

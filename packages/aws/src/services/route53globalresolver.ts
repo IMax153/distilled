@@ -1137,6 +1137,7 @@ export const associateHostedZone: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /hosted-zone-associations/{hostedZoneId}",
+    input: { hostedZoneId: 0, resourceArn: 0, name: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -1174,6 +1175,24 @@ export const batchCreateFirewallRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /firewall-rules/batch-create",
+    input: {
+      firewallRules: D.list({
+        action: 0,
+        blockOverrideDnsType: 0,
+        blockOverrideDomain: 0,
+        blockOverrideTtl: 0,
+        blockResponse: 0,
+        clientToken: 0,
+        confidenceThreshold: 0,
+        description: 0,
+        dnsAdvancedProtection: 0,
+        firewallDomainListId: 0,
+        name: 0,
+        priority: 0,
+        dnsViewId: 0,
+        qType: 0,
+      }),
+    },
     output: {
       failures: D.list(o_BatchCreateFirewallRuleOutputItem),
       successes: D.list(o_BatchCreateFirewallRuleOutputItem),
@@ -1211,6 +1230,7 @@ export const batchDeleteFirewallRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /firewall-rules/batch-delete",
+    input: { firewallRules: D.list({ firewallRuleId: 0 }) },
     body: true,
   },
   errors: [
@@ -1244,6 +1264,21 @@ export const batchUpdateFirewallRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /firewall-rules/batch-update",
+    input: {
+      firewallRules: D.list({
+        action: 0,
+        blockOverrideDnsType: 0,
+        blockOverrideDomain: 0,
+        blockOverrideTtl: 0,
+        blockResponse: 0,
+        confidenceThreshold: 0,
+        description: 0,
+        dnsAdvancedProtection: 0,
+        firewallRuleId: 0,
+        name: 0,
+        priority: 0,
+      }),
+    },
     output: {
       failures: D.list(o_BatchUpdateFirewallRuleOutputItem),
       successes: D.list(o_BatchUpdateFirewallRuleOutputItem),
@@ -1284,7 +1319,15 @@ export const createAccessSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /access-sources",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      cidr: 0,
+      clientToken: D.m({ idempotency: true }),
+      ipAddressType: 0,
+      name: 0,
+      dnsViewId: 0,
+      protocol: 0,
+      tags: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -1327,7 +1370,10 @@ export const createAccessToken: API.OperationMethod<
     http: "POST /tokens/{dnsViewId}",
     input: {
       clientToken: D.m({ idempotency: true }),
+      dnsViewId: 0,
       expiresAt: D.tsAs("date-time"),
+      name: 0,
+      tags: 0,
     },
     output: { createdAt: D.ts, expiresAt: D.ts, value: D.secret },
     body: true,
@@ -1369,7 +1415,16 @@ export const createDNSView: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /dns-views/{globalResolverId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      globalResolverId: 0,
+      clientToken: D.m({ idempotency: true }),
+      name: 0,
+      dnssecValidation: 0,
+      ednsClientSubnet: 0,
+      firewallRulesFailOpen: 0,
+      description: 0,
+      tags: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -1410,7 +1465,13 @@ export const createFirewallDomainList: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /firewall-domain-lists/{globalResolverId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      globalResolverId: 0,
+      description: 0,
+      name: 0,
+      tags: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -1451,7 +1512,22 @@ export const createFirewallRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /firewall-rules",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      action: 0,
+      blockOverrideDnsType: 0,
+      blockOverrideDomain: 0,
+      blockOverrideTtl: 0,
+      blockResponse: 0,
+      clientToken: D.m({ idempotency: true }),
+      confidenceThreshold: 0,
+      description: 0,
+      dnsAdvancedProtection: 0,
+      firewallDomainListId: 0,
+      name: 0,
+      priority: 0,
+      dnsViewId: 0,
+      qType: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -1491,7 +1567,15 @@ export const createGlobalResolver: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /global-resolver",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      description: 0,
+      ipAddressType: 0,
+      name: 0,
+      observabilityRegion: 0,
+      regions: 0,
+      tags: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -1530,6 +1614,7 @@ export const deleteAccessSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /access-sources/{accessSourceId}",
+    input: { accessSourceId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1567,6 +1652,7 @@ export const deleteAccessToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tokens/{accessTokenId}",
+    input: { accessTokenId: 0 },
     output: { deletedAt: D.ts },
   },
   errors: [
@@ -1604,6 +1690,7 @@ export const deleteDNSView: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /dns-views/{dnsViewId}",
+    input: { dnsViewId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1641,6 +1728,7 @@ export const deleteFirewallDomainList: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /firewall-domain-lists/{firewallDomainListId}",
+    input: { firewallDomainListId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1677,6 +1765,7 @@ export const deleteFirewallRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /firewall-rules/{firewallRuleId}",
+    input: { firewallRuleId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1714,6 +1803,7 @@ export const deleteGlobalResolver: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /global-resolver/{globalResolverId}",
+    input: { globalResolverId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1752,6 +1842,7 @@ export const disableDNSView: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /dns-views/{dnsViewId}/disable",
+    input: { dnsViewId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1790,6 +1881,7 @@ export const disassociateHostedZone: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /hosted-zone-associations/hosted-zone/{hostedZoneId}/resource-arn/{resourceArn+}",
+    input: { hostedZoneId: 0, resourceArn: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1828,6 +1920,7 @@ export const enableDNSView: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /dns-views/{dnsViewId}/enable",
+    input: { dnsViewId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1865,6 +1958,7 @@ export const getAccessSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /access-sources/{accessSourceId}",
+    input: { accessSourceId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1900,6 +1994,7 @@ export const getAccessToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tokens/{accessTokenId}",
+    input: { accessTokenId: 0 },
     output: {
       createdAt: D.ts,
       expiresAt: D.ts,
@@ -1940,6 +2035,7 @@ export const getDNSView: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /dns-views/{dnsViewId}",
+    input: { dnsViewId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1975,6 +2071,7 @@ export const getFirewallDomainList: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /firewall-domain-lists/{firewallDomainListId}",
+    input: { firewallDomainListId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -2010,6 +2107,7 @@ export const getFirewallRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /firewall-rules/{firewallRuleId}",
+    input: { firewallRuleId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -2045,6 +2143,7 @@ export const getGlobalResolver: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /global-resolver/{globalResolverId}",
+    input: { globalResolverId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -2080,6 +2179,7 @@ export const getHostedZoneAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /hosted-zone-associations/{hostedZoneAssociationId}",
+    input: { hostedZoneAssociationId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -2115,6 +2215,7 @@ export const getManagedFirewallDomainList: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /managed-firewall-domain-lists/{managedFirewallDomainListId}",
+    input: { managedFirewallDomainListId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2151,6 +2252,7 @@ export const importFirewallDomains: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /firewall-domain-lists/{firewallDomainListId}/domains/s3_file_url",
+    input: { domainFileUrl: 0, firewallDomainListId: 0, operation: 0 },
     body: true,
   },
   errors: [
@@ -2237,6 +2339,7 @@ export const listAccessTokens: API.PaginatedOperationMethod<
     input: {
       maxResults: D.m({ query: "max_results" }),
       nextToken: D.m({ query: "next_token" }),
+      dnsViewId: 0,
       filters: D.m({ queryParams: true }),
     },
     output: {
@@ -2290,6 +2393,7 @@ export const listDNSViews: API.PaginatedOperationMethod<
     input: {
       maxResults: D.m({ query: "max_results" }),
       nextToken: D.m({ query: "next_token" }),
+      globalResolverId: 0,
     },
     output: { dnsViews: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
   },
@@ -2385,6 +2489,7 @@ export const listFirewallDomains: API.PaginatedOperationMethod<
     input: {
       maxResults: D.m({ query: "max_results" }),
       nextToken: D.m({ query: "next_token" }),
+      firewallDomainListId: 0,
     },
   },
   errors: [
@@ -2570,6 +2675,7 @@ export const listManagedFirewallDomainLists: API.PaginatedOperationMethod<
     input: {
       maxResults: D.m({ query: "max_results" }),
       nextToken: D.m({ query: "next_token" }),
+      managedFirewallDomainListType: 0,
     },
   },
   errors: [
@@ -2645,7 +2751,12 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /get-all-tags", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /get-all-tags",
+    input: { resourceArn: 0 },
+    body: true,
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2668,7 +2779,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tag-resource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tag-resource",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     ResourceNotFoundException,
     ServiceQuotaExceededException,
@@ -2694,7 +2810,12 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /untag-resource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /untag-resource",
+    input: { resourceArn: 0, tagKeys: 0 },
+    body: true,
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2724,6 +2845,13 @@ export const updateAccessSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /access-sources/{accessSourceId}",
+    input: {
+      accessSourceId: 0,
+      cidr: 0,
+      ipAddressType: 0,
+      name: 0,
+      protocol: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -2764,6 +2892,7 @@ export const updateAccessToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /tokens/{accessTokenId}",
+    input: { accessTokenId: 0, name: 0 },
     body: true,
   },
   errors: [
@@ -2803,6 +2932,14 @@ export const updateDNSView: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /dns-views/{dnsViewId}",
+    input: {
+      dnsViewId: 0,
+      name: 0,
+      description: 0,
+      dnssecValidation: 0,
+      ednsClientSubnet: 0,
+      firewallRulesFailOpen: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -2843,6 +2980,7 @@ export const updateFirewallDomains: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /firewall-domain-lists/{firewallDomainListId}/domains",
+    input: { domains: 0, firewallDomainListId: 0, operation: 0 },
     body: true,
   },
   errors: [
@@ -2882,7 +3020,20 @@ export const updateFirewallRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /firewall-rules/{firewallRuleId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      action: 0,
+      blockOverrideDnsType: 0,
+      blockOverrideDomain: 0,
+      blockOverrideTtl: 0,
+      blockResponse: 0,
+      clientToken: D.m({ idempotency: true }),
+      confidenceThreshold: 0,
+      description: 0,
+      dnsAdvancedProtection: 0,
+      firewallRuleId: 0,
+      name: 0,
+      priority: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -2923,6 +3074,14 @@ export const updateGlobalResolver: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /global-resolver/{globalResolverId}",
+    input: {
+      globalResolverId: 0,
+      name: 0,
+      observabilityRegion: 0,
+      description: 0,
+      ipAddressType: 0,
+      regions: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -2963,6 +3122,7 @@ export const updateHostedZoneAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /hosted-zone-associations/{hostedZoneAssociationId}",
+    input: { hostedZoneAssociationId: 0, name: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },

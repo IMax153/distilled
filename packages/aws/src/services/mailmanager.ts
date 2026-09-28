@@ -1563,7 +1563,11 @@ export const createAddonInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      AddonSubscriptionId: 0,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     ConflictException,
@@ -1593,7 +1597,11 @@ export const createAddonSubscription: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      AddonName: 0,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     ConflictException,
@@ -1624,7 +1632,11 @@ export const createAddressList: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      AddressListName: 0,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1655,7 +1667,12 @@ export const createAddressListImportJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      AddressListId: 0,
+      Name: 0,
+      ImportDataFormat: { ImportDataType: 0 },
+    },
     output: { PreSignedUrl: D.secret },
   },
   errors: [
@@ -1687,7 +1704,13 @@ export const createArchive: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      ArchiveName: 0,
+      Retention: i_ArchiveRetention,
+      KmsKeyArn: 0,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1717,7 +1740,20 @@ export const createIngressPoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      IngressPointName: 0,
+      Type: 0,
+      RuleSetId: 0,
+      TrafficPolicyId: 0,
+      IngressPointConfiguration: i_IngressPointConfiguration,
+      NetworkConfiguration: {
+        PublicNetworkConfiguration: { IpType: 0 },
+        PrivateNetworkConfiguration: { VpcEndpointId: 0 },
+      },
+      TlsPolicy: 0,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     ConflictException,
@@ -1745,7 +1781,14 @@ export const createRelay: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      RelayName: 0,
+      ServerName: 0,
+      ServerPort: 0,
+      Authentication: i_RelayAuthentication,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     ConflictException,
@@ -1773,7 +1816,12 @@ export const createRuleSet: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      RuleSetName: 0,
+      Rules: D.list(i_Rule),
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     ConflictException,
@@ -1801,7 +1849,14 @@ export const createTrafficPolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      TrafficPolicyName: 0,
+      PolicyStatements: D.list(i_PolicyStatement),
+      DefaultAction: 0,
+      MaxMessageSizeBytes: 0,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     ConflictException,
@@ -1826,7 +1881,7 @@ export const deleteAddonInstance: API.OperationMethod<
   DeleteAddonInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AddonInstanceId: 0 } },
   errors: [ConflictException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1846,7 +1901,7 @@ export const deleteAddonSubscription: API.OperationMethod<
   DeleteAddonSubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AddonSubscriptionId: 0 } },
   errors: [ConflictException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1868,7 +1923,7 @@ export const deleteAddressList: API.OperationMethod<
   DeleteAddressListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AddressListId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1895,7 +1950,7 @@ export const deleteArchive: API.OperationMethod<
   DeleteArchiveError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ArchiveId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1921,7 +1976,7 @@ export const deleteIngressPoint: API.OperationMethod<
   DeleteIngressPointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { IngressPointId: 0 } },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1942,7 +1997,7 @@ export const deleteRelay: API.OperationMethod<
   DeleteRelayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RelayId: 0 } },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1962,7 +2017,7 @@ export const deleteRuleSet: API.OperationMethod<
   DeleteRuleSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RuleSetId: 0 } },
   errors: [ConflictException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1983,7 +2038,7 @@ export const deleteTrafficPolicy: API.OperationMethod<
   DeleteTrafficPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrafficPolicyId: 0 } },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2006,7 +2061,7 @@ export const deregisterMemberFromAddressList: API.OperationMethod<
   DeregisterMemberFromAddressListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AddressListId: 0, Address: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2032,7 +2087,11 @@ export const getAddonInstance: API.OperationMethod<
   GetAddonInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { AddonInstanceId: 0 },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2052,7 +2111,11 @@ export const getAddonSubscription: API.OperationMethod<
   GetAddonSubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { AddonSubscriptionId: 0 },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2076,6 +2139,7 @@ export const getAddressList: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AddressListId: 0 },
     output: { CreatedTimestamp: D.ts, LastUpdatedTimestamp: D.ts },
   },
   errors: [
@@ -2106,6 +2170,7 @@ export const getAddressListImportJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: {
       PreSignedUrl: D.secret,
       CreatedTimestamp: D.ts,
@@ -2141,6 +2206,7 @@ export const getArchive: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ArchiveId: 0 },
     output: { CreatedTimestamp: D.ts, LastUpdatedTimestamp: D.ts },
   },
   errors: [
@@ -2170,6 +2236,7 @@ export const getArchiveExport: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ExportId: 0 },
     output: { FromTimestamp: D.ts, ToTimestamp: D.ts, Status: o_ExportStatus },
   },
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
@@ -2194,6 +2261,7 @@ export const getArchiveMessage: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ArchivedMessageId: 0 },
     output: { Metadata: { Timestamp: D.ts, SenderIpAddress: D.secret } },
   },
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
@@ -2216,7 +2284,7 @@ export const getArchiveMessageContent: API.OperationMethod<
   GetArchiveMessageContentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ArchivedMessageId: 0 } },
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2239,6 +2307,7 @@ export const getArchiveSearch: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SearchId: 0 },
     output: { FromTimestamp: D.ts, ToTimestamp: D.ts, Status: o_SearchStatus },
   },
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
@@ -2264,6 +2333,7 @@ export const getArchiveSearchResults: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SearchId: 0 },
     output: {
       Rows: D.list({ ReceivedTimestamp: D.ts, SenderIpAddress: D.secret }),
     },
@@ -2294,6 +2364,7 @@ export const getIngressPoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { IngressPointId: 0, IncludeTrustStoreContents: 0 },
     output: {
       IngressPointAuthConfiguration: {
         IngressPointPasswordConfiguration: {
@@ -2330,6 +2401,7 @@ export const getMemberOfAddressList: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AddressListId: 0, Address: 0 },
     output: { Address: D.secret, CreatedTimestamp: D.ts },
   },
   errors: [
@@ -2358,6 +2430,7 @@ export const getRelay: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { RelayId: 0 },
     output: { CreatedTimestamp: D.ts, LastModifiedTimestamp: D.ts },
   },
   errors: [ResourceNotFoundException, ValidationException],
@@ -2381,6 +2454,7 @@ export const getRuleSet: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { RuleSetId: 0 },
     output: {
       CreatedDate: D.ts,
       LastModificationDate: D.ts,
@@ -2419,6 +2493,7 @@ export const getTrafficPolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TrafficPolicyId: 0 },
     output: { CreatedTimestamp: D.ts, LastUpdatedTimestamp: D.ts },
   },
   errors: [ResourceNotFoundException, ValidationException],
@@ -2440,6 +2515,7 @@ export const listAddonInstances: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, PageSize: 0 },
     output: { AddonInstances: D.list({ CreatedTimestamp: D.ts }) },
   },
   errors: [ValidationException],
@@ -2467,6 +2543,7 @@ export const listAddonSubscriptions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, PageSize: 0 },
     output: { AddonSubscriptions: D.list({ CreatedTimestamp: D.ts }) },
   },
   errors: [ValidationException],
@@ -2499,6 +2576,7 @@ export const listAddressListImportJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { AddressListId: 0, NextToken: 0, PageSize: 0 },
     output: {
       ImportJobs: D.list({
         PreSignedUrl: D.secret,
@@ -2542,6 +2620,7 @@ export const listAddressLists: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, PageSize: 0 },
     output: {
       AddressLists: D.list({
         CreatedTimestamp: D.ts,
@@ -2579,6 +2658,7 @@ export const listArchiveExports: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ArchiveId: 0, NextToken: 0, PageSize: 0 },
     output: { Exports: D.list({ Status: o_ExportStatus }) },
   },
   errors: [
@@ -2615,6 +2695,7 @@ export const listArchives: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, PageSize: 0 },
     output: { Archives: D.list({ LastUpdatedTimestamp: D.ts }) },
   },
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
@@ -2647,6 +2728,7 @@ export const listArchiveSearches: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ArchiveId: 0, NextToken: 0, PageSize: 0 },
     output: { Searches: D.list({ Status: o_SearchStatus }) },
   },
   errors: [
@@ -2677,7 +2759,7 @@ export const listIngressPoints: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   IngressPoint
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PageSize: 0, NextToken: 0 } },
   errors: [ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2708,6 +2790,12 @@ export const listMembersOfAddressList: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AddressListId: 0,
+      Filter: { AddressPrefix: 0 },
+      NextToken: 0,
+      PageSize: 0,
+    },
     output: {
       Addresses: D.list({ Address: D.secret, CreatedTimestamp: D.ts }),
     },
@@ -2742,6 +2830,7 @@ export const listRelays: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { PageSize: 0, NextToken: 0 },
     output: { Relays: D.list({ LastModifiedTimestamp: D.ts }) },
   },
   errors: [ValidationException],
@@ -2769,6 +2858,7 @@ export const listRuleSets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, PageSize: 0 },
     output: { RuleSets: D.list({ LastModificationDate: D.ts }) },
   },
   errors: [ValidationException],
@@ -2796,7 +2886,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2814,7 +2904,7 @@ export const listTrafficPolicies: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TrafficPolicy
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PageSize: 0, NextToken: 0 } },
   errors: [ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2844,7 +2934,7 @@ export const registerMemberToAddressList: API.OperationMethod<
   RegisterMemberToAddressListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AddressListId: 0, Address: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2875,7 +2965,7 @@ export const startAddressListImportJob: API.OperationMethod<
   StartAddressListImportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2905,7 +2995,18 @@ export const startArchiveExport: API.OperationMethod<
   StartArchiveExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ArchiveId: 0,
+      Filters: i_ArchiveFilters,
+      FromTimestamp: 0,
+      ToTimestamp: 0,
+      MaxResults: 0,
+      ExportDestinationConfiguration: { S3: { S3Location: 0 } },
+      IncludeMetadata: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -2935,7 +3036,16 @@ export const startArchiveSearch: API.OperationMethod<
   StartArchiveSearchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ArchiveId: 0,
+      Filters: i_ArchiveFilters,
+      FromTimestamp: 0,
+      ToTimestamp: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2965,7 +3075,7 @@ export const stopAddressListImportJob: API.OperationMethod<
   StopAddressListImportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2992,7 +3102,7 @@ export const stopArchiveExport: API.OperationMethod<
   StopArchiveExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ExportId: 0 } },
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3013,7 +3123,7 @@ export const stopArchiveSearch: API.OperationMethod<
   StopArchiveSearchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SearchId: 0 } },
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3035,7 +3145,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -3061,7 +3171,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3085,7 +3195,10 @@ export const updateArchive: API.OperationMethod<
   UpdateArchiveError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ArchiveId: 0, ArchiveName: 0, Retention: i_ArchiveRetention },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3113,7 +3226,18 @@ export const updateIngressPoint: API.OperationMethod<
   UpdateIngressPointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IngressPointId: 0,
+      IngressPointName: 0,
+      StatusToUpdate: 0,
+      RuleSetId: 0,
+      TrafficPolicyId: 0,
+      IngressPointConfiguration: i_IngressPointConfiguration,
+      TlsPolicy: 0,
+    },
+  },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3134,7 +3258,16 @@ export const updateRelay: API.OperationMethod<
   UpdateRelayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      RelayId: 0,
+      RelayName: 0,
+      ServerName: 0,
+      ServerPort: 0,
+      Authentication: i_RelayAuthentication,
+    },
+  },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3155,7 +3288,10 @@ export const updateRuleSet: API.OperationMethod<
   UpdateRuleSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { RuleSetId: 0, RuleSetName: 0, Rules: D.list(i_Rule) },
+  },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3176,13 +3312,109 @@ export const updateTrafficPolicy: API.OperationMethod<
   UpdateTrafficPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TrafficPolicyId: 0,
+      TrafficPolicyName: 0,
+      PolicyStatements: D.list(i_PolicyStatement),
+      DefaultAction: 0,
+      MaxMessageSizeBytes: 0,
+    },
+  },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "UpdateTrafficPolicy",
 })) as any;
 
+const i_ArchiveFilters: D.LazyStruct = () => ({
+  Include: D.list(i_ArchiveFilterCondition),
+  Unless: D.list(i_ArchiveFilterCondition),
+});
+const i_ArchiveRetention: D.LazyStruct = () => ({ RetentionPeriod: 0 });
+const i_IngressPointConfiguration: D.LazyStruct = () => ({
+  SmtpPassword: 0,
+  SecretArn: 0,
+  TlsAuthConfiguration: {
+    TrustStore: { CAContent: 0, CrlContent: 0, KmsKeyArn: 0 },
+  },
+});
+const i_PolicyStatement: D.LazyStruct = () => ({
+  Conditions: D.list({
+    StringExpression: {
+      Evaluate: { Attribute: 0, Analysis: i_IngressAnalysis },
+      Operator: 0,
+      Values: 0,
+    },
+    IpExpression: { Evaluate: { Attribute: 0 }, Operator: 0, Values: 0 },
+    Ipv6Expression: { Evaluate: { Attribute: 0 }, Operator: 0, Values: 0 },
+    TlsExpression: { Evaluate: { Attribute: 0 }, Operator: 0, Value: 0 },
+    BooleanExpression: {
+      Evaluate: {
+        Analysis: i_IngressAnalysis,
+        IsInAddressList: { Attribute: 0, AddressLists: 0 },
+      },
+      Operator: 0,
+    },
+  }),
+  Action: 0,
+});
+const i_RelayAuthentication: D.LazyStruct = () => ({
+  SecretArn: 0,
+  NoAuthentication: {},
+});
+const i_Rule: D.LazyStruct = () => ({
+  Name: 0,
+  Conditions: D.list(i_RuleCondition),
+  Unless: D.list(i_RuleCondition),
+  Actions: D.list({
+    Drop: {},
+    Relay: { ActionFailurePolicy: 0, Relay: 0, MailFrom: 0 },
+    Archive: { ActionFailurePolicy: 0, TargetArchive: 0 },
+    WriteToS3: {
+      ActionFailurePolicy: 0,
+      RoleArn: 0,
+      S3Bucket: 0,
+      S3Prefix: 0,
+      S3SseKmsKeyId: 0,
+    },
+    Send: { ActionFailurePolicy: 0, RoleArn: 0 },
+    AddHeader: { HeaderName: 0, HeaderValue: 0 },
+    ReplaceRecipient: { ReplaceWith: 0 },
+    DeliverToMailbox: { ActionFailurePolicy: 0, MailboxArn: 0, RoleArn: 0 },
+    DeliverToQBusiness: {
+      ActionFailurePolicy: 0,
+      ApplicationId: 0,
+      IndexId: 0,
+      RoleArn: 0,
+    },
+    PublishToSns: {
+      ActionFailurePolicy: 0,
+      TopicArn: 0,
+      RoleArn: 0,
+      Encoding: 0,
+      PayloadType: 0,
+    },
+    Bounce: {
+      ActionFailurePolicy: 0,
+      RoleArn: 0,
+      Sender: 0,
+      StatusCode: 0,
+      SmtpReplyCode: 0,
+      DiagnosticMessage: 0,
+      Message: 0,
+    },
+    InvokeLambda: {
+      ActionFailurePolicy: 0,
+      FunctionArn: 0,
+      InvocationType: 0,
+      RoleArn: 0,
+      RetryTimeMinutes: 0,
+    },
+  }),
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_ExportStatus: D.LazyStruct = () => ({
   SubmissionTimestamp: D.ts,
   CompletionTimestamp: D.ts,
@@ -3194,3 +3426,37 @@ const o_SearchStatus: D.LazyStruct = () => ({
   SubmissionTimestamp: D.ts,
   CompletionTimestamp: D.ts,
 });
+const i_ArchiveFilterCondition: D.LazyStruct = () => ({
+  StringExpression: { Evaluate: { Attribute: 0 }, Operator: 0, Values: 0 },
+  BooleanExpression: { Evaluate: { Attribute: 0 }, Operator: 0 },
+});
+const i_IngressAnalysis: D.LazyStruct = () => ({ Analyzer: 0, ResultField: 0 });
+const i_RuleCondition: D.LazyStruct = () => ({
+  BooleanExpression: {
+    Evaluate: {
+      Attribute: 0,
+      Analysis: i_Analysis,
+      IsInAddressList: { Attribute: 0, AddressLists: 0 },
+    },
+    Operator: 0,
+  },
+  StringExpression: {
+    Evaluate: {
+      Attribute: 0,
+      MimeHeaderAttribute: 0,
+      Analysis: i_Analysis,
+      ClientCertificateAttribute: 0,
+    },
+    Operator: 0,
+    Values: 0,
+  },
+  NumberExpression: { Evaluate: { Attribute: 0 }, Operator: 0, Value: 0 },
+  IpExpression: { Evaluate: { Attribute: 0 }, Operator: 0, Values: 0 },
+  VerdictExpression: {
+    Evaluate: { Attribute: 0, Analysis: i_Analysis },
+    Operator: 0,
+    Values: 0,
+  },
+  DmarcExpression: { Operator: 0, Values: 0 },
+});
+const i_Analysis: D.LazyStruct = () => ({ Analyzer: 0, ResultField: 0 });

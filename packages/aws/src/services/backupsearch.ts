@@ -370,6 +370,7 @@ export const getSearchJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /search-jobs/{SearchJobIdentifier}",
+    input: { SearchJobIdentifier: 0 },
     output: {
       CompletionTime: D.ts,
       SearchScope: {
@@ -410,6 +411,7 @@ export const getSearchResultExportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /export-search-jobs/{ExportJobIdentifier}",
+    input: { ExportJobIdentifier: 0 },
     output: { CreationTime: D.ts, CompletionTime: D.ts },
   },
   errors: [ResourceNotFoundException],
@@ -439,6 +441,7 @@ export const listSearchJobBackups: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /search-jobs/{SearchJobIdentifier}/backups",
     input: {
+      SearchJobIdentifier: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -475,6 +478,7 @@ export const listSearchJobResults: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /search-jobs/{SearchJobIdentifier}/search-results",
     input: {
+      SearchJobIdentifier: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -585,7 +589,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -611,6 +619,34 @@ export const startSearchJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /search-jobs",
+    input: {
+      Tags: 0,
+      Name: 0,
+      EncryptionKeyArn: 0,
+      ClientToken: 0,
+      SearchScope: {
+        BackupResourceTypes: 0,
+        BackupResourceCreationTime: { CreatedAfter: 0, CreatedBefore: 0 },
+        SourceResourceArns: 0,
+        BackupResourceArns: 0,
+        BackupResourceTags: 0,
+      },
+      ItemFilters: {
+        S3ItemFilters: D.list({
+          ObjectKeys: D.list(i_StringCondition),
+          Sizes: D.list(i_LongCondition),
+          CreationTimes: D.list(i_TimeCondition),
+          VersionIds: D.list(i_StringCondition),
+          ETags: D.list(i_StringCondition),
+        }),
+        EBSItemFilters: D.list({
+          FilePaths: D.list(i_StringCondition),
+          Sizes: D.list(i_LongCondition),
+          CreationTimes: D.list(i_TimeCondition),
+          LastModificationTimes: D.list(i_TimeCondition),
+        }),
+      },
+    },
     output: { CreationTime: D.ts },
     body: true,
   },
@@ -638,7 +674,20 @@ export const startSearchResultExportJob: API.OperationMethod<
   StartSearchResultExportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /export-search-jobs", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /export-search-jobs",
+    input: {
+      SearchJobIdentifier: 0,
+      ExportSpecification: {
+        s3ExportSpecification: { DestinationBucket: 0, DestinationPrefix: 0 },
+      },
+      ClientToken: 0,
+      Tags: 0,
+      RoleArn: 0,
+    },
+    body: true,
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -667,6 +716,7 @@ export const stopSearchJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /search-jobs/{SearchJobIdentifier}/actions/cancel",
+    input: { SearchJobIdentifier: 0 },
   },
   errors: [ConflictException, ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -684,7 +734,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -704,7 +759,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -712,4 +767,7 @@ export const untagResource: API.OperationMethod<
   operationName: "UntagResource",
 })) as any;
 
+const i_LongCondition: D.LazyStruct = () => ({ Value: 0, Operator: 0 });
+const i_StringCondition: D.LazyStruct = () => ({ Value: 0, Operator: 0 });
+const i_TimeCondition: D.LazyStruct = () => ({ Value: 0, Operator: 0 });
 const o_TimeCondition: D.LazyStruct = () => ({ Value: D.ts });

@@ -1474,7 +1474,12 @@ export const addFacetToObject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/object/facets",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      SchemaFacet: i_SchemaFacet,
+      ObjectAttributeList: D.list(i_AttributeKeyAndValue),
+      ObjectReference: i_ObjectReference,
+    },
     body: true,
   },
   errors: [
@@ -1517,7 +1522,10 @@ export const applySchema: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/schema/apply",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      PublishedSchemaArn: 0,
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+    },
     body: true,
   },
   errors: [
@@ -1566,7 +1574,12 @@ export const attachObject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/object/attach",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      ParentReference: i_ObjectReference,
+      ChildReference: i_ObjectReference,
+      LinkName: 0,
+    },
     body: true,
   },
   errors: [
@@ -1611,7 +1624,11 @@ export const attachPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/policy/attach",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      PolicyReference: i_ObjectReference,
+      ObjectReference: i_ObjectReference,
+    },
     body: true,
   },
   errors: [
@@ -1656,7 +1673,11 @@ export const attachToIndex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/index/attach",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      IndexReference: i_ObjectReference,
+      TargetReference: i_ObjectReference,
+    },
     body: true,
   },
   errors: [
@@ -1702,7 +1723,13 @@ export const attachTypedLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/typedlink/attach",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      SourceObjectReference: i_ObjectReference,
+      TargetObjectReference: i_ObjectReference,
+      TypedLinkFacet: i_TypedLinkSchemaAndFacetName,
+      Attributes: D.list(i_AttributeNameAndValue),
+    },
     output: { TypedLinkSpecifier: o_TypedLinkSpecifier },
     body: true,
   },
@@ -1746,6 +1773,79 @@ export const batchRead: API.OperationMethod<
     http: "POST /amazonclouddirectory/2017-01-11/batchread",
     input: {
       DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      Operations: D.list({
+        ListObjectAttributes: {
+          ObjectReference: i_ObjectReference,
+          NextToken: 0,
+          MaxResults: 0,
+          FacetFilter: i_SchemaFacet,
+        },
+        ListObjectChildren: {
+          ObjectReference: i_ObjectReference,
+          NextToken: 0,
+          MaxResults: 0,
+        },
+        ListAttachedIndices: {
+          TargetReference: i_ObjectReference,
+          NextToken: 0,
+          MaxResults: 0,
+        },
+        ListObjectParentPaths: {
+          ObjectReference: i_ObjectReference,
+          NextToken: 0,
+          MaxResults: 0,
+        },
+        GetObjectInformation: { ObjectReference: i_ObjectReference },
+        GetObjectAttributes: {
+          ObjectReference: i_ObjectReference,
+          SchemaFacet: i_SchemaFacet,
+          AttributeNames: 0,
+        },
+        ListObjectParents: {
+          ObjectReference: i_ObjectReference,
+          NextToken: 0,
+          MaxResults: 0,
+        },
+        ListObjectPolicies: {
+          ObjectReference: i_ObjectReference,
+          NextToken: 0,
+          MaxResults: 0,
+        },
+        ListPolicyAttachments: {
+          PolicyReference: i_ObjectReference,
+          NextToken: 0,
+          MaxResults: 0,
+        },
+        LookupPolicy: {
+          ObjectReference: i_ObjectReference,
+          NextToken: 0,
+          MaxResults: 0,
+        },
+        ListIndex: {
+          RangesOnIndexedValues: D.list(i_ObjectAttributeRange),
+          IndexReference: i_ObjectReference,
+          MaxResults: 0,
+          NextToken: 0,
+        },
+        ListOutgoingTypedLinks: {
+          ObjectReference: i_ObjectReference,
+          FilterAttributeRanges: D.list(i_TypedLinkAttributeRange),
+          FilterTypedLink: i_TypedLinkSchemaAndFacetName,
+          NextToken: 0,
+          MaxResults: 0,
+        },
+        ListIncomingTypedLinks: {
+          ObjectReference: i_ObjectReference,
+          FilterAttributeRanges: D.list(i_TypedLinkAttributeRange),
+          FilterTypedLink: i_TypedLinkSchemaAndFacetName,
+          NextToken: 0,
+          MaxResults: 0,
+        },
+        GetLinkAttributes: {
+          TypedLinkSpecifier: i_TypedLinkSpecifier,
+          AttributeNames: 0,
+        },
+      }),
       ConsistencyLevel: D.m({ header: "x-amz-consistency-level" }),
     },
     output: {
@@ -1804,7 +1904,76 @@ export const batchWrite: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/batchwrite",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      Operations: D.list({
+        CreateObject: {
+          SchemaFacet: D.list(i_SchemaFacet),
+          ObjectAttributeList: D.list(i_AttributeKeyAndValue),
+          ParentReference: i_ObjectReference,
+          LinkName: 0,
+          BatchReferenceName: 0,
+        },
+        AttachObject: {
+          ParentReference: i_ObjectReference,
+          ChildReference: i_ObjectReference,
+          LinkName: 0,
+        },
+        DetachObject: {
+          ParentReference: i_ObjectReference,
+          LinkName: 0,
+          BatchReferenceName: 0,
+        },
+        UpdateObjectAttributes: {
+          ObjectReference: i_ObjectReference,
+          AttributeUpdates: D.list(i_ObjectAttributeUpdate),
+        },
+        DeleteObject: { ObjectReference: i_ObjectReference },
+        AddFacetToObject: {
+          SchemaFacet: i_SchemaFacet,
+          ObjectAttributeList: D.list(i_AttributeKeyAndValue),
+          ObjectReference: i_ObjectReference,
+        },
+        RemoveFacetFromObject: {
+          SchemaFacet: i_SchemaFacet,
+          ObjectReference: i_ObjectReference,
+        },
+        AttachPolicy: {
+          PolicyReference: i_ObjectReference,
+          ObjectReference: i_ObjectReference,
+        },
+        DetachPolicy: {
+          PolicyReference: i_ObjectReference,
+          ObjectReference: i_ObjectReference,
+        },
+        CreateIndex: {
+          OrderedIndexedAttributeList: D.list(i_AttributeKey),
+          IsUnique: 0,
+          ParentReference: i_ObjectReference,
+          LinkName: 0,
+          BatchReferenceName: 0,
+        },
+        AttachToIndex: {
+          IndexReference: i_ObjectReference,
+          TargetReference: i_ObjectReference,
+        },
+        DetachFromIndex: {
+          IndexReference: i_ObjectReference,
+          TargetReference: i_ObjectReference,
+        },
+        AttachTypedLink: {
+          SourceObjectReference: i_ObjectReference,
+          TargetObjectReference: i_ObjectReference,
+          TypedLinkFacet: i_TypedLinkSchemaAndFacetName,
+          Attributes: D.list(i_AttributeNameAndValue),
+        },
+        DetachTypedLink: { TypedLinkSpecifier: i_TypedLinkSpecifier },
+        UpdateLinkAttributes: {
+          TypedLinkSpecifier: i_TypedLinkSpecifier,
+          AttributeUpdates: D.list(i_LinkAttributeUpdate),
+        },
+      }),
+    },
     output: {
       Responses: D.list({
         AttachTypedLink: { TypedLinkSpecifier: o_TypedLinkSpecifier },
@@ -1853,7 +2022,7 @@ export const createDirectory: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/directory/create",
-    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }) },
+    input: { Name: 0, SchemaArn: D.m({ header: "x-amz-data-partition" }) },
     body: true,
   },
   errors: [
@@ -1896,7 +2065,13 @@ export const createFacet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/facet/create",
-    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      SchemaArn: D.m({ header: "x-amz-data-partition" }),
+      Name: 0,
+      Attributes: D.list(i_FacetAttribute),
+      ObjectType: 0,
+      FacetStyle: 0,
+    },
     body: true,
   },
   errors: [
@@ -1941,7 +2116,13 @@ export const createIndex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/index",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      OrderedIndexedAttributeList: D.list(i_AttributeKey),
+      IsUnique: 0,
+      ParentReference: i_ObjectReference,
+      LinkName: 0,
+    },
     body: true,
   },
   errors: [
@@ -1990,7 +2171,13 @@ export const createObject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/object",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      SchemaFacets: D.list(i_SchemaFacet),
+      ObjectAttributeList: D.list(i_AttributeKeyAndValue),
+      ParentReference: i_ObjectReference,
+      LinkName: 0,
+    },
     body: true,
   },
   errors: [
@@ -2044,6 +2231,7 @@ export const createSchema: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/schema/create",
+    input: { Name: 0 },
     body: true,
   },
   errors: [
@@ -2084,7 +2272,14 @@ export const createTypedLinkFacet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/typedlink/facet/create",
-    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      SchemaArn: D.m({ header: "x-amz-data-partition" }),
+      Facet: {
+        Name: 0,
+        Attributes: D.list(i_TypedLinkAttributeDefinition),
+        IdentityAttributeOrder: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -2172,7 +2367,7 @@ export const deleteFacet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/facet/delete",
-    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }) },
+    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }), Name: 0 },
     body: true,
   },
   errors: [
@@ -2215,7 +2410,10 @@ export const deleteObject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/object/delete",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      ObjectReference: i_ObjectReference,
+    },
     body: true,
   },
   errors: [
@@ -2295,7 +2493,7 @@ export const deleteTypedLinkFacet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/typedlink/facet/delete",
-    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }) },
+    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }), Name: 0 },
     body: true,
   },
   errors: [
@@ -2337,7 +2535,11 @@ export const detachFromIndex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/index/detach",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      IndexReference: i_ObjectReference,
+      TargetReference: i_ObjectReference,
+    },
     body: true,
   },
   errors: [
@@ -2381,7 +2583,11 @@ export const detachObject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/object/detach",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      ParentReference: i_ObjectReference,
+      LinkName: 0,
+    },
     body: true,
   },
   errors: [
@@ -2423,7 +2629,11 @@ export const detachPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/policy/detach",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      PolicyReference: i_ObjectReference,
+      ObjectReference: i_ObjectReference,
+    },
     body: true,
   },
   errors: [
@@ -2465,7 +2675,10 @@ export const detachTypedLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/typedlink/detach",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      TypedLinkSpecifier: i_TypedLinkSpecifier,
+    },
     body: true,
   },
   errors: [
@@ -2585,6 +2798,7 @@ export const getAppliedSchemaVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /amazonclouddirectory/2017-01-11/schema/getappliedschema",
+    input: { SchemaArn: 0 },
     body: true,
   },
   errors: [
@@ -2660,7 +2874,7 @@ export const getFacet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /amazonclouddirectory/2017-01-11/facet",
-    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }) },
+    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }), Name: 0 },
     body: true,
   },
   errors: [
@@ -2701,7 +2915,12 @@ export const getLinkAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /amazonclouddirectory/2017-01-11/typedlink/attributes/get",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      TypedLinkSpecifier: i_TypedLinkSpecifier,
+      AttributeNames: 0,
+      ConsistencyLevel: 0,
+    },
     output: { Attributes: D.list(o_AttributeKeyAndValue) },
     body: true,
   },
@@ -2746,7 +2965,10 @@ export const getObjectAttributes: API.OperationMethod<
     http: "POST /amazonclouddirectory/2017-01-11/object/attributes/get",
     input: {
       DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      ObjectReference: i_ObjectReference,
       ConsistencyLevel: D.m({ header: "x-amz-consistency-level" }),
+      SchemaFacet: i_SchemaFacet,
+      AttributeNames: 0,
     },
     output: { Attributes: D.list(o_AttributeKeyAndValue) },
     body: true,
@@ -2791,6 +3013,7 @@ export const getObjectInformation: API.OperationMethod<
     http: "POST /amazonclouddirectory/2017-01-11/object/information",
     input: {
       DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      ObjectReference: i_ObjectReference,
       ConsistencyLevel: D.m({ header: "x-amz-consistency-level" }),
     },
     body: true,
@@ -2870,7 +3093,7 @@ export const getTypedLinkFacetInformation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /amazonclouddirectory/2017-01-11/typedlink/facet/get",
-    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }) },
+    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }), Name: 0 },
     body: true,
   },
   errors: [
@@ -2912,6 +3135,7 @@ export const listAppliedSchemaArns: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /amazonclouddirectory/2017-01-11/schema/applied",
+    input: { DirectoryArn: 0, SchemaArn: 0, NextToken: 0, MaxResults: 0 },
     body: true,
   },
   errors: [
@@ -2959,6 +3183,9 @@ export const listAttachedIndices: API.PaginatedOperationMethod<
     http: "POST /amazonclouddirectory/2017-01-11/object/indices",
     input: {
       DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      TargetReference: i_ObjectReference,
+      NextToken: 0,
+      MaxResults: 0,
       ConsistencyLevel: D.m({ header: "x-amz-consistency-level" }),
     },
     output: { IndexAttachments: D.list(o_IndexAttachment) },
@@ -3008,6 +3235,7 @@ export const listDevelopmentSchemaArns: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /amazonclouddirectory/2017-01-11/schema/development",
+    input: { NextToken: 0, MaxResults: 0 },
     body: true,
   },
   errors: [
@@ -3052,6 +3280,7 @@ export const listDirectories: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /amazonclouddirectory/2017-01-11/directory/list",
+    input: { NextToken: 0, MaxResults: 0, state: 0 },
     output: { Directories: D.list(o_Directory) },
     body: true,
   },
@@ -3098,7 +3327,12 @@ export const listFacetAttributes: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /amazonclouddirectory/2017-01-11/facet/attributes",
-    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      SchemaArn: D.m({ header: "x-amz-data-partition" }),
+      Name: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       Attributes: D.list({
         AttributeDefinition: { DefaultValue: o_TypedAttributeValue },
@@ -3150,7 +3384,11 @@ export const listFacetNames: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /amazonclouddirectory/2017-01-11/facet/list",
-    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      SchemaArn: D.m({ header: "x-amz-data-partition" }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -3199,7 +3437,15 @@ export const listIncomingTypedLinks: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /amazonclouddirectory/2017-01-11/typedlink/incoming",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      ObjectReference: i_ObjectReference,
+      FilterAttributeRanges: D.list(i_TypedLinkAttributeRange),
+      FilterTypedLink: i_TypedLinkSchemaAndFacetName,
+      NextToken: 0,
+      MaxResults: 0,
+      ConsistencyLevel: 0,
+    },
     output: { LinkSpecifiers: D.list(o_TypedLinkSpecifier) },
     body: true,
   },
@@ -3248,6 +3494,10 @@ export const listIndex: API.PaginatedOperationMethod<
     http: "POST /amazonclouddirectory/2017-01-11/index/targets",
     input: {
       DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      RangesOnIndexedValues: D.list(i_ObjectAttributeRange),
+      IndexReference: i_ObjectReference,
+      MaxResults: 0,
+      NextToken: 0,
       ConsistencyLevel: D.m({ header: "x-amz-consistency-level" }),
     },
     output: { IndexAttachments: D.list(o_IndexAttachment) },
@@ -3297,6 +3547,7 @@ export const listManagedSchemaArns: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /amazonclouddirectory/2017-01-11/schema/managed",
+    input: { SchemaArn: 0, NextToken: 0, MaxResults: 0 },
     body: true,
   },
   errors: [
@@ -3344,7 +3595,11 @@ export const listObjectAttributes: API.PaginatedOperationMethod<
     http: "POST /amazonclouddirectory/2017-01-11/object/attributes",
     input: {
       DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      ObjectReference: i_ObjectReference,
+      NextToken: 0,
+      MaxResults: 0,
       ConsistencyLevel: D.m({ header: "x-amz-consistency-level" }),
+      FacetFilter: i_SchemaFacet,
     },
     output: { Attributes: D.list(o_AttributeKeyAndValue) },
     body: true,
@@ -3399,6 +3654,9 @@ export const listObjectChildren: API.PaginatedOperationMethod<
     http: "POST /amazonclouddirectory/2017-01-11/object/children",
     input: {
       DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      ObjectReference: i_ObjectReference,
+      NextToken: 0,
+      MaxResults: 0,
       ConsistencyLevel: D.m({ header: "x-amz-consistency-level" }),
     },
     body: true,
@@ -3457,7 +3715,12 @@ export const listObjectParentPaths: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /amazonclouddirectory/2017-01-11/object/parentpaths",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      ObjectReference: i_ObjectReference,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -3509,7 +3772,11 @@ export const listObjectParents: API.PaginatedOperationMethod<
     http: "POST /amazonclouddirectory/2017-01-11/object/parent",
     input: {
       DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      ObjectReference: i_ObjectReference,
+      NextToken: 0,
+      MaxResults: 0,
       ConsistencyLevel: D.m({ header: "x-amz-consistency-level" }),
+      IncludeAllLinksToEachParent: 0,
     },
     body: true,
   },
@@ -3561,6 +3828,9 @@ export const listObjectPolicies: API.PaginatedOperationMethod<
     http: "POST /amazonclouddirectory/2017-01-11/object/policy",
     input: {
       DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      ObjectReference: i_ObjectReference,
+      NextToken: 0,
+      MaxResults: 0,
       ConsistencyLevel: D.m({ header: "x-amz-consistency-level" }),
     },
     body: true,
@@ -3612,7 +3882,15 @@ export const listOutgoingTypedLinks: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /amazonclouddirectory/2017-01-11/typedlink/outgoing",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      ObjectReference: i_ObjectReference,
+      FilterAttributeRanges: D.list(i_TypedLinkAttributeRange),
+      FilterTypedLink: i_TypedLinkSchemaAndFacetName,
+      NextToken: 0,
+      MaxResults: 0,
+      ConsistencyLevel: 0,
+    },
     output: { TypedLinkSpecifiers: D.list(o_TypedLinkSpecifier) },
     body: true,
   },
@@ -3660,6 +3938,9 @@ export const listPolicyAttachments: API.PaginatedOperationMethod<
     http: "POST /amazonclouddirectory/2017-01-11/policy/attachment",
     input: {
       DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      PolicyReference: i_ObjectReference,
+      NextToken: 0,
+      MaxResults: 0,
       ConsistencyLevel: D.m({ header: "x-amz-consistency-level" }),
     },
     body: true,
@@ -3709,6 +3990,7 @@ export const listPublishedSchemaArns: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /amazonclouddirectory/2017-01-11/schema/published",
+    input: { SchemaArn: 0, NextToken: 0, MaxResults: 0 },
     body: true,
   },
   errors: [
@@ -3756,6 +4038,7 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /amazonclouddirectory/2017-01-11/tags",
+    input: { ResourceArn: 0, NextToken: 0, MaxResults: 0 },
     body: true,
   },
   errors: [
@@ -3802,7 +4085,12 @@ export const listTypedLinkFacetAttributes: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /amazonclouddirectory/2017-01-11/typedlink/facet/attributes",
-    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      SchemaArn: D.m({ header: "x-amz-data-partition" }),
+      Name: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { Attributes: D.list({ DefaultValue: o_TypedAttributeValue }) },
     body: true,
   },
@@ -3851,7 +4139,11 @@ export const listTypedLinkFacetNames: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /amazonclouddirectory/2017-01-11/typedlink/facet/list",
-    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      SchemaArn: D.m({ header: "x-amz-data-partition" }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -3903,7 +4195,12 @@ export const lookupPolicy: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /amazonclouddirectory/2017-01-11/policy/lookup",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      ObjectReference: i_ObjectReference,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -3949,7 +4246,12 @@ export const publishSchema: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/schema/publish",
-    input: { DevelopmentSchemaArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DevelopmentSchemaArn: D.m({ header: "x-amz-data-partition" }),
+      Version: 0,
+      MinorVersion: 0,
+      Name: 0,
+    },
     body: true,
   },
   errors: [
@@ -3989,7 +4291,7 @@ export const putSchemaFromJson: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/schema/json",
-    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }) },
+    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }), Document: 0 },
     body: true,
   },
   errors: [
@@ -4030,7 +4332,11 @@ export const removeFacetFromObject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/object/facets/delete",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      SchemaFacet: i_SchemaFacet,
+      ObjectReference: i_ObjectReference,
+    },
     body: true,
   },
   errors: [
@@ -4071,6 +4377,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/tags/add",
+    input: { ResourceArn: 0, Tags: D.list({ Key: 0, Value: 0 }) },
     body: true,
   },
   errors: [
@@ -4110,6 +4417,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/tags/remove",
+    input: { ResourceArn: 0, TagKeys: 0 },
     body: true,
   },
   errors: [
@@ -4158,7 +4466,12 @@ export const updateFacet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/facet",
-    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      SchemaArn: D.m({ header: "x-amz-data-partition" }),
+      Name: 0,
+      AttributeUpdates: D.list({ Attribute: i_FacetAttribute, Action: 0 }),
+      ObjectType: 0,
+    },
     body: true,
   },
   errors: [
@@ -4202,7 +4515,11 @@ export const updateLinkAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /amazonclouddirectory/2017-01-11/typedlink/attributes/update",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      TypedLinkSpecifier: i_TypedLinkSpecifier,
+      AttributeUpdates: D.list(i_LinkAttributeUpdate),
+    },
     body: true,
   },
   errors: [
@@ -4245,7 +4562,11 @@ export const updateObjectAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/object/update",
-    input: { DirectoryArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      DirectoryArn: D.m({ header: "x-amz-data-partition" }),
+      ObjectReference: i_ObjectReference,
+      AttributeUpdates: D.list(i_ObjectAttributeUpdate),
+    },
     body: true,
   },
   errors: [
@@ -4287,7 +4608,7 @@ export const updateSchema: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/schema/update",
-    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }) },
+    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }), Name: 0 },
     body: true,
   },
   errors: [
@@ -4329,7 +4650,15 @@ export const updateTypedLinkFacet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/typedlink/facet",
-    input: { SchemaArn: D.m({ header: "x-amz-data-partition" }) },
+    input: {
+      SchemaArn: D.m({ header: "x-amz-data-partition" }),
+      Name: 0,
+      AttributeUpdates: D.list({
+        Attribute: i_TypedLinkAttributeDefinition,
+        Action: 0,
+      }),
+      IdentityAttributeOrder: 0,
+    },
     body: true,
   },
   errors: [
@@ -4373,6 +4702,7 @@ export const upgradeAppliedSchema: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/schema/upgradeapplied",
+    input: { PublishedSchemaArn: 0, DirectoryArn: 0, DryRun: 0 },
     body: true,
   },
   errors: [
@@ -4414,6 +4744,12 @@ export const upgradePublishedSchema: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /amazonclouddirectory/2017-01-11/schema/upgradepublished",
+    input: {
+      DevelopmentSchemaArn: 0,
+      PublishedSchemaArn: 0,
+      MinorVersion: 0,
+      DryRun: 0,
+    },
     body: true,
   },
   errors: [
@@ -4432,6 +4768,72 @@ export const upgradePublishedSchema: API.OperationMethod<
   operationName: "UpgradePublishedSchema",
 })) as any;
 
+const i_AttributeKey: D.LazyStruct = () => ({
+  SchemaArn: 0,
+  FacetName: 0,
+  Name: 0,
+});
+const i_AttributeKeyAndValue: D.LazyStruct = () => ({
+  Key: i_AttributeKey,
+  Value: i_TypedAttributeValue,
+});
+const i_AttributeNameAndValue: D.LazyStruct = () => ({
+  AttributeName: 0,
+  Value: i_TypedAttributeValue,
+});
+const i_FacetAttribute: D.LazyStruct = () => ({
+  Name: 0,
+  AttributeDefinition: {
+    Type: 0,
+    DefaultValue: i_TypedAttributeValue,
+    IsImmutable: 0,
+    Rules: D.map(i_Rule),
+  },
+  AttributeReference: { TargetFacetName: 0, TargetAttributeName: 0 },
+  RequiredBehavior: 0,
+});
+const i_LinkAttributeUpdate: D.LazyStruct = () => ({
+  AttributeKey: i_AttributeKey,
+  AttributeAction: {
+    AttributeActionType: 0,
+    AttributeUpdateValue: i_TypedAttributeValue,
+  },
+});
+const i_ObjectAttributeRange: D.LazyStruct = () => ({
+  AttributeKey: i_AttributeKey,
+  Range: i_TypedAttributeValueRange,
+});
+const i_ObjectAttributeUpdate: D.LazyStruct = () => ({
+  ObjectAttributeKey: i_AttributeKey,
+  ObjectAttributeAction: {
+    ObjectAttributeActionType: 0,
+    ObjectAttributeUpdateValue: i_TypedAttributeValue,
+  },
+});
+const i_ObjectReference: D.LazyStruct = () => ({ Selector: 0 });
+const i_SchemaFacet: D.LazyStruct = () => ({ SchemaArn: 0, FacetName: 0 });
+const i_TypedLinkAttributeDefinition: D.LazyStruct = () => ({
+  Name: 0,
+  Type: 0,
+  DefaultValue: i_TypedAttributeValue,
+  IsImmutable: 0,
+  Rules: D.map(i_Rule),
+  RequiredBehavior: 0,
+});
+const i_TypedLinkAttributeRange: D.LazyStruct = () => ({
+  AttributeName: 0,
+  Range: i_TypedAttributeValueRange,
+});
+const i_TypedLinkSchemaAndFacetName: D.LazyStruct = () => ({
+  SchemaArn: 0,
+  TypedLinkName: 0,
+});
+const i_TypedLinkSpecifier: D.LazyStruct = () => ({
+  TypedLinkFacet: i_TypedLinkSchemaAndFacetName,
+  SourceObjectReference: i_ObjectReference,
+  TargetObjectReference: i_ObjectReference,
+  IdentityAttributeValues: D.list(i_AttributeNameAndValue),
+});
 const o_AttributeKeyAndValue: D.LazyStruct = () => ({
   Value: o_TypedAttributeValue,
 });
@@ -4445,4 +4847,18 @@ const o_TypedAttributeValue: D.LazyStruct = () => ({
 });
 const o_TypedLinkSpecifier: D.LazyStruct = () => ({
   IdentityAttributeValues: D.list({ Value: o_TypedAttributeValue }),
+});
+const i_Rule: D.LazyStruct = () => ({ Type: 0, Parameters: 0 });
+const i_TypedAttributeValue: D.LazyStruct = () => ({
+  StringValue: 0,
+  BinaryValue: 0,
+  BooleanValue: 0,
+  NumberValue: 0,
+  DatetimeValue: 0,
+});
+const i_TypedAttributeValueRange: D.LazyStruct = () => ({
+  StartMode: 0,
+  StartValue: i_TypedAttributeValue,
+  EndMode: 0,
+  EndValue: i_TypedAttributeValue,
 });

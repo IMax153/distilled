@@ -371,6 +371,7 @@ export const deleteConnection: API.OperationMethod<
     service: svc,
     http: "DELETE /connections/{clientId}",
     input: {
+      clientId: 0,
       cleanSession: D.m({ query: "cleanSession" }),
       preventWillMessage: D.m({ query: "preventWillMessage" }),
     },
@@ -414,8 +415,8 @@ export const deleteThingShadow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /things/{thingName}/shadow",
-    input: { shadowName: D.m({ query: "name" }) },
-    output: { payload: D.m({ payload: true, shape: D.stream }) },
+    input: { thingName: 0, shadowName: D.m({ query: "name" }) },
+    output: { payload: D.m({ payload: true, shape: D.blob }) },
   },
   errors: [
     InternalFailureException,
@@ -455,6 +456,7 @@ export const getConnection: API.OperationMethod<
     service: svc,
     http: "GET /connections/{clientId}",
     input: {
+      clientId: 0,
       includeSocketInformation: D.m({ query: "includeSocketInformation" }),
     },
   },
@@ -501,6 +503,7 @@ export const getRetainedMessage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /retainedMessage/{topic}",
+    input: { topic: 0 },
     output: { payload: D.blob, userProperties: D.blob },
   },
   errors: [
@@ -546,8 +549,8 @@ export const getThingShadow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /things/{thingName}/shadow",
-    input: { shadowName: D.m({ query: "name" }) },
-    output: { payload: D.m({ payload: true, shape: D.stream }) },
+    input: { thingName: 0, shadowName: D.m({ query: "name" }) },
+    output: { payload: D.m({ payload: true, shape: D.blob }) },
   },
   errors: [
     InternalFailureException,
@@ -590,6 +593,7 @@ export const listNamedShadowsForThing: API.OperationMethod<
     service: svc,
     http: "GET /api/things/shadow/ListNamedShadowsForThing/{thingName}",
     input: {
+      thingName: 0,
       nextToken: D.m({ query: "nextToken" }),
       pageSize: D.m({ query: "pageSize" }),
     },
@@ -692,6 +696,7 @@ export const listSubscriptions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /connections/{clientId}/subscriptions",
     input: {
+      clientId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -744,9 +749,10 @@ export const publish: API.OperationMethod<
     service: svc,
     http: "POST /topics/{topic}",
     input: {
+      topic: 0,
       qos: D.m({ query: "qos" }),
       retain: D.m({ query: "retain" }),
-      payload: D.m({ payload: true, shape: D.stream }),
+      payload: D.m({ payload: true, shape: D.blob }),
       userProperties: D.m({ header: "x-amz-mqtt5-user-properties" }),
       payloadFormatIndicator: D.m({
         header: "x-amz-mqtt5-payload-format-indicator",
@@ -801,12 +807,13 @@ export const sendDirectMessage: API.OperationMethod<
     service: svc,
     http: "POST /connections/{clientId}/messages",
     input: {
+      clientId: 0,
       topic: D.m({ query: "topic" }),
       contentType: D.m({ query: "contentType" }),
       responseTopic: D.m({ query: "responseTopic" }),
       confirmation: D.m({ query: "confirmation" }),
       timeout: D.m({ query: "timeout" }),
-      payload: D.m({ payload: true, shape: D.stream }),
+      payload: D.m({ payload: true, shape: D.blob }),
       userProperties: D.m({ header: "x-amz-mqtt5-user-properties" }),
       payloadFormatIndicator: D.m({
         header: "x-amz-mqtt5-payload-format-indicator",
@@ -859,10 +866,11 @@ export const updateThingShadow: API.OperationMethod<
     service: svc,
     http: "POST /things/{thingName}/shadow",
     input: {
+      thingName: 0,
       shadowName: D.m({ query: "name" }),
-      payload: D.m({ payload: true, shape: D.stream }),
+      payload: D.m({ payload: true, shape: D.blob }),
     },
-    output: { payload: D.m({ payload: true, shape: D.stream }) },
+    output: { payload: D.m({ payload: true, shape: D.blob }) },
   },
   errors: [
     ConflictException,

@@ -893,6 +893,7 @@ export const batchAssociateClientDeviceWithCoreDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/v2/coreDevices/{coreDeviceThingName}/associateClientDevices",
+    input: { entries: D.list({ thingName: 0 }), coreDeviceThingName: 0 },
     body: true,
   },
   errors: [
@@ -928,6 +929,7 @@ export const batchDisassociateClientDeviceFromCoreDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/v2/coreDevices/{coreDeviceThingName}/disassociateClientDevices",
+    input: { entries: D.list({ thingName: 0 }), coreDeviceThingName: 0 },
     body: true,
   },
   errors: [
@@ -964,6 +966,7 @@ export const cancelDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/v2/deployments/{deploymentId}/cancel",
+    input: { deploymentId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1028,7 +1031,47 @@ export const createComponentVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/v2/createComponentVersion",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      inlineRecipe: 0,
+      lambdaFunction: {
+        lambdaArn: 0,
+        componentName: 0,
+        componentVersion: 0,
+        componentPlatforms: D.list(i_ComponentPlatform),
+        componentDependencies: D.map({
+          versionRequirement: 0,
+          dependencyType: 0,
+        }),
+        componentLambdaParameters: {
+          eventSources: D.list({ topic: 0, type: 0 }),
+          maxQueueSize: 0,
+          maxInstancesCount: 0,
+          maxIdleTimeInSeconds: 0,
+          timeoutInSeconds: 0,
+          statusTimeoutInSeconds: 0,
+          pinned: 0,
+          inputPayloadEncodingType: 0,
+          execArgs: 0,
+          environmentVariables: 0,
+          linuxProcessParams: {
+            isolationMode: 0,
+            containerParams: {
+              memorySizeInKB: 0,
+              mountROSysfs: 0,
+              volumes: D.list({
+                sourcePath: 0,
+                destinationPath: 0,
+                permission: 0,
+                addGroupOwner: 0,
+              }),
+              devices: D.list({ path: 0, permission: 0, addGroupOwner: 0 }),
+            },
+          },
+        },
+      },
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { creationTimestamp: D.ts },
     body: true,
   },
@@ -1080,7 +1123,49 @@ export const createDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/v2/deployments",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      targetArn: 0,
+      deploymentName: 0,
+      components: D.map({
+        componentVersion: 0,
+        configurationUpdate: { merge: 0, reset: 0 },
+        runWith: {
+          posixUser: 0,
+          systemResourceLimits: { memory: 0, cpus: 0 },
+          windowsUser: 0,
+        },
+      }),
+      iotJobConfiguration: {
+        jobExecutionsRolloutConfig: {
+          exponentialRate: {
+            baseRatePerMinute: 0,
+            incrementFactor: 0,
+            rateIncreaseCriteria: {
+              numberOfNotifiedThings: 0,
+              numberOfSucceededThings: 0,
+            },
+          },
+          maximumPerMinute: 0,
+        },
+        abortConfig: {
+          criteriaList: D.list({
+            failureType: 0,
+            action: 0,
+            thresholdPercentage: 0,
+            minNumberOfExecutedThings: 0,
+          }),
+        },
+        timeoutConfig: { inProgressTimeoutInMinutes: 0 },
+      },
+      deploymentPolicies: {
+        failureHandlingPolicy: 0,
+        componentUpdatePolicy: { timeoutInSeconds: 0, action: 0 },
+        configurationValidationPolicy: { timeoutInSeconds: 0 },
+      },
+      parentTargetArn: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1119,7 +1204,11 @@ export const deleteComponent: API.OperationMethod<
   DeleteComponentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /greengrass/v2/components/{arn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /greengrass/v2/components/{arn}",
+    input: { arn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1156,6 +1245,7 @@ export const deleteCoreDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /greengrass/v2/coreDevices/{coreDeviceThingName}",
+    input: { coreDeviceThingName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1195,6 +1285,7 @@ export const deleteDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /greengrass/v2/deployments/{deploymentId}",
+    input: { deploymentId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1228,6 +1319,7 @@ export const describeComponent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/v2/components/{arn}/metadata",
+    input: { arn: 0 },
     output: { creationTimestamp: D.ts },
   },
   errors: [
@@ -1260,6 +1352,7 @@ export const disassociateServiceRoleFromAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /greengrass/servicerole",
+    input: {},
     output: { disassociatedAt: D.m({ wire: "DisassociatedAt" }) },
   },
   errors: [InternalServerException],
@@ -1287,7 +1380,7 @@ export const getComponent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/v2/components/{arn}",
-    input: { recipeOutputFormat: D.m({ query: "recipeOutputFormat" }) },
+    input: { recipeOutputFormat: D.m({ query: "recipeOutputFormat" }), arn: 0 },
     output: { recipe: D.blob },
   },
   errors: [
@@ -1324,6 +1417,8 @@ export const getComponentVersionArtifact: API.OperationMethod<
     service: svc,
     http: "GET /greengrass/v2/components/{arn}/artifacts/{artifactName+}",
     input: {
+      arn: 0,
+      artifactName: 0,
       s3EndpointType: D.m({ query: "s3EndpointType" }),
       iotEndpointType: D.m({ header: "x-amz-iot-endpoint-type" }),
     },
@@ -1363,6 +1458,7 @@ export const getConnectivityInfo: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/things/{thingName}/connectivityInfo",
+    input: { thingName: 0 },
     output: {
       connectivityInfo: D.m({
         wire: "ConnectivityInfo",
@@ -1420,6 +1516,7 @@ export const getCoreDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/v2/coreDevices/{coreDeviceThingName}",
+    input: { coreDeviceThingName: 0 },
     output: { lastStatusUpdateTimestamp: D.ts },
   },
   errors: [
@@ -1453,6 +1550,7 @@ export const getDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/v2/deployments/{deploymentId}",
+    input: { deploymentId: 0 },
     output: { creationTimestamp: D.ts },
   },
   errors: [
@@ -1485,6 +1583,7 @@ export const getServiceRoleForAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/servicerole",
+    input: {},
     output: {
       associatedAt: D.m({ wire: "AssociatedAt" }),
       roleArn: D.m({ wire: "RoleArn" }),
@@ -1518,6 +1617,7 @@ export const listClientDevicesAssociatedWithCoreDevice: API.PaginatedOperationMe
     service: svc,
     http: "GET /greengrass/v2/coreDevices/{coreDeviceThingName}/associatedClientDevices",
     input: {
+      coreDeviceThingName: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -1611,6 +1711,7 @@ export const listComponentVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /greengrass/v2/components/{arn}/versions",
     input: {
+      arn: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -1768,6 +1869,7 @@ export const listEffectiveDeployments: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /greengrass/v2/coreDevices/{coreDeviceThingName}/effectiveDeployments",
     input: {
+      coreDeviceThingName: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -1839,6 +1941,7 @@ export const listInstalledComponents: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /greengrass/v2/coreDevices/{coreDeviceThingName}/installedComponents",
     input: {
+      coreDeviceThingName: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
       topologyFilter: D.m({ query: "topologyFilter" }),
@@ -1882,7 +1985,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1928,6 +2035,14 @@ export const resolveComponentCandidates: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/v2/resolveComponentCandidates",
+    input: {
+      platform: i_ComponentPlatform,
+      componentCandidates: D.list({
+        componentName: 0,
+        componentVersion: 0,
+        versionRequirements: 0,
+      }),
+    },
     output: { resolvedComponentVersions: D.list({ recipe: D.blob }) },
     body: true,
   },
@@ -1959,7 +2074,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1987,7 +2107,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -2023,6 +2143,7 @@ export const updateConnectivityInfo: API.OperationMethod<
     service: svc,
     http: "PUT /greengrass/things/{thingName}/connectivityInfo",
     input: {
+      thingName: 0,
       connectivityInfo: D.m({
         wire: "ConnectivityInfo",
         shape: D.list({
@@ -2044,3 +2165,5 @@ export const updateConnectivityInfo: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateConnectivityInfo",
 })) as any;
+
+const i_ComponentPlatform: D.LazyStruct = () => ({ name: 0, attributes: 0 });

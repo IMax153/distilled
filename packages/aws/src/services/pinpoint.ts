@@ -5995,7 +5995,12 @@ export const createApp: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apps",
-    input: { CreateApplicationRequest: D.m({ payload: true }) },
+    input: {
+      CreateApplicationRequest: D.m({
+        payload: true,
+        shape: { Name: 0, tags: 0 },
+      }),
+    },
     output: { ApplicationResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -6033,7 +6038,13 @@ export const createCampaign: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apps/{ApplicationId}/campaigns",
-    input: { WriteCampaignRequest: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      WriteCampaignRequest: D.m({
+        payload: true,
+        shape: i_WriteCampaignRequest,
+      }),
+    },
     output: { CampaignResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -6069,7 +6080,13 @@ export const createEmailTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/templates/{TemplateName}/email",
-    input: { EmailTemplateRequest: D.m({ payload: true }) },
+    input: {
+      EmailTemplateRequest: D.m({
+        payload: true,
+        shape: i_EmailTemplateRequest,
+      }),
+      TemplateName: 0,
+    },
     output: { CreateTemplateMessageBody: D.m({ payload: true }) },
   },
   errors: [
@@ -6105,7 +6122,13 @@ export const createExportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apps/{ApplicationId}/jobs/export",
-    input: { ExportJobRequest: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      ExportJobRequest: D.m({
+        payload: true,
+        shape: { RoleArn: 0, S3UrlPrefix: 0, SegmentId: 0, SegmentVersion: 0 },
+      }),
+    },
     output: { ExportJobResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -6143,7 +6166,22 @@ export const createImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apps/{ApplicationId}/jobs/import",
-    input: { ImportJobRequest: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      ImportJobRequest: D.m({
+        payload: true,
+        shape: {
+          DefineSegment: 0,
+          ExternalId: 0,
+          Format: 0,
+          RegisterEndpoints: 0,
+          RoleArn: 0,
+          S3Url: 0,
+          SegmentId: 0,
+          SegmentName: 0,
+        },
+      }),
+    },
     output: { ImportJobResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -6179,7 +6217,13 @@ export const createInAppTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/templates/{TemplateName}/inapp",
-    input: { InAppTemplateRequest: D.m({ payload: true }) },
+    input: {
+      InAppTemplateRequest: D.m({
+        payload: true,
+        shape: i_InAppTemplateRequest,
+      }),
+      TemplateName: 0,
+    },
     output: { TemplateCreateMessageBody: D.m({ payload: true }) },
   },
   errors: [
@@ -6216,6 +6260,7 @@ export const createJourney: API.OperationMethod<
     service: svc,
     http: "POST /v1/apps/{ApplicationId}/journeys",
     input: {
+      ApplicationId: 0,
       WriteJourneyRequest: D.m({ payload: true, shape: i_WriteJourneyRequest }),
     },
     output: {
@@ -6255,7 +6300,13 @@ export const createPushTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/templates/{TemplateName}/push",
-    input: { PushNotificationTemplateRequest: D.m({ payload: true }) },
+    input: {
+      PushNotificationTemplateRequest: D.m({
+        payload: true,
+        shape: i_PushNotificationTemplateRequest,
+      }),
+      TemplateName: 0,
+    },
     output: { CreateTemplateMessageBody: D.m({ payload: true }) },
   },
   errors: [
@@ -6291,7 +6342,22 @@ export const createRecommenderConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/recommenders",
-    input: { CreateRecommenderConfiguration: D.m({ payload: true }) },
+    input: {
+      CreateRecommenderConfiguration: D.m({
+        payload: true,
+        shape: {
+          Attributes: 0,
+          Description: 0,
+          Name: 0,
+          RecommendationProviderIdType: 0,
+          RecommendationProviderRoleArn: 0,
+          RecommendationProviderUri: 0,
+          RecommendationTransformerUri: 0,
+          RecommendationsDisplayName: 0,
+          RecommendationsPerMessage: 0,
+        },
+      }),
+    },
     output: { RecommenderConfigurationResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -6329,7 +6395,10 @@ export const createSegment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apps/{ApplicationId}/segments",
-    input: { WriteSegmentRequest: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      WriteSegmentRequest: D.m({ payload: true, shape: i_WriteSegmentRequest }),
+    },
     output: { SegmentResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -6365,7 +6434,10 @@ export const createSmsTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/templates/{TemplateName}/sms",
-    input: { SMSTemplateRequest: D.m({ payload: true }) },
+    input: {
+      SMSTemplateRequest: D.m({ payload: true, shape: i_SMSTemplateRequest }),
+      TemplateName: 0,
+    },
     output: { CreateTemplateMessageBody: D.m({ payload: true }) },
   },
   errors: [
@@ -6399,7 +6471,13 @@ export const createVoiceTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/templates/{TemplateName}/voice",
-    input: { VoiceTemplateRequest: D.m({ payload: true }) },
+    input: {
+      TemplateName: 0,
+      VoiceTemplateRequest: D.m({
+        payload: true,
+        shape: i_VoiceTemplateRequest,
+      }),
+    },
     output: { CreateTemplateMessageBody: D.m({ payload: true }) },
   },
   errors: [
@@ -6435,6 +6513,7 @@ export const deleteAdmChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apps/{ApplicationId}/channels/adm",
+    input: { ApplicationId: 0 },
     output: { ADMChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -6472,6 +6551,7 @@ export const deleteApnsChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apps/{ApplicationId}/channels/apns",
+    input: { ApplicationId: 0 },
     output: { APNSChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -6509,6 +6589,7 @@ export const deleteApnsSandboxChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apps/{ApplicationId}/channels/apns_sandbox",
+    input: { ApplicationId: 0 },
     output: { APNSSandboxChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -6546,6 +6627,7 @@ export const deleteApnsVoipChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apps/{ApplicationId}/channels/apns_voip",
+    input: { ApplicationId: 0 },
     output: { APNSVoipChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -6583,6 +6665,7 @@ export const deleteApnsVoipSandboxChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apps/{ApplicationId}/channels/apns_voip_sandbox",
+    input: { ApplicationId: 0 },
     output: { APNSVoipSandboxChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -6620,6 +6703,7 @@ export const deleteApp: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apps/{ApplicationId}",
+    input: { ApplicationId: 0 },
     output: { ApplicationResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -6657,6 +6741,7 @@ export const deleteBaiduChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apps/{ApplicationId}/channels/baidu",
+    input: { ApplicationId: 0 },
     output: { BaiduChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -6694,6 +6779,7 @@ export const deleteCampaign: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apps/{ApplicationId}/campaigns/{CampaignId}",
+    input: { ApplicationId: 0, CampaignId: 0 },
     output: { CampaignResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -6731,6 +6817,7 @@ export const deleteEmailChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apps/{ApplicationId}/channels/email",
+    input: { ApplicationId: 0 },
     output: { EmailChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -6768,7 +6855,7 @@ export const deleteEmailTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/templates/{TemplateName}/email",
-    input: { Version: D.m({ query: "version" }) },
+    input: { TemplateName: 0, Version: D.m({ query: "version" }) },
     output: { MessageBody: D.m({ payload: true }) },
   },
   errors: [
@@ -6806,6 +6893,7 @@ export const deleteEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apps/{ApplicationId}/endpoints/{EndpointId}",
+    input: { ApplicationId: 0, EndpointId: 0 },
     output: { EndpointResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -6843,6 +6931,7 @@ export const deleteEventStream: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apps/{ApplicationId}/eventstream",
+    input: { ApplicationId: 0 },
     output: { EventStream: D.m({ payload: true }) },
   },
   errors: [
@@ -6880,6 +6969,7 @@ export const deleteGcmChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apps/{ApplicationId}/channels/gcm",
+    input: { ApplicationId: 0 },
     output: { GCMChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -6917,7 +7007,7 @@ export const deleteInAppTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/templates/{TemplateName}/inapp",
-    input: { Version: D.m({ query: "version" }) },
+    input: { TemplateName: 0, Version: D.m({ query: "version" }) },
     output: { MessageBody: D.m({ payload: true }) },
   },
   errors: [
@@ -6955,6 +7045,7 @@ export const deleteJourney: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apps/{ApplicationId}/journeys/{JourneyId}",
+    input: { ApplicationId: 0, JourneyId: 0 },
     output: {
       JourneyResponse: D.m({ payload: true, shape: o_JourneyResponse }),
     },
@@ -6994,7 +7085,7 @@ export const deletePushTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/templates/{TemplateName}/push",
-    input: { Version: D.m({ query: "version" }) },
+    input: { TemplateName: 0, Version: D.m({ query: "version" }) },
     output: { MessageBody: D.m({ payload: true }) },
   },
   errors: [
@@ -7032,6 +7123,7 @@ export const deleteRecommenderConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/recommenders/{RecommenderId}",
+    input: { RecommenderId: 0 },
     output: { RecommenderConfigurationResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -7069,6 +7161,7 @@ export const deleteSegment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apps/{ApplicationId}/segments/{SegmentId}",
+    input: { ApplicationId: 0, SegmentId: 0 },
     output: { SegmentResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -7106,6 +7199,7 @@ export const deleteSmsChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apps/{ApplicationId}/channels/sms",
+    input: { ApplicationId: 0 },
     output: { SMSChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -7143,7 +7237,7 @@ export const deleteSmsTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/templates/{TemplateName}/sms",
-    input: { Version: D.m({ query: "version" }) },
+    input: { TemplateName: 0, Version: D.m({ query: "version" }) },
     output: { MessageBody: D.m({ payload: true }) },
   },
   errors: [
@@ -7181,6 +7275,7 @@ export const deleteUserEndpoints: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apps/{ApplicationId}/users/{UserId}",
+    input: { ApplicationId: 0, UserId: 0 },
     output: { EndpointsResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -7218,6 +7313,7 @@ export const deleteVoiceChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/apps/{ApplicationId}/channels/voice",
+    input: { ApplicationId: 0 },
     output: { VoiceChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -7255,7 +7351,7 @@ export const deleteVoiceTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/templates/{TemplateName}/voice",
-    input: { Version: D.m({ query: "version" }) },
+    input: { TemplateName: 0, Version: D.m({ query: "version" }) },
     output: { MessageBody: D.m({ payload: true }) },
   },
   errors: [
@@ -7293,6 +7389,7 @@ export const getAdmChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/channels/adm",
+    input: { ApplicationId: 0 },
     output: { ADMChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -7330,6 +7427,7 @@ export const getApnsChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/channels/apns",
+    input: { ApplicationId: 0 },
     output: { APNSChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -7367,6 +7465,7 @@ export const getApnsSandboxChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/channels/apns_sandbox",
+    input: { ApplicationId: 0 },
     output: { APNSSandboxChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -7404,6 +7503,7 @@ export const getApnsVoipChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/channels/apns_voip",
+    input: { ApplicationId: 0 },
     output: { APNSVoipChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -7441,6 +7541,7 @@ export const getApnsVoipSandboxChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/channels/apns_voip_sandbox",
+    input: { ApplicationId: 0 },
     output: { APNSVoipSandboxChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -7478,6 +7579,7 @@ export const getApp: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}",
+    input: { ApplicationId: 0 },
     output: { ApplicationResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -7516,7 +7618,9 @@ export const getApplicationDateRangeKpi: API.OperationMethod<
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/kpis/daterange/{KpiName}",
     input: {
+      ApplicationId: 0,
       EndTime: D.m({ query: "end-time" }),
+      KpiName: 0,
       NextToken: D.m({ query: "next-token" }),
       PageSize: D.m({ query: "page-size" }),
       StartTime: D.m({ query: "start-time" }),
@@ -7563,6 +7667,7 @@ export const getApplicationSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/settings",
+    input: { ApplicationId: 0 },
     output: { ApplicationSettingsResource: D.m({ payload: true }) },
   },
   errors: [
@@ -7641,6 +7746,7 @@ export const getBaiduChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/channels/baidu",
+    input: { ApplicationId: 0 },
     output: { BaiduChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -7678,6 +7784,7 @@ export const getCampaign: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/campaigns/{CampaignId}",
+    input: { ApplicationId: 0, CampaignId: 0 },
     output: { CampaignResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -7716,6 +7823,8 @@ export const getCampaignActivities: API.OperationMethod<
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/campaigns/{CampaignId}/activities",
     input: {
+      ApplicationId: 0,
+      CampaignId: 0,
       PageSize: D.m({ query: "page-size" }),
       Token: D.m({ query: "token" }),
     },
@@ -7757,7 +7866,10 @@ export const getCampaignDateRangeKpi: API.OperationMethod<
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/campaigns/{CampaignId}/kpis/daterange/{KpiName}",
     input: {
+      ApplicationId: 0,
+      CampaignId: 0,
       EndTime: D.m({ query: "end-time" }),
+      KpiName: 0,
       NextToken: D.m({ query: "next-token" }),
       PageSize: D.m({ query: "page-size" }),
       StartTime: D.m({ query: "start-time" }),
@@ -7805,6 +7917,7 @@ export const getCampaigns: API.OperationMethod<
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/campaigns",
     input: {
+      ApplicationId: 0,
       PageSize: D.m({ query: "page-size" }),
       Token: D.m({ query: "token" }),
     },
@@ -7845,6 +7958,7 @@ export const getCampaignVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/campaigns/{CampaignId}/versions/{Version}",
+    input: { ApplicationId: 0, CampaignId: 0, Version: 0 },
     output: { CampaignResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -7883,6 +7997,8 @@ export const getCampaignVersions: API.OperationMethod<
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/campaigns/{CampaignId}/versions",
     input: {
+      ApplicationId: 0,
+      CampaignId: 0,
       PageSize: D.m({ query: "page-size" }),
       Token: D.m({ query: "token" }),
     },
@@ -7923,6 +8039,7 @@ export const getChannels: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/channels",
+    input: { ApplicationId: 0 },
     output: { ChannelsResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -7960,6 +8077,7 @@ export const getEmailChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/channels/email",
+    input: { ApplicationId: 0 },
     output: { EmailChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -7997,7 +8115,7 @@ export const getEmailTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/templates/{TemplateName}/email",
-    input: { Version: D.m({ query: "version" }) },
+    input: { TemplateName: 0, Version: D.m({ query: "version" }) },
     output: { EmailTemplateResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -8035,6 +8153,7 @@ export const getEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/endpoints/{EndpointId}",
+    input: { ApplicationId: 0, EndpointId: 0 },
     output: { EndpointResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -8072,6 +8191,7 @@ export const getEventStream: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/eventstream",
+    input: { ApplicationId: 0 },
     output: { EventStream: D.m({ payload: true }) },
   },
   errors: [
@@ -8109,6 +8229,7 @@ export const getExportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/jobs/export/{JobId}",
+    input: { ApplicationId: 0, JobId: 0 },
     output: { ExportJobResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -8147,6 +8268,7 @@ export const getExportJobs: API.OperationMethod<
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/jobs/export",
     input: {
+      ApplicationId: 0,
       PageSize: D.m({ query: "page-size" }),
       Token: D.m({ query: "token" }),
     },
@@ -8187,6 +8309,7 @@ export const getGcmChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/channels/gcm",
+    input: { ApplicationId: 0 },
     output: { GCMChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -8224,6 +8347,7 @@ export const getImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/jobs/import/{JobId}",
+    input: { ApplicationId: 0, JobId: 0 },
     output: { ImportJobResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -8262,6 +8386,7 @@ export const getImportJobs: API.OperationMethod<
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/jobs/import",
     input: {
+      ApplicationId: 0,
       PageSize: D.m({ query: "page-size" }),
       Token: D.m({ query: "token" }),
     },
@@ -8302,6 +8427,7 @@ export const getInAppMessages: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/endpoints/{EndpointId}/inappmessages",
+    input: { ApplicationId: 0, EndpointId: 0 },
     output: { InAppMessagesResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -8339,7 +8465,7 @@ export const getInAppTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/templates/{TemplateName}/inapp",
-    input: { Version: D.m({ query: "version" }) },
+    input: { TemplateName: 0, Version: D.m({ query: "version" }) },
     output: { InAppTemplateResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -8377,6 +8503,7 @@ export const getJourney: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/journeys/{JourneyId}",
+    input: { ApplicationId: 0, JourneyId: 0 },
     output: {
       JourneyResponse: D.m({ payload: true, shape: o_JourneyResponse }),
     },
@@ -8417,7 +8544,10 @@ export const getJourneyDateRangeKpi: API.OperationMethod<
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/journeys/{JourneyId}/kpis/daterange/{KpiName}",
     input: {
+      ApplicationId: 0,
       EndTime: D.m({ query: "end-time" }),
+      JourneyId: 0,
+      KpiName: 0,
       NextToken: D.m({ query: "next-token" }),
       PageSize: D.m({ query: "page-size" }),
       StartTime: D.m({ query: "start-time" }),
@@ -8465,6 +8595,9 @@ export const getJourneyExecutionActivityMetrics: API.OperationMethod<
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/journeys/{JourneyId}/activities/{JourneyActivityId}/execution-metrics",
     input: {
+      ApplicationId: 0,
+      JourneyActivityId: 0,
+      JourneyId: 0,
       NextToken: D.m({ query: "next-token" }),
       PageSize: D.m({ query: "page-size" }),
     },
@@ -8506,6 +8639,8 @@ export const getJourneyExecutionMetrics: API.OperationMethod<
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/journeys/{JourneyId}/execution-metrics",
     input: {
+      ApplicationId: 0,
+      JourneyId: 0,
       NextToken: D.m({ query: "next-token" }),
       PageSize: D.m({ query: "page-size" }),
     },
@@ -8547,8 +8682,12 @@ export const getJourneyRunExecutionActivityMetrics: API.OperationMethod<
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/journeys/{JourneyId}/runs/{RunId}/activities/{JourneyActivityId}/execution-metrics",
     input: {
+      ApplicationId: 0,
+      JourneyActivityId: 0,
+      JourneyId: 0,
       NextToken: D.m({ query: "next-token" }),
       PageSize: D.m({ query: "page-size" }),
+      RunId: 0,
     },
     output: {
       JourneyRunExecutionActivityMetricsResponse: D.m({ payload: true }),
@@ -8590,8 +8729,11 @@ export const getJourneyRunExecutionMetrics: API.OperationMethod<
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/journeys/{JourneyId}/runs/{RunId}/execution-metrics",
     input: {
+      ApplicationId: 0,
+      JourneyId: 0,
       NextToken: D.m({ query: "next-token" }),
       PageSize: D.m({ query: "page-size" }),
+      RunId: 0,
     },
     output: { JourneyRunExecutionMetricsResponse: D.m({ payload: true }) },
   },
@@ -8631,6 +8773,8 @@ export const getJourneyRuns: API.OperationMethod<
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/journeys/{JourneyId}/runs",
     input: {
+      ApplicationId: 0,
+      JourneyId: 0,
       PageSize: D.m({ query: "page-size" }),
       Token: D.m({ query: "token" }),
     },
@@ -8671,7 +8815,7 @@ export const getPushTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/templates/{TemplateName}/push",
-    input: { Version: D.m({ query: "version" }) },
+    input: { TemplateName: 0, Version: D.m({ query: "version" }) },
     output: { PushNotificationTemplateResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -8709,6 +8853,7 @@ export const getRecommenderConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/recommenders/{RecommenderId}",
+    input: { RecommenderId: 0 },
     output: { RecommenderConfigurationResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -8787,6 +8932,7 @@ export const getSegment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/segments/{SegmentId}",
+    input: { ApplicationId: 0, SegmentId: 0 },
     output: { SegmentResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -8825,7 +8971,9 @@ export const getSegmentExportJobs: API.OperationMethod<
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/segments/{SegmentId}/jobs/export",
     input: {
+      ApplicationId: 0,
       PageSize: D.m({ query: "page-size" }),
+      SegmentId: 0,
       Token: D.m({ query: "token" }),
     },
     output: { ExportJobsResponse: D.m({ payload: true }) },
@@ -8866,7 +9014,9 @@ export const getSegmentImportJobs: API.OperationMethod<
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/segments/{SegmentId}/jobs/import",
     input: {
+      ApplicationId: 0,
       PageSize: D.m({ query: "page-size" }),
+      SegmentId: 0,
       Token: D.m({ query: "token" }),
     },
     output: { ImportJobsResponse: D.m({ payload: true }) },
@@ -8907,6 +9057,7 @@ export const getSegments: API.OperationMethod<
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/segments",
     input: {
+      ApplicationId: 0,
       PageSize: D.m({ query: "page-size" }),
       Token: D.m({ query: "token" }),
     },
@@ -8947,6 +9098,7 @@ export const getSegmentVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/segments/{SegmentId}/versions/{Version}",
+    input: { ApplicationId: 0, SegmentId: 0, Version: 0 },
     output: { SegmentResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -8985,7 +9137,9 @@ export const getSegmentVersions: API.OperationMethod<
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/segments/{SegmentId}/versions",
     input: {
+      ApplicationId: 0,
       PageSize: D.m({ query: "page-size" }),
+      SegmentId: 0,
       Token: D.m({ query: "token" }),
     },
     output: { SegmentsResponse: D.m({ payload: true }) },
@@ -9025,6 +9179,7 @@ export const getSmsChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/channels/sms",
+    input: { ApplicationId: 0 },
     output: { SMSChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -9062,7 +9217,7 @@ export const getSmsTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/templates/{TemplateName}/sms",
-    input: { Version: D.m({ query: "version" }) },
+    input: { TemplateName: 0, Version: D.m({ query: "version" }) },
     output: { SMSTemplateResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -9100,6 +9255,7 @@ export const getUserEndpoints: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/users/{UserId}",
+    input: { ApplicationId: 0, UserId: 0 },
     output: { EndpointsResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -9137,6 +9293,7 @@ export const getVoiceChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/channels/voice",
+    input: { ApplicationId: 0 },
     output: { VoiceChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -9174,7 +9331,7 @@ export const getVoiceTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/templates/{TemplateName}/voice",
-    input: { Version: D.m({ query: "version" }) },
+    input: { TemplateName: 0, Version: D.m({ query: "version" }) },
     output: { VoiceTemplateResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -9213,6 +9370,7 @@ export const listJourneys: API.OperationMethod<
     service: svc,
     http: "GET /v1/apps/{ApplicationId}/journeys",
     input: {
+      ApplicationId: 0,
       PageSize: D.m({ query: "page-size" }),
       Token: D.m({ query: "token" }),
     },
@@ -9250,6 +9408,7 @@ export const listTagsForResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
     output: { TagsModel: D.m({ payload: true }) },
   },
   errors: [],
@@ -9321,6 +9480,8 @@ export const listTemplateVersions: API.OperationMethod<
     input: {
       NextToken: D.m({ query: "next-token" }),
       PageSize: D.m({ query: "page-size" }),
+      TemplateName: 0,
+      TemplateType: 0,
     },
     output: { TemplateVersionsResponse: D.m({ payload: true }) },
   },
@@ -9359,7 +9520,12 @@ export const phoneNumberValidate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/phone/number/validate",
-    input: { NumberValidateRequest: D.m({ payload: true }) },
+    input: {
+      NumberValidateRequest: D.m({
+        payload: true,
+        shape: { IsoCountryCode: 0, PhoneNumber: 0 },
+      }),
+    },
     output: { NumberValidateResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -9397,7 +9563,46 @@ export const putEvents: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apps/{ApplicationId}/events",
-    input: { EventsRequest: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      EventsRequest: D.m({
+        payload: true,
+        shape: {
+          BatchItem: D.map({
+            Endpoint: {
+              Address: 0,
+              Attributes: 0,
+              ChannelType: 0,
+              Demographic: i_EndpointDemographic,
+              EffectiveDate: 0,
+              EndpointStatus: 0,
+              Location: i_EndpointLocation,
+              Metrics: 0,
+              OptOut: 0,
+              RequestId: 0,
+              User: i_EndpointUser,
+            },
+            Events: D.map({
+              AppPackageName: 0,
+              AppTitle: 0,
+              AppVersionCode: 0,
+              Attributes: 0,
+              ClientSdkVersion: 0,
+              EventType: 0,
+              Metrics: 0,
+              SdkName: 0,
+              Session: {
+                Duration: 0,
+                Id: 0,
+                StartTimestamp: 0,
+                StopTimestamp: 0,
+              },
+              Timestamp: 0,
+            }),
+          }),
+        },
+      }),
+    },
     output: { EventsResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -9435,7 +9640,13 @@ export const putEventStream: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apps/{ApplicationId}/eventstream",
-    input: { WriteEventStream: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      WriteEventStream: D.m({
+        payload: true,
+        shape: { DestinationStreamArn: 0, RoleArn: 0 },
+      }),
+    },
     output: { EventStream: D.m({ payload: true }) },
   },
   errors: [
@@ -9473,7 +9684,11 @@ export const removeAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/apps/{ApplicationId}/attributes/{AttributeType}",
-    input: { UpdateAttributesRequest: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      AttributeType: 0,
+      UpdateAttributesRequest: D.m({ payload: true, shape: { Blacklist: 0 } }),
+    },
     output: { AttributesResource: D.m({ payload: true }) },
   },
   errors: [
@@ -9511,7 +9726,27 @@ export const sendMessages: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apps/{ApplicationId}/messages",
-    input: { MessageRequest: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      MessageRequest: D.m({
+        payload: true,
+        shape: {
+          Addresses: D.map({
+            BodyOverride: 0,
+            ChannelType: 0,
+            Context: 0,
+            RawContent: 0,
+            Substitutions: 0,
+            TitleOverride: 0,
+          }),
+          Context: 0,
+          Endpoints: D.map(i_EndpointSendConfiguration),
+          MessageConfiguration: i_DirectMessageConfiguration,
+          TemplateConfiguration: i_TemplateConfiguration,
+          TraceId: 0,
+        },
+      }),
+    },
     output: { MessageResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -9549,7 +9784,25 @@ export const sendOTPMessage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apps/{ApplicationId}/otp",
-    input: { SendOTPMessageRequestParameters: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      SendOTPMessageRequestParameters: D.m({
+        payload: true,
+        shape: {
+          AllowedAttempts: 0,
+          BrandName: 0,
+          Channel: 0,
+          CodeLength: 0,
+          DestinationIdentity: 0,
+          EntityId: 0,
+          Language: 0,
+          OriginationIdentity: 0,
+          ReferenceId: 0,
+          TemplateId: 0,
+          ValidityPeriod: 0,
+        },
+      }),
+    },
     output: { MessageResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -9587,7 +9840,19 @@ export const sendUsersMessages: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apps/{ApplicationId}/users-messages",
-    input: { SendUsersMessageRequest: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      SendUsersMessageRequest: D.m({
+        payload: true,
+        shape: {
+          Context: 0,
+          MessageConfiguration: i_DirectMessageConfiguration,
+          TemplateConfiguration: i_TemplateConfiguration,
+          TraceId: 0,
+          Users: D.map(i_EndpointSendConfiguration),
+        },
+      }),
+    },
     output: { SendUsersMessageResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -9617,7 +9882,10 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/tags/{ResourceArn}",
-    input: { TagsModel: D.m({ payload: true }) },
+    input: {
+      ResourceArn: 0,
+      TagsModel: D.m({ payload: true, shape: { tags: 0 } }),
+    },
   },
   errors: [],
   protocol: AwsProtocol,
@@ -9638,7 +9906,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [],
   protocol: AwsProtocol,
@@ -9667,7 +9935,13 @@ export const updateAdmChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/apps/{ApplicationId}/channels/adm",
-    input: { ADMChannelRequest: D.m({ payload: true }) },
+    input: {
+      ADMChannelRequest: D.m({
+        payload: true,
+        shape: { ClientId: 0, ClientSecret: 0, Enabled: 0 },
+      }),
+      ApplicationId: 0,
+    },
     output: { ADMChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -9705,7 +9979,22 @@ export const updateApnsChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/apps/{ApplicationId}/channels/apns",
-    input: { APNSChannelRequest: D.m({ payload: true }) },
+    input: {
+      APNSChannelRequest: D.m({
+        payload: true,
+        shape: {
+          BundleId: 0,
+          Certificate: 0,
+          DefaultAuthenticationMethod: 0,
+          Enabled: 0,
+          PrivateKey: 0,
+          TeamId: 0,
+          TokenKey: 0,
+          TokenKeyId: 0,
+        },
+      }),
+      ApplicationId: 0,
+    },
     output: { APNSChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -9743,7 +10032,22 @@ export const updateApnsSandboxChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/apps/{ApplicationId}/channels/apns_sandbox",
-    input: { APNSSandboxChannelRequest: D.m({ payload: true }) },
+    input: {
+      APNSSandboxChannelRequest: D.m({
+        payload: true,
+        shape: {
+          BundleId: 0,
+          Certificate: 0,
+          DefaultAuthenticationMethod: 0,
+          Enabled: 0,
+          PrivateKey: 0,
+          TeamId: 0,
+          TokenKey: 0,
+          TokenKeyId: 0,
+        },
+      }),
+      ApplicationId: 0,
+    },
     output: { APNSSandboxChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -9781,7 +10085,22 @@ export const updateApnsVoipChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/apps/{ApplicationId}/channels/apns_voip",
-    input: { APNSVoipChannelRequest: D.m({ payload: true }) },
+    input: {
+      APNSVoipChannelRequest: D.m({
+        payload: true,
+        shape: {
+          BundleId: 0,
+          Certificate: 0,
+          DefaultAuthenticationMethod: 0,
+          Enabled: 0,
+          PrivateKey: 0,
+          TeamId: 0,
+          TokenKey: 0,
+          TokenKeyId: 0,
+        },
+      }),
+      ApplicationId: 0,
+    },
     output: { APNSVoipChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -9819,7 +10138,22 @@ export const updateApnsVoipSandboxChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/apps/{ApplicationId}/channels/apns_voip_sandbox",
-    input: { APNSVoipSandboxChannelRequest: D.m({ payload: true }) },
+    input: {
+      APNSVoipSandboxChannelRequest: D.m({
+        payload: true,
+        shape: {
+          BundleId: 0,
+          Certificate: 0,
+          DefaultAuthenticationMethod: 0,
+          Enabled: 0,
+          PrivateKey: 0,
+          TeamId: 0,
+          TokenKey: 0,
+          TokenKeyId: 0,
+        },
+      }),
+      ApplicationId: 0,
+    },
     output: { APNSVoipSandboxChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -9857,7 +10191,24 @@ export const updateApplicationSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/apps/{ApplicationId}/settings",
-    input: { WriteApplicationSettingsRequest: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      WriteApplicationSettingsRequest: D.m({
+        payload: true,
+        shape: {
+          CampaignHook: i_CampaignHook,
+          CloudWatchMetricsEnabled: 0,
+          EventTaggingEnabled: 0,
+          Limits: i_CampaignLimits,
+          QuietTime: i_QuietTime,
+          JourneyLimits: {
+            DailyCap: 0,
+            TimeframeCap: i_JourneyTimeframeCap,
+            TotalCap: 0,
+          },
+        },
+      }),
+    },
     output: { ApplicationSettingsResource: D.m({ payload: true }) },
   },
   errors: [
@@ -9895,7 +10246,13 @@ export const updateBaiduChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/apps/{ApplicationId}/channels/baidu",
-    input: { BaiduChannelRequest: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      BaiduChannelRequest: D.m({
+        payload: true,
+        shape: { ApiKey: 0, Enabled: 0, SecretKey: 0 },
+      }),
+    },
     output: { BaiduChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -9933,7 +10290,14 @@ export const updateCampaign: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/apps/{ApplicationId}/campaigns/{CampaignId}",
-    input: { WriteCampaignRequest: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      CampaignId: 0,
+      WriteCampaignRequest: D.m({
+        payload: true,
+        shape: i_WriteCampaignRequest,
+      }),
+    },
     output: { CampaignResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -9971,7 +10335,20 @@ export const updateEmailChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/apps/{ApplicationId}/channels/email",
-    input: { EmailChannelRequest: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      EmailChannelRequest: D.m({
+        payload: true,
+        shape: {
+          ConfigurationSet: 0,
+          Enabled: 0,
+          FromAddress: 0,
+          Identity: 0,
+          RoleArn: 0,
+          OrchestrationSendingRoleArn: 0,
+        },
+      }),
+    },
     output: { EmailChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -10011,7 +10388,11 @@ export const updateEmailTemplate: API.OperationMethod<
     http: "PUT /v1/templates/{TemplateName}/email",
     input: {
       CreateNewVersion: D.m({ query: "create-new-version" }),
-      EmailTemplateRequest: D.m({ payload: true }),
+      EmailTemplateRequest: D.m({
+        payload: true,
+        shape: i_EmailTemplateRequest,
+      }),
+      TemplateName: 0,
       Version: D.m({ query: "version" }),
     },
     output: { MessageBody: D.m({ payload: true }) },
@@ -10051,7 +10432,26 @@ export const updateEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/apps/{ApplicationId}/endpoints/{EndpointId}",
-    input: { EndpointRequest: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      EndpointId: 0,
+      EndpointRequest: D.m({
+        payload: true,
+        shape: {
+          Address: 0,
+          Attributes: 0,
+          ChannelType: 0,
+          Demographic: i_EndpointDemographic,
+          EffectiveDate: 0,
+          EndpointStatus: 0,
+          Location: i_EndpointLocation,
+          Metrics: 0,
+          OptOut: 0,
+          RequestId: 0,
+          User: i_EndpointUser,
+        },
+      }),
+    },
     output: { MessageBody: D.m({ payload: true }) },
   },
   errors: [
@@ -10089,7 +10489,28 @@ export const updateEndpointsBatch: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/apps/{ApplicationId}/endpoints",
-    input: { EndpointBatchRequest: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      EndpointBatchRequest: D.m({
+        payload: true,
+        shape: {
+          Item: D.list({
+            Address: 0,
+            Attributes: 0,
+            ChannelType: 0,
+            Demographic: i_EndpointDemographic,
+            EffectiveDate: 0,
+            EndpointStatus: 0,
+            Id: 0,
+            Location: i_EndpointLocation,
+            Metrics: 0,
+            OptOut: 0,
+            RequestId: 0,
+            User: i_EndpointUser,
+          }),
+        },
+      }),
+    },
     output: { MessageBody: D.m({ payload: true }) },
   },
   errors: [
@@ -10127,7 +10548,18 @@ export const updateGcmChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/apps/{ApplicationId}/channels/gcm",
-    input: { GCMChannelRequest: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      GCMChannelRequest: D.m({
+        payload: true,
+        shape: {
+          ApiKey: 0,
+          DefaultAuthenticationMethod: 0,
+          Enabled: 0,
+          ServiceJson: 0,
+        },
+      }),
+    },
     output: { GCMChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -10167,7 +10599,11 @@ export const updateInAppTemplate: API.OperationMethod<
     http: "PUT /v1/templates/{TemplateName}/inapp",
     input: {
       CreateNewVersion: D.m({ query: "create-new-version" }),
-      InAppTemplateRequest: D.m({ payload: true }),
+      InAppTemplateRequest: D.m({
+        payload: true,
+        shape: i_InAppTemplateRequest,
+      }),
+      TemplateName: 0,
       Version: D.m({ query: "version" }),
     },
     output: { MessageBody: D.m({ payload: true }) },
@@ -10209,6 +10645,8 @@ export const updateJourney: API.OperationMethod<
     service: svc,
     http: "PUT /v1/apps/{ApplicationId}/journeys/{JourneyId}",
     input: {
+      ApplicationId: 0,
+      JourneyId: 0,
       WriteJourneyRequest: D.m({ payload: true, shape: i_WriteJourneyRequest }),
     },
     output: {
@@ -10251,7 +10689,11 @@ export const updateJourneyState: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/apps/{ApplicationId}/journeys/{JourneyId}/state",
-    input: { JourneyStateRequest: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      JourneyId: 0,
+      JourneyStateRequest: D.m({ payload: true, shape: { State: 0 } }),
+    },
     output: {
       JourneyResponse: D.m({ payload: true, shape: o_JourneyResponse }),
     },
@@ -10293,7 +10735,11 @@ export const updatePushTemplate: API.OperationMethod<
     http: "PUT /v1/templates/{TemplateName}/push",
     input: {
       CreateNewVersion: D.m({ query: "create-new-version" }),
-      PushNotificationTemplateRequest: D.m({ payload: true }),
+      PushNotificationTemplateRequest: D.m({
+        payload: true,
+        shape: i_PushNotificationTemplateRequest,
+      }),
+      TemplateName: 0,
       Version: D.m({ query: "version" }),
     },
     output: { MessageBody: D.m({ payload: true }) },
@@ -10333,7 +10779,23 @@ export const updateRecommenderConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/recommenders/{RecommenderId}",
-    input: { UpdateRecommenderConfiguration: D.m({ payload: true }) },
+    input: {
+      RecommenderId: 0,
+      UpdateRecommenderConfiguration: D.m({
+        payload: true,
+        shape: {
+          Attributes: 0,
+          Description: 0,
+          Name: 0,
+          RecommendationProviderIdType: 0,
+          RecommendationProviderRoleArn: 0,
+          RecommendationProviderUri: 0,
+          RecommendationTransformerUri: 0,
+          RecommendationsDisplayName: 0,
+          RecommendationsPerMessage: 0,
+        },
+      }),
+    },
     output: { RecommenderConfigurationResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -10371,7 +10833,11 @@ export const updateSegment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/apps/{ApplicationId}/segments/{SegmentId}",
-    input: { WriteSegmentRequest: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      SegmentId: 0,
+      WriteSegmentRequest: D.m({ payload: true, shape: i_WriteSegmentRequest }),
+    },
     output: { SegmentResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -10409,7 +10875,13 @@ export const updateSmsChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/apps/{ApplicationId}/channels/sms",
-    input: { SMSChannelRequest: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      SMSChannelRequest: D.m({
+        payload: true,
+        shape: { Enabled: 0, SenderId: 0, ShortCode: 0 },
+      }),
+    },
     output: { SMSChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -10449,7 +10921,8 @@ export const updateSmsTemplate: API.OperationMethod<
     http: "PUT /v1/templates/{TemplateName}/sms",
     input: {
       CreateNewVersion: D.m({ query: "create-new-version" }),
-      SMSTemplateRequest: D.m({ payload: true }),
+      SMSTemplateRequest: D.m({ payload: true, shape: i_SMSTemplateRequest }),
+      TemplateName: 0,
       Version: D.m({ query: "version" }),
     },
     output: { MessageBody: D.m({ payload: true }) },
@@ -10489,7 +10962,14 @@ export const updateTemplateActiveVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/templates/{TemplateName}/{TemplateType}/active-version",
-    input: { TemplateActiveVersionRequest: D.m({ payload: true }) },
+    input: {
+      TemplateActiveVersionRequest: D.m({
+        payload: true,
+        shape: { Version: 0 },
+      }),
+      TemplateName: 0,
+      TemplateType: 0,
+    },
     output: { MessageBody: D.m({ payload: true }) },
   },
   errors: [
@@ -10527,7 +11007,10 @@ export const updateVoiceChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/apps/{ApplicationId}/channels/voice",
-    input: { VoiceChannelRequest: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      VoiceChannelRequest: D.m({ payload: true, shape: { Enabled: 0 } }),
+    },
     output: { VoiceChannelResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -10567,8 +11050,12 @@ export const updateVoiceTemplate: API.OperationMethod<
     http: "PUT /v1/templates/{TemplateName}/voice",
     input: {
       CreateNewVersion: D.m({ query: "create-new-version" }),
+      TemplateName: 0,
       Version: D.m({ query: "version" }),
-      VoiceTemplateRequest: D.m({ payload: true }),
+      VoiceTemplateRequest: D.m({
+        payload: true,
+        shape: i_VoiceTemplateRequest,
+      }),
     },
     output: { MessageBody: D.m({ payload: true }) },
   },
@@ -10607,7 +11094,13 @@ export const verifyOTPMessage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/apps/{ApplicationId}/verify-otp",
-    input: { VerifyOTPMessageRequestParameters: D.m({ payload: true }) },
+    input: {
+      ApplicationId: 0,
+      VerifyOTPMessageRequestParameters: D.m({
+        payload: true,
+        shape: { DestinationIdentity: 0, Otp: 0, ReferenceId: 0 },
+      }),
+    },
     output: { VerificationResponse: D.m({ payload: true }) },
   },
   errors: [
@@ -10624,12 +11117,365 @@ export const verifyOTPMessage: API.OperationMethod<
   operationName: "VerifyOTPMessage",
 })) as any;
 
+const i_CampaignHook: D.LazyStruct = () => ({
+  LambdaFunctionName: 0,
+  Mode: 0,
+  WebUrl: 0,
+});
+const i_CampaignLimits: D.LazyStruct = () => ({
+  Daily: 0,
+  MaximumDuration: 0,
+  MessagesPerSecond: 0,
+  Total: 0,
+  Session: 0,
+});
+const i_DirectMessageConfiguration: D.LazyStruct = () => ({
+  ADMMessage: {
+    Action: 0,
+    Body: 0,
+    ConsolidationKey: 0,
+    Data: 0,
+    ExpiresAfter: 0,
+    IconReference: 0,
+    ImageIconUrl: 0,
+    ImageUrl: 0,
+    MD5: 0,
+    RawContent: 0,
+    SilentPush: 0,
+    SmallImageIconUrl: 0,
+    Sound: 0,
+    Substitutions: 0,
+    Title: 0,
+    Url: 0,
+  },
+  APNSMessage: {
+    APNSPushType: 0,
+    Action: 0,
+    Badge: 0,
+    Body: 0,
+    Category: 0,
+    CollapseId: 0,
+    Data: 0,
+    MediaUrl: 0,
+    PreferredAuthenticationMethod: 0,
+    Priority: 0,
+    RawContent: 0,
+    SilentPush: 0,
+    Sound: 0,
+    Substitutions: 0,
+    ThreadId: 0,
+    TimeToLive: 0,
+    Title: 0,
+    Url: 0,
+  },
+  BaiduMessage: {
+    Action: 0,
+    Body: 0,
+    Data: 0,
+    IconReference: 0,
+    ImageIconUrl: 0,
+    ImageUrl: 0,
+    RawContent: 0,
+    SilentPush: 0,
+    SmallImageIconUrl: 0,
+    Sound: 0,
+    Substitutions: 0,
+    TimeToLive: 0,
+    Title: 0,
+    Url: 0,
+  },
+  DefaultMessage: { Body: 0, Substitutions: 0 },
+  DefaultPushNotificationMessage: {
+    Action: 0,
+    Body: 0,
+    Data: 0,
+    SilentPush: 0,
+    Substitutions: 0,
+    Title: 0,
+    Url: 0,
+  },
+  EmailMessage: {
+    Body: 0,
+    FeedbackForwardingAddress: 0,
+    FromAddress: 0,
+    RawEmail: { Data: 0 },
+    ReplyToAddresses: 0,
+    SimpleEmail: {
+      HtmlPart: i_SimpleEmailPart,
+      Subject: i_SimpleEmailPart,
+      TextPart: i_SimpleEmailPart,
+      Headers: D.list(i_MessageHeader),
+    },
+    Substitutions: 0,
+  },
+  GCMMessage: {
+    Action: 0,
+    Body: 0,
+    CollapseKey: 0,
+    Data: 0,
+    IconReference: 0,
+    ImageIconUrl: 0,
+    ImageUrl: 0,
+    PreferredAuthenticationMethod: 0,
+    Priority: 0,
+    RawContent: 0,
+    RestrictedPackageName: 0,
+    SilentPush: 0,
+    SmallImageIconUrl: 0,
+    Sound: 0,
+    Substitutions: 0,
+    TimeToLive: 0,
+    Title: 0,
+    Url: 0,
+  },
+  SMSMessage: {
+    Body: 0,
+    Keyword: 0,
+    MediaUrl: 0,
+    MessageType: 0,
+    OriginationNumber: 0,
+    SenderId: 0,
+    Substitutions: 0,
+    EntityId: 0,
+    TemplateId: 0,
+  },
+  VoiceMessage: {
+    Body: 0,
+    LanguageCode: 0,
+    OriginationNumber: 0,
+    Substitutions: 0,
+    VoiceId: 0,
+  },
+});
+const i_EmailTemplateRequest: D.LazyStruct = () => ({
+  DefaultSubstitutions: 0,
+  HtmlPart: 0,
+  RecommenderId: 0,
+  Subject: 0,
+  Headers: D.list(i_MessageHeader),
+  tags: 0,
+  TemplateDescription: 0,
+  TextPart: 0,
+});
+const i_EndpointDemographic: D.LazyStruct = () => ({
+  AppVersion: 0,
+  Locale: 0,
+  Make: 0,
+  Model: 0,
+  ModelVersion: 0,
+  Platform: 0,
+  PlatformVersion: 0,
+  Timezone: 0,
+});
+const i_EndpointLocation: D.LazyStruct = () => ({
+  City: 0,
+  Country: 0,
+  Latitude: 0,
+  Longitude: 0,
+  PostalCode: 0,
+  Region: 0,
+});
+const i_EndpointSendConfiguration: D.LazyStruct = () => ({
+  BodyOverride: 0,
+  Context: 0,
+  RawContent: 0,
+  Substitutions: 0,
+  TitleOverride: 0,
+});
+const i_EndpointUser: D.LazyStruct = () => ({ UserAttributes: 0, UserId: 0 });
+const i_InAppTemplateRequest: D.LazyStruct = () => ({
+  Content: D.list(i_InAppMessageContent),
+  CustomConfig: 0,
+  Layout: 0,
+  tags: 0,
+  TemplateDescription: 0,
+});
+const i_JourneyTimeframeCap: D.LazyStruct = () => ({ Cap: 0, Days: 0 });
+const i_PushNotificationTemplateRequest: D.LazyStruct = () => ({
+  ADM: i_AndroidPushNotificationTemplate,
+  APNS: {
+    Action: 0,
+    Body: 0,
+    MediaUrl: 0,
+    RawContent: 0,
+    Sound: 0,
+    Title: 0,
+    Url: 0,
+  },
+  Baidu: i_AndroidPushNotificationTemplate,
+  Default: { Action: 0, Body: 0, Sound: 0, Title: 0, Url: 0 },
+  DefaultSubstitutions: 0,
+  GCM: i_AndroidPushNotificationTemplate,
+  RecommenderId: 0,
+  tags: 0,
+  TemplateDescription: 0,
+});
+const i_QuietTime: D.LazyStruct = () => ({ End: 0, Start: 0 });
+const i_SMSTemplateRequest: D.LazyStruct = () => ({
+  Body: 0,
+  DefaultSubstitutions: 0,
+  RecommenderId: 0,
+  tags: 0,
+  TemplateDescription: 0,
+});
+const i_TemplateConfiguration: D.LazyStruct = () => ({
+  EmailTemplate: i_Template,
+  PushTemplate: i_Template,
+  SMSTemplate: i_Template,
+  VoiceTemplate: i_Template,
+  InAppTemplate: i_Template,
+});
+const i_VoiceTemplateRequest: D.LazyStruct = () => ({
+  Body: 0,
+  DefaultSubstitutions: 0,
+  LanguageCode: 0,
+  tags: 0,
+  TemplateDescription: 0,
+  VoiceId: 0,
+});
+const i_WriteCampaignRequest: D.LazyStruct = () => ({
+  AdditionalTreatments: D.list({
+    CustomDeliveryConfiguration: i_CustomDeliveryConfiguration,
+    MessageConfiguration: i_MessageConfiguration,
+    Schedule: i_Schedule,
+    SizePercent: 0,
+    TemplateConfiguration: i_TemplateConfiguration,
+    TreatmentDescription: 0,
+    TreatmentName: 0,
+  }),
+  CustomDeliveryConfiguration: i_CustomDeliveryConfiguration,
+  Description: 0,
+  HoldoutPercent: 0,
+  Hook: i_CampaignHook,
+  IsPaused: 0,
+  Limits: i_CampaignLimits,
+  MessageConfiguration: i_MessageConfiguration,
+  Name: 0,
+  Schedule: i_Schedule,
+  SegmentId: 0,
+  SegmentVersion: 0,
+  tags: 0,
+  TemplateConfiguration: i_TemplateConfiguration,
+  TreatmentDescription: 0,
+  TreatmentName: 0,
+  Priority: 0,
+});
 const i_WriteJourneyRequest: D.LazyStruct = () => ({
   Activities: D.map({
-    ConditionalSplit: { Condition: { Conditions: D.list(i_SimpleCondition) } },
-    MultiCondition: { Branches: D.list({ Condition: i_SimpleCondition }) },
+    CUSTOM: {
+      DeliveryUri: 0,
+      EndpointTypes: 0,
+      MessageConfig: { Data: 0 },
+      NextActivity: 0,
+      TemplateName: 0,
+      TemplateVersion: 0,
+    },
+    ConditionalSplit: {
+      Condition: { Conditions: D.list(i_SimpleCondition), Operator: 0 },
+      EvaluationWaitTime: i_WaitTime,
+      FalseActivity: 0,
+      TrueActivity: 0,
+    },
+    Description: 0,
+    EMAIL: {
+      MessageConfig: { FromAddress: 0 },
+      NextActivity: 0,
+      TemplateName: 0,
+      TemplateVersion: 0,
+    },
+    Holdout: { NextActivity: 0, Percentage: 0 },
+    MultiCondition: {
+      Branches: D.list({ Condition: i_SimpleCondition, NextActivity: 0 }),
+      DefaultActivity: 0,
+      EvaluationWaitTime: i_WaitTime,
+    },
+    PUSH: {
+      MessageConfig: { TimeToLive: 0 },
+      NextActivity: 0,
+      TemplateName: 0,
+      TemplateVersion: 0,
+    },
+    RandomSplit: { Branches: D.list({ NextActivity: 0, Percentage: 0 }) },
+    SMS: {
+      MessageConfig: {
+        MessageType: 0,
+        OriginationNumber: 0,
+        SenderId: 0,
+        EntityId: 0,
+        TemplateId: 0,
+      },
+      NextActivity: 0,
+      TemplateName: 0,
+      TemplateVersion: 0,
+    },
+    Wait: { NextActivity: 0, WaitTime: i_WaitTime },
+    ContactCenter: { NextActivity: 0 },
   }),
-  Schedule: { EndTime: D.tsAs("date-time"), StartTime: D.tsAs("date-time") },
+  CreationDate: 0,
+  LastModifiedDate: 0,
+  Limits: {
+    DailyCap: 0,
+    EndpointReentryCap: 0,
+    MessagesPerSecond: 0,
+    EndpointReentryInterval: 0,
+    TimeframeCap: i_JourneyTimeframeCap,
+    TotalCap: 0,
+  },
+  LocalTime: 0,
+  Name: 0,
+  QuietTime: i_QuietTime,
+  RefreshFrequency: 0,
+  Schedule: {
+    EndTime: D.tsAs("date-time"),
+    StartTime: D.tsAs("date-time"),
+    Timezone: 0,
+  },
+  StartActivity: 0,
+  StartCondition: {
+    Description: 0,
+    EventStartCondition: {
+      EventFilter: { Dimensions: i_EventDimensions, FilterType: 0 },
+      SegmentId: 0,
+    },
+    SegmentStartCondition: i_SegmentCondition,
+  },
+  State: 0,
+  WaitForQuietTime: 0,
+  RefreshOnSegmentUpdate: 0,
+  JourneyChannelSettings: {
+    ConnectCampaignArn: 0,
+    ConnectCampaignExecutionRoleArn: 0,
+  },
+  SendingSchedule: 0,
+  OpenHours: {
+    EMAIL: D.map(D.list(i_OpenHoursRule)),
+    SMS: D.map(D.list(i_OpenHoursRule)),
+    PUSH: D.map(D.list(i_OpenHoursRule)),
+    VOICE: D.map(D.list(i_OpenHoursRule)),
+    CUSTOM: D.map(D.list(i_OpenHoursRule)),
+  },
+  ClosedDays: {
+    EMAIL: D.list(i_ClosedDaysRule),
+    SMS: D.list(i_ClosedDaysRule),
+    PUSH: D.list(i_ClosedDaysRule),
+    VOICE: D.list(i_ClosedDaysRule),
+    CUSTOM: D.list(i_ClosedDaysRule),
+  },
+  TimezoneEstimationMethods: 0,
+});
+const i_WriteSegmentRequest: D.LazyStruct = () => ({
+  Dimensions: i_SegmentDimensions,
+  Name: 0,
+  SegmentGroups: {
+    Groups: D.list({
+      Dimensions: D.list(i_SegmentDimensions),
+      SourceSegments: D.list({ Id: 0, Version: 0 }),
+      SourceType: 0,
+      Type: 0,
+    }),
+    Include: 0,
+  },
+  tags: 0,
 });
 const o_JourneyResponse: D.LazyStruct = () => ({
   Activities: D.map({
@@ -10638,9 +11484,152 @@ const o_JourneyResponse: D.LazyStruct = () => ({
   }),
   Schedule: { EndTime: D.ts, StartTime: D.ts },
 });
-const i_SimpleCondition: D.LazyStruct = () => ({
-  SegmentDimensions: D.m({ wire: "segmentDimensions" }),
+const i_AndroidPushNotificationTemplate: D.LazyStruct = () => ({
+  Action: 0,
+  Body: 0,
+  ImageIconUrl: 0,
+  ImageUrl: 0,
+  RawContent: 0,
+  SmallImageIconUrl: 0,
+  Sound: 0,
+  Title: 0,
+  Url: 0,
 });
+const i_ClosedDaysRule: D.LazyStruct = () => ({
+  Name: 0,
+  StartDateTime: 0,
+  EndDateTime: 0,
+});
+const i_CustomDeliveryConfiguration: D.LazyStruct = () => ({
+  DeliveryUri: 0,
+  EndpointTypes: 0,
+});
+const i_EventDimensions: D.LazyStruct = () => ({
+  Attributes: D.map(i_AttributeDimension),
+  EventType: i_SetDimension,
+  Metrics: D.map(i_MetricDimension),
+});
+const i_InAppMessageContent: D.LazyStruct = () => ({
+  BackgroundColor: 0,
+  BodyConfig: { Alignment: 0, Body: 0, TextColor: 0 },
+  HeaderConfig: { Alignment: 0, Header: 0, TextColor: 0 },
+  ImageUrl: 0,
+  PrimaryBtn: i_InAppMessageButton,
+  SecondaryBtn: i_InAppMessageButton,
+});
+const i_MessageConfiguration: D.LazyStruct = () => ({
+  ADMMessage: i_Message,
+  APNSMessage: i_Message,
+  BaiduMessage: i_Message,
+  CustomMessage: { Data: 0 },
+  DefaultMessage: i_Message,
+  EmailMessage: {
+    Body: 0,
+    FromAddress: 0,
+    Headers: D.list(i_MessageHeader),
+    HtmlBody: 0,
+    Title: 0,
+  },
+  GCMMessage: i_Message,
+  SMSMessage: {
+    Body: 0,
+    MessageType: 0,
+    OriginationNumber: 0,
+    SenderId: 0,
+    EntityId: 0,
+    TemplateId: 0,
+  },
+  InAppMessage: {
+    Body: 0,
+    Content: D.list(i_InAppMessageContent),
+    CustomConfig: 0,
+    Layout: 0,
+  },
+});
+const i_MessageHeader: D.LazyStruct = () => ({ Name: 0, Value: 0 });
+const i_OpenHoursRule: D.LazyStruct = () => ({ StartTime: 0, EndTime: 0 });
+const i_Schedule: D.LazyStruct = () => ({
+  EndTime: 0,
+  EventFilter: { Dimensions: i_EventDimensions, FilterType: 0 },
+  Frequency: 0,
+  IsLocalTime: 0,
+  QuietTime: i_QuietTime,
+  StartTime: 0,
+  Timezone: 0,
+});
+const i_SegmentCondition: D.LazyStruct = () => ({ SegmentId: 0 });
+const i_SegmentDimensions: D.LazyStruct = () => ({
+  Attributes: D.map(i_AttributeDimension),
+  Behavior: { Recency: { Duration: 0, RecencyType: 0 } },
+  Demographic: {
+    AppVersion: i_SetDimension,
+    Channel: i_SetDimension,
+    DeviceType: i_SetDimension,
+    Make: i_SetDimension,
+    Model: i_SetDimension,
+    Platform: i_SetDimension,
+  },
+  Location: {
+    Country: i_SetDimension,
+    GPSPoint: {
+      Coordinates: { Latitude: 0, Longitude: 0 },
+      RangeInKilometers: 0,
+    },
+  },
+  Metrics: D.map(i_MetricDimension),
+  UserAttributes: D.map(i_AttributeDimension),
+});
+const i_SimpleCondition: D.LazyStruct = () => ({
+  EventCondition: { Dimensions: i_EventDimensions, MessageActivity: 0 },
+  SegmentCondition: i_SegmentCondition,
+  SegmentDimensions: D.m({
+    wire: "segmentDimensions",
+    shape: i_SegmentDimensions,
+  }),
+});
+const i_SimpleEmailPart: D.LazyStruct = () => ({ Charset: 0, Data: 0 });
+const i_Template: D.LazyStruct = () => ({ Name: 0, Version: 0 });
+const i_WaitTime: D.LazyStruct = () => ({ WaitFor: 0, WaitUntil: 0 });
 const o_SimpleCondition: D.LazyStruct = () => ({
   SegmentDimensions: D.m({ wire: "segmentDimensions" }),
+});
+const i_AttributeDimension: D.LazyStruct = () => ({
+  AttributeType: 0,
+  Values: 0,
+});
+const i_InAppMessageButton: D.LazyStruct = () => ({
+  Android: i_OverrideButtonConfiguration,
+  DefaultConfig: {
+    BackgroundColor: 0,
+    BorderRadius: 0,
+    ButtonAction: 0,
+    Link: 0,
+    Text: 0,
+    TextColor: 0,
+  },
+  IOS: i_OverrideButtonConfiguration,
+  Web: i_OverrideButtonConfiguration,
+});
+const i_Message: D.LazyStruct = () => ({
+  Action: 0,
+  Body: 0,
+  ImageIconUrl: 0,
+  ImageSmallIconUrl: 0,
+  ImageUrl: 0,
+  JsonBody: 0,
+  MediaUrl: 0,
+  RawContent: 0,
+  SilentPush: 0,
+  TimeToLive: 0,
+  Title: 0,
+  Url: 0,
+});
+const i_MetricDimension: D.LazyStruct = () => ({
+  ComparisonOperator: 0,
+  Value: 0,
+});
+const i_SetDimension: D.LazyStruct = () => ({ DimensionType: 0, Values: 0 });
+const i_OverrideButtonConfiguration: D.LazyStruct = () => ({
+  ButtonAction: 0,
+  Link: 0,
 });

@@ -705,6 +705,7 @@ export const batchGetIncidentFindings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /batchGetIncidentFindings",
+    input: { incidentRecordArn: 0, findingIds: 0 },
     output: {
       findings: D.list({
         creationTime: D.ts,
@@ -751,7 +752,11 @@ export const createReplicationSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /createReplicationSet",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      regions: D.map({ sseKmsKeyId: 0 }),
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -790,7 +795,24 @@ export const createResponsePlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /createResponsePlan",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      name: 0,
+      displayName: 0,
+      incidentTemplate: {
+        title: 0,
+        impact: 0,
+        summary: 0,
+        dedupeString: 0,
+        notificationTargets: D.list(i_NotificationTargetItem),
+        incidentTags: 0,
+      },
+      chatChannel: i_ChatChannel,
+      engagements: 0,
+      actions: D.list(i_Action),
+      tags: 0,
+      integrations: D.list(i_Integration),
+    },
     body: true,
   },
   errors: [
@@ -829,7 +851,14 @@ export const createTimelineEvent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /createTimelineEvent",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      incidentRecordArn: 0,
+      eventTime: 0,
+      eventType: 0,
+      eventData: 0,
+      eventReferences: D.list(i_EventReference),
+    },
     body: true,
   },
   errors: [
@@ -860,7 +889,12 @@ export const deleteIncidentRecord: API.OperationMethod<
   DeleteIncidentRecordError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /deleteIncidentRecord", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /deleteIncidentRecord",
+    input: { arn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -923,7 +957,12 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /deleteResourcePolicy", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /deleteResourcePolicy",
+    input: { resourceArn: 0, policyId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -952,7 +991,12 @@ export const deleteResponsePlan: API.OperationMethod<
   DeleteResponsePlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /deleteResponsePlan", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /deleteResponsePlan",
+    input: { arn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -979,7 +1023,12 @@ export const deleteTimelineEvent: API.OperationMethod<
   DeleteTimelineEventError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /deleteTimelineEvent", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /deleteTimelineEvent",
+    input: { incidentRecordArn: 0, eventId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1091,7 +1140,11 @@ export const getResourcePolicies: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getResourcePolicies",
-    input: { resourceArn: D.m({ query: "resourceArn" }) },
+    input: {
+      resourceArn: D.m({ query: "resourceArn" }),
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -1205,6 +1258,7 @@ export const listIncidentFindings: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listIncidentFindings",
+    input: { incidentRecordArn: 0, maxResults: 0, nextToken: 0 },
     output: { findings: D.list({ lastModifiedTime: D.ts }) },
     body: true,
   },
@@ -1246,6 +1300,7 @@ export const listIncidentRecords: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listIncidentRecords",
+    input: { filters: D.list(i_Filter), maxResults: 0, nextToken: 0 },
     output: {
       incidentRecordSummaries: D.list({
         creationTime: D.ts,
@@ -1287,7 +1342,12 @@ export const listRelatedItems: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RelatedItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /listRelatedItems", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /listRelatedItems",
+    input: { incidentRecordArn: 0, maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1321,7 +1381,12 @@ export const listReplicationSets: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Arn
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /listReplicationSets", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /listReplicationSets",
+    input: { maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1355,7 +1420,12 @@ export const listResponsePlans: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ResponsePlanSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /listResponsePlans", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /listResponsePlans",
+    input: { maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1389,7 +1459,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1421,6 +1495,14 @@ export const listTimelineEvents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listTimelineEvents",
+    input: {
+      incidentRecordArn: 0,
+      filters: D.list(i_Filter),
+      sortBy: 0,
+      sortOrder: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       eventSummaries: D.list({ eventTime: D.ts, eventUpdatedTime: D.ts }),
     },
@@ -1461,7 +1543,12 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /putResourcePolicy", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /putResourcePolicy",
+    input: { resourceArn: 0, policy: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1495,7 +1582,14 @@ export const startIncident: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /startIncident",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      responsePlanArn: 0,
+      title: 0,
+      impact: 0,
+      triggerDetails: { source: 0, triggerArn: 0, timestamp: 0, rawData: 0 },
+      relatedItems: D.list(i_RelatedItem),
+    },
     body: true,
   },
   errors: [
@@ -1529,7 +1623,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1564,7 +1663,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1599,7 +1698,11 @@ export const updateDeletionProtection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /updateDeletionProtection",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      arn: 0,
+      deletionProtected: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1636,7 +1739,16 @@ export const updateIncidentRecord: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /updateIncidentRecord",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      arn: 0,
+      title: 0,
+      summary: 0,
+      impact: 0,
+      status: 0,
+      chatChannel: i_ChatChannel,
+      notificationTargets: D.list(i_NotificationTargetItem),
+    },
     body: true,
   },
   errors: [
@@ -1672,7 +1784,14 @@ export const updateRelatedItems: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /updateRelatedItems",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      incidentRecordArn: 0,
+      relatedItemsUpdate: {
+        itemToAdd: i_RelatedItem,
+        itemToRemove: i_ItemIdentifier,
+      },
+    },
     body: true,
   },
   errors: [
@@ -1708,7 +1827,14 @@ export const updateReplicationSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /updateReplicationSet",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      arn: 0,
+      actions: D.list({
+        addRegionAction: { regionName: 0, sseKmsKeyId: 0 },
+        deleteRegionAction: { regionName: 0 },
+      }),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1744,7 +1870,21 @@ export const updateResponsePlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /updateResponsePlan",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      arn: 0,
+      displayName: 0,
+      incidentTemplateTitle: 0,
+      incidentTemplateImpact: 0,
+      incidentTemplateSummary: 0,
+      incidentTemplateDedupeString: 0,
+      incidentTemplateNotificationTargets: D.list(i_NotificationTargetItem),
+      chatChannel: i_ChatChannel,
+      engagements: 0,
+      actions: D.list(i_Action),
+      incidentTemplateTags: 0,
+      integrations: D.list(i_Integration),
+    },
     body: true,
   },
   errors: [
@@ -1780,7 +1920,15 @@ export const updateTimelineEvent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /updateTimelineEvent",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      incidentRecordArn: 0,
+      eventId: 0,
+      eventTime: 0,
+      eventType: 0,
+      eventData: 0,
+      eventReferences: D.list(i_EventReference),
+    },
     body: true,
   },
   errors: [
@@ -1795,3 +1943,49 @@ export const updateTimelineEvent: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateTimelineEvent",
 })) as any;
+
+const i_Action: D.LazyStruct = () => ({
+  ssmAutomation: {
+    roleArn: 0,
+    documentName: 0,
+    documentVersion: 0,
+    targetAccount: 0,
+    parameters: 0,
+    dynamicParameters: D.map({ variable: 0 }),
+  },
+});
+const i_ChatChannel: D.LazyStruct = () => ({ empty: {}, chatbotSns: 0 });
+const i_EventReference: D.LazyStruct = () => ({
+  resource: 0,
+  relatedItemId: 0,
+});
+const i_Filter: D.LazyStruct = () => ({
+  key: 0,
+  condition: {
+    before: 0,
+    after: 0,
+    equals: { stringValues: 0, integerValues: 0 },
+  },
+});
+const i_Integration: D.LazyStruct = () => ({
+  pagerDutyConfiguration: {
+    name: 0,
+    secretId: 0,
+    pagerDutyIncidentConfiguration: { serviceId: 0 },
+  },
+});
+const i_ItemIdentifier: D.LazyStruct = () => ({
+  value: {
+    arn: 0,
+    url: 0,
+    metricDefinition: 0,
+    pagerDutyIncidentDetail: { id: 0, autoResolve: 0, secretId: 0 },
+  },
+  type: 0,
+});
+const i_NotificationTargetItem: D.LazyStruct = () => ({ snsTopicArn: 0 });
+const i_RelatedItem: D.LazyStruct = () => ({
+  identifier: i_ItemIdentifier,
+  title: 0,
+  generatedId: 0,
+});

@@ -2486,7 +2486,10 @@ export const associateKmsKey: API.OperationMethod<
   AssociateKmsKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { logGroupName: 0, kmsKeyId: 0, resourceIdentifier: 0 },
+  },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -2516,7 +2519,10 @@ export const associateSourceToS3TableIntegration: API.OperationMethod<
   AssociateSourceToS3TableIntegrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { integrationArn: 0, dataSource: { name: 0, type: 0 } },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2546,7 +2552,7 @@ export const cancelExportTask: API.OperationMethod<
   CancelExportTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { taskId: 0 } },
   errors: [
     InvalidOperationException,
     InvalidParameterException,
@@ -2574,7 +2580,7 @@ export const cancelImportTask: API.OperationMethod<
   CancelImportTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { importId: 0 } },
   errors: [
     AccessDeniedException,
     InvalidOperationException,
@@ -2634,7 +2640,17 @@ export const createDelivery: API.OperationMethod<
   CreateDeliveryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      deliverySourceName: 0,
+      deliveryDestinationArn: 0,
+      recordFields: 0,
+      fieldDelimiter: 0,
+      s3DeliveryConfiguration: i_S3DeliveryConfiguration,
+      tags: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2693,7 +2709,18 @@ export const createExportTask: API.OperationMethod<
   CreateExportTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      taskName: 0,
+      logGroupName: 0,
+      logStreamNamePrefix: 0,
+      from: 0,
+      to: 0,
+      destination: 0,
+      destinationPrefix: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     LimitExceededException,
@@ -2759,7 +2786,14 @@ export const createImportTask: API.OperationMethod<
   CreateImportTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      importSourceArn: 0,
+      importRoleArn: 0,
+      importFilter: { startEventTime: 0, endEventTime: 0 },
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2817,7 +2851,18 @@ export const createLogAnomalyDetector: API.OperationMethod<
   CreateLogAnomalyDetectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      logGroupArnList: 0,
+      detectorName: 0,
+      evaluationFrequency: 0,
+      filterPattern: 0,
+      kmsKeyId: 0,
+      anomalyVisibilityTime: 0,
+      tags: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     LimitExceededException,
@@ -2876,7 +2921,16 @@ export const createLogGroup: API.OperationMethod<
   CreateLogGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      logGroupName: 0,
+      kmsKeyId: 0,
+      tags: 0,
+      logGroupClass: 0,
+      deletionProtectionEnabled: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     LimitExceededException,
@@ -2918,7 +2972,7 @@ export const createLogStream: API.OperationMethod<
   CreateLogStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { logGroupName: 0, logStreamName: 0 } },
   errors: [
     InvalidParameterException,
     ResourceAlreadyExistsException,
@@ -2954,7 +3008,17 @@ export const createLookupTable: API.OperationMethod<
   CreateLookupTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      lookupTableName: 0,
+      description: 0,
+      tableBody: 0,
+      queryId: 0,
+      kmsKeyId: 0,
+      tags: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterException,
@@ -2989,7 +3053,26 @@ export const createScheduledQuery: API.OperationMethod<
   CreateScheduledQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      queryLanguage: 0,
+      queryString: 0,
+      logGroupIdentifiers: 0,
+      scheduleExpression: 0,
+      timezone: 0,
+      startTimeOffset: 0,
+      endTimeOffset: 0,
+      destinationConfiguration: i_DestinationConfiguration,
+      scheduleStartTime: 0,
+      scheduleEndTime: 0,
+      executionRoleArn: 0,
+      state: 0,
+      tags: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3048,7 +3131,7 @@ export const deleteAccountPolicy: API.OperationMethod<
   DeleteAccountPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { policyName: 0, policyType: 0 } },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -3077,7 +3160,7 @@ export const deleteDataProtectionPolicy: API.OperationMethod<
   DeleteDataProtectionPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { logGroupIdentifier: 0 } },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -3110,7 +3193,7 @@ export const deleteDelivery: API.OperationMethod<
   DeleteDeliveryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { id: 0 } },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -3147,7 +3230,7 @@ export const deleteDeliveryDestination: API.OperationMethod<
   DeleteDeliveryDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -3177,7 +3260,7 @@ export const deleteDeliveryDestinationPolicy: API.OperationMethod<
   DeleteDeliveryDestinationPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { deliveryDestinationName: 0 } },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -3212,7 +3295,7 @@ export const deleteDeliverySource: API.OperationMethod<
   DeleteDeliverySourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -3243,7 +3326,7 @@ export const deleteDestination: API.OperationMethod<
   DeleteDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { destinationName: 0 } },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -3285,7 +3368,7 @@ export const deleteIndexPolicy: API.OperationMethod<
   DeleteIndexPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { logGroupIdentifier: 0 } },
   errors: [
     InvalidParameterException,
     LimitExceededException,
@@ -3318,7 +3401,7 @@ export const deleteIntegration: API.OperationMethod<
   DeleteIntegrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { integrationName: 0, force: 0 } },
   errors: [
     InvalidParameterException,
     ResourceNotFoundException,
@@ -3345,7 +3428,7 @@ export const deleteLogAnomalyDetector: API.OperationMethod<
   DeleteLogAnomalyDetectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { anomalyDetectorArn: 0 } },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -3374,7 +3457,7 @@ export const deleteLogGroup: API.OperationMethod<
   DeleteLogGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { logGroupName: 0 } },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -3404,7 +3487,7 @@ export const deleteLogStream: API.OperationMethod<
   DeleteLogStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { logGroupName: 0, logStreamName: 0 } },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -3435,7 +3518,7 @@ export const deleteLookupTable: API.OperationMethod<
   DeleteLookupTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { lookupTableArn: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterException,
@@ -3462,7 +3545,7 @@ export const deleteMetricFilter: API.OperationMethod<
   DeleteMetricFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { logGroupName: 0, filterName: 0 } },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -3494,7 +3577,7 @@ export const deleteQueryDefinition: API.OperationMethod<
   DeleteQueryDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { queryDefinitionId: 0 } },
   errors: [
     InvalidParameterException,
     ResourceNotFoundException,
@@ -3521,7 +3604,10 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { policyName: 0, resourceArn: 0, expectedRevisionId: 0 },
+  },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -3551,7 +3637,7 @@ export const deleteRetentionPolicy: API.OperationMethod<
   DeleteRetentionPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { logGroupName: 0 } },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -3580,7 +3666,7 @@ export const deleteScheduledQuery: API.OperationMethod<
   DeleteScheduledQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { identifier: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3608,7 +3694,7 @@ export const deleteSubscriptionFilter: API.OperationMethod<
   DeleteSubscriptionFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { logGroupName: 0, filterName: 0 } },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -3639,7 +3725,10 @@ export const deleteSyslogConfiguration: API.OperationMethod<
   DeleteSyslogConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { logGroupIdentifier: 0, vpcEndpointId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InvalidOperationException,
@@ -3676,7 +3765,7 @@ export const deleteTransformer: API.OperationMethod<
   DeleteTransformerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { logGroupIdentifier: 0 } },
   errors: [
     InvalidOperationException,
     InvalidParameterException,
@@ -3721,7 +3810,15 @@ export const describeAccountPolicies: API.OperationMethod<
   DescribeAccountPoliciesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      policyType: 0,
+      policyName: 0,
+      accountIdentifiers: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -3751,7 +3848,17 @@ export const describeConfigurationTemplates: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ConfigurationTemplate
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      service: 0,
+      logTypes: 0,
+      resourceTypes: 0,
+      deliveryDestinationTypes: 0,
+      nextToken: 0,
+      limit: 0,
+    },
+  },
   errors: [
     ResourceNotFoundException,
     ServiceUnavailableException,
@@ -3797,7 +3904,7 @@ export const describeDeliveries: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Delivery
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0, limit: 0 } },
   errors: [
     ServiceQuotaExceededException,
     ServiceUnavailableException,
@@ -3832,7 +3939,7 @@ export const describeDeliveryDestinations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DeliveryDestination
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0, limit: 0 } },
   errors: [
     ServiceQuotaExceededException,
     ServiceUnavailableException,
@@ -3866,7 +3973,7 @@ export const describeDeliverySources: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DeliverySource
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0, limit: 0 } },
   errors: [
     ServiceQuotaExceededException,
     ServiceUnavailableException,
@@ -3899,7 +4006,10 @@ export const describeDestinations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Destination
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DestinationNamePrefix: 0, nextToken: 0, limit: 0 },
+  },
   errors: [InvalidParameterException, ServiceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3926,7 +4036,10 @@ export const describeExportTasks: API.OperationMethod<
   DescribeExportTasksError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { taskId: 0, statusCode: 0, nextToken: 0, limit: 0 },
+  },
   errors: [InvalidParameterException, ServiceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3953,7 +4066,10 @@ export const describeFieldIndexes: API.OperationMethod<
   DescribeFieldIndexesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { logGroupIdentifiers: 0, indexCategories: 0, nextToken: 0 },
+  },
   errors: [
     InvalidParameterException,
     LimitExceededException,
@@ -3983,7 +4099,10 @@ export const describeImportTaskBatches: API.OperationMethod<
   DescribeImportTaskBatchesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { importId: 0, batchImportStatus: 0, limit: 0, nextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InvalidOperationException,
@@ -4012,7 +4131,16 @@ export const describeImportTasks: API.OperationMethod<
   DescribeImportTasksError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      importId: 0,
+      importStatus: 0,
+      importSourceArn: 0,
+      limit: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidOperationException,
@@ -4050,7 +4178,7 @@ export const describeIndexPolicies: API.OperationMethod<
   DescribeIndexPoliciesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { logGroupIdentifiers: 0, nextToken: 0 } },
   errors: [
     InvalidParameterException,
     LimitExceededException,
@@ -4093,7 +4221,19 @@ export const describeLogGroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   LogGroup
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      accountIdentifiers: 0,
+      logGroupNamePrefix: 0,
+      logGroupNamePattern: 0,
+      nextToken: 0,
+      limit: 0,
+      includeLinkedAccounts: 0,
+      logGroupClass: 0,
+      logGroupIdentifiers: 0,
+    },
+  },
   errors: [InvalidParameterException, ServiceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4133,7 +4273,18 @@ export const describeLogStreams: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   LogStream
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      logGroupName: 0,
+      logGroupIdentifier: 0,
+      logStreamNamePrefix: 0,
+      orderBy: 0,
+      descending: 0,
+      nextToken: 0,
+      limit: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     ResourceNotFoundException,
@@ -4166,7 +4317,10 @@ export const describeLookupTables: API.OperationMethod<
   DescribeLookupTablesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { lookupTableNamePrefix: 0, maxResults: 0, nextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterException,
@@ -4195,7 +4349,17 @@ export const describeMetricFilters: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   MetricFilter
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      logGroupName: 0,
+      filterNamePrefix: 0,
+      nextToken: 0,
+      limit: 0,
+      metricName: 0,
+      metricNamespace: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     ResourceNotFoundException,
@@ -4233,7 +4397,16 @@ export const describeQueries: API.OperationMethod<
   DescribeQueriesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      logGroupName: 0,
+      status: 0,
+      maxResults: 0,
+      nextToken: 0,
+      queryLanguage: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     ResourceNotFoundException,
@@ -4262,7 +4435,15 @@ export const describeQueryDefinitions: API.OperationMethod<
   DescribeQueryDefinitionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      queryLanguage: 0,
+      queryDefinitionNamePrefix: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
+  },
   errors: [InvalidParameterException, ServiceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4282,7 +4463,10 @@ export const describeResourcePolicies: API.OperationMethod<
   DescribeResourcePoliciesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { nextToken: 0, limit: 0, resourceArn: 0, policyScope: 0 },
+  },
   errors: [InvalidParameterException, ServiceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4306,7 +4490,10 @@ export const describeSubscriptionFilters: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   SubscriptionFilter
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { logGroupName: 0, filterNamePrefix: 0, nextToken: 0, limit: 0 },
+  },
   errors: [
     InvalidParameterException,
     ResourceNotFoundException,
@@ -4358,7 +4545,10 @@ export const disassociateKmsKey: API.OperationMethod<
   DisassociateKmsKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { logGroupName: 0, resourceIdentifier: 0 },
+  },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -4387,7 +4577,7 @@ export const disassociateSourceFromS3TableIntegration: API.OperationMethod<
   DisassociateSourceFromS3TableIntegrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { identifier: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4461,7 +4651,23 @@ export const filterLogEvents: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      logGroupName: 0,
+      logGroupIdentifier: 0,
+      logStreamNames: 0,
+      logStreamNamePrefix: 0,
+      startTime: 0,
+      endTime: 0,
+      filterPattern: 0,
+      nextToken: 0,
+      limit: 0,
+      startFromHead: 0,
+      interleaved: 0,
+      unmask: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     ResourceNotFoundException,
@@ -4492,7 +4698,7 @@ export const getDataProtectionPolicy: API.OperationMethod<
   GetDataProtectionPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { logGroupIdentifier: 0 } },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -4534,7 +4740,7 @@ export const getDelivery: API.OperationMethod<
   GetDeliveryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { id: 0 } },
   errors: [
     ResourceNotFoundException,
     ServiceQuotaExceededException,
@@ -4563,7 +4769,7 @@ export const getDeliveryDestination: API.OperationMethod<
   GetDeliveryDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [
     ResourceNotFoundException,
     ServiceQuotaExceededException,
@@ -4591,7 +4797,7 @@ export const getDeliveryDestinationPolicy: API.OperationMethod<
   GetDeliveryDestinationPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { deliveryDestinationName: 0 } },
   errors: [
     ResourceNotFoundException,
     ServiceUnavailableException,
@@ -4618,7 +4824,7 @@ export const getDeliverySource: API.OperationMethod<
   GetDeliverySourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [
     ResourceNotFoundException,
     ServiceQuotaExceededException,
@@ -4645,7 +4851,7 @@ export const getIntegration: API.OperationMethod<
   GetIntegrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { integrationName: 0 } },
   errors: [
     InvalidParameterException,
     ResourceNotFoundException,
@@ -4671,7 +4877,7 @@ export const getLogAnomalyDetector: API.OperationMethod<
   GetLogAnomalyDetectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { anomalyDetectorArn: 0 } },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -4730,7 +4936,20 @@ export const getLogEvents: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   OutputLogEvent
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      logGroupName: 0,
+      logGroupIdentifier: 0,
+      logStreamName: 0,
+      startTime: 0,
+      endTime: 0,
+      nextToken: 0,
+      limit: 0,
+      startFromHead: 0,
+      unmask: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     ResourceNotFoundException,
@@ -4763,7 +4982,7 @@ export const getLogFields: API.OperationMethod<
   GetLogFieldsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { dataSourceName: 0, dataSourceType: 0 } },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -4811,7 +5030,10 @@ export const getLogGroupFields: API.OperationMethod<
   GetLogGroupFieldsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { logGroupName: 0, time: 0, logGroupIdentifier: 0 },
+  },
   errors: [
     InvalidParameterException,
     LimitExceededException,
@@ -4856,6 +5078,7 @@ export const getLogObject: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { unmask: 0, logObjectPointer: 0 },
     output: {
       fieldStream: D.events({
         fields: { data: D.blob },
@@ -4895,7 +5118,7 @@ export const getLogRecord: API.OperationMethod<
   GetLogRecordError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { logRecordPointer: 0, unmask: 0 } },
   errors: [
     InvalidParameterException,
     LimitExceededException,
@@ -4922,7 +5145,7 @@ export const getLookupTable: API.OperationMethod<
   GetLookupTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { lookupTableArn: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterException,
@@ -4975,7 +5198,10 @@ export const getQueryResults: API.OperationMethod<
   GetQueryResultsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { queryId: 0, nextToken: 0, maxItems: 0 },
+  },
   errors: [
     InvalidParameterException,
     ResourceNotFoundException,
@@ -5003,7 +5229,7 @@ export const getScheduledQuery: API.OperationMethod<
   GetScheduledQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { identifier: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5034,7 +5260,17 @@ export const getScheduledQueryHistory: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TriggerHistoryRecord
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      identifier: 0,
+      startTime: 0,
+      endTime: 0,
+      executionStatuses: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5069,7 +5305,7 @@ export const getStorageTierPolicy: API.OperationMethod<
   GetStorageTierPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     InvalidParameterException,
@@ -5100,7 +5336,7 @@ export const getTransformer: API.OperationMethod<
   GetTransformerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { logGroupIdentifier: 0 } },
   errors: [
     InvalidOperationException,
     InvalidParameterException,
@@ -5138,7 +5374,19 @@ export const listAggregateLogGroupSummaries: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AggregateLogGroupSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      accountIdentifiers: 0,
+      includeLinkedAccounts: 0,
+      logGroupClass: 0,
+      logGroupNamePattern: 0,
+      dataSources: D.list(i_DataSourceFilter),
+      groupBy: 0,
+      nextToken: 0,
+      limit: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     ServiceUnavailableException,
@@ -5173,7 +5421,15 @@ export const listAnomalies: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Anomaly
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      anomalyDetectorArn: 0,
+      suppressionState: 0,
+      limit: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -5206,7 +5462,14 @@ export const listIntegrations: API.OperationMethod<
   ListIntegrationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      integrationNamePrefix: 0,
+      integrationType: 0,
+      integrationStatus: 0,
+    },
+  },
   errors: [InvalidParameterException, ServiceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5229,7 +5492,10 @@ export const listLogAnomalyDetectors: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AnomalyDetector
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { filterLogGroupArn: 0, limit: 0, nextToken: 0 },
+  },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -5271,7 +5537,20 @@ export const listLogGroups: API.OperationMethod<
   ListLogGroupsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      logGroupNamePattern: 0,
+      logGroupClass: 0,
+      includeLinkedAccounts: 0,
+      accountIdentifiers: 0,
+      nextToken: 0,
+      limit: 0,
+      dataSources: D.list(i_DataSourceFilter),
+      fieldIndexNames: 0,
+      logGroupTags: D.list({ key: 0, values: 0 }),
+    },
+  },
   errors: [InvalidParameterException, ServiceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5300,7 +5579,10 @@ export const listLogGroupsForQuery: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   LogGroupIdentifier
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { queryId: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterException,
@@ -5335,7 +5617,10 @@ export const listScheduledQueries: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ScheduledQuerySummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { maxResults: 0, nextToken: 0, state: 0, scheduleType: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5371,7 +5656,10 @@ export const listSourcesForS3TableIntegration: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   S3TableIntegrationSource
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { integrationArn: 0, maxResults: 0, nextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5408,7 +5696,15 @@ export const listSyslogConfigurations: API.OperationMethod<
   ListSyslogConfigurationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      logGroupIdentifier: 0,
+      vpcEndpointId: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidOperationException,
@@ -5437,7 +5733,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [
     InvalidParameterException,
     ResourceNotFoundException,
@@ -5464,7 +5760,7 @@ export const listTagsLogGroup: API.OperationMethod<
   ListTagsLogGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { logGroupName: 0 } },
   errors: [ResourceNotFoundException, ServiceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5837,7 +6133,16 @@ export const putAccountPolicy: API.OperationMethod<
   PutAccountPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      policyName: 0,
+      policyDocument: 0,
+      policyType: 0,
+      scope: 0,
+      selectionCriteria: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     LimitExceededException,
@@ -5870,7 +6175,10 @@ export const putBearerTokenAuthentication: API.OperationMethod<
   PutBearerTokenAuthenticationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { logGroupIdentifier: 0, bearerTokenAuthenticationEnabled: 0 },
+  },
   errors: [
     AccessDeniedException,
     InvalidOperationException,
@@ -5923,7 +6231,10 @@ export const putDataProtectionPolicy: API.OperationMethod<
   PutDataProtectionPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { logGroupIdentifier: 0, policyDocument: 0 },
+  },
   errors: [
     InvalidParameterException,
     LimitExceededException,
@@ -5986,7 +6297,16 @@ export const putDeliveryDestination: API.OperationMethod<
   PutDeliveryDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      outputFormat: 0,
+      deliveryDestinationConfiguration: { destinationResourceArn: 0 },
+      deliveryDestinationType: 0,
+      tags: 0,
+    },
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -6038,7 +6358,10 @@ export const putDeliveryDestinationPolicy: API.OperationMethod<
   PutDeliveryDestinationPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { deliveryDestinationName: 0, deliveryDestinationPolicy: 0 },
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -6096,7 +6419,16 @@ export const putDeliverySource: API.OperationMethod<
   PutDeliverySourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      resourceArn: 0,
+      logType: 0,
+      tags: 0,
+      deliverySourceConfiguration: 0,
+    },
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -6137,7 +6469,10 @@ export const putDestination: API.OperationMethod<
   PutDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { destinationName: 0, targetArn: 0, roleArn: 0, tags: 0 },
+  },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -6165,7 +6500,10 @@ export const putDestinationPolicy: API.OperationMethod<
   PutDestinationPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { destinationName: 0, accessPolicy: 0, forceUpdate: 0 },
+  },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -6252,7 +6590,10 @@ export const putIndexPolicy: API.OperationMethod<
   PutIndexPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { logGroupIdentifier: 0, policyDocument: 0 },
+  },
   errors: [
     InvalidParameterException,
     LimitExceededException,
@@ -6289,7 +6630,22 @@ export const putIntegration: API.OperationMethod<
   PutIntegrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      integrationName: 0,
+      resourceConfig: {
+        openSearchResourceConfig: {
+          kmsKeyArn: 0,
+          dataSourceRoleArn: 0,
+          dashboardViewerPrincipals: 0,
+          applicationArn: 0,
+          retentionDays: 0,
+        },
+      },
+      integrationType: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     LimitExceededException,
@@ -6358,7 +6714,16 @@ export const putLogEvents: API.OperationMethod<
   PutLogEventsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      logGroupName: 0,
+      logStreamName: 0,
+      logEvents: D.list({ timestamp: 0, message: 0 }),
+      sequenceToken: 0,
+      entity: { keyAttributes: 0, attributes: 0 },
+    },
+  },
   errors: [
     DataAlreadyAcceptedException,
     InvalidParameterException,
@@ -6393,7 +6758,10 @@ export const putLogGroupDeletionProtection: API.OperationMethod<
   PutLogGroupDeletionProtectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { logGroupIdentifier: 0, deletionProtectionEnabled: 0 },
+  },
   errors: [
     AccessDeniedException,
     InvalidOperationException,
@@ -6450,7 +6818,25 @@ export const putMetricFilter: API.OperationMethod<
   PutMetricFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      logGroupName: 0,
+      filterName: 0,
+      filterPattern: 0,
+      metricTransformations: D.list({
+        metricName: 0,
+        metricNamespace: 0,
+        metricValue: 0,
+        defaultValue: 0,
+        dimensions: 0,
+        unit: 0,
+      }),
+      applyOnTransformedLogs: 0,
+      fieldSelectionCriteria: 0,
+      emitSystemFieldDimensions: 0,
+    },
+  },
   errors: [
     InvalidOperationException,
     InvalidParameterException,
@@ -6493,7 +6879,15 @@ export const putQueryDefinition: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      queryLanguage: 0,
+      name: 0,
+      queryDefinitionId: 0,
+      logGroupNames: 0,
+      queryString: 0,
+      clientToken: D.m({ idempotency: true }),
+      parameters: D.list({ name: 0, defaultValue: 0, description: 0 }),
+    },
   },
   errors: [
     InvalidParameterException,
@@ -6539,7 +6933,15 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      policyName: 0,
+      policyDocument: 0,
+      resourceArn: 0,
+      expectedRevisionId: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     LimitExceededException,
@@ -6587,7 +6989,7 @@ export const putRetentionPolicy: API.OperationMethod<
   PutRetentionPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { logGroupName: 0, retentionInDays: 0 } },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -6617,7 +7019,7 @@ export const putStorageTierPolicy: API.OperationMethod<
   PutStorageTierPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { storageTier: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterException,
@@ -6679,7 +7081,20 @@ export const putSubscriptionFilter: API.OperationMethod<
   PutSubscriptionFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      logGroupName: 0,
+      filterName: 0,
+      filterPattern: 0,
+      destinationArn: 0,
+      roleArn: 0,
+      distribution: 0,
+      applyOnTransformedLogs: 0,
+      fieldSelectionCriteria: 0,
+      emitSystemFields: 0,
+    },
+  },
   errors: [
     InvalidOperationException,
     InvalidParameterException,
@@ -6712,7 +7127,10 @@ export const putSyslogConfiguration: API.OperationMethod<
   PutSyslogConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { logGroupIdentifier: 0, vpcEndpointId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InvalidOperationException,
@@ -6774,7 +7192,10 @@ export const putTransformer: API.OperationMethod<
   PutTransformerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { logGroupIdentifier: 0, transformerConfig: D.list(i_Processor) },
+  },
   errors: [
     InvalidOperationException,
     InvalidParameterException,
@@ -6848,6 +7269,12 @@ export const startLiveTail: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      logGroupIdentifiers: 0,
+      logStreamNames: 0,
+      logStreamNamePrefixes: 0,
+      logEventFilterPattern: 0,
+    },
     output: {
       responseStream: D.events({
         sessionStart: 0,
@@ -6931,7 +7358,19 @@ export const startQuery: API.OperationMethod<
   StartQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      queryLanguage: 0,
+      logGroupName: 0,
+      logGroupNames: 0,
+      logGroupIdentifiers: 0,
+      startTime: 0,
+      endTime: 0,
+      queryString: 0,
+      limit: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     LimitExceededException,
@@ -6965,7 +7404,7 @@ export const stopQuery: API.OperationMethod<
   StopQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { queryId: 0 } },
   errors: [
     InvalidParameterException,
     ResourceNotFoundException,
@@ -7004,7 +7443,7 @@ export const tagLogGroup: API.OperationMethod<
   TagLogGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { logGroupName: 0, tags: 0 } },
   errors: [InvalidParameterException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -7042,7 +7481,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: 0 } },
   errors: [
     InvalidParameterException,
     ResourceNotFoundException,
@@ -7068,7 +7507,10 @@ export const testMetricFilter: API.OperationMethod<
   TestMetricFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { filterPattern: 0, logEventMessages: 0 },
+  },
   errors: [InvalidParameterException, ServiceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -7091,7 +7533,10 @@ export const testTransformer: API.OperationMethod<
   TestTransformerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { transformerConfig: D.list(i_Processor), logEventMessages: 0 },
+  },
   errors: [
     InvalidOperationException,
     InvalidParameterException,
@@ -7121,7 +7566,7 @@ export const untagLogGroup: API.OperationMethod<
   UntagLogGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { logGroupName: 0, tags: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -7142,7 +7587,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [
     InvalidParameterException,
     ResourceNotFoundException,
@@ -7179,7 +7624,17 @@ export const updateAnomaly: API.OperationMethod<
   UpdateAnomalyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      anomalyId: 0,
+      patternId: 0,
+      anomalyDetectorArn: 0,
+      suppressionType: 0,
+      suppressionPeriod: { value: 0, suppressionUnit: 0 },
+      baseline: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -7210,7 +7665,15 @@ export const updateDeliveryConfiguration: API.OperationMethod<
   UpdateDeliveryConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      id: 0,
+      recordFields: 0,
+      fieldDelimiter: 0,
+      s3DeliveryConfiguration: i_S3DeliveryConfiguration,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -7239,7 +7702,16 @@ export const updateLogAnomalyDetector: API.OperationMethod<
   UpdateLogAnomalyDetectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      anomalyDetectorArn: 0,
+      evaluationFrequency: 0,
+      filterPattern: 0,
+      anomalyVisibilityTime: 0,
+      enabled: 0,
+    },
+  },
   errors: [
     InvalidParameterException,
     OperationAbortedException,
@@ -7272,7 +7744,16 @@ export const updateLookupTable: API.OperationMethod<
   UpdateLookupTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      lookupTableArn: 0,
+      description: 0,
+      tableBody: 0,
+      queryId: 0,
+      kmsKeyId: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterException,
@@ -7303,7 +7784,25 @@ export const updateScheduledQuery: API.OperationMethod<
   UpdateScheduledQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      identifier: 0,
+      description: 0,
+      queryLanguage: 0,
+      queryString: 0,
+      logGroupIdentifiers: 0,
+      scheduleExpression: 0,
+      timezone: 0,
+      startTimeOffset: 0,
+      endTimeOffset: 0,
+      destinationConfiguration: i_DestinationConfiguration,
+      scheduleStartTime: 0,
+      scheduleEndTime: 0,
+      executionRoleArn: 0,
+      state: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -7316,3 +7815,82 @@ export const updateScheduledQuery: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateScheduledQuery",
 })) as any;
+
+const i_DataSourceFilter: D.LazyStruct = () => ({ name: 0, type: 0 });
+const i_DestinationConfiguration: D.LazyStruct = () => ({
+  s3Configuration: {
+    destinationIdentifier: 0,
+    roleArn: 0,
+    ownerAccountId: 0,
+    kmsKeyId: 0,
+  },
+  lookupTableConfiguration: {
+    tableName: 0,
+    roleArn: 0,
+    description: 0,
+    kmsKeyId: 0,
+    tags: 0,
+  },
+});
+const i_Processor: D.LazyStruct = () => ({
+  addKeys: { entries: D.list({ key: 0, value: 0, overwriteIfExists: 0 }) },
+  copyValue: {
+    entries: D.list({ source: 0, target: 0, overwriteIfExists: 0 }),
+  },
+  csv: {
+    quoteCharacter: 0,
+    delimiter: 0,
+    columns: 0,
+    source: 0,
+    destination: 0,
+  },
+  dateTimeConverter: {
+    source: 0,
+    target: 0,
+    targetFormat: 0,
+    matchPatterns: 0,
+    sourceTimezone: 0,
+    targetTimezone: 0,
+    locale: 0,
+  },
+  deleteKeys: { withKeys: 0 },
+  grok: { source: 0, match: 0 },
+  listToMap: {
+    source: 0,
+    key: 0,
+    valueKey: 0,
+    target: 0,
+    flatten: 0,
+    flattenedElement: 0,
+  },
+  lowerCaseString: { withKeys: 0 },
+  moveKeys: { entries: D.list({ source: 0, target: 0, overwriteIfExists: 0 }) },
+  parseCloudfront: { source: 0 },
+  parseJSON: { source: 0, destination: 0 },
+  parseKeyValue: {
+    source: 0,
+    destination: 0,
+    fieldDelimiter: 0,
+    keyValueDelimiter: 0,
+    keyPrefix: 0,
+    nonMatchValue: 0,
+    overwriteIfExists: 0,
+  },
+  parseRoute53: { source: 0 },
+  parseToOCSF: { source: 0, eventSource: 0, ocsfVersion: 0, mappingVersion: 0 },
+  parsePostgres: { source: 0 },
+  parseVPC: { source: 0 },
+  parseWAF: { source: 0 },
+  renameKeys: {
+    entries: D.list({ key: 0, renameTo: 0, overwriteIfExists: 0 }),
+  },
+  splitString: { entries: D.list({ source: 0, delimiter: 0 }) },
+  substituteString: { entries: D.list({ source: 0, from: 0, to: 0 }) },
+  trimString: { withKeys: 0 },
+  typeConverter: { entries: D.list({ key: 0, type: 0 }) },
+  upperCaseString: { withKeys: 0 },
+});
+const i_S3DeliveryConfiguration: D.LazyStruct = () => ({
+  suffixPath: 0,
+  enableHiveCompatiblePath: 0,
+});

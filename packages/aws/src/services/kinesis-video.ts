@@ -690,6 +690,12 @@ export const createSignalingChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /createSignalingChannel",
+    input: {
+      ChannelName: 0,
+      ChannelType: 0,
+      SingleMasterConfiguration: i_SingleMasterConfiguration,
+      Tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -733,7 +739,20 @@ export const createStream: API.OperationMethod<
   CreateStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /createStream", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /createStream",
+    input: {
+      DeviceName: 0,
+      StreamName: 0,
+      MediaType: 0,
+      KmsKeyId: 0,
+      DataRetentionInHours: 0,
+      Tags: 0,
+      StreamStorageConfiguration: i_StreamStorageConfiguration,
+    },
+    body: true,
+  },
   errors: [
     AccountStreamLimitExceededException,
     ClientLimitExceededException,
@@ -771,6 +790,7 @@ export const deleteEdgeConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /deleteEdgeConfiguration",
+    input: { StreamName: 0, StreamARN: 0 },
     body: true,
   },
   errors: [
@@ -807,6 +827,7 @@ export const deleteSignalingChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /deleteSignalingChannel",
+    input: { ChannelARN: 0, CurrentVersion: 0 },
     body: true,
   },
   errors: [
@@ -850,7 +871,12 @@ export const deleteStream: API.OperationMethod<
   DeleteStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /deleteStream", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /deleteStream",
+    input: { StreamARN: 0, CurrentVersion: 0 },
+    body: true,
+  },
   errors: [
     ClientLimitExceededException,
     InvalidArgumentException,
@@ -887,6 +913,7 @@ export const describeEdgeConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describeEdgeConfiguration",
+    input: { StreamName: 0, StreamARN: 0 },
     output: {
       CreationTime: D.ts,
       LastUpdatedTime: D.ts,
@@ -928,6 +955,7 @@ export const describeImageGenerationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describeImageGenerationConfiguration",
+    input: { StreamName: 0, StreamARN: 0 },
     body: true,
   },
   errors: [
@@ -961,6 +989,7 @@ export const describeMappedResourceConfiguration: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describeMappedResourceConfiguration",
+    input: { StreamName: 0, StreamARN: 0, MaxResults: 0, NextToken: 0 },
     body: true,
   },
   errors: [
@@ -999,6 +1028,7 @@ export const describeMediaStorageConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describeMediaStorageConfiguration",
+    input: { ChannelName: 0, ChannelARN: 0 },
     body: true,
   },
   errors: [
@@ -1030,6 +1060,7 @@ export const describeNotificationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describeNotificationConfiguration",
+    input: { StreamName: 0, StreamARN: 0 },
     body: true,
   },
   errors: [
@@ -1063,6 +1094,7 @@ export const describeSignalingChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describeSignalingChannel",
+    input: { ChannelName: 0, ChannelARN: 0 },
     output: { ChannelInfo: o_ChannelInfo },
     body: true,
   },
@@ -1096,6 +1128,7 @@ export const describeStream: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describeStream",
+    input: { StreamName: 0, StreamARN: 0 },
     output: { StreamInfo: o_StreamInfo },
     body: true,
   },
@@ -1132,6 +1165,7 @@ export const describeStreamStorageConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describeStreamStorageConfiguration",
+    input: { StreamName: 0, StreamARN: 0 },
     body: true,
   },
   errors: [
@@ -1169,7 +1203,12 @@ export const getDataEndpoint: API.OperationMethod<
   GetDataEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /getDataEndpoint", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /getDataEndpoint",
+    input: { StreamName: 0, StreamARN: 0, APIName: 0 },
+    body: true,
+  },
   errors: [
     ClientLimitExceededException,
     InvalidArgumentException,
@@ -1214,6 +1253,10 @@ export const getSignalingChannelEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getSignalingChannelEndpoint",
+    input: {
+      ChannelARN: 0,
+      SingleMasterChannelEndpointConfiguration: { Protocols: 0, Role: 0 },
+    },
     body: true,
   },
   errors: [
@@ -1248,6 +1291,7 @@ export const listEdgeAgentConfigurations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listEdgeAgentConfigurations",
+    input: { HubDeviceArn: 0, MaxResults: 0, NextToken: 0 },
     output: {
       EdgeConfigs: D.list({
         CreationTime: D.ts,
@@ -1293,6 +1337,11 @@ export const listSignalingChannels: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listSignalingChannels",
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      ChannelNameCondition: { ComparisonOperator: 0, ComparisonValue: 0 },
+    },
     output: { ChannelInfoList: D.list(o_ChannelInfo) },
     body: true,
   },
@@ -1331,6 +1380,11 @@ export const listStreams: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listStreams",
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      StreamNameCondition: { ComparisonOperator: 0, ComparisonValue: 0 },
+    },
     output: { StreamInfoList: D.list(o_StreamInfo) },
     body: true,
   },
@@ -1361,7 +1415,12 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /ListTagsForResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListTagsForResource",
+    input: { NextToken: 0, ResourceARN: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ClientLimitExceededException,
@@ -1392,7 +1451,12 @@ export const listTagsForStream: API.OperationMethod<
   ListTagsForStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /listTagsForStream", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /listTagsForStream",
+    input: { NextToken: 0, StreamARN: 0, StreamName: 0 },
+    body: true,
+  },
   errors: [
     ClientLimitExceededException,
     InvalidArgumentException,
@@ -1440,6 +1504,23 @@ export const startEdgeConfigurationUpdate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /startEdgeConfigurationUpdate",
+    input: {
+      StreamName: 0,
+      StreamARN: 0,
+      EdgeConfig: {
+        HubDeviceArn: 0,
+        RecorderConfig: {
+          MediaSourceConfig: { MediaUriSecretArn: 0, MediaUriType: 0 },
+          ScheduleConfig: i_ScheduleConfig,
+        },
+        UploaderConfig: { ScheduleConfig: i_ScheduleConfig },
+        DeletionConfig: {
+          EdgeRetentionInHours: 0,
+          LocalSizeConfig: { MaxLocalMediaSizeInMB: 0, StrategyOnFullSize: 0 },
+          DeleteAfterUpload: 0,
+        },
+      },
+    },
     output: {
       CreationTime: D.ts,
       LastUpdatedTime: D.ts,
@@ -1482,7 +1563,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /TagResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /TagResource",
+    input: { ResourceARN: 0, Tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ClientLimitExceededException,
@@ -1526,7 +1612,12 @@ export const tagStream: API.OperationMethod<
   TagStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tagStream", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tagStream",
+    input: { StreamARN: 0, StreamName: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     ClientLimitExceededException,
     InvalidArgumentException,
@@ -1559,7 +1650,12 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UntagResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UntagResource",
+    input: { ResourceARN: 0, TagKeyList: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ClientLimitExceededException,
@@ -1594,7 +1690,12 @@ export const untagStream: API.OperationMethod<
   UntagStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /untagStream", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /untagStream",
+    input: { StreamARN: 0, StreamName: 0, TagKeyList: 0 },
+    body: true,
+  },
   errors: [
     ClientLimitExceededException,
     InvalidArgumentException,
@@ -1645,7 +1746,18 @@ export const updateDataRetention: API.OperationMethod<
   UpdateDataRetentionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /updateDataRetention", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /updateDataRetention",
+    input: {
+      StreamName: 0,
+      StreamARN: 0,
+      CurrentVersion: 0,
+      Operation: 0,
+      DataRetentionChangeInHours: 0,
+    },
+    body: true,
+  },
   errors: [
     ClientLimitExceededException,
     InvalidArgumentException,
@@ -1680,6 +1792,20 @@ export const updateImageGenerationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /updateImageGenerationConfiguration",
+    input: {
+      StreamName: 0,
+      StreamARN: 0,
+      ImageGenerationConfiguration: {
+        Status: 0,
+        ImageSelectorType: 0,
+        DestinationConfig: { Uri: 0, DestinationRegion: 0 },
+        SamplingInterval: 0,
+        Format: 0,
+        FormatConfig: 0,
+        WidthPixels: 0,
+        HeightPixels: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -1728,6 +1854,10 @@ export const updateMediaStorageConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /updateMediaStorageConfiguration",
+    input: {
+      ChannelARN: 0,
+      MediaStorageConfiguration: { StreamARN: 0, Status: 0 },
+    },
     body: true,
   },
   errors: [
@@ -1763,6 +1893,11 @@ export const updateNotificationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /updateNotificationConfiguration",
+    input: {
+      StreamName: 0,
+      StreamARN: 0,
+      NotificationConfiguration: { Status: 0, DestinationConfig: { Uri: 0 } },
+    },
     body: true,
   },
   errors: [
@@ -1805,6 +1940,11 @@ export const updateSignalingChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /updateSignalingChannel",
+    input: {
+      ChannelARN: 0,
+      CurrentVersion: 0,
+      SingleMasterConfiguration: i_SingleMasterConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -1850,7 +1990,18 @@ export const updateStream: API.OperationMethod<
   UpdateStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /updateStream", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /updateStream",
+    input: {
+      StreamName: 0,
+      StreamARN: 0,
+      CurrentVersion: 0,
+      DeviceName: 0,
+      MediaType: 0,
+    },
+    body: true,
+  },
   errors: [
     ClientLimitExceededException,
     InvalidArgumentException,
@@ -1891,6 +2042,12 @@ export const updateStreamStorageConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /updateStreamStorageConfiguration",
+    input: {
+      StreamName: 0,
+      StreamARN: 0,
+      CurrentVersion: 0,
+      StreamStorageConfiguration: i_StreamStorageConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -1906,6 +2063,17 @@ export const updateStreamStorageConfiguration: API.OperationMethod<
   operationName: "UpdateStreamStorageConfiguration",
 })) as any;
 
+const i_ScheduleConfig: D.LazyStruct = () => ({
+  ScheduleExpression: 0,
+  DurationInSeconds: 0,
+});
+const i_SingleMasterConfiguration: D.LazyStruct = () => ({
+  MessageTtlSeconds: 0,
+});
+const i_StreamStorageConfiguration: D.LazyStruct = () => ({
+  DefaultStorageTier: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_ChannelInfo: D.LazyStruct = () => ({ CreationTime: D.ts });
 const o_EdgeConfig: D.LazyStruct = () => ({
   RecorderConfig: { MediaSourceConfig: { MediaUriSecretArn: D.secret } },

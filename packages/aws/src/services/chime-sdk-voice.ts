@@ -1350,6 +1350,7 @@ export const associatePhoneNumbersWithVoiceConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /voice-connectors/{VoiceConnectorId}?operation=associate-phone-numbers",
+    input: { VoiceConnectorId: 0, E164PhoneNumbers: 0, ForceAssociate: 0 },
     output: { PhoneNumberErrors: D.list(o_PhoneNumberError) },
     body: true,
   },
@@ -1390,6 +1391,7 @@ export const associatePhoneNumbersWithVoiceConnectorGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /voice-connector-groups/{VoiceConnectorGroupId}?operation=associate-phone-numbers",
+    input: { VoiceConnectorGroupId: 0, E164PhoneNumbers: 0, ForceAssociate: 0 },
     output: { PhoneNumberErrors: D.list(o_PhoneNumberError) },
     body: true,
   },
@@ -1433,6 +1435,7 @@ export const batchDeletePhoneNumber: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /phone-numbers?operation=batch-delete",
+    input: { PhoneNumberIds: 0 },
     output: { PhoneNumberErrors: D.list(o_PhoneNumberError) },
     body: true,
   },
@@ -1474,6 +1477,14 @@ export const batchUpdatePhoneNumber: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /phone-numbers?operation=batch-update",
+    input: {
+      UpdatePhoneNumberRequestItems: D.list({
+        PhoneNumberId: 0,
+        ProductType: 0,
+        CallingName: 0,
+        Name: 0,
+      }),
+    },
     output: { PhoneNumberErrors: D.list(o_PhoneNumberError) },
     body: true,
   },
@@ -1513,6 +1524,7 @@ export const createPhoneNumberOrder: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /phone-number-orders",
+    input: { ProductType: 0, E164PhoneNumbers: 0, Name: 0 },
     output: { PhoneNumberOrder: o_PhoneNumberOrder },
     body: true,
   },
@@ -1555,6 +1567,16 @@ export const createProxySession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /voice-connectors/{VoiceConnectorId}/proxy-sessions",
+    input: {
+      VoiceConnectorId: 0,
+      ParticipantPhoneNumbers: 0,
+      Name: 0,
+      ExpiryMinutes: 0,
+      Capabilities: 0,
+      NumberSelectionBehavior: 0,
+      GeoMatchLevel: 0,
+      GeoMatchParams: { Country: 0, AreaCode: 0 },
+    },
     output: { ProxySession: o_ProxySession },
     body: true,
   },
@@ -1596,6 +1618,12 @@ export const createSipMediaApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sip-media-applications",
+    input: {
+      AwsRegion: 0,
+      Name: 0,
+      Endpoints: D.list(i_SipMediaApplicationEndpoint),
+      Tags: D.list(i_Tag),
+    },
     output: { SipMediaApplication: o_SipMediaApplication },
     body: true,
   },
@@ -1639,6 +1667,13 @@ export const createSipMediaApplicationCall: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sip-media-applications/{SipMediaApplicationId}/calls",
+    input: {
+      FromPhoneNumber: 0,
+      ToPhoneNumber: 0,
+      SipMediaApplicationId: 0,
+      SipHeaders: 0,
+      ArgumentsMap: 0,
+    },
     body: true,
   },
   errors: [
@@ -1680,6 +1715,13 @@ export const createSipRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sip-rules",
+    input: {
+      Name: 0,
+      TriggerType: 0,
+      TriggerValue: 0,
+      Disabled: 0,
+      TargetApplications: D.list(i_SipRuleTargetApplication),
+    },
     output: { SipRule: o_SipRule },
     body: true,
   },
@@ -1724,6 +1766,14 @@ export const createVoiceConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /voice-connectors",
+    input: {
+      Name: 0,
+      AwsRegion: 0,
+      RequireEncryption: 0,
+      Tags: D.list(i_Tag),
+      IntegrationType: 0,
+      NetworkType: 0,
+    },
     output: { VoiceConnector: o_VoiceConnector },
     body: true,
   },
@@ -1771,6 +1821,11 @@ export const createVoiceConnectorGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /voice-connector-groups",
+    input: {
+      Name: 0,
+      VoiceConnectorItems: D.list(i_VoiceConnectorItem),
+      CallDistributionType: 0,
+    },
     output: { VoiceConnectorGroup: o_VoiceConnectorGroup },
     body: true,
   },
@@ -1821,6 +1876,7 @@ export const createVoiceProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /voice-profiles",
+    input: { SpeakerSearchTaskId: 0 },
     output: { VoiceProfile: o_VoiceProfile },
     body: true,
   },
@@ -1871,6 +1927,13 @@ export const createVoiceProfileDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /voice-profile-domains",
+    input: {
+      Name: 0,
+      Description: 0,
+      ServerSideEncryptionConfiguration: { KmsKeyArn: 0 },
+      ClientRequestToken: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { VoiceProfileDomain: o_VoiceProfileDomain },
     body: true,
   },
@@ -1915,7 +1978,11 @@ export const deletePhoneNumber: API.OperationMethod<
   DeletePhoneNumberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /phone-numbers/{PhoneNumberId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /phone-numbers/{PhoneNumberId}",
+    input: { PhoneNumberId: 0 },
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -1954,6 +2021,7 @@ export const deleteProxySession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /voice-connectors/{VoiceConnectorId}/proxy-sessions/{ProxySessionId}",
+    input: { VoiceConnectorId: 0, ProxySessionId: 0 },
   },
   errors: [
     BadRequestException,
@@ -1991,6 +2059,7 @@ export const deleteSipMediaApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /sip-media-applications/{SipMediaApplicationId}",
+    input: { SipMediaApplicationId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2026,7 +2095,11 @@ export const deleteSipRule: API.OperationMethod<
   DeleteSipRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /sip-rules/{SipRuleId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /sip-rules/{SipRuleId}",
+    input: { SipRuleId: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -2066,6 +2139,7 @@ export const deleteVoiceConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /voice-connectors/{VoiceConnectorId}",
+    input: { VoiceConnectorId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2104,6 +2178,7 @@ export const deleteVoiceConnectorEmergencyCallingConfiguration: API.OperationMet
   descriptor: {
     service: svc,
     http: "DELETE /voice-connectors/{VoiceConnectorId}/emergency-calling-configuration",
+    input: { VoiceConnectorId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2140,6 +2215,7 @@ export const deleteVoiceConnectorExternalSystemsConfiguration: API.OperationMeth
   descriptor: {
     service: svc,
     http: "DELETE /voice-connectors/{VoiceConnectorId}/external-systems-configuration",
+    input: { VoiceConnectorId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2179,6 +2255,7 @@ export const deleteVoiceConnectorGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /voice-connector-groups/{VoiceConnectorGroupId}",
+    input: { VoiceConnectorGroupId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2219,6 +2296,7 @@ export const deleteVoiceConnectorOrigination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /voice-connectors/{VoiceConnectorId}/origination",
+    input: { VoiceConnectorId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2257,6 +2335,7 @@ export const deleteVoiceConnectorProxy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /voice-connectors/{VoiceConnectorId}/programmable-numbers/proxy",
+    input: { VoiceConnectorId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2293,6 +2372,7 @@ export const deleteVoiceConnectorStreamingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /voice-connectors/{VoiceConnectorId}/streaming-configuration",
+    input: { VoiceConnectorId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2332,6 +2412,7 @@ export const deleteVoiceConnectorTermination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /voice-connectors/{VoiceConnectorId}/termination",
+    input: { VoiceConnectorId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2369,6 +2450,7 @@ export const deleteVoiceConnectorTerminationCredentials: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /voice-connectors/{VoiceConnectorId}/termination/credentials?operation=delete",
+    input: { VoiceConnectorId: 0, Usernames: 0 },
     body: true,
   },
   errors: [
@@ -2405,7 +2487,11 @@ export const deleteVoiceProfile: API.OperationMethod<
   DeleteVoiceProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /voice-profiles/{VoiceProfileId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /voice-profiles/{VoiceProfileId}",
+    input: { VoiceProfileId: 0 },
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -2445,6 +2531,7 @@ export const deleteVoiceProfileDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /voice-profile-domains/{VoiceProfileDomainId}",
+    input: { VoiceProfileDomainId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2484,6 +2571,7 @@ export const disassociatePhoneNumbersFromVoiceConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /voice-connectors/{VoiceConnectorId}?operation=disassociate-phone-numbers",
+    input: { VoiceConnectorId: 0, E164PhoneNumbers: 0 },
     output: { PhoneNumberErrors: D.list(o_PhoneNumberError) },
     body: true,
   },
@@ -2523,6 +2611,7 @@ export const disassociatePhoneNumbersFromVoiceConnectorGroup: API.OperationMetho
   descriptor: {
     service: svc,
     http: "POST /voice-connector-groups/{VoiceConnectorGroupId}?operation=disassociate-phone-numbers",
+    input: { VoiceConnectorGroupId: 0, E164PhoneNumbers: 0 },
     output: { PhoneNumberErrors: D.list(o_PhoneNumberError) },
     body: true,
   },
@@ -2593,6 +2682,7 @@ export const getPhoneNumber: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /phone-numbers/{PhoneNumberId}",
+    input: { PhoneNumberId: 0 },
     output: { PhoneNumber: o_PhoneNumber },
   },
   errors: [
@@ -2632,6 +2722,7 @@ export const getPhoneNumberOrder: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /phone-number-orders/{PhoneNumberOrderId}",
+    input: { PhoneNumberOrderId: 0 },
     output: { PhoneNumberOrder: o_PhoneNumberOrder },
   },
   errors: [
@@ -2707,6 +2798,7 @@ export const getProxySession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /voice-connectors/{VoiceConnectorId}/proxy-sessions/{ProxySessionId}",
+    input: { VoiceConnectorId: 0, ProxySessionId: 0 },
     output: { ProxySession: o_ProxySession },
   },
   errors: [
@@ -2745,6 +2837,7 @@ export const getSipMediaApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sip-media-applications/{SipMediaApplicationId}",
+    input: { SipMediaApplicationId: 0 },
     output: { SipMediaApplication: o_SipMediaApplication },
   },
   errors: [
@@ -2786,6 +2879,7 @@ export const getSipMediaApplicationAlexaSkillConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sip-media-applications/{SipMediaApplicationId}/alexa-skill-configuration",
+    input: { SipMediaApplicationId: 0 },
     output: {
       SipMediaApplicationAlexaSkillConfiguration:
         o_SipMediaApplicationAlexaSkillConfiguration,
@@ -2827,6 +2921,7 @@ export const getSipMediaApplicationLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sip-media-applications/{SipMediaApplicationId}/logging-configuration",
+    input: { SipMediaApplicationId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2864,6 +2959,7 @@ export const getSipRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sip-rules/{SipRuleId}",
+    input: { SipRuleId: 0 },
     output: { SipRule: o_SipRule },
   },
   errors: [
@@ -2903,6 +2999,7 @@ export const getSpeakerSearchTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /voice-connectors/{VoiceConnectorId}/speaker-search-tasks/{SpeakerSearchTaskId}",
+    input: { VoiceConnectorId: 0, SpeakerSearchTaskId: 0 },
     output: { SpeakerSearchTask: o_SpeakerSearchTask },
   },
   errors: [
@@ -2943,6 +3040,7 @@ export const getVoiceConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /voice-connectors/{VoiceConnectorId}",
+    input: { VoiceConnectorId: 0 },
     output: { VoiceConnector: o_VoiceConnector },
   },
   errors: [
@@ -2980,6 +3078,7 @@ export const getVoiceConnectorEmergencyCallingConfiguration: API.OperationMethod
   descriptor: {
     service: svc,
     http: "GET /voice-connectors/{VoiceConnectorId}/emergency-calling-configuration",
+    input: { VoiceConnectorId: 0 },
     output: { EmergencyCallingConfiguration: o_EmergencyCallingConfiguration },
   },
   errors: [
@@ -3018,6 +3117,7 @@ export const getVoiceConnectorExternalSystemsConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /voice-connectors/{VoiceConnectorId}/external-systems-configuration",
+    input: { VoiceConnectorId: 0 },
   },
   errors: [
     BadRequestException,
@@ -3055,6 +3155,7 @@ export const getVoiceConnectorGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /voice-connector-groups/{VoiceConnectorGroupId}",
+    input: { VoiceConnectorGroupId: 0 },
     output: { VoiceConnectorGroup: o_VoiceConnectorGroup },
   },
   errors: [
@@ -3093,6 +3194,7 @@ export const getVoiceConnectorLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /voice-connectors/{VoiceConnectorId}/logging-configuration",
+    input: { VoiceConnectorId: 0 },
   },
   errors: [
     BadRequestException,
@@ -3129,6 +3231,7 @@ export const getVoiceConnectorOrigination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /voice-connectors/{VoiceConnectorId}/origination",
+    input: { VoiceConnectorId: 0 },
   },
   errors: [
     BadRequestException,
@@ -3168,6 +3271,7 @@ export const getVoiceConnectorProxy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /voice-connectors/{VoiceConnectorId}/programmable-numbers/proxy",
+    input: { VoiceConnectorId: 0 },
     output: { Proxy: o_Proxy },
   },
   errors: [
@@ -3207,6 +3311,7 @@ export const getVoiceConnectorStreamingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /voice-connectors/{VoiceConnectorId}/streaming-configuration",
+    input: { VoiceConnectorId: 0 },
     output: { StreamingConfiguration: o_StreamingConfiguration },
   },
   errors: [
@@ -3244,6 +3349,7 @@ export const getVoiceConnectorTermination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /voice-connectors/{VoiceConnectorId}/termination",
+    input: { VoiceConnectorId: 0 },
     output: { Termination: o_Termination },
   },
   errors: [
@@ -3283,6 +3389,7 @@ export const getVoiceConnectorTerminationHealth: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /voice-connectors/{VoiceConnectorId}/termination/health",
+    input: { VoiceConnectorId: 0 },
     output: { TerminationHealth: { Timestamp: D.ts } },
   },
   errors: [
@@ -3321,6 +3428,7 @@ export const getVoiceProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /voice-profiles/{VoiceProfileId}",
+    input: { VoiceProfileId: 0 },
     output: { VoiceProfile: o_VoiceProfile },
   },
   errors: [
@@ -3360,6 +3468,7 @@ export const getVoiceProfileDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /voice-profile-domains/{VoiceProfileDomainId}",
+    input: { VoiceProfileDomainId: 0 },
     output: { VoiceProfileDomain: o_VoiceProfileDomain },
   },
   errors: [
@@ -3400,7 +3509,11 @@ export const getVoiceToneAnalysisTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /voice-connectors/{VoiceConnectorId}/voice-tone-analysis-tasks/{VoiceToneAnalysisTaskId}",
-    input: { IsCaller: D.m({ query: "isCaller" }) },
+    input: {
+      VoiceConnectorId: 0,
+      VoiceToneAnalysisTaskId: 0,
+      IsCaller: D.m({ query: "isCaller" }),
+    },
     output: { VoiceToneAnalysisTask: o_VoiceToneAnalysisTask },
   },
   errors: [
@@ -3573,6 +3686,7 @@ export const listProxySessions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /voice-connectors/{VoiceConnectorId}/proxy-sessions",
     input: {
+      VoiceConnectorId: 0,
       Status: D.m({ query: "status" }),
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
@@ -3879,6 +3993,7 @@ export const listVoiceConnectorTerminationCredentials: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /voice-connectors/{VoiceConnectorId}/termination/credentials",
+    input: { VoiceConnectorId: 0 },
     output: { Usernames: D.list(D.secret) },
   },
   errors: [
@@ -4028,6 +4143,13 @@ export const putSipMediaApplicationAlexaSkillConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /sip-media-applications/{SipMediaApplicationId}/alexa-skill-configuration",
+    input: {
+      SipMediaApplicationId: 0,
+      SipMediaApplicationAlexaSkillConfiguration: {
+        AlexaSkillStatus: 0,
+        AlexaSkillIds: 0,
+      },
+    },
     output: {
       SipMediaApplicationAlexaSkillConfiguration:
         o_SipMediaApplicationAlexaSkillConfiguration,
@@ -4070,6 +4192,12 @@ export const putSipMediaApplicationLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /sip-media-applications/{SipMediaApplicationId}/logging-configuration",
+    input: {
+      SipMediaApplicationId: 0,
+      SipMediaApplicationLoggingConfiguration: {
+        EnableSipMediaApplicationMessageLogs: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -4107,6 +4235,16 @@ export const putVoiceConnectorEmergencyCallingConfiguration: API.OperationMethod
   descriptor: {
     service: svc,
     http: "PUT /voice-connectors/{VoiceConnectorId}/emergency-calling-configuration",
+    input: {
+      VoiceConnectorId: 0,
+      EmergencyCallingConfiguration: {
+        DNIS: D.list({
+          EmergencyPhoneNumber: 0,
+          TestPhoneNumber: 0,
+          CallingCountry: 0,
+        }),
+      },
+    },
     output: { EmergencyCallingConfiguration: o_EmergencyCallingConfiguration },
     body: true,
   },
@@ -4146,6 +4284,11 @@ export const putVoiceConnectorExternalSystemsConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /voice-connectors/{VoiceConnectorId}/external-systems-configuration",
+    input: {
+      VoiceConnectorId: 0,
+      SessionBorderControllerTypes: 0,
+      ContactCenterSystemTypes: 0,
+    },
     body: true,
   },
   errors: [
@@ -4184,6 +4327,10 @@ export const putVoiceConnectorLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /voice-connectors/{VoiceConnectorId}/logging-configuration",
+    input: {
+      VoiceConnectorId: 0,
+      LoggingConfiguration: { EnableSIPLogs: 0, EnableMediaMetricLogs: 0 },
+    },
     body: true,
   },
   errors: [
@@ -4222,6 +4369,19 @@ export const putVoiceConnectorOrigination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /voice-connectors/{VoiceConnectorId}/origination",
+    input: {
+      VoiceConnectorId: 0,
+      Origination: {
+        Routes: D.list({
+          Host: 0,
+          Port: 0,
+          Protocol: 0,
+          Priority: 0,
+          Weight: 0,
+        }),
+        Disabled: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -4263,6 +4423,13 @@ export const putVoiceConnectorProxy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /voice-connectors/{VoiceConnectorId}/programmable-numbers/proxy",
+    input: {
+      VoiceConnectorId: 0,
+      DefaultSessionExpiryMinutes: 0,
+      PhoneNumberPoolCountries: 0,
+      FallBackPhoneNumber: 0,
+      Disabled: 0,
+    },
     output: { Proxy: o_Proxy },
     body: true,
   },
@@ -4302,6 +4469,15 @@ export const putVoiceConnectorStreamingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /voice-connectors/{VoiceConnectorId}/streaming-configuration",
+    input: {
+      VoiceConnectorId: 0,
+      StreamingConfiguration: {
+        DataRetentionInHours: 0,
+        Disabled: 0,
+        StreamingNotificationTargets: D.list({ NotificationTarget: 0 }),
+        MediaInsightsConfiguration: { Disabled: 0, ConfigurationArn: 0 },
+      },
+    },
     output: { StreamingConfiguration: o_StreamingConfiguration },
     body: true,
   },
@@ -4341,6 +4517,16 @@ export const putVoiceConnectorTermination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /voice-connectors/{VoiceConnectorId}/termination",
+    input: {
+      VoiceConnectorId: 0,
+      Termination: {
+        CpsLimit: 0,
+        DefaultPhoneNumber: 0,
+        CallingRegions: 0,
+        CidrAllowedList: 0,
+        Disabled: 0,
+      },
+    },
     output: { Termination: o_Termination },
     body: true,
   },
@@ -4380,6 +4566,10 @@ export const putVoiceConnectorTerminationCredentials: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /voice-connectors/{VoiceConnectorId}/termination/credentials?operation=put",
+    input: {
+      VoiceConnectorId: 0,
+      Credentials: D.list({ Username: 0, Password: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -4418,6 +4608,7 @@ export const restorePhoneNumber: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /phone-numbers/{PhoneNumberId}?operation=restore",
+    input: { PhoneNumberId: 0 },
     output: { PhoneNumber: o_PhoneNumber },
   },
   errors: [
@@ -4517,6 +4708,13 @@ export const startSpeakerSearchTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /voice-connectors/{VoiceConnectorId}/speaker-search-tasks",
+    input: {
+      VoiceConnectorId: 0,
+      TransactionId: 0,
+      VoiceProfileDomainId: 0,
+      ClientRequestToken: 0,
+      CallLeg: 0,
+    },
     output: { SpeakerSearchTask: o_SpeakerSearchTask },
     body: true,
   },
@@ -4570,6 +4768,12 @@ export const startVoiceToneAnalysisTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /voice-connectors/{VoiceConnectorId}/voice-tone-analysis-tasks",
+    input: {
+      VoiceConnectorId: 0,
+      TransactionId: 0,
+      LanguageCode: 0,
+      ClientRequestToken: 0,
+    },
     output: { VoiceToneAnalysisTask: o_VoiceToneAnalysisTask },
     body: true,
   },
@@ -4616,6 +4820,7 @@ export const stopSpeakerSearchTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /voice-connectors/{VoiceConnectorId}/speaker-search-tasks/{SpeakerSearchTaskId}?operation=stop",
+    input: { VoiceConnectorId: 0, SpeakerSearchTaskId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4658,6 +4863,7 @@ export const stopVoiceToneAnalysisTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /voice-connectors/{VoiceConnectorId}/voice-tone-analysis-tasks/{VoiceToneAnalysisTaskId}?operation=stop",
+    input: { VoiceConnectorId: 0, VoiceToneAnalysisTaskId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4697,6 +4903,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags?operation=tag-resource",
+    input: { ResourceARN: 0, Tags: D.list(i_Tag) },
     body: true,
   },
   errors: [
@@ -4733,6 +4940,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags?operation=untag-resource",
+    input: { ResourceARN: 0, TagKeys: 0 },
     body: true,
   },
   errors: [
@@ -4765,7 +4973,12 @@ export const updateGlobalSettings: API.OperationMethod<
   UpdateGlobalSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /settings", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /settings",
+    input: { VoiceConnector: { CdrBucket: 0 } },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -4810,6 +5023,7 @@ export const updatePhoneNumber: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /phone-numbers/{PhoneNumberId}",
+    input: { PhoneNumberId: 0, ProductType: 0, CallingName: 0, Name: 0 },
     output: { PhoneNumber: o_PhoneNumber },
     body: true,
   },
@@ -4848,7 +5062,12 @@ export const updatePhoneNumberSettings: API.OperationMethod<
   UpdatePhoneNumberSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /settings/phone-number", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /settings/phone-number",
+    input: { CallingName: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -4885,6 +5104,12 @@ export const updateProxySession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /voice-connectors/{VoiceConnectorId}/proxy-sessions/{ProxySessionId}",
+    input: {
+      VoiceConnectorId: 0,
+      ProxySessionId: 0,
+      Capabilities: 0,
+      ExpiryMinutes: 0,
+    },
     output: { ProxySession: o_ProxySession },
     body: true,
   },
@@ -4924,6 +5149,11 @@ export const updateSipMediaApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /sip-media-applications/{SipMediaApplicationId}",
+    input: {
+      SipMediaApplicationId: 0,
+      Name: 0,
+      Endpoints: D.list(i_SipMediaApplicationEndpoint),
+    },
     output: { SipMediaApplication: o_SipMediaApplication },
     body: true,
   },
@@ -4966,6 +5196,7 @@ export const updateSipMediaApplicationCall: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sip-media-applications/{SipMediaApplicationId}/calls/{TransactionId}",
+    input: { SipMediaApplicationId: 0, TransactionId: 0, Arguments: 0 },
     body: true,
   },
   errors: [
@@ -5006,6 +5237,12 @@ export const updateSipRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /sip-rules/{SipRuleId}",
+    input: {
+      SipRuleId: 0,
+      Name: 0,
+      Disabled: 0,
+      TargetApplications: D.list(i_SipRuleTargetApplication),
+    },
     output: { SipRule: o_SipRule },
     body: true,
   },
@@ -5046,6 +5283,7 @@ export const updateVoiceConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /voice-connectors/{VoiceConnectorId}",
+    input: { VoiceConnectorId: 0, Name: 0, RequireEncryption: 0 },
     output: { VoiceConnector: o_VoiceConnector },
     body: true,
   },
@@ -5085,6 +5323,12 @@ export const updateVoiceConnectorGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /voice-connector-groups/{VoiceConnectorGroupId}",
+    input: {
+      VoiceConnectorGroupId: 0,
+      Name: 0,
+      VoiceConnectorItems: D.list(i_VoiceConnectorItem),
+      CallDistributionType: 0,
+    },
     output: { VoiceConnectorGroup: o_VoiceConnectorGroup },
     body: true,
   },
@@ -5136,6 +5380,7 @@ export const updateVoiceProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /voice-profiles/{VoiceProfileId}",
+    input: { VoiceProfileId: 0, SpeakerSearchTaskId: 0 },
     output: { VoiceProfile: o_VoiceProfile },
     body: true,
   },
@@ -5178,6 +5423,7 @@ export const updateVoiceProfileDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /voice-profile-domains/{VoiceProfileDomainId}",
+    input: { VoiceProfileDomainId: 0, Name: 0, Description: 0 },
     output: { VoiceProfileDomain: o_VoiceProfileDomain },
     body: true,
   },
@@ -5221,6 +5467,15 @@ export const validateE911Address: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /emergency-calling/address",
+    input: {
+      AwsAccountId: 0,
+      StreetNumber: 0,
+      StreetInfo: 0,
+      City: 0,
+      State: 0,
+      Country: 0,
+      PostalCode: 0,
+    },
     output: {
       Address: {
         streetName: D.secret,
@@ -5261,6 +5516,17 @@ export const validateE911Address: API.OperationMethod<
   operationName: "ValidateE911Address",
 })) as any;
 
+const i_SipMediaApplicationEndpoint: D.LazyStruct = () => ({ LambdaArn: 0 });
+const i_SipRuleTargetApplication: D.LazyStruct = () => ({
+  SipMediaApplicationId: 0,
+  Priority: 0,
+  AwsRegion: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_VoiceConnectorItem: D.LazyStruct = () => ({
+  VoiceConnectorId: 0,
+  Priority: 0,
+});
 const o_EmergencyCallingConfiguration: D.LazyStruct = () => ({
   DNIS: D.list({ EmergencyPhoneNumber: D.secret, TestPhoneNumber: D.secret }),
 });

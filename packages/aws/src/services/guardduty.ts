@@ -3197,6 +3197,7 @@ export const acceptAdministratorInvitation: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/administrator",
     input: {
+      DetectorId: 0,
       AdministratorId: D.m({ wire: "administratorId" }),
       InvitationId: D.m({ wire: "invitationId" }),
     },
@@ -3225,6 +3226,7 @@ export const acceptInvitation: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/master",
     input: {
+      DetectorId: 0,
       MasterId: D.m({ wire: "masterId" }),
       InvitationId: D.m({ wire: "invitationId" }),
     },
@@ -3254,7 +3256,7 @@ export const archiveFindings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /detector/{DetectorId}/findings/archive",
-    input: { FindingIds: D.m({ wire: "findingIds" }) },
+    input: { DetectorId: 0, FindingIds: D.m({ wire: "findingIds" }) },
     body: true,
   },
   errors: [BadRequestException, InternalServerErrorException],
@@ -3338,6 +3340,7 @@ export const createFilter: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/filter",
     input: {
+      DetectorId: 0,
       Name: D.m({ wire: "name" }),
       Description: D.m({ wire: "description" }),
       Action: D.m({ wire: "action" }),
@@ -3384,6 +3387,7 @@ export const createInvestigation: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/investigation",
     input: {
+      DetectorId: 0,
       TriggerPrompt: D.m({ wire: "triggerPrompt" }),
       ClientToken: D.m({ idempotency: true, wire: "clientToken" }),
     },
@@ -3418,6 +3422,7 @@ export const createIPSet: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/ipset",
     input: {
+      DetectorId: 0,
       Name: D.m({ wire: "name" }),
       Format: D.m({ wire: "format" }),
       Location: D.m({ wire: "location" }),
@@ -3518,6 +3523,7 @@ export const createMembers: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/member",
     input: {
+      DetectorId: 0,
       AccountDetails: D.m({
         wire: "accountDetails",
         shape: D.list({
@@ -3557,6 +3563,7 @@ export const createPublishingDestination: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/publishingDestination",
     input: {
+      DetectorId: 0,
       DestinationType: D.m({ wire: "destinationType" }),
       DestinationProperties: D.m({
         wire: "destinationProperties",
@@ -3590,7 +3597,7 @@ export const createSampleFindings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /detector/{DetectorId}/findings/create",
-    input: { FindingTypes: D.m({ wire: "findingTypes" }) },
+    input: { DetectorId: 0, FindingTypes: D.m({ wire: "findingTypes" }) },
     body: true,
   },
   errors: [BadRequestException, InternalServerErrorException],
@@ -3616,6 +3623,7 @@ export const createThreatEntitySet: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/threatentityset",
     input: {
+      DetectorId: 0,
       Name: D.m({ wire: "name" }),
       Format: D.m({ wire: "format" }),
       Location: D.m({ wire: "location" }),
@@ -3651,6 +3659,7 @@ export const createThreatIntelSet: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/threatintelset",
     input: {
+      DetectorId: 0,
       Name: D.m({ wire: "name" }),
       Format: D.m({ wire: "format" }),
       Location: D.m({ wire: "location" }),
@@ -3691,6 +3700,7 @@ export const createTrustedEntitySet: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/trustedentityset",
     input: {
+      DetectorId: 0,
       Name: D.m({ wire: "name" }),
       Format: D.m({ wire: "format" }),
       Location: D.m({ wire: "location" }),
@@ -3752,7 +3762,11 @@ export const deleteDetector: API.OperationMethod<
   DeleteDetectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /detector/{DetectorId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /detector/{DetectorId}",
+    input: { DetectorId: 0 },
+  },
   errors: [BadRequestException, InternalServerErrorException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3775,6 +3789,7 @@ export const deleteFilter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /detector/{DetectorId}/filter/{FilterName}",
+    input: { DetectorId: 0, FilterName: 0 },
   },
   errors: [BadRequestException, InternalServerErrorException],
   protocol: AwsProtocol,
@@ -3829,6 +3844,7 @@ export const deleteIPSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /detector/{DetectorId}/ipset/{IpSetId}",
+    input: { DetectorId: 0, IpSetId: 0 },
   },
   errors: [BadRequestException, InternalServerErrorException],
   protocol: AwsProtocol,
@@ -3854,6 +3870,7 @@ export const deleteMalwareProtectionPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /malware-protection-plan/{MalwareProtectionPlanId}",
+    input: { MalwareProtectionPlanId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3884,7 +3901,7 @@ export const deleteMembers: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /detector/{DetectorId}/member/delete",
-    input: { AccountIds: D.m({ wire: "accountIds" }) },
+    input: { DetectorId: 0, AccountIds: D.m({ wire: "accountIds" }) },
     output: {
       UnprocessedAccounts: D.m({
         wire: "unprocessedAccounts",
@@ -3915,6 +3932,7 @@ export const deletePublishingDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /detector/{DetectorId}/publishingDestination/{DestinationId}",
+    input: { DetectorId: 0, DestinationId: 0 },
   },
   errors: [BadRequestException, InternalServerErrorException],
   protocol: AwsProtocol,
@@ -3938,6 +3956,7 @@ export const deleteThreatEntitySet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /detector/{DetectorId}/threatentityset/{ThreatEntitySetId}",
+    input: { DetectorId: 0, ThreatEntitySetId: 0 },
   },
   errors: [BadRequestException, InternalServerErrorException],
   protocol: AwsProtocol,
@@ -3961,6 +3980,7 @@ export const deleteThreatIntelSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /detector/{DetectorId}/threatintelset/{ThreatIntelSetId}",
+    input: { DetectorId: 0, ThreatIntelSetId: 0 },
   },
   errors: [BadRequestException, InternalServerErrorException],
   protocol: AwsProtocol,
@@ -3984,6 +4004,7 @@ export const deleteTrustedEntitySet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /detector/{DetectorId}/trustedentityset/{TrustedEntitySetId}",
+    input: { DetectorId: 0, TrustedEntitySetId: 0 },
   },
   errors: [BadRequestException, InternalServerErrorException],
   protocol: AwsProtocol,
@@ -4011,6 +4032,7 @@ export const describeMalwareScans: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/malware-scans",
     input: {
+      DetectorId: 0,
       NextToken: D.m({ wire: "nextToken" }),
       MaxResults: D.m({ wire: "maxResults" }),
       FilterCriteria: D.m({
@@ -4099,6 +4121,7 @@ export const describeOrganizationConfiguration: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /detector/{DetectorId}/admin",
     input: {
+      DetectorId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -4184,6 +4207,7 @@ export const describePublishingDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /detector/{DetectorId}/publishingDestination/{DestinationId}",
+    input: { DetectorId: 0, DestinationId: 0 },
     output: {
       DestinationId: D.m({ wire: "destinationId" }),
       DestinationType: D.m({ wire: "destinationType" }),
@@ -4252,6 +4276,7 @@ export const disassociateFromAdministratorAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /detector/{DetectorId}/administrator/disassociate",
+    input: { DetectorId: 0 },
   },
   errors: [BadRequestException, InternalServerErrorException],
   protocol: AwsProtocol,
@@ -4277,6 +4302,7 @@ export const disassociateFromMasterAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /detector/{DetectorId}/master/disassociate",
+    input: { DetectorId: 0 },
   },
   errors: [BadRequestException, InternalServerErrorException],
   protocol: AwsProtocol,
@@ -4308,7 +4334,7 @@ export const disassociateMembers: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /detector/{DetectorId}/member/disassociate",
-    input: { AccountIds: D.m({ wire: "accountIds" }) },
+    input: { DetectorId: 0, AccountIds: D.m({ wire: "accountIds" }) },
     output: {
       UnprocessedAccounts: D.m({
         wire: "unprocessedAccounts",
@@ -4372,6 +4398,7 @@ export const getAdministratorAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /detector/{DetectorId}/administrator",
+    input: { DetectorId: 0 },
     output: {
       Administrator: D.m({
         wire: "administrator",
@@ -4407,6 +4434,7 @@ export const getCoverageStatistics: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/coverage/statistics",
     input: {
+      DetectorId: 0,
       FilterCriteria: D.m({
         wire: "filterCriteria",
         shape: i_CoverageFilterCriteria,
@@ -4448,6 +4476,7 @@ export const getDetector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /detector/{DetectorId}",
+    input: { DetectorId: 0 },
     output: {
       CreatedAt: D.m({ wire: "createdAt" }),
       FindingPublishingFrequency: D.m({ wire: "findingPublishingFrequency" }),
@@ -4499,6 +4528,7 @@ export const getFilter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /detector/{DetectorId}/filter/{FilterName}",
+    input: { DetectorId: 0, FilterName: 0 },
     output: {
       Name: D.m({ wire: "name" }),
       Description: D.m({ wire: "description" }),
@@ -4557,6 +4587,7 @@ export const getFindings: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/findings/get",
     input: {
+      DetectorId: 0,
       FindingIds: D.m({ wire: "findingIds" }),
       SortCriteria: D.m({ wire: "sortCriteria", shape: i_SortCriteria }),
     },
@@ -5662,6 +5693,7 @@ export const getFindingsStatistics: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/findings/statistics",
     input: {
+      DetectorId: 0,
       FindingStatisticTypes: D.m({ wire: "findingStatisticTypes" }),
       FindingCriteria: D.m({
         wire: "findingCriteria",
@@ -5753,6 +5785,7 @@ export const getInvestigation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /detector/{DetectorId}/investigation/{InvestigationId}",
+    input: { DetectorId: 0, InvestigationId: 0 },
     output: {
       Investigation: D.m({
         wire: "investigation",
@@ -5820,6 +5853,7 @@ export const getInvitationsCount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /invitation/count",
+    input: {},
     output: { InvitationsCount: D.m({ wire: "invitationsCount" }) },
   },
   errors: [BadRequestException, InternalServerErrorException],
@@ -5844,6 +5878,7 @@ export const getIPSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /detector/{DetectorId}/ipset/{IpSetId}",
+    input: { DetectorId: 0, IpSetId: 0 },
     output: {
       Name: D.m({ wire: "name" }),
       Format: D.m({ wire: "format" }),
@@ -5877,6 +5912,7 @@ export const getMalwareProtectionPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /malware-protection-plan/{MalwareProtectionPlanId}",
+    input: { MalwareProtectionPlanId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       Role: D.m({ wire: "role" }),
@@ -5943,6 +5979,7 @@ export const getMalwareScan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /malware-scan/{ScanId}",
+    input: { ScanId: 0 },
     output: {
       ScanId: D.m({ wire: "scanId" }),
       DetectorId: D.m({ wire: "detectorId" }),
@@ -6056,6 +6093,7 @@ export const getMalwareScanSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /detector/{DetectorId}/malware-scan-settings",
+    input: { DetectorId: 0 },
     output: {
       ScanResourceCriteria: D.m({
         wire: "scanResourceCriteria",
@@ -6089,6 +6127,7 @@ export const getMasterAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /detector/{DetectorId}/master",
+    input: { DetectorId: 0 },
     output: {
       Master: D.m({
         wire: "master",
@@ -6125,7 +6164,7 @@ export const getMemberDetectors: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /detector/{DetectorId}/member/detector/get",
-    input: { AccountIds: D.m({ wire: "accountIds" }) },
+    input: { DetectorId: 0, AccountIds: D.m({ wire: "accountIds" }) },
     output: {
       MemberDataSourceConfigurations: D.m({
         wire: "members",
@@ -6182,7 +6221,7 @@ export const getMembers: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /detector/{DetectorId}/member/get",
-    input: { AccountIds: D.m({ wire: "accountIds" }) },
+    input: { DetectorId: 0, AccountIds: D.m({ wire: "accountIds" }) },
     output: {
       Members: D.m({ wire: "members", shape: D.list(o_Member) }),
       UnprocessedAccounts: D.m({
@@ -6272,7 +6311,7 @@ export const getRemainingFreeTrialDays: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /detector/{DetectorId}/freeTrial/daysRemaining",
-    input: { AccountIds: D.m({ wire: "accountIds" }) },
+    input: { DetectorId: 0, AccountIds: D.m({ wire: "accountIds" }) },
     output: {
       Accounts: D.m({
         wire: "accounts",
@@ -6346,6 +6385,7 @@ export const getThreatEntitySet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /detector/{DetectorId}/threatentityset/{ThreatEntitySetId}",
+    input: { DetectorId: 0, ThreatEntitySetId: 0 },
     output: {
       Name: D.m({ wire: "name" }),
       Format: D.m({ wire: "format" }),
@@ -6380,6 +6420,7 @@ export const getThreatIntelSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /detector/{DetectorId}/threatintelset/{ThreatIntelSetId}",
+    input: { DetectorId: 0, ThreatIntelSetId: 0 },
     output: {
       Name: D.m({ wire: "name" }),
       Format: D.m({ wire: "format" }),
@@ -6411,6 +6452,7 @@ export const getTrustedEntitySet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /detector/{DetectorId}/trustedentityset/{TrustedEntitySetId}",
+    input: { DetectorId: 0, TrustedEntitySetId: 0 },
     output: {
       Name: D.m({ wire: "name" }),
       Format: D.m({ wire: "format" }),
@@ -6447,6 +6489,7 @@ export const getUsageStatistics: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/usage/statistics",
     input: {
+      DetectorId: 0,
       UsageStatisticType: D.m({ wire: "usageStatisticsType" }),
       UsageCriteria: D.m({
         wire: "usageCriteria",
@@ -6549,6 +6592,7 @@ export const inviteMembers: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/member/invite",
     input: {
+      DetectorId: 0,
       AccountIds: D.m({ wire: "accountIds" }),
       DisableEmailNotification: D.m({ wire: "disableEmailNotification" }),
       Message: D.m({ wire: "message" }),
@@ -6587,6 +6631,7 @@ export const listCoverage: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/coverage",
     input: {
+      DetectorId: 0,
       NextToken: D.m({ wire: "nextToken" }),
       MaxResults: D.m({ wire: "maxResults" }),
       FilterCriteria: D.m({
@@ -6744,6 +6789,7 @@ export const listFilters: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /detector/{DetectorId}/filter",
     input: {
+      DetectorId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -6784,6 +6830,7 @@ export const listFindings: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/findings",
     input: {
+      DetectorId: 0,
       FindingCriteria: D.m({
         wire: "findingCriteria",
         shape: i_FindingCriteria,
@@ -6833,6 +6880,7 @@ export const listInvestigations: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/investigation/list",
     input: {
+      DetectorId: 0,
       SortCriteria: D.m({
         wire: "sortCriteria",
         shape: {
@@ -6942,6 +6990,7 @@ export const listIPSets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /detector/{DetectorId}/ipset",
     input: {
+      DetectorId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -7085,6 +7134,7 @@ export const listMembers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /detector/{DetectorId}/member",
     input: {
+      DetectorId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
       OnlyAssociated: D.m({ query: "onlyAssociated" }),
@@ -7168,6 +7218,7 @@ export const listPublishingDestinations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /detector/{DetectorId}/publishingDestination",
     input: {
+      DetectorId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -7211,6 +7262,7 @@ export const listTagsForResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
   },
   errors: [
@@ -7241,6 +7293,7 @@ export const listThreatEntitySets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /detector/{DetectorId}/threatentityset",
     input: {
+      DetectorId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -7279,6 +7332,7 @@ export const listThreatIntelSets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /detector/{DetectorId}/threatintelset",
     input: {
+      DetectorId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -7317,6 +7371,7 @@ export const listTrustedEntitySets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /detector/{DetectorId}/trustedentityset",
     input: {
+      DetectorId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -7457,7 +7512,7 @@ export const startMonitoringMembers: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /detector/{DetectorId}/member/start",
-    input: { AccountIds: D.m({ wire: "accountIds" }) },
+    input: { DetectorId: 0, AccountIds: D.m({ wire: "accountIds" }) },
     output: {
       UnprocessedAccounts: D.m({
         wire: "unprocessedAccounts",
@@ -7490,7 +7545,7 @@ export const stopMonitoringMembers: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /detector/{DetectorId}/member/stop",
-    input: { AccountIds: D.m({ wire: "accountIds" }) },
+    input: { DetectorId: 0, AccountIds: D.m({ wire: "accountIds" }) },
     output: {
       UnprocessedAccounts: D.m({
         wire: "unprocessedAccounts",
@@ -7522,7 +7577,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags/{ResourceArn}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: { ResourceArn: 0, Tags: D.m({ wire: "tags" }) },
     body: true,
   },
   errors: [
@@ -7551,7 +7606,7 @@ export const unarchiveFindings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /detector/{DetectorId}/findings/unarchive",
-    input: { FindingIds: D.m({ wire: "findingIds" }) },
+    input: { DetectorId: 0, FindingIds: D.m({ wire: "findingIds" }) },
     body: true,
   },
   errors: [BadRequestException, InternalServerErrorException],
@@ -7577,7 +7632,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -7610,6 +7665,7 @@ export const updateDetector: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}",
     input: {
+      DetectorId: 0,
       Enable: D.m({ wire: "enable" }),
       FindingPublishingFrequency: D.m({ wire: "findingPublishingFrequency" }),
       DataSources: D.m({
@@ -7646,6 +7702,8 @@ export const updateFilter: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/filter/{FilterName}",
     input: {
+      DetectorId: 0,
+      FilterName: 0,
       Description: D.m({ wire: "description" }),
       Action: D.m({ wire: "action" }),
       Rank: D.m({ wire: "rank" }),
@@ -7680,6 +7738,7 @@ export const updateFindingsFeedback: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/findings/feedback",
     input: {
+      DetectorId: 0,
       FindingIds: D.m({ wire: "findingIds" }),
       Feedback: D.m({ wire: "feedback" }),
       Comments: D.m({ wire: "comments" }),
@@ -7710,6 +7769,8 @@ export const updateIPSet: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/ipset/{IpSetId}",
     input: {
+      DetectorId: 0,
+      IpSetId: 0,
       Name: D.m({ wire: "name" }),
       Location: D.m({ wire: "location" }),
       Activate: D.m({ wire: "activate" }),
@@ -7746,6 +7807,7 @@ export const updateMalwareProtectionPlan: API.OperationMethod<
     service: svc,
     http: "PATCH /malware-protection-plan/{MalwareProtectionPlanId}",
     input: {
+      MalwareProtectionPlanId: 0,
       Role: D.m({ wire: "role" }),
       Actions: D.m({ wire: "actions", shape: i_MalwareProtectionPlanActions }),
       ProtectedResource: D.m({
@@ -7790,6 +7852,7 @@ export const updateMalwareScanSettings: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/malware-scan-settings",
     input: {
+      DetectorId: 0,
       ScanResourceCriteria: D.m({
         wire: "scanResourceCriteria",
         shape: {
@@ -7828,6 +7891,7 @@ export const updateMemberDetectors: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/member/detector/update",
     input: {
+      DetectorId: 0,
       AccountIds: D.m({ wire: "accountIds" }),
       DataSources: D.m({
         wire: "dataSources",
@@ -7883,6 +7947,7 @@ export const updateOrganizationConfiguration: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/admin",
     input: {
+      DetectorId: 0,
       AutoEnable: D.m({ wire: "autoEnable" }),
       DataSources: D.m({
         wire: "dataSources",
@@ -7959,6 +8024,8 @@ export const updatePublishingDestination: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/publishingDestination/{DestinationId}",
     input: {
+      DetectorId: 0,
+      DestinationId: 0,
       DestinationProperties: D.m({
         wire: "destinationProperties",
         shape: i_DestinationProperties,
@@ -7989,6 +8056,8 @@ export const updateThreatEntitySet: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/threatentityset/{ThreatEntitySetId}",
     input: {
+      DetectorId: 0,
+      ThreatEntitySetId: 0,
       Name: D.m({ wire: "name" }),
       Location: D.m({ wire: "location" }),
       ExpectedBucketOwner: D.m({ wire: "expectedBucketOwner" }),
@@ -8020,6 +8089,8 @@ export const updateThreatIntelSet: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/threatintelset/{ThreatIntelSetId}",
     input: {
+      DetectorId: 0,
+      ThreatIntelSetId: 0,
       Name: D.m({ wire: "name" }),
       Location: D.m({ wire: "location" }),
       Activate: D.m({ wire: "activate" }),
@@ -8054,6 +8125,8 @@ export const updateTrustedEntitySet: API.OperationMethod<
     service: svc,
     http: "POST /detector/{DetectorId}/trustedentityset/{TrustedEntitySetId}",
     input: {
+      DetectorId: 0,
+      TrustedEntitySetId: 0,
       Name: D.m({ wire: "name" }),
       Location: D.m({ wire: "location" }),
       ExpectedBucketOwner: D.m({ wire: "expectedBucketOwner" }),

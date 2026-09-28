@@ -712,6 +712,7 @@ export const cancelJobRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /virtualclusters/{virtualClusterId}/jobruns/{id}",
+    input: { id: 0, virtualClusterId: 0 },
   },
   errors: [
     InternalServerException,
@@ -744,7 +745,30 @@ export const createJobTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /jobtemplates",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      clientToken: D.m({ idempotency: true }),
+      jobTemplateData: {
+        executionRoleArn: 0,
+        releaseLabel: 0,
+        configurationOverrides: {
+          applicationConfiguration: D.list(i_Configuration),
+          monitoringConfiguration: {
+            persistentAppUI: 0,
+            cloudWatchMonitoringConfiguration: {
+              logGroupName: 0,
+              logStreamNamePrefix: 0,
+            },
+            s3MonitoringConfiguration: { logUri: 0 },
+          },
+        },
+        jobDriver: i_JobDriver,
+        parameterConfiguration: D.map({ type: 0, defaultValue: 0 }),
+        jobTags: 0,
+      },
+      tags: 0,
+      kmsKeyArn: 0,
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -778,7 +802,18 @@ export const createManagedEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /virtualclusters/{virtualClusterId}/endpoints",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      virtualClusterId: 0,
+      type: 0,
+      releaseLabel: 0,
+      executionRoleArn: 0,
+      certificateArn: 0,
+      configurationOverrides: i_ConfigurationOverrides,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+      sessionIdleTimeoutInMinutes: 0,
+    },
     body: true,
   },
   errors: [
@@ -812,7 +847,39 @@ export const createSecurityConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /securityconfigurations",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      name: 0,
+      containerProvider: i_ContainerProvider,
+      securityConfigurationData: {
+        authorizationConfiguration: {
+          lakeFormationConfiguration: {
+            authorizedSessionTagValue: 0,
+            secureNamespaceInfo: { clusterId: 0, namespace: 0 },
+            queryEngineRoleArn: 0,
+          },
+          encryptionConfiguration: {
+            inTransitEncryptionConfiguration: {
+              tlsCertificateConfiguration: {
+                certificateProviderType: 0,
+                publicCertificateSecretArn: 0,
+                privateCertificateSecretArn: 0,
+              },
+            },
+          },
+        },
+        authenticationConfiguration: {
+          identityCenterConfiguration: {
+            enableIdentityCenter: 0,
+            identityCenterApplicationAssignmentRequired: 0,
+            identityCenterInstanceARN: 0,
+            emrIdentityCenterApplicationARN: 0,
+          },
+          iamConfiguration: { systemRole: 0 },
+        },
+      },
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -847,7 +914,15 @@ export const createVirtualCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /virtualclusters",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      containerProvider: i_ContainerProvider,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+      securityConfigurationId: 0,
+      sessionEnabled: 0,
+      schedulerConfiguration: i_SchedulerConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -879,7 +954,11 @@ export const deleteJobTemplate: API.OperationMethod<
   DeleteJobTemplateError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /jobtemplates/{id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /jobtemplates/{id}",
+    input: { id: 0 },
+  },
   errors: [
     InternalServerException,
     ValidationException,
@@ -908,6 +987,7 @@ export const deleteManagedEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /virtualclusters/{virtualClusterId}/endpoints/{id}",
+    input: { id: 0, virtualClusterId: 0 },
   },
   errors: [
     InternalServerException,
@@ -932,7 +1012,11 @@ export const deleteSecurityConfiguration: API.OperationMethod<
   DeleteSecurityConfigurationError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /securityconfigurations/{id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /securityconfigurations/{id}",
+    input: { id: 0 },
+  },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -956,7 +1040,11 @@ export const deleteVirtualCluster: API.OperationMethod<
   DeleteVirtualClusterError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /virtualclusters/{id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /virtualclusters/{id}",
+    input: { id: 0 },
+  },
   errors: [
     InternalServerException,
     ValidationException,
@@ -986,6 +1074,7 @@ export const describeJobRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /virtualclusters/{virtualClusterId}/jobruns/{id}",
+    input: { id: 0, virtualClusterId: 0 },
     output: { jobRun: o_JobRun },
   },
   errors: [
@@ -1020,6 +1109,7 @@ export const describeJobTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /jobtemplates/{id}",
+    input: { id: 0 },
     output: { jobTemplate: o_JobTemplate },
   },
   errors: [
@@ -1052,6 +1142,7 @@ export const describeManagedEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /virtualclusters/{virtualClusterId}/endpoints/{id}",
+    input: { id: 0, virtualClusterId: 0 },
     output: { endpoint: o_Endpoint },
   },
   errors: [
@@ -1087,6 +1178,7 @@ export const describeSecurityConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /securityconfigurations/{id}",
+    input: { id: 0 },
     output: { securityConfiguration: o_SecurityConfiguration },
   },
   errors: [
@@ -1123,6 +1215,7 @@ export const describeVirtualCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /virtualclusters/{id}",
+    input: { id: 0 },
     output: { virtualCluster: o_VirtualCluster },
   },
   errors: [
@@ -1155,7 +1248,15 @@ export const getManagedEndpointSessionCredentials: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /virtualclusters/{virtualClusterIdentifier}/endpoints/{endpointIdentifier}/credentials",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      endpointIdentifier: 0,
+      virtualClusterIdentifier: 0,
+      executionRoleArn: 0,
+      credentialType: 0,
+      durationInSeconds: 0,
+      logContext: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: {
       credentials: o_Credentials,
       endpointCredentials: o_Credentials,
@@ -1195,6 +1296,7 @@ export const listJobRuns: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /virtualclusters/{virtualClusterId}/jobruns",
     input: {
+      virtualClusterId: 0,
       createdBefore: D.m({ query: "createdBefore" }),
       createdAfter: D.m({ query: "createdAfter" }),
       name: D.m({ query: "name" }),
@@ -1285,6 +1387,7 @@ export const listManagedEndpoints: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /virtualclusters/{virtualClusterId}/endpoints",
     input: {
+      virtualClusterId: 0,
       createdBefore: D.m({ query: "createdBefore" }),
       createdAfter: D.m({ query: "createdAfter" }),
       types: D.m({ query: "types" }),
@@ -1371,7 +1474,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1453,7 +1560,19 @@ export const startJobRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /virtualclusters/{virtualClusterId}/jobruns",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      virtualClusterId: 0,
+      clientToken: D.m({ idempotency: true }),
+      executionRoleArn: 0,
+      releaseLabel: 0,
+      jobDriver: i_JobDriver,
+      configurationOverrides: i_ConfigurationOverrides,
+      tags: 0,
+      jobTemplateId: 0,
+      jobTemplateParameters: 0,
+      retryPolicyConfiguration: { maxAttempts: 0 },
+    },
     body: true,
   },
   errors: [
@@ -1491,7 +1610,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1523,7 +1647,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -1557,7 +1681,11 @@ export const updateVirtualCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /virtualclusters/{id}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      id: 0,
+      schedulerConfiguration: i_SchedulerConfiguration,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { virtualCluster: o_VirtualCluster },
     body: true,
   },
@@ -1571,6 +1699,41 @@ export const updateVirtualCluster: API.OperationMethod<
   operationName: "UpdateVirtualCluster",
 })) as any;
 
+const i_Configuration: D.LazyStruct = () => ({
+  classification: 0,
+  properties: 0,
+  configurations: D.list(i_Configuration),
+});
+const i_ConfigurationOverrides: D.LazyStruct = () => ({
+  applicationConfiguration: D.list(i_Configuration),
+  monitoringConfiguration: {
+    managedLogs: { allowAWSToRetainLogs: 0, encryptionKeyArn: 0 },
+    persistentAppUI: 0,
+    cloudWatchMonitoringConfiguration: {
+      logGroupName: 0,
+      logStreamNamePrefix: 0,
+    },
+    s3MonitoringConfiguration: { logUri: 0, encryptionKeyArn: 0 },
+    containerLogRotationConfiguration: { rotationSize: 0, maxFilesToKeep: 0 },
+  },
+});
+const i_ContainerProvider: D.LazyStruct = () => ({
+  type: 0,
+  id: 0,
+  info: { eksInfo: { namespace: 0, nodeLabel: 0 } },
+});
+const i_JobDriver: D.LazyStruct = () => ({
+  sparkSubmitJobDriver: {
+    entryPoint: 0,
+    entryPointArguments: 0,
+    sparkSubmitParameters: 0,
+  },
+  sparkSqlJobDriver: { entryPoint: 0, sparkSqlParameters: 0 },
+});
+const i_SchedulerConfiguration: D.LazyStruct = () => ({
+  maxInQueueJobRuns: 0,
+  maxConcurrentJobRuns: 0,
+});
 const o_Credentials: D.LazyStruct = () => ({ token: D.secret });
 const o_Endpoint: D.LazyStruct = () => ({ createdAt: D.ts });
 const o_JobRun: D.LazyStruct = () => ({

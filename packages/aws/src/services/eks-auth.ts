@@ -185,6 +185,7 @@ export const assumeRoleForPodIdentity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/assume-role-for-pod-identity",
+    input: { clusterName: 0, token: 0, eksNodeName: 0, instanceId: 0, zone: 0 },
     output: {
       credentials: {
         sessionToken: D.secret,

@@ -1590,7 +1590,7 @@ export const batchDeleteBuilds: API.OperationMethod<
   BatchDeleteBuildsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ids: 0 } },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1607,7 +1607,11 @@ export const batchGetBuildBatches: API.OperationMethod<
   BatchGetBuildBatchesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { buildBatches: D.list(o_BuildBatch) } },
+  descriptor: {
+    service: svc,
+    input: { ids: 0 },
+    output: { buildBatches: D.list(o_BuildBatch) },
+  },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1624,7 +1628,11 @@ export const batchGetBuilds: API.OperationMethod<
   BatchGetBuildsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { builds: D.list(o_Build) } },
+  descriptor: {
+    service: svc,
+    input: { ids: 0 },
+    output: { builds: D.list(o_Build) },
+  },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1645,6 +1653,7 @@ export const batchGetCommandExecutions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { sandboxId: 0, commandExecutionIds: 0 },
     output: { commandExecutions: D.list(o_CommandExecution) },
   },
   errors: [InvalidInputException],
@@ -1663,7 +1672,11 @@ export const batchGetFleets: API.OperationMethod<
   BatchGetFleetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { fleets: D.list(o_Fleet) } },
+  descriptor: {
+    service: svc,
+    input: { names: 0 },
+    output: { fleets: D.list(o_Fleet) },
+  },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1680,7 +1693,11 @@ export const batchGetProjects: API.OperationMethod<
   BatchGetProjectsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { projects: D.list(o_Project) } },
+  descriptor: {
+    service: svc,
+    input: { names: 0 },
+    output: { projects: D.list(o_Project) },
+  },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1697,7 +1714,11 @@ export const batchGetReportGroups: API.OperationMethod<
   BatchGetReportGroupsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { reportGroups: D.list(o_ReportGroup) } },
+  descriptor: {
+    service: svc,
+    input: { reportGroupArns: 0 },
+    output: { reportGroups: D.list(o_ReportGroup) },
+  },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1716,6 +1737,7 @@ export const batchGetReports: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { reportArns: 0 },
     output: { reports: D.list({ created: D.ts, expired: D.ts }) },
   },
   errors: [InvalidInputException],
@@ -1734,7 +1756,11 @@ export const batchGetSandboxes: API.OperationMethod<
   BatchGetSandboxesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { sandboxes: D.list(o_Sandbox) } },
+  descriptor: {
+    service: svc,
+    input: { ids: 0 },
+    output: { sandboxes: D.list(o_Sandbox) },
+  },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1755,7 +1781,24 @@ export const createFleet: API.OperationMethod<
   CreateFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { fleet: o_Fleet } },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      baseCapacity: 0,
+      environmentType: 0,
+      computeType: 0,
+      computeConfiguration: i_ComputeConfiguration,
+      scalingConfiguration: i_ScalingConfigurationInput,
+      overflowBehavior: 0,
+      vpcConfig: i_VpcConfig,
+      proxyConfiguration: i_ProxyConfiguration,
+      imageId: 0,
+      fleetServiceRole: 0,
+      tags: D.list(i_Tag),
+    },
+    output: { fleet: o_Fleet },
+  },
   errors: [
     AccountLimitExceededException,
     InvalidInputException,
@@ -1780,7 +1823,34 @@ export const createProject: API.OperationMethod<
   CreateProjectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { project: o_Project } },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      source: i_ProjectSource,
+      secondarySources: D.list(i_ProjectSource),
+      sourceVersion: 0,
+      secondarySourceVersions: D.list(i_ProjectSourceVersion),
+      artifacts: i_ProjectArtifacts,
+      secondaryArtifacts: D.list(i_ProjectArtifacts),
+      cache: i_ProjectCache,
+      environment: i_ProjectEnvironment,
+      serviceRole: 0,
+      timeoutInMinutes: 0,
+      queuedTimeoutInMinutes: 0,
+      encryptionKey: 0,
+      tags: D.list(i_Tag),
+      vpcConfig: i_VpcConfig,
+      badgeEnabled: 0,
+      logsConfig: i_LogsConfig,
+      fileSystemLocations: D.list(i_ProjectFileSystemLocation),
+      buildBatchConfig: i_ProjectBuildBatchConfig,
+      concurrentBuildLimit: 0,
+      autoRetryLimit: 0,
+    },
+    output: { project: o_Project },
+  },
   errors: [
     AccountLimitExceededException,
     InvalidInputException,
@@ -1805,7 +1875,16 @@ export const createReportGroup: API.OperationMethod<
   CreateReportGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { reportGroup: o_ReportGroup } },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      type: 0,
+      exportConfig: i_ReportExportConfig,
+      tags: D.list(i_Tag),
+    },
+    output: { reportGroup: o_ReportGroup },
+  },
   errors: [
     AccountLimitExceededException,
     InvalidInputException,
@@ -1840,7 +1919,19 @@ export const createWebhook: API.OperationMethod<
   CreateWebhookError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { webhook: o_Webhook } },
+  descriptor: {
+    service: svc,
+    input: {
+      projectName: 0,
+      branchFilter: 0,
+      filterGroups: D.list(D.list(i_WebhookFilter)),
+      buildType: 0,
+      manualCreation: 0,
+      scopeConfiguration: { name: 0, domain: 0, scope: 0 },
+      pullRequestBuildPolicy: i_PullRequestBuildPolicy,
+    },
+    output: { webhook: o_Webhook },
+  },
   errors: [
     InvalidInputException,
     OAuthProviderException,
@@ -1862,7 +1953,7 @@ export const deleteBuildBatch: API.OperationMethod<
   DeleteBuildBatchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { id: 0 } },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1879,7 +1970,7 @@ export const deleteFleet: API.OperationMethod<
   DeleteFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1896,7 +1987,7 @@ export const deleteProject: API.OperationMethod<
   DeleteProjectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1913,7 +2004,7 @@ export const deleteReport: API.OperationMethod<
   DeleteReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1930,7 +2021,7 @@ export const deleteReportGroup: API.OperationMethod<
   DeleteReportGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0, deleteReports: 0 } },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1947,7 +2038,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1967,7 +2058,7 @@ export const deleteSourceCredentials: API.OperationMethod<
   DeleteSourceCredentialsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1990,7 +2081,7 @@ export const deleteWebhook: API.OperationMethod<
   DeleteWebhookError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { projectName: 0 } },
   errors: [
     InvalidInputException,
     OAuthProviderException,
@@ -2014,6 +2105,15 @@ export const describeCodeCoverages: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      reportArn: 0,
+      nextToken: 0,
+      maxResults: 0,
+      sortOrder: 0,
+      sortBy: 0,
+      minLineCoveragePercentage: 0,
+      maxLineCoveragePercentage: 0,
+    },
     output: { codeCoverages: D.list({ expired: D.ts }) },
   },
   errors: [InvalidInputException],
@@ -2044,6 +2144,12 @@ export const describeTestCases: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      reportArn: 0,
+      nextToken: 0,
+      maxResults: 0,
+      filter: { status: 0, keyword: 0 },
+    },
     output: { testCases: D.list({ expired: D.ts }) },
   },
   errors: [InvalidInputException, ResourceNotFoundException],
@@ -2071,7 +2177,10 @@ export const getReportGroupTrend: API.OperationMethod<
   GetReportGroupTrendError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { reportGroupArn: 0, numOfReports: 0, trendField: 0 },
+  },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2091,7 +2200,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2113,7 +2222,16 @@ export const importSourceCredentials: API.OperationMethod<
   ImportSourceCredentialsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      username: 0,
+      token: 0,
+      serverType: 0,
+      authType: 0,
+      shouldOverwrite: 0,
+    },
+  },
   errors: [
     AccountLimitExceededException,
     InvalidInputException,
@@ -2137,7 +2255,7 @@ export const invalidateProjectCache: API.OperationMethod<
   InvalidateProjectCacheError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { projectName: 0 } },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2155,7 +2273,15 @@ export const listBuildBatches: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   NonEmptyString
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      filter: i_BuildBatchFilter,
+      maxResults: 0,
+      sortOrder: 0,
+      nextToken: 0,
+    },
+  },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2182,7 +2308,16 @@ export const listBuildBatchesForProject: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   NonEmptyString
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      projectName: 0,
+      filter: i_BuildBatchFilter,
+      maxResults: 0,
+      sortOrder: 0,
+      nextToken: 0,
+    },
+  },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2206,7 +2341,7 @@ export const listBuilds: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   NonEmptyString
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { sortOrder: 0, nextToken: 0 } },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2233,7 +2368,10 @@ export const listBuildsForProject: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   NonEmptyString
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { projectName: 0, sortOrder: 0, nextToken: 0 },
+  },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2261,6 +2399,7 @@ export const listCommandExecutionsForSandbox: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { sandboxId: 0, maxResults: 0, sortOrder: 0, nextToken: 0 },
     output: { commandExecutions: D.list(o_CommandExecution) },
   },
   errors: [InvalidInputException, ResourceNotFoundException],
@@ -2285,7 +2424,7 @@ export const listCuratedEnvironmentImages: API.OperationMethod<
   ListCuratedEnvironmentImagesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2303,7 +2442,10 @@ export const listFleets: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { nextToken: 0, maxResults: 0, sortOrder: 0, sortBy: 0 },
+  },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2327,7 +2469,10 @@ export const listProjects: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   NonEmptyString
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { sortBy: 0, sortOrder: 0, nextToken: 0 },
+  },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2350,7 +2495,10 @@ export const listReportGroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   NonEmptyString
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { sortOrder: 0, sortBy: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2374,7 +2522,15 @@ export const listReports: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   NonEmptyString
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      sortOrder: 0,
+      nextToken: 0,
+      maxResults: 0,
+      filter: i_ReportFilter,
+    },
+  },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2401,7 +2557,16 @@ export const listReportsForReportGroup: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   NonEmptyString
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      reportGroupArn: 0,
+      nextToken: 0,
+      sortOrder: 0,
+      maxResults: 0,
+      filter: i_ReportFilter,
+    },
+  },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2425,7 +2590,10 @@ export const listSandboxes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   NonEmptyString
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { maxResults: 0, sortOrder: 0, nextToken: 0 },
+  },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2452,7 +2620,10 @@ export const listSandboxesForProject: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   NonEmptyString
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { projectName: 0, maxResults: 0, sortOrder: 0, nextToken: 0 },
+  },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2476,7 +2647,10 @@ export const listSharedProjects: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   NonEmptyString
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { sortBy: 0, sortOrder: 0, maxResults: 0, nextToken: 0 },
+  },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2500,7 +2674,10 @@ export const listSharedReportGroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   NonEmptyString
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { sortOrder: 0, sortBy: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2523,7 +2700,7 @@ export const listSourceCredentials: API.OperationMethod<
   ListSourceCredentialsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2544,7 +2721,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { policy: 0, resourceArn: 0 } },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2565,7 +2742,11 @@ export const retryBuild: API.OperationMethod<
   RetryBuildError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { build: o_Build } },
+  descriptor: {
+    service: svc,
+    input: { id: 0, idempotencyToken: 0 },
+    output: { build: o_Build },
+  },
   errors: [
     AccountLimitExceededException,
     InvalidInputException,
@@ -2589,7 +2770,11 @@ export const retryBuildBatch: API.OperationMethod<
   RetryBuildBatchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { buildBatch: o_BuildBatch } },
+  descriptor: {
+    service: svc,
+    input: { id: 0, idempotencyToken: 0, retryType: 0 },
+    output: { buildBatch: o_BuildBatch },
+  },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2614,7 +2799,46 @@ export const startBuild: API.OperationMethod<
   StartBuildError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { build: o_Build } },
+  descriptor: {
+    service: svc,
+    input: {
+      projectName: 0,
+      secondarySourcesOverride: D.list(i_ProjectSource),
+      secondarySourcesVersionOverride: D.list(i_ProjectSourceVersion),
+      sourceVersion: 0,
+      artifactsOverride: i_ProjectArtifacts,
+      secondaryArtifactsOverride: D.list(i_ProjectArtifacts),
+      environmentVariablesOverride: D.list(i_EnvironmentVariable),
+      sourceTypeOverride: 0,
+      sourceLocationOverride: 0,
+      sourceAuthOverride: i_SourceAuth,
+      gitCloneDepthOverride: 0,
+      gitSubmodulesConfigOverride: i_GitSubmodulesConfig,
+      buildspecOverride: 0,
+      insecureSslOverride: 0,
+      reportBuildStatusOverride: 0,
+      buildStatusConfigOverride: i_BuildStatusConfig,
+      environmentTypeOverride: 0,
+      imageOverride: 0,
+      computeTypeOverride: 0,
+      certificateOverride: 0,
+      cacheOverride: i_ProjectCache,
+      serviceRoleOverride: 0,
+      privilegedModeOverride: 0,
+      timeoutInMinutesOverride: 0,
+      queuedTimeoutInMinutesOverride: 0,
+      encryptionKeyOverride: 0,
+      idempotencyToken: 0,
+      logsConfigOverride: i_LogsConfig,
+      registryCredentialOverride: i_RegistryCredential,
+      imagePullCredentialsTypeOverride: 0,
+      debugSessionEnabled: 0,
+      fleetOverride: i_ProjectFleet,
+      autoRetryLimitOverride: 0,
+      hostKernelOverride: 0,
+    },
+    output: { build: o_Build },
+  },
   errors: [
     AccountLimitExceededException,
     InvalidInputException,
@@ -2638,7 +2862,43 @@ export const startBuildBatch: API.OperationMethod<
   StartBuildBatchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { buildBatch: o_BuildBatch } },
+  descriptor: {
+    service: svc,
+    input: {
+      projectName: 0,
+      secondarySourcesOverride: D.list(i_ProjectSource),
+      secondarySourcesVersionOverride: D.list(i_ProjectSourceVersion),
+      sourceVersion: 0,
+      artifactsOverride: i_ProjectArtifacts,
+      secondaryArtifactsOverride: D.list(i_ProjectArtifacts),
+      environmentVariablesOverride: D.list(i_EnvironmentVariable),
+      sourceTypeOverride: 0,
+      sourceLocationOverride: 0,
+      sourceAuthOverride: i_SourceAuth,
+      gitCloneDepthOverride: 0,
+      gitSubmodulesConfigOverride: i_GitSubmodulesConfig,
+      buildspecOverride: 0,
+      insecureSslOverride: 0,
+      reportBuildBatchStatusOverride: 0,
+      environmentTypeOverride: 0,
+      imageOverride: 0,
+      computeTypeOverride: 0,
+      certificateOverride: 0,
+      cacheOverride: i_ProjectCache,
+      serviceRoleOverride: 0,
+      privilegedModeOverride: 0,
+      buildTimeoutInMinutesOverride: 0,
+      queuedTimeoutInMinutesOverride: 0,
+      encryptionKeyOverride: 0,
+      idempotencyToken: 0,
+      logsConfigOverride: i_LogsConfig,
+      registryCredentialOverride: i_RegistryCredential,
+      imagePullCredentialsTypeOverride: 0,
+      buildBatchConfigOverride: i_ProjectBuildBatchConfig,
+      debugSessionEnabled: 0,
+    },
+    output: { buildBatch: o_BuildBatch },
+  },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2660,6 +2920,7 @@ export const startCommandExecution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { sandboxId: 0, command: 0, type: 0 },
     output: { commandExecution: o_CommandExecution },
   },
   errors: [InvalidInputException, ResourceNotFoundException],
@@ -2682,7 +2943,11 @@ export const startSandbox: API.OperationMethod<
   StartSandboxError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { sandbox: o_Sandbox } },
+  descriptor: {
+    service: svc,
+    input: { projectName: 0, idempotencyToken: 0 },
+    output: { sandbox: o_Sandbox },
+  },
   errors: [
     AccountSuspendedException,
     InvalidInputException,
@@ -2706,7 +2971,7 @@ export const startSandboxConnection: API.OperationMethod<
   StartSandboxConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { sandboxId: 0 } },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2726,7 +2991,7 @@ export const stopBuild: API.OperationMethod<
   StopBuildError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { build: o_Build } },
+  descriptor: { service: svc, input: { id: 0 }, output: { build: o_Build } },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2746,7 +3011,11 @@ export const stopBuildBatch: API.OperationMethod<
   StopBuildBatchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { buildBatch: o_BuildBatch } },
+  descriptor: {
+    service: svc,
+    input: { id: 0 },
+    output: { buildBatch: o_BuildBatch },
+  },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2766,7 +3035,11 @@ export const stopSandbox: API.OperationMethod<
   StopSandboxError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { sandbox: o_Sandbox } },
+  descriptor: {
+    service: svc,
+    input: { id: 0 },
+    output: { sandbox: o_Sandbox },
+  },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2787,7 +3060,24 @@ export const updateFleet: API.OperationMethod<
   UpdateFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { fleet: o_Fleet } },
+  descriptor: {
+    service: svc,
+    input: {
+      arn: 0,
+      baseCapacity: 0,
+      environmentType: 0,
+      computeType: 0,
+      computeConfiguration: i_ComputeConfiguration,
+      scalingConfiguration: i_ScalingConfigurationInput,
+      overflowBehavior: 0,
+      vpcConfig: i_VpcConfig,
+      proxyConfiguration: i_ProxyConfiguration,
+      imageId: 0,
+      fleetServiceRole: 0,
+      tags: D.list(i_Tag),
+    },
+    output: { fleet: o_Fleet },
+  },
   errors: [
     AccountLimitExceededException,
     InvalidInputException,
@@ -2811,7 +3101,34 @@ export const updateProject: API.OperationMethod<
   UpdateProjectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { project: o_Project } },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      source: i_ProjectSource,
+      secondarySources: D.list(i_ProjectSource),
+      sourceVersion: 0,
+      secondarySourceVersions: D.list(i_ProjectSourceVersion),
+      artifacts: i_ProjectArtifacts,
+      secondaryArtifacts: D.list(i_ProjectArtifacts),
+      cache: i_ProjectCache,
+      environment: i_ProjectEnvironment,
+      serviceRole: 0,
+      timeoutInMinutes: 0,
+      queuedTimeoutInMinutes: 0,
+      encryptionKey: 0,
+      tags: D.list(i_Tag),
+      vpcConfig: i_VpcConfig,
+      badgeEnabled: 0,
+      logsConfig: i_LogsConfig,
+      fileSystemLocations: D.list(i_ProjectFileSystemLocation),
+      buildBatchConfig: i_ProjectBuildBatchConfig,
+      concurrentBuildLimit: 0,
+      autoRetryLimit: 0,
+    },
+    output: { project: o_Project },
+  },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2857,7 +3174,10 @@ export const updateProjectVisibility: API.OperationMethod<
   UpdateProjectVisibilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { projectArn: 0, projectVisibility: 0, resourceAccessRole: 0 },
+  },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2877,7 +3197,11 @@ export const updateReportGroup: API.OperationMethod<
   UpdateReportGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { reportGroup: o_ReportGroup } },
+  descriptor: {
+    service: svc,
+    input: { arn: 0, exportConfig: i_ReportExportConfig, tags: D.list(i_Tag) },
+    output: { reportGroup: o_ReportGroup },
+  },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2900,7 +3224,18 @@ export const updateWebhook: API.OperationMethod<
   UpdateWebhookError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { webhook: o_Webhook } },
+  descriptor: {
+    service: svc,
+    input: {
+      projectName: 0,
+      branchFilter: 0,
+      rotateSecret: 0,
+      filterGroups: D.list(D.list(i_WebhookFilter)),
+      buildType: 0,
+      pullRequestBuildPolicy: i_PullRequestBuildPolicy,
+    },
+    output: { webhook: o_Webhook },
+  },
   errors: [
     InvalidInputException,
     OAuthProviderException,
@@ -2911,6 +3246,142 @@ export const updateWebhook: API.OperationMethod<
   operationName: "UpdateWebhook",
 })) as any;
 
+const i_BuildBatchFilter: D.LazyStruct = () => ({ status: 0 });
+const i_BuildStatusConfig: D.LazyStruct = () => ({ context: 0, targetUrl: 0 });
+const i_ComputeConfiguration: D.LazyStruct = () => ({
+  vCpu: 0,
+  memory: 0,
+  disk: 0,
+  machineType: 0,
+  instanceType: 0,
+});
+const i_EnvironmentVariable: D.LazyStruct = () => ({
+  name: 0,
+  value: 0,
+  type: 0,
+});
+const i_GitSubmodulesConfig: D.LazyStruct = () => ({ fetchSubmodules: 0 });
+const i_LogsConfig: D.LazyStruct = () => ({
+  cloudWatchLogs: { status: 0, groupName: 0, streamName: 0 },
+  s3Logs: {
+    status: 0,
+    location: 0,
+    encryptionDisabled: 0,
+    bucketOwnerAccess: 0,
+  },
+});
+const i_ProjectArtifacts: D.LazyStruct = () => ({
+  type: 0,
+  location: 0,
+  path: 0,
+  namespaceType: 0,
+  name: 0,
+  packaging: 0,
+  overrideArtifactName: 0,
+  encryptionDisabled: 0,
+  artifactIdentifier: 0,
+  bucketOwnerAccess: 0,
+});
+const i_ProjectBuildBatchConfig: D.LazyStruct = () => ({
+  serviceRole: 0,
+  combineArtifacts: 0,
+  restrictions: {
+    maximumBuildsAllowed: 0,
+    computeTypesAllowed: 0,
+    fleetsAllowed: 0,
+  },
+  timeoutInMins: 0,
+  batchReportMode: 0,
+});
+const i_ProjectCache: D.LazyStruct = () => ({
+  type: 0,
+  location: 0,
+  modes: 0,
+  cacheNamespace: 0,
+});
+const i_ProjectEnvironment: D.LazyStruct = () => ({
+  type: 0,
+  image: 0,
+  computeType: 0,
+  computeConfiguration: i_ComputeConfiguration,
+  fleet: i_ProjectFleet,
+  environmentVariables: D.list(i_EnvironmentVariable),
+  privilegedMode: 0,
+  certificate: 0,
+  registryCredential: i_RegistryCredential,
+  imagePullCredentialsType: 0,
+  dockerServer: {
+    computeType: 0,
+    securityGroupIds: 0,
+    status: { status: 0, message: 0 },
+  },
+  hostKernel: 0,
+});
+const i_ProjectFileSystemLocation: D.LazyStruct = () => ({
+  type: 0,
+  location: 0,
+  mountPoint: 0,
+  identifier: 0,
+  mountOptions: 0,
+});
+const i_ProjectFleet: D.LazyStruct = () => ({ fleetArn: 0 });
+const i_ProjectSource: D.LazyStruct = () => ({
+  type: 0,
+  location: 0,
+  gitCloneDepth: 0,
+  gitSubmodulesConfig: i_GitSubmodulesConfig,
+  buildspec: 0,
+  auth: i_SourceAuth,
+  reportBuildStatus: 0,
+  buildStatusConfig: i_BuildStatusConfig,
+  insecureSsl: 0,
+  sourceIdentifier: 0,
+});
+const i_ProjectSourceVersion: D.LazyStruct = () => ({
+  sourceIdentifier: 0,
+  sourceVersion: 0,
+});
+const i_ProxyConfiguration: D.LazyStruct = () => ({
+  defaultBehavior: 0,
+  orderedProxyRules: D.list({ type: 0, effect: 0, entities: 0 }),
+});
+const i_PullRequestBuildPolicy: D.LazyStruct = () => ({
+  requiresCommentApproval: 0,
+  approverRoles: 0,
+});
+const i_RegistryCredential: D.LazyStruct = () => ({
+  credential: 0,
+  credentialProvider: 0,
+});
+const i_ReportExportConfig: D.LazyStruct = () => ({
+  exportConfigType: 0,
+  s3Destination: {
+    bucket: 0,
+    bucketOwner: 0,
+    path: 0,
+    packaging: 0,
+    encryptionKey: 0,
+    encryptionDisabled: 0,
+  },
+});
+const i_ReportFilter: D.LazyStruct = () => ({ status: 0 });
+const i_ScalingConfigurationInput: D.LazyStruct = () => ({
+  scalingType: 0,
+  targetTrackingScalingConfigs: D.list({ metricType: 0, targetValue: 0 }),
+  maxCapacity: 0,
+});
+const i_SourceAuth: D.LazyStruct = () => ({ type: 0, resource: 0 });
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_VpcConfig: D.LazyStruct = () => ({
+  vpcId: 0,
+  subnets: 0,
+  securityGroupIds: 0,
+});
+const i_WebhookFilter: D.LazyStruct = () => ({
+  type: 0,
+  pattern: 0,
+  excludeMatchedPattern: 0,
+});
 const o_Build: D.LazyStruct = () => ({
   startTime: D.ts,
   endTime: D.ts,

@@ -231,6 +231,7 @@ export const activateEmailContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /emailcontacts/{arn}/activate/{code}",
+    input: { arn: 0, code: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -265,6 +266,7 @@ export const createEmailContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2022-09-19/emailcontacts",
+    input: { name: 0, emailAddress: 0, tags: 0 },
     body: true,
   },
   errors: [
@@ -299,7 +301,11 @@ export const deleteEmailContact: API.OperationMethod<
   DeleteEmailContactError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /emailcontacts/{arn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /emailcontacts/{arn}",
+    input: { arn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -332,6 +338,7 @@ export const getEmailContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /emailcontacts/{arn}",
+    input: { arn: 0 },
     output: { emailContact: o_EmailContact },
   },
   errors: [
@@ -404,7 +411,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{arn}" },
+  descriptor: { service: svc, http: "GET /tags/{arn}", input: { arn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -439,6 +446,7 @@ export const sendActivationCode: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2022-10-31/emailcontacts/{arn}/activate/send",
+    input: { arn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -469,7 +477,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{arn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{arn}",
+    input: { arn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -501,7 +514,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{arn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { arn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,

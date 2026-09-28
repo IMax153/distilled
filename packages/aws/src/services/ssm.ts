@@ -5024,7 +5024,10 @@ export const addTagsToResource: API.OperationMethod<
   AddTagsToResourceError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceType: 0, ResourceId: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     InternalServerError,
     InvalidResourceId,
@@ -5056,7 +5059,15 @@ export const associateOpsItemRelatedItem: API.OperationMethod<
   AssociateOpsItemRelatedItemError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OpsItemId: 0,
+      AssociationType: 0,
+      ResourceType: 0,
+      ResourceUri: 0,
+    },
+  },
   errors: [
     InternalServerError,
     OpsItemConflictException,
@@ -5086,7 +5097,7 @@ export const cancelCommand: API.OperationMethod<
   CancelCommandError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CommandId: 0, InstanceIds: 0 } },
   errors: [
     DuplicateInstanceId,
     InternalServerError,
@@ -5113,7 +5124,7 @@ export const cancelMaintenanceWindowExecution: API.OperationMethod<
   CancelMaintenanceWindowExecutionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WindowExecutionId: 0 } },
   errors: [DoesNotExistException, InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5141,7 +5152,18 @@ export const createActivation: API.OperationMethod<
   CreateActivationError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Description: 0,
+      DefaultInstanceName: 0,
+      IamRole: 0,
+      RegistrationLimit: 0,
+      ExpirationDate: 0,
+      Tags: D.list(i_Tag),
+      RegistrationMetadata: D.list({ Key: 0, Value: 0 }),
+    },
+  },
   errors: [InternalServerError, InvalidParameters],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5183,6 +5205,30 @@ export const createAssociation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Name: 0,
+      DocumentVersion: 0,
+      InstanceId: 0,
+      Parameters: 0,
+      Targets: D.list(i_Target),
+      ScheduleExpression: 0,
+      OutputLocation: i_InstanceAssociationOutputLocation,
+      AssociationName: 0,
+      AutomationTargetParameterName: 0,
+      MaxErrors: 0,
+      MaxConcurrency: 0,
+      ComplianceSeverity: 0,
+      SyncCompliance: 0,
+      ApplyOnlyAtCronInterval: 0,
+      CalendarNames: 0,
+      TargetLocations: D.list(i_TargetLocation),
+      ScheduleOffset: 0,
+      Duration: 0,
+      TargetMaps: 0,
+      Tags: D.list(i_Tag),
+      AlarmConfiguration: i_AlarmConfiguration,
+      AssociationDispatchAssumeRole: 0,
+    },
     output: { AssociationDescription: o_AssociationDescription },
   },
   errors: [
@@ -5238,6 +5284,31 @@ export const createAssociationBatch: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Entries: D.list({
+        Name: 0,
+        InstanceId: 0,
+        Parameters: 0,
+        AutomationTargetParameterName: 0,
+        DocumentVersion: 0,
+        Targets: D.list(i_Target),
+        ScheduleExpression: 0,
+        OutputLocation: i_InstanceAssociationOutputLocation,
+        AssociationName: 0,
+        MaxErrors: 0,
+        MaxConcurrency: 0,
+        ComplianceSeverity: 0,
+        SyncCompliance: 0,
+        ApplyOnlyAtCronInterval: 0,
+        CalendarNames: 0,
+        TargetLocations: D.list(i_TargetLocation),
+        ScheduleOffset: 0,
+        Duration: 0,
+        TargetMaps: 0,
+        AlarmConfiguration: i_AlarmConfiguration,
+      }),
+      AssociationDispatchAssumeRole: 0,
+    },
     output: { Successful: D.list(o_AssociationDescription) },
   },
   errors: [
@@ -5274,7 +5345,17 @@ export const createCloudConnector: API.OperationMethod<
   CreateCloudConnectorError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DisplayName: 0,
+      RoleArn: 0,
+      Description: 0,
+      Configuration: i_CloudConnectorConfiguration,
+      ConfigConnectorArn: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     ConflictException,
     InternalServerError,
@@ -5309,6 +5390,18 @@ export const createDocument: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Content: 0,
+      Requires: D.list({ Name: 0, Version: 0, RequireType: 0, VersionName: 0 }),
+      Attachments: D.list(i_AttachmentsSource),
+      Name: 0,
+      DisplayName: 0,
+      VersionName: 0,
+      DocumentType: 0,
+      DocumentFormat: 0,
+      TargetType: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { DocumentDescription: o_DocumentDescription },
   },
   errors: [
@@ -5349,7 +5442,20 @@ export const createMaintenanceWindow: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Description: 0,
+      StartDate: 0,
+      EndDate: 0,
+      Schedule: 0,
+      ScheduleTimezone: 0,
+      ScheduleOffset: 0,
+      Duration: 0,
+      Cutoff: 0,
+      AllowUnassociatedTargets: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     IdempotentParameterMismatch,
@@ -5383,7 +5489,27 @@ export const createOpsItem: API.OperationMethod<
   CreateOpsItemError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Description: 0,
+      OpsItemType: 0,
+      OperationalData: D.map(i_OpsItemDataValue),
+      Notifications: D.list(i_OpsItemNotification),
+      Priority: 0,
+      RelatedOpsItems: D.list(i_RelatedOpsItem),
+      Source: 0,
+      Title: 0,
+      Tags: D.list(i_Tag),
+      Category: 0,
+      Severity: 0,
+      ActualStartTime: 0,
+      ActualEndTime: 0,
+      PlannedStartTime: 0,
+      PlannedEndTime: 0,
+      AccountId: 0,
+    },
+  },
   errors: [
     InternalServerError,
     OpsItemAccessDeniedException,
@@ -5413,7 +5539,14 @@ export const createOpsMetadata: API.OperationMethod<
   CreateOpsMetadataError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceId: 0,
+      Metadata: D.map(i_MetadataValue),
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InternalServerError,
     OpsMetadataAlreadyExistsException,
@@ -5445,7 +5578,22 @@ export const createPatchBaseline: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      OperatingSystem: 0,
+      Name: 0,
+      GlobalFilters: i_PatchFilterGroup,
+      ApprovalRules: i_PatchRuleGroup,
+      ApprovedPatches: 0,
+      ApprovedPatchesComplianceLevel: 0,
+      ApprovedPatchesEnableNonSecurity: 0,
+      RejectedPatches: 0,
+      RejectedPatchesAction: 0,
+      Description: 0,
+      Sources: D.list(i_PatchSource),
+      AvailableSecurityUpdatesComplianceStatus: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     IdempotentParameterMismatch,
@@ -5494,7 +5642,22 @@ export const createResourceDataSync: API.OperationMethod<
   CreateResourceDataSyncError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SyncName: 0,
+      S3Destination: {
+        BucketName: 0,
+        Prefix: 0,
+        SyncFormat: 0,
+        Region: 0,
+        AWSKMSKeyARN: 0,
+        DestinationDataSharing: { DestinationDataSharingType: 0 },
+      },
+      SyncType: 0,
+      SyncSource: i_ResourceDataSyncSource,
+    },
+  },
   errors: [
     InternalServerError,
     ResourceDataSyncAlreadyExistsException,
@@ -5523,7 +5686,7 @@ export const deleteActivation: API.OperationMethod<
   DeleteActivationError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ActivationId: 0 } },
   errors: [
     InternalServerError,
     InvalidActivation,
@@ -5558,7 +5721,10 @@ export const deleteAssociation: API.OperationMethod<
   DeleteAssociationError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, InstanceId: 0, AssociationId: 0 },
+  },
   errors: [
     AssociationDoesNotExist,
     InternalServerError,
@@ -5585,7 +5751,7 @@ export const deleteCloudConnector: API.OperationMethod<
   DeleteCloudConnectorError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CloudConnectorId: 0 } },
   errors: [ConflictException, InternalServerError, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5611,7 +5777,10 @@ export const deleteDocument: API.OperationMethod<
   DeleteDocumentError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, DocumentVersion: 0, VersionName: 0, Force: 0 },
+  },
   errors: [
     AssociatedInstances,
     InternalServerError,
@@ -5643,7 +5812,12 @@ export const deleteInventory: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      TypeName: 0,
+      SchemaDeleteOption: 0,
+      DryRun: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     InternalServerError,
@@ -5667,7 +5841,7 @@ export const deleteMaintenanceWindow: API.OperationMethod<
   DeleteMaintenanceWindowError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WindowId: 0 } },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5707,7 +5881,7 @@ export const deleteOpsItem: API.OperationMethod<
   DeleteOpsItemError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OpsItemId: 0 } },
   errors: [InternalServerError, OpsItemInvalidParameterException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5728,7 +5902,7 @@ export const deleteOpsMetadata: API.OperationMethod<
   DeleteOpsMetadataError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OpsMetadataArn: 0 } },
   errors: [
     InternalServerError,
     OpsMetadataInvalidArgumentException,
@@ -5753,7 +5927,7 @@ export const deleteParameter: API.OperationMethod<
   DeleteParameterError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [InternalServerError, ParameterNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5771,7 +5945,7 @@ export const deleteParameters: API.OperationMethod<
   DeleteParametersError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Names: 0 } },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5791,7 +5965,7 @@ export const deletePatchBaseline: API.OperationMethod<
   DeletePatchBaselineError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { BaselineId: 0 } },
   errors: [InternalServerError, ResourceInUseException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5814,7 +5988,7 @@ export const deleteResourceDataSync: API.OperationMethod<
   DeleteResourceDataSyncError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SyncName: 0, SyncType: 0 } },
   errors: [
     InternalServerError,
     ResourceDataSyncInvalidConfigurationException,
@@ -5851,7 +6025,10 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, PolicyId: 0, PolicyHash: 0 },
+  },
   errors: [
     InternalServerError,
     MalformedResourcePolicyDocumentException,
@@ -5885,7 +6062,7 @@ export const deregisterManagedInstance: API.OperationMethod<
   DeregisterManagedInstanceError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InstanceId: 0 } },
   errors: [InternalServerError, InvalidInstanceId],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5905,7 +6082,7 @@ export const deregisterPatchBaselineForPatchGroup: API.OperationMethod<
   DeregisterPatchBaselineForPatchGroupError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { BaselineId: 0, PatchGroup: 0 } },
   errors: [InternalServerError, InvalidResourceId],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5926,7 +6103,10 @@ export const deregisterTargetFromMaintenanceWindow: API.OperationMethod<
   DeregisterTargetFromMaintenanceWindowError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { WindowId: 0, WindowTargetId: 0, Safe: 0 },
+  },
   errors: [DoesNotExistException, InternalServerError, TargetInUseException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5946,7 +6126,7 @@ export const deregisterTaskFromMaintenanceWindow: API.OperationMethod<
   DeregisterTaskFromMaintenanceWindowError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WindowId: 0, WindowTaskId: 0 } },
   errors: [DoesNotExistException, InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5973,6 +6153,11 @@ export const describeActivations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filters: D.list({ FilterKey: 0, FilterValues: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       ActivationList: D.list({ ExpirationDate: D.ts, CreatedDate: D.ts }),
     },
@@ -6009,6 +6194,7 @@ export const describeAssociation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0, InstanceId: 0, AssociationId: 0, AssociationVersion: 0 },
     output: { AssociationDescription: o_AssociationDescription },
   },
   errors: [
@@ -6040,6 +6226,12 @@ export const describeAssociationExecutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AssociationId: 0,
+      Filters: D.list({ Key: 0, Value: 0, Type: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       AssociationExecutions: D.list({
         CreatedTime: D.ts,
@@ -6077,6 +6269,13 @@ export const describeAssociationExecutionTargets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AssociationId: 0,
+      ExecutionId: 0,
+      Filters: D.list({ Key: 0, Value: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       AssociationExecutionTargets: D.list({ LastExecutionDate: D.ts }),
     },
@@ -6116,6 +6315,11 @@ export const describeAutomationExecutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filters: D.list({ Key: 0, Values: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       AutomationExecutionMetadataList: D.list({
         ExecutionStartTime: D.ts,
@@ -6161,6 +6365,13 @@ export const describeAutomationStepExecutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AutomationExecutionId: 0,
+      Filters: D.list({ Key: 0, Values: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+      ReverseOrder: 0,
+    },
     output: { StepExecutions: D.list(o_StepExecution) },
   },
   errors: [
@@ -6195,7 +6406,15 @@ export const describeAvailablePatches: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   Patch
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Patches: D.list(o_Patch) } },
+  descriptor: {
+    service: svc,
+    input: {
+      Filters: D.list(i_PatchOrchestratorFilter),
+      MaxResults: 0,
+      NextToken: 0,
+    },
+    output: { Patches: D.list(o_Patch) },
+  },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6222,7 +6441,11 @@ export const describeDocument: API.OperationMethod<
   DescribeDocumentError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Document: o_DocumentDescription } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, DocumentVersion: 0, VersionName: 0 },
+    output: { Document: o_DocumentDescription },
+  },
   errors: [InternalServerError, InvalidDocument, InvalidDocumentVersion],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6247,7 +6470,10 @@ export const describeDocumentPermission: API.OperationMethod<
   DescribeDocumentPermissionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, PermissionType: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     InternalServerError,
     InvalidDocument,
@@ -6275,7 +6501,10 @@ export const describeEffectiveInstanceAssociations: API.PaginatedOperationMethod
   Creds | HttpClient.HttpClient,
   InstanceAssociation
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceId: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [InternalServerError, InvalidInstanceId, InvalidNextToken],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6307,6 +6536,7 @@ export const describeEffectivePatchesForPatchBaseline: API.PaginatedOperationMet
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { BaselineId: 0, MaxResults: 0, NextToken: 0 },
     output: {
       EffectivePatches: D.list({
         Patch: o_Patch,
@@ -6348,6 +6578,7 @@ export const describeInstanceAssociationsStatus: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { InstanceId: 0, MaxResults: 0, NextToken: 0 },
     output: { InstanceAssociationStatusInfos: D.list({ ExecutionDate: D.ts }) },
   },
   errors: [InternalServerError, InvalidInstanceId, InvalidNextToken],
@@ -6391,6 +6622,12 @@ export const describeInstanceInformation: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      InstanceInformationFilterList: D.list({ key: 0, valueSet: 0 }),
+      Filters: D.list({ Key: 0, Values: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       InstanceInformationList: D.list({
         LastPingDateTime: D.ts,
@@ -6438,6 +6675,12 @@ export const describeInstancePatches: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      InstanceId: 0,
+      Filters: D.list(i_PatchOrchestratorFilter),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { Patches: D.list({ InstalledTime: D.ts }) },
   },
   errors: [
@@ -6473,6 +6716,7 @@ export const describeInstancePatchStates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { InstanceIds: 0, NextToken: 0, MaxResults: 0 },
     output: { InstancePatchStates: D.list(o_InstancePatchState) },
   },
   errors: [InternalServerError, InvalidNextToken],
@@ -6505,6 +6749,12 @@ export const describeInstancePatchStatesForPatchGroup: API.PaginatedOperationMet
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      PatchGroup: 0,
+      Filters: D.list({ Key: 0, Values: 0, Type: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { InstancePatchStates: D.list(o_InstancePatchState) },
   },
   errors: [InternalServerError, InvalidFilter, InvalidNextToken],
@@ -6541,6 +6791,12 @@ export const describeInstanceProperties: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      InstancePropertyFilterList: D.list({ key: 0, valueSet: 0 }),
+      FiltersWithOperator: D.list({ Key: 0, Values: 0, Operator: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       InstanceProperties: D.list({
         IPAddress: D.secret,
@@ -6589,6 +6845,7 @@ export const describeInventoryDeletions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DeletionId: 0, NextToken: 0, MaxResults: 0 },
     output: {
       InventoryDeletions: D.list({
         DeletionStartTime: D.ts,
@@ -6625,6 +6882,12 @@ export const describeMaintenanceWindowExecutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      WindowId: 0,
+      Filters: D.list(i_MaintenanceWindowFilter),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { WindowExecutions: D.list({ StartTime: D.ts, EndTime: D.ts }) },
   },
   errors: [InternalServerError],
@@ -6656,6 +6919,13 @@ export const describeMaintenanceWindowExecutionTaskInvocations: API.PaginatedOpe
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      WindowExecutionId: 0,
+      TaskId: 0,
+      Filters: D.list(i_MaintenanceWindowFilter),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       WindowExecutionTaskInvocationIdentities: D.list({
         Parameters: D.secret,
@@ -6693,6 +6963,12 @@ export const describeMaintenanceWindowExecutionTasks: API.PaginatedOperationMeth
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      WindowExecutionId: 0,
+      Filters: D.list(i_MaintenanceWindowFilter),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       WindowExecutionTaskIdentities: D.list({ StartTime: D.ts, EndTime: D.ts }),
     },
@@ -6724,6 +7000,11 @@ export const describeMaintenanceWindows: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filters: D.list(i_MaintenanceWindowFilter),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { WindowIdentities: D.list({ Description: D.secret }) },
   },
   errors: [InternalServerError],
@@ -6752,7 +7033,17 @@ export const describeMaintenanceWindowSchedule: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   ScheduledWindowExecution
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      WindowId: 0,
+      Targets: D.list(i_Target),
+      ResourceType: 0,
+      Filters: D.list(i_PatchOrchestratorFilter),
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [DoesNotExistException, InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6779,7 +7070,15 @@ export const describeMaintenanceWindowsForTarget: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   MaintenanceWindowIdentityForTarget
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Targets: D.list(i_Target),
+      ResourceType: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6808,6 +7107,12 @@ export const describeMaintenanceWindowTargets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      WindowId: 0,
+      Filters: D.list(i_MaintenanceWindowFilter),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       Targets: D.list({ OwnerInformation: D.secret, Description: D.secret }),
     },
@@ -6845,6 +7150,12 @@ export const describeMaintenanceWindowTasks: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      WindowId: 0,
+      Filters: D.list(i_MaintenanceWindowFilter),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       Tasks: D.list({
         TaskParameters: D.map(o_MaintenanceWindowTaskParameterValueExpression),
@@ -6883,6 +7194,11 @@ export const describeOpsItems: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      OpsItemFilters: D.list({ Key: 0, Values: 0, Operator: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       OpsItemSummaries: D.list({
         CreatedTime: D.ts,
@@ -6942,6 +7258,13 @@ export const describeParameters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filters: D.list({ Key: 0, Values: 0 }),
+      ParameterFilters: D.list(i_ParameterStringFilter),
+      MaxResults: 0,
+      NextToken: 0,
+      Shared: 0,
+    },
     output: { Parameters: D.list({ LastModifiedDate: D.ts }) },
   },
   errors: [
@@ -6972,7 +7295,14 @@ export const describePatchBaselines: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   PatchBaselineIdentity
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Filters: D.list(i_PatchOrchestratorFilter),
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6996,7 +7326,14 @@ export const describePatchGroups: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   PatchGroupPatchBaselineMapping
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MaxResults: 0,
+      Filters: D.list(i_PatchOrchestratorFilter),
+      NextToken: 0,
+    },
+  },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -7022,7 +7359,7 @@ export const describePatchGroupState: API.OperationMethod<
   DescribePatchGroupStateError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PatchGroup: 0 } },
   errors: [InternalServerError, InvalidNextToken],
   protocol: AwsProtocol,
   retry: Retry,
@@ -7097,7 +7434,16 @@ export const describePatchProperties: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   { [key: string]: string | undefined }
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OperatingSystem: 0,
+      Property: 0,
+      PatchSet: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -7128,6 +7474,12 @@ export const describeSessions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      State: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list({ key: 0, value: 0 }),
+    },
     output: { Sessions: D.list({ StartDate: D.ts, EndDate: D.ts }) },
   },
   errors: [InternalServerError, InvalidFilterKey, InvalidNextToken],
@@ -7160,7 +7512,7 @@ export const disassociateOpsItemRelatedItem: API.OperationMethod<
   DisassociateOpsItemRelatedItemError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OpsItemId: 0, AssociationId: 0 } },
   errors: [
     InternalServerError,
     OpsItemConflictException,
@@ -7191,6 +7543,7 @@ export const getAccessToken: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AccessRequestId: 0 },
     output: {
       Credentials: {
         SecretAccessKey: D.secret,
@@ -7226,6 +7579,7 @@ export const getAutomationExecution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AutomationExecutionId: 0 },
     output: {
       AutomationExecution: {
         ExecutionStartTime: D.ts,
@@ -7266,7 +7620,7 @@ export const getCalendarState: API.OperationMethod<
   GetCalendarStateError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CalendarNames: 0, AtTime: 0 } },
   errors: [
     InternalServerError,
     InvalidDocument,
@@ -7291,7 +7645,11 @@ export const getCloudConnector: API.OperationMethod<
   GetCloudConnectorError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedAt: D.ts, UpdatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { CloudConnectorId: 0 },
+    output: { CreatedAt: D.ts, UpdatedAt: D.ts },
+  },
   errors: [InternalServerError, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -7323,7 +7681,10 @@ export const getCommandInvocation: API.OperationMethod<
   GetCommandInvocationError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CommandId: 0, InstanceId: 0, PluginName: 0 },
+  },
   errors: [
     InternalServerError,
     InvalidCommandId,
@@ -7347,7 +7708,7 @@ export const getConnectionStatus: API.OperationMethod<
   GetConnectionStatusError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Target: 0 } },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -7368,7 +7729,7 @@ export const getDefaultPatchBaseline: API.OperationMethod<
   GetDefaultPatchBaselineError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OperatingSystem: 0 } },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -7396,7 +7757,26 @@ export const getDeployablePatchSnapshotForInstance: API.OperationMethod<
   GetDeployablePatchSnapshotForInstanceError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceId: 0,
+      SnapshotId: 0,
+      BaselineOverride: {
+        OperatingSystem: 0,
+        GlobalFilters: i_PatchFilterGroup,
+        ApprovalRules: i_PatchRuleGroup,
+        ApprovedPatches: 0,
+        ApprovedPatchesComplianceLevel: 0,
+        RejectedPatches: 0,
+        RejectedPatchesAction: 0,
+        ApprovedPatchesEnableNonSecurity: 0,
+        Sources: D.list(i_PatchSource),
+        AvailableSecurityUpdatesComplianceStatus: 0,
+      },
+      UseS3DualStackEndpoint: 0,
+    },
+  },
   errors: [
     InternalServerError,
     UnsupportedFeatureRequiredException,
@@ -7421,7 +7801,11 @@ export const getDocument: API.OperationMethod<
   GetDocumentError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedDate: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, VersionName: 0, DocumentVersion: 0, DocumentFormat: 0 },
+    output: { CreatedDate: D.ts },
+  },
   errors: [InternalServerError, InvalidDocument, InvalidDocumentVersion],
   protocol: AwsProtocol,
   retry: Retry,
@@ -7442,7 +7826,11 @@ export const getExecutionPreview: API.OperationMethod<
   GetExecutionPreviewError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { EndedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ExecutionPreviewId: 0 },
+    output: { EndedAt: D.ts },
+  },
   errors: [InternalServerError, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -7469,7 +7857,16 @@ export const getInventory: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   InventoryResultEntity
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Filters: D.list(i_InventoryFilter),
+      Aggregators: D.list(i_InventoryAggregator),
+      ResultAttributes: D.list({ TypeName: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     InternalServerError,
     InvalidAggregatorException,
@@ -7506,7 +7903,16 @@ export const getInventorySchema: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   InventoryItemSchema
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TypeName: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      Aggregator: 0,
+      SubType: 0,
+    },
+  },
   errors: [InternalServerError, InvalidNextToken, InvalidTypeNameException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -7534,6 +7940,7 @@ export const getMaintenanceWindow: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { WindowId: 0 },
     output: { Description: D.secret, CreatedDate: D.ts, ModifiedDate: D.ts },
   },
   errors: [DoesNotExistException, InternalServerError],
@@ -7555,7 +7962,11 @@ export const getMaintenanceWindowExecution: API.OperationMethod<
   GetMaintenanceWindowExecutionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { StartTime: D.ts, EndTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { WindowExecutionId: 0 },
+    output: { StartTime: D.ts, EndTime: D.ts },
+  },
   errors: [DoesNotExistException, InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -7578,6 +7989,7 @@ export const getMaintenanceWindowExecutionTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { WindowExecutionId: 0, TaskId: 0 },
     output: {
       TaskParameters: D.list(
         D.map(o_MaintenanceWindowTaskParameterValueExpression),
@@ -7607,6 +8019,7 @@ export const getMaintenanceWindowExecutionTaskInvocation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { WindowExecutionId: 0, TaskId: 0, InvocationId: 0 },
     output: {
       Parameters: D.secret,
       StartTime: D.ts,
@@ -7642,6 +8055,7 @@ export const getMaintenanceWindowTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { WindowId: 0, WindowTaskId: 0 },
     output: {
       TaskParameters: D.map(o_MaintenanceWindowTaskParameterValueExpression),
       TaskInvocationParameters: o_MaintenanceWindowTaskInvocationParameters,
@@ -7677,6 +8091,7 @@ export const getOpsItem: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { OpsItemId: 0, OpsItemArn: 0 },
     output: {
       OpsItem: {
         CreatedTime: D.ts,
@@ -7712,7 +8127,10 @@ export const getOpsMetadata: API.OperationMethod<
   GetOpsMetadataError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OpsMetadataArn: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     InternalServerError,
     OpsMetadataInvalidArgumentException,
@@ -7744,7 +8162,17 @@ export const getOpsSummary: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   OpsEntity
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SyncName: 0,
+      Filters: D.list(i_OpsFilter),
+      Aggregators: D.list(i_OpsAggregator),
+      ResultAttributes: D.list({ TypeName: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     InternalServerError,
     InvalidAggregatorException,
@@ -7799,7 +8227,11 @@ export const getParameter: API.OperationMethod<
   GetParameterError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Parameter: o_Parameter } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, WithDecryption: 0 },
+    output: { Parameter: o_Parameter },
+  },
   errors: [
     InternalServerError,
     InvalidKeyId,
@@ -7838,6 +8270,7 @@ export const getParameterHistory: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0, WithDecryption: 0, MaxResults: 0, NextToken: 0 },
     output: { Parameters: D.list({ LastModifiedDate: D.ts, Value: D.secret }) },
   },
   errors: [
@@ -7890,7 +8323,11 @@ export const getParameters: API.OperationMethod<
   GetParametersError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Parameters: D.list(o_Parameter) } },
+  descriptor: {
+    service: svc,
+    input: { Names: 0, WithDecryption: 0 },
+    output: { Parameters: D.list(o_Parameter) },
+  },
   errors: [InternalServerError, InvalidKeyId],
   protocol: AwsProtocol,
   retry: Retry,
@@ -7926,7 +8363,18 @@ export const getParametersByPath: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Parameters: D.list(o_Parameter) } },
+  descriptor: {
+    service: svc,
+    input: {
+      Path: 0,
+      Recursive: 0,
+      ParameterFilters: D.list(i_ParameterStringFilter),
+      WithDecryption: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+    output: { Parameters: D.list(o_Parameter) },
+  },
   errors: [
     InternalServerError,
     InvalidFilterKey,
@@ -7961,6 +8409,7 @@ export const getPatchBaseline: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { BaselineId: 0 },
     output: {
       CreatedDate: D.ts,
       ModifiedDate: D.ts,
@@ -7985,7 +8434,7 @@ export const getPatchBaselineForPatchGroup: API.OperationMethod<
   GetPatchBaselineForPatchGroupError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PatchGroup: 0, OperatingSystem: 0 } },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -8007,7 +8456,10 @@ export const getResourcePolicies: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   GetResourcePoliciesResponseEntry
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     InternalServerError,
     ResourceNotFoundException,
@@ -8051,7 +8503,11 @@ export const getServiceSetting: API.OperationMethod<
   GetServiceSettingError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ServiceSetting: o_ServiceSetting } },
+  descriptor: {
+    service: svc,
+    input: { SettingId: 0 },
+    output: { ServiceSetting: o_ServiceSetting },
+  },
   errors: [InternalServerError, ServiceSettingNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -8105,7 +8561,10 @@ export const labelParameterVersion: API.OperationMethod<
   LabelParameterVersionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, ParameterVersion: 0, Labels: 0 },
+  },
   errors: [
     InternalServerError,
     ParameterNotFound,
@@ -8136,6 +8595,11 @@ export const listAssociations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AssociationFilterList: D.list({ key: 0, value: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { Associations: D.list({ LastExecutionDate: D.ts }) },
   },
   errors: [InternalServerError, InvalidNextToken],
@@ -8167,6 +8631,7 @@ export const listAssociationVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { AssociationId: 0, MaxResults: 0, NextToken: 0 },
     output: { AssociationVersions: D.list({ CreatedDate: D.ts }) },
   },
   errors: [AssociationDoesNotExist, InternalServerError, InvalidNextToken],
@@ -8194,6 +8659,11 @@ export const listCloudConnectors: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list({ FilterKey: 0, FilterValues: 0 }),
+    },
     output: { CloudConnectors: D.list({ CreatedAt: D.ts, UpdatedAt: D.ts }) },
   },
   errors: [InternalServerError],
@@ -8231,6 +8701,14 @@ export const listCommandInvocations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CommandId: 0,
+      InstanceId: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list(i_CommandFilter),
+      Details: 0,
+    },
     output: {
       CommandInvocations: D.list({
         RequestedDateTime: D.ts,
@@ -8276,7 +8754,17 @@ export const listCommands: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   Command
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Commands: D.list(o_Command) } },
+  descriptor: {
+    service: svc,
+    input: {
+      CommandId: 0,
+      InstanceId: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list(i_CommandFilter),
+    },
+    output: { Commands: D.list(o_Command) },
+  },
   errors: [
     InternalServerError,
     InvalidCommandId,
@@ -8316,6 +8804,13 @@ export const listComplianceItems: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filters: D.list(i_ComplianceStringFilter),
+      ResourceIds: 0,
+      ResourceTypes: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       ComplianceItems: D.list({
         ExecutionSummary: o_ComplianceExecutionSummary,
@@ -8357,7 +8852,14 @@ export const listComplianceSummaries: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   ComplianceSummaryItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Filters: D.list(i_ComplianceStringFilter),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [InternalServerError, InvalidFilter, InvalidNextToken],
   protocol: AwsProtocol,
   retry: Retry,
@@ -8391,6 +8893,13 @@ export const listDocumentMetadataHistory: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Name: 0,
+      DocumentVersion: 0,
+      Metadata: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       Metadata: {
         ReviewerResponse: D.list({ CreateTime: D.ts, UpdatedTime: D.ts }),
@@ -8426,6 +8935,12 @@ export const listDocuments: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DocumentFilterList: D.list({ key: 0, value: 0 }),
+      Filters: D.list({ Key: 0, Values: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { DocumentIdentifiers: D.list({ CreatedDate: D.ts }) },
   },
   errors: [InternalServerError, InvalidFilterKey, InvalidNextToken],
@@ -8457,6 +8972,7 @@ export const listDocumentVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0, MaxResults: 0, NextToken: 0 },
     output: { DocumentVersions: D.list({ CreatedDate: D.ts }) },
   },
   errors: [InternalServerError, InvalidDocument, InvalidNextToken],
@@ -8487,7 +9003,16 @@ export const listInventoryEntries: API.OperationMethod<
   ListInventoryEntriesError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceId: 0,
+      TypeName: 0,
+      Filters: D.list(i_InventoryFilter),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     InternalServerError,
     InvalidFilter,
@@ -8519,6 +9044,12 @@ export const listNodes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      SyncName: 0,
+      Filters: D.list(i_NodeFilter),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       Nodes: D.list({
         CaptureTime: D.ts,
@@ -8563,7 +9094,16 @@ export const listNodesSummary: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   { [key: string]: string | undefined }
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SyncName: 0,
+      Filters: D.list(i_NodeFilter),
+      Aggregators: D.list(i_NodeAggregator),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     InternalServerError,
     InvalidAggregatorException,
@@ -8602,6 +9142,11 @@ export const listOpsItemEvents: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filters: D.list({ Key: 0, Values: 0, Operator: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { Summaries: D.list({ CreatedTime: D.ts }) },
   },
   errors: [
@@ -8638,6 +9183,12 @@ export const listOpsItemRelatedItems: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      OpsItemId: 0,
+      Filters: D.list({ Key: 0, Values: 0, Operator: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       Summaries: D.list({ CreatedTime: D.ts, LastModifiedTime: D.ts }),
     },
@@ -8671,6 +9222,11 @@ export const listOpsMetadata: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filters: D.list({ Key: 0, Values: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       OpsMetadataList: D.list({ LastModifiedDate: D.ts, CreationDate: D.ts }),
     },
@@ -8706,6 +9262,11 @@ export const listResourceComplianceSummaries: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filters: D.list(i_ComplianceStringFilter),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       ResourceComplianceSummaryItems: D.list({
         ExecutionSummary: o_ComplianceExecutionSummary,
@@ -8750,6 +9311,7 @@ export const listResourceDataSync: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { SyncType: 0, NextToken: 0, MaxResults: 0 },
     output: {
       ResourceDataSyncItems: D.list({
         LastSyncTime: D.ts,
@@ -8791,7 +9353,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceType: 0, ResourceId: 0 } },
   errors: [InternalServerError, InvalidResourceId, InvalidResourceType],
   protocol: AwsProtocol,
   retry: Retry,
@@ -8817,7 +9379,16 @@ export const modifyDocumentPermission: API.OperationMethod<
   ModifyDocumentPermissionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      PermissionType: 0,
+      AccountIdsToAdd: 0,
+      AccountIdsToRemove: 0,
+      SharedDocumentVersion: 0,
+    },
+  },
   errors: [
     DocumentLimitExceeded,
     DocumentPermissionLimit,
@@ -8894,7 +9465,18 @@ export const putComplianceItems: API.OperationMethod<
   PutComplianceItemsError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceId: 0,
+      ResourceType: 0,
+      ComplianceType: 0,
+      ExecutionSummary: { ExecutionTime: 0, ExecutionId: 0, ExecutionType: 0 },
+      Items: D.list({ Id: 0, Title: 0, Severity: 0, Status: 0, Details: 0 }),
+      ItemContentHash: 0,
+      UploadType: 0,
+    },
+  },
   errors: [
     ComplianceTypeCountLimitExceededException,
     InternalServerError,
@@ -8934,7 +9516,20 @@ export const putInventory: API.OperationMethod<
   PutInventoryError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceId: 0,
+      Items: D.list({
+        TypeName: 0,
+        SchemaVersion: 0,
+        CaptureTime: 0,
+        ContentHash: 0,
+        Content: 0,
+        Context: 0,
+      }),
+    },
+  },
   errors: [
     CustomSchemaCountLimitExceededException,
     InternalServerError,
@@ -8994,7 +9589,22 @@ export const putParameter: API.OperationMethod<
   PutParameterError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      Value: 0,
+      Type: 0,
+      KeyId: 0,
+      Overwrite: 0,
+      AllowedPattern: 0,
+      Tags: D.list(i_Tag),
+      Tier: 0,
+      Policies: 0,
+      DataType: 0,
+    },
+  },
   errors: [
     HierarchyLevelLimitExceededException,
     HierarchyTypeMismatchException,
@@ -9061,7 +9671,10 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, Policy: 0, PolicyId: 0, PolicyHash: 0 },
+  },
   errors: [
     InternalServerError,
     MalformedResourcePolicyDocumentException,
@@ -9095,7 +9708,7 @@ export const registerDefaultPatchBaseline: API.OperationMethod<
   RegisterDefaultPatchBaselineError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { BaselineId: 0 } },
   errors: [DoesNotExistException, InternalServerError, InvalidResourceId],
   protocol: AwsProtocol,
   retry: Retry,
@@ -9118,7 +9731,7 @@ export const registerPatchBaselineForPatchGroup: API.OperationMethod<
   RegisterPatchBaselineForPatchGroupError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { BaselineId: 0, PatchGroup: 0 } },
   errors: [
     AlreadyExistsException,
     DoesNotExistException,
@@ -9148,7 +9761,15 @@ export const registerTargetWithMaintenanceWindow: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      WindowId: 0,
+      ResourceType: 0,
+      Targets: D.list(i_Target),
+      OwnerInformation: 0,
+      Name: 0,
+      Description: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     DoesNotExistException,
@@ -9179,7 +9800,24 @@ export const registerTaskWithMaintenanceWindow: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      WindowId: 0,
+      Targets: D.list(i_Target),
+      TaskArn: 0,
+      ServiceRoleArn: 0,
+      TaskType: 0,
+      TaskParameters: D.map(i_MaintenanceWindowTaskParameterValueExpression),
+      TaskInvocationParameters: i_MaintenanceWindowTaskInvocationParameters,
+      Priority: 0,
+      MaxConcurrency: 0,
+      MaxErrors: 0,
+      LoggingInfo: i_LoggingInfo,
+      Name: 0,
+      Description: 0,
+      ClientToken: D.m({ idempotency: true }),
+      CutoffBehavior: 0,
+      AlarmConfiguration: i_AlarmConfiguration,
+    },
   },
   errors: [
     DoesNotExistException,
@@ -9208,7 +9846,10 @@ export const removeTagsFromResource: API.OperationMethod<
   RemoveTagsFromResourceError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceType: 0, ResourceId: 0, TagKeys: 0 },
+  },
   errors: [
     InternalServerError,
     InvalidResourceId,
@@ -9249,7 +9890,11 @@ export const resetServiceSetting: API.OperationMethod<
   ResetServiceSettingError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ServiceSetting: o_ServiceSetting } },
+  descriptor: {
+    service: svc,
+    input: { SettingId: 0 },
+    output: { ServiceSetting: o_ServiceSetting },
+  },
   errors: [InternalServerError, ServiceSettingNotFound, TooManyUpdates],
   protocol: AwsProtocol,
   retry: Retry,
@@ -9273,7 +9918,7 @@ export const resumeSession: API.OperationMethod<
   ResumeSessionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SessionId: 0 } },
   errors: [DoesNotExistException, InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -9296,7 +9941,10 @@ export const sendAutomationSignal: API.OperationMethod<
   SendAutomationSignalError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AutomationExecutionId: 0, SignalType: 0, Payload: 0 },
+  },
   errors: [
     AutomationExecutionNotFoundException,
     AutomationStepNotFoundException,
@@ -9330,7 +9978,30 @@ export const sendCommand: API.OperationMethod<
   SendCommandError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Command: o_Command } },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceIds: 0,
+      Targets: D.list(i_Target),
+      DocumentName: 0,
+      DocumentVersion: 0,
+      DocumentHash: 0,
+      DocumentHashType: 0,
+      TimeoutSeconds: 0,
+      Comment: 0,
+      Parameters: 0,
+      OutputS3Region: 0,
+      OutputS3BucketName: 0,
+      OutputS3KeyPrefix: 0,
+      MaxConcurrency: 0,
+      MaxErrors: 0,
+      ServiceRoleArn: 0,
+      NotificationConfig: i_NotificationConfig,
+      CloudWatchOutputConfig: i_CloudWatchOutputConfig,
+      AlarmConfiguration: i_AlarmConfiguration,
+    },
+    output: { Command: o_Command },
+  },
   errors: [
     DuplicateInstanceId,
     InternalServerError,
@@ -9366,7 +10037,10 @@ export const startAccessRequest: API.OperationMethod<
   StartAccessRequestError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Reason: 0, Targets: D.list(i_Target), Tags: D.list(i_Tag) },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -9394,7 +10068,7 @@ export const startAssociationsOnce: API.OperationMethod<
   StartAssociationsOnceError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AssociationIds: 0 } },
   errors: [AssociationDoesNotExist, InvalidAssociation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -9419,7 +10093,25 @@ export const startAutomationExecution: API.OperationMethod<
   StartAutomationExecutionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DocumentName: 0,
+      DocumentVersion: 0,
+      Parameters: 0,
+      ClientToken: 0,
+      Mode: 0,
+      TargetParameterName: 0,
+      Targets: D.list(i_Target),
+      TargetMaps: 0,
+      MaxConcurrency: 0,
+      MaxErrors: 0,
+      TargetLocations: D.list(i_TargetLocation),
+      Tags: D.list(i_Tag),
+      AlarmConfiguration: i_AlarmConfiguration,
+      TargetLocationsURL: 0,
+    },
+  },
   errors: [
     AutomationDefinitionNotFoundException,
     AutomationDefinitionVersionNotFoundException,
@@ -9459,7 +10151,32 @@ export const startChangeRequestExecution: API.OperationMethod<
   StartChangeRequestExecutionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ScheduledTime: 0,
+      DocumentName: 0,
+      DocumentVersion: 0,
+      Parameters: 0,
+      ChangeRequestName: 0,
+      ClientToken: 0,
+      AutoApprove: 0,
+      Runbooks: D.list({
+        DocumentName: 0,
+        DocumentVersion: 0,
+        Parameters: 0,
+        TargetParameterName: 0,
+        Targets: D.list(i_Target),
+        TargetMaps: 0,
+        MaxConcurrency: 0,
+        MaxErrors: 0,
+        TargetLocations: D.list(i_TargetLocation),
+      }),
+      Tags: D.list(i_Tag),
+      ScheduledEndTime: 0,
+      ChangeDetails: 0,
+    },
+  },
   errors: [
     AutomationDefinitionNotApprovedException,
     AutomationDefinitionNotFoundException,
@@ -9489,7 +10206,23 @@ export const startExecutionPreview: API.OperationMethod<
   StartExecutionPreviewError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DocumentName: 0,
+      DocumentVersion: 0,
+      ExecutionInputs: {
+        Automation: {
+          Parameters: 0,
+          TargetParameterName: 0,
+          Targets: D.list(i_Target),
+          TargetMaps: 0,
+          TargetLocations: D.list(i_TargetLocation),
+          TargetLocationsURL: 0,
+        },
+      },
+    },
+  },
   errors: [InternalServerError, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -9519,7 +10252,10 @@ export const startSession: API.OperationMethod<
   StartSessionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Target: 0, DocumentName: 0, Reason: 0, Parameters: 0 },
+  },
   errors: [InternalServerError, InvalidDocument, TargetNotConnected],
   protocol: AwsProtocol,
   retry: Retry,
@@ -9540,7 +10276,7 @@ export const stopAutomationExecution: API.OperationMethod<
   StopAutomationExecutionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AutomationExecutionId: 0, Type: 0 } },
   errors: [
     AutomationExecutionNotFoundException,
     InternalServerError,
@@ -9562,7 +10298,7 @@ export const terminateSession: API.OperationMethod<
   TerminateSessionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SessionId: 0 } },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -9588,7 +10324,10 @@ export const unlabelParameterVersion: API.OperationMethod<
   UnlabelParameterVersionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, ParameterVersion: 0, Labels: 0 },
+  },
   errors: [
     InternalServerError,
     ParameterNotFound,
@@ -9643,6 +10382,30 @@ export const updateAssociation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AssociationId: 0,
+      Parameters: 0,
+      DocumentVersion: 0,
+      ScheduleExpression: 0,
+      OutputLocation: i_InstanceAssociationOutputLocation,
+      Name: 0,
+      Targets: D.list(i_Target),
+      AssociationName: 0,
+      AssociationVersion: 0,
+      AutomationTargetParameterName: 0,
+      MaxErrors: 0,
+      MaxConcurrency: 0,
+      ComplianceSeverity: 0,
+      SyncCompliance: 0,
+      ApplyOnlyAtCronInterval: 0,
+      CalendarNames: 0,
+      TargetLocations: D.list(i_TargetLocation),
+      ScheduleOffset: 0,
+      Duration: 0,
+      TargetMaps: 0,
+      AlarmConfiguration: i_AlarmConfiguration,
+      AssociationDispatchAssumeRole: 0,
+    },
     output: { AssociationDescription: o_AssociationDescription },
   },
   errors: [
@@ -9689,6 +10452,11 @@ export const updateAssociationStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Name: 0,
+      InstanceId: 0,
+      AssociationStatus: { Date: 0, Name: 0, Message: 0, AdditionalInfo: 0 },
+    },
     output: { AssociationDescription: o_AssociationDescription },
   },
   errors: [
@@ -9718,7 +10486,15 @@ export const updateCloudConnector: API.OperationMethod<
   UpdateCloudConnectorError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CloudConnectorId: 0,
+      DisplayName: 0,
+      Configuration: i_CloudConnectorConfiguration,
+      Description: 0,
+    },
+  },
   errors: [ConflictException, InternalServerError, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -9748,6 +10524,16 @@ export const updateDocument: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Content: 0,
+      Attachments: D.list(i_AttachmentsSource),
+      Name: 0,
+      DisplayName: 0,
+      VersionName: 0,
+      DocumentVersion: 0,
+      DocumentFormat: 0,
+      TargetType: 0,
+    },
     output: { DocumentDescription: o_DocumentDescription },
   },
   errors: [
@@ -9786,7 +10572,7 @@ export const updateDocumentDefaultVersion: API.OperationMethod<
   UpdateDocumentDefaultVersionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, DocumentVersion: 0 } },
   errors: [
     InternalServerError,
     InvalidDocument,
@@ -9819,7 +10605,14 @@ export const updateDocumentMetadata: API.OperationMethod<
   UpdateDocumentMetadataError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      DocumentVersion: 0,
+      DocumentReviews: { Action: 0, Comment: D.list({ Type: 0, Content: 0 }) },
+    },
+  },
   errors: [
     InternalServerError,
     InvalidDocument,
@@ -9852,7 +10645,25 @@ export const updateMaintenanceWindow: API.OperationMethod<
   UpdateMaintenanceWindowError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Description: D.secret } },
+  descriptor: {
+    service: svc,
+    input: {
+      WindowId: 0,
+      Name: 0,
+      Description: 0,
+      StartDate: 0,
+      EndDate: 0,
+      Schedule: 0,
+      ScheduleTimezone: 0,
+      ScheduleOffset: 0,
+      Duration: 0,
+      Cutoff: 0,
+      AllowUnassociatedTargets: 0,
+      Enabled: 0,
+      Replace: 0,
+    },
+    output: { Description: D.secret },
+  },
   errors: [DoesNotExistException, InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -9890,6 +10701,15 @@ export const updateMaintenanceWindowTarget: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      WindowId: 0,
+      WindowTargetId: 0,
+      Targets: D.list(i_Target),
+      OwnerInformation: 0,
+      Name: 0,
+      Description: 0,
+      Replace: 0,
+    },
     output: { OwnerInformation: D.secret, Description: D.secret },
   },
   errors: [DoesNotExistException, InternalServerError],
@@ -9948,6 +10768,24 @@ export const updateMaintenanceWindowTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      WindowId: 0,
+      WindowTaskId: 0,
+      Targets: D.list(i_Target),
+      TaskArn: 0,
+      ServiceRoleArn: 0,
+      TaskParameters: D.map(i_MaintenanceWindowTaskParameterValueExpression),
+      TaskInvocationParameters: i_MaintenanceWindowTaskInvocationParameters,
+      Priority: 0,
+      MaxConcurrency: 0,
+      MaxErrors: 0,
+      LoggingInfo: i_LoggingInfo,
+      Name: 0,
+      Description: 0,
+      Replace: 0,
+      CutoffBehavior: 0,
+      AlarmConfiguration: i_AlarmConfiguration,
+    },
     output: {
       TaskParameters: D.map(o_MaintenanceWindowTaskParameterValueExpression),
       TaskInvocationParameters: o_MaintenanceWindowTaskInvocationParameters,
@@ -9975,7 +10813,7 @@ export const updateManagedInstanceRole: API.OperationMethod<
   UpdateManagedInstanceRoleError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InstanceId: 0, IamRole: 0 } },
   errors: [InternalServerError, InvalidInstanceId],
   protocol: AwsProtocol,
   retry: Retry,
@@ -10006,7 +10844,27 @@ export const updateOpsItem: API.OperationMethod<
   UpdateOpsItemError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Description: 0,
+      OperationalData: D.map(i_OpsItemDataValue),
+      OperationalDataToDelete: 0,
+      Notifications: D.list(i_OpsItemNotification),
+      Priority: 0,
+      RelatedOpsItems: D.list(i_RelatedOpsItem),
+      Status: 0,
+      OpsItemId: 0,
+      Title: 0,
+      Category: 0,
+      Severity: 0,
+      ActualStartTime: 0,
+      ActualEndTime: 0,
+      PlannedStartTime: 0,
+      PlannedEndTime: 0,
+      OpsItemArn: 0,
+    },
+  },
   errors: [
     InternalServerError,
     OpsItemAccessDeniedException,
@@ -10037,7 +10895,14 @@ export const updateOpsMetadata: API.OperationMethod<
   UpdateOpsMetadataError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OpsMetadataArn: 0,
+      MetadataToUpdate: D.map(i_MetadataValue),
+      KeysToDelete: 0,
+    },
+  },
   errors: [
     InternalServerError,
     OpsMetadataInvalidArgumentException,
@@ -10069,6 +10934,21 @@ export const updatePatchBaseline: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      BaselineId: 0,
+      Name: 0,
+      GlobalFilters: i_PatchFilterGroup,
+      ApprovalRules: i_PatchRuleGroup,
+      ApprovedPatches: 0,
+      ApprovedPatchesComplianceLevel: 0,
+      ApprovedPatchesEnableNonSecurity: 0,
+      RejectedPatches: 0,
+      RejectedPatchesAction: 0,
+      Description: 0,
+      Sources: D.list(i_PatchSource),
+      AvailableSecurityUpdatesComplianceStatus: 0,
+      Replace: 0,
+    },
     output: {
       CreatedDate: D.ts,
       ModifiedDate: D.ts,
@@ -10104,7 +10984,10 @@ export const updateResourceDataSync: API.OperationMethod<
   UpdateResourceDataSyncError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SyncName: 0, SyncType: 0, SyncSource: i_ResourceDataSyncSource },
+  },
   errors: [
     InternalServerError,
     ResourceDataSyncConflictException,
@@ -10144,7 +11027,7 @@ export const updateServiceSetting: API.OperationMethod<
   UpdateServiceSettingError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SettingId: 0, SettingValue: 0 } },
   errors: [InternalServerError, ServiceSettingNotFound, TooManyUpdates],
   protocol: AwsProtocol,
   retry: Retry,
@@ -10165,7 +11048,10 @@ export const validateCloudConnector: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   ValidationFinding
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CloudConnectorId: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [InternalServerError, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -10178,6 +11064,147 @@ export const validateCloudConnector: API.PaginatedOperationMethod<
   } as const,
 })) as any;
 
+const i_AlarmConfiguration: D.LazyStruct = () => ({
+  IgnorePollAlarmFailure: 0,
+  Alarms: D.list({ Name: 0 }),
+});
+const i_AttachmentsSource: D.LazyStruct = () => ({
+  Key: 0,
+  Values: 0,
+  Name: 0,
+});
+const i_CloudConnectorConfiguration: D.LazyStruct = () => ({
+  AzureConfiguration: {
+    TenantId: 0,
+    TenantDisplayName: 0,
+    ApplicationId: 0,
+    ApplicationDisplayName: 0,
+    Targets: { Subscriptions: D.list({ Id: 0, DisplayName: 0 }) },
+  },
+});
+const i_CloudWatchOutputConfig: D.LazyStruct = () => ({
+  CloudWatchLogGroupName: 0,
+  CloudWatchOutputEnabled: 0,
+});
+const i_CommandFilter: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_ComplianceStringFilter: D.LazyStruct = () => ({
+  Key: 0,
+  Values: 0,
+  Type: 0,
+});
+const i_InstanceAssociationOutputLocation: D.LazyStruct = () => ({
+  S3Location: {
+    OutputS3Region: 0,
+    OutputS3BucketName: 0,
+    OutputS3KeyPrefix: 0,
+  },
+});
+const i_InventoryAggregator: D.LazyStruct = () => ({
+  Expression: 0,
+  Aggregators: D.list(i_InventoryAggregator),
+  Groups: D.list({ Name: 0, Filters: D.list(i_InventoryFilter) }),
+});
+const i_InventoryFilter: D.LazyStruct = () => ({ Key: 0, Values: 0, Type: 0 });
+const i_LoggingInfo: D.LazyStruct = () => ({
+  S3BucketName: 0,
+  S3KeyPrefix: 0,
+  S3Region: 0,
+});
+const i_MaintenanceWindowFilter: D.LazyStruct = () => ({ Key: 0, Values: 0 });
+const i_MaintenanceWindowTaskInvocationParameters: D.LazyStruct = () => ({
+  RunCommand: {
+    Comment: 0,
+    CloudWatchOutputConfig: i_CloudWatchOutputConfig,
+    DocumentHash: 0,
+    DocumentHashType: 0,
+    DocumentVersion: 0,
+    NotificationConfig: i_NotificationConfig,
+    OutputS3BucketName: 0,
+    OutputS3KeyPrefix: 0,
+    Parameters: 0,
+    ServiceRoleArn: 0,
+    TimeoutSeconds: 0,
+  },
+  Automation: { DocumentVersion: 0, Parameters: 0 },
+  StepFunctions: { Input: 0, Name: 0 },
+  Lambda: { ClientContext: 0, Qualifier: 0, Payload: 0 },
+});
+const i_MaintenanceWindowTaskParameterValueExpression: D.LazyStruct = () => ({
+  Values: 0,
+});
+const i_MetadataValue: D.LazyStruct = () => ({ Value: 0 });
+const i_NodeAggregator: D.LazyStruct = () => ({
+  AggregatorType: 0,
+  TypeName: 0,
+  AttributeName: 0,
+  Aggregators: D.list(i_NodeAggregator),
+});
+const i_NodeFilter: D.LazyStruct = () => ({ Key: 0, Values: 0, Type: 0 });
+const i_NotificationConfig: D.LazyStruct = () => ({
+  NotificationArn: 0,
+  NotificationEvents: 0,
+  NotificationType: 0,
+});
+const i_OpsAggregator: D.LazyStruct = () => ({
+  AggregatorType: 0,
+  TypeName: 0,
+  AttributeName: 0,
+  Values: 0,
+  Filters: D.list(i_OpsFilter),
+  Aggregators: D.list(i_OpsAggregator),
+});
+const i_OpsFilter: D.LazyStruct = () => ({ Key: 0, Values: 0, Type: 0 });
+const i_OpsItemDataValue: D.LazyStruct = () => ({ Value: 0, Type: 0 });
+const i_OpsItemNotification: D.LazyStruct = () => ({ Arn: 0 });
+const i_ParameterStringFilter: D.LazyStruct = () => ({
+  Key: 0,
+  Option: 0,
+  Values: 0,
+});
+const i_PatchFilterGroup: D.LazyStruct = () => ({
+  PatchFilters: D.list({ Key: 0, Values: 0 }),
+});
+const i_PatchOrchestratorFilter: D.LazyStruct = () => ({ Key: 0, Values: 0 });
+const i_PatchRuleGroup: D.LazyStruct = () => ({
+  PatchRules: D.list({
+    PatchFilterGroup: i_PatchFilterGroup,
+    ComplianceLevel: 0,
+    ApproveAfterDays: 0,
+    ApproveUntilDate: 0,
+    EnableNonSecurity: 0,
+  }),
+});
+const i_PatchSource: D.LazyStruct = () => ({
+  Name: 0,
+  Products: 0,
+  Configuration: 0,
+});
+const i_RelatedOpsItem: D.LazyStruct = () => ({ OpsItemId: 0 });
+const i_ResourceDataSyncSource: D.LazyStruct = () => ({
+  SourceType: 0,
+  AwsOrganizationsSource: {
+    OrganizationSourceType: 0,
+    OrganizationalUnits: D.list({ OrganizationalUnitId: 0 }),
+  },
+  SourceRegions: 0,
+  IncludeFutureRegions: 0,
+  EnableAllOpsDataSources: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_Target: D.LazyStruct = () => ({ Key: 0, Values: 0 });
+const i_TargetLocation: D.LazyStruct = () => ({
+  Accounts: 0,
+  Regions: 0,
+  TargetLocationMaxConcurrency: 0,
+  TargetLocationMaxErrors: 0,
+  ExecutionRoleName: 0,
+  TargetLocationAlarmConfiguration: i_AlarmConfiguration,
+  IncludeChildOrganizationUnits: 0,
+  ExcludeAccounts: 0,
+  Targets: D.list(i_Target),
+  TargetsMaxConcurrency: 0,
+  TargetsMaxErrors: 0,
+});
 const o_AssociationDescription: D.LazyStruct = () => ({
   Date: D.ts,
   LastUpdateAssociationDate: D.ts,

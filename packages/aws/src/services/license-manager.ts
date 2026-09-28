@@ -1379,7 +1379,7 @@ export const acceptGrant: API.OperationMethod<
   AcceptGrantError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GrantArn: 0 } },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -1413,7 +1413,10 @@ export const checkInLicense: API.OperationMethod<
   CheckInLicenseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { LicenseConsumptionToken: 0, Beneficiary: 0 },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -1451,7 +1454,17 @@ export const checkoutBorrowLicense: API.OperationMethod<
   CheckoutBorrowLicenseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LicenseArn: 0,
+      Entitlements: D.list(i_EntitlementData),
+      DigitalSignatureMethod: 0,
+      NodeId: 0,
+      CheckoutMetadata: D.list(i_Metadata),
+      ClientToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -1494,7 +1507,18 @@ export const checkoutLicense: API.OperationMethod<
   CheckoutLicenseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProductSKU: 0,
+      CheckoutType: 0,
+      KeyFingerprint: 0,
+      Entitlements: D.list(i_EntitlementData),
+      ClientToken: 0,
+      Beneficiary: 0,
+      NodeId: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -1532,7 +1556,18 @@ export const createGrant: API.OperationMethod<
   CreateGrantError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClientToken: 0,
+      GrantName: 0,
+      LicenseArn: 0,
+      Principals: 0,
+      HomeRegion: 0,
+      AllowedOperations: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -1566,7 +1601,19 @@ export const createGrantVersion: API.OperationMethod<
   CreateGrantVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClientToken: 0,
+      GrantArn: 0,
+      GrantName: 0,
+      AllowedOperations: 0,
+      Status: 0,
+      StatusReason: 0,
+      SourceVersion: 0,
+      Options: { ActivationOverrideBehavior: 0 },
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -1599,7 +1646,23 @@ export const createLicense: API.OperationMethod<
   CreateLicenseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LicenseName: 0,
+      ProductName: 0,
+      ProductSKU: 0,
+      Issuer: i_Issuer,
+      HomeRegion: 0,
+      Validity: i_DatetimeRange,
+      Entitlements: D.list(i_Entitlement),
+      Beneficiary: 0,
+      ConsumptionConfiguration: i_ConsumptionConfiguration,
+      LicenseMetadata: D.list(i_Metadata),
+      ClientToken: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -1631,7 +1694,18 @@ export const createLicenseAssetGroup: API.OperationMethod<
   CreateLicenseAssetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      LicenseAssetGroupConfigurations: D.list(i_LicenseAssetGroupConfiguration),
+      AssociatedLicenseAssetRulesetARNs: 0,
+      Properties: D.list(i_LicenseAssetGroupProperty),
+      Tags: D.list(i_Tag),
+      ClientToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -1662,7 +1736,16 @@ export const createLicenseAssetRuleset: API.OperationMethod<
   CreateLicenseAssetRulesetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      Rules: D.list(i_LicenseAssetRule),
+      Tags: D.list(i_Tag),
+      ClientToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -1699,7 +1782,21 @@ export const createLicenseConfiguration: API.OperationMethod<
   CreateLicenseConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      LicenseCountingType: 0,
+      LicenseCount: 0,
+      LicenseCountHardLimit: 0,
+      LicenseRules: 0,
+      Tags: D.list(i_Tag),
+      DisassociateWhenNotFound: 0,
+      ProductInformationList: D.list(i_ProductInformation),
+      LicenseExpiry: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -1730,7 +1827,14 @@ export const createLicenseConversionTaskForResource: API.OperationMethod<
   CreateLicenseConversionTaskForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceArn: 0,
+      SourceLicenseContext: i_LicenseConversionContext,
+      DestinationLicenseContext: i_LicenseConversionContext,
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -1763,7 +1867,18 @@ export const createLicenseManagerReportGenerator: API.OperationMethod<
   CreateLicenseManagerReportGeneratorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ReportGeneratorName: 0,
+      Type: 0,
+      ReportContext: i_ReportContext,
+      ReportFrequency: i_ReportFrequency,
+      ClientToken: 0,
+      Description: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -1798,7 +1913,24 @@ export const createLicenseVersion: API.OperationMethod<
   CreateLicenseVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LicenseArn: 0,
+      LicenseName: 0,
+      ProductName: 0,
+      Issuer: i_Issuer,
+      HomeRegion: 0,
+      Validity: i_DatetimeRange,
+      LicenseMetadata: D.list(i_Metadata),
+      Entitlements: D.list(i_Entitlement),
+      ConsumptionConfiguration: i_ConsumptionConfiguration,
+      Status: 0,
+      ClientToken: 0,
+      SourceVersion: 0,
+      ResetUsage: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -1837,7 +1969,17 @@ export const createToken: API.OperationMethod<
   CreateTokenError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Token: D.secret } },
+  descriptor: {
+    service: svc,
+    input: {
+      LicenseArn: 0,
+      RoleArns: 0,
+      ExpirationInDays: 0,
+      TokenProperties: 0,
+      ClientToken: 0,
+    },
+    output: { Token: D.secret },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -1871,7 +2013,10 @@ export const deleteGrant: API.OperationMethod<
   DeleteGrantError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { GrantArn: 0, StatusReason: 0, Version: 0 },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -1905,7 +2050,7 @@ export const deleteLicense: API.OperationMethod<
   DeleteLicenseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LicenseArn: 0, SourceVersion: 0 } },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -1938,7 +2083,7 @@ export const deleteLicenseAssetGroup: API.OperationMethod<
   DeleteLicenseAssetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LicenseAssetGroupArn: 0 } },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -1969,7 +2114,7 @@ export const deleteLicenseAssetRuleset: API.OperationMethod<
   DeleteLicenseAssetRulesetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LicenseAssetRulesetArn: 0 } },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -2002,7 +2147,7 @@ export const deleteLicenseConfiguration: API.OperationMethod<
   DeleteLicenseConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LicenseConfigurationArn: 0 } },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -2038,7 +2183,7 @@ export const deleteLicenseManagerReportGenerator: API.OperationMethod<
   DeleteLicenseManagerReportGeneratorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LicenseManagerReportGeneratorArn: 0 } },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -2072,7 +2217,7 @@ export const deleteToken: API.OperationMethod<
   DeleteTokenError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TokenId: 0 } },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -2105,7 +2250,10 @@ export const extendLicenseConsumption: API.OperationMethod<
   ExtendLicenseConsumptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { LicenseConsumptionToken: 0, DryRun: 0 },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -2138,7 +2286,11 @@ export const getAccessToken: API.OperationMethod<
   GetAccessTokenError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AccessToken: D.secret } },
+  descriptor: {
+    service: svc,
+    input: { Token: 0, TokenProperties: 0 },
+    output: { AccessToken: D.secret },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -2171,7 +2323,7 @@ export const getGrant: API.OperationMethod<
   GetGrantError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GrantArn: 0, Version: 0 } },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -2205,7 +2357,7 @@ export const getLicense: API.OperationMethod<
   GetLicenseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LicenseArn: 0, Version: 0 } },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -2239,6 +2391,7 @@ export const getLicenseAssetGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { LicenseAssetGroupArn: 0 },
     output: { LicenseAssetGroup: o_LicenseAssetGroup },
   },
   errors: [
@@ -2271,7 +2424,7 @@ export const getLicenseAssetRuleset: API.OperationMethod<
   GetLicenseAssetRulesetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LicenseAssetRulesetArn: 0 } },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -2304,6 +2457,7 @@ export const getLicenseConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { LicenseConfigurationArn: 0 },
     output: { AutomatedDiscoveryInformation: o_AutomatedDiscoveryInformation },
   },
   errors: [
@@ -2337,6 +2491,7 @@ export const getLicenseConversionTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { LicenseConversionTaskId: 0 },
     output: { StartTime: D.ts, LicenseConversionTime: D.ts, EndTime: D.ts },
   },
   errors: [
@@ -2370,7 +2525,11 @@ export const getLicenseManagerReportGenerator: API.OperationMethod<
   GetLicenseManagerReportGeneratorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ReportGenerator: o_ReportGenerator } },
+  descriptor: {
+    service: svc,
+    input: { LicenseManagerReportGeneratorArn: 0 },
+    output: { ReportGenerator: o_ReportGenerator },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -2403,7 +2562,7 @@ export const getLicenseUsage: API.OperationMethod<
   GetLicenseUsageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LicenseArn: 0 } },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -2432,7 +2591,7 @@ export const getServiceSettings: API.OperationMethod<
   GetServiceSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -2463,6 +2622,12 @@ export const listAssetsForLicenseAssetGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      LicenseAssetGroupArn: 0,
+      AssetType: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { Assets: D.list({ LatestAssetDiscoveryTime: D.ts }) },
   },
   errors: [
@@ -2501,6 +2666,7 @@ export const listAssociationsForLicenseConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { LicenseConfigurationArn: 0, MaxResults: 0, NextToken: 0 },
     output: {
       LicenseConfigurationAssociations: D.list({ AssociationTime: D.ts }),
     },
@@ -2536,7 +2702,15 @@ export const listDistributedGrants: API.OperationMethod<
   ListDistributedGrantsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      GrantArns: 0,
+      Filters: D.list(i_Filter),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -2569,6 +2743,7 @@ export const listFailuresForLicenseConfigurationOperations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { LicenseConfigurationArn: 0, MaxResults: 0, NextToken: 0 },
     output: { LicenseOperationFailureList: D.list({ FailureTime: D.ts }) },
   },
   errors: [
@@ -2602,6 +2777,7 @@ export const listLicenseAssetGroups: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Filters: D.list(i_Filter), MaxResults: 0, NextToken: 0 },
     output: { LicenseAssetGroups: D.list(o_LicenseAssetGroup) },
   },
   errors: [
@@ -2634,7 +2810,15 @@ export const listLicenseAssetRulesets: API.OperationMethod<
   ListLicenseAssetRulesetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Filters: D.list(i_Filter),
+      ShowAWSManagedLicenseAssetRulesets: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -2667,6 +2851,12 @@ export const listLicenseConfigurations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      LicenseConfigurationArns: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list(i_Filter),
+    },
     output: { LicenseConfigurations: D.list(o_LicenseConfiguration) },
   },
   errors: [
@@ -2701,6 +2891,12 @@ export const listLicenseConfigurationsForOrganization: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      LicenseConfigurationArns: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list(i_Filter),
+    },
     output: { LicenseConfigurations: D.list(o_LicenseConfiguration) },
   },
   errors: [
@@ -2734,6 +2930,7 @@ export const listLicenseConversionTasks: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, Filters: D.list(i_Filter) },
     output: {
       LicenseConversionTasks: D.list({
         StartTime: D.ts,
@@ -2775,6 +2972,7 @@ export const listLicenseManagerReportGenerators: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Filters: D.list(i_Filter), NextToken: 0, MaxResults: 0 },
     output: { ReportGenerators: D.list(o_ReportGenerator) },
   },
   errors: [
@@ -2809,7 +3007,15 @@ export const listLicenses: API.OperationMethod<
   ListLicensesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LicenseArns: 0,
+      Filters: D.list(i_Filter),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -2839,7 +3045,10 @@ export const listLicenseSpecificationsForResource: API.OperationMethod<
   ListLicenseSpecificationsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -2868,7 +3077,10 @@ export const listLicenseVersions: API.OperationMethod<
   ListLicenseVersionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { LicenseArn: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -2901,7 +3113,15 @@ export const listReceivedGrants: API.OperationMethod<
   ListReceivedGrantsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      GrantArns: 0,
+      Filters: D.list(i_Filter),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -2934,7 +3154,15 @@ export const listReceivedGrantsForOrganization: API.OperationMethod<
   ListReceivedGrantsForOrganizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LicenseArn: 0,
+      Filters: D.list(i_Filter),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -2967,7 +3195,15 @@ export const listReceivedLicenses: API.OperationMethod<
   ListReceivedLicensesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LicenseArns: 0,
+      Filters: D.list(i_Filter),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -3000,7 +3236,10 @@ export const listReceivedLicensesForOrganization: API.OperationMethod<
   ListReceivedLicensesForOrganizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Filters: D.list(i_Filter), NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -3033,7 +3272,14 @@ export const listResourceInventory: API.OperationMethod<
   ListResourceInventoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list({ Name: 0, Condition: 0, Value: 0 }),
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -3066,7 +3312,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -3096,7 +3342,15 @@ export const listTokens: API.OperationMethod<
   ListTokensError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TokenIds: 0,
+      Filters: D.list(i_Filter),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -3130,6 +3384,12 @@ export const listUsageForLicenseConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      LicenseConfigurationArn: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list(i_Filter),
+    },
     output: {
       LicenseConfigurationUsageList: D.list({ AssociationTime: D.ts }),
     },
@@ -3165,7 +3425,7 @@ export const rejectGrant: API.OperationMethod<
   RejectGrantError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GrantArn: 0 } },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -3206,7 +3466,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -3237,7 +3497,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -3268,7 +3528,19 @@ export const updateLicenseAssetGroup: API.OperationMethod<
   UpdateLicenseAssetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      LicenseAssetGroupConfigurations: D.list(i_LicenseAssetGroupConfiguration),
+      AssociatedLicenseAssetRulesetARNs: 0,
+      Properties: D.list(i_LicenseAssetGroupProperty),
+      LicenseAssetGroupArn: 0,
+      Status: 0,
+      ClientToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -3299,7 +3571,16 @@ export const updateLicenseAssetRuleset: API.OperationMethod<
   UpdateLicenseAssetRulesetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      Rules: D.list(i_LicenseAssetRule),
+      LicenseAssetRulesetArn: 0,
+      ClientToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -3332,7 +3613,21 @@ export const updateLicenseConfiguration: API.OperationMethod<
   UpdateLicenseConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LicenseConfigurationArn: 0,
+      LicenseConfigurationStatus: 0,
+      LicenseRules: 0,
+      LicenseCount: 0,
+      LicenseCountHardLimit: 0,
+      Name: 0,
+      Description: 0,
+      ProductInformationList: D.list(i_ProductInformation),
+      DisassociateWhenNotFound: 0,
+      LicenseExpiry: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -3369,7 +3664,18 @@ export const updateLicenseManagerReportGenerator: API.OperationMethod<
   UpdateLicenseManagerReportGeneratorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LicenseManagerReportGeneratorArn: 0,
+      ReportGeneratorName: 0,
+      Type: 0,
+      ReportContext: i_ReportContext,
+      ReportFrequency: i_ReportFrequency,
+      ClientToken: 0,
+      Description: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -3408,7 +3714,14 @@ export const updateLicenseSpecificationsForResource: API.OperationMethod<
   UpdateLicenseSpecificationsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceArn: 0,
+      AddLicenseSpecifications: D.list(i_LicenseSpecification),
+      RemoveLicenseSpecifications: D.list(i_LicenseSpecification),
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -3442,7 +3755,16 @@ export const updateServiceSettings: API.OperationMethod<
   UpdateServiceSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      S3BucketArn: 0,
+      SnsTopicArn: 0,
+      OrganizationConfiguration: { EnableIntegration: 0 },
+      EnableCrossAccountsDiscovery: 0,
+      EnabledDiscoverySourceRegions: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AuthorizationException,
@@ -3457,6 +3779,72 @@ export const updateServiceSettings: API.OperationMethod<
   operationName: "UpdateServiceSettings",
 })) as any;
 
+const i_ConsumptionConfiguration: D.LazyStruct = () => ({
+  RenewType: 0,
+  ProvisionalConfiguration: { MaxTimeToLiveInMinutes: 0 },
+  BorrowConfiguration: { AllowEarlyCheckIn: 0, MaxTimeToLiveInMinutes: 0 },
+});
+const i_DatetimeRange: D.LazyStruct = () => ({ Begin: 0, End: 0 });
+const i_Entitlement: D.LazyStruct = () => ({
+  Name: 0,
+  Value: 0,
+  MaxCount: 0,
+  Overage: 0,
+  Unit: 0,
+  AllowCheckIn: 0,
+});
+const i_EntitlementData: D.LazyStruct = () => ({ Name: 0, Value: 0, Unit: 0 });
+const i_Filter: D.LazyStruct = () => ({ Name: 0, Values: 0 });
+const i_Issuer: D.LazyStruct = () => ({ Name: 0, SignKey: 0 });
+const i_LicenseAssetGroupConfiguration: D.LazyStruct = () => ({
+  UsageDimension: 0,
+});
+const i_LicenseAssetGroupProperty: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_LicenseAssetRule: D.LazyStruct = () => ({
+  RuleStatement: {
+    LicenseConfigurationRuleStatement: {
+      AndRuleStatement: i_AndRuleStatement,
+      OrRuleStatement: i_OrRuleStatement,
+      MatchingRuleStatement: i_MatchingRuleStatement,
+    },
+    LicenseRuleStatement: {
+      AndRuleStatement: i_AndRuleStatement,
+      OrRuleStatement: i_OrRuleStatement,
+      MatchingRuleStatement: i_MatchingRuleStatement,
+    },
+    InstanceRuleStatement: {
+      AndRuleStatement: i_AndRuleStatement,
+      OrRuleStatement: i_OrRuleStatement,
+      MatchingRuleStatement: i_MatchingRuleStatement,
+      ScriptRuleStatement: i_ScriptRuleStatement,
+    },
+  },
+});
+const i_LicenseConversionContext: D.LazyStruct = () => ({
+  UsageOperation: 0,
+  ProductCodes: D.list({ ProductCodeId: 0, ProductCodeType: 0 }),
+});
+const i_LicenseSpecification: D.LazyStruct = () => ({
+  LicenseConfigurationArn: 0,
+  AmiAssociationScope: 0,
+});
+const i_Metadata: D.LazyStruct = () => ({ Name: 0, Value: 0 });
+const i_ProductInformation: D.LazyStruct = () => ({
+  ResourceType: 0,
+  ProductInformationFilterList: D.list({
+    ProductInformationFilterName: 0,
+    ProductInformationFilterValue: 0,
+    ProductInformationFilterComparator: 0,
+  }),
+});
+const i_ReportContext: D.LazyStruct = () => ({
+  licenseConfigurationArns: 0,
+  licenseAssetGroupArns: 0,
+  reportStartDate: 0,
+  reportEndDate: 0,
+});
+const i_ReportFrequency: D.LazyStruct = () => ({ value: 0, period: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_AutomatedDiscoveryInformation: D.LazyStruct = () => ({
   LastRunTime: D.ts,
 });
@@ -3469,4 +3857,21 @@ const o_LicenseConfiguration: D.LazyStruct = () => ({
 });
 const o_ReportGenerator: D.LazyStruct = () => ({
   ReportContext: { reportStartDate: D.ts, reportEndDate: D.ts },
+});
+const i_AndRuleStatement: D.LazyStruct = () => ({
+  MatchingRuleStatements: D.list(i_MatchingRuleStatement),
+  ScriptRuleStatements: D.list(i_ScriptRuleStatement),
+});
+const i_MatchingRuleStatement: D.LazyStruct = () => ({
+  KeyToMatch: 0,
+  Constraint: 0,
+  ValueToMatch: 0,
+});
+const i_OrRuleStatement: D.LazyStruct = () => ({
+  MatchingRuleStatements: D.list(i_MatchingRuleStatement),
+  ScriptRuleStatements: D.list(i_ScriptRuleStatement),
+});
+const i_ScriptRuleStatement: D.LazyStruct = () => ({
+  KeyToMatch: 0,
+  Script: 0,
 });

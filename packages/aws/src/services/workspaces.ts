@@ -2014,7 +2014,7 @@ export const acceptAccountLinkInvitation: API.OperationMethod<
   AcceptAccountLinkInvitationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LinkId: 0, ClientToken: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2050,7 +2050,7 @@ export const associateConnectionAlias: API.OperationMethod<
   AssociateConnectionAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AliasId: 0, ResourceId: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -2081,7 +2081,7 @@ export const associateIpGroups: API.OperationMethod<
   AssociateIpGroupsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0, GroupIds: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -2118,6 +2118,7 @@ export const associateWorkspaceApplication: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { WorkspaceId: 0, ApplicationId: 0 },
     output: { Association: o_WorkspaceResourceAssociation },
   },
   errors: [
@@ -2156,7 +2157,10 @@ export const authorizeIpRules: API.OperationMethod<
   AuthorizeIpRulesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { GroupId: 0, UserRules: D.list(i_IpRuleItem) },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -2197,7 +2201,16 @@ export const copyWorkspaceImage: API.OperationMethod<
   CopyWorkspaceImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      SourceImageId: 0,
+      SourceRegion: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -2227,7 +2240,7 @@ export const createAccountLinkInvitation: API.OperationMethod<
   CreateAccountLinkInvitationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TargetAccountId: 0, ClientToken: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2258,7 +2271,7 @@ export const createConnectClientAddIn: API.OperationMethod<
   CreateConnectClientAddInError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0, Name: 0, URL: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -2290,7 +2303,10 @@ export const createConnectionAlias: API.OperationMethod<
   CreateConnectionAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ConnectionString: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -2330,7 +2346,15 @@ export const createIpGroup: API.OperationMethod<
   CreateIpGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      GroupName: 0,
+      GroupDesc: 0,
+      UserRules: D.list(i_IpRuleItem),
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -2359,7 +2383,19 @@ export const createStandbyWorkspaces: API.OperationMethod<
   CreateStandbyWorkspacesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      PrimaryRegion: 0,
+      StandbyWorkspaces: D.list({
+        PrimaryWorkspaceId: 0,
+        VolumeEncryptionKey: 0,
+        DirectoryId: 0,
+        Tags: D.list(i_Tag),
+        DataReplication: 0,
+      }),
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -2386,7 +2422,7 @@ export const createTags: API.OperationMethod<
   CreateTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0, Tags: D.list(i_Tag) } },
   errors: [
     InvalidParameterValuesException,
     ResourceLimitExceededException,
@@ -2430,7 +2466,10 @@ export const createUpdatedWorkspaceImage: API.OperationMethod<
   CreateUpdatedWorkspaceImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, Description: 0, SourceImageId: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -2464,7 +2503,19 @@ export const createWorkspaceBundle: API.OperationMethod<
   CreateWorkspaceBundleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { WorkspaceBundle: o_WorkspaceBundle } },
+  descriptor: {
+    service: svc,
+    input: {
+      BundleName: 0,
+      BundleDescription: 0,
+      ImageId: 0,
+      ComputeType: { Name: 0 },
+      UserStorage: { Capacity: 0 },
+      RootStorage: { Capacity: 0 },
+      Tags: D.list(i_Tag),
+    },
+    output: { WorkspaceBundle: o_WorkspaceBundle },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -2496,7 +2547,11 @@ export const createWorkspaceImage: API.OperationMethod<
   CreateWorkspaceImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Created: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, Description: 0, WorkspaceId: 0, Tags: D.list(i_Tag) },
+    output: { Created: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -2544,6 +2599,20 @@ export const createWorkspaces: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Workspaces: D.list({
+        DirectoryId: 0,
+        UserName: 0,
+        BundleId: 0,
+        VolumeEncryptionKey: 0,
+        UserVolumeEncryptionEnabled: 0,
+        RootVolumeEncryptionEnabled: 0,
+        WorkspaceProperties: i_WorkspaceProperties,
+        Tags: D.list(i_Tag),
+        WorkspaceName: 0,
+        Ipv6Address: 0,
+      }),
+    },
     output: { PendingRequests: D.list(o_Workspace) },
   },
   errors: [InvalidParameterValuesException, ResourceLimitExceededException],
@@ -2573,7 +2642,21 @@ export const createWorkspacesPool: API.OperationMethod<
   CreateWorkspacesPoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { WorkspacesPool: o_WorkspacesPool } },
+  descriptor: {
+    service: svc,
+    input: {
+      PoolName: 0,
+      Description: 0,
+      BundleId: 0,
+      DirectoryId: 0,
+      Capacity: i_Capacity,
+      Tags: D.list(i_Tag),
+      ApplicationSettings: i_ApplicationSettingsRequest,
+      TimeoutSettings: i_TimeoutSettings,
+      RunningMode: 0,
+    },
+    output: { WorkspacesPool: o_WorkspacesPool },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -2603,7 +2686,7 @@ export const deleteAccountLinkInvitation: API.OperationMethod<
   DeleteAccountLinkInvitationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LinkId: 0, ClientToken: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2636,7 +2719,7 @@ export const deleteClientBranding: API.OperationMethod<
   DeleteClientBrandingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0, Platforms: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -2662,7 +2745,7 @@ export const deleteConnectClientAddIn: API.OperationMethod<
   DeleteConnectClientAddInError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AddInId: 0, ResourceId: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -2702,7 +2785,7 @@ export const deleteConnectionAlias: API.OperationMethod<
   DeleteConnectionAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AliasId: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -2733,7 +2816,7 @@ export const deleteIpGroup: API.OperationMethod<
   DeleteIpGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GroupId: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -2758,7 +2841,7 @@ export const deleteTags: API.OperationMethod<
   DeleteTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0, TagKeys: 0 } },
   errors: [InvalidParameterValuesException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2782,7 +2865,7 @@ export const deleteWorkspaceBundle: API.OperationMethod<
   DeleteWorkspaceBundleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { BundleId: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -2810,7 +2893,7 @@ export const deleteWorkspaceImage: API.OperationMethod<
   DeleteWorkspaceImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ImageId: 0 } },
   errors: [
     AccessDeniedException,
     InvalidResourceStateException,
@@ -2840,6 +2923,7 @@ export const deployWorkspaceApplications: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { WorkspaceId: 0, Force: 0 },
     output: {
       Deployment: { Associations: D.list(o_WorkspaceResourceAssociation) },
     },
@@ -2886,7 +2970,7 @@ export const deregisterWorkspaceDirectory: API.OperationMethod<
   DeregisterWorkspaceDirectoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -2910,7 +2994,7 @@ export const describeAccount: API.OperationMethod<
   DescribeAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [AccessDeniedException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2932,6 +3016,7 @@ export const describeAccountModifications: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0 },
     output: { AccountModifications: D.list({ StartTime: D.ts }) },
   },
   errors: [AccessDeniedException],
@@ -2958,6 +3043,12 @@ export const describeApplicationAssociations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      ApplicationId: 0,
+      AssociatedResourceTypes: 0,
+    },
     output: { Associations: D.list({ Created: D.ts, LastUpdatedTime: D.ts }) },
   },
   errors: [
@@ -2994,6 +3085,15 @@ export const describeApplications: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ApplicationIds: 0,
+      ComputeTypeNames: 0,
+      LicenseType: 0,
+      OperatingSystemNames: 0,
+      Owner: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { Applications: D.list({ Created: D.ts }) },
   },
   errors: [
@@ -3029,6 +3129,7 @@ export const describeBundleAssociations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { BundleId: 0, AssociatedResourceTypes: 0 },
     output: { Associations: D.list({ Created: D.ts, LastUpdatedTime: D.ts }) },
   },
   errors: [
@@ -3062,7 +3163,7 @@ export const describeClientBranding: API.OperationMethod<
   DescribeClientBrandingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -3087,7 +3188,7 @@ export const describeClientProperties: API.OperationMethod<
   DescribeClientPropertiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceIds: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -3112,7 +3213,10 @@ export const describeConnectClientAddIns: API.OperationMethod<
   DescribeConnectClientAddInsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceId: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -3139,7 +3243,10 @@ export const describeConnectionAliases: API.OperationMethod<
   DescribeConnectionAliasesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AliasIds: 0, ResourceId: 0, Limit: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -3168,7 +3275,10 @@ export const describeConnectionAliasPermissions: API.OperationMethod<
   DescribeConnectionAliasPermissionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AliasId: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -3195,6 +3305,7 @@ export const describeCustomWorkspaceImageImport: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ImageId: 0 },
     output: { Created: D.ts, LastUpdatedTime: D.ts },
   },
   errors: [AccessDeniedException, ResourceNotFoundException],
@@ -3220,6 +3331,7 @@ export const describeImageAssociations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ImageId: 0, AssociatedResourceTypes: 0 },
     output: { Associations: D.list({ Created: D.ts, LastUpdatedTime: D.ts }) },
   },
   errors: [
@@ -3246,7 +3358,10 @@ export const describeIpGroups: API.OperationMethod<
   DescribeIpGroupsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { GroupIds: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [AccessDeniedException, InvalidParameterValuesException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3263,7 +3378,7 @@ export const describeTags: API.OperationMethod<
   DescribeTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3287,6 +3402,7 @@ export const describeWorkspaceAssociations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { WorkspaceId: 0, AssociatedResourceTypes: 0 },
     output: { Associations: D.list(o_WorkspaceResourceAssociation) },
   },
   errors: [
@@ -3315,7 +3431,11 @@ export const describeWorkspaceBundles: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   WorkspaceBundle
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Bundles: D.list(o_WorkspaceBundle) } },
+  descriptor: {
+    service: svc,
+    input: { BundleIds: 0, Owner: 0, NextToken: 0 },
+    output: { Bundles: D.list(o_WorkspaceBundle) },
+  },
   errors: [InvalidParameterValuesException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3340,7 +3460,16 @@ export const describeWorkspaceDirectories: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   WorkspaceDirectory
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DirectoryIds: 0,
+      WorkspaceDirectoryNames: 0,
+      Limit: 0,
+      NextToken: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+    },
+  },
   errors: [InvalidParameterValuesException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3366,7 +3495,10 @@ export const describeWorkspaceImagePermissions: API.OperationMethod<
   DescribeWorkspaceImagePermissionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ImageId: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -3388,7 +3520,11 @@ export const describeWorkspaceImages: API.OperationMethod<
   DescribeWorkspaceImagesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Images: D.list({ Created: D.ts }) } },
+  descriptor: {
+    service: svc,
+    input: { ImageIds: 0, ImageType: 0, NextToken: 0, MaxResults: 0 },
+    output: { Images: D.list({ Created: D.ts }) },
+  },
   errors: [AccessDeniedException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3412,7 +3548,19 @@ export const describeWorkspaces: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Workspace
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Workspaces: D.list(o_Workspace) } },
+  descriptor: {
+    service: svc,
+    input: {
+      WorkspaceIds: 0,
+      DirectoryId: 0,
+      UserName: 0,
+      BundleId: 0,
+      Limit: 0,
+      NextToken: 0,
+      WorkspaceName: 0,
+    },
+    output: { Workspaces: D.list(o_Workspace) },
+  },
   errors: [InvalidParameterValuesException, ResourceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3439,6 +3587,7 @@ export const describeWorkspacesConnectionStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { WorkspaceIds: 0, NextToken: 0 },
     output: {
       WorkspacesConnectionStatus: D.list({
         ConnectionStateCheckTimestamp: D.ts,
@@ -3468,6 +3617,7 @@ export const describeWorkspaceSnapshots: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { WorkspaceId: 0 },
     output: {
       RebuildSnapshots: D.list(o_Snapshot),
       RestoreSnapshots: D.list(o_Snapshot),
@@ -3503,6 +3653,12 @@ export const describeWorkspacesPools: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      PoolIds: 0,
+      Filters: D.list({ Name: 0, Values: 0, Operator: 0 }),
+      Limit: 0,
+      NextToken: 0,
+    },
     output: { WorkspacesPools: D.list(o_WorkspacesPool) },
   },
   errors: [
@@ -3535,6 +3691,7 @@ export const describeWorkspacesPoolSessions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { PoolId: 0, UserId: 0, Limit: 0, NextToken: 0 },
     output: { Sessions: D.list({ ExpirationTime: D.ts, StartTime: D.ts }) },
   },
   errors: [
@@ -3570,7 +3727,7 @@ export const disassociateConnectionAlias: API.OperationMethod<
   DisassociateConnectionAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AliasId: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -3599,7 +3756,7 @@ export const disassociateIpGroups: API.OperationMethod<
   DisassociateIpGroupsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0, GroupIds: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -3630,6 +3787,7 @@ export const disassociateWorkspaceApplication: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { WorkspaceId: 0, ApplicationId: 0 },
     output: { Association: o_WorkspaceResourceAssociation },
   },
   errors: [
@@ -3659,7 +3817,7 @@ export const getAccountLink: API.OperationMethod<
   GetAccountLinkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LinkId: 0, LinkedAccountId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3706,7 +3864,26 @@ export const importClientBranding: API.OperationMethod<
   ImportClientBrandingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceId: 0,
+      DeviceTypeWindows: i_DefaultImportClientBrandingAttributes,
+      DeviceTypeOsx: i_DefaultImportClientBrandingAttributes,
+      DeviceTypeAndroid: i_DefaultImportClientBrandingAttributes,
+      DeviceTypeIos: {
+        Logo: 0,
+        Logo2x: 0,
+        Logo3x: 0,
+        SupportEmail: 0,
+        SupportLink: 0,
+        ForgotPasswordLink: 0,
+        LoginMessage: 0,
+      },
+      DeviceTypeLinux: i_DefaultImportClientBrandingAttributes,
+      DeviceTypeWeb: i_DefaultImportClientBrandingAttributes,
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -3739,7 +3916,24 @@ export const importCustomWorkspaceImage: API.OperationMethod<
   ImportCustomWorkspaceImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ImageName: 0,
+      ImageDescription: 0,
+      ComputeType: 0,
+      Protocol: 0,
+      ImageSource: {
+        Ec2ImportTaskId: 0,
+        ImageBuildVersionArn: 0,
+        Ec2ImageId: 0,
+      },
+      InfrastructureConfigurationArn: 0,
+      Platform: 0,
+      OsVersion: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -3774,7 +3968,17 @@ export const importWorkspaceImage: API.OperationMethod<
   ImportWorkspaceImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Ec2ImageId: 0,
+      IngestionProcess: 0,
+      ImageName: 0,
+      ImageDescription: 0,
+      Tags: D.list(i_Tag),
+      Applications: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -3803,7 +4007,10 @@ export const listAccountLinks: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AccountLink
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { LinkStatusFilter: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [AccessDeniedException, InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3838,7 +4045,10 @@ export const listAvailableManagementCidrRanges: API.OperationMethod<
   ListAvailableManagementCidrRangesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ManagementCidrRangeConstraint: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [AccessDeniedException, InvalidParameterValuesException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3877,7 +4087,7 @@ export const migrateWorkspace: API.OperationMethod<
   MigrateWorkspaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SourceWorkspaceId: 0, BundleId: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -3908,7 +4118,13 @@ export const modifyAccount: API.OperationMethod<
   ModifyAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DedicatedTenancySupport: 0,
+      DedicatedTenancyManagementCidrRange: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -3937,7 +4153,14 @@ export const modifyCertificateBasedAuthProperties: API.OperationMethod<
   ModifyCertificateBasedAuthPropertiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceId: 0,
+      CertificateBasedAuthProperties: { Status: 0, CertificateAuthorityArn: 0 },
+      PropertiesToDelete: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -3964,7 +4187,17 @@ export const modifyClientProperties: API.OperationMethod<
   ModifyClientPropertiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceId: 0,
+      ClientProperties: {
+        ReconnectEnabled: 0,
+        LogUploadEnabled: 0,
+        ClientExperiencePolicy: 0,
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -3991,7 +4224,10 @@ export const modifyEndpointEncryptionMode: API.OperationMethod<
   ModifyEndpointEncryptionModeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DirectoryId: 0, EndpointEncryptionMode: 0 },
+  },
   errors: [
     AccessDeniedException,
     OperationNotSupportedException,
@@ -4019,7 +4255,18 @@ export const modifySamlProperties: API.OperationMethod<
   ModifySamlPropertiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceId: 0,
+      SamlProperties: {
+        Status: 0,
+        UserAccessUrl: 0,
+        RelayStateParameterName: 0,
+      },
+      PropertiesToDelete: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -4047,7 +4294,19 @@ export const modifySelfservicePermissions: API.OperationMethod<
   ModifySelfservicePermissionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceId: 0,
+      SelfservicePermissions: {
+        RestartWorkspace: 0,
+        IncreaseVolumeSize: 0,
+        ChangeComputeType: 0,
+        SwitchRunningMode: 0,
+        RebuildWorkspace: 0,
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -4074,7 +4333,18 @@ export const modifyStreamingProperties: API.OperationMethod<
   ModifyStreamingPropertiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceId: 0,
+      StreamingProperties: {
+        StreamingExperiencePreferredProtocol: 0,
+        UserSettings: D.list({ Action: 0, Permission: 0, MaximumLength: 0 }),
+        StorageConnectors: D.list({ ConnectorType: 0, Status: 0 }),
+        GlobalAccelerator: { Mode: 0, PreferredProtocol: 0 },
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -4104,7 +4374,27 @@ export const modifyWorkspaceAccessProperties: API.OperationMethod<
   ModifyWorkspaceAccessPropertiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceId: 0,
+      WorkspaceAccessProperties: {
+        DeviceTypeWindows: 0,
+        DeviceTypeOsx: 0,
+        DeviceTypeWeb: 0,
+        DeviceTypeIos: 0,
+        DeviceTypeAndroid: 0,
+        DeviceTypeChromeOs: 0,
+        DeviceTypeZeroClient: 0,
+        DeviceTypeLinux: 0,
+        DeviceTypeWorkSpacesThinClient: 0,
+        AccessEndpointConfig: {
+          AccessEndpoints: D.list({ AccessEndpointType: 0, VpcEndpointId: 0 }),
+          InternetFallbackProtocols: 0,
+        },
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterCombinationException,
@@ -4132,7 +4422,20 @@ export const modifyWorkspaceCreationProperties: API.OperationMethod<
   ModifyWorkspaceCreationPropertiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceId: 0,
+      WorkspaceCreationProperties: {
+        EnableInternetAccess: 0,
+        DefaultOu: 0,
+        CustomSecurityGroupId: 0,
+        UserEnabledAsLocalAdministrator: 0,
+        EnableMaintenanceMode: 0,
+        InstanceIamRoleArn: 0,
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -4168,7 +4471,14 @@ export const modifyWorkspaceProperties: API.OperationMethod<
   ModifyWorkspacePropertiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      WorkspaceId: 0,
+      WorkspaceProperties: i_WorkspaceProperties,
+      DataReplication: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -4204,7 +4514,7 @@ export const modifyWorkspaceState: API.OperationMethod<
   ModifyWorkspaceStateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WorkspaceId: 0, WorkspaceState: 0 } },
   errors: [
     InvalidParameterValuesException,
     InvalidResourceStateException,
@@ -4234,7 +4544,10 @@ export const rebootWorkspaces: API.OperationMethod<
   RebootWorkspacesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { RebootWorkspaceRequests: D.list({ WorkspaceId: 0 }) },
+  },
   errors: [OperationNotSupportedException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4264,7 +4577,10 @@ export const rebuildWorkspaces: API.OperationMethod<
   RebuildWorkspacesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { RebuildWorkspaceRequests: D.list({ WorkspaceId: 0 }) },
+  },
   errors: [OperationNotSupportedException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4295,7 +4611,23 @@ export const registerWorkspaceDirectory: API.OperationMethod<
   RegisterWorkspaceDirectoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DirectoryId: 0,
+      SubnetIds: 0,
+      EnableSelfService: 0,
+      Tenancy: 0,
+      Tags: D.list(i_Tag),
+      WorkspaceDirectoryName: 0,
+      WorkspaceDirectoryDescription: 0,
+      UserIdentityType: 0,
+      IdcInstanceArn: 0,
+      MicrosoftEntraConfig: { TenantId: 0, ApplicationConfigSecretArn: 0 },
+      WorkspaceType: 0,
+      ActiveDirectoryConfig: { DomainName: 0, ServiceAccountSecretArn: 0 },
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -4328,7 +4660,7 @@ export const rejectAccountLinkInvitation: API.OperationMethod<
   RejectAccountLinkInvitationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LinkId: 0, ClientToken: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4366,7 +4698,7 @@ export const restoreWorkspace: API.OperationMethod<
   RestoreWorkspaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WorkspaceId: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -4393,7 +4725,7 @@ export const revokeIpRules: API.OperationMethod<
   RevokeIpRulesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GroupId: 0, UserRules: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -4418,7 +4750,10 @@ export const startWorkspaces: API.OperationMethod<
   StartWorkspacesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { StartWorkspaceRequests: D.list({ WorkspaceId: 0 }) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4450,7 +4785,7 @@ export const startWorkspacesPool: API.OperationMethod<
   StartWorkspacesPoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PoolId: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -4479,7 +4814,10 @@ export const stopWorkspaces: API.OperationMethod<
   StopWorkspacesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { StopWorkspaceRequests: D.list({ WorkspaceId: 0 }) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4509,7 +4847,7 @@ export const stopWorkspacesPool: API.OperationMethod<
   StopWorkspacesPoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PoolId: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -4557,7 +4895,10 @@ export const terminateWorkspaces: API.OperationMethod<
   TerminateWorkspacesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TerminateWorkspaceRequests: D.list({ WorkspaceId: 0 }) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4584,7 +4925,7 @@ export const terminateWorkspacesPool: API.OperationMethod<
   TerminateWorkspacesPoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PoolId: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -4617,7 +4958,7 @@ export const terminateWorkspacesPoolSession: API.OperationMethod<
   TerminateWorkspacesPoolSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SessionId: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -4645,7 +4986,10 @@ export const updateConnectClientAddIn: API.OperationMethod<
   UpdateConnectClientAddInError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AddInId: 0, ResourceId: 0, Name: 0, URL: 0 },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -4689,7 +5033,13 @@ export const updateConnectionAliasPermission: API.OperationMethod<
   UpdateConnectionAliasPermissionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AliasId: 0,
+      ConnectionAliasPermission: { SharedAccountId: 0, AllowAssociation: 0 },
+    },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -4721,7 +5071,10 @@ export const updateRulesOfIpGroup: API.OperationMethod<
   UpdateRulesOfIpGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { GroupId: 0, UserRules: D.list(i_IpRuleItem) },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -4756,7 +5109,7 @@ export const updateWorkspaceBundle: API.OperationMethod<
   UpdateWorkspaceBundleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { BundleId: 0, ImageId: 0 } },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -4805,7 +5158,10 @@ export const updateWorkspaceImagePermission: API.OperationMethod<
   UpdateWorkspaceImagePermissionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ImageId: 0, AllowCopyImage: 0, SharedAccountId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -4840,7 +5196,20 @@ export const updateWorkspacesPool: API.OperationMethod<
   UpdateWorkspacesPoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { WorkspacesPool: o_WorkspacesPool } },
+  descriptor: {
+    service: svc,
+    input: {
+      PoolId: 0,
+      Description: 0,
+      BundleId: 0,
+      DirectoryId: 0,
+      Capacity: i_Capacity,
+      ApplicationSettings: i_ApplicationSettingsRequest,
+      TimeoutSettings: i_TimeoutSettings,
+      RunningMode: 0,
+    },
+    output: { WorkspacesPool: o_WorkspacesPool },
+  },
   errors: [
     AccessDeniedException,
     InvalidParameterValuesException,
@@ -4855,6 +5224,36 @@ export const updateWorkspacesPool: API.OperationMethod<
   operationName: "UpdateWorkspacesPool",
 })) as any;
 
+const i_ApplicationSettingsRequest: D.LazyStruct = () => ({
+  Status: 0,
+  SettingsGroup: 0,
+});
+const i_Capacity: D.LazyStruct = () => ({ DesiredUserSessions: 0 });
+const i_DefaultImportClientBrandingAttributes: D.LazyStruct = () => ({
+  Logo: 0,
+  SupportEmail: 0,
+  SupportLink: 0,
+  ForgotPasswordLink: 0,
+  LoginMessage: 0,
+});
+const i_IpRuleItem: D.LazyStruct = () => ({ ipRule: 0, ruleDesc: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_TimeoutSettings: D.LazyStruct = () => ({
+  DisconnectTimeoutInSeconds: 0,
+  IdleDisconnectTimeoutInSeconds: 0,
+  MaxUserDurationInSeconds: 0,
+});
+const i_WorkspaceProperties: D.LazyStruct = () => ({
+  RunningMode: 0,
+  RunningModeAutoStopTimeoutInMinutes: 0,
+  RootVolumeSizeGib: 0,
+  UserVolumeSizeGib: 0,
+  ComputeTypeName: 0,
+  Protocols: 0,
+  OperatingSystemName: 0,
+  GlobalAccelerator: { Mode: 0, PreferredProtocol: 0 },
+  NestedVirtualizationEnabled: 0,
+});
 const o_Snapshot: D.LazyStruct = () => ({ SnapshotTime: D.ts });
 const o_Workspace: D.LazyStruct = () => ({
   DataReplicationSettings: { RecoverySnapshotTime: D.ts },

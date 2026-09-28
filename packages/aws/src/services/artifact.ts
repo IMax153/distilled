@@ -499,7 +499,16 @@ export const createComplianceInquiry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/compliance-inquiry/create",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      inquiryContent: {
+        query: 0,
+        fileContent: { fileSections: 0, content: 0 },
+      },
+      clientToken: D.m({ idempotency: true }),
+      supportMode: 0,
+      tags: 0,
+    },
     output: { complianceInquirySummary: o_InquirySummary },
     body: true,
   },
@@ -534,6 +543,7 @@ export const exportComplianceInquiry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/compliance-inquiry/export",
+    input: { complianceInquiryId: 0, queryIdentifiers: 0, includeCitations: 0 },
     output: { documentPresignedUrl: D.secret },
     body: true,
   },
@@ -567,7 +577,7 @@ export const getAccountSettings: API.OperationMethod<
   GetAccountSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/account-settings/get" },
+  descriptor: { service: svc, http: "GET /v1/account-settings/get", input: {} },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -991,7 +1001,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1025,6 +1039,7 @@ export const putAccountSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/account-settings/put",
+    input: { notificationSubscriptionStatus: 0 },
     body: true,
   },
   errors: [
@@ -1061,7 +1076,15 @@ export const putComplianceInquiryFeedback: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/compliance-inquiry/putFeedback",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      complianceInquiryId: 0,
+      queryIdentifier: 0,
+      rating: 0,
+      responseRevisionId: 0,
+      reasonCodes: 0,
+      comment: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { submittedAt: D.ts },
     body: true,
   },
@@ -1094,7 +1117,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1126,7 +1154,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,

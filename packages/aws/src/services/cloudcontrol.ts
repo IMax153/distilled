@@ -360,7 +360,11 @@ export const cancelResourceRequest: API.OperationMethod<
   CancelResourceRequestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ProgressEvent: o_ProgressEvent } },
+  descriptor: {
+    service: svc,
+    input: { RequestToken: 0 },
+    output: { ProgressEvent: o_ProgressEvent },
+  },
   errors: [ConcurrentModificationException, RequestTokenNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -404,7 +408,13 @@ export const createResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      TypeName: 0,
+      TypeVersionId: 0,
+      RoleArn: 0,
+      ClientToken: D.m({ idempotency: true }),
+      DesiredState: 0,
+    },
     output: { ProgressEvent: o_ProgressEvent },
   },
   errors: [
@@ -470,7 +480,13 @@ export const deleteResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      TypeName: 0,
+      TypeVersionId: 0,
+      RoleArn: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Identifier: 0,
+    },
     output: { ProgressEvent: o_ProgressEvent },
   },
   errors: [
@@ -533,6 +549,7 @@ export const getResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TypeName: 0, TypeVersionId: 0, RoleArn: 0, Identifier: 0 },
     output: { ResourceDescription: o_ResourceDescription },
   },
   errors: [
@@ -575,6 +592,7 @@ export const getResourceRequestStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { RequestToken: 0 },
     output: {
       ProgressEvent: o_ProgressEvent,
       HooksProgressEvent: D.list({ HookEventTime: D.ts }),
@@ -603,6 +621,11 @@ export const listResourceRequests: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      ResourceRequestStatusFilter: { Operations: 0, OperationStatuses: 0 },
+    },
     output: { ResourceRequestStatusSummaries: D.list(o_ProgressEvent) },
   },
   errors: [],
@@ -651,6 +674,14 @@ export const listResources: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TypeName: 0,
+      TypeVersionId: 0,
+      RoleArn: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      ResourceModel: 0,
+    },
     output: { ResourceDescriptions: D.list(o_ResourceDescription) },
   },
   errors: [
@@ -730,7 +761,14 @@ export const updateResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      TypeName: 0,
+      TypeVersionId: 0,
+      RoleArn: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Identifier: 0,
+      PatchDocument: 0,
+    },
     output: { ProgressEvent: o_ProgressEvent },
   },
   errors: [

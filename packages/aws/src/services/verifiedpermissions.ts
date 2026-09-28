@@ -1241,6 +1241,7 @@ export const batchGetPolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { requests: D.list({ policyStoreId: 0, policyId: 0 }) },
     output: {
       results: D.list({
         definition: o_PolicyDefinitionDetail,
@@ -1276,6 +1277,16 @@ export const batchIsAuthorized: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      policyStoreId: 0,
+      entities: i_EntitiesDefinition,
+      requests: D.list({
+        principal: i_EntityIdentifier,
+        action: i_ActionIdentifier,
+        resource: i_EntityIdentifier,
+        context: i_ContextDefinition,
+      }),
+    },
     output: {
       results: D.list({
         request: {
@@ -1314,6 +1325,17 @@ export const batchIsAuthorizedWithToken: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      policyStoreId: 0,
+      identityToken: 0,
+      accessToken: 0,
+      entities: i_EntitiesDefinition,
+      requests: D.list({
+        action: i_ActionIdentifier,
+        resource: i_EntityIdentifier,
+        context: i_ContextDefinition,
+      }),
+    },
     output: {
       principal: o_EntityIdentifier,
       results: D.list({
@@ -1360,7 +1382,27 @@ export const createIdentitySource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      policyStoreId: 0,
+      configuration: {
+        cognitoUserPoolConfiguration: {
+          userPoolArn: 0,
+          clientIds: 0,
+          groupConfiguration: { groupEntityType: 0 },
+        },
+        openIdConnectConfiguration: {
+          issuer: 0,
+          entityIdPrefix: 0,
+          groupConfiguration: { groupClaim: 0, groupEntityType: 0 },
+          tokenSelection: {
+            accessTokenOnly: { principalIdClaim: 0, audiences: 0 },
+            identityTokenOnly: { principalIdClaim: 0, clientIds: 0 },
+          },
+        },
+      },
+      principalEntityType: 0,
+    },
     output: { createdDate: D.ts, lastUpdatedDate: D.ts },
   },
   errors: [
@@ -1399,7 +1441,19 @@ export const createPolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      policyStoreId: 0,
+      definition: {
+        static: { description: 0, statement: 0 },
+        templateLinked: {
+          policyTemplateId: 0,
+          principal: i_EntityIdentifier,
+          resource: i_EntityIdentifier,
+        },
+      },
+      name: 0,
+    },
     output: {
       principal: o_EntityIdentifier,
       resource: o_EntityIdentifier,
@@ -1439,7 +1493,17 @@ export const createPolicyStore: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      validationSettings: i_ValidationSettings,
+      description: 0,
+      deletionProtection: 0,
+      encryptionSettings: {
+        kmsEncryptionSettings: { key: 0, encryptionContext: 0 },
+        default: {},
+      },
+      tags: 0,
+    },
     output: { createdDate: D.ts, lastUpdatedDate: D.ts },
   },
   errors: [
@@ -1471,7 +1535,11 @@ export const createPolicyStoreAlias: API.OperationMethod<
   CreatePolicyStoreAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createdAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { aliasName: 0, policyStoreId: 0 },
+    output: { createdAt: D.ts },
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -1502,7 +1570,13 @@ export const createPolicyTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      policyStoreId: 0,
+      description: 0,
+      statement: 0,
+      name: 0,
+    },
     output: { createdDate: D.ts, lastUpdatedDate: D.ts },
   },
   errors: [
@@ -1529,7 +1603,10 @@ export const deleteIdentitySource: API.OperationMethod<
   DeleteIdentitySourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { policyStoreId: 0, identitySourceId: 0 },
+  },
   errors: [ConflictException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1551,7 +1628,7 @@ export const deletePolicy: API.OperationMethod<
   DeletePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { policyStoreId: 0, policyId: 0 } },
   errors: [ConflictException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1570,7 +1647,7 @@ export const deletePolicyStore: API.OperationMethod<
   DeletePolicyStoreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { policyStoreId: 0 } },
   errors: [InvalidStateException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1599,7 +1676,7 @@ export const deletePolicyStoreAlias: API.OperationMethod<
   DeletePolicyStoreAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { aliasName: 0, deletionMode: 0 } },
   errors: [
     InvalidStateException,
     ValidationException,
@@ -1625,7 +1702,10 @@ export const deletePolicyTemplate: API.OperationMethod<
   DeletePolicyTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { policyStoreId: 0, policyTemplateId: 0 },
+  },
   errors: [ConflictException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1644,6 +1724,7 @@ export const getIdentitySource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { policyStoreId: 0, identitySourceId: 0 },
     output: {
       createdDate: D.ts,
       details: { clientIds: D.list(D.secret) },
@@ -1692,6 +1773,7 @@ export const getPolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { policyStoreId: 0, policyId: 0 },
     output: {
       principal: o_EntityIdentifier,
       resource: o_EntityIdentifier,
@@ -1722,6 +1804,7 @@ export const getPolicyStore: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { policyStoreId: 0, tags: 0 },
     output: { createdDate: D.ts, lastUpdatedDate: D.ts, description: D.secret },
   },
   errors: [ResourceNotFoundException, ValidationException],
@@ -1740,7 +1823,11 @@ export const getPolicyStoreAlias: API.OperationMethod<
   GetPolicyStoreAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createdAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { aliasName: 0 },
+    output: { createdAt: D.ts },
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1759,6 +1846,7 @@ export const getPolicyTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { policyStoreId: 0, policyTemplateId: 0 },
     output: {
       description: D.secret,
       statement: D.secret,
@@ -1787,6 +1875,7 @@ export const getSchema: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { policyStoreId: 0 },
     output: {
       schema: D.secret,
       createdDate: D.ts,
@@ -1813,7 +1902,17 @@ export const isAuthorized: API.OperationMethod<
   IsAuthorizedError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      policyStoreId: 0,
+      principal: i_EntityIdentifier,
+      action: i_ActionIdentifier,
+      resource: i_EntityIdentifier,
+      context: i_ContextDefinition,
+      entities: i_EntitiesDefinition,
+    },
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1837,7 +1936,19 @@ export const isAuthorizedWithToken: API.OperationMethod<
   IsAuthorizedWithTokenError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { principal: o_EntityIdentifier } },
+  descriptor: {
+    service: svc,
+    input: {
+      policyStoreId: 0,
+      identityToken: 0,
+      accessToken: 0,
+      action: i_ActionIdentifier,
+      resource: i_EntityIdentifier,
+      context: i_ContextDefinition,
+      entities: i_EntitiesDefinition,
+    },
+    output: { principal: o_EntityIdentifier },
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1857,6 +1968,12 @@ export const listIdentitySources: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      policyStoreId: 0,
+      nextToken: 0,
+      maxResults: 0,
+      filters: D.list({ principalEntityType: 0 }),
+    },
     output: {
       identitySources: D.list({
         createdDate: D.ts,
@@ -1911,6 +2028,17 @@ export const listPolicies: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      policyStoreId: 0,
+      nextToken: 0,
+      maxResults: 0,
+      filter: {
+        principal: i_EntityReference,
+        resource: i_EntityReference,
+        policyType: 0,
+        policyTemplateId: 0,
+      },
+    },
     output: {
       policies: D.list({
         principal: o_EntityIdentifier,
@@ -1953,6 +2081,7 @@ export const listPolicyStoreAliases: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0, filter: { policyStoreId: 0 } },
     output: { policyStoreAliases: D.list({ createdAt: D.ts }) },
   },
   errors: [],
@@ -1980,6 +2109,7 @@ export const listPolicyStores: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0 },
     output: {
       policyStores: D.list({
         createdDate: D.ts,
@@ -2013,6 +2143,7 @@ export const listPolicyTemplates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { policyStoreId: 0, nextToken: 0, maxResults: 0 },
     output: {
       policyTemplates: D.list({
         description: D.secret,
@@ -2048,7 +2179,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2079,6 +2210,7 @@ export const putSchema: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { policyStoreId: 0, definition: { cedarJson: 0 } },
     output: {
       namespaces: D.list(D.secret),
       createdDate: D.ts,
@@ -2118,7 +2250,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2146,7 +2278,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2176,6 +2308,27 @@ export const updateIdentitySource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      policyStoreId: 0,
+      identitySourceId: 0,
+      updateConfiguration: {
+        cognitoUserPoolConfiguration: {
+          userPoolArn: 0,
+          clientIds: 0,
+          groupConfiguration: { groupEntityType: 0 },
+        },
+        openIdConnectConfiguration: {
+          issuer: 0,
+          entityIdPrefix: 0,
+          groupConfiguration: { groupClaim: 0, groupEntityType: 0 },
+          tokenSelection: {
+            accessTokenOnly: { principalIdClaim: 0, audiences: 0 },
+            identityTokenOnly: { principalIdClaim: 0, clientIds: 0 },
+          },
+        },
+      },
+      principalEntityType: 0,
+    },
     output: { createdDate: D.ts, lastUpdatedDate: D.ts },
   },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
@@ -2223,6 +2376,12 @@ export const updatePolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      policyStoreId: 0,
+      policyId: 0,
+      definition: { static: { description: 0, statement: 0 } },
+      name: 0,
+    },
     output: {
       principal: o_EntityIdentifier,
       resource: o_EntityIdentifier,
@@ -2260,6 +2419,12 @@ export const updatePolicyStore: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      policyStoreId: 0,
+      validationSettings: i_ValidationSettings,
+      deletionProtection: 0,
+      description: 0,
+    },
     output: { createdDate: D.ts, lastUpdatedDate: D.ts },
   },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
@@ -2288,6 +2453,13 @@ export const updatePolicyTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      policyStoreId: 0,
+      policyTemplateId: 0,
+      description: 0,
+      statement: 0,
+      name: 0,
+    },
     output: { createdDate: D.ts, lastUpdatedDate: D.ts },
   },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
@@ -2296,6 +2468,26 @@ export const updatePolicyTemplate: API.OperationMethod<
   operationName: "UpdatePolicyTemplate",
 })) as any;
 
+const i_ActionIdentifier: D.LazyStruct = () => ({ actionType: 0, actionId: 0 });
+const i_ContextDefinition: D.LazyStruct = () => ({
+  contextMap: D.map(i_AttributeValue),
+  cedarJson: 0,
+});
+const i_EntitiesDefinition: D.LazyStruct = () => ({
+  entityList: D.list({
+    identifier: i_EntityIdentifier,
+    attributes: D.map(i_AttributeValue),
+    parents: D.list(i_EntityIdentifier),
+    tags: D.map(i_CedarTagValue),
+  }),
+  cedarJson: 0,
+});
+const i_EntityIdentifier: D.LazyStruct = () => ({ entityType: 0, entityId: 0 });
+const i_EntityReference: D.LazyStruct = () => ({
+  unspecified: 0,
+  identifier: i_EntityIdentifier,
+});
+const i_ValidationSettings: D.LazyStruct = () => ({ mode: 0 });
 const o_ActionIdentifier: D.LazyStruct = () => ({
   actionType: D.secret,
   actionId: D.secret,
@@ -2314,6 +2506,30 @@ const o_PolicyDefinitionDetail: D.LazyStruct = () => ({
     principal: o_EntityIdentifier,
     resource: o_EntityIdentifier,
   },
+});
+const i_AttributeValue: D.LazyStruct = () => ({
+  boolean: 0,
+  entityIdentifier: i_EntityIdentifier,
+  long: 0,
+  string: 0,
+  set: D.list(i_AttributeValue),
+  record: D.map(i_AttributeValue),
+  ipaddr: 0,
+  decimal: 0,
+  datetime: 0,
+  duration: 0,
+});
+const i_CedarTagValue: D.LazyStruct = () => ({
+  boolean: 0,
+  entityIdentifier: i_EntityIdentifier,
+  long: 0,
+  string: 0,
+  set: D.list(i_CedarTagValue),
+  record: D.map(i_CedarTagValue),
+  ipaddr: 0,
+  decimal: 0,
+  datetime: 0,
+  duration: 0,
 });
 const o_AttributeValue: D.LazyStruct = () => ({
   entityIdentifier: o_EntityIdentifier,

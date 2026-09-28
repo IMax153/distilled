@@ -425,7 +425,23 @@ export const createCampaign: API.OperationMethod<
   CreateCampaignError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /campaigns", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /campaigns",
+    input: {
+      name: 0,
+      connectInstanceId: 0,
+      dialerConfig: i_DialerConfig,
+      outboundCallConfig: {
+        connectContactFlowId: 0,
+        connectSourcePhoneNumber: 0,
+        connectQueueId: 0,
+        answerMachineDetectionConfig: i_AnswerMachineDetectionConfig,
+      },
+      tags: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -455,7 +471,11 @@ export const deleteCampaign: API.OperationMethod<
   DeleteCampaignError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /campaigns/{id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /campaigns/{id}",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -487,6 +507,7 @@ export const deleteConnectInstanceConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /connect-instance/{connectInstanceId}/config",
+    input: { connectInstanceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -520,6 +541,7 @@ export const deleteInstanceOnboardingJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /connect-instance/{connectInstanceId}/onboarding",
+    input: { connectInstanceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -548,7 +570,7 @@ export const describeCampaign: API.OperationMethod<
   DescribeCampaignError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /campaigns/{id}" },
+  descriptor: { service: svc, http: "GET /campaigns/{id}", input: { id: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -576,7 +598,11 @@ export const getCampaignState: API.OperationMethod<
   GetCampaignStateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /campaigns/{id}/state" },
+  descriptor: {
+    service: svc,
+    http: "GET /campaigns/{id}/state",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -604,7 +630,12 @@ export const getCampaignStateBatch: API.OperationMethod<
   GetCampaignStateBatchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /campaigns-state", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /campaigns-state",
+    input: { campaignIds: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -634,6 +665,7 @@ export const getConnectInstanceConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /connect-instance/{connectInstanceId}/config",
+    input: { connectInstanceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -664,6 +696,7 @@ export const getInstanceOnboardingJobStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /connect-instance/{connectInstanceId}/onboarding",
+    input: { connectInstanceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -691,7 +724,16 @@ export const listCampaigns: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   CampaignSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /campaigns-summary", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /campaigns-summary",
+    input: {
+      maxResults: 0,
+      nextToken: 0,
+      filters: { instanceIdFilter: { value: 0, operator: 0 } },
+    },
+    body: true,
+  },
   errors: [AccessDeniedException, InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -720,7 +762,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{arn}" },
+  descriptor: { service: svc, http: "GET /tags/{arn}", input: { arn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -751,7 +793,11 @@ export const pauseCampaign: API.OperationMethod<
   PauseCampaignError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /campaigns/{id}/pause" },
+  descriptor: {
+    service: svc,
+    http: "POST /campaigns/{id}/pause",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -787,7 +833,15 @@ export const putDialRequestBatch: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /campaigns/{id}/dial-requests",
-    input: { dialRequests: D.list({ expirationTime: D.tsAs("date-time") }) },
+    input: {
+      id: 0,
+      dialRequests: D.list({
+        clientToken: 0,
+        phoneNumber: 0,
+        expirationTime: D.tsAs("date-time"),
+        attributes: 0,
+      }),
+    },
     body: true,
   },
   errors: [
@@ -822,7 +876,11 @@ export const resumeCampaign: API.OperationMethod<
   ResumeCampaignError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /campaigns/{id}/resume" },
+  descriptor: {
+    service: svc,
+    http: "POST /campaigns/{id}/resume",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -855,7 +913,11 @@ export const startCampaign: API.OperationMethod<
   StartCampaignError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /campaigns/{id}/start" },
+  descriptor: {
+    service: svc,
+    http: "POST /campaigns/{id}/start",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -890,6 +952,10 @@ export const startInstanceOnboardingJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /connect-instance/{connectInstanceId}/onboarding",
+    input: {
+      connectInstanceId: 0,
+      encryptionConfig: { enabled: 0, encryptionType: 0, keyArn: 0 },
+    },
     body: true,
   },
   errors: [
@@ -923,7 +989,11 @@ export const stopCampaign: API.OperationMethod<
   StopCampaignError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /campaigns/{id}/stop" },
+  descriptor: {
+    service: svc,
+    http: "POST /campaigns/{id}/stop",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -954,7 +1024,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{arn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{arn}",
+    input: { arn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -986,7 +1061,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{arn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { arn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1019,6 +1094,7 @@ export const updateCampaignDialerConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /campaigns/{id}/dialer-config",
+    input: { id: 0, dialerConfig: i_DialerConfig },
     body: true,
   },
   errors: [
@@ -1049,7 +1125,12 @@ export const updateCampaignName: API.OperationMethod<
   UpdateCampaignNameError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /campaigns/{id}/name", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /campaigns/{id}/name",
+    input: { id: 0, name: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1082,6 +1163,12 @@ export const updateCampaignOutboundCallConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /campaigns/{id}/outbound-call-config",
+    input: {
+      id: 0,
+      connectContactFlowId: 0,
+      connectSourcePhoneNumber: 0,
+      answerMachineDetectionConfig: i_AnswerMachineDetectionConfig,
+    },
     body: true,
   },
   errors: [
@@ -1096,3 +1183,13 @@ export const updateCampaignOutboundCallConfig: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateCampaignOutboundCallConfig",
 })) as any;
+
+const i_AnswerMachineDetectionConfig: D.LazyStruct = () => ({
+  enableAnswerMachineDetection: 0,
+  awaitAnswerMachinePrompt: 0,
+});
+const i_DialerConfig: D.LazyStruct = () => ({
+  progressiveDialerConfig: { bandwidthAllocation: 0, dialingCapacity: 0 },
+  predictiveDialerConfig: { bandwidthAllocation: 0, dialingCapacity: 0 },
+  agentlessDialerConfig: { dialingCapacity: 0 },
+});

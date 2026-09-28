@@ -173,7 +173,12 @@ export const joinStorageSession: API.OperationMethod<
   JoinStorageSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /joinStorageSession", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /joinStorageSession",
+    input: { channelArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ClientLimitExceededException,
@@ -219,6 +224,7 @@ export const joinStorageSessionAsViewer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /joinStorageSessionAsViewer",
+    input: { channelArn: 0, clientId: 0 },
     body: true,
   },
   errors: [

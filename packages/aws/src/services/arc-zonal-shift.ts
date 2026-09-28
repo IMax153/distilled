@@ -421,6 +421,7 @@ export const cancelPracticeRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /practiceruns/{zonalShiftId}",
+    input: { zonalShiftId: 0 },
     output: { expiryTime: D.ts, startTime: D.ts },
   },
   errors: [
@@ -458,6 +459,7 @@ export const cancelZonalShift: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /zonalshifts/{zonalShiftId}",
+    input: { zonalShiftId: 0 },
     output: { expiryTime: D.ts, startTime: D.ts },
   },
   errors: [
@@ -494,7 +496,19 @@ export const createPracticeRunConfiguration: API.OperationMethod<
   CreatePracticeRunConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /configuration", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /configuration",
+    input: {
+      resourceIdentifier: 0,
+      blockedWindows: 0,
+      blockedDates: 0,
+      blockingAlarms: D.list(i_ControlCondition),
+      allowedWindows: 0,
+      outcomeAlarms: D.list(i_ControlCondition),
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -528,6 +542,7 @@ export const deletePracticeRunConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /configuration/{resourceIdentifier}",
+    input: { resourceIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -556,7 +571,11 @@ export const getAutoshiftObserverNotificationStatus: API.OperationMethod<
   GetAutoshiftObserverNotificationStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /autoshift-observer-notification" },
+  descriptor: {
+    service: svc,
+    http: "GET /autoshift-observer-notification",
+    input: {},
+  },
   errors: [AccessDeniedException, InternalServerException, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -582,6 +601,7 @@ export const getManagedResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /managedresources/{resourceIdentifier}",
+    input: { resourceIdentifier: 0 },
     output: {
       zonalShifts: D.list(o_ZonalShiftInResource),
       autoshifts: D.list(o_AutoshiftInResource),
@@ -757,6 +777,7 @@ export const startPracticeRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /practiceruns",
+    input: { resourceIdentifier: 0, awayFrom: 0, comment: 0 },
     output: { expiryTime: D.ts, startTime: D.ts },
     body: true,
   },
@@ -807,6 +828,7 @@ export const startZonalShift: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /zonalshifts",
+    input: { resourceIdentifier: 0, awayFrom: 0, expiresIn: 0, comment: 0 },
     output: { expiryTime: D.ts, startTime: D.ts },
     body: true,
   },
@@ -845,6 +867,7 @@ export const updateAutoshiftObserverNotificationStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /autoshift-observer-notification",
+    input: { status: 0 },
     body: true,
   },
   errors: [
@@ -878,6 +901,14 @@ export const updatePracticeRunConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /configuration/{resourceIdentifier}",
+    input: {
+      resourceIdentifier: 0,
+      blockedWindows: 0,
+      blockedDates: 0,
+      blockingAlarms: D.list(i_ControlCondition),
+      allowedWindows: 0,
+      outcomeAlarms: D.list(i_ControlCondition),
+    },
     body: true,
   },
   errors: [
@@ -915,6 +946,7 @@ export const updateZonalAutoshiftConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /managedresources/{resourceIdentifier}",
+    input: { resourceIdentifier: 0, zonalAutoshiftStatus: 0 },
     body: true,
   },
   errors: [
@@ -950,6 +982,7 @@ export const updateZonalShift: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /zonalshifts/{zonalShiftId}",
+    input: { zonalShiftId: 0, comment: 0, expiresIn: 0 },
     output: { expiryTime: D.ts, startTime: D.ts },
     body: true,
   },
@@ -966,6 +999,10 @@ export const updateZonalShift: API.OperationMethod<
   operationName: "UpdateZonalShift",
 })) as any;
 
+const i_ControlCondition: D.LazyStruct = () => ({
+  type: 0,
+  alarmIdentifier: 0,
+});
 const o_AutoshiftInResource: D.LazyStruct = () => ({ startTime: D.ts });
 const o_ZonalShiftInResource: D.LazyStruct = () => ({
   expiryTime: D.ts,

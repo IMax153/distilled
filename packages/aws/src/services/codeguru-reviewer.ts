@@ -547,7 +547,17 @@ export const associateRepository: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /associations",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Repository: {
+        CodeCommit: { Name: 0 },
+        Bitbucket: i_ThirdPartySourceRepository,
+        GitHubEnterpriseServer: i_ThirdPartySourceRepository,
+        S3Bucket: { Name: 0, BucketName: 0 },
+      },
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: 0,
+      KMSKeyDetails: { KMSKeyId: 0, EncryptionOption: 0 },
+    },
     output: { RepositoryAssociation: o_RepositoryAssociation },
     body: true,
   },
@@ -586,7 +596,42 @@ export const createCodeReview: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /codereviews",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      RepositoryAssociationArn: 0,
+      Type: {
+        RepositoryAnalysis: {
+          RepositoryHead: i_RepositoryHeadSourceCodeType,
+          SourceCodeType: {
+            CommitDiff: {
+              SourceCommit: 0,
+              DestinationCommit: 0,
+              MergeBaseCommit: 0,
+            },
+            RepositoryHead: i_RepositoryHeadSourceCodeType,
+            BranchDiff: { SourceBranchName: 0, DestinationBranchName: 0 },
+            S3BucketRepository: {
+              Name: 0,
+              Details: {
+                BucketName: 0,
+                CodeArtifacts: {
+                  SourceCodeArtifactsObjectKey: 0,
+                  BuildArtifactsObjectKey: 0,
+                },
+              },
+            },
+            RequestMetadata: {
+              RequestId: 0,
+              Requester: 0,
+              EventInfo: { Name: 0, State: 0 },
+              VendorName: 0,
+            },
+          },
+        },
+        AnalysisTypes: 0,
+      },
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
     output: { CodeReview: o_CodeReview },
     body: true,
   },
@@ -622,6 +667,7 @@ export const describeCodeReview: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /codereviews/{CodeReviewArn}",
+    input: { CodeReviewArn: 0 },
     output: { CodeReview: o_CodeReview },
   },
   errors: [
@@ -656,6 +702,7 @@ export const describeRecommendationFeedback: API.OperationMethod<
     service: svc,
     http: "GET /feedback/{CodeReviewArn}",
     input: {
+      CodeReviewArn: 0,
       RecommendationId: D.m({ query: "RecommendationId" }),
       UserId: D.m({ query: "UserId" }),
     },
@@ -698,6 +745,7 @@ export const describeRepositoryAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /associations/{AssociationArn}",
+    input: { AssociationArn: 0 },
     output: { RepositoryAssociation: o_RepositoryAssociation },
   },
   errors: [
@@ -732,6 +780,7 @@ export const disassociateRepository: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /associations/{AssociationArn}",
+    input: { AssociationArn: 0 },
     output: { RepositoryAssociation: o_RepositoryAssociation },
   },
   errors: [
@@ -821,6 +870,7 @@ export const listRecommendationFeedback: API.PaginatedOperationMethod<
     input: {
       NextToken: D.m({ query: "NextToken" }),
       MaxResults: D.m({ query: "MaxResults" }),
+      CodeReviewArn: 0,
       UserIds: D.m({ query: "UserIds" }),
       RecommendationIds: D.m({ query: "RecommendationIds" }),
     },
@@ -865,6 +915,7 @@ export const listRecommendations: API.PaginatedOperationMethod<
     input: {
       NextToken: D.m({ query: "NextToken" }),
       MaxResults: D.m({ query: "MaxResults" }),
+      CodeReviewArn: 0,
     },
   },
   errors: [
@@ -941,7 +992,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -969,7 +1024,12 @@ export const putRecommendationFeedback: API.OperationMethod<
   PutRecommendationFeedbackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /feedback", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /feedback",
+    input: { CodeReviewArn: 0, RecommendationId: 0, Reactions: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -996,7 +1056,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1024,7 +1089,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -1036,6 +1101,12 @@ export const untagResource: API.OperationMethod<
   operationName: "UntagResource",
 })) as any;
 
+const i_RepositoryHeadSourceCodeType: D.LazyStruct = () => ({ BranchName: 0 });
+const i_ThirdPartySourceRepository: D.LazyStruct = () => ({
+  Name: 0,
+  ConnectionArn: 0,
+  Owner: 0,
+});
 const o_CodeReview: D.LazyStruct = () => ({
   CreatedTimeStamp: D.ts,
   LastUpdatedTimeStamp: D.ts,

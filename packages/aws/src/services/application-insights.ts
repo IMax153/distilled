@@ -752,7 +752,14 @@ export const addWorkload: API.OperationMethod<
   AddWorkloadError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceGroupName: 0,
+      ComponentName: 0,
+      WorkloadConfiguration: i_WorkloadConfiguration,
+    },
+  },
   errors: [
     InternalServerException,
     ResourceInUseException,
@@ -781,7 +788,21 @@ export const createApplication: API.OperationMethod<
   CreateApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceGroupName: 0,
+      OpsCenterEnabled: 0,
+      CWEMonitorEnabled: 0,
+      OpsItemSNSTopicArn: 0,
+      SNSNotificationArn: 0,
+      Tags: D.list(i_Tag),
+      AutoConfigEnabled: 0,
+      AutoCreate: 0,
+      GroupingType: 0,
+      AttachMissingPermission: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -810,7 +831,10 @@ export const createComponent: API.OperationMethod<
   CreateComponentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceGroupName: 0, ComponentName: 0, ResourceList: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceInUseException,
@@ -837,7 +861,16 @@ export const createLogPattern: API.OperationMethod<
   CreateLogPatternError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceGroupName: 0,
+      PatternSetName: 0,
+      PatternName: 0,
+      Pattern: 0,
+      Rank: 0,
+    },
+  },
   errors: [
     InternalServerException,
     ResourceInUseException,
@@ -865,7 +898,7 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceGroupName: 0 } },
   errors: [
     BadRequestException,
     InternalServerException,
@@ -893,7 +926,10 @@ export const deleteComponent: API.OperationMethod<
   DeleteComponentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceGroupName: 0, ComponentName: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -919,7 +955,10 @@ export const deleteLogPattern: API.OperationMethod<
   DeleteLogPatternError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceGroupName: 0, PatternSetName: 0, PatternName: 0 },
+  },
   errors: [
     BadRequestException,
     InternalServerException,
@@ -945,7 +984,7 @@ export const describeApplication: API.OperationMethod<
   DescribeApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceGroupName: 0, AccountId: 0 } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -971,7 +1010,10 @@ export const describeComponent: API.OperationMethod<
   DescribeComponentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceGroupName: 0, ComponentName: 0, AccountId: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -996,7 +1038,10 @@ export const describeComponentConfiguration: API.OperationMethod<
   DescribeComponentConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceGroupName: 0, ComponentName: 0, AccountId: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1021,7 +1066,16 @@ export const describeComponentConfigurationRecommendation: API.OperationMethod<
   DescribeComponentConfigurationRecommendationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceGroupName: 0,
+      ComponentName: 0,
+      Tier: 0,
+      WorkloadName: 0,
+      RecommendationType: 0,
+    },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1046,7 +1100,15 @@ export const describeLogPattern: API.OperationMethod<
   DescribeLogPatternError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceGroupName: 0,
+      PatternSetName: 0,
+      PatternName: 0,
+      AccountId: 0,
+    },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1071,7 +1133,11 @@ export const describeObservation: API.OperationMethod<
   DescribeObservationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Observation: o_Observation } },
+  descriptor: {
+    service: svc,
+    input: { ObservationId: 0, AccountId: 0 },
+    output: { Observation: o_Observation },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1096,7 +1162,11 @@ export const describeProblem: API.OperationMethod<
   DescribeProblemError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Problem: o_Problem } },
+  descriptor: {
+    service: svc,
+    input: { ProblemId: 0, AccountId: 0 },
+    output: { Problem: o_Problem },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1123,6 +1193,7 @@ export const describeProblemObservations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ProblemId: 0, AccountId: 0 },
     output: { RelatedObservations: { ObservationList: D.list(o_Observation) } },
   },
   errors: [
@@ -1149,7 +1220,15 @@ export const describeWorkload: API.OperationMethod<
   DescribeWorkloadError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceGroupName: 0,
+      ComponentName: 0,
+      WorkloadId: 0,
+      AccountId: 0,
+    },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1174,7 +1253,10 @@ export const listApplications: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MaxResults: 0, NextToken: 0, AccountId: 0 },
+  },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1201,7 +1283,10 @@ export const listComponents: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceGroupName: 0, MaxResults: 0, NextToken: 0, AccountId: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1242,6 +1327,15 @@ export const listConfigurationHistory: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ResourceGroupName: 0,
+      StartTime: 0,
+      EndTime: 0,
+      EventStatus: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      AccountId: 0,
+    },
     output: { EventList: D.list({ EventTime: D.ts }) },
   },
   errors: [
@@ -1274,7 +1368,16 @@ export const listLogPatterns: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceGroupName: 0,
+      PatternSetName: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      AccountId: 0,
+    },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1305,7 +1408,10 @@ export const listLogPatternSets: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceGroupName: 0, MaxResults: 0, NextToken: 0, AccountId: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1336,7 +1442,20 @@ export const listProblems: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { ProblemList: D.list(o_Problem) } },
+  descriptor: {
+    service: svc,
+    input: {
+      AccountId: 0,
+      ResourceGroupName: 0,
+      StartTime: 0,
+      EndTime: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      ComponentName: 0,
+      Visibility: 0,
+    },
+    output: { ProblemList: D.list(o_Problem) },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1370,7 +1489,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1392,7 +1511,16 @@ export const listWorkloads: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceGroupName: 0,
+      ComponentName: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      AccountId: 0,
+    },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1422,7 +1550,10 @@ export const removeWorkload: API.OperationMethod<
   RemoveWorkloadError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceGroupName: 0, ComponentName: 0, WorkloadId: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1455,7 +1586,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [
     ResourceNotFoundException,
     TooManyTagsException,
@@ -1479,7 +1610,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1500,7 +1631,19 @@ export const updateApplication: API.OperationMethod<
   UpdateApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceGroupName: 0,
+      OpsCenterEnabled: 0,
+      CWEMonitorEnabled: 0,
+      OpsItemSNSTopicArn: 0,
+      SNSNotificationArn: 0,
+      RemoveSNSTopic: 0,
+      AutoConfigEnabled: 0,
+      AttachMissingPermission: 0,
+    },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1527,7 +1670,15 @@ export const updateComponent: API.OperationMethod<
   UpdateComponentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceGroupName: 0,
+      ComponentName: 0,
+      NewComponentName: 0,
+      ResourceList: 0,
+    },
+  },
   errors: [
     InternalServerException,
     ResourceInUseException,
@@ -1556,7 +1707,17 @@ export const updateComponentConfiguration: API.OperationMethod<
   UpdateComponentConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceGroupName: 0,
+      ComponentName: 0,
+      Monitor: 0,
+      Tier: 0,
+      ComponentConfiguration: 0,
+      AutoConfigEnabled: 0,
+    },
+  },
   errors: [
     InternalServerException,
     ResourceInUseException,
@@ -1583,7 +1744,16 @@ export const updateLogPattern: API.OperationMethod<
   UpdateLogPatternError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceGroupName: 0,
+      PatternSetName: 0,
+      PatternName: 0,
+      Pattern: 0,
+      Rank: 0,
+    },
+  },
   errors: [
     InternalServerException,
     ResourceInUseException,
@@ -1610,7 +1780,10 @@ export const updateProblem: API.OperationMethod<
   UpdateProblemError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ProblemId: 0, UpdateStatus: 0, Visibility: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1635,7 +1808,15 @@ export const updateWorkload: API.OperationMethod<
   UpdateWorkloadError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceGroupName: 0,
+      ComponentName: 0,
+      WorkloadId: 0,
+      WorkloadConfiguration: i_WorkloadConfiguration,
+    },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1646,6 +1827,12 @@ export const updateWorkload: API.OperationMethod<
   operationName: "UpdateWorkload",
 })) as any;
 
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_WorkloadConfiguration: D.LazyStruct = () => ({
+  WorkloadName: 0,
+  Tier: 0,
+  Configuration: 0,
+});
 const o_Observation: D.LazyStruct = () => ({
   StartTime: D.ts,
   EndTime: D.ts,

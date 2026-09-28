@@ -701,7 +701,12 @@ export const createAccessor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accessors",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      AccessorType: 0,
+      Tags: 0,
+      NetworkType: 0,
+    },
     body: true,
   },
   errors: [
@@ -743,7 +748,12 @@ export const createMember: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /networks/{NetworkId}/members",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      InvitationId: 0,
+      NetworkId: 0,
+      MemberConfiguration: i_MemberConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -785,7 +795,23 @@ export const createNetwork: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /networks",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      Name: 0,
+      Description: 0,
+      Framework: 0,
+      FrameworkVersion: 0,
+      FrameworkConfiguration: { Fabric: { Edition: 0 } },
+      VotingPolicy: {
+        ApprovalThresholdPolicy: {
+          ThresholdPercentage: 0,
+          ProposalDurationInHours: 0,
+          ThresholdComparator: 0,
+        },
+      },
+      MemberConfiguration: i_MemberConfiguration,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -827,7 +853,18 @@ export const createNode: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /networks/{NetworkId}/nodes",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      NetworkId: 0,
+      MemberId: 0,
+      NodeConfiguration: {
+        InstanceType: 0,
+        AvailabilityZone: 0,
+        LogPublishingConfiguration: i_NodeLogPublishingConfiguration,
+        StateDB: 0,
+      },
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -869,7 +906,17 @@ export const createProposal: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /networks/{NetworkId}/proposals",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      NetworkId: 0,
+      MemberId: 0,
+      Actions: {
+        Invitations: D.list({ Principal: 0 }),
+        Removals: D.list({ MemberId: 0 }),
+      },
+      Description: 0,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -908,7 +955,11 @@ export const deleteAccessor: API.OperationMethod<
   DeleteAccessorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /accessors/{AccessorId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /accessors/{AccessorId}",
+    input: { AccessorId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -943,6 +994,7 @@ export const deleteMember: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /networks/{NetworkId}/members/{MemberId}",
+    input: { NetworkId: 0, MemberId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -979,7 +1031,7 @@ export const deleteNode: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /networks/{NetworkId}/nodes/{NodeId}",
-    input: { MemberId: D.m({ query: "memberId" }) },
+    input: { NetworkId: 0, MemberId: D.m({ query: "memberId" }), NodeId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1014,6 +1066,7 @@ export const getAccessor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accessors/{AccessorId}",
+    input: { AccessorId: 0 },
     output: { Accessor: { CreationDate: D.ts } },
   },
   errors: [
@@ -1049,6 +1102,7 @@ export const getMember: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /networks/{NetworkId}/members/{MemberId}",
+    input: { NetworkId: 0, MemberId: 0 },
     output: { Member: { CreationDate: D.ts } },
   },
   errors: [
@@ -1084,6 +1138,7 @@ export const getNetwork: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /networks/{NetworkId}",
+    input: { NetworkId: 0 },
     output: { Network: { CreationDate: D.ts } },
   },
   errors: [
@@ -1119,7 +1174,7 @@ export const getNode: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /networks/{NetworkId}/nodes/{NodeId}",
-    input: { MemberId: D.m({ query: "memberId" }) },
+    input: { NetworkId: 0, MemberId: D.m({ query: "memberId" }), NodeId: 0 },
     output: { Node: { CreationDate: D.ts } },
   },
   errors: [
@@ -1155,6 +1210,7 @@ export const getProposal: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /networks/{NetworkId}/proposals/{ProposalId}",
+    input: { NetworkId: 0, ProposalId: 0 },
     output: { Proposal: { CreationDate: D.ts, ExpirationDate: D.ts } },
   },
   errors: [
@@ -1288,6 +1344,7 @@ export const listMembers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /networks/{NetworkId}/members",
     input: {
+      NetworkId: 0,
       Name: D.m({ query: "name" }),
       Status: D.m({ query: "status" }),
       IsOwned: D.m({ query: "isOwned" }),
@@ -1380,6 +1437,7 @@ export const listNodes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /networks/{NetworkId}/nodes",
     input: {
+      NetworkId: 0,
       MemberId: D.m({ query: "memberId" }),
       Status: D.m({ query: "status" }),
       MaxResults: D.m({ query: "maxResults" }),
@@ -1426,6 +1484,7 @@ export const listProposals: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /networks/{NetworkId}/proposals",
     input: {
+      NetworkId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -1470,6 +1529,8 @@ export const listProposalVotes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /networks/{NetworkId}/proposals/{ProposalId}/votes",
     input: {
+      NetworkId: 0,
+      ProposalId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -1507,7 +1568,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -1538,7 +1603,11 @@ export const rejectInvitation: API.OperationMethod<
   RejectInvitationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /invitations/{InvitationId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /invitations/{InvitationId}",
+    input: { InvitationId: 0 },
+  },
   errors: [
     AccessDeniedException,
     IllegalActionException,
@@ -1574,7 +1643,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServiceErrorException,
     InvalidRequestException,
@@ -1607,7 +1681,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServiceErrorException,
@@ -1641,6 +1715,11 @@ export const updateMember: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /networks/{NetworkId}/members/{MemberId}",
+    input: {
+      NetworkId: 0,
+      MemberId: 0,
+      LogPublishingConfiguration: i_MemberLogPublishingConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -1676,6 +1755,12 @@ export const updateNode: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /networks/{NetworkId}/nodes/{NodeId}",
+    input: {
+      NetworkId: 0,
+      MemberId: 0,
+      NodeId: 0,
+      LogPublishingConfiguration: i_NodeLogPublishingConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -1712,6 +1797,7 @@ export const voteOnProposal: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /networks/{NetworkId}/proposals/{ProposalId}/votes",
+    input: { NetworkId: 0, ProposalId: 0, VoterMemberId: 0, Vote: 0 },
     body: true,
   },
   errors: [
@@ -1727,4 +1813,21 @@ export const voteOnProposal: API.OperationMethod<
   operationName: "VoteOnProposal",
 })) as any;
 
+const i_MemberConfiguration: D.LazyStruct = () => ({
+  Name: 0,
+  Description: 0,
+  FrameworkConfiguration: { Fabric: { AdminUsername: 0, AdminPassword: 0 } },
+  LogPublishingConfiguration: i_MemberLogPublishingConfiguration,
+  Tags: 0,
+  KmsKeyArn: 0,
+});
+const i_MemberLogPublishingConfiguration: D.LazyStruct = () => ({
+  Fabric: { CaLogs: i_LogConfigurations },
+});
+const i_NodeLogPublishingConfiguration: D.LazyStruct = () => ({
+  Fabric: { ChaincodeLogs: i_LogConfigurations, PeerLogs: i_LogConfigurations },
+});
 const o_NetworkSummary: D.LazyStruct = () => ({ CreationDate: D.ts });
+const i_LogConfigurations: D.LazyStruct = () => ({
+  Cloudwatch: { Enabled: 0 },
+});

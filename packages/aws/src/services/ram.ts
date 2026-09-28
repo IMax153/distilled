@@ -851,6 +851,7 @@ export const acceptResourceShareInvitation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /acceptresourceshareinvitation",
+    input: { resourceShareInvitationArn: 0, clientToken: 0 },
     output: { resourceShareInvitation: o_ResourceShareInvitation },
     body: true,
   },
@@ -898,6 +899,13 @@ export const associateResourceShare: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /associateresourceshare",
+    input: {
+      resourceShareArn: 0,
+      resourceArns: 0,
+      principals: 0,
+      clientToken: 0,
+      sources: 0,
+    },
     output: { resourceShareAssociations: D.list(o_ResourceShareAssociation) },
     body: true,
   },
@@ -943,6 +951,13 @@ export const associateResourceSharePermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /associateresourcesharepermission",
+    input: {
+      resourceShareArn: 0,
+      permissionArn: 0,
+      replace: 0,
+      clientToken: 0,
+      permissionVersion: 0,
+    },
     body: true,
   },
   errors: [
@@ -984,6 +999,13 @@ export const createPermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /createpermission",
+    input: {
+      name: 0,
+      resourceType: 0,
+      policyTemplate: 0,
+      clientToken: 0,
+      tags: D.list(i_Tag),
+    },
     output: { permission: o_ResourceSharePermissionSummary },
     body: true,
   },
@@ -1034,6 +1056,7 @@ export const createPermissionVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /createpermissionversion",
+    input: { permissionArn: 0, policyTemplate: 0, clientToken: 0 },
     output: { permission: o_ResourceSharePermissionDetail },
     body: true,
   },
@@ -1087,6 +1110,19 @@ export const createResourceShare: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /createresourceshare",
+    input: {
+      name: 0,
+      resourceArns: 0,
+      principals: 0,
+      tags: D.list(i_Tag),
+      allowExternalPrincipals: 0,
+      clientToken: 0,
+      permissionArns: 0,
+      sources: 0,
+      resourceShareConfiguration: {
+        retainSharingOnAccountLeaveOrganization: 0,
+      },
+    },
     output: { resourceShare: o_ResourceShare },
     body: true,
   },
@@ -1274,6 +1310,13 @@ export const disassociateResourceShare: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /disassociateresourceshare",
+    input: {
+      resourceShareArn: 0,
+      resourceArns: 0,
+      principals: 0,
+      clientToken: 0,
+      sources: 0,
+    },
     output: { resourceShareAssociations: D.list(o_ResourceShareAssociation) },
     body: true,
   },
@@ -1319,6 +1362,7 @@ export const disassociateResourceSharePermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /disassociateresourcesharepermission",
+    input: { resourceShareArn: 0, permissionArn: 0, clientToken: 0 },
     body: true,
   },
   errors: [
@@ -1360,7 +1404,11 @@ export const enableSharingWithAwsOrganization: API.OperationMethod<
   EnableSharingWithAwsOrganizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /enablesharingwithawsorganization" },
+  descriptor: {
+    service: svc,
+    http: "POST /enablesharingwithawsorganization",
+    input: {},
+  },
   errors: [
     OperationNotPermittedException,
     ServerInternalException,
@@ -1391,6 +1439,7 @@ export const getPermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getpermission",
+    input: { permissionArn: 0, permissionVersion: 0 },
     output: { permission: o_ResourceSharePermissionDetail },
     body: true,
   },
@@ -1432,7 +1481,12 @@ export const getResourcePolicies: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /getresourcepolicies", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /getresourcepolicies",
+    input: { resourceArns: 0, principal: 0, nextToken: 0, maxResults: 0 },
+    body: true,
+  },
   errors: [
     InvalidNextTokenException,
     InvalidParameterException,
@@ -1480,6 +1534,15 @@ export const getResourceShareAssociations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getresourceshareassociations",
+    input: {
+      associationType: 0,
+      resourceShareArns: 0,
+      resourceArn: 0,
+      principal: 0,
+      associationStatus: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { resourceShareAssociations: D.list(o_ResourceShareAssociation) },
     body: true,
   },
@@ -1531,6 +1594,12 @@ export const getResourceShareInvitations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getresourceshareinvitations",
+    input: {
+      resourceShareInvitationArns: 0,
+      resourceShareArns: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { resourceShareInvitations: D.list(o_ResourceShareInvitation) },
     body: true,
   },
@@ -1581,6 +1650,17 @@ export const getResourceShares: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getresourceshares",
+    input: {
+      resourceShareArns: 0,
+      resourceShareStatus: 0,
+      resourceOwner: 0,
+      name: 0,
+      tagFilters: D.list({ tagKey: 0, tagValues: 0 }),
+      nextToken: 0,
+      maxResults: 0,
+      permissionArn: 0,
+      permissionVersion: 0,
+    },
     output: { resourceShares: D.list(o_ResourceShare) },
     body: true,
   },
@@ -1634,6 +1714,12 @@ export const listPendingInvitationResources: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listpendinginvitationresources",
+    input: {
+      resourceShareInvitationArn: 0,
+      nextToken: 0,
+      maxResults: 0,
+      resourceRegionScope: 0,
+    },
     output: { resources: D.list(o_Resource) },
     body: true,
   },
@@ -1686,6 +1772,16 @@ export const listPermissionAssociations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listpermissionassociations",
+    input: {
+      permissionArn: 0,
+      permissionVersion: 0,
+      associationStatus: 0,
+      resourceType: 0,
+      featureSet: 0,
+      defaultVersion: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { permissions: D.list({ lastUpdatedTime: D.ts }) },
     body: true,
   },
@@ -1733,6 +1829,7 @@ export const listPermissions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listpermissions",
+    input: { resourceType: 0, nextToken: 0, maxResults: 0, permissionType: 0 },
     output: { permissions: D.list(o_ResourceSharePermissionSummary) },
     body: true,
   },
@@ -1781,6 +1878,7 @@ export const listPermissionVersions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listpermissionversions",
+    input: { permissionArn: 0, nextToken: 0, maxResults: 0 },
     output: { permissions: D.list(o_ResourceSharePermissionSummary) },
     body: true,
   },
@@ -1831,6 +1929,15 @@ export const listPrincipals: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listprincipals",
+    input: {
+      resourceOwner: 0,
+      resourceArn: 0,
+      principals: 0,
+      resourceType: 0,
+      resourceShareArns: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       principals: D.list({ creationTime: D.ts, lastUpdatedTime: D.ts }),
     },
@@ -1880,6 +1987,7 @@ export const listReplacePermissionAssociationsWork: API.PaginatedOperationMethod
   descriptor: {
     service: svc,
     http: "POST /listreplacepermissionassociationswork",
+    input: { workIds: 0, status: 0, nextToken: 0, maxResults: 0 },
     output: {
       replacePermissionAssociationsWorks: D.list(
         o_ReplacePermissionAssociationsWork,
@@ -1932,6 +2040,16 @@ export const listResources: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listresources",
+    input: {
+      resourceOwner: 0,
+      principal: 0,
+      resourceType: 0,
+      resourceArns: 0,
+      resourceShareArns: 0,
+      nextToken: 0,
+      maxResults: 0,
+      resourceRegionScope: 0,
+    },
     output: { resources: D.list(o_Resource) },
     body: true,
   },
@@ -1982,6 +2100,7 @@ export const listResourceSharePermissions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listresourcesharepermissions",
+    input: { resourceShareArn: 0, nextToken: 0, maxResults: 0 },
     output: { permissions: D.list(o_ResourceSharePermissionSummary) },
     body: true,
   },
@@ -2020,7 +2139,12 @@ export const listResourceTypes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /listresourcetypes", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /listresourcetypes",
+    input: { nextToken: 0, maxResults: 0, resourceRegionScope: 0 },
+    body: true,
+  },
   errors: [
     InvalidNextTokenException,
     InvalidParameterException,
@@ -2060,6 +2184,14 @@ export const listSourceAssociations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listsourceassociations",
+    input: {
+      resourceShareArns: 0,
+      sourceId: 0,
+      sourceType: 0,
+      associationStatus: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       sourceAssociations: D.list({ lastUpdatedTime: D.ts, creationTime: D.ts }),
     },
@@ -2132,6 +2264,7 @@ export const promotePermissionCreatedFromPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /promotepermissioncreatedfrompolicy",
+    input: { permissionArn: 0, name: 0, clientToken: 0 },
     output: { permission: o_ResourceSharePermissionSummary },
     body: true,
   },
@@ -2230,6 +2363,7 @@ export const rejectResourceShareInvitation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /rejectresourceshareinvitation",
+    input: { resourceShareInvitationArn: 0, clientToken: 0 },
     output: { resourceShareInvitation: o_ResourceShareInvitation },
     body: true,
   },
@@ -2287,6 +2421,12 @@ export const replacePermissionAssociations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /replacepermissionassociations",
+    input: {
+      fromPermissionArn: 0,
+      fromPermissionVersion: 0,
+      toPermissionArn: 0,
+      clientToken: 0,
+    },
     output: {
       replacePermissionAssociationsWork: o_ReplacePermissionAssociationsWork,
     },
@@ -2330,6 +2470,7 @@ export const setDefaultPermissionVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /setdefaultpermissionversion",
+    input: { permissionArn: 0, permissionVersion: 0, clientToken: 0 },
     body: true,
   },
   errors: [
@@ -2368,7 +2509,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tagresource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tagresource",
+    input: { resourceShareArn: 0, tags: D.list(i_Tag), resourceArn: 0 },
+    body: true,
+  },
   errors: [
     InvalidParameterException,
     MalformedArnException,
@@ -2400,7 +2546,12 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /untagresource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /untagresource",
+    input: { resourceShareArn: 0, tagKeys: 0, resourceArn: 0 },
+    body: true,
+  },
   errors: [
     InvalidParameterException,
     MalformedArnException,
@@ -2436,6 +2587,12 @@ export const updateResourceShare: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /updateresourceshare",
+    input: {
+      resourceShareArn: 0,
+      name: 0,
+      allowExternalPrincipals: 0,
+      clientToken: 0,
+    },
     output: { resourceShare: o_ResourceShare },
     body: true,
   },
@@ -2455,6 +2612,7 @@ export const updateResourceShare: API.OperationMethod<
   operationName: "UpdateResourceShare",
 })) as any;
 
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
 const o_ReplacePermissionAssociationsWork: D.LazyStruct = () => ({
   creationTime: D.ts,
   lastUpdatedTime: D.ts,

@@ -136,7 +136,11 @@ export const getAccountCustomizations: API.OperationMethod<
   GetAccountCustomizationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/account-customizations" },
+  descriptor: {
+    service: svc,
+    http: "GET /v1/account-customizations",
+    input: {},
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -210,6 +214,7 @@ export const updateAccountCustomizations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v1/account-customizations",
+    input: { accountColor: 0, visibleServices: 0, visibleRegions: 0 },
     body: true,
   },
   errors: [

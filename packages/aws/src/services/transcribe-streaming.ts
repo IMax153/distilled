@@ -992,6 +992,7 @@ export const getMedicalScribeStream: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /medical-scribe-stream/{SessionId}",
+    input: { SessionId: 0 },
     output: {
       MedicalScribeStreamDetails: {
         StreamCreatedAt: D.ts,
@@ -1050,7 +1051,10 @@ export const startCallAnalyticsStreamTranscription: API.OperationMethod<
       AudioStream: D.m({
         payload: true,
         shape: D.events(
-          { AudioEvent: 0, ConfigurationEvent: 0 },
+          {
+            AudioEvent: i_AudioEvent,
+            ConfigurationEvent: i_ConfigurationEvent,
+          },
           { AudioEvent: "AudioChunk" },
         ),
       }),
@@ -1212,7 +1216,25 @@ export const startMedicalScribeStream: API.OperationMethod<
       InputStream: D.m({
         payload: true,
         shape: D.events(
-          { AudioEvent: 0, SessionControlEvent: 0, ConfigurationEvent: 0 },
+          {
+            AudioEvent: { AudioChunk: 0 },
+            SessionControlEvent: { Type: 0 },
+            ConfigurationEvent: {
+              VocabularyName: 0,
+              VocabularyFilterName: 0,
+              VocabularyFilterMethod: 0,
+              ResourceAccessRoleArn: 0,
+              ChannelDefinitions: D.list({ ChannelId: 0, ParticipantRole: 0 }),
+              EncryptionSettings: { KmsEncryptionContext: 0, KmsKeyId: 0 },
+              PostStreamAnalyticsSettings: {
+                ClinicalNoteGenerationSettings: {
+                  OutputBucketName: 0,
+                  NoteTemplate: 0,
+                },
+              },
+              MedicalScribeContext: { PatientContext: { Pronouns: 0 } },
+            },
+          },
           { AudioEvent: "AudioChunk" },
         ),
       }),
@@ -1296,7 +1318,10 @@ export const startMedicalStreamTranscription: API.OperationMethod<
       AudioStream: D.m({
         payload: true,
         shape: D.events(
-          { AudioEvent: 0, ConfigurationEvent: 0 },
+          {
+            AudioEvent: i_AudioEvent,
+            ConfigurationEvent: i_ConfigurationEvent,
+          },
           { AudioEvent: "AudioChunk" },
         ),
       }),
@@ -1399,7 +1424,10 @@ export const startStreamTranscription: API.OperationMethod<
       AudioStream: D.m({
         payload: true,
         shape: D.events(
-          { AudioEvent: 0, ConfigurationEvent: 0 },
+          {
+            AudioEvent: i_AudioEvent,
+            ConfigurationEvent: i_ConfigurationEvent,
+          },
           { AudioEvent: "AudioChunk" },
         ),
       }),
@@ -1537,3 +1565,14 @@ export const startStreamTranscription: API.OperationMethod<
   retry: Retry,
   operationName: "StartStreamTranscription",
 })) as any;
+
+const i_AudioEvent: D.LazyStruct = () => ({ AudioChunk: 0 });
+const i_ConfigurationEvent: D.LazyStruct = () => ({
+  ChannelDefinitions: D.list({ ChannelId: 0, ParticipantRole: 0 }),
+  PostCallAnalyticsSettings: {
+    OutputLocation: 0,
+    DataAccessRoleArn: 0,
+    ContentRedactionOutput: 0,
+    OutputEncryptionKMSKeyId: 0,
+  },
+});

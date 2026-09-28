@@ -330,7 +330,23 @@ export const createConfigurationManager: API.OperationMethod<
   CreateConfigurationManagerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /configurationManager", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /configurationManager",
+    input: {
+      Name: 0,
+      Description: 0,
+      ConfigurationDefinitions: D.list({
+        Type: 0,
+        Parameters: 0,
+        TypeVersion: 0,
+        LocalDeploymentExecutionRoleName: 0,
+        LocalDeploymentAdministrationRoleArn: 0,
+      }),
+      Tags: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -363,6 +379,7 @@ export const deleteConfigurationManager: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /configurationManager/{ManagerArn}",
+    input: { ManagerArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -397,6 +414,7 @@ export const getConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /getConfiguration/{ConfigurationId}",
+    input: { ConfigurationId: 0 },
     output: {
       CreatedAt: D.ts,
       LastModifiedAt: D.ts,
@@ -436,6 +454,7 @@ export const getConfigurationManager: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /configurationManager/{ManagerArn}",
+    input: { ManagerArn: 0 },
     output: {
       CreatedAt: D.ts,
       LastModifiedAt: D.ts,
@@ -502,6 +521,7 @@ export const listConfigurationManagers: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listConfigurationManagers",
+    input: { StartingToken: 0, MaxItems: 0, Filters: D.list(i_Filter) },
     output: {
       ConfigurationManagersList: D.list({
         StatusSummaries: D.list(o_StatusSummary),
@@ -547,6 +567,13 @@ export const listConfigurations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listConfigurations",
+    input: {
+      StartingToken: 0,
+      MaxItems: 0,
+      Filters: D.list(i_Filter),
+      ManagerArn: 0,
+      ConfigurationDefinitionId: 0,
+    },
     output: {
       ConfigurationsList: D.list({
         CreatedAt: D.ts,
@@ -617,7 +644,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -648,7 +679,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -682,7 +718,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -717,6 +753,14 @@ export const updateConfigurationDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /configurationDefinition/{ManagerArn}/{Id}",
+    input: {
+      ManagerArn: 0,
+      Id: 0,
+      TypeVersion: 0,
+      Parameters: 0,
+      LocalDeploymentExecutionRoleName: 0,
+      LocalDeploymentAdministrationRoleArn: 0,
+    },
     body: true,
   },
   errors: [
@@ -752,6 +796,7 @@ export const updateConfigurationManager: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /configurationManager/{ManagerArn}",
+    input: { ManagerArn: 0, Name: 0, Description: 0 },
     body: true,
   },
   errors: [
@@ -783,7 +828,12 @@ export const updateServiceSettings: API.OperationMethod<
   UpdateServiceSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /serviceSettings", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /serviceSettings",
+    input: { ExplorerEnablingRoleArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -796,4 +846,5 @@ export const updateServiceSettings: API.OperationMethod<
   operationName: "UpdateServiceSettings",
 })) as any;
 
+const i_Filter: D.LazyStruct = () => ({ Key: 0, Values: 0 });
 const o_StatusSummary: D.LazyStruct = () => ({ LastUpdatedAt: D.ts });

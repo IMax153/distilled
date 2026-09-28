@@ -1084,7 +1084,16 @@ export const convertRecoveryPointToSnapshot: API.OperationMethod<
   ConvertRecoveryPointToSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { snapshot: o_Snapshot } },
+  descriptor: {
+    service: svc,
+    input: {
+      recoveryPointId: 0,
+      snapshotName: 0,
+      retentionPeriod: 0,
+      tags: D.list(i_Tag),
+    },
+    output: { snapshot: o_Snapshot },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1117,6 +1126,11 @@ export const createCustomDomainAssociation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      workgroupName: 0,
+      customDomainName: 0,
+      customDomainCertificateArn: 0,
+    },
     output: { customDomainCertificateExpiryTime: D.ts },
   },
   errors: [
@@ -1149,7 +1163,17 @@ export const createEndpointAccess: API.OperationMethod<
   CreateEndpointAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { endpoint: o_EndpointAccess } },
+  descriptor: {
+    service: svc,
+    input: {
+      endpointName: 0,
+      subnetIds: 0,
+      workgroupName: 0,
+      vpcSecurityGroupIds: 0,
+      ownerAccount: 0,
+    },
+    output: { endpoint: o_EndpointAccess },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1178,7 +1202,24 @@ export const createNamespace: API.OperationMethod<
   CreateNamespaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { namespace: o_Namespace } },
+  descriptor: {
+    service: svc,
+    input: {
+      namespaceName: 0,
+      adminUsername: 0,
+      adminUserPassword: 0,
+      dbName: 0,
+      kmsKeyId: 0,
+      defaultIamRoleArn: 0,
+      iamRoles: 0,
+      logExports: 0,
+      tags: D.list(i_Tag),
+      manageAdminPassword: 0,
+      adminPasswordSecretKmsKeyId: 0,
+      redshiftIdcApplicationArn: 0,
+    },
+    output: { namespace: o_Namespace },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1210,7 +1251,11 @@ export const createReservation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      capacity: 0,
+      offeringId: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { reservation: o_Reservation },
   },
   errors: [
@@ -1244,6 +1289,17 @@ export const createScheduledAction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      scheduledActionName: 0,
+      targetAction: i_TargetAction,
+      schedule: i_Schedule,
+      roleArn: 0,
+      namespaceName: 0,
+      enabled: 0,
+      scheduledActionDescription: 0,
+      startTime: 0,
+      endTime: 0,
+    },
     output: { scheduledAction: o_ScheduledActionResponse },
   },
   errors: [
@@ -1274,7 +1330,16 @@ export const createSnapshot: API.OperationMethod<
   CreateSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { snapshot: o_Snapshot } },
+  descriptor: {
+    service: svc,
+    input: {
+      namespaceName: 0,
+      snapshotName: 0,
+      retentionPeriod: 0,
+      tags: D.list(i_Tag),
+    },
+    output: { snapshot: o_Snapshot },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1305,7 +1370,15 @@ export const createSnapshotCopyConfiguration: API.OperationMethod<
   CreateSnapshotCopyConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      namespaceName: 0,
+      destinationRegion: 0,
+      snapshotRetentionPeriod: 0,
+      destinationKmsKeyId: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1335,7 +1408,16 @@ export const createUsageLimit: API.OperationMethod<
   CreateUsageLimitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      resourceArn: 0,
+      usageType: 0,
+      amount: 0,
+      period: 0,
+      breachAction: 0,
+    },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1376,7 +1458,27 @@ export const createWorkgroup: API.OperationMethod<
   CreateWorkgroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { workgroup: o_Workgroup } },
+  descriptor: {
+    service: svc,
+    input: {
+      workgroupName: 0,
+      namespaceName: 0,
+      baseCapacity: 0,
+      enhancedVpcRouting: 0,
+      configParameters: D.list(i_ConfigParameter),
+      securityGroupIds: 0,
+      subnetIds: 0,
+      publiclyAccessible: 0,
+      tags: D.list(i_Tag),
+      port: 0,
+      maxCapacity: 0,
+      pricePerformanceTarget: i_PerformanceTarget,
+      ipAddressType: 0,
+      trackName: 0,
+      extraComputeForAutomaticOptimization: 0,
+    },
+    output: { workgroup: o_Workgroup },
+  },
   errors: [
     ConflictException,
     InsufficientCapacityException,
@@ -1408,7 +1510,10 @@ export const deleteCustomDomainAssociation: API.OperationMethod<
   DeleteCustomDomainAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { workgroupName: 0, customDomainName: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1437,7 +1542,11 @@ export const deleteEndpointAccess: API.OperationMethod<
   DeleteEndpointAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { endpoint: o_EndpointAccess } },
+  descriptor: {
+    service: svc,
+    input: { endpointName: 0 },
+    output: { endpoint: o_EndpointAccess },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1464,7 +1573,15 @@ export const deleteNamespace: API.OperationMethod<
   DeleteNamespaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { namespace: o_Namespace } },
+  descriptor: {
+    service: svc,
+    input: {
+      namespaceName: 0,
+      finalSnapshotName: 0,
+      finalSnapshotRetentionPeriod: 0,
+    },
+    output: { namespace: o_Namespace },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1490,7 +1607,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1517,6 +1634,7 @@ export const deleteScheduledAction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { scheduledActionName: 0 },
     output: { scheduledAction: o_ScheduledActionResponse },
   },
   errors: [
@@ -1544,7 +1662,11 @@ export const deleteSnapshot: API.OperationMethod<
   DeleteSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { snapshot: o_Snapshot } },
+  descriptor: {
+    service: svc,
+    input: { snapshotName: 0 },
+    output: { snapshot: o_Snapshot },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1572,7 +1694,7 @@ export const deleteSnapshotCopyConfiguration: API.OperationMethod<
   DeleteSnapshotCopyConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { snapshotCopyConfigurationId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1600,7 +1722,7 @@ export const deleteUsageLimit: API.OperationMethod<
   DeleteUsageLimitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { usageLimitId: 0 } },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1627,7 +1749,11 @@ export const deleteWorkgroup: API.OperationMethod<
   DeleteWorkgroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { workgroup: o_Workgroup } },
+  descriptor: {
+    service: svc,
+    input: { workgroupName: 0 },
+    output: { workgroup: o_Workgroup },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1661,6 +1787,12 @@ export const getCredentials: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      dbName: 0,
+      durationSeconds: 0,
+      workgroupName: 0,
+      customDomainName: 0,
+    },
     output: {
       dbUser: D.secret,
       dbPassword: D.secret,
@@ -1697,6 +1829,7 @@ export const getCustomDomainAssociation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { customDomainName: 0, workgroupName: 0 },
     output: { customDomainCertificateExpiryTime: D.ts },
   },
   errors: [
@@ -1727,7 +1860,11 @@ export const getEndpointAccess: API.OperationMethod<
   GetEndpointAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { endpoint: o_EndpointAccess } },
+  descriptor: {
+    service: svc,
+    input: { endpointName: 0 },
+    output: { endpoint: o_EndpointAccess },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1763,6 +1900,7 @@ export const getIdentityCenterAuthToken: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { workgroupNames: 0 },
     output: { token: D.secret, expirationTime: D.ts },
   },
   errors: [
@@ -1793,7 +1931,11 @@ export const getNamespace: API.OperationMethod<
   GetNamespaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { namespace: o_Namespace } },
+  descriptor: {
+    service: svc,
+    input: { namespaceName: 0 },
+    output: { namespace: o_Namespace },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1819,7 +1961,11 @@ export const getRecoveryPoint: API.OperationMethod<
   GetRecoveryPointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { recoveryPoint: o_RecoveryPoint } },
+  descriptor: {
+    service: svc,
+    input: { recoveryPointId: 0 },
+    output: { recoveryPoint: o_RecoveryPoint },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1846,7 +1992,11 @@ export const getReservation: API.OperationMethod<
   GetReservationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { reservation: o_Reservation } },
+  descriptor: {
+    service: svc,
+    input: { reservationId: 0 },
+    output: { reservation: o_Reservation },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1873,7 +2023,7 @@ export const getReservationOffering: API.OperationMethod<
   GetReservationOfferingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { offeringId: 0 } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1899,7 +2049,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1926,6 +2076,7 @@ export const getScheduledAction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { scheduledActionName: 0 },
     output: { scheduledAction: o_ScheduledActionResponse },
   },
   errors: [
@@ -1952,7 +2103,11 @@ export const getSnapshot: API.OperationMethod<
   GetSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { snapshot: o_Snapshot } },
+  descriptor: {
+    service: svc,
+    input: { snapshotName: 0, ownerAccount: 0, snapshotArn: 0 },
+    output: { snapshot: o_Snapshot },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1978,6 +2133,7 @@ export const getTableRestoreStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { tableRestoreRequestId: 0 },
     output: { tableRestoreStatus: o_TableRestoreStatus },
   },
   errors: [ResourceNotFoundException, ValidationException],
@@ -2004,7 +2160,7 @@ export const getTrack: API.OperationMethod<
   GetTrackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { trackName: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2034,7 +2190,7 @@ export const getUsageLimit: API.OperationMethod<
   GetUsageLimitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { usageLimitId: 0 } },
   errors: [
     ConflictException,
     InternalServerException,
@@ -2060,7 +2216,11 @@ export const getWorkgroup: API.OperationMethod<
   GetWorkgroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { workgroup: o_Workgroup } },
+  descriptor: {
+    service: svc,
+    input: { workgroupName: 0 },
+    output: { workgroup: o_Workgroup },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -2090,6 +2250,12 @@ export const listCustomDomainAssociations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      nextToken: 0,
+      maxResults: 0,
+      customDomainName: 0,
+      customDomainCertificateArn: 0,
+    },
     output: {
       associations: D.list({ customDomainCertificateExpiryTime: D.ts }),
     },
@@ -2128,7 +2294,17 @@ export const listEndpointAccess: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   EndpointAccess
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { endpoints: D.list(o_EndpointAccess) } },
+  descriptor: {
+    service: svc,
+    input: {
+      nextToken: 0,
+      maxResults: 0,
+      workgroupName: 0,
+      vpcId: 0,
+      ownerAccount: 0,
+    },
+    output: { endpoints: D.list(o_EndpointAccess) },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -2162,6 +2338,7 @@ export const listManagedWorkgroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { sourceArn: 0, nextToken: 0, maxResults: 0 },
     output: { managedWorkgroups: D.list({ creationDate: D.ts }) },
   },
   errors: [AccessDeniedException, InternalServerException],
@@ -2190,7 +2367,11 @@ export const listNamespaces: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Namespace
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { namespaces: D.list(o_Namespace) } },
+  descriptor: {
+    service: svc,
+    input: { nextToken: 0, maxResults: 0 },
+    output: { namespaces: D.list(o_Namespace) },
+  },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2219,6 +2400,14 @@ export const listRecoveryPoints: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      nextToken: 0,
+      maxResults: 0,
+      startTime: 0,
+      endTime: 0,
+      namespaceName: 0,
+      namespaceArn: 0,
+    },
     output: { recoveryPoints: D.list(o_RecoveryPoint) },
   },
   errors: [InternalServerException, ValidationException],
@@ -2248,7 +2437,7 @@ export const listReservationOfferings: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ReservationOffering
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0, maxResults: 0 } },
   errors: [InternalServerException, ThrottlingException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2278,6 +2467,7 @@ export const listReservations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0 },
     output: { reservationsList: D.list(o_Reservation) },
   },
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -2308,7 +2498,10 @@ export const listScheduledActions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ScheduledActionAssociation
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { nextToken: 0, maxResults: 0, namespaceName: 0 },
+  },
   errors: [
     InternalServerException,
     InvalidPaginationException,
@@ -2343,7 +2536,10 @@ export const listSnapshotCopyConfigurations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   SnapshotCopyConfiguration
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { namespaceName: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -2377,7 +2573,19 @@ export const listSnapshots: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Snapshot
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { snapshots: D.list(o_Snapshot) } },
+  descriptor: {
+    service: svc,
+    input: {
+      nextToken: 0,
+      maxResults: 0,
+      namespaceName: 0,
+      namespaceArn: 0,
+      ownerAccount: 0,
+      startTime: 0,
+      endTime: 0,
+    },
+    output: { snapshots: D.list(o_Snapshot) },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -2411,6 +2619,7 @@ export const listTableRestoreStatus: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0, namespaceName: 0, workgroupName: 0 },
     output: { tableRestoreStatuses: D.list(o_TableRestoreStatus) },
   },
   errors: [
@@ -2444,7 +2653,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -2473,7 +2682,7 @@ export const listTracks: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ServerlessTrack
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0, maxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2509,7 +2718,10 @@ export const listUsageLimits: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   UsageLimit
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { resourceArn: 0, usageType: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -2542,7 +2754,11 @@ export const listWorkgroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Workgroup
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { workgroups: D.list(o_Workgroup) } },
+  descriptor: {
+    service: svc,
+    input: { nextToken: 0, maxResults: 0, ownerAccount: 0 },
+    output: { workgroups: D.list(o_Workgroup) },
+  },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2571,7 +2787,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, policy: 0 } },
   errors: [
     ConflictException,
     InternalServerException,
@@ -2599,7 +2815,16 @@ export const restoreFromRecoveryPoint: API.OperationMethod<
   RestoreFromRecoveryPointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { namespace: o_Namespace } },
+  descriptor: {
+    service: svc,
+    input: {
+      recoveryPointId: 0,
+      namespaceName: 0,
+      workgroupName: 0,
+      maintainIntegration: 0,
+    },
+    output: { namespace: o_Namespace },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -2627,7 +2852,20 @@ export const restoreFromSnapshot: API.OperationMethod<
   RestoreFromSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { namespace: o_Namespace } },
+  descriptor: {
+    service: svc,
+    input: {
+      namespaceName: 0,
+      workgroupName: 0,
+      snapshotName: 0,
+      snapshotArn: 0,
+      ownerAccount: 0,
+      manageAdminPassword: 0,
+      adminPasswordSecretKmsKeyId: 0,
+      maintainIntegration: 0,
+    },
+    output: { namespace: o_Namespace },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -2657,6 +2895,18 @@ export const restoreTableFromRecoveryPoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      namespaceName: 0,
+      workgroupName: 0,
+      recoveryPointId: 0,
+      sourceDatabaseName: 0,
+      sourceSchemaName: 0,
+      sourceTableName: 0,
+      targetDatabaseName: 0,
+      targetSchemaName: 0,
+      newTableName: 0,
+      activateCaseSensitiveIdentifier: 0,
+    },
     output: { tableRestoreStatus: o_TableRestoreStatus },
   },
   errors: [
@@ -2687,6 +2937,18 @@ export const restoreTableFromSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      namespaceName: 0,
+      workgroupName: 0,
+      snapshotName: 0,
+      sourceDatabaseName: 0,
+      sourceSchemaName: 0,
+      sourceTableName: 0,
+      targetDatabaseName: 0,
+      targetSchemaName: 0,
+      newTableName: 0,
+      activateCaseSensitiveIdentifier: 0,
+    },
     output: { tableRestoreStatus: o_TableRestoreStatus },
   },
   errors: [
@@ -2716,7 +2978,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: D.list(i_Tag) } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -2744,7 +3006,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -2775,6 +3037,11 @@ export const updateCustomDomainAssociation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      workgroupName: 0,
+      customDomainName: 0,
+      customDomainCertificateArn: 0,
+    },
     output: { customDomainCertificateExpiryTime: D.ts },
   },
   errors: [
@@ -2806,7 +3073,11 @@ export const updateEndpointAccess: API.OperationMethod<
   UpdateEndpointAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { endpoint: o_EndpointAccess } },
+  descriptor: {
+    service: svc,
+    input: { endpointName: 0, vpcSecurityGroupIds: 0 },
+    output: { endpoint: o_EndpointAccess },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2835,7 +3106,17 @@ export const updateLakehouseConfiguration: API.OperationMethod<
   UpdateLakehouseConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      namespaceName: 0,
+      lakehouseRegistration: 0,
+      catalogName: 0,
+      lakehouseIdcRegistration: 0,
+      lakehouseIdcApplicationArn: 0,
+      dryRun: 0,
+    },
+  },
   errors: [
     ConflictException,
     DryRunException,
@@ -2865,7 +3146,26 @@ export const updateNamespace: API.OperationMethod<
   UpdateNamespaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { namespace: o_Namespace } },
+  descriptor: {
+    service: svc,
+    input: {
+      namespaceName: 0,
+      adminUserPassword: 0,
+      adminUsername: 0,
+      kmsKeyId: 0,
+      defaultIamRoleArn: 0,
+      iamRoles: 0,
+      logExports: 0,
+      manageAdminPassword: 0,
+      adminPasswordSecretKmsKeyId: 0,
+      logDestinationType: 0,
+      s3TableAction: 0,
+      s3TableNames: 0,
+      s3TableKmsKeyId: 0,
+      s3TableGranularity: 0,
+    },
+    output: { namespace: o_Namespace },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -2894,6 +3194,16 @@ export const updateScheduledAction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      scheduledActionName: 0,
+      targetAction: i_TargetAction,
+      schedule: i_Schedule,
+      roleArn: 0,
+      enabled: 0,
+      scheduledActionDescription: 0,
+      startTime: 0,
+      endTime: 0,
+    },
     output: { scheduledAction: o_ScheduledActionResponse },
   },
   errors: [
@@ -2922,7 +3232,11 @@ export const updateSnapshot: API.OperationMethod<
   UpdateSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { snapshot: o_Snapshot } },
+  descriptor: {
+    service: svc,
+    input: { snapshotName: 0, retentionPeriod: 0 },
+    output: { snapshot: o_Snapshot },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -2950,7 +3264,10 @@ export const updateSnapshotCopyConfiguration: API.OperationMethod<
   UpdateSnapshotCopyConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { snapshotCopyConfigurationId: 0, snapshotRetentionPeriod: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2978,7 +3295,10 @@ export const updateUsageLimit: API.OperationMethod<
   UpdateUsageLimitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { usageLimitId: 0, amount: 0, breachAction: 0 },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -3017,7 +3337,25 @@ export const updateWorkgroup: API.OperationMethod<
   UpdateWorkgroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { workgroup: o_Workgroup } },
+  descriptor: {
+    service: svc,
+    input: {
+      workgroupName: 0,
+      baseCapacity: 0,
+      enhancedVpcRouting: 0,
+      configParameters: D.list(i_ConfigParameter),
+      publiclyAccessible: 0,
+      subnetIds: 0,
+      securityGroupIds: 0,
+      port: 0,
+      maxCapacity: 0,
+      ipAddressType: 0,
+      pricePerformanceTarget: i_PerformanceTarget,
+      trackName: 0,
+      extraComputeForAutomaticOptimization: 0,
+    },
+    output: { workgroup: o_Workgroup },
+  },
   errors: [
     ConflictException,
     InsufficientCapacityException,
@@ -3031,6 +3369,21 @@ export const updateWorkgroup: API.OperationMethod<
   operationName: "UpdateWorkgroup",
 })) as any;
 
+const i_ConfigParameter: D.LazyStruct = () => ({
+  parameterKey: 0,
+  parameterValue: 0,
+});
+const i_PerformanceTarget: D.LazyStruct = () => ({ status: 0, level: 0 });
+const i_Schedule: D.LazyStruct = () => ({ at: 0, cron: 0 });
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_TargetAction: D.LazyStruct = () => ({
+  createSnapshot: {
+    namespaceName: 0,
+    snapshotNamePrefix: 0,
+    retentionPeriod: 0,
+    tags: D.list(i_Tag),
+  },
+});
 const o_EndpointAccess: D.LazyStruct = () => ({ endpointCreateTime: D.ts });
 const o_Namespace: D.LazyStruct = () => ({
   adminUsername: D.secret,

@@ -203,6 +203,16 @@ export const getMedia: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getMedia",
+    input: {
+      StreamName: 0,
+      StreamARN: 0,
+      StartSelector: {
+        StartSelectorType: 0,
+        AfterFragmentNumber: 0,
+        StartTimestamp: 0,
+        ContinuationToken: 0,
+      },
+    },
     output: {
       ContentType: D.m({ header: "Content-Type" }),
       Payload: D.m({ payload: true, shape: D.stream }),

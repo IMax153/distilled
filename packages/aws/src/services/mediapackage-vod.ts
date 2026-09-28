@@ -669,6 +669,7 @@ export const configureLogs: API.OperationMethod<
         wire: "egressAccessLogs",
         shape: i_EgressAccessLogs,
       }),
+      Id: 0,
     },
     output: {
       Arn: D.m({ wire: "arn" }),
@@ -988,7 +989,7 @@ export const deleteAsset: API.OperationMethod<
   DeleteAssetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /assets/{Id}" },
+  descriptor: { service: svc, http: "DELETE /assets/{Id}", input: { Id: 0 } },
   errors: [
     ForbiddenException,
     InternalServerErrorException,
@@ -1019,7 +1020,11 @@ export const deletePackagingConfiguration: API.OperationMethod<
   DeletePackagingConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /packaging_configurations/{Id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /packaging_configurations/{Id}",
+    input: { Id: 0 },
+  },
   errors: [
     ForbiddenException,
     InternalServerErrorException,
@@ -1050,7 +1055,11 @@ export const deletePackagingGroup: API.OperationMethod<
   DeletePackagingGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /packaging_groups/{Id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /packaging_groups/{Id}",
+    input: { Id: 0 },
+  },
   errors: [
     ForbiddenException,
     InternalServerErrorException,
@@ -1084,6 +1093,7 @@ export const describeAsset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /assets/{Id}",
+    input: { Id: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CreatedAt: D.m({ wire: "createdAt" }),
@@ -1132,6 +1142,7 @@ export const describePackagingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /packaging_configurations/{Id}",
+    input: { Id: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CmafPackage: D.m({ wire: "cmafPackage", shape: o_CmafPackage }),
@@ -1177,6 +1188,7 @@ export const describePackagingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /packaging_groups/{Id}",
+    input: { Id: 0 },
     output: {
       ApproximateAssetCount: D.m({ wire: "approximateAssetCount" }),
       Arn: D.m({ wire: "arn" }),
@@ -1406,6 +1418,7 @@ export const listTagsForResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
   },
   errors: [],
@@ -1427,7 +1440,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags/{ResourceArn}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: { ResourceArn: 0, Tags: D.m({ wire: "tags" }) },
     body: true,
   },
   errors: [],
@@ -1449,7 +1462,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [],
   protocol: AwsProtocol,
@@ -1479,6 +1492,7 @@ export const updatePackagingGroup: API.OperationMethod<
     http: "PUT /packaging_groups/{Id}",
     input: {
       Authorization: D.m({ wire: "authorization", shape: i_Authorization }),
+      Id: 0,
     },
     output: {
       ApproximateAssetCount: D.m({ wire: "approximateAssetCount" }),

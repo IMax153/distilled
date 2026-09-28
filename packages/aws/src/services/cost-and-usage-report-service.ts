@@ -1,5 +1,6 @@
 import type * as HttpClient from "effect/unstable/http/HttpClient";
 import * as API from "@distilled.cloud/core/api";
+import * as D from "@distilled.cloud/core/shape";
 import * as TE from "@distilled.cloud/core/error-class";
 import { AwsProtocol } from "../protocol.ts";
 import { awsJson1_1Protocol } from "../protocols/aws-json.ts";
@@ -259,7 +260,7 @@ export const deleteReportDefinition: API.OperationMethod<
   DeleteReportDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ReportName: 0 } },
   errors: [InternalErrorException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -279,7 +280,7 @@ export const describeReportDefinitions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [InternalErrorException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -305,7 +306,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ReportName: 0 } },
   errors: [
     InternalErrorException,
     ResourceNotFoundException,
@@ -330,7 +331,10 @@ export const modifyReportDefinition: API.OperationMethod<
   ModifyReportDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ReportName: 0, ReportDefinition: i_ReportDefinition },
+  },
   errors: [
     InternalErrorException,
     ValidationException,
@@ -358,7 +362,10 @@ export const putReportDefinition: API.OperationMethod<
   PutReportDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ReportDefinition: i_ReportDefinition, Tags: D.list(i_Tag) },
+  },
   errors: [
     DuplicateReportNameException,
     InternalErrorException,
@@ -386,7 +393,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ReportName: 0, Tags: D.list(i_Tag) } },
   errors: [
     InternalErrorException,
     ResourceNotFoundException,
@@ -411,7 +418,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ReportName: 0, TagKeys: 0 } },
   errors: [
     InternalErrorException,
     ResourceNotFoundException,
@@ -421,3 +428,20 @@ export const untagResource: API.OperationMethod<
   retry: Retry,
   operationName: "UntagResource",
 })) as any;
+
+const i_ReportDefinition: D.LazyStruct = () => ({
+  ReportName: 0,
+  TimeUnit: 0,
+  Format: 0,
+  Compression: 0,
+  AdditionalSchemaElements: 0,
+  S3Bucket: 0,
+  S3Prefix: 0,
+  S3Region: 0,
+  AdditionalArtifacts: 0,
+  RefreshClosedReports: 0,
+  ReportVersioning: 0,
+  BillingViewArn: 0,
+  ReportStatus: { lastDelivery: 0, lastStatus: 0 },
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });

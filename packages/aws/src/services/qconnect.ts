@@ -3198,6 +3198,7 @@ export const activateMessageTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/messageTemplates/{messageTemplateId}/activate",
+    input: { knowledgeBaseId: 0, messageTemplateId: 0, versionNumber: 0 },
     body: true,
   },
   errors: [
@@ -3233,7 +3234,16 @@ export const createAIAgent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/aiagents",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      assistantId: 0,
+      name: 0,
+      type: 0,
+      configuration: i_AIAgentConfiguration,
+      visibilityStatus: 0,
+      tags: 0,
+      description: 0,
+    },
     output: { aiAgent: o_AIAgentData },
     body: true,
   },
@@ -3272,7 +3282,12 @@ export const createAIAgentVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/aiagents/{aiAgentId}/versions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      assistantId: 0,
+      aiAgentId: 0,
+      modifiedTime: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { aiAgent: o_AIAgentData },
     body: true,
   },
@@ -3311,7 +3326,23 @@ export const createAIGuardrail: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/aiguardrails",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      assistantId: 0,
+      name: 0,
+      blockedInputMessaging: 0,
+      blockedOutputsMessaging: 0,
+      visibilityStatus: 0,
+      description: 0,
+      topicPolicyConfig: i_AIGuardrailTopicPolicyConfig,
+      contentPolicyConfig: i_AIGuardrailContentPolicyConfig,
+      wordPolicyConfig: i_AIGuardrailWordPolicyConfig,
+      sensitiveInformationPolicyConfig:
+        i_AIGuardrailSensitiveInformationPolicyConfig,
+      contextualGroundingPolicyConfig:
+        i_AIGuardrailContextualGroundingPolicyConfig,
+      tags: 0,
+    },
     output: { aiGuardrail: o_AIGuardrailData },
     body: true,
   },
@@ -3350,7 +3381,12 @@ export const createAIGuardrailVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/aiguardrails/{aiGuardrailId}/versions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      assistantId: 0,
+      aiGuardrailId: 0,
+      modifiedTime: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { aiGuardrail: o_AIGuardrailData },
     body: true,
   },
@@ -3389,7 +3425,20 @@ export const createAIPrompt: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/aiprompts",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      assistantId: 0,
+      name: 0,
+      type: 0,
+      templateConfiguration: i_AIPromptTemplateConfiguration,
+      visibilityStatus: 0,
+      templateType: 0,
+      modelId: 0,
+      apiFormat: 0,
+      tags: 0,
+      description: 0,
+      inferenceConfiguration: i_AIPromptInferenceConfiguration,
+    },
     output: { aiPrompt: o_AIPromptData },
     body: true,
   },
@@ -3428,7 +3477,12 @@ export const createAIPromptVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/aiprompts/{aiPromptId}/versions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      assistantId: 0,
+      aiPromptId: 0,
+      modifiedTime: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { aiPrompt: o_AIPromptData },
     body: true,
   },
@@ -3465,7 +3519,14 @@ export const createAssistant: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      name: 0,
+      type: 0,
+      description: 0,
+      tags: 0,
+      serverSideEncryptionConfiguration: i_ServerSideEncryptionConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -3499,7 +3560,19 @@ export const createAssistantAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/associations",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      assistantId: 0,
+      associationType: 0,
+      association: {
+        knowledgeBaseId: 0,
+        externalBedrockKnowledgeBaseConfig: {
+          bedrockKnowledgeBaseArn: 0,
+          accessRoleArn: 0,
+        },
+      },
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -3534,7 +3607,16 @@ export const createContent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/contents",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      knowledgeBaseId: 0,
+      name: 0,
+      title: 0,
+      overrideLinkOutUri: 0,
+      metadata: 0,
+      uploadId: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { content: o_ContentData },
     body: true,
   },
@@ -3582,7 +3664,14 @@ export const createContentAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/contents/{contentId}/associations",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      knowledgeBaseId: 0,
+      contentId: 0,
+      associationType: 0,
+      association: { amazonConnectGuideAssociation: { flowId: 0 } },
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -3630,7 +3719,52 @@ export const createKnowledgeBase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      name: 0,
+      knowledgeBaseType: 0,
+      sourceConfiguration: {
+        appIntegrations: { appIntegrationArn: 0, objectFields: 0 },
+        managedSourceConfiguration: {
+          webCrawlerConfiguration: {
+            urlConfiguration: { seedUrls: D.list({ url: 0 }) },
+            crawlerLimits: { rateLimit: 0 },
+            inclusionFilters: 0,
+            exclusionFilters: 0,
+            scope: 0,
+          },
+        },
+      },
+      renderingConfiguration: { templateUri: 0 },
+      vectorIngestionConfiguration: {
+        chunkingConfiguration: {
+          chunkingStrategy: 0,
+          fixedSizeChunkingConfiguration: {
+            maxTokens: 0,
+            overlapPercentage: 0,
+          },
+          hierarchicalChunkingConfiguration: {
+            levelConfigurations: D.list({ maxTokens: 0 }),
+            overlapTokens: 0,
+          },
+          semanticChunkingConfiguration: {
+            maxTokens: 0,
+            bufferSize: 0,
+            breakpointPercentileThreshold: 0,
+          },
+        },
+        parsingConfiguration: {
+          parsingStrategy: 0,
+          bedrockFoundationModelConfiguration: {
+            modelArn: 0,
+            parsingPrompt: { parsingPromptText: 0 },
+          },
+        },
+      },
+      serverSideEncryptionConfiguration: i_ServerSideEncryptionConfiguration,
+      description: 0,
+      tags: 0,
+    },
     output: { knowledgeBase: o_KnowledgeBaseData },
     body: true,
   },
@@ -3666,7 +3800,19 @@ export const createMessageTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/messageTemplates",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      knowledgeBaseId: 0,
+      name: 0,
+      content: i_MessageTemplateContentProvider,
+      description: 0,
+      channelSubtype: 0,
+      language: 0,
+      sourceConfiguration: i_MessageTemplateSourceConfiguration,
+      defaultAttributes: i_MessageTemplateAttributes,
+      groupingConfiguration: i_GroupingConfiguration,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { messageTemplate: o_MessageTemplateData },
     body: true,
   },
@@ -3704,6 +3850,14 @@ export const createMessageTemplateAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/messageTemplates/{messageTemplateId}/attachments",
+    input: {
+      knowledgeBaseId: 0,
+      messageTemplateId: 0,
+      contentDisposition: 0,
+      name: 0,
+      body: 0,
+      clientToken: 0,
+    },
     output: { attachment: o_MessageTemplateAttachment },
     body: true,
   },
@@ -3741,6 +3895,11 @@ export const createMessageTemplateVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/messageTemplates/{messageTemplateId}/versions",
+    input: {
+      knowledgeBaseId: 0,
+      messageTemplateId: 0,
+      messageTemplateContentSha256: 0,
+    },
     output: { messageTemplate: o_ExtendedMessageTemplateData },
     body: true,
   },
@@ -3777,7 +3936,20 @@ export const createQuickResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/quickResponses",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      knowledgeBaseId: 0,
+      name: 0,
+      content: i_QuickResponseDataProvider,
+      contentType: 0,
+      groupingConfiguration: i_GroupingConfiguration,
+      description: 0,
+      shortcutKey: 0,
+      isActive: 0,
+      channels: 0,
+      language: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { quickResponse: o_QuickResponseData },
     body: true,
   },
@@ -3814,7 +3986,18 @@ export const createSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/sessions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      assistantId: 0,
+      name: 0,
+      description: 0,
+      tags: 0,
+      tagFilter: i_TagFilter,
+      aiAgentConfiguration: D.map(i_AIAgentConfigurationData),
+      contactArn: 0,
+      orchestratorConfigurationList: D.list(i_OrchestratorConfigurationEntry),
+      removeOrchestratorConfigurationList: 0,
+    },
     body: true,
   },
   errors: [
@@ -3849,6 +4032,7 @@ export const deactivateMessageTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/messageTemplates/{messageTemplateId}/deactivate",
+    input: { knowledgeBaseId: 0, messageTemplateId: 0, versionNumber: 0 },
     body: true,
   },
   errors: [
@@ -3882,6 +4066,7 @@ export const deleteAIAgent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /assistants/{assistantId}/aiagents/{aiAgentId}",
+    input: { assistantId: 0, aiAgentId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3915,6 +4100,7 @@ export const deleteAIAgentVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /assistants/{assistantId}/aiagents/{aiAgentId}/versions/{versionNumber}",
+    input: { assistantId: 0, aiAgentId: 0, versionNumber: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3949,6 +4135,7 @@ export const deleteAIGuardrail: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /assistants/{assistantId}/aiguardrails/{aiGuardrailId}",
+    input: { assistantId: 0, aiGuardrailId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3983,6 +4170,7 @@ export const deleteAIGuardrailVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /assistants/{assistantId}/aiguardrails/{aiGuardrailId}/versions/{versionNumber}",
+    input: { assistantId: 0, aiGuardrailId: 0, versionNumber: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4016,6 +4204,7 @@ export const deleteAIPrompt: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /assistants/{assistantId}/aiprompts/{aiPromptId}",
+    input: { assistantId: 0, aiPromptId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4049,6 +4238,7 @@ export const deleteAIPromptVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /assistants/{assistantId}/aiprompts/{aiPromptId}/versions/{versionNumber}",
+    input: { assistantId: 0, aiPromptId: 0, versionNumber: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4078,7 +4268,11 @@ export const deleteAssistant: API.OperationMethod<
   DeleteAssistantError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /assistants/{assistantId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /assistants/{assistantId}",
+    input: { assistantId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -4108,6 +4302,7 @@ export const deleteAssistantAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /assistants/{assistantId}/associations/{assistantAssociationId}",
+    input: { assistantAssociationId: 0, assistantId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4139,6 +4334,7 @@ export const deleteContent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /knowledgeBases/{knowledgeBaseId}/contents/{contentId}",
+    input: { knowledgeBaseId: 0, contentId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4172,6 +4368,7 @@ export const deleteContentAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /knowledgeBases/{knowledgeBaseId}/contents/{contentId}/associations/{contentAssociationId}",
+    input: { knowledgeBaseId: 0, contentId: 0, contentAssociationId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4203,6 +4400,7 @@ export const deleteImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /knowledgeBases/{knowledgeBaseId}/importJobs/{importJobId}",
+    input: { knowledgeBaseId: 0, importJobId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4237,6 +4435,7 @@ export const deleteKnowledgeBase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /knowledgeBases/{knowledgeBaseId}",
+    input: { knowledgeBaseId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4269,6 +4468,7 @@ export const deleteMessageTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /knowledgeBases/{knowledgeBaseId}/messageTemplates/{messageTemplateId}",
+    input: { knowledgeBaseId: 0, messageTemplateId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4301,6 +4501,7 @@ export const deleteMessageTemplateAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /knowledgeBases/{knowledgeBaseId}/messageTemplates/{messageTemplateId}/attachments/{attachmentId}",
+    input: { knowledgeBaseId: 0, messageTemplateId: 0, attachmentId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4332,6 +4533,7 @@ export const deleteQuickResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /knowledgeBases/{knowledgeBaseId}/quickResponses/{quickResponseId}",
+    input: { knowledgeBaseId: 0, quickResponseId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4363,6 +4565,7 @@ export const getAIAgent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /assistants/{assistantId}/aiagents/{aiAgentId}",
+    input: { assistantId: 0, aiAgentId: 0 },
     output: { aiAgent: o_AIAgentData },
   },
   errors: [
@@ -4396,6 +4599,7 @@ export const getAIGuardrail: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /assistants/{assistantId}/aiguardrails/{aiGuardrailId}",
+    input: { assistantId: 0, aiGuardrailId: 0 },
     output: { aiGuardrail: o_AIGuardrailData },
   },
   errors: [
@@ -4429,6 +4633,7 @@ export const getAIPrompt: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /assistants/{assistantId}/aiprompts/{aiPromptId}",
+    input: { assistantId: 0, aiPromptId: 0 },
     output: { aiPrompt: o_AIPromptData },
   },
   errors: [
@@ -4458,7 +4663,11 @@ export const getAssistant: API.OperationMethod<
   GetAssistantError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /assistants/{assistantId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /assistants/{assistantId}",
+    input: { assistantId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -4488,6 +4697,7 @@ export const getAssistantAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /assistants/{assistantId}/associations/{assistantAssociationId}",
+    input: { assistantAssociationId: 0, assistantId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4518,6 +4728,7 @@ export const getContent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /knowledgeBases/{knowledgeBaseId}/contents/{contentId}",
+    input: { contentId: 0, knowledgeBaseId: 0 },
     output: { content: o_ContentData },
   },
   errors: [
@@ -4551,6 +4762,7 @@ export const getContentAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /knowledgeBases/{knowledgeBaseId}/contents/{contentId}/associations/{contentAssociationId}",
+    input: { knowledgeBaseId: 0, contentId: 0, contentAssociationId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4581,6 +4793,7 @@ export const getContentSummary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /knowledgeBases/{knowledgeBaseId}/contents/{contentId}/summary",
+    input: { contentId: 0, knowledgeBaseId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4610,6 +4823,7 @@ export const getImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /knowledgeBases/{knowledgeBaseId}/importJobs/{importJobId}",
+    input: { importJobId: 0, knowledgeBaseId: 0 },
     output: { importJob: o_ImportJobData },
   },
   errors: [
@@ -4640,6 +4854,7 @@ export const getKnowledgeBase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /knowledgeBases/{knowledgeBaseId}",
+    input: { knowledgeBaseId: 0 },
     output: { knowledgeBase: o_KnowledgeBaseData },
   },
   errors: [
@@ -4672,6 +4887,7 @@ export const getMessageTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /knowledgeBases/{knowledgeBaseId}/messageTemplates/{messageTemplateId}",
+    input: { messageTemplateId: 0, knowledgeBaseId: 0 },
     output: { messageTemplate: o_ExtendedMessageTemplateData },
   },
   errors: [
@@ -4704,7 +4920,11 @@ export const getNextMessage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /assistants/{assistantId}/sessions/{sessionId}/messages/next",
-    input: { nextMessageToken: D.m({ query: "nextMessageToken" }) },
+    input: {
+      assistantId: 0,
+      sessionId: 0,
+      nextMessageToken: D.m({ query: "nextMessageToken" }),
+    },
     output: {
       response: o_MessageOutput,
       conversationSessionData: D.list(o_RuntimeSessionData),
@@ -4739,6 +4959,7 @@ export const getQuickResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /knowledgeBases/{knowledgeBaseId}/quickResponses/{quickResponseId}",
+    input: { quickResponseId: 0, knowledgeBaseId: 0 },
     output: { quickResponse: o_QuickResponseData },
   },
   errors: [
@@ -4772,6 +4993,8 @@ export const getRecommendations: API.OperationMethod<
     service: svc,
     http: "GET /assistants/{assistantId}/sessions/{sessionId}/recommendations",
     input: {
+      assistantId: 0,
+      sessionId: 0,
       maxResults: D.m({ query: "maxResults" }),
       waitTimeSeconds: D.m({ query: "waitTimeSeconds" }),
       nextChunkToken: D.m({ query: "nextChunkToken" }),
@@ -4810,6 +5033,7 @@ export const getSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /assistants/{assistantId}/sessions/{sessionId}",
+    input: { assistantId: 0, sessionId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4843,6 +5067,7 @@ export const listAIAgents: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /assistants/{assistantId}/aiagents",
     input: {
+      assistantId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       origin: D.m({ query: "origin" }),
@@ -4888,6 +5113,8 @@ export const listAIAgentVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /assistants/{assistantId}/aiagents/{aiAgentId}/versions",
     input: {
+      assistantId: 0,
+      aiAgentId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       origin: D.m({ query: "origin" }),
@@ -4935,6 +5162,7 @@ export const listAIGuardrails: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /assistants/{assistantId}/aiguardrails",
     input: {
+      assistantId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -4979,6 +5207,8 @@ export const listAIGuardrailVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /assistants/{assistantId}/aiguardrails/{aiGuardrailId}/versions",
     input: {
+      assistantId: 0,
+      aiGuardrailId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -5027,6 +5257,7 @@ export const listAIPrompts: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /assistants/{assistantId}/aiprompts",
     input: {
+      assistantId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       origin: D.m({ query: "origin" }),
@@ -5072,6 +5303,8 @@ export const listAIPromptVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /assistants/{assistantId}/aiprompts/{aiPromptId}/versions",
     input: {
+      assistantId: 0,
+      aiPromptId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       origin: D.m({ query: "origin" }),
@@ -5119,6 +5352,7 @@ export const listAssistantAssociations: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      assistantId: 0,
     },
   },
   errors: [
@@ -5196,6 +5430,8 @@ export const listContentAssociations: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      knowledgeBaseId: 0,
+      contentId: 0,
     },
   },
   errors: [
@@ -5236,6 +5472,7 @@ export const listContents: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      knowledgeBaseId: 0,
     },
   },
   errors: [
@@ -5274,6 +5511,7 @@ export const listImportJobs: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      knowledgeBaseId: 0,
     },
     output: {
       importJobSummaries: D.list({ createdTime: D.ts, lastModifiedTime: D.ts }),
@@ -5349,6 +5587,8 @@ export const listMessages: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /assistants/{assistantId}/sessions/{sessionId}/messages",
     input: {
+      assistantId: 0,
+      sessionId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       filter: D.m({ query: "filter" }),
@@ -5393,6 +5633,7 @@ export const listMessageTemplates: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      knowledgeBaseId: 0,
     },
     output: {
       messageTemplateSummaries: D.list({
@@ -5439,6 +5680,8 @@ export const listMessageTemplateVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /knowledgeBases/{knowledgeBaseId}/messageTemplates/{messageTemplateId}/versions",
     input: {
+      knowledgeBaseId: 0,
+      messageTemplateId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -5483,6 +5726,7 @@ export const listModels: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /assistants/{assistantId}/models",
     input: {
+      assistantId: 0,
       aiPromptType: D.m({ query: "aiPromptType" }),
       modelLifecycle: D.m({ query: "modelLifecycle" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -5535,6 +5779,7 @@ export const listQuickResponses: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      knowledgeBaseId: 0,
     },
     output: {
       quickResponseSummaries: D.list({
@@ -5579,6 +5824,8 @@ export const listSpans: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /assistants/{assistantId}/sessions/{sessionId}/spans",
     input: {
+      assistantId: 0,
+      sessionId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -5620,7 +5867,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5644,6 +5895,7 @@ export const notifyRecommendationsReceived: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/sessions/{sessionId}/recommendations/notify",
+    input: { assistantId: 0, sessionId: 0, recommendationIds: 0 },
     body: true,
   },
   errors: [
@@ -5673,6 +5925,12 @@ export const putFeedback: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /assistants/{assistantId}/feedback",
+    input: {
+      assistantId: 0,
+      targetId: 0,
+      targetType: 0,
+      contentFeedback: { generativeContentFeedbackData: { relevance: 0 } },
+    },
     body: true,
   },
   errors: [
@@ -5706,6 +5964,20 @@ export const queryAssistant: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/query",
+    input: {
+      assistantId: 0,
+      queryText: 0,
+      nextToken: 0,
+      maxResults: 0,
+      sessionId: 0,
+      queryCondition: D.list({ single: { field: 0, comparator: 0, value: 0 } }),
+      queryInputData: {
+        queryTextInputData: { text: 0 },
+        intentInputData: { intentId: 0 },
+        caseSummarizationInputData: { caseArn: 0 },
+      },
+      overrideKnowledgeBaseSearchType: 0,
+    },
     output: { results: D.list({ document: o_Document, data: o_DataSummary }) },
     body: true,
   },
@@ -5745,6 +6017,7 @@ export const removeAssistantAIAgent: API.OperationMethod<
     service: svc,
     http: "DELETE /assistants/{assistantId}/aiagentConfiguration",
     input: {
+      assistantId: 0,
       aiAgentType: D.m({ query: "aiAgentType" }),
       orchestratorUseCase: D.m({ query: "orchestratorUseCase" }),
     },
@@ -5777,6 +6050,7 @@ export const removeKnowledgeBaseTemplateUri: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /knowledgeBases/{knowledgeBaseId}/templateUri",
+    input: { knowledgeBaseId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5806,6 +6080,11 @@ export const renderMessageTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/messageTemplates/{messageTemplateId}/render",
+    input: {
+      knowledgeBaseId: 0,
+      messageTemplateId: 0,
+      attributes: i_MessageTemplateAttributes,
+    },
     output: {
       content: o_MessageTemplateContentProvider,
       sourceConfigurationSummary: o_MessageTemplateSourceConfigurationSummary,
@@ -5846,6 +6125,16 @@ export const retrieve: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/retrieve",
+    input: {
+      assistantId: 0,
+      retrievalConfiguration: {
+        knowledgeSource: { assistantAssociationIds: 0 },
+        filter: i_RetrievalFilterConfiguration,
+        numberOfResults: 0,
+        overrideKnowledgeBaseSearchType: 0,
+      },
+      retrievalQuery: 0,
+    },
     output: { results: D.list({ sourceId: D.secret, contentText: D.secret }) },
     body: true,
   },
@@ -5886,6 +6175,8 @@ export const searchContent: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      knowledgeBaseId: 0,
+      searchExpression: i_SearchExpression,
     },
     body: true,
   },
@@ -5927,6 +6218,23 @@ export const searchMessageTemplates: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/search/messageTemplates",
     input: {
+      knowledgeBaseId: 0,
+      searchExpression: {
+        queries: D.list({
+          name: 0,
+          values: 0,
+          operator: 0,
+          allowFuzziness: 0,
+          priority: 0,
+        }),
+        filters: D.list({
+          name: 0,
+          values: 0,
+          operator: 0,
+          includeNoExistence: 0,
+        }),
+        orderOnField: { name: 0, order: 0 },
+      },
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -5980,8 +6288,26 @@ export const searchQuickResponses: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/search/quickResponses",
     input: {
+      knowledgeBaseId: 0,
+      searchExpression: {
+        queries: D.list({
+          name: 0,
+          values: 0,
+          operator: 0,
+          allowFuzziness: 0,
+          priority: 0,
+        }),
+        filters: D.list({
+          name: 0,
+          values: 0,
+          operator: 0,
+          includeNoExistence: 0,
+        }),
+        orderOnField: { name: 0, order: 0 },
+      },
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      attributes: 0,
     },
     output: {
       results: D.list({
@@ -6034,6 +6360,8 @@ export const searchSessions: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      assistantId: 0,
+      searchExpression: i_SearchExpression,
     },
     body: true,
   },
@@ -6076,7 +6404,47 @@ export const sendMessage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/sessions/{sessionId}/message",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      assistantId: 0,
+      sessionId: 0,
+      type: 0,
+      message: {
+        value: {
+          text: {
+            value: 0,
+            citations: D.list({
+              contentId: 0,
+              title: 0,
+              knowledgeBaseId: 0,
+              citationSpan: { beginOffsetInclusive: 0, endOffsetExclusive: 0 },
+              sourceURL: 0,
+              referenceType: 0,
+            }),
+            aiGuardrailAssessment: { blocked: 0 },
+          },
+          toolUseResult: {
+            toolUseId: 0,
+            toolName: 0,
+            toolResult: 0,
+            inputSchema: 0,
+          },
+        },
+      },
+      aiAgentId: 0,
+      conversationContext: {
+        selfServiceConversationHistory: D.list({
+          turnNumber: 0,
+          inputTranscript: 0,
+          botResponse: 0,
+          timestamp: 0,
+        }),
+      },
+      configuration: { generateFillerMessage: 0, generateChunkedMessage: 0 },
+      clientToken: D.m({ idempotency: true }),
+      orchestratorUseCase: 0,
+      metadata: 0,
+      originRequestId: 0,
+    },
     body: true,
   },
   errors: [
@@ -6112,6 +6480,7 @@ export const startContentUpload: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/upload",
+    input: { knowledgeBaseId: 0, contentType: 0, presignedUrlTimeToLive: 0 },
     output: { url: D.secret, urlExpiry: D.ts },
     body: true,
   },
@@ -6148,7 +6517,17 @@ export const startImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/importJobs",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      knowledgeBaseId: 0,
+      importJobType: 0,
+      uploadId: 0,
+      clientToken: D.m({ idempotency: true }),
+      metadata: 0,
+      externalSourceConfiguration: {
+        source: 0,
+        configuration: { connectConfiguration: { instanceId: 0 } },
+      },
+    },
     output: { importJob: o_ImportJobData },
     body: true,
   },
@@ -6178,7 +6557,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [ResourceNotFoundException, TooManyTagsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6198,7 +6582,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -6226,7 +6610,14 @@ export const updateAIAgent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/aiagents/{aiAgentId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      assistantId: 0,
+      aiAgentId: 0,
+      visibilityStatus: 0,
+      configuration: i_AIAgentConfiguration,
+      description: 0,
+    },
     output: { aiAgent: o_AIAgentData },
     body: true,
   },
@@ -6263,7 +6654,22 @@ export const updateAIGuardrail: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/aiguardrails/{aiGuardrailId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      assistantId: 0,
+      aiGuardrailId: 0,
+      visibilityStatus: 0,
+      blockedInputMessaging: 0,
+      blockedOutputsMessaging: 0,
+      description: 0,
+      topicPolicyConfig: i_AIGuardrailTopicPolicyConfig,
+      contentPolicyConfig: i_AIGuardrailContentPolicyConfig,
+      wordPolicyConfig: i_AIGuardrailWordPolicyConfig,
+      sensitiveInformationPolicyConfig:
+        i_AIGuardrailSensitiveInformationPolicyConfig,
+      contextualGroundingPolicyConfig:
+        i_AIGuardrailContextualGroundingPolicyConfig,
+    },
     output: { aiGuardrail: o_AIGuardrailData },
     body: true,
   },
@@ -6300,7 +6706,16 @@ export const updateAIPrompt: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/aiprompts/{aiPromptId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      assistantId: 0,
+      aiPromptId: 0,
+      visibilityStatus: 0,
+      templateConfiguration: i_AIPromptTemplateConfiguration,
+      description: 0,
+      modelId: 0,
+      inferenceConfiguration: i_AIPromptInferenceConfiguration,
+    },
     output: { aiPrompt: o_AIPromptData },
     body: true,
   },
@@ -6335,6 +6750,12 @@ export const updateAssistantAIAgent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/aiagentConfiguration",
+    input: {
+      assistantId: 0,
+      aiAgentType: 0,
+      configuration: i_AIAgentConfigurationData,
+      orchestratorUseCase: 0,
+    },
     body: true,
   },
   errors: [
@@ -6367,6 +6788,16 @@ export const updateContent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/contents/{contentId}",
+    input: {
+      knowledgeBaseId: 0,
+      contentId: 0,
+      revisionId: 0,
+      title: 0,
+      overrideLinkOutUri: 0,
+      removeOverrideLinkOutUri: 0,
+      metadata: 0,
+      uploadId: 0,
+    },
     output: { content: o_ContentData },
     body: true,
   },
@@ -6399,6 +6830,7 @@ export const updateKnowledgeBaseTemplateUri: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/templateUri",
+    input: { knowledgeBaseId: 0, templateUri: 0 },
     output: { knowledgeBase: o_KnowledgeBaseData },
     body: true,
   },
@@ -6431,6 +6863,14 @@ export const updateMessageTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/messageTemplates/{messageTemplateId}",
+    input: {
+      knowledgeBaseId: 0,
+      messageTemplateId: 0,
+      content: i_MessageTemplateContentProvider,
+      language: 0,
+      sourceConfiguration: i_MessageTemplateSourceConfiguration,
+      defaultAttributes: i_MessageTemplateAttributes,
+    },
     output: { messageTemplate: o_MessageTemplateData },
     body: true,
   },
@@ -6465,6 +6905,13 @@ export const updateMessageTemplateMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/messageTemplates/{messageTemplateId}/metadata",
+    input: {
+      knowledgeBaseId: 0,
+      messageTemplateId: 0,
+      name: 0,
+      description: 0,
+      groupingConfiguration: i_GroupingConfiguration,
+    },
     output: { messageTemplate: o_MessageTemplateData },
     body: true,
   },
@@ -6500,6 +6947,22 @@ export const updateQuickResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/quickResponses/{quickResponseId}",
+    input: {
+      knowledgeBaseId: 0,
+      quickResponseId: 0,
+      name: 0,
+      content: i_QuickResponseDataProvider,
+      contentType: 0,
+      groupingConfiguration: i_GroupingConfiguration,
+      removeGroupingConfiguration: 0,
+      description: 0,
+      removeDescription: 0,
+      shortcutKey: 0,
+      removeShortcutKey: 0,
+      isActive: 0,
+      channels: 0,
+      language: 0,
+    },
     output: { quickResponse: o_QuickResponseData },
     body: true,
   },
@@ -6534,6 +6997,15 @@ export const updateSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/sessions/{sessionId}",
+    input: {
+      assistantId: 0,
+      sessionId: 0,
+      description: 0,
+      tagFilter: i_TagFilter,
+      aiAgentConfiguration: D.map(i_AIAgentConfigurationData),
+      orchestratorConfigurationList: D.list(i_OrchestratorConfigurationEntry),
+      removeOrchestratorConfigurationList: 0,
+    },
     body: true,
   },
   errors: [
@@ -6565,6 +7037,12 @@ export const updateSessionData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /assistants/{assistantId}/sessions/{sessionId}/data",
+    input: {
+      assistantId: 0,
+      sessionId: 0,
+      namespace: 0,
+      data: D.list({ key: 0, value: { stringValue: 0 } }),
+    },
     output: { data: D.list(o_RuntimeSessionData) },
     body: true,
   },
@@ -6579,6 +7057,274 @@ export const updateSessionData: API.OperationMethod<
   operationName: "UpdateSessionData",
 })) as any;
 
+const i_AIAgentConfiguration: D.LazyStruct = () => ({
+  manualSearchAIAgentConfiguration: {
+    answerGenerationAIPromptId: 0,
+    answerGenerationAIGuardrailId: 0,
+    associationConfigurations: D.list(i_AssociationConfiguration),
+    locale: 0,
+  },
+  answerRecommendationAIAgentConfiguration: {
+    intentLabelingGenerationAIPromptId: 0,
+    queryReformulationAIPromptId: 0,
+    answerGenerationAIPromptId: 0,
+    answerGenerationAIGuardrailId: 0,
+    associationConfigurations: D.list(i_AssociationConfiguration),
+    locale: 0,
+    suggestedMessages: 0,
+  },
+  selfServiceAIAgentConfiguration: {
+    selfServicePreProcessingAIPromptId: 0,
+    selfServiceAnswerGenerationAIPromptId: 0,
+    selfServiceAIGuardrailId: 0,
+    associationConfigurations: D.list(i_AssociationConfiguration),
+  },
+  emailResponseAIAgentConfiguration: {
+    emailResponseAIPromptId: 0,
+    emailQueryReformulationAIPromptId: 0,
+    locale: 0,
+    associationConfigurations: D.list(i_AssociationConfiguration),
+  },
+  emailOverviewAIAgentConfiguration: { emailOverviewAIPromptId: 0, locale: 0 },
+  emailGenerativeAnswerAIAgentConfiguration: {
+    emailGenerativeAnswerAIPromptId: 0,
+    emailQueryReformulationAIPromptId: 0,
+    locale: 0,
+    associationConfigurations: D.list(i_AssociationConfiguration),
+  },
+  orchestrationAIAgentConfiguration: {
+    orchestrationAIPromptId: 0,
+    orchestrationAIGuardrailId: 0,
+    toolConfigurations: D.list({
+      toolName: 0,
+      toolType: 0,
+      title: 0,
+      toolId: 0,
+      description: 0,
+      instruction: { instruction: 0, examples: 0 },
+      overrideInputValues: D.list({
+        jsonPath: 0,
+        value: { constant: { type: 0, value: 0 } },
+      }),
+      outputFilters: D.list({
+        jsonPath: 0,
+        outputConfiguration: {
+          outputVariableNameOverride: 0,
+          sessionDataNamespace: 0,
+        },
+      }),
+      inputSchema: 0,
+      outputSchema: 0,
+      annotations: { title: 0, destructiveHint: 0 },
+      userInteractionConfiguration: { isUserConfirmationRequired: 0 },
+    }),
+    connectInstanceArn: 0,
+    locale: 0,
+  },
+  noteTakingAIAgentConfiguration: {
+    noteTakingAIPromptId: 0,
+    noteTakingAIGuardrailId: 0,
+    locale: 0,
+  },
+  caseSummarizationAIAgentConfiguration: {
+    caseSummarizationAIPromptId: 0,
+    caseSummarizationAIGuardrailId: 0,
+    locale: 0,
+  },
+});
+const i_AIAgentConfigurationData: D.LazyStruct = () => ({ aiAgentId: 0 });
+const i_AIGuardrailContentPolicyConfig: D.LazyStruct = () => ({
+  filtersConfig: D.list({ type: 0, inputStrength: 0, outputStrength: 0 }),
+});
+const i_AIGuardrailContextualGroundingPolicyConfig: D.LazyStruct = () => ({
+  filtersConfig: D.list({ type: 0, threshold: 0 }),
+});
+const i_AIGuardrailSensitiveInformationPolicyConfig: D.LazyStruct = () => ({
+  piiEntitiesConfig: D.list({ type: 0, action: 0 }),
+  regexesConfig: D.list({ name: 0, description: 0, pattern: 0, action: 0 }),
+});
+const i_AIGuardrailTopicPolicyConfig: D.LazyStruct = () => ({
+  topicsConfig: D.list({ name: 0, definition: 0, examples: 0, type: 0 }),
+});
+const i_AIGuardrailWordPolicyConfig: D.LazyStruct = () => ({
+  wordsConfig: D.list({ text: 0 }),
+  managedWordListsConfig: D.list({ type: 0 }),
+});
+const i_AIPromptInferenceConfiguration: D.LazyStruct = () => ({
+  temperature: 0,
+  topP: 0,
+  topK: 0,
+  maxTokensToSample: 0,
+});
+const i_AIPromptTemplateConfiguration: D.LazyStruct = () => ({
+  textFullAIPromptEditTemplateConfiguration: { text: 0 },
+});
+const i_GroupingConfiguration: D.LazyStruct = () => ({
+  criteria: 0,
+  values: 0,
+});
+const i_MessageTemplateAttributes: D.LazyStruct = () => ({
+  systemAttributes: {
+    name: 0,
+    customerEndpoint: i_SystemEndpointAttributes,
+    systemEndpoint: i_SystemEndpointAttributes,
+  },
+  agentAttributes: { firstName: 0, lastName: 0 },
+  customerProfileAttributes: {
+    profileId: 0,
+    profileARN: 0,
+    firstName: 0,
+    middleName: 0,
+    lastName: 0,
+    accountNumber: 0,
+    emailAddress: 0,
+    phoneNumber: 0,
+    additionalInformation: 0,
+    partyType: 0,
+    businessName: 0,
+    birthDate: 0,
+    gender: 0,
+    mobilePhoneNumber: 0,
+    homePhoneNumber: 0,
+    businessPhoneNumber: 0,
+    businessEmailAddress: 0,
+    address1: 0,
+    address2: 0,
+    address3: 0,
+    address4: 0,
+    city: 0,
+    county: 0,
+    country: 0,
+    postalCode: 0,
+    province: 0,
+    state: 0,
+    shippingAddress1: 0,
+    shippingAddress2: 0,
+    shippingAddress3: 0,
+    shippingAddress4: 0,
+    shippingCity: 0,
+    shippingCounty: 0,
+    shippingCountry: 0,
+    shippingPostalCode: 0,
+    shippingProvince: 0,
+    shippingState: 0,
+    mailingAddress1: 0,
+    mailingAddress2: 0,
+    mailingAddress3: 0,
+    mailingAddress4: 0,
+    mailingCity: 0,
+    mailingCounty: 0,
+    mailingCountry: 0,
+    mailingPostalCode: 0,
+    mailingProvince: 0,
+    mailingState: 0,
+    billingAddress1: 0,
+    billingAddress2: 0,
+    billingAddress3: 0,
+    billingAddress4: 0,
+    billingCity: 0,
+    billingCounty: 0,
+    billingCountry: 0,
+    billingPostalCode: 0,
+    billingProvince: 0,
+    billingState: 0,
+    custom: 0,
+  },
+  customAttributes: 0,
+});
+const i_MessageTemplateContentProvider: D.LazyStruct = () => ({
+  email: {
+    subject: 0,
+    body: {
+      plainText: i_MessageTemplateBodyContentProvider,
+      html: i_MessageTemplateBodyContentProvider,
+    },
+    headers: D.list({ name: 0, value: 0 }),
+  },
+  sms: { body: { plainText: i_MessageTemplateBodyContentProvider } },
+  whatsApp: { data: 0 },
+  push: {
+    adm: {
+      title: 0,
+      body: i_MessageTemplateBodyContentProvider,
+      action: 0,
+      sound: 0,
+      url: 0,
+      imageUrl: 0,
+      imageIconUrl: 0,
+      smallImageIconUrl: 0,
+      rawContent: i_MessageTemplateBodyContentProvider,
+    },
+    apns: {
+      title: 0,
+      body: i_MessageTemplateBodyContentProvider,
+      action: 0,
+      sound: 0,
+      url: 0,
+      mediaUrl: 0,
+      rawContent: i_MessageTemplateBodyContentProvider,
+    },
+    fcm: {
+      title: 0,
+      body: i_MessageTemplateBodyContentProvider,
+      action: 0,
+      sound: 0,
+      url: 0,
+      imageUrl: 0,
+      imageIconUrl: 0,
+      smallImageIconUrl: 0,
+      rawContent: i_MessageTemplateBodyContentProvider,
+    },
+    baidu: {
+      title: 0,
+      body: i_MessageTemplateBodyContentProvider,
+      action: 0,
+      sound: 0,
+      url: 0,
+      imageUrl: 0,
+      imageIconUrl: 0,
+      smallImageIconUrl: 0,
+      rawContent: i_MessageTemplateBodyContentProvider,
+    },
+  },
+});
+const i_MessageTemplateSourceConfiguration: D.LazyStruct = () => ({
+  whatsApp: { businessAccountId: 0, templateId: 0, components: 0 },
+});
+const i_OrchestratorConfigurationEntry: D.LazyStruct = () => ({
+  aiAgentId: 0,
+  orchestratorUseCase: 0,
+});
+const i_QuickResponseDataProvider: D.LazyStruct = () => ({ content: 0 });
+const i_RetrievalFilterConfiguration: D.LazyStruct = () => ({
+  andAll: D.list(i_RetrievalFilterConfiguration),
+  equals: i_FilterAttribute,
+  greaterThan: i_FilterAttribute,
+  greaterThanOrEquals: i_FilterAttribute,
+  in: i_FilterAttribute,
+  lessThan: i_FilterAttribute,
+  lessThanOrEquals: i_FilterAttribute,
+  listContains: i_FilterAttribute,
+  notEquals: i_FilterAttribute,
+  notIn: i_FilterAttribute,
+  orAll: D.list(i_RetrievalFilterConfiguration),
+  startsWith: i_FilterAttribute,
+  stringContains: i_FilterAttribute,
+});
+const i_SearchExpression: D.LazyStruct = () => ({
+  filters: D.list({ field: 0, operator: 0, value: 0 }),
+});
+const i_ServerSideEncryptionConfiguration: D.LazyStruct = () => ({
+  kmsKeyId: 0,
+});
+const i_TagFilter: D.LazyStruct = () => ({
+  tagCondition: i_TagCondition,
+  andConditions: D.list(i_TagCondition),
+  orConditions: D.list({
+    andConditions: D.list(i_TagCondition),
+    tagCondition: i_TagCondition,
+  }),
+});
 const o_AIAgentData: D.LazyStruct = () => ({
   configuration: o_AIAgentConfiguration,
   modifiedTime: D.ts,
@@ -6797,6 +7543,23 @@ const o_SpanMessageValue: D.LazyStruct = () => ({
   toolResult: { values: D.list(o_SpanMessageValue) },
   reasoning: { value: D.secret },
 });
+const i_AssociationConfiguration: D.LazyStruct = () => ({
+  associationId: 0,
+  associationType: 0,
+  associationConfigurationData: {
+    knowledgeBaseAssociationConfigurationData: {
+      contentTagFilter: i_TagFilter,
+      maxResults: 0,
+      overrideKnowledgeBaseSearchType: 0,
+    },
+  },
+});
+const i_FilterAttribute: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_MessageTemplateBodyContentProvider: D.LazyStruct = () => ({
+  content: 0,
+});
+const i_SystemEndpointAttributes: D.LazyStruct = () => ({ address: 0 });
+const i_TagCondition: D.LazyStruct = () => ({ key: 0, value: 0 });
 const o_AIAgentConfiguration: D.LazyStruct = () => ({
   answerRecommendationAIAgentConfiguration: {
     suggestedMessages: D.list(D.secret),

@@ -922,6 +922,7 @@ export const associatePhoneNumberWithUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/users/{UserId}?operation=associate-phone-number",
+    input: { AccountId: 0, UserId: 0, E164PhoneNumber: 0 },
     body: true,
   },
   errors: [
@@ -960,6 +961,7 @@ export const associateSigninDelegateGroupsWithAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}?operation=associate-signin-delegate-groups",
+    input: { AccountId: 0, SigninDelegateGroups: D.list({ GroupName: 0 }) },
     body: true,
   },
   errors: [
@@ -998,6 +1000,11 @@ export const batchCreateRoomMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/rooms/{RoomId}/memberships?operation=batch-create",
+    input: {
+      AccountId: 0,
+      RoomId: 0,
+      MembershipItemList: D.list({ MemberId: 0, Role: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -1039,6 +1046,7 @@ export const batchDeletePhoneNumber: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /phone-numbers?operation=batch-delete",
+    input: { PhoneNumberIds: 0 },
     body: true,
   },
   errors: [
@@ -1090,6 +1098,7 @@ export const batchSuspendUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/users?operation=suspend",
+    input: { AccountId: 0, UserIdList: 0 },
     body: true,
   },
   errors: [
@@ -1136,6 +1145,7 @@ export const batchUnsuspendUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/users?operation=unsuspend",
+    input: { AccountId: 0, UserIdList: 0 },
     body: true,
   },
   errors: [
@@ -1177,6 +1187,13 @@ export const batchUpdatePhoneNumber: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /phone-numbers?operation=batch-update",
+    input: {
+      UpdatePhoneNumberRequestItems: D.list({
+        PhoneNumberId: 0,
+        ProductType: 0,
+        CallingName: 0,
+      }),
+    },
     body: true,
   },
   errors: [
@@ -1214,6 +1231,15 @@ export const batchUpdateUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/users",
+    input: {
+      AccountId: 0,
+      UpdateUserRequestItems: D.list({
+        UserId: 0,
+        LicenseType: 0,
+        UserType: 0,
+        AlexaForBusinessMetadata: i_AlexaForBusinessMetadata,
+      }),
+    },
     body: true,
   },
   errors: [
@@ -1254,6 +1280,7 @@ export const createAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts",
+    input: { Name: 0 },
     output: { Account: o_Account },
     body: true,
   },
@@ -1293,6 +1320,7 @@ export const createBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/bots",
+    input: { AccountId: 0, DisplayName: 0, Domain: 0 },
     output: { Bot: o_Bot },
     body: true,
   },
@@ -1339,6 +1367,7 @@ export const createMeetingDialOut: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /meetings/{MeetingId}/dial-outs",
+    input: { MeetingId: 0, FromPhoneNumber: 0, ToPhoneNumber: 0, JoinToken: 0 },
     body: true,
   },
   errors: [
@@ -1379,6 +1408,7 @@ export const createPhoneNumberOrder: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /phone-number-orders",
+    input: { ProductType: 0, E164PhoneNumbers: 0 },
     output: { PhoneNumberOrder: o_PhoneNumberOrder },
     body: true,
   },
@@ -1419,7 +1449,11 @@ export const createRoom: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/rooms",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      AccountId: 0,
+      Name: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
     output: { Room: o_Room },
     body: true,
   },
@@ -1461,6 +1495,7 @@ export const createRoomMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/rooms/{RoomId}/memberships",
+    input: { AccountId: 0, RoomId: 0, MemberId: 0, Role: 0 },
     output: { RoomMembership: o_RoomMembership },
     body: true,
   },
@@ -1502,6 +1537,7 @@ export const createUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/users?operation=create",
+    input: { AccountId: 0, Username: 0, Email: 0, UserType: 0 },
     output: { User: o_User },
     body: true,
   },
@@ -1552,7 +1588,11 @@ export const deleteAccount: API.OperationMethod<
   DeleteAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /accounts/{AccountId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /accounts/{AccountId}",
+    input: { AccountId: 0 },
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -1588,6 +1628,7 @@ export const deleteEventsConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AccountId}/bots/{BotId}/events-configuration",
+    input: { AccountId: 0, BotId: 0 },
   },
   errors: [
     BadRequestException,
@@ -1626,7 +1667,11 @@ export const deletePhoneNumber: API.OperationMethod<
   DeletePhoneNumberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /phone-numbers/{PhoneNumberId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /phone-numbers/{PhoneNumberId}",
+    input: { PhoneNumberId: 0 },
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -1662,6 +1707,7 @@ export const deleteRoom: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AccountId}/rooms/{RoomId}",
+    input: { AccountId: 0, RoomId: 0 },
   },
   errors: [
     BadRequestException,
@@ -1698,6 +1744,7 @@ export const deleteRoomMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AccountId}/rooms/{RoomId}/memberships/{MemberId}",
+    input: { AccountId: 0, RoomId: 0, MemberId: 0 },
   },
   errors: [
     BadRequestException,
@@ -1734,6 +1781,7 @@ export const disassociatePhoneNumberFromUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/users/{UserId}?operation=disassociate-phone-number",
+    input: { AccountId: 0, UserId: 0 },
   },
   errors: [
     BadRequestException,
@@ -1770,6 +1818,7 @@ export const disassociateSigninDelegateGroupsFromAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}?operation=disassociate-signin-delegate-groups",
+    input: { AccountId: 0, GroupNames: 0 },
     body: true,
   },
   errors: [
@@ -1808,6 +1857,7 @@ export const getAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AccountId}",
+    input: { AccountId: 0 },
     output: { Account: o_Account },
   },
   errors: [
@@ -1844,7 +1894,11 @@ export const getAccountSettings: API.OperationMethod<
   GetAccountSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /accounts/{AccountId}/settings" },
+  descriptor: {
+    service: svc,
+    http: "GET /accounts/{AccountId}/settings",
+    input: { AccountId: 0 },
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -1880,6 +1934,7 @@ export const getBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AccountId}/bots/{BotId}",
+    input: { AccountId: 0, BotId: 0 },
     output: { Bot: o_Bot },
   },
   errors: [
@@ -1917,6 +1972,7 @@ export const getEventsConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AccountId}/bots/{BotId}/events-configuration",
+    input: { AccountId: 0, BotId: 0 },
     output: { EventsConfiguration: o_EventsConfiguration },
   },
   errors: [
@@ -1986,6 +2042,7 @@ export const getPhoneNumber: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /phone-numbers/{PhoneNumberId}",
+    input: { PhoneNumberId: 0 },
     output: { PhoneNumber: o_PhoneNumber },
   },
   errors: [
@@ -2024,6 +2081,7 @@ export const getPhoneNumberOrder: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /phone-number-orders/{PhoneNumberOrderId}",
+    input: { PhoneNumberOrderId: 0 },
     output: { PhoneNumberOrder: o_PhoneNumberOrder },
   },
   errors: [
@@ -2097,6 +2155,7 @@ export const getRetentionSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AccountId}/retention-settings",
+    input: { AccountId: 0 },
     output: { InitiateDeletionTimestamp: D.ts },
   },
   errors: [
@@ -2134,6 +2193,7 @@ export const getRoom: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AccountId}/rooms/{RoomId}",
+    input: { AccountId: 0, RoomId: 0 },
     output: { Room: o_Room },
   },
   errors: [
@@ -2174,6 +2234,7 @@ export const getUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AccountId}/users/{UserId}",
+    input: { AccountId: 0, UserId: 0 },
     output: { User: o_User },
   },
   errors: [
@@ -2211,6 +2272,7 @@ export const getUserSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AccountId}/users/{UserId}/settings",
+    input: { AccountId: 0, UserId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2249,6 +2311,7 @@ export const inviteUsers: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/users?operation=add",
+    input: { AccountId: 0, UserEmailList: 0, UserType: 0 },
     output: { Invites: D.list({ EmailAddress: D.secret }) },
     body: true,
   },
@@ -2340,6 +2403,7 @@ export const listBots: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AccountId}/bots",
     input: {
+      AccountId: 0,
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
     },
@@ -2484,6 +2548,8 @@ export const listRoomMemberships: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AccountId}/rooms/{RoomId}/memberships",
     input: {
+      AccountId: 0,
+      RoomId: 0,
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
     },
@@ -2531,6 +2597,7 @@ export const listRooms: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AccountId}/rooms",
     input: {
+      AccountId: 0,
       MemberId: D.m({ query: "member-id" }),
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
@@ -2617,6 +2684,7 @@ export const listUsers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AccountId}/users",
     input: {
+      AccountId: 0,
       UserEmail: D.m({ query: "user-email" }),
       UserType: D.m({ query: "user-type" }),
       MaxResults: D.m({ query: "max-results" }),
@@ -2664,6 +2732,7 @@ export const logoutUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/users/{UserId}?operation=logout",
+    input: { AccountId: 0, UserId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2702,6 +2771,12 @@ export const putEventsConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AccountId}/bots/{BotId}/events-configuration",
+    input: {
+      AccountId: 0,
+      BotId: 0,
+      OutboundEventsHTTPSEndpoint: 0,
+      LambdaFunctionArn: 0,
+    },
     output: { EventsConfiguration: o_EventsConfiguration },
     body: true,
   },
@@ -2751,6 +2826,13 @@ export const putRetentionSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AccountId}/retention-settings",
+    input: {
+      AccountId: 0,
+      RetentionSettings: {
+        RoomRetentionSettings: { RetentionDays: 0 },
+        ConversationRetentionSettings: { RetentionDays: 0 },
+      },
+    },
     output: { InitiateDeletionTimestamp: D.ts },
     body: true,
   },
@@ -2790,6 +2872,7 @@ export const redactConversationMessage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/conversations/{ConversationId}/messages/{MessageId}?operation=redact",
+    input: { AccountId: 0, ConversationId: 0, MessageId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2826,6 +2909,7 @@ export const redactRoomMessage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/rooms/{RoomId}/messages/{MessageId}?operation=redact",
+    input: { AccountId: 0, RoomId: 0, MessageId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2862,6 +2946,7 @@ export const regenerateSecurityToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/bots/{BotId}?operation=regenerate-security-token",
+    input: { AccountId: 0, BotId: 0 },
     output: { Bot: o_Bot },
   },
   errors: [
@@ -2900,6 +2985,7 @@ export const resetPersonalPIN: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/users/{UserId}?operation=reset-personal-pin",
+    input: { AccountId: 0, UserId: 0 },
     output: { User: o_User },
   },
   errors: [
@@ -2939,6 +3025,7 @@ export const restorePhoneNumber: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /phone-numbers/{PhoneNumberId}?operation=restore",
+    input: { PhoneNumberId: 0 },
     output: { PhoneNumber: o_PhoneNumber },
   },
   errors: [
@@ -3034,6 +3121,7 @@ export const updateAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}",
+    input: { AccountId: 0, Name: 0, DefaultLicense: 0 },
     output: { Account: o_Account },
     body: true,
   },
@@ -3077,6 +3165,10 @@ export const updateAccountSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AccountId}/settings",
+    input: {
+      AccountId: 0,
+      AccountSettings: { DisableRemoteControl: 0, EnableDialOut: 0 },
+    },
     body: true,
   },
   errors: [
@@ -3115,6 +3207,7 @@ export const updateBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/bots/{BotId}",
+    input: { AccountId: 0, BotId: 0, Disabled: 0 },
     output: { Bot: o_Bot },
     body: true,
   },
@@ -3149,7 +3242,15 @@ export const updateGlobalSettings: API.OperationMethod<
   UpdateGlobalSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /settings", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /settings",
+    input: {
+      BusinessCalling: { CdrBucket: 0 },
+      VoiceConnector: { CdrBucket: 0 },
+    },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -3189,6 +3290,7 @@ export const updatePhoneNumber: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /phone-numbers/{PhoneNumberId}",
+    input: { PhoneNumberId: 0, ProductType: 0, CallingName: 0 },
     output: { PhoneNumber: o_PhoneNumber },
     body: true,
   },
@@ -3226,7 +3328,12 @@ export const updatePhoneNumberSettings: API.OperationMethod<
   UpdatePhoneNumberSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /settings/phone-number", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /settings/phone-number",
+    input: { CallingName: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -3261,6 +3368,7 @@ export const updateRoom: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/rooms/{RoomId}",
+    input: { AccountId: 0, RoomId: 0, Name: 0 },
     output: { Room: o_Room },
     body: true,
   },
@@ -3302,6 +3410,7 @@ export const updateRoomMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/rooms/{RoomId}/memberships/{MemberId}",
+    input: { AccountId: 0, RoomId: 0, MemberId: 0, Role: 0 },
     output: { RoomMembership: o_RoomMembership },
     body: true,
   },
@@ -3340,6 +3449,13 @@ export const updateUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AccountId}/users/{UserId}",
+    input: {
+      AccountId: 0,
+      UserId: 0,
+      LicenseType: 0,
+      UserType: 0,
+      AlexaForBusinessMetadata: i_AlexaForBusinessMetadata,
+    },
     output: { User: o_User },
     body: true,
   },
@@ -3378,6 +3494,13 @@ export const updateUserSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AccountId}/users/{UserId}/settings",
+    input: {
+      AccountId: 0,
+      UserId: 0,
+      UserSettings: {
+        Telephony: { InboundCalling: 0, OutboundCalling: 0, SMS: 0 },
+      },
+    },
     body: true,
   },
   errors: [
@@ -3394,6 +3517,10 @@ export const updateUserSettings: API.OperationMethod<
   operationName: "UpdateUserSettings",
 })) as any;
 
+const i_AlexaForBusinessMetadata: D.LazyStruct = () => ({
+  IsAlexaForBusinessEnabled: 0,
+  AlexaForBusinessRoomArn: 0,
+});
 const o_Account: D.LazyStruct = () => ({ CreatedTimestamp: D.ts });
 const o_Bot: D.LazyStruct = () => ({
   DisplayName: D.secret,

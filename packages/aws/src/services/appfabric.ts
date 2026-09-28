@@ -539,6 +539,7 @@ export const batchGetUserAccessTasks: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /useraccess/batchget",
+    input: { appBundleIdentifier: 0, taskIdList: 0 },
     output: {
       userAccessResultsList: D.list({
         email: D.secret,
@@ -582,6 +583,11 @@ export const connectAppAuthorization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /appbundles/{appBundleIdentifier}/appauthorizations/{appAuthorizationIdentifier}/connect",
+    input: {
+      appBundleIdentifier: 0,
+      appAuthorizationIdentifier: 0,
+      authRequest: { redirectUri: 0, code: 0 },
+    },
     output: { appAuthorizationSummary: o_AppAuthorizationSummary },
     body: true,
   },
@@ -619,7 +625,15 @@ export const createAppAuthorization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /appbundles/{appBundleIdentifier}/appauthorizations",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      appBundleIdentifier: 0,
+      app: 0,
+      credential: i_Credential,
+      tenant: i_Tenant,
+      authType: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: D.list(i_Tag),
+    },
     output: { appAuthorization: o_AppAuthorization },
     body: true,
   },
@@ -657,7 +671,11 @@ export const createAppBundle: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /appbundles",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      customerManagedKeyIdentifier: 0,
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -693,7 +711,14 @@ export const createIngestion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /appbundles/{appBundleIdentifier}/ingestions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      appBundleIdentifier: 0,
+      app: 0,
+      tenantId: 0,
+      ingestionType: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: D.list(i_Tag),
+    },
     output: { ingestion: o_Ingestion },
     body: true,
   },
@@ -731,7 +756,14 @@ export const createIngestionDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /appbundles/{appBundleIdentifier}/ingestions/{ingestionIdentifier}/ingestiondestinations",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      appBundleIdentifier: 0,
+      ingestionIdentifier: 0,
+      processingConfiguration: { auditLog: { schema: 0, format: 0 } },
+      destinationConfiguration: i_DestinationConfiguration,
+      clientToken: D.m({ idempotency: true }),
+      tags: D.list(i_Tag),
+    },
     output: { ingestionDestination: o_IngestionDestination },
     body: true,
   },
@@ -768,6 +800,7 @@ export const deleteAppAuthorization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /appbundles/{appBundleIdentifier}/appauthorizations/{appAuthorizationIdentifier}",
+    input: { appBundleIdentifier: 0, appAuthorizationIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -801,6 +834,7 @@ export const deleteAppBundle: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /appbundles/{appBundleIdentifier}",
+    input: { appBundleIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -834,6 +868,7 @@ export const deleteIngestion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /appbundles/{appBundleIdentifier}/ingestions/{ingestionIdentifier}",
+    input: { appBundleIdentifier: 0, ingestionIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -871,6 +906,11 @@ export const deleteIngestionDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /appbundles/{appBundleIdentifier}/ingestions/{ingestionIdentifier}/ingestiondestinations/{ingestionDestinationIdentifier}",
+    input: {
+      appBundleIdentifier: 0,
+      ingestionIdentifier: 0,
+      ingestionDestinationIdentifier: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -903,6 +943,7 @@ export const getAppAuthorization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /appbundles/{appBundleIdentifier}/appauthorizations/{appAuthorizationIdentifier}",
+    input: { appBundleIdentifier: 0, appAuthorizationIdentifier: 0 },
     output: { appAuthorization: o_AppAuthorization },
   },
   errors: [
@@ -933,7 +974,11 @@ export const getAppBundle: API.OperationMethod<
   GetAppBundleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /appbundles/{appBundleIdentifier}" },
+  descriptor: {
+    service: svc,
+    http: "GET /appbundles/{appBundleIdentifier}",
+    input: { appBundleIdentifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -965,6 +1010,7 @@ export const getIngestion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /appbundles/{appBundleIdentifier}/ingestions/{ingestionIdentifier}",
+    input: { appBundleIdentifier: 0, ingestionIdentifier: 0 },
     output: { ingestion: o_Ingestion },
   },
   errors: [
@@ -998,6 +1044,11 @@ export const getIngestionDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /appbundles/{appBundleIdentifier}/ingestions/{ingestionIdentifier}/ingestiondestinations/{ingestionDestinationIdentifier}",
+    input: {
+      appBundleIdentifier: 0,
+      ingestionIdentifier: 0,
+      ingestionDestinationIdentifier: 0,
+    },
     output: { ingestionDestination: o_IngestionDestination },
   },
   errors: [
@@ -1033,6 +1084,7 @@ export const listAppAuthorizations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /appbundles/{appBundleIdentifier}/appauthorizations",
     input: {
+      appBundleIdentifier: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -1118,6 +1170,8 @@ export const listIngestionDestinations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /appbundles/{appBundleIdentifier}/ingestions/{ingestionIdentifier}/ingestiondestinations",
     input: {
+      appBundleIdentifier: 0,
+      ingestionIdentifier: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -1161,6 +1215,7 @@ export const listIngestions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /appbundles/{appBundleIdentifier}/ingestions",
     input: {
+      appBundleIdentifier: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -1199,7 +1254,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1232,6 +1291,7 @@ export const startIngestion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /appbundles/{appBundleIdentifier}/ingestions/{ingestionIdentifier}/start",
+    input: { ingestionIdentifier: 0, appBundleIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1265,7 +1325,12 @@ export const startUserAccessTasks: API.OperationMethod<
   StartUserAccessTasksError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /useraccess/start", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /useraccess/start",
+    input: { appBundleIdentifier: 0, email: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1298,6 +1363,7 @@ export const stopIngestion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /appbundles/{appBundleIdentifier}/ingestions/{ingestionIdentifier}/stop",
+    input: { ingestionIdentifier: 0, appBundleIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1328,7 +1394,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1360,7 +1431,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1397,6 +1468,12 @@ export const updateAppAuthorization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /appbundles/{appBundleIdentifier}/appauthorizations/{appAuthorizationIdentifier}",
+    input: {
+      appBundleIdentifier: 0,
+      appAuthorizationIdentifier: 0,
+      credential: i_Credential,
+      tenant: i_Tenant,
+    },
     output: { appAuthorization: o_AppAuthorization },
     body: true,
   },
@@ -1434,6 +1511,12 @@ export const updateIngestionDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /appbundles/{appBundleIdentifier}/ingestions/{ingestionIdentifier}/ingestiondestinations/{ingestionDestinationIdentifier}",
+    input: {
+      appBundleIdentifier: 0,
+      ingestionIdentifier: 0,
+      ingestionDestinationIdentifier: 0,
+      destinationConfiguration: i_DestinationConfiguration,
+    },
     output: { ingestionDestination: o_IngestionDestination },
     body: true,
   },
@@ -1451,6 +1534,23 @@ export const updateIngestionDestination: API.OperationMethod<
   operationName: "UpdateIngestionDestination",
 })) as any;
 
+const i_Credential: D.LazyStruct = () => ({
+  oauth2Credential: { clientId: 0, clientSecret: 0 },
+  apiKeyCredential: { apiKey: 0 },
+});
+const i_DestinationConfiguration: D.LazyStruct = () => ({
+  auditLog: {
+    destination: {
+      s3Bucket: { bucketName: 0, prefix: 0 },
+      firehoseStream: { streamName: 0 },
+    },
+  },
+});
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_Tenant: D.LazyStruct = () => ({
+  tenantIdentifier: 0,
+  tenantDisplayName: 0,
+});
 const o_AppAuthorization: D.LazyStruct = () => ({
   createdAt: D.ts,
   updatedAt: D.ts,

@@ -1338,6 +1338,7 @@ export const associateRoleToGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /greengrass/groups/{GroupId}/role",
+    input: { GroupId: 0, RoleArn: 0 },
     body: true,
   },
   errors: [BadRequestException, InternalServerErrorException],
@@ -1359,7 +1360,12 @@ export const associateServiceRoleToAccount: API.OperationMethod<
   AssociateServiceRoleToAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /greengrass/servicerole", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /greengrass/servicerole",
+    input: { RoleArn: 0 },
+    body: true,
+  },
   errors: [BadRequestException, InternalServerErrorException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1379,7 +1385,12 @@ export const createConnectorDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/definition/connectors",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      InitialVersion: { Connectors: D.list(i_Connector) },
+      Name: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [BadRequestException],
@@ -1403,7 +1414,11 @@ export const createConnectorDefinitionVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/definition/connectors/{ConnectorDefinitionId}/versions",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      ConnectorDefinitionId: 0,
+      Connectors: D.list(i_Connector),
+    },
     body: true,
   },
   errors: [BadRequestException],
@@ -1425,7 +1440,12 @@ export const createCoreDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/definition/cores",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      InitialVersion: { Cores: D.list(i_Core) },
+      Name: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [BadRequestException],
@@ -1449,7 +1469,11 @@ export const createCoreDefinitionVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/definition/cores/{CoreDefinitionId}/versions",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      CoreDefinitionId: 0,
+      Cores: D.list(i_Core),
+    },
     body: true,
   },
   errors: [BadRequestException],
@@ -1471,7 +1495,13 @@ export const createDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/groups/{GroupId}/deployments",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      DeploymentId: 0,
+      DeploymentType: 0,
+      GroupId: 0,
+      GroupVersionId: 0,
+    },
     body: true,
   },
   errors: [BadRequestException],
@@ -1493,7 +1523,12 @@ export const createDeviceDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/definition/devices",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      InitialVersion: { Devices: D.list(i_Device) },
+      Name: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [BadRequestException],
@@ -1517,7 +1552,11 @@ export const createDeviceDefinitionVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/definition/devices/{DeviceDefinitionId}/versions",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      DeviceDefinitionId: 0,
+      Devices: D.list(i_Device),
+    },
     body: true,
   },
   errors: [BadRequestException],
@@ -1539,7 +1578,15 @@ export const createFunctionDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/definition/functions",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      InitialVersion: {
+        DefaultConfig: i_FunctionDefaultConfig,
+        Functions: D.list(i_Function),
+      },
+      Name: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [BadRequestException],
@@ -1563,7 +1610,12 @@ export const createFunctionDefinitionVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/definition/functions/{FunctionDefinitionId}/versions",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      DefaultConfig: i_FunctionDefaultConfig,
+      FunctionDefinitionId: 0,
+      Functions: D.list(i_Function),
+    },
     body: true,
   },
   errors: [BadRequestException],
@@ -1585,7 +1637,20 @@ export const createGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/groups",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      InitialVersion: {
+        ConnectorDefinitionVersionArn: 0,
+        CoreDefinitionVersionArn: 0,
+        DeviceDefinitionVersionArn: 0,
+        FunctionDefinitionVersionArn: 0,
+        LoggerDefinitionVersionArn: 0,
+        ResourceDefinitionVersionArn: 0,
+        SubscriptionDefinitionVersionArn: 0,
+      },
+      Name: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [BadRequestException],
@@ -1610,7 +1675,10 @@ export const createGroupCertificateAuthority: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/groups/{GroupId}/certificateauthorities",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      GroupId: 0,
+    },
   },
   errors: [BadRequestException, InternalServerErrorException],
   protocol: AwsProtocol,
@@ -1631,7 +1699,17 @@ export const createGroupVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/groups/{GroupId}/versions",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      ConnectorDefinitionVersionArn: 0,
+      CoreDefinitionVersionArn: 0,
+      DeviceDefinitionVersionArn: 0,
+      FunctionDefinitionVersionArn: 0,
+      GroupId: 0,
+      LoggerDefinitionVersionArn: 0,
+      ResourceDefinitionVersionArn: 0,
+      SubscriptionDefinitionVersionArn: 0,
+    },
     body: true,
   },
   errors: [BadRequestException],
@@ -1653,7 +1731,12 @@ export const createLoggerDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/definition/loggers",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      InitialVersion: { Loggers: D.list(i_Logger) },
+      Name: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [BadRequestException],
@@ -1677,7 +1760,11 @@ export const createLoggerDefinitionVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/definition/loggers/{LoggerDefinitionId}/versions",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      LoggerDefinitionId: 0,
+      Loggers: D.list(i_Logger),
+    },
     body: true,
   },
   errors: [BadRequestException],
@@ -1699,7 +1786,12 @@ export const createResourceDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/definition/resources",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      InitialVersion: { Resources: D.list(i_Resource) },
+      Name: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [BadRequestException],
@@ -1723,7 +1815,11 @@ export const createResourceDefinitionVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/definition/resources/{ResourceDefinitionId}/versions",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      ResourceDefinitionId: 0,
+      Resources: D.list(i_Resource),
+    },
     body: true,
   },
   errors: [BadRequestException],
@@ -1748,7 +1844,15 @@ export const createSoftwareUpdateJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/updates",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      S3UrlSignerRole: 0,
+      SoftwareToUpdate: 0,
+      UpdateAgentLogLevel: 0,
+      UpdateTargets: 0,
+      UpdateTargetsArchitecture: 0,
+      UpdateTargetsOperatingSystem: 0,
+    },
     body: true,
   },
   errors: [BadRequestException, InternalServerErrorException],
@@ -1772,7 +1876,12 @@ export const createSubscriptionDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/definition/subscriptions",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      InitialVersion: { Subscriptions: D.list(i_Subscription) },
+      Name: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [BadRequestException],
@@ -1796,7 +1905,11 @@ export const createSubscriptionDefinitionVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/definition/subscriptions/{SubscriptionDefinitionId}/versions",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      SubscriptionDefinitionId: 0,
+      Subscriptions: D.list(i_Subscription),
+    },
     body: true,
   },
   errors: [BadRequestException],
@@ -1818,6 +1931,7 @@ export const deleteConnectorDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /greengrass/definition/connectors/{ConnectorDefinitionId}",
+    input: { ConnectorDefinitionId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -1838,6 +1952,7 @@ export const deleteCoreDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /greengrass/definition/cores/{CoreDefinitionId}",
+    input: { CoreDefinitionId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -1858,6 +1973,7 @@ export const deleteDeviceDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /greengrass/definition/devices/{DeviceDefinitionId}",
+    input: { DeviceDefinitionId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -1878,6 +1994,7 @@ export const deleteFunctionDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /greengrass/definition/functions/{FunctionDefinitionId}",
+    input: { FunctionDefinitionId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -1895,7 +2012,11 @@ export const deleteGroup: API.OperationMethod<
   DeleteGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /greengrass/groups/{GroupId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /greengrass/groups/{GroupId}",
+    input: { GroupId: 0 },
+  },
   errors: [BadRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1915,6 +2036,7 @@ export const deleteLoggerDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /greengrass/definition/loggers/{LoggerDefinitionId}",
+    input: { LoggerDefinitionId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -1935,6 +2057,7 @@ export const deleteResourceDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /greengrass/definition/resources/{ResourceDefinitionId}",
+    input: { ResourceDefinitionId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -1957,6 +2080,7 @@ export const deleteSubscriptionDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /greengrass/definition/subscriptions/{SubscriptionDefinitionId}",
+    input: { SubscriptionDefinitionId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -1980,6 +2104,7 @@ export const disassociateRoleFromGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /greengrass/groups/{GroupId}/role",
+    input: { GroupId: 0 },
   },
   errors: [BadRequestException, InternalServerErrorException],
   protocol: AwsProtocol,
@@ -1999,7 +2124,11 @@ export const disassociateServiceRoleFromAccount: API.OperationMethod<
   DisassociateServiceRoleFromAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /greengrass/servicerole" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /greengrass/servicerole",
+    input: {},
+  },
   errors: [InternalServerErrorException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2019,7 +2148,11 @@ export const getAssociatedRole: API.OperationMethod<
   GetAssociatedRoleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /greengrass/groups/{GroupId}/role" },
+  descriptor: {
+    service: svc,
+    http: "GET /greengrass/groups/{GroupId}/role",
+    input: { GroupId: 0 },
+  },
   errors: [BadRequestException, InternalServerErrorException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2039,6 +2172,7 @@ export const getBulkDeploymentStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/bulk/deployments/{BulkDeploymentId}/status",
+    input: { BulkDeploymentId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -2062,6 +2196,7 @@ export const getConnectivityInfo: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/things/{ThingName}/connectivityInfo",
+    input: { ThingName: 0 },
     output: { Message: D.m({ wire: "message" }) },
   },
   errors: [BadRequestException, InternalServerErrorException],
@@ -2083,6 +2218,7 @@ export const getConnectorDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/definition/connectors/{ConnectorDefinitionId}",
+    input: { ConnectorDefinitionId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -2105,7 +2241,11 @@ export const getConnectorDefinitionVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/definition/connectors/{ConnectorDefinitionId}/versions/{ConnectorDefinitionVersionId}",
-    input: { NextToken: D.m({ query: "NextToken" }) },
+    input: {
+      ConnectorDefinitionId: 0,
+      ConnectorDefinitionVersionId: 0,
+      NextToken: D.m({ query: "NextToken" }),
+    },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -2126,6 +2266,7 @@ export const getCoreDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/definition/cores/{CoreDefinitionId}",
+    input: { CoreDefinitionId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -2146,6 +2287,7 @@ export const getCoreDefinitionVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/definition/cores/{CoreDefinitionId}/versions/{CoreDefinitionVersionId}",
+    input: { CoreDefinitionId: 0, CoreDefinitionVersionId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -2166,6 +2308,7 @@ export const getDeploymentStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/groups/{GroupId}/deployments/{DeploymentId}/status",
+    input: { DeploymentId: 0, GroupId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -2186,6 +2329,7 @@ export const getDeviceDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/definition/devices/{DeviceDefinitionId}",
+    input: { DeviceDefinitionId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -2208,7 +2352,11 @@ export const getDeviceDefinitionVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/definition/devices/{DeviceDefinitionId}/versions/{DeviceDefinitionVersionId}",
-    input: { NextToken: D.m({ query: "NextToken" }) },
+    input: {
+      DeviceDefinitionId: 0,
+      DeviceDefinitionVersionId: 0,
+      NextToken: D.m({ query: "NextToken" }),
+    },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -2229,6 +2377,7 @@ export const getFunctionDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/definition/functions/{FunctionDefinitionId}",
+    input: { FunctionDefinitionId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -2251,7 +2400,11 @@ export const getFunctionDefinitionVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/definition/functions/{FunctionDefinitionId}/versions/{FunctionDefinitionVersionId}",
-    input: { NextToken: D.m({ query: "NextToken" }) },
+    input: {
+      FunctionDefinitionId: 0,
+      FunctionDefinitionVersionId: 0,
+      NextToken: D.m({ query: "NextToken" }),
+    },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -2269,7 +2422,11 @@ export const getGroup: API.OperationMethod<
   GetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /greengrass/groups/{GroupId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /greengrass/groups/{GroupId}",
+    input: { GroupId: 0 },
+  },
   errors: [BadRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2292,6 +2449,7 @@ export const getGroupCertificateAuthority: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/groups/{GroupId}/certificateauthorities/{CertificateAuthorityId}",
+    input: { CertificateAuthorityId: 0, GroupId: 0 },
   },
   errors: [BadRequestException, InternalServerErrorException],
   protocol: AwsProtocol,
@@ -2315,6 +2473,7 @@ export const getGroupCertificateConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/groups/{GroupId}/certificateauthorities/configuration/expiry",
+    input: { GroupId: 0 },
   },
   errors: [BadRequestException, InternalServerErrorException],
   protocol: AwsProtocol,
@@ -2335,6 +2494,7 @@ export const getGroupVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/groups/{GroupId}/versions/{GroupVersionId}",
+    input: { GroupId: 0, GroupVersionId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -2355,6 +2515,7 @@ export const getLoggerDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/definition/loggers/{LoggerDefinitionId}",
+    input: { LoggerDefinitionId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -2377,7 +2538,11 @@ export const getLoggerDefinitionVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/definition/loggers/{LoggerDefinitionId}/versions/{LoggerDefinitionVersionId}",
-    input: { NextToken: D.m({ query: "NextToken" }) },
+    input: {
+      LoggerDefinitionId: 0,
+      LoggerDefinitionVersionId: 0,
+      NextToken: D.m({ query: "NextToken" }),
+    },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -2398,6 +2563,7 @@ export const getResourceDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/definition/resources/{ResourceDefinitionId}",
+    input: { ResourceDefinitionId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -2420,6 +2586,7 @@ export const getResourceDefinitionVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/definition/resources/{ResourceDefinitionId}/versions/{ResourceDefinitionVersionId}",
+    input: { ResourceDefinitionId: 0, ResourceDefinitionVersionId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -2439,7 +2606,7 @@ export const getServiceRoleForAccount: API.OperationMethod<
   GetServiceRoleForAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /greengrass/servicerole" },
+  descriptor: { service: svc, http: "GET /greengrass/servicerole", input: {} },
   errors: [InternalServerErrorException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2459,6 +2626,7 @@ export const getSubscriptionDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/definition/subscriptions/{SubscriptionDefinitionId}",
+    input: { SubscriptionDefinitionId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -2481,7 +2649,11 @@ export const getSubscriptionDefinitionVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/definition/subscriptions/{SubscriptionDefinitionId}/versions/{SubscriptionDefinitionVersionId}",
-    input: { NextToken: D.m({ query: "NextToken" }) },
+    input: {
+      NextToken: D.m({ query: "NextToken" }),
+      SubscriptionDefinitionId: 0,
+      SubscriptionDefinitionVersionId: 0,
+    },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -2505,6 +2677,7 @@ export const getThingRuntimeConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/things/{ThingName}/runtimeconfig",
+    input: { ThingName: 0 },
   },
   errors: [BadRequestException, InternalServerErrorException],
   protocol: AwsProtocol,
@@ -2528,6 +2701,7 @@ export const listBulkDeploymentDetailedReports: API.OperationMethod<
     service: svc,
     http: "GET /greengrass/bulk/deployments/{BulkDeploymentId}/detailed-reports",
     input: {
+      BulkDeploymentId: 0,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
     },
@@ -2603,6 +2777,7 @@ export const listConnectorDefinitionVersions: API.OperationMethod<
     service: svc,
     http: "GET /greengrass/definition/connectors/{ConnectorDefinitionId}/versions",
     input: {
+      ConnectorDefinitionId: 0,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
     },
@@ -2654,6 +2829,7 @@ export const listCoreDefinitionVersions: API.OperationMethod<
     service: svc,
     http: "GET /greengrass/definition/cores/{CoreDefinitionId}/versions",
     input: {
+      CoreDefinitionId: 0,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
     },
@@ -2678,6 +2854,7 @@ export const listDeployments: API.OperationMethod<
     service: svc,
     http: "GET /greengrass/groups/{GroupId}/deployments",
     input: {
+      GroupId: 0,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
     },
@@ -2729,6 +2906,7 @@ export const listDeviceDefinitionVersions: API.OperationMethod<
     service: svc,
     http: "GET /greengrass/definition/devices/{DeviceDefinitionId}/versions",
     input: {
+      DeviceDefinitionId: 0,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
     },
@@ -2780,6 +2958,7 @@ export const listFunctionDefinitionVersions: API.OperationMethod<
     service: svc,
     http: "GET /greengrass/definition/functions/{FunctionDefinitionId}/versions",
     input: {
+      FunctionDefinitionId: 0,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
     },
@@ -2806,6 +2985,7 @@ export const listGroupCertificateAuthorities: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /greengrass/groups/{GroupId}/certificateauthorities",
+    input: { GroupId: 0 },
   },
   errors: [BadRequestException, InternalServerErrorException],
   protocol: AwsProtocol,
@@ -2851,6 +3031,7 @@ export const listGroupVersions: API.OperationMethod<
     service: svc,
     http: "GET /greengrass/groups/{GroupId}/versions",
     input: {
+      GroupId: 0,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
     },
@@ -2902,6 +3083,7 @@ export const listLoggerDefinitionVersions: API.OperationMethod<
     service: svc,
     http: "GET /greengrass/definition/loggers/{LoggerDefinitionId}/versions",
     input: {
+      LoggerDefinitionId: 0,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
     },
@@ -2955,6 +3137,7 @@ export const listResourceDefinitionVersions: API.OperationMethod<
     input: {
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
+      ResourceDefinitionId: 0,
     },
   },
   errors: [BadRequestException],
@@ -3006,6 +3189,7 @@ export const listSubscriptionDefinitionVersions: API.OperationMethod<
     input: {
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
+      SubscriptionDefinitionId: 0,
     },
   },
   errors: [BadRequestException],
@@ -3024,7 +3208,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [BadRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3044,7 +3232,11 @@ export const resetDeployments: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/groups/{GroupId}/deployments/$reset",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      Force: 0,
+      GroupId: 0,
+    },
     body: true,
   },
   errors: [BadRequestException],
@@ -3066,7 +3258,12 @@ export const startBulkDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /greengrass/bulk/deployments",
-    input: { AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }) },
+    input: {
+      AmznClientToken: D.m({ header: "X-Amzn-Client-Token" }),
+      ExecutionRoleArn: 0,
+      InputFileUri: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [BadRequestException],
@@ -3088,6 +3285,7 @@ export const stopBulkDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /greengrass/bulk/deployments/{BulkDeploymentId}/$stop",
+    input: { BulkDeploymentId: 0 },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -3105,7 +3303,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [BadRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3125,7 +3328,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [BadRequestException],
   protocol: AwsProtocol,
@@ -3149,6 +3352,15 @@ export const updateConnectivityInfo: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /greengrass/things/{ThingName}/connectivityInfo",
+    input: {
+      ConnectivityInfo: D.list({
+        HostAddress: 0,
+        Id: 0,
+        Metadata: 0,
+        PortNumber: 0,
+      }),
+      ThingName: 0,
+    },
     output: { Message: D.m({ wire: "message" }) },
     body: true,
   },
@@ -3171,6 +3383,7 @@ export const updateConnectorDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /greengrass/definition/connectors/{ConnectorDefinitionId}",
+    input: { ConnectorDefinitionId: 0, Name: 0 },
     body: true,
   },
   errors: [BadRequestException],
@@ -3192,6 +3405,7 @@ export const updateCoreDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /greengrass/definition/cores/{CoreDefinitionId}",
+    input: { CoreDefinitionId: 0, Name: 0 },
     body: true,
   },
   errors: [BadRequestException],
@@ -3213,6 +3427,7 @@ export const updateDeviceDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /greengrass/definition/devices/{DeviceDefinitionId}",
+    input: { DeviceDefinitionId: 0, Name: 0 },
     body: true,
   },
   errors: [BadRequestException],
@@ -3234,6 +3449,7 @@ export const updateFunctionDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /greengrass/definition/functions/{FunctionDefinitionId}",
+    input: { FunctionDefinitionId: 0, Name: 0 },
     body: true,
   },
   errors: [BadRequestException],
@@ -3255,6 +3471,7 @@ export const updateGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /greengrass/groups/{GroupId}",
+    input: { GroupId: 0, Name: 0 },
     body: true,
   },
   errors: [BadRequestException],
@@ -3279,6 +3496,7 @@ export const updateGroupCertificateConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /greengrass/groups/{GroupId}/certificateauthorities/configuration/expiry",
+    input: { CertificateExpiryInMilliseconds: 0, GroupId: 0 },
     body: true,
   },
   errors: [BadRequestException, InternalServerErrorException],
@@ -3300,6 +3518,7 @@ export const updateLoggerDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /greengrass/definition/loggers/{LoggerDefinitionId}",
+    input: { LoggerDefinitionId: 0, Name: 0 },
     body: true,
   },
   errors: [BadRequestException],
@@ -3321,6 +3540,7 @@ export const updateResourceDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /greengrass/definition/resources/{ResourceDefinitionId}",
+    input: { Name: 0, ResourceDefinitionId: 0 },
     body: true,
   },
   errors: [BadRequestException],
@@ -3344,6 +3564,7 @@ export const updateSubscriptionDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /greengrass/definition/subscriptions/{SubscriptionDefinitionId}",
+    input: { Name: 0, SubscriptionDefinitionId: 0 },
     body: true,
   },
   errors: [BadRequestException],
@@ -3368,6 +3589,7 @@ export const updateThingRuntimeConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /greengrass/things/{ThingName}/runtimeconfig",
+    input: { TelemetryConfiguration: { Telemetry: 0 }, ThingName: 0 },
     body: true,
   },
   errors: [BadRequestException, InternalServerErrorException],
@@ -3376,6 +3598,96 @@ export const updateThingRuntimeConfiguration: API.OperationMethod<
   operationName: "UpdateThingRuntimeConfiguration",
 })) as any;
 
+const i_Connector: D.LazyStruct = () => ({
+  ConnectorArn: 0,
+  Id: 0,
+  Parameters: 0,
+});
+const i_Core: D.LazyStruct = () => ({
+  CertificateArn: 0,
+  Id: 0,
+  SyncShadow: 0,
+  ThingArn: 0,
+});
+const i_Device: D.LazyStruct = () => ({
+  CertificateArn: 0,
+  Id: 0,
+  SyncShadow: 0,
+  ThingArn: 0,
+});
+const i_Function: D.LazyStruct = () => ({
+  FunctionArn: 0,
+  FunctionConfiguration: {
+    EncodingType: 0,
+    Environment: {
+      AccessSysfs: 0,
+      Execution: { IsolationMode: 0, RunAs: i_FunctionRunAsConfig },
+      ResourceAccessPolicies: D.list({ Permission: 0, ResourceId: 0 }),
+      Variables: 0,
+    },
+    ExecArgs: 0,
+    Executable: 0,
+    MemorySize: 0,
+    Pinned: 0,
+    Timeout: 0,
+    FunctionRuntimeOverride: 0,
+  },
+  Id: 0,
+});
+const i_FunctionDefaultConfig: D.LazyStruct = () => ({
+  Execution: { IsolationMode: 0, RunAs: i_FunctionRunAsConfig },
+});
+const i_Logger: D.LazyStruct = () => ({
+  Component: 0,
+  Id: 0,
+  Level: 0,
+  Space: 0,
+  Type: 0,
+});
+const i_Resource: D.LazyStruct = () => ({
+  Id: 0,
+  Name: 0,
+  ResourceDataContainer: {
+    LocalDeviceResourceData: {
+      GroupOwnerSetting: i_GroupOwnerSetting,
+      SourcePath: 0,
+    },
+    LocalVolumeResourceData: {
+      DestinationPath: 0,
+      GroupOwnerSetting: i_GroupOwnerSetting,
+      SourcePath: 0,
+    },
+    S3MachineLearningModelResourceData: {
+      DestinationPath: 0,
+      OwnerSetting: i_ResourceDownloadOwnerSetting,
+      S3Uri: 0,
+    },
+    SageMakerMachineLearningModelResourceData: {
+      DestinationPath: 0,
+      OwnerSetting: i_ResourceDownloadOwnerSetting,
+      SageMakerJobArn: 0,
+    },
+    SecretsManagerSecretResourceData: {
+      ARN: 0,
+      AdditionalStagingLabelsToDownload: 0,
+    },
+  },
+});
+const i_Subscription: D.LazyStruct = () => ({
+  Id: 0,
+  Source: 0,
+  Subject: 0,
+  Target: 0,
+});
 const o_DefinitionInformation: D.LazyStruct = () => ({
   Tags: D.m({ wire: "tags" }),
+});
+const i_FunctionRunAsConfig: D.LazyStruct = () => ({ Gid: 0, Uid: 0 });
+const i_GroupOwnerSetting: D.LazyStruct = () => ({
+  AutoAddGroupOwner: 0,
+  GroupOwner: 0,
+});
+const i_ResourceDownloadOwnerSetting: D.LazyStruct = () => ({
+  GroupOwner: 0,
+  GroupPermission: 0,
 });

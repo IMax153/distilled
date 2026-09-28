@@ -1,5 +1,6 @@
 import type * as HttpClient from "effect/unstable/http/HttpClient";
 import * as API from "@distilled.cloud/core/api";
+import * as D from "@distilled.cloud/core/shape";
 import * as TE from "@distilled.cloud/core/error-class";
 import { AwsProtocol } from "../protocol.ts";
 import { restJson1Protocol } from "../protocols/rest-json.ts";
@@ -895,6 +896,7 @@ export const createCentralizationRuleForOrganization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateCentralizationRuleForOrganization",
+    input: { RuleName: 0, Rule: i_CentralizationRule, Tags: 0 },
     body: true,
   },
   errors: [
@@ -930,6 +932,11 @@ export const createS3TableIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateS3TableIntegration",
+    input: {
+      Encryption: { SseAlgorithm: 0, KmsKeyArn: 0 },
+      RoleArn: 0,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -965,6 +972,11 @@ export const createTelemetryPipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateTelemetryPipeline",
+    input: {
+      Name: 0,
+      Configuration: i_TelemetryPipelineConfiguration,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -997,7 +1009,12 @@ export const createTelemetryRule: API.OperationMethod<
   CreateTelemetryRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CreateTelemetryRule", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CreateTelemetryRule",
+    input: { RuleName: 0, Rule: i_TelemetryRule, Tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1031,6 +1048,7 @@ export const createTelemetryRuleForOrganization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateTelemetryRuleForOrganization",
+    input: { RuleName: 0, Rule: i_TelemetryRule, Tags: 0 },
     body: true,
   },
   errors: [
@@ -1065,6 +1083,7 @@ export const deleteCentralizationRuleForOrganization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteCentralizationRuleForOrganization",
+    input: { RuleIdentifier: 0 },
     body: true,
   },
   errors: [
@@ -1099,6 +1118,7 @@ export const deleteS3TableIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteS3TableIntegration",
+    input: { Arn: 0 },
     body: true,
   },
   errors: [
@@ -1134,6 +1154,7 @@ export const deleteTelemetryPipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteTelemetryPipeline",
+    input: { PipelineIdentifier: 0 },
     body: true,
   },
   errors: [
@@ -1165,7 +1186,12 @@ export const deleteTelemetryRule: API.OperationMethod<
   DeleteTelemetryRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteTelemetryRule", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteTelemetryRule",
+    input: { RuleIdentifier: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1197,6 +1223,7 @@ export const deleteTelemetryRuleForOrganization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteTelemetryRuleForOrganization",
+    input: { RuleIdentifier: 0 },
     body: true,
   },
   errors: [
@@ -1230,6 +1257,7 @@ export const getCentralizationRuleForOrganization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetCentralizationRuleForOrganization",
+    input: { RuleIdentifier: 0 },
     body: true,
   },
   errors: [
@@ -1260,7 +1288,12 @@ export const getS3TableIntegration: API.OperationMethod<
   GetS3TableIntegrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetS3TableIntegration", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetS3TableIntegration",
+    input: { Arn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1371,7 +1404,12 @@ export const getTelemetryPipeline: API.OperationMethod<
   GetTelemetryPipelineError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetTelemetryPipeline", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetTelemetryPipeline",
+    input: { PipelineIdentifier: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1400,7 +1438,12 @@ export const getTelemetryRule: API.OperationMethod<
   GetTelemetryRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetTelemetryRule", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetTelemetryRule",
+    input: { RuleIdentifier: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1432,6 +1475,7 @@ export const getTelemetryRuleForOrganization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetTelemetryRuleForOrganization",
+    input: { RuleIdentifier: 0 },
     body: true,
   },
   errors: [
@@ -1465,6 +1509,7 @@ export const listCentralizationRulesForOrganization: API.PaginatedOperationMetho
   descriptor: {
     service: svc,
     http: "POST /ListCentralizationRulesForOrganization",
+    input: { RuleNamePrefix: 0, AllRegions: 0, MaxResults: 0, NextToken: 0 },
     body: true,
   },
   errors: [
@@ -1500,7 +1545,19 @@ export const listResourceTelemetry: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TelemetryConfiguration
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListResourceTelemetry", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListResourceTelemetry",
+    input: {
+      ResourceIdentifierPrefix: 0,
+      ResourceTypes: 0,
+      TelemetryConfigurationState: 0,
+      ResourceTags: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1537,6 +1594,15 @@ export const listResourceTelemetryForOrganization: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListResourceTelemetryForOrganization",
+    input: {
+      AccountIdentifiers: 0,
+      ResourceIdentifierPrefix: 0,
+      ResourceTypes: 0,
+      TelemetryConfigurationState: 0,
+      ResourceTags: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -1575,6 +1641,7 @@ export const listS3TableIntegrations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListS3TableIntegrations",
+    input: { MaxResults: 0, NextToken: 0 },
     body: true,
   },
   errors: [
@@ -1610,7 +1677,12 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /ListTagsForResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListTagsForResource",
+    input: { ResourceARN: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1642,6 +1714,7 @@ export const listTelemetryPipelines: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListTelemetryPipelines",
+    input: { MaxResults: 0, NextToken: 0 },
     body: true,
   },
   errors: [
@@ -1677,7 +1750,12 @@ export const listTelemetryRules: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TelemetryRuleSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListTelemetryRules", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListTelemetryRules",
+    input: { RuleNamePrefix: 0, MaxResults: 0, NextToken: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1714,6 +1792,13 @@ export const listTelemetryRulesForOrganization: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListTelemetryRulesForOrganization",
+    input: {
+      RuleNamePrefix: 0,
+      SourceAccountIds: 0,
+      SourceOrganizationUnitIds: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -1778,6 +1863,7 @@ export const startTelemetryEvaluation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /StartTelemetryEvaluation",
+    input: { Regions: 0, AllRegions: 0 },
     body: true,
   },
   errors: [
@@ -1809,6 +1895,7 @@ export const startTelemetryEvaluationForOrganization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /StartTelemetryEvaluationForOrganization",
+    input: { Regions: 0, AllRegions: 0 },
     body: true,
   },
   errors: [
@@ -1923,7 +2010,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /TagResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /TagResource",
+    input: { ResourceARN: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1952,7 +2044,16 @@ export const testTelemetryPipeline: API.OperationMethod<
   TestTelemetryPipelineError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /TestTelemetryPipeline", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /TestTelemetryPipeline",
+    input: {
+      Records: D.list({ Data: 0, Type: 0 }),
+      Configuration: i_TelemetryPipelineConfiguration,
+      SignalType: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1980,7 +2081,12 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UntagResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UntagResource",
+    input: { ResourceARN: 0, TagKeys: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2013,6 +2119,7 @@ export const updateCentralizationRuleForOrganization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateCentralizationRuleForOrganization",
+    input: { RuleIdentifier: 0, Rule: i_CentralizationRule },
     body: true,
   },
   errors: [
@@ -2095,6 +2202,10 @@ export const updateTelemetryPipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateTelemetryPipeline",
+    input: {
+      PipelineIdentifier: 0,
+      Configuration: i_TelemetryPipelineConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -2127,7 +2238,12 @@ export const updateTelemetryRule: API.OperationMethod<
   UpdateTelemetryRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UpdateTelemetryRule", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UpdateTelemetryRule",
+    input: { RuleIdentifier: 0, Rule: i_TelemetryRule },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2162,6 +2278,7 @@ export const updateTelemetryRuleForOrganization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateTelemetryRuleForOrganization",
+    input: { RuleIdentifier: 0, Rule: i_TelemetryRule },
     body: true,
   },
   errors: [
@@ -2195,6 +2312,7 @@ export const validateTelemetryPipelineConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ValidateTelemetryPipelineConfiguration",
+    input: { Configuration: i_TelemetryPipelineConfiguration },
     body: true,
   },
   errors: [
@@ -2207,3 +2325,94 @@ export const validateTelemetryPipelineConfiguration: API.OperationMethod<
   retry: Retry,
   operationName: "ValidateTelemetryPipelineConfiguration",
 })) as any;
+
+const i_CentralizationRule: D.LazyStruct = () => ({
+  Source: {
+    Regions: 0,
+    Scope: 0,
+    SourceLogsConfiguration: {
+      LogGroupSelectionCriteria: 0,
+      DataSourceSelectionCriteria: 0,
+      EncryptedLogGroupStrategy: 0,
+    },
+    SourceMetricsConfiguration: { MetricsSelectionCriteria: 0 },
+  },
+  Destination: {
+    Region: 0,
+    Account: 0,
+    DestinationLogsConfiguration: {
+      LogsEncryptionConfiguration: {
+        EncryptionStrategy: 0,
+        KmsKeyArn: 0,
+        EncryptionConflictResolutionStrategy: 0,
+        EncryptionScope: 0,
+      },
+      BackupConfiguration: { Region: 0, KmsKeyArn: 0 },
+      LogGroupNameConfiguration: { LogGroupNamePattern: 0 },
+      TagPropagationConfiguration: {
+        DestinationRoleArn: 0,
+        TagConflictResolutionStrategy: 0,
+      },
+    },
+    DestinationMetricsConfiguration: { BackupConfiguration: { Region: 0 } },
+  },
+});
+const i_TelemetryPipelineConfiguration: D.LazyStruct = () => ({ Body: 0 });
+const i_TelemetryRule: D.LazyStruct = () => ({
+  ResourceType: 0,
+  TelemetryType: 0,
+  TelemetrySourceTypes: 0,
+  DestinationConfiguration: {
+    DestinationType: 0,
+    DestinationPattern: 0,
+    RetentionInDays: 0,
+    VPCFlowLogParameters: {
+      LogFormat: 0,
+      TrafficType: 0,
+      MaxAggregationInterval: 0,
+    },
+    CloudtrailParameters: {
+      AdvancedEventSelectors: D.list({
+        Name: 0,
+        FieldSelectors: D.list({
+          Field: 0,
+          Equals: 0,
+          StartsWith: 0,
+          EndsWith: 0,
+          NotEquals: 0,
+          NotStartsWith: 0,
+          NotEndsWith: 0,
+        }),
+      }),
+    },
+    ELBLoadBalancerLoggingParameters: { OutputFormat: 0, FieldDelimiter: 0 },
+    WAFLoggingParameters: {
+      RedactedFields: D.list({
+        SingleHeader: { Name: 0 },
+        UriPath: 0,
+        QueryString: 0,
+        Method: 0,
+      }),
+      LoggingFilter: {
+        Filters: D.list({
+          Behavior: 0,
+          Requirement: 0,
+          Conditions: D.list({
+            ActionCondition: { Action: 0 },
+            LabelNameCondition: { LabelName: 0 },
+          }),
+        }),
+        DefaultBehavior: 0,
+      },
+      LogType: 0,
+    },
+    LogDeliveryParameters: { LogTypes: 0 },
+    MskMonitoringParameters: { EnhancedMonitoring: 0 },
+    KmsKeyArn: 0,
+  },
+  Scope: 0,
+  SelectionCriteria: 0,
+  AllowFieldUpdates: 0,
+  Regions: 0,
+  AllRegions: 0,
+});

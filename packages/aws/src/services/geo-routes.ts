@@ -2542,7 +2542,86 @@ export const calculateIsolines: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/isolines",
-    input: { Key: D.m({ query: "key" }) },
+    input: {
+      Allow: { Hot: 0, Hov: 0 },
+      ArrivalTime: 0,
+      Avoid: {
+        Areas: D.list({
+          Except: D.list(i_IsolineAvoidanceAreaGeometry),
+          Geometry: i_IsolineAvoidanceAreaGeometry,
+        }),
+        CarShuttleTrains: 0,
+        ControlledAccessHighways: 0,
+        DirtRoads: 0,
+        Ferries: 0,
+        SeasonalClosure: 0,
+        TollRoads: 0,
+        TollTransponders: 0,
+        TruckRoadTypes: 0,
+        Tunnels: 0,
+        UTurns: 0,
+        ZoneCategories: D.list({ Category: 0 }),
+      },
+      DepartNow: 0,
+      DepartureTime: 0,
+      Destination: 0,
+      DestinationOptions: {
+        AvoidActionsForDistance: 0,
+        Heading: 0,
+        Matching: i_IsolineMatchingOptions,
+        SideOfStreet: i_IsolineSideOfStreetOptions,
+      },
+      IsolineGeometryFormat: 0,
+      IsolineGranularity: { MaxPoints: 0, MaxResolution: 0 },
+      Key: D.m({ query: "key" }),
+      OptimizeIsolineFor: 0,
+      OptimizeRoutingFor: 0,
+      Origin: 0,
+      OriginOptions: {
+        AvoidActionsForDistance: 0,
+        Heading: 0,
+        Matching: i_IsolineMatchingOptions,
+        SideOfStreet: i_IsolineSideOfStreetOptions,
+      },
+      Thresholds: { Distance: 0, Time: 0 },
+      Traffic: { FlowEventThresholdOverride: 0, Usage: 0 },
+      TravelMode: 0,
+      TravelModeOptions: {
+        Car: {
+          EngineType: 0,
+          LicensePlate: i_IsolineVehicleLicensePlate,
+          MaxSpeed: 0,
+          Occupancy: 0,
+        },
+        Scooter: {
+          EngineType: 0,
+          LicensePlate: i_IsolineVehicleLicensePlate,
+          MaxSpeed: 0,
+          Occupancy: 0,
+        },
+        Truck: {
+          AxleCount: 0,
+          EngineType: 0,
+          GrossWeight: 0,
+          HazardousCargos: 0,
+          Height: 0,
+          HeightAboveFirstAxle: 0,
+          KpraLength: 0,
+          Length: 0,
+          LicensePlate: i_IsolineVehicleLicensePlate,
+          MaxSpeed: 0,
+          Occupancy: 0,
+          PayloadCapacity: 0,
+          TireCount: 0,
+          Trailer: { AxleCount: 0, TrailerCount: 0 },
+          TruckType: 0,
+          TunnelRestrictionCode: 0,
+          WeightPerAxle: 0,
+          WeightPerAxleGroup: i_WeightPerAxleGroup,
+          Width: 0,
+        },
+      },
+    },
     output: {
       ArrivalTime: D.secret,
       DepartureTime: D.secret,
@@ -2585,7 +2664,88 @@ export const calculateRouteMatrix: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/route-matrix",
-    input: { Key: D.m({ query: "key" }) },
+    input: {
+      Allow: { Hot: 0, Hov: 0 },
+      Avoid: {
+        Areas: D.list({
+          Geometry: { BoundingBox: 0, Polygon: 0, PolylinePolygon: 0 },
+        }),
+        CarShuttleTrains: 0,
+        ControlledAccessHighways: 0,
+        DirtRoads: 0,
+        Ferries: 0,
+        TollRoads: 0,
+        TollTransponders: 0,
+        TruckRoadTypes: 0,
+        Tunnels: 0,
+        UTurns: 0,
+        ZoneCategories: D.list({ Category: 0 }),
+      },
+      DepartNow: 0,
+      DepartureTime: 0,
+      Destinations: D.list({
+        Options: {
+          AvoidActionsForDistance: 0,
+          Heading: 0,
+          Matching: i_RouteMatrixMatchingOptions,
+          SideOfStreet: i_RouteMatrixSideOfStreetOptions,
+        },
+        Position: 0,
+      }),
+      Exclude: { Countries: 0 },
+      Key: D.m({ query: "key" }),
+      OptimizeRoutingFor: 0,
+      Origins: D.list({
+        Options: {
+          AvoidActionsForDistance: 0,
+          Heading: 0,
+          Matching: i_RouteMatrixMatchingOptions,
+          SideOfStreet: i_RouteMatrixSideOfStreetOptions,
+        },
+        Position: 0,
+      }),
+      RoutingBoundary: {
+        Geometry: {
+          AutoCircle: { Margin: 0, MaxRadius: 0 },
+          Circle: { Center: 0, Radius: 0 },
+          BoundingBox: 0,
+          Polygon: 0,
+        },
+        Unbounded: 0,
+      },
+      Traffic: { FlowEventThresholdOverride: 0, Usage: 0 },
+      TravelMode: 0,
+      TravelModeOptions: {
+        Car: {
+          LicensePlate: i_RouteMatrixVehicleLicensePlate,
+          MaxSpeed: 0,
+          Occupancy: 0,
+        },
+        Scooter: {
+          LicensePlate: i_RouteMatrixVehicleLicensePlate,
+          MaxSpeed: 0,
+          Occupancy: 0,
+        },
+        Truck: {
+          AxleCount: 0,
+          GrossWeight: 0,
+          HazardousCargos: 0,
+          Height: 0,
+          KpraLength: 0,
+          Length: 0,
+          LicensePlate: i_RouteMatrixVehicleLicensePlate,
+          MaxSpeed: 0,
+          Occupancy: 0,
+          PayloadCapacity: 0,
+          Trailer: { TrailerCount: 0 },
+          TruckType: 0,
+          TunnelRestrictionCode: 0,
+          WeightPerAxle: 0,
+          WeightPerAxleGroup: i_WeightPerAxleGroup,
+          Width: 0,
+        },
+      },
+    },
     output: { PricingBucket: D.m({ header: "x-amz-geo-pricing-bucket" }) },
     body: true,
   },
@@ -2620,7 +2780,128 @@ export const calculateRoutes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/routes",
-    input: { Key: D.m({ query: "key" }) },
+    input: {
+      Allow: { Hot: 0, Hov: 0 },
+      ArrivalTime: 0,
+      Avoid: {
+        Areas: D.list({
+          Except: D.list(i_RouteAvoidanceAreaGeometry),
+          Geometry: i_RouteAvoidanceAreaGeometry,
+        }),
+        CarShuttleTrains: 0,
+        ControlledAccessHighways: 0,
+        DirtRoads: 0,
+        Ferries: 0,
+        SeasonalClosure: 0,
+        TollRoads: 0,
+        TollTransponders: 0,
+        TruckRoadTypes: 0,
+        Tunnels: 0,
+        UTurns: 0,
+        ZoneCategories: D.list({ Category: 0 }),
+      },
+      DepartNow: 0,
+      DepartureTime: 0,
+      Destination: 0,
+      DestinationOptions: {
+        AvoidActionsForDistance: 0,
+        AvoidUTurns: 0,
+        Heading: 0,
+        Matching: i_RouteMatchingOptions,
+        SideOfStreet: i_RouteSideOfStreetOptions,
+        StopDuration: 0,
+      },
+      Driver: { Schedule: D.list({ DriveDuration: 0, RestDuration: 0 }) },
+      Exclude: { Countries: 0 },
+      InstructionsMeasurementSystem: 0,
+      Key: D.m({ query: "key" }),
+      Languages: 0,
+      LegAdditionalFeatures: 0,
+      LegGeometryFormat: 0,
+      MaxAlternatives: 0,
+      OptimizeRoutingFor: 0,
+      Origin: 0,
+      OriginOptions: {
+        AvoidActionsForDistance: 0,
+        AvoidUTurns: 0,
+        Heading: 0,
+        Matching: i_RouteMatchingOptions,
+        SideOfStreet: i_RouteSideOfStreetOptions,
+      },
+      SpanAdditionalFeatures: 0,
+      Tolls: {
+        AllTransponders: 0,
+        AllVignettes: 0,
+        Currency: 0,
+        EmissionType: { Co2EmissionClass: 0, Type: 0 },
+        VehicleCategory: 0,
+      },
+      Traffic: { FlowEventThresholdOverride: 0, Usage: 0 },
+      TravelMode: 0,
+      TravelModeOptions: {
+        Car: {
+          EngineType: 0,
+          LicensePlate: i_RouteVehicleLicensePlate,
+          MaxSpeed: 0,
+          Occupancy: 0,
+        },
+        Pedestrian: { Speed: 0 },
+        Scooter: {
+          EngineType: 0,
+          LicensePlate: i_RouteVehicleLicensePlate,
+          MaxSpeed: 0,
+          Occupancy: 0,
+        },
+        Truck: {
+          AxleCount: 0,
+          EngineType: 0,
+          GrossWeight: 0,
+          HazardousCargos: 0,
+          Height: 0,
+          HeightAboveFirstAxle: 0,
+          KpraLength: 0,
+          Length: 0,
+          LicensePlate: i_RouteVehicleLicensePlate,
+          MaxSpeed: 0,
+          Occupancy: 0,
+          PayloadCapacity: 0,
+          TireCount: 0,
+          Trailer: { AxleCount: 0, TrailerCount: 0 },
+          TruckType: 0,
+          TunnelRestrictionCode: 0,
+          WeightPerAxle: 0,
+          WeightPerAxleGroup: i_WeightPerAxleGroup,
+          Width: 0,
+        },
+        Intermodal: {
+          AccessibilityAttributes: 0,
+          MaxTransfers: 0,
+          Pedestrian: { MaxDistance: 0, Speed: 0 },
+          Rental: { AllowedModes: 0, EnabledFor: 0, ExcludedModes: 0 },
+          Taxi: { AllowedModes: 0, EnabledFor: 0, ExcludedModes: 0 },
+          Transit: { AllowedModes: 0, EnabledFor: 0, ExcludedModes: 0 },
+          Vehicle: { AllowedModes: 0, EnabledFor: 0, ExcludedModes: 0 },
+        },
+        Transit: {
+          AccessibilityAttributes: 0,
+          AllowedModes: 0,
+          ExcludedModes: 0,
+          MaxTransfers: 0,
+          Pedestrian: { MaxDistance: 0, Speed: 0 },
+        },
+      },
+      TravelStepType: 0,
+      Waypoints: D.list({
+        AvoidActionsForDistance: 0,
+        AvoidUTurns: 0,
+        Heading: 0,
+        Matching: i_RouteMatchingOptions,
+        PassThrough: 0,
+        Position: 0,
+        SideOfStreet: i_RouteSideOfStreetOptions,
+        StopDuration: 0,
+      }),
+    },
     output: {
       PricingBucket: D.m({ header: "x-amz-geo-pricing-bucket" }),
       Routes: D.list({
@@ -2898,7 +3179,71 @@ export const optimizeWaypoints: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/optimize-waypoints",
-    input: { Key: D.m({ query: "key" }) },
+    input: {
+      Avoid: {
+        Areas: D.list({ Geometry: { BoundingBox: 0 } }),
+        CarShuttleTrains: 0,
+        ControlledAccessHighways: 0,
+        DirtRoads: 0,
+        Ferries: 0,
+        TollRoads: 0,
+        Tunnels: 0,
+        UTurns: 0,
+      },
+      Clustering: {
+        Algorithm: 0,
+        DrivingDistanceOptions: { DrivingDistance: 0 },
+      },
+      DepartureTime: 0,
+      Destination: 0,
+      DestinationOptions: {
+        AccessHours: i_WaypointOptimizationAccessHours,
+        AppointmentTime: 0,
+        Heading: 0,
+        Id: 0,
+        ServiceDuration: 0,
+        SideOfStreet: i_WaypointOptimizationSideOfStreetOptions,
+      },
+      Driver: {
+        RestCycles: {
+          LongCycle: i_WaypointOptimizationRestCycleDurations,
+          ShortCycle: i_WaypointOptimizationRestCycleDurations,
+        },
+        RestProfile: { Profile: 0 },
+        TreatServiceTimeAs: 0,
+      },
+      Exclude: { Countries: 0 },
+      Key: D.m({ query: "key" }),
+      OptimizeSequencingFor: 0,
+      Origin: 0,
+      OriginOptions: { Id: 0 },
+      Traffic: { Usage: 0 },
+      TravelMode: 0,
+      TravelModeOptions: {
+        Pedestrian: { Speed: 0 },
+        Truck: {
+          GrossWeight: 0,
+          HazardousCargos: 0,
+          Height: 0,
+          Length: 0,
+          Trailer: { TrailerCount: 0 },
+          TruckType: 0,
+          TunnelRestrictionCode: 0,
+          WeightPerAxle: 0,
+          Width: 0,
+        },
+      },
+      Waypoints: D.list({
+        AccessHours: i_WaypointOptimizationAccessHours,
+        AppointmentTime: 0,
+        Before: 0,
+        Heading: 0,
+        Id: 0,
+        Position: 0,
+        ServiceDuration: 0,
+        SideOfStreet: i_WaypointOptimizationSideOfStreetOptions,
+      }),
+    },
     output: {
       ImpedingWaypoints: D.list({
         FailedConstraints: D.list({ Constraint: D.secret, Reason: D.secret }),
@@ -2942,7 +3287,24 @@ export const snapToRoads: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/snap-to-roads",
-    input: { Key: D.m({ query: "key" }) },
+    input: {
+      Key: D.m({ query: "key" }),
+      SnappedGeometryFormat: 0,
+      SnapRadius: 0,
+      TracePoints: D.list({ Heading: 0, Position: 0, Speed: 0, Timestamp: 0 }),
+      TravelMode: 0,
+      TravelModeOptions: {
+        Truck: {
+          GrossWeight: 0,
+          HazardousCargos: 0,
+          Height: 0,
+          Length: 0,
+          Trailer: { TrailerCount: 0 },
+          TunnelRestrictionCode: 0,
+          Width: 0,
+        },
+      },
+    },
     output: {
       Notices: D.list({ Code: D.secret, Title: D.secret }),
       PricingBucket: D.m({ header: "x-amz-geo-pricing-bucket" }),
@@ -2961,6 +3323,74 @@ export const snapToRoads: API.OperationMethod<
   operationName: "SnapToRoads",
 })) as any;
 
+const i_IsolineAvoidanceAreaGeometry: D.LazyStruct = () => ({
+  BoundingBox: 0,
+  Corridor: i_Corridor,
+  Polygon: 0,
+  PolylineCorridor: i_PolylineCorridor,
+  PolylinePolygon: 0,
+});
+const i_IsolineMatchingOptions: D.LazyStruct = () => ({
+  NameHint: 0,
+  OnRoadThreshold: 0,
+  Radius: 0,
+  Strategy: 0,
+});
+const i_IsolineSideOfStreetOptions: D.LazyStruct = () => ({
+  Position: 0,
+  UseWith: 0,
+});
+const i_IsolineVehicleLicensePlate: D.LazyStruct = () => ({ LastCharacter: 0 });
+const i_RouteAvoidanceAreaGeometry: D.LazyStruct = () => ({
+  Corridor: i_Corridor,
+  BoundingBox: 0,
+  Polygon: 0,
+  PolylineCorridor: i_PolylineCorridor,
+  PolylinePolygon: 0,
+});
+const i_RouteMatchingOptions: D.LazyStruct = () => ({
+  NameHint: 0,
+  OnRoadThreshold: 0,
+  Radius: 0,
+  Strategy: 0,
+});
+const i_RouteMatrixMatchingOptions: D.LazyStruct = () => ({
+  NameHint: 0,
+  OnRoadThreshold: 0,
+  Radius: 0,
+  Strategy: 0,
+});
+const i_RouteMatrixSideOfStreetOptions: D.LazyStruct = () => ({
+  Position: 0,
+  UseWith: 0,
+});
+const i_RouteMatrixVehicleLicensePlate: D.LazyStruct = () => ({
+  LastCharacter: 0,
+});
+const i_RouteSideOfStreetOptions: D.LazyStruct = () => ({
+  Position: 0,
+  UseWith: 0,
+});
+const i_RouteVehicleLicensePlate: D.LazyStruct = () => ({ LastCharacter: 0 });
+const i_WaypointOptimizationAccessHours: D.LazyStruct = () => ({
+  From: i_WaypointOptimizationAccessHoursEntry,
+  To: i_WaypointOptimizationAccessHoursEntry,
+});
+const i_WaypointOptimizationRestCycleDurations: D.LazyStruct = () => ({
+  RestDuration: 0,
+  WorkDuration: 0,
+});
+const i_WaypointOptimizationSideOfStreetOptions: D.LazyStruct = () => ({
+  Position: 0,
+  UseWith: 0,
+});
+const i_WeightPerAxleGroup: D.LazyStruct = () => ({
+  Single: 0,
+  Tandem: 0,
+  Triple: 0,
+  Quad: 0,
+  Quint: 0,
+});
 const o_LocalizedString: D.LazyStruct = () => ({ Value: D.secret });
 const o_RouteAttribution: D.LazyStruct = () => ({
   AttributionType: D.secret,
@@ -3068,6 +3498,12 @@ const o_RouteWebLink: D.LazyStruct = () => ({
   Description: D.secret,
   DeviceType: D.secret,
   Url: D.secret,
+});
+const i_Corridor: D.LazyStruct = () => ({ LineString: 0, Radius: 0 });
+const i_PolylineCorridor: D.LazyStruct = () => ({ Polyline: 0, Radius: 0 });
+const i_WaypointOptimizationAccessHoursEntry: D.LazyStruct = () => ({
+  DayOfWeek: 0,
+  TimeOfDay: 0,
 });
 const o_RouteStationDetails: D.LazyStruct = () => ({
   PlatformName: D.secret,

@@ -1,5 +1,6 @@
 import type * as HttpClient from "effect/unstable/http/HttpClient";
 import * as API from "@distilled.cloud/core/api";
+import * as D from "@distilled.cloud/core/shape";
 import * as TE from "@distilled.cloud/core/error-class";
 import { AwsProtocol } from "../protocol.ts";
 import { awsJson1_0Protocol } from "../protocols/aws-json.ts";
@@ -248,7 +249,7 @@ export const getRoutingControlState: API.OperationMethod<
   GetRoutingControlStateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RoutingControlArn: 0 } },
   errors: [
     AccessDeniedException,
     EndpointTemporarilyUnavailableException,
@@ -305,7 +306,10 @@ export const listRoutingControls: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RoutingControl
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ControlPanelArn: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     EndpointTemporarilyUnavailableException,
@@ -370,7 +374,14 @@ export const updateRoutingControlState: API.OperationMethod<
   UpdateRoutingControlStateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      RoutingControlArn: 0,
+      RoutingControlState: 0,
+      SafetyRulesToOverride: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -431,7 +442,16 @@ export const updateRoutingControlStates: API.OperationMethod<
   UpdateRoutingControlStatesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UpdateRoutingControlStateEntries: D.list({
+        RoutingControlArn: 0,
+        RoutingControlState: 0,
+      }),
+      SafetyRulesToOverride: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,

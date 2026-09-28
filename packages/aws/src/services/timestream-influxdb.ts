@@ -1035,7 +1035,11 @@ export const createDbBackup: API.OperationMethod<
   CreateDbBackupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createdAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { name: 0, dbResourceId: 0, retentionDays: 0, tags: 0 },
+    output: { createdAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1068,7 +1072,32 @@ export const createDbCluster: API.OperationMethod<
   CreateDbClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      username: 0,
+      password: 0,
+      organization: 0,
+      bucket: 0,
+      port: 0,
+      dbParameterGroupIdentifier: 0,
+      dbInstanceType: 0,
+      dbStorageType: 0,
+      allocatedStorage: 0,
+      networkType: 0,
+      publiclyAccessible: 0,
+      vpcSubnetIds: 0,
+      vpcSecurityGroupIds: 0,
+      deploymentType: 0,
+      failoverMode: 0,
+      logDeliveryConfiguration: i_LogDeliveryConfiguration,
+      maintenanceSchedule: i_MaintenanceSchedule,
+      dbBackupConfigurations: D.list(i_DbBackupConfiguration),
+      kmsKeyId: 0,
+      tags: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1103,6 +1132,28 @@ export const createDbInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      name: 0,
+      username: 0,
+      password: 0,
+      organization: 0,
+      bucket: 0,
+      dbInstanceType: 0,
+      vpcSubnetIds: 0,
+      vpcSecurityGroupIds: 0,
+      publiclyAccessible: 0,
+      dbStorageType: 0,
+      allocatedStorage: 0,
+      dbParameterGroupIdentifier: 0,
+      deploymentType: 0,
+      logDeliveryConfiguration: i_LogDeliveryConfiguration,
+      maintenanceSchedule: i_MaintenanceSchedule,
+      tags: 0,
+      port: 0,
+      networkType: 0,
+      dbBackupConfigurations: D.list(i_DbBackupConfiguration),
+      kmsKeyId: 0,
+    },
     output: {
       lastMaintenanceTime: D.ts,
       nextMaintenanceTime: D.ts,
@@ -1141,7 +1192,151 @@ export const createDbParameterGroup: API.OperationMethod<
   CreateDbParameterGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      parameters: {
+        InfluxDBv2: {
+          fluxLogEnabled: 0,
+          logLevel: 0,
+          noTasks: 0,
+          queryConcurrency: 0,
+          queryQueueSize: 0,
+          tracingType: 0,
+          metricsDisabled: 0,
+          httpIdleTimeout: i_Duration,
+          httpReadHeaderTimeout: i_Duration,
+          httpReadTimeout: i_Duration,
+          httpWriteTimeout: i_Duration,
+          influxqlMaxSelectBuckets: 0,
+          influxqlMaxSelectPoint: 0,
+          influxqlMaxSelectSeries: 0,
+          pprofDisabled: 0,
+          queryInitialMemoryBytes: 0,
+          queryMaxMemoryBytes: 0,
+          queryMemoryBytes: 0,
+          sessionLength: 0,
+          sessionRenewDisabled: 0,
+          storageCacheMaxMemorySize: 0,
+          storageCacheSnapshotMemorySize: 0,
+          storageCacheSnapshotWriteColdDuration: i_Duration,
+          storageCompactFullWriteColdDuration: i_Duration,
+          storageCompactThroughputBurst: 0,
+          storageMaxConcurrentCompactions: 0,
+          storageMaxIndexLogFileSize: 0,
+          storageNoValidateFieldSize: 0,
+          storageRetentionCheckInterval: i_Duration,
+          storageSeriesFileMaxConcurrentSnapshotCompactions: 0,
+          storageSeriesIdSetCacheSize: 0,
+          storageWalMaxConcurrentWrites: 0,
+          storageWalMaxWriteDelay: i_Duration,
+          uiDisabled: 0,
+        },
+        InfluxDBv3Core: {
+          queryFileLimit: 0,
+          queryLogSize: 0,
+          logFilter: 0,
+          logFormat: 0,
+          dataFusionNumThreads: 0,
+          dataFusionRuntimeType: 0,
+          dataFusionRuntimeDisableLifoSlot: 0,
+          dataFusionRuntimeEventInterval: 0,
+          dataFusionRuntimeGlobalQueueInterval: 0,
+          dataFusionRuntimeMaxBlockingThreads: 0,
+          dataFusionRuntimeMaxIoEventsPerTick: 0,
+          dataFusionRuntimeThreadKeepAlive: i_Duration,
+          dataFusionRuntimeThreadPriority: 0,
+          dataFusionMaxParquetFanout: 0,
+          dataFusionUseCachedParquetLoader: 0,
+          dataFusionConfig: 0,
+          maxHttpRequestSize: 0,
+          forceSnapshotMemThreshold: i_PercentOrAbsoluteLong,
+          walSnapshotSize: 0,
+          walMaxWriteBufferSize: 0,
+          snapshottedWalFilesToKeep: 0,
+          preemptiveCacheAge: i_Duration,
+          parquetMemCachePrunePercentage: 0,
+          parquetMemCachePruneInterval: i_Duration,
+          disableParquetMemCache: 0,
+          parquetMemCacheQueryPathDuration: i_Duration,
+          lastCacheEvictionInterval: i_Duration,
+          distinctCacheEvictionInterval: i_Duration,
+          gen1Duration: i_Duration,
+          execMemPoolBytes: i_PercentOrAbsoluteLong,
+          parquetMemCacheSize: i_PercentOrAbsoluteLong,
+          walReplayFailOnError: 0,
+          walReplayConcurrencyLimit: 0,
+          tableIndexCacheMaxEntries: 0,
+          tableIndexCacheConcurrencyLimit: 0,
+          gen1LookbackDuration: i_Duration,
+          retentionCheckInterval: i_Duration,
+          deleteGracePeriod: i_Duration,
+          hardDeleteDefaultDuration: i_Duration,
+          pluginRepositoryUrl: 0,
+          pluginRepositorySecretArn: 0,
+        },
+        InfluxDBv3Enterprise: {
+          queryFileLimit: 0,
+          queryLogSize: 0,
+          logFilter: 0,
+          logFormat: 0,
+          dataFusionNumThreads: 0,
+          dataFusionRuntimeType: 0,
+          dataFusionRuntimeDisableLifoSlot: 0,
+          dataFusionRuntimeEventInterval: 0,
+          dataFusionRuntimeGlobalQueueInterval: 0,
+          dataFusionRuntimeMaxBlockingThreads: 0,
+          dataFusionRuntimeMaxIoEventsPerTick: 0,
+          dataFusionRuntimeThreadKeepAlive: i_Duration,
+          dataFusionRuntimeThreadPriority: 0,
+          dataFusionMaxParquetFanout: 0,
+          dataFusionUseCachedParquetLoader: 0,
+          dataFusionConfig: 0,
+          maxHttpRequestSize: 0,
+          forceSnapshotMemThreshold: i_PercentOrAbsoluteLong,
+          walSnapshotSize: 0,
+          walMaxWriteBufferSize: 0,
+          snapshottedWalFilesToKeep: 0,
+          preemptiveCacheAge: i_Duration,
+          parquetMemCachePrunePercentage: 0,
+          parquetMemCachePruneInterval: i_Duration,
+          disableParquetMemCache: 0,
+          parquetMemCacheQueryPathDuration: i_Duration,
+          lastCacheEvictionInterval: i_Duration,
+          distinctCacheEvictionInterval: i_Duration,
+          gen1Duration: i_Duration,
+          execMemPoolBytes: i_PercentOrAbsoluteLong,
+          parquetMemCacheSize: i_PercentOrAbsoluteLong,
+          walReplayFailOnError: 0,
+          walReplayConcurrencyLimit: 0,
+          tableIndexCacheMaxEntries: 0,
+          tableIndexCacheConcurrencyLimit: 0,
+          gen1LookbackDuration: i_Duration,
+          retentionCheckInterval: i_Duration,
+          deleteGracePeriod: i_Duration,
+          hardDeleteDefaultDuration: i_Duration,
+          pluginRepositoryUrl: 0,
+          pluginRepositorySecretArn: 0,
+          ingestQueryInstances: 0,
+          queryOnlyInstances: 0,
+          dedicatedCompactor: 0,
+          compactionRowLimit: 0,
+          compactionMaxNumFilesPerPlan: 0,
+          compactionGen2Duration: i_Duration,
+          compactionMultipliers: 0,
+          compactionCleanupWait: i_Duration,
+          compactionCheckInterval: i_Duration,
+          lastValueCacheDisableFromHistory: 0,
+          distinctValueCacheDisableFromHistory: 0,
+          replicationInterval: i_Duration,
+          catalogSyncInterval: i_Duration,
+        },
+      },
+      tags: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1173,7 +1368,11 @@ export const deleteDbBackup: API.OperationMethod<
   DeleteDbBackupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createdAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { identifier: 0 },
+    output: { createdAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1204,7 +1403,10 @@ export const deleteDbCluster: API.OperationMethod<
   DeleteDbClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { dbClusterId: 0, retainAutomatedBackups: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1237,6 +1439,7 @@ export const deleteDbInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { identifier: 0, retainAutomatedBackups: 0 },
     output: {
       lastMaintenanceTime: D.ts,
       nextMaintenanceTime: D.ts,
@@ -1272,7 +1475,11 @@ export const getDbBackup: API.OperationMethod<
   GetDbBackupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createdAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { identifier: 0 },
+    output: { createdAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1303,6 +1510,7 @@ export const getDbCluster: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { dbClusterId: 0 },
     output: {
       lastMaintenanceTime: D.ts,
       nextMaintenanceTime: D.ts,
@@ -1339,6 +1547,7 @@ export const getDbInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { identifier: 0 },
     output: {
       lastMaintenanceTime: D.ts,
       nextMaintenanceTime: D.ts,
@@ -1373,7 +1582,7 @@ export const getDbParameterGroup: API.OperationMethod<
   GetDbParameterGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { identifier: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1403,7 +1612,11 @@ export const listDbBackups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DbBackupSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { items: D.list({ createdAt: D.ts }) } },
+  descriptor: {
+    service: svc,
+    input: { dbResourceId: 0, nextToken: 0, maxResults: 0 },
+    output: { items: D.list({ createdAt: D.ts }) },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1439,7 +1652,7 @@ export const listDbClusters: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DbClusterSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0, maxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1475,7 +1688,7 @@ export const listDbInstances: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DbInstanceSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0, maxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1511,7 +1724,10 @@ export const listDbInstancesForCluster: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DbInstanceForClusterSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { dbClusterId: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1547,7 +1763,7 @@ export const listDbParameterGroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DbParameterGroupSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0, maxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1576,7 +1792,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1600,7 +1816,7 @@ export const rebootDbCluster: API.OperationMethod<
   RebootDbClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { dbClusterId: 0, instanceIds: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1633,6 +1849,7 @@ export const rebootDbInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { identifier: 0 },
     output: {
       lastMaintenanceTime: D.ts,
       nextMaintenanceTime: D.ts,
@@ -1670,7 +1887,26 @@ export const restoreFromDbBackup: API.OperationMethod<
   RestoreFromDbBackupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, input: { restoreToTime: D.tsAs("date-time") } },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      dbBackupId: 0,
+      restoreToTime: D.tsAs("date-time"),
+      restoreMode: 0,
+      vpcSubnetIds: 0,
+      vpcSecurityGroupIds: 0,
+      publiclyAccessible: 0,
+      logDeliveryConfiguration: i_LogDeliveryConfiguration,
+      maintenanceSchedule: i_MaintenanceSchedule,
+      tags: 0,
+      port: 0,
+      networkType: 0,
+      deploymentType: 0,
+      dbBackupConfigurations: D.list(i_DbBackupConfiguration),
+      kmsKeyId: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1698,7 +1934,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: 0 } },
   errors: [ResourceNotFoundException, ServiceQuotaExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1715,7 +1951,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1739,7 +1975,19 @@ export const updateDbCluster: API.OperationMethod<
   UpdateDbClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      dbClusterId: 0,
+      logDeliveryConfiguration: i_LogDeliveryConfiguration,
+      dbParameterGroupIdentifier: 0,
+      port: 0,
+      dbInstanceType: 0,
+      failoverMode: 0,
+      maintenanceSchedule: i_MaintenanceSchedule,
+      dbBackupConfigurations: D.list(i_DbBackupConfiguration),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1772,6 +2020,18 @@ export const updateDbInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      identifier: 0,
+      logDeliveryConfiguration: i_LogDeliveryConfiguration,
+      dbParameterGroupIdentifier: 0,
+      port: 0,
+      dbInstanceType: 0,
+      deploymentType: 0,
+      dbStorageType: 0,
+      allocatedStorage: 0,
+      maintenanceSchedule: i_MaintenanceSchedule,
+      dbBackupConfigurations: D.list(i_DbBackupConfiguration),
+    },
     output: {
       lastMaintenanceTime: D.ts,
       nextMaintenanceTime: D.ts,
@@ -1791,6 +2051,24 @@ export const updateDbInstance: API.OperationMethod<
   operationName: "UpdateDbInstance",
 })) as any;
 
+const i_DbBackupConfiguration: D.LazyStruct = () => ({
+  type: 0,
+  retentionDays: 0,
+  enabled: 0,
+  customSchedule: 0,
+});
+const i_Duration: D.LazyStruct = () => ({ durationType: 0, value: 0 });
+const i_LogDeliveryConfiguration: D.LazyStruct = () => ({
+  s3Configuration: { bucketName: 0, enabled: 0 },
+});
+const i_MaintenanceSchedule: D.LazyStruct = () => ({
+  timezone: 0,
+  preferredMaintenanceWindow: 0,
+});
+const i_PercentOrAbsoluteLong: D.LazyStruct = () => ({
+  percent: 0,
+  absolute: 0,
+});
 const o_DbBackupConfigurationOutput: D.LazyStruct = () => ({
   nextAutomatedBackupTime: D.ts,
 });

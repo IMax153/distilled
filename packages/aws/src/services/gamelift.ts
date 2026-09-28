@@ -3542,7 +3542,10 @@ export const acceptMatch: API.OperationMethod<
   AcceptMatchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TicketId: 0, PlayerIds: 0, AcceptanceType: 0 },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -3608,7 +3611,16 @@ export const claimGameServer: API.OperationMethod<
   ClaimGameServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GameServer: o_GameServer } },
+  descriptor: {
+    service: svc,
+    input: {
+      GameServerGroupName: 0,
+      GameServerId: 0,
+      GameServerData: 0,
+      FilterOption: { InstanceStatuses: 0 },
+    },
+    output: { GameServer: o_GameServer },
+  },
   errors: [
     ConflictException,
     InternalServiceException,
@@ -3660,7 +3672,16 @@ export const createAlias: API.OperationMethod<
   CreateAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Alias: o_Alias } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      RoutingStrategy: i_RoutingStrategy,
+      Tags: D.list(i_Tag),
+    },
+    output: { Alias: o_Alias },
+  },
   errors: [
     ConflictException,
     InternalServiceException,
@@ -3727,7 +3748,18 @@ export const createBuild: API.OperationMethod<
   CreateBuildError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Build: o_Build } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Version: 0,
+      StorageLocation: i_S3Location,
+      OperatingSystem: 0,
+      Tags: D.list(i_Tag),
+      ServerSdkVersion: 0,
+    },
+    output: { Build: o_Build },
+  },
   errors: [
     ConflictException,
     InternalServiceException,
@@ -3832,7 +3864,28 @@ export const createContainerFleet: API.OperationMethod<
   CreateContainerFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ContainerFleet: o_ContainerFleet } },
+  descriptor: {
+    service: svc,
+    input: {
+      FleetRoleArn: 0,
+      Description: 0,
+      GameServerContainerGroupDefinitionName: 0,
+      PerInstanceContainerGroupDefinitionName: 0,
+      InstanceConnectionPortRange: i_ConnectionPortRange,
+      InstanceInboundPermissions: D.list(i_IpPermission),
+      GameServerContainerGroupsPerInstance: 0,
+      InstanceType: 0,
+      BillingType: 0,
+      Locations: D.list(i_LocationConfiguration),
+      MetricGroups: 0,
+      NewGameSessionProtectionPolicy: 0,
+      GameSessionCreationLimitPolicy: i_GameSessionCreationLimitPolicy,
+      LogConfiguration: i_LogConfiguration,
+      Tags: D.list(i_Tag),
+      PlayerGatewayMode: 0,
+    },
+    output: { ContainerFleet: o_ContainerFleet },
+  },
   errors: [
     ConflictException,
     InternalServiceException,
@@ -3959,6 +4012,17 @@ export const createContainerGroupDefinition: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Name: 0,
+      ContainerGroupType: 0,
+      TotalMemoryLimitMebibytes: 0,
+      TotalVcpuLimit: 0,
+      GameServerContainerDefinition: i_GameServerContainerDefinitionInput,
+      SupportContainerDefinitions: D.list(i_SupportContainerDefinitionInput),
+      OperatingSystem: 0,
+      VersionDescription: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { ContainerGroupDefinition: o_ContainerGroupDefinition },
   },
   errors: [
@@ -4068,7 +4132,37 @@ export const createFleet: API.OperationMethod<
   CreateFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { FleetAttributes: o_FleetAttributes } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      BuildId: 0,
+      ScriptId: 0,
+      ServerLaunchPath: 0,
+      ServerLaunchParameters: 0,
+      LogPaths: 0,
+      EC2InstanceType: 0,
+      EC2InboundPermissions: D.list(i_IpPermission),
+      NewGameSessionProtectionPolicy: 0,
+      RuntimeConfiguration: i_RuntimeConfiguration,
+      ResourceCreationLimitPolicy: i_ResourceCreationLimitPolicy,
+      MetricGroups: 0,
+      PeerVpcAwsAccountId: 0,
+      PeerVpcId: 0,
+      FleetType: 0,
+      InstanceRoleArn: 0,
+      CertificateConfiguration: { CertificateType: 0 },
+      Locations: D.list(i_LocationConfiguration),
+      Tags: D.list(i_Tag),
+      ComputeType: 0,
+      AnywhereConfiguration: i_AnywhereConfiguration,
+      InstanceRoleCredentialsProvider: 0,
+      PlayerGatewayMode: 0,
+      PlayerGatewayConfiguration: { GameServerIpProtocolSupported: 0 },
+    },
+    output: { FleetAttributes: o_FleetAttributes },
+  },
   errors: [
     ConflictException,
     InternalServiceException,
@@ -4130,7 +4224,10 @@ export const createFleetLocations: API.OperationMethod<
   CreateFleetLocationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { FleetId: 0, Locations: D.list(i_LocationConfiguration) },
+  },
   errors: [
     ConflictException,
     InternalServiceException,
@@ -4200,7 +4297,30 @@ export const createGameServerGroup: API.OperationMethod<
   CreateGameServerGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GameServerGroup: o_GameServerGroup } },
+  descriptor: {
+    service: svc,
+    input: {
+      GameServerGroupName: 0,
+      RoleArn: 0,
+      MinSize: 0,
+      MaxSize: 0,
+      LaunchTemplate: {
+        LaunchTemplateId: 0,
+        LaunchTemplateName: 0,
+        Version: 0,
+      },
+      InstanceDefinitions: D.list(i_InstanceDefinition),
+      AutoScalingPolicy: {
+        EstimatedInstanceWarmup: 0,
+        TargetTrackingConfiguration: { TargetValue: 0 },
+      },
+      BalancingStrategy: 0,
+      GameServerProtectionPolicy: 0,
+      VpcSubnets: 0,
+      Tags: D.list(i_Tag),
+    },
+    output: { GameServerGroup: o_GameServerGroup },
+  },
   errors: [
     ConflictException,
     InternalServiceException,
@@ -4275,7 +4395,22 @@ export const createGameSession: API.OperationMethod<
   CreateGameSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GameSession: o_GameSession } },
+  descriptor: {
+    service: svc,
+    input: {
+      FleetId: 0,
+      AliasId: 0,
+      MaximumPlayerSessionCount: 0,
+      Name: 0,
+      GameProperties: D.list(i_GameProperty),
+      CreatorId: 0,
+      GameSessionId: 0,
+      IdempotencyToken: 0,
+      GameSessionData: 0,
+      Location: 0,
+    },
+    output: { GameSession: o_GameSession },
+  },
   errors: [
     ConflictException,
     FleetCapacityExceededException,
@@ -4387,6 +4522,17 @@ export const createGameSessionQueue: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Name: 0,
+      TimeoutInSeconds: 0,
+      PlayerLatencyPolicies: D.list(i_PlayerLatencyPolicy),
+      Destinations: D.list(i_GameSessionQueueDestination),
+      FilterConfiguration: i_FilterConfiguration,
+      PriorityConfiguration: i_PriorityConfiguration,
+      CustomEventData: 0,
+      NotificationTarget: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { GameSessionQueue: o_GameSessionQueue },
   },
   errors: [
@@ -4422,7 +4568,7 @@ export const createLocation: API.OperationMethod<
   CreateLocationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LocationName: 0, Tags: D.list(i_Tag) } },
   errors: [
     ConflictException,
     InternalServiceException,
@@ -4482,6 +4628,23 @@ export const createMatchmakingConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      GameSessionQueueArns: 0,
+      RequestTimeoutSeconds: 0,
+      AcceptanceTimeoutSeconds: 0,
+      AcceptanceRequired: 0,
+      RuleSetName: 0,
+      NotificationTarget: 0,
+      AdditionalPlayerCount: 0,
+      CustomEventData: 0,
+      GameProperties: D.list(i_GameProperty),
+      GameSessionData: 0,
+      BackfillMode: 0,
+      FlexMatchMode: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { Configuration: o_MatchmakingConfiguration },
   },
   errors: [
@@ -4535,7 +4698,11 @@ export const createMatchmakingRuleSet: API.OperationMethod<
   CreateMatchmakingRuleSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { RuleSet: o_MatchmakingRuleSet } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, RuleSetBody: 0, Tags: D.list(i_Tag) },
+    output: { RuleSet: o_MatchmakingRuleSet },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -4586,7 +4753,11 @@ export const createPlayerSession: API.OperationMethod<
   CreatePlayerSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { PlayerSession: o_PlayerSession } },
+  descriptor: {
+    service: svc,
+    input: { GameSessionId: 0, PlayerId: 0, PlayerData: 0 },
+    output: { PlayerSession: o_PlayerSession },
+  },
   errors: [
     GameSessionFullException,
     InternalServiceException,
@@ -4641,6 +4812,7 @@ export const createPlayerSessions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { GameSessionId: 0, PlayerIds: 0, PlayerDataMap: 0 },
     output: { PlayerSessions: D.list(o_PlayerSession) },
   },
   errors: [
@@ -4706,7 +4878,18 @@ export const createScript: API.OperationMethod<
   CreateScriptError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Script: o_Script } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Version: 0,
+      StorageLocation: i_S3Location,
+      ZipFile: 0,
+      Tags: D.list(i_Tag),
+      NodeJsVersion: 0,
+    },
+    output: { Script: o_Script },
+  },
   errors: [
     ConflictException,
     InternalServiceException,
@@ -4781,6 +4964,7 @@ export const createVpcPeeringAuthorization: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { GameLiftAwsAccountId: 0, PeerVpcId: 0 },
     output: { VpcPeeringAuthorization: o_VpcPeeringAuthorization },
   },
   errors: [
@@ -4849,7 +5033,10 @@ export const createVpcPeeringConnection: API.OperationMethod<
   CreateVpcPeeringConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { FleetId: 0, PeerVpcAwsAccountId: 0, PeerVpcId: 0 },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -4885,7 +5072,7 @@ export const deleteAlias: API.OperationMethod<
   DeleteAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AliasId: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -4927,7 +5114,7 @@ export const deleteBuild: API.OperationMethod<
   DeleteBuildError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { BuildId: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -4969,7 +5156,7 @@ export const deleteContainerFleet: API.OperationMethod<
   DeleteContainerFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FleetId: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5030,7 +5217,10 @@ export const deleteContainerGroupDefinition: API.OperationMethod<
   DeleteContainerGroupDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, VersionNumber: 0, VersionCountToRetain: 0 },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5078,7 +5268,7 @@ export const deleteFleet: API.OperationMethod<
   DeleteFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FleetId: 0 } },
   errors: [
     InternalServiceException,
     InvalidFleetStatusException,
@@ -5123,7 +5313,7 @@ export const deleteFleetLocations: API.OperationMethod<
   DeleteFleetLocationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FleetId: 0, Locations: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5180,7 +5370,11 @@ export const deleteGameServerGroup: API.OperationMethod<
   DeleteGameServerGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GameServerGroup: o_GameServerGroup } },
+  descriptor: {
+    service: svc,
+    input: { GameServerGroupName: 0, DeleteOption: 0 },
+    output: { GameServerGroup: o_GameServerGroup },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5211,7 +5405,7 @@ export const deleteGameSessionQueue: API.OperationMethod<
   DeleteGameSessionQueueError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5245,7 +5439,7 @@ export const deleteLocation: API.OperationMethod<
   DeleteLocationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LocationName: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5278,7 +5472,7 @@ export const deleteMatchmakingConfiguration: API.OperationMethod<
   DeleteMatchmakingConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5316,7 +5510,7 @@ export const deleteMatchmakingRuleSet: API.OperationMethod<
   DeleteMatchmakingRuleSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5352,7 +5546,7 @@ export const deleteScalingPolicy: API.OperationMethod<
   DeleteScalingPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, FleetId: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5398,7 +5592,7 @@ export const deleteScript: API.OperationMethod<
   DeleteScriptError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ScriptId: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5433,7 +5627,10 @@ export const deleteVpcPeeringAuthorization: API.OperationMethod<
   DeleteVpcPeeringAuthorizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { GameLiftAwsAccountId: 0, PeerVpcId: 0 },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5471,7 +5668,10 @@ export const deleteVpcPeeringConnection: API.OperationMethod<
   DeleteVpcPeeringConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { FleetId: 0, VpcPeeringConnectionId: 0 },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5507,7 +5707,7 @@ export const deregisterCompute: API.OperationMethod<
   DeregisterComputeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FleetId: 0, ComputeName: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5548,7 +5748,10 @@ export const deregisterGameServer: API.OperationMethod<
   DeregisterGameServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { GameServerGroupName: 0, GameServerId: 0 },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5585,7 +5788,11 @@ export const describeAlias: API.OperationMethod<
   DescribeAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Alias: o_Alias } },
+  descriptor: {
+    service: svc,
+    input: { AliasId: 0 },
+    output: { Alias: o_Alias },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5622,7 +5829,11 @@ export const describeBuild: API.OperationMethod<
   DescribeBuildError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Build: o_Build } },
+  descriptor: {
+    service: svc,
+    input: { BuildId: 0 },
+    output: { Build: o_Build },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5680,7 +5891,11 @@ export const describeCompute: API.OperationMethod<
   DescribeComputeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Compute: o_Compute } },
+  descriptor: {
+    service: svc,
+    input: { FleetId: 0, ComputeName: 0 },
+    output: { Compute: o_Compute },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5726,7 +5941,11 @@ export const describeContainerFleet: API.OperationMethod<
   DescribeContainerFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ContainerFleet: o_ContainerFleet } },
+  descriptor: {
+    service: svc,
+    input: { FleetId: 0 },
+    output: { ContainerFleet: o_ContainerFleet },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5777,6 +5996,7 @@ export const describeContainerGroupDefinition: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0, VersionNumber: 0 },
     output: { ContainerGroupDefinition: o_ContainerGroupDefinition },
   },
   errors: [
@@ -5842,7 +6062,16 @@ export const describeContainerGroupPortMappings: API.OperationMethod<
   DescribeContainerGroupPortMappingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FleetId: 0,
+      ContainerGroupType: 0,
+      ComputeName: 0,
+      InstanceId: 0,
+      ContainerName: 0,
+    },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5922,7 +6151,7 @@ export const describeEC2InstanceLimits: API.OperationMethod<
   DescribeEC2InstanceLimitsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EC2InstanceType: 0, Location: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -5976,6 +6205,7 @@ export const describeFleetAttributes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { FleetIds: 0, Limit: 0, NextToken: 0 },
     output: { FleetAttributes: D.list(o_FleetAttributes) },
   },
   errors: [
@@ -6045,7 +6275,7 @@ export const describeFleetCapacity: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   FleetCapacity
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FleetIds: 0, Limit: 0, NextToken: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -6094,7 +6324,11 @@ export const describeFleetDeployment: API.OperationMethod<
   DescribeFleetDeploymentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { FleetDeployment: o_FleetDeployment } },
+  descriptor: {
+    service: svc,
+    input: { FleetId: 0, DeploymentId: 0 },
+    output: { FleetDeployment: o_FleetDeployment },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -6139,7 +6373,11 @@ export const describeFleetEvents: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Event
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Events: D.list({ EventTime: D.ts }) } },
+  descriptor: {
+    service: svc,
+    input: { FleetId: 0, StartTime: 0, EndTime: 0, Limit: 0, NextToken: 0 },
+    output: { Events: D.list({ EventTime: D.ts }) },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -6199,7 +6437,10 @@ export const describeFleetLocationAttributes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { FleetId: 0, Locations: 0, Limit: 0, NextToken: 0 },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -6256,7 +6497,7 @@ export const describeFleetLocationCapacity: API.OperationMethod<
   DescribeFleetLocationCapacityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FleetId: 0, Location: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -6305,7 +6546,7 @@ export const describeFleetLocationUtilization: API.OperationMethod<
   DescribeFleetLocationUtilizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FleetId: 0, Location: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -6359,6 +6600,7 @@ export const describeFleetPortSettings: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { FleetId: 0, Location: 0 },
     output: { InboundPermissions: D.list(o_IpPermission) },
   },
   errors: [
@@ -6420,7 +6662,7 @@ export const describeFleetUtilization: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   FleetUtilization
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FleetIds: 0, Limit: 0, NextToken: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -6465,7 +6707,11 @@ export const describeGameServer: API.OperationMethod<
   DescribeGameServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GameServer: o_GameServer } },
+  descriptor: {
+    service: svc,
+    input: { GameServerGroupName: 0, GameServerId: 0 },
+    output: { GameServer: o_GameServer },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -6506,7 +6752,11 @@ export const describeGameServerGroup: API.OperationMethod<
   DescribeGameServerGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GameServerGroup: o_GameServerGroup } },
+  descriptor: {
+    service: svc,
+    input: { GameServerGroupName: 0 },
+    output: { GameServerGroup: o_GameServerGroup },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -6555,7 +6805,10 @@ export const describeGameServerInstances: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   GameServerInstance
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { GameServerGroupName: 0, InstanceIds: 0, Limit: 0, NextToken: 0 },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -6624,6 +6877,15 @@ export const describeGameSessionDetails: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      FleetId: 0,
+      GameSessionId: 0,
+      AliasId: 0,
+      Location: 0,
+      StatusFilter: 0,
+      Limit: 0,
+      NextToken: 0,
+    },
     output: { GameSessionDetails: D.list({ GameSession: o_GameSession }) },
   },
   errors: [
@@ -6675,6 +6937,7 @@ export const describeGameSessionPlacement: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { PlacementId: 0 },
     output: { GameSessionPlacement: o_GameSessionPlacement },
   },
   errors: [
@@ -6715,6 +6978,7 @@ export const describeGameSessionQueues: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Names: 0, Limit: 0, NextToken: 0 },
     output: { GameSessionQueues: D.list(o_GameSessionQueue) },
   },
   errors: [
@@ -6790,7 +7054,19 @@ export const describeGameSessions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   GameSession
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { GameSessions: D.list(o_GameSession) } },
+  descriptor: {
+    service: svc,
+    input: {
+      FleetId: 0,
+      GameSessionId: 0,
+      AliasId: 0,
+      Location: 0,
+      StatusFilter: 0,
+      Limit: 0,
+      NextToken: 0,
+    },
+    output: { GameSessions: D.list(o_GameSession) },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -6864,6 +7140,7 @@ export const describeInstances: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { FleetId: 0, InstanceId: 0, Limit: 0, NextToken: 0, Location: 0 },
     output: { Instances: D.list({ IpAddress: D.secret, CreationTime: D.ts }) },
   },
   errors: [
@@ -6920,6 +7197,7 @@ export const describeMatchmaking: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TicketIds: 0 },
     output: { TicketList: D.list(o_MatchmakingTicket) },
   },
   errors: [
@@ -6963,6 +7241,7 @@ export const describeMatchmakingConfigurations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Names: 0, RuleSetName: 0, Limit: 0, NextToken: 0 },
     output: { Configurations: D.list(o_MatchmakingConfiguration) },
   },
   errors: [
@@ -7009,6 +7288,7 @@ export const describeMatchmakingRuleSets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Names: 0, Limit: 0, NextToken: 0 },
     output: { RuleSets: D.list(o_MatchmakingRuleSet) },
   },
   errors: [
@@ -7071,6 +7351,14 @@ export const describePlayerSessions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      GameSessionId: 0,
+      PlayerId: 0,
+      PlayerSessionId: 0,
+      PlayerSessionStatusFilter: 0,
+      Limit: 0,
+      NextToken: 0,
+    },
     output: { PlayerSessions: D.list(o_PlayerSession) },
   },
   errors: [
@@ -7125,7 +7413,7 @@ export const describeRuntimeConfiguration: API.OperationMethod<
   DescribeRuntimeConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FleetId: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -7164,7 +7452,10 @@ export const describeScalingPolicies: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ScalingPolicy
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { FleetId: 0, StatusFilter: 0, Limit: 0, NextToken: 0, Location: 0 },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -7211,7 +7502,11 @@ export const describeScript: API.OperationMethod<
   DescribeScriptError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Script: o_Script } },
+  descriptor: {
+    service: svc,
+    input: { ScriptId: 0 },
+    output: { Script: o_Script },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -7247,6 +7542,7 @@ export const describeVpcPeeringAuthorizations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {},
     output: { VpcPeeringAuthorizations: D.list(o_VpcPeeringAuthorization) },
   },
   errors: [
@@ -7287,7 +7583,7 @@ export const describeVpcPeeringConnections: API.OperationMethod<
   DescribeVpcPeeringConnectionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FleetId: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -7340,7 +7636,7 @@ export const getComputeAccess: API.OperationMethod<
   GetComputeAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FleetId: 0, ComputeName: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -7398,7 +7694,11 @@ export const getComputeAuthToken: API.OperationMethod<
   GetComputeAuthTokenError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ExpirationTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { FleetId: 0, ComputeName: 0 },
+    output: { ExpirationTimestamp: D.ts },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -7436,7 +7736,7 @@ export const getGameSessionLogUrl: API.OperationMethod<
   GetGameSessionLogUrlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GameSessionId: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -7496,6 +7796,7 @@ export const getInstanceAccess: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { FleetId: 0, InstanceId: 0 },
     output: { InstanceAccess: { IpAddress: D.secret } },
   },
   errors: [
@@ -7541,6 +7842,7 @@ export const getPlayerConnectionDetails: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { GameSessionId: 0, PlayerIds: 0 },
     output: {
       PlayerConnectionDetails: D.list({
         PlayerId: D.secret,
@@ -7588,7 +7890,11 @@ export const listAliases: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Alias
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Aliases: D.list(o_Alias) } },
+  descriptor: {
+    service: svc,
+    input: { RoutingStrategyType: 0, Name: 0, Limit: 0, NextToken: 0 },
+    output: { Aliases: D.list(o_Alias) },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -7633,7 +7939,11 @@ export const listBuilds: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Build
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Builds: D.list(o_Build) } },
+  descriptor: {
+    service: svc,
+    input: { Status: 0, Limit: 0, NextToken: 0 },
+    output: { Builds: D.list(o_Build) },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -7691,7 +8001,18 @@ export const listCompute: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Compute
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { ComputeList: D.list(o_Compute) } },
+  descriptor: {
+    service: svc,
+    input: {
+      FleetId: 0,
+      Location: 0,
+      ContainerGroupDefinitionName: 0,
+      ComputeStatus: 0,
+      Limit: 0,
+      NextToken: 0,
+    },
+    output: { ComputeList: D.list(o_Compute) },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -7750,6 +8071,7 @@ export const listContainerFleets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ContainerGroupDefinitionName: 0, Limit: 0, NextToken: 0 },
     output: { ContainerFleets: D.list(o_ContainerFleet) },
   },
   errors: [
@@ -7807,6 +8129,7 @@ export const listContainerGroupDefinitions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ContainerGroupType: 0, Limit: 0, NextToken: 0 },
     output: { ContainerGroupDefinitions: D.list(o_ContainerGroupDefinition) },
   },
   errors: [
@@ -7866,6 +8189,7 @@ export const listContainerGroupDefinitionVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0, Limit: 0, NextToken: 0 },
     output: { ContainerGroupDefinitions: D.list(o_ContainerGroupDefinition) },
   },
   errors: [
@@ -7922,6 +8246,7 @@ export const listFleetDeployments: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { FleetId: 0, Limit: 0, NextToken: 0 },
     output: { FleetDeployments: D.list(o_FleetDeployment) },
   },
   errors: [
@@ -7982,7 +8307,10 @@ export const listFleets: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   FleetId
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { BuildId: 0, ScriptId: 0, Limit: 0, NextToken: 0 },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -8019,6 +8347,7 @@ export const listGameServerGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Limit: 0, NextToken: 0 },
     output: { GameServerGroups: D.list(o_GameServerGroup) },
   },
   errors: [
@@ -8062,7 +8391,11 @@ export const listGameServers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   GameServer
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { GameServers: D.list(o_GameServer) } },
+  descriptor: {
+    service: svc,
+    input: { GameServerGroupName: 0, SortOrder: 0, Limit: 0, NextToken: 0 },
+    output: { GameServers: D.list(o_GameServer) },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -8103,7 +8436,7 @@ export const listLocations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   LocationModel
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Filters: 0, Limit: 0, NextToken: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -8146,7 +8479,11 @@ export const listScripts: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Script
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Scripts: D.list(o_Script) } },
+  descriptor: {
+    service: svc,
+    input: { Limit: 0, NextToken: 0 },
+    output: { Scripts: D.list(o_Script) },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -8196,7 +8533,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -8294,7 +8631,21 @@ export const putScalingPolicy: API.OperationMethod<
   PutScalingPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      FleetId: 0,
+      ScalingAdjustment: 0,
+      ScalingAdjustmentType: 0,
+      Threshold: 0,
+      ComparisonOperator: 0,
+      EvaluationPeriods: 0,
+      MetricName: 0,
+      PolicyType: 0,
+      TargetConfiguration: { TargetValue: 0 },
+    },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -8354,7 +8705,18 @@ export const registerCompute: API.OperationMethod<
   RegisterComputeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Compute: o_Compute } },
+  descriptor: {
+    service: svc,
+    input: {
+      FleetId: 0,
+      ComputeName: 0,
+      CertificatePath: 0,
+      DnsName: 0,
+      IpAddress: 0,
+      Location: 0,
+    },
+    output: { Compute: o_Compute },
+  },
   errors: [
     ConflictException,
     InternalServiceException,
@@ -8406,7 +8768,17 @@ export const registerGameServer: API.OperationMethod<
   RegisterGameServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GameServer: o_GameServer } },
+  descriptor: {
+    service: svc,
+    input: {
+      GameServerGroupName: 0,
+      GameServerId: 0,
+      InstanceId: 0,
+      ConnectionInfo: 0,
+      GameServerData: 0,
+    },
+    output: { GameServer: o_GameServer },
+  },
   errors: [
     ConflictException,
     InternalServiceException,
@@ -8448,7 +8820,7 @@ export const requestUploadCredentials: API.OperationMethod<
   RequestUploadCredentialsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { BuildId: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -8487,7 +8859,7 @@ export const resolveAlias: API.OperationMethod<
   ResolveAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AliasId: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -8532,7 +8904,11 @@ export const resumeGameServerGroup: API.OperationMethod<
   ResumeGameServerGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GameServerGroup: o_GameServerGroup } },
+  descriptor: {
+    service: svc,
+    input: { GameServerGroupName: 0, ResumeActions: 0 },
+    output: { GameServerGroup: o_GameServerGroup },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -8632,7 +9008,19 @@ export const searchGameSessions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   GameSession
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { GameSessions: D.list(o_GameSession) } },
+  descriptor: {
+    service: svc,
+    input: {
+      FleetId: 0,
+      AliasId: 0,
+      Location: 0,
+      FilterExpression: 0,
+      SortExpression: 0,
+      Limit: 0,
+      NextToken: 0,
+    },
+    output: { GameSessions: D.list(o_GameSession) },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -8689,7 +9077,7 @@ export const startFleetActions: API.OperationMethod<
   StartFleetActionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FleetId: 0, Actions: 0, Location: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -8797,6 +9185,24 @@ export const startGameSessionPlacement: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      PlacementId: 0,
+      GameSessionQueueName: 0,
+      GameProperties: D.list(i_GameProperty),
+      MaximumPlayerSessionCount: 0,
+      GameSessionName: 0,
+      PlayerLatencies: D.list({
+        PlayerId: 0,
+        RegionIdentifier: 0,
+        LatencyInMilliseconds: 0,
+      }),
+      DesiredPlayerSessions: D.list({ PlayerId: 0, PlayerData: 0 }),
+      GameSessionData: 0,
+      PriorityConfigurationOverride: {
+        PlacementFallbackStrategy: 0,
+        LocationOrder: 0,
+      },
+    },
     output: { GameSessionPlacement: o_GameSessionPlacement },
   },
   errors: [
@@ -8865,6 +9271,12 @@ export const startMatchBackfill: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TicketId: 0,
+      ConfigurationName: 0,
+      GameSessionArn: 0,
+      Players: D.list(i_Player),
+    },
     output: { MatchmakingTicket: o_MatchmakingTicket },
   },
   errors: [
@@ -8922,6 +9334,7 @@ export const startMatchmaking: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TicketId: 0, ConfigurationName: 0, Players: D.list(i_Player) },
     output: { MatchmakingTicket: o_MatchmakingTicket },
   },
   errors: [
@@ -8977,7 +9390,7 @@ export const stopFleetActions: API.OperationMethod<
   StopFleetActionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FleetId: 0, Actions: 0, Location: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -9019,6 +9432,7 @@ export const stopGameSessionPlacement: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { PlacementId: 0 },
     output: { GameSessionPlacement: o_GameSessionPlacement },
   },
   errors: [
@@ -9064,7 +9478,7 @@ export const stopMatchmaking: API.OperationMethod<
   StopMatchmakingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TicketId: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -9114,7 +9528,11 @@ export const suspendGameServerGroup: API.OperationMethod<
   SuspendGameServerGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GameServerGroup: o_GameServerGroup } },
+  descriptor: {
+    service: svc,
+    input: { GameServerGroupName: 0, SuspendActions: 0 },
+    output: { GameServerGroup: o_GameServerGroup },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -9162,7 +9580,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -9236,7 +9654,11 @@ export const terminateGameSession: API.OperationMethod<
   TerminateGameSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GameSession: o_GameSession } },
+  descriptor: {
+    service: svc,
+    input: { GameSessionId: 0, TerminationMode: 0 },
+    output: { GameSession: o_GameSession },
+  },
   errors: [
     InternalServiceException,
     InvalidGameSessionStatusException,
@@ -9285,7 +9707,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -9323,7 +9745,16 @@ export const updateAlias: API.OperationMethod<
   UpdateAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Alias: o_Alias } },
+  descriptor: {
+    service: svc,
+    input: {
+      AliasId: 0,
+      Name: 0,
+      Description: 0,
+      RoutingStrategy: i_RoutingStrategy,
+    },
+    output: { Alias: o_Alias },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -9361,7 +9792,11 @@ export const updateBuild: API.OperationMethod<
   UpdateBuildError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Build: o_Build } },
+  descriptor: {
+    service: svc,
+    input: { BuildId: 0, Name: 0, Version: 0 },
+    output: { Build: o_Build },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -9440,7 +9875,30 @@ export const updateContainerFleet: API.OperationMethod<
   UpdateContainerFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ContainerFleet: o_ContainerFleet } },
+  descriptor: {
+    service: svc,
+    input: {
+      FleetId: 0,
+      GameServerContainerGroupDefinitionName: 0,
+      PerInstanceContainerGroupDefinitionName: 0,
+      GameServerContainerGroupsPerInstance: 0,
+      InstanceConnectionPortRange: i_ConnectionPortRange,
+      InstanceInboundPermissionAuthorizations: D.list(i_IpPermission),
+      InstanceInboundPermissionRevocations: D.list(i_IpPermission),
+      DeploymentConfiguration: {
+        ProtectionStrategy: 0,
+        MinimumHealthyPercentage: 0,
+        ImpairmentStrategy: 0,
+      },
+      Description: 0,
+      MetricGroups: 0,
+      NewGameSessionProtectionPolicy: 0,
+      GameSessionCreationLimitPolicy: i_GameSessionCreationLimitPolicy,
+      LogConfiguration: i_LogConfiguration,
+      RemoveAttributes: 0,
+    },
+    output: { ContainerFleet: o_ContainerFleet },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -9511,6 +9969,16 @@ export const updateContainerGroupDefinition: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Name: 0,
+      GameServerContainerDefinition: i_GameServerContainerDefinitionInput,
+      SupportContainerDefinitions: D.list(i_SupportContainerDefinitionInput),
+      TotalMemoryLimitMebibytes: 0,
+      TotalVcpuLimit: 0,
+      VersionDescription: 0,
+      SourceVersionNumber: 0,
+      OperatingSystem: 0,
+    },
     output: { ContainerGroupDefinition: o_ContainerGroupDefinition },
   },
   errors: [
@@ -9562,7 +10030,18 @@ export const updateFleetAttributes: API.OperationMethod<
   UpdateFleetAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FleetId: 0,
+      Name: 0,
+      Description: 0,
+      NewGameSessionProtectionPolicy: 0,
+      ResourceCreationLimitPolicy: i_ResourceCreationLimitPolicy,
+      MetricGroups: 0,
+      AnywhereConfiguration: i_AnywhereConfiguration,
+    },
+  },
   errors: [
     ConflictException,
     InternalServiceException,
@@ -9646,7 +10125,20 @@ export const updateFleetCapacity: API.OperationMethod<
   UpdateFleetCapacityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FleetId: 0,
+      DesiredInstances: 0,
+      MinSize: 0,
+      MaxSize: 0,
+      Location: 0,
+      ManagedCapacityConfiguration: {
+        ZeroCapacityStrategy: 0,
+        ScaleInAfterInactivityMinutes: 0,
+      },
+    },
+  },
   errors: [
     ConflictException,
     InternalServiceException,
@@ -9699,7 +10191,14 @@ export const updateFleetPortSettings: API.OperationMethod<
   UpdateFleetPortSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FleetId: 0,
+      InboundPermissionAuthorizations: D.list(i_IpPermission),
+      InboundPermissionRevocations: D.list(i_IpPermission),
+    },
+  },
   errors: [
     ConflictException,
     InternalServiceException,
@@ -9759,7 +10258,17 @@ export const updateGameServer: API.OperationMethod<
   UpdateGameServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GameServer: o_GameServer } },
+  descriptor: {
+    service: svc,
+    input: {
+      GameServerGroupName: 0,
+      GameServerId: 0,
+      GameServerData: 0,
+      UtilizationStatus: 0,
+      HealthCheck: 0,
+    },
+    output: { GameServer: o_GameServer },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -9807,7 +10316,17 @@ export const updateGameServerGroup: API.OperationMethod<
   UpdateGameServerGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GameServerGroup: o_GameServerGroup } },
+  descriptor: {
+    service: svc,
+    input: {
+      GameServerGroupName: 0,
+      RoleArn: 0,
+      InstanceDefinitions: D.list(i_InstanceDefinition),
+      GameServerProtectionPolicy: 0,
+      BalancingStrategy: 0,
+    },
+    output: { GameServerGroup: o_GameServerGroup },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -9846,7 +10365,18 @@ export const updateGameSession: API.OperationMethod<
   UpdateGameSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GameSession: o_GameSession } },
+  descriptor: {
+    service: svc,
+    input: {
+      GameSessionId: 0,
+      MaximumPlayerSessionCount: 0,
+      Name: 0,
+      PlayerSessionCreationPolicy: 0,
+      ProtectionPolicy: 0,
+      GameProperties: D.list(i_GameProperty),
+    },
+    output: { GameSession: o_GameSession },
+  },
   errors: [
     ConflictException,
     InternalServiceException,
@@ -9887,6 +10417,16 @@ export const updateGameSessionQueue: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Name: 0,
+      TimeoutInSeconds: 0,
+      PlayerLatencyPolicies: D.list(i_PlayerLatencyPolicy),
+      Destinations: D.list(i_GameSessionQueueDestination),
+      FilterConfiguration: i_FilterConfiguration,
+      PriorityConfiguration: i_PriorityConfiguration,
+      CustomEventData: 0,
+      NotificationTarget: 0,
+    },
     output: { GameSessionQueue: o_GameSessionQueue },
   },
   errors: [
@@ -9926,6 +10466,22 @@ export const updateMatchmakingConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      GameSessionQueueArns: 0,
+      RequestTimeoutSeconds: 0,
+      AcceptanceTimeoutSeconds: 0,
+      AcceptanceRequired: 0,
+      RuleSetName: 0,
+      NotificationTarget: 0,
+      AdditionalPlayerCount: 0,
+      CustomEventData: 0,
+      GameProperties: D.list(i_GameProperty),
+      GameSessionData: 0,
+      BackfillMode: 0,
+      FlexMatchMode: 0,
+    },
     output: { Configuration: o_MatchmakingConfiguration },
   },
   errors: [
@@ -9977,7 +10533,10 @@ export const updateRuntimeConfiguration: API.OperationMethod<
   UpdateRuntimeConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { FleetId: 0, RuntimeConfiguration: i_RuntimeConfiguration },
+  },
   errors: [
     InternalServiceException,
     InvalidFleetStatusException,
@@ -10028,7 +10587,17 @@ export const updateScript: API.OperationMethod<
   UpdateScriptError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Script: o_Script } },
+  descriptor: {
+    service: svc,
+    input: {
+      ScriptId: 0,
+      Name: 0,
+      Version: 0,
+      StorageLocation: i_S3Location,
+      ZipFile: 0,
+    },
+    output: { Script: o_Script },
+  },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -10063,7 +10632,7 @@ export const validateMatchmakingRuleSet: API.OperationMethod<
   ValidateMatchmakingRuleSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RuleSetBody: 0 } },
   errors: [
     InternalServiceException,
     InvalidRequestException,
@@ -10074,6 +10643,101 @@ export const validateMatchmakingRuleSet: API.OperationMethod<
   operationName: "ValidateMatchmakingRuleSet",
 })) as any;
 
+const i_AnywhereConfiguration: D.LazyStruct = () => ({ Cost: 0 });
+const i_ConnectionPortRange: D.LazyStruct = () => ({ FromPort: 0, ToPort: 0 });
+const i_FilterConfiguration: D.LazyStruct = () => ({ AllowedLocations: 0 });
+const i_GameProperty: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_GameServerContainerDefinitionInput: D.LazyStruct = () => ({
+  ContainerName: 0,
+  DependsOn: D.list(i_ContainerDependency),
+  MountPoints: D.list(i_ContainerMountPoint),
+  EnvironmentOverride: D.list(i_ContainerEnvironment),
+  ImageUri: 0,
+  PortConfiguration: i_ContainerPortConfiguration,
+  ServerSdkVersion: 0,
+  LinuxCapabilities: i_LinuxCapabilities,
+});
+const i_GameSessionCreationLimitPolicy: D.LazyStruct = () => ({
+  NewGameSessionsPerCreator: 0,
+  PolicyPeriodInMinutes: 0,
+});
+const i_GameSessionQueueDestination: D.LazyStruct = () => ({
+  DestinationArn: 0,
+});
+const i_InstanceDefinition: D.LazyStruct = () => ({
+  InstanceType: 0,
+  WeightedCapacity: 0,
+});
+const i_IpPermission: D.LazyStruct = () => ({
+  FromPort: 0,
+  ToPort: 0,
+  IpRange: 0,
+  Protocol: 0,
+});
+const i_LocationConfiguration: D.LazyStruct = () => ({ Location: 0 });
+const i_LogConfiguration: D.LazyStruct = () => ({
+  LogDestination: 0,
+  S3BucketName: 0,
+  LogGroupArn: 0,
+});
+const i_Player: D.LazyStruct = () => ({
+  PlayerId: 0,
+  PlayerAttributes: D.map({ S: 0, N: 0, SL: 0, SDM: 0 }),
+  Team: 0,
+  LatencyInMs: 0,
+});
+const i_PlayerLatencyPolicy: D.LazyStruct = () => ({
+  MaximumIndividualPlayerLatencyMilliseconds: 0,
+  PolicyDurationSeconds: 0,
+});
+const i_PriorityConfiguration: D.LazyStruct = () => ({
+  PriorityOrder: 0,
+  LocationOrder: 0,
+});
+const i_ResourceCreationLimitPolicy: D.LazyStruct = () => ({
+  NewGameSessionsPerCreator: 0,
+  PolicyPeriodInMinutes: 0,
+});
+const i_RoutingStrategy: D.LazyStruct = () => ({
+  Type: 0,
+  FleetId: 0,
+  Message: 0,
+});
+const i_RuntimeConfiguration: D.LazyStruct = () => ({
+  ServerProcesses: D.list({
+    LaunchPath: 0,
+    Parameters: 0,
+    ConcurrentExecutions: 0,
+  }),
+  MaxConcurrentGameSessionActivations: 0,
+  GameSessionActivationTimeoutSeconds: 0,
+});
+const i_S3Location: D.LazyStruct = () => ({
+  Bucket: 0,
+  Key: 0,
+  RoleArn: 0,
+  ObjectVersion: 0,
+});
+const i_SupportContainerDefinitionInput: D.LazyStruct = () => ({
+  ContainerName: 0,
+  DependsOn: D.list(i_ContainerDependency),
+  MountPoints: D.list(i_ContainerMountPoint),
+  EnvironmentOverride: D.list(i_ContainerEnvironment),
+  Essential: 0,
+  HealthCheck: {
+    Command: 0,
+    Interval: 0,
+    Retries: 0,
+    StartPeriod: 0,
+    Timeout: 0,
+  },
+  ImageUri: 0,
+  MemoryHardLimitMebibytes: 0,
+  PortConfiguration: i_ContainerPortConfiguration,
+  Vcpu: 0,
+  LinuxCapabilities: i_LinuxCapabilities,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Alias: D.LazyStruct = () => ({
   CreationTime: D.ts,
   LastUpdatedTime: D.ts,
@@ -10151,4 +10815,18 @@ const o_VpcPeeringAuthorization: D.LazyStruct = () => ({
   CreationTime: D.ts,
   ExpirationTime: D.ts,
 });
+const i_ContainerDependency: D.LazyStruct = () => ({
+  ContainerName: 0,
+  Condition: 0,
+});
+const i_ContainerEnvironment: D.LazyStruct = () => ({ Name: 0, Value: 0 });
+const i_ContainerMountPoint: D.LazyStruct = () => ({
+  InstancePath: 0,
+  ContainerPath: 0,
+  AccessLevel: 0,
+});
+const i_ContainerPortConfiguration: D.LazyStruct = () => ({
+  ContainerPortRanges: D.list({ FromPort: 0, ToPort: 0, Protocol: 0 }),
+});
+const i_LinuxCapabilities: D.LazyStruct = () => ({ Include: 0 });
 const o_GameProperty: D.LazyStruct = () => ({ Value: D.secret });

@@ -1282,6 +1282,7 @@ export const acceptAgreementCancellationRequest: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { agreementId: 0, agreementCancellationRequestId: 0 },
     output: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1318,6 +1319,7 @@ export const acceptAgreementPaymentRequest: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { paymentRequestId: 0, agreementId: 0, purchaseOrderReference: 0 },
     output: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1350,7 +1352,10 @@ export const acceptAgreementRequest: API.OperationMethod<
   AcceptAgreementRequestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { agreementRequestId: 0, purchaseOrders: D.list(i_PurchaseOrder) },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1382,7 +1387,20 @@ export const batchCreateBillingAdjustmentRequest: API.OperationMethod<
   BatchCreateBillingAdjustmentRequestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      billingAdjustmentRequestEntries: D.list({
+        agreementId: 0,
+        originalInvoiceId: 0,
+        adjustmentAmount: 0,
+        currencyCode: 0,
+        adjustmentReasonCode: 0,
+        description: 0,
+        clientToken: 0,
+      }),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1412,7 +1430,7 @@ export const cancelAgreement: API.OperationMethod<
   CancelAgreementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { agreementId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1447,6 +1465,11 @@ export const cancelAgreementCancellationRequest: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      agreementId: 0,
+      agreementCancellationRequestId: 0,
+      cancellationReason: 0,
+    },
     output: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1483,6 +1506,7 @@ export const cancelAgreementPaymentRequest: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { paymentRequestId: 0, agreementId: 0 },
     output: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1518,7 +1542,27 @@ export const createAgreementRequest: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      intent: 0,
+      requestedTerms: D.list({
+        id: 0,
+        configuration: {
+          configurableUpfrontPricingTermConfiguration: {
+            selectorValue: 0,
+            dimensions: D.list({ dimensionKey: 0, dimensionValue: 0 }),
+          },
+          renewalTermConfiguration: { enableAutoRenew: 0 },
+          variablePaymentTermConfiguration: {
+            paymentRequestApprovalStrategy: 0,
+            expirationDuration: 0,
+          },
+        },
+      }),
+      sourceAgreementIdentifier: 0,
+      agreementProposalIdentifier: 0,
+      taxConfiguration: { taxEstimation: 0 },
+    },
     output: { chargeSummary: { expectedCharges: D.list({ time: D.ts }) } },
   },
   errors: [
@@ -1553,6 +1597,7 @@ export const describeAgreement: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { agreementId: 0 },
     output: { startTime: D.ts, endTime: D.ts, acceptanceTime: D.ts },
   },
   errors: [
@@ -1585,6 +1630,7 @@ export const getAgreementCancellationRequest: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { agreementCancellationRequestId: 0, agreementId: 0 },
     output: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1616,7 +1662,10 @@ export const getAgreementEntitlements: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AgreementEntitlement
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { agreementId: 0, maxResults: 0, nextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1655,6 +1704,7 @@ export const getAgreementPaymentRequest: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { paymentRequestId: 0, agreementId: 0 },
     output: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1698,6 +1748,7 @@ export const getAgreementTerms: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { agreementId: 0, maxResults: 0, nextToken: 0 },
     output: {
       acceptedTerms: D.list({
         validityTerm: { agreementStartDate: D.ts, agreementEndDate: D.ts },
@@ -1739,7 +1790,11 @@ export const getBillingAdjustmentRequest: API.OperationMethod<
   GetBillingAdjustmentRequestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createdAt: D.ts, updatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { agreementId: 0, billingAdjustmentRequestId: 0 },
+    output: { createdAt: D.ts, updatedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1772,6 +1827,15 @@ export const listAgreementCancellationRequests: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      partyType: 0,
+      agreementId: 0,
+      status: 0,
+      agreementType: 0,
+      catalog: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { items: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
   },
   errors: [
@@ -1807,7 +1871,17 @@ export const listAgreementCharges: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Charge
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { items: D.list({ time: D.ts }) } },
+  descriptor: {
+    service: svc,
+    input: {
+      catalog: 0,
+      agreementId: 0,
+      agreementType: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
+    output: { items: D.list({ time: D.ts }) },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1846,6 +1920,17 @@ export const listAgreementInvoiceLineItems: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      agreementId: 0,
+      groupBy: 0,
+      invoiceId: 0,
+      invoiceType: 0,
+      invoiceBillingPeriod: { month: 0, year: 0 },
+      beforeIssuedTime: 0,
+      afterIssuedTime: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       agreementInvoiceLineItemGroupSummaries: D.list({ issuedTime: D.ts }),
     },
@@ -1888,6 +1973,15 @@ export const listAgreementPaymentRequests: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      partyType: 0,
+      agreementType: 0,
+      catalog: 0,
+      agreementId: 0,
+      status: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { items: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
   },
   errors: [
@@ -1925,6 +2019,16 @@ export const listBillingAdjustmentRequests: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      agreementId: 0,
+      status: 0,
+      createdAfter: 0,
+      createdBefore: 0,
+      maxResults: 0,
+      catalog: 0,
+      agreementType: 0,
+      nextToken: 0,
+    },
     output: { items: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
   },
   errors: [
@@ -1965,6 +2069,11 @@ export const rejectAgreementCancellationRequest: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      agreementId: 0,
+      agreementCancellationRequestId: 0,
+      rejectionReason: 0,
+    },
     output: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -2001,6 +2110,7 @@ export const rejectAgreementPaymentRequest: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { paymentRequestId: 0, agreementId: 0, rejectionReason: 0 },
     output: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -2148,6 +2258,13 @@ export const searchAgreements: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      catalog: 0,
+      filters: D.list({ name: 0, values: 0 }),
+      sort: { sortBy: 0, sortOrder: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       agreementViewSummaries: D.list({
         acceptanceTime: D.ts,
@@ -2192,7 +2309,12 @@ export const sendAgreementCancellationRequest: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      agreementId: 0,
+      reasonCode: 0,
+      clientToken: D.m({ idempotency: true }),
+      description: 0,
+    },
     output: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -2229,7 +2351,14 @@ export const sendAgreementPaymentRequest: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      agreementId: 0,
+      termId: 0,
+      name: 0,
+      chargeAmount: 0,
+      description: 0,
+    },
     output: { description: D.secret, createdAt: D.ts },
   },
   errors: [
@@ -2262,7 +2391,10 @@ export const updatePurchaseOrders: API.OperationMethod<
   UpdatePurchaseOrdersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { purchaseOrders: D.list(i_PurchaseOrder) },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2275,3 +2407,10 @@ export const updatePurchaseOrders: API.OperationMethod<
   retry: Retry,
   operationName: "UpdatePurchaseOrders",
 })) as any;
+
+const i_PurchaseOrder: D.LazyStruct = () => ({
+  chargeId: 0,
+  chargeRevision: 0,
+  agreementId: 0,
+  purchaseOrderReference: 0,
+});

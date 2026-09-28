@@ -1341,7 +1341,18 @@ export const countClosedWorkflowExecutions: API.OperationMethod<
   CountClosedWorkflowExecutionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      domain: 0,
+      startTimeFilter: i_ExecutionTimeFilter,
+      closeTimeFilter: i_ExecutionTimeFilter,
+      executionFilter: i_WorkflowExecutionFilter,
+      typeFilter: i_WorkflowTypeFilter,
+      tagFilter: i_TagFilter,
+      closeStatusFilter: i_CloseStatusFilter,
+    },
+  },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1394,7 +1405,16 @@ export const countOpenWorkflowExecutions: API.OperationMethod<
   CountOpenWorkflowExecutionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      domain: 0,
+      startTimeFilter: i_ExecutionTimeFilter,
+      typeFilter: i_WorkflowTypeFilter,
+      tagFilter: i_TagFilter,
+      executionFilter: i_WorkflowExecutionFilter,
+    },
+  },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1437,7 +1457,7 @@ export const countPendingActivityTasks: API.OperationMethod<
   CountPendingActivityTasksError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { domain: 0, taskList: i_TaskList } },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1480,7 +1500,7 @@ export const countPendingDecisionTasks: API.OperationMethod<
   CountPendingDecisionTasksError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { domain: 0, taskList: i_TaskList } },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1530,7 +1550,10 @@ export const deleteActivityType: API.OperationMethod<
   DeleteActivityTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { domain: 0, activityType: i_ActivityType },
+  },
   errors: [
     OperationNotPermittedFault,
     TypeNotDeprecatedFault,
@@ -1585,7 +1608,10 @@ export const deleteWorkflowType: API.OperationMethod<
   DeleteWorkflowTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { domain: 0, workflowType: i_WorkflowType },
+  },
   errors: [
     OperationNotPermittedFault,
     TypeNotDeprecatedFault,
@@ -1638,7 +1664,10 @@ export const deprecateActivityType: API.OperationMethod<
   DeprecateActivityTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { domain: 0, activityType: i_ActivityType },
+  },
   errors: [
     OperationNotPermittedFault,
     TypeDeprecatedFault,
@@ -1689,7 +1718,7 @@ export const deprecateDomain: API.OperationMethod<
   DeprecateDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [
     DomainDeprecatedFault,
     OperationNotPermittedFault,
@@ -1746,7 +1775,10 @@ export const deprecateWorkflowType: API.OperationMethod<
   DeprecateWorkflowTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { domain: 0, workflowType: i_WorkflowType },
+  },
   errors: [
     OperationNotPermittedFault,
     TypeDeprecatedFault,
@@ -1798,7 +1830,11 @@ export const describeActivityType: API.OperationMethod<
   DescribeActivityTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { typeInfo: o_ActivityTypeInfo } },
+  descriptor: {
+    service: svc,
+    input: { domain: 0, activityType: i_ActivityType },
+    output: { typeInfo: o_ActivityTypeInfo },
+  },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1838,7 +1874,7 @@ export const describeDomain: API.OperationMethod<
   DescribeDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1883,6 +1919,7 @@ export const describeWorkflowExecution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { domain: 0, execution: i_WorkflowExecution },
     output: {
       executionInfo: o_WorkflowExecutionInfo,
       latestActivityTaskTimestamp: D.ts,
@@ -1935,7 +1972,11 @@ export const describeWorkflowType: API.OperationMethod<
   DescribeWorkflowTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { typeInfo: o_WorkflowTypeInfo } },
+  descriptor: {
+    service: svc,
+    input: { domain: 0, workflowType: i_WorkflowType },
+    output: { typeInfo: o_WorkflowTypeInfo },
+  },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1980,7 +2021,17 @@ export const getWorkflowExecutionHistory: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   HistoryEvent
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { events: D.list(o_HistoryEvent) } },
+  descriptor: {
+    service: svc,
+    input: {
+      domain: 0,
+      execution: i_WorkflowExecution,
+      nextPageToken: 0,
+      maximumPageSize: 0,
+      reverseOrder: 0,
+    },
+    output: { events: D.list(o_HistoryEvent) },
+  },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2032,6 +2083,14 @@ export const listActivityTypes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      domain: 0,
+      name: 0,
+      registrationStatus: 0,
+      nextPageToken: 0,
+      maximumPageSize: 0,
+      reverseOrder: 0,
+    },
     output: { typeInfos: D.list(o_ActivityTypeInfo) },
   },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
@@ -2096,6 +2155,18 @@ export const listClosedWorkflowExecutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      domain: 0,
+      startTimeFilter: i_ExecutionTimeFilter,
+      closeTimeFilter: i_ExecutionTimeFilter,
+      executionFilter: i_WorkflowExecutionFilter,
+      closeStatusFilter: i_CloseStatusFilter,
+      typeFilter: i_WorkflowTypeFilter,
+      tagFilter: i_TagFilter,
+      nextPageToken: 0,
+      maximumPageSize: 0,
+      reverseOrder: 0,
+    },
     output: { executionInfos: D.list(o_WorkflowExecutionInfo) },
   },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
@@ -2147,7 +2218,15 @@ export const listDomains: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DomainInfo
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      nextPageToken: 0,
+      registrationStatus: 0,
+      maximumPageSize: 0,
+      reverseOrder: 0,
+    },
+  },
   errors: [OperationNotPermittedFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2210,6 +2289,16 @@ export const listOpenWorkflowExecutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      domain: 0,
+      startTimeFilter: i_ExecutionTimeFilter,
+      typeFilter: i_WorkflowTypeFilter,
+      tagFilter: i_TagFilter,
+      nextPageToken: 0,
+      maximumPageSize: 0,
+      reverseOrder: 0,
+      executionFilter: i_WorkflowExecutionFilter,
+    },
     output: { executionInfos: D.list(o_WorkflowExecutionInfo) },
   },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
@@ -2238,7 +2327,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [
     LimitExceededFault,
     OperationNotPermittedFault,
@@ -2285,6 +2374,14 @@ export const listWorkflowTypes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      domain: 0,
+      name: 0,
+      registrationStatus: 0,
+      nextPageToken: 0,
+      maximumPageSize: 0,
+      reverseOrder: 0,
+    },
     output: { typeInfos: D.list(o_WorkflowTypeInfo) },
   },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
@@ -2343,7 +2440,10 @@ export const pollForActivityTask: API.OperationMethod<
   PollForActivityTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { domain: 0, taskList: i_TaskList, identity: 0 },
+  },
   errors: [
     LimitExceededFault,
     OperationNotPermittedFault,
@@ -2411,7 +2511,19 @@ export const pollForDecisionTask: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   HistoryEvent
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { events: D.list(o_HistoryEvent) } },
+  descriptor: {
+    service: svc,
+    input: {
+      domain: 0,
+      taskList: i_TaskList,
+      identity: 0,
+      nextPageToken: 0,
+      maximumPageSize: 0,
+      reverseOrder: 0,
+      startAtPreviousStartedEvent: 0,
+    },
+    output: { events: D.list(o_HistoryEvent) },
+  },
   errors: [
     LimitExceededFault,
     OperationNotPermittedFault,
@@ -2483,7 +2595,7 @@ export const recordActivityTaskHeartbeat: API.OperationMethod<
   RecordActivityTaskHeartbeatError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { taskToken: 0, details: 0 } },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2538,7 +2650,21 @@ export const registerActivityType: API.OperationMethod<
   RegisterActivityTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      domain: 0,
+      name: 0,
+      version: 0,
+      description: 0,
+      defaultTaskStartToCloseTimeout: 0,
+      defaultTaskHeartbeatTimeout: 0,
+      defaultTaskList: i_TaskList,
+      defaultTaskPriority: 0,
+      defaultTaskScheduleToStartTimeout: 0,
+      defaultTaskScheduleToCloseTimeout: 0,
+    },
+  },
   errors: [
     LimitExceededFault,
     OperationNotPermittedFault,
@@ -2584,7 +2710,15 @@ export const registerDomain: API.OperationMethod<
   RegisterDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      workflowExecutionRetentionPeriodInDays: 0,
+      tags: D.list(i_ResourceTag),
+    },
+  },
   errors: [
     DomainAlreadyExistsFault,
     LimitExceededFault,
@@ -2646,7 +2780,21 @@ export const registerWorkflowType: API.OperationMethod<
   RegisterWorkflowTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      domain: 0,
+      name: 0,
+      version: 0,
+      description: 0,
+      defaultTaskStartToCloseTimeout: 0,
+      defaultExecutionStartToCloseTimeout: 0,
+      defaultTaskList: i_TaskList,
+      defaultTaskPriority: 0,
+      defaultChildPolicy: 0,
+      defaultLambdaRole: 0,
+    },
+  },
   errors: [
     LimitExceededFault,
     OperationNotPermittedFault,
@@ -2701,7 +2849,7 @@ export const requestCancelWorkflowExecution: API.OperationMethod<
   RequestCancelWorkflowExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { domain: 0, workflowId: 0, runId: 0 } },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2755,7 +2903,7 @@ export const respondActivityTaskCanceled: API.OperationMethod<
   RespondActivityTaskCanceledError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { taskToken: 0, details: 0 } },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2807,7 +2955,7 @@ export const respondActivityTaskCompleted: API.OperationMethod<
   RespondActivityTaskCompletedError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { taskToken: 0, result: 0 } },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2854,7 +3002,7 @@ export const respondActivityTaskFailed: API.OperationMethod<
   RespondActivityTaskFailedError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { taskToken: 0, reason: 0, details: 0 } },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2891,7 +3039,84 @@ export const respondDecisionTaskCompleted: API.OperationMethod<
   RespondDecisionTaskCompletedError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      taskToken: 0,
+      decisions: D.list({
+        decisionType: 0,
+        scheduleActivityTaskDecisionAttributes: {
+          activityType: i_ActivityType,
+          activityId: 0,
+          control: 0,
+          input: 0,
+          scheduleToCloseTimeout: 0,
+          taskList: i_TaskList,
+          taskPriority: 0,
+          scheduleToStartTimeout: 0,
+          startToCloseTimeout: 0,
+          heartbeatTimeout: 0,
+        },
+        requestCancelActivityTaskDecisionAttributes: { activityId: 0 },
+        completeWorkflowExecutionDecisionAttributes: { result: 0 },
+        failWorkflowExecutionDecisionAttributes: { reason: 0, details: 0 },
+        cancelWorkflowExecutionDecisionAttributes: { details: 0 },
+        continueAsNewWorkflowExecutionDecisionAttributes: {
+          input: 0,
+          executionStartToCloseTimeout: 0,
+          taskList: i_TaskList,
+          taskPriority: 0,
+          taskStartToCloseTimeout: 0,
+          childPolicy: 0,
+          tagList: 0,
+          workflowTypeVersion: 0,
+          lambdaRole: 0,
+        },
+        recordMarkerDecisionAttributes: { markerName: 0, details: 0 },
+        startTimerDecisionAttributes: {
+          timerId: 0,
+          control: 0,
+          startToFireTimeout: 0,
+        },
+        cancelTimerDecisionAttributes: { timerId: 0 },
+        signalExternalWorkflowExecutionDecisionAttributes: {
+          workflowId: 0,
+          runId: 0,
+          signalName: 0,
+          input: 0,
+          control: 0,
+        },
+        requestCancelExternalWorkflowExecutionDecisionAttributes: {
+          workflowId: 0,
+          runId: 0,
+          control: 0,
+        },
+        startChildWorkflowExecutionDecisionAttributes: {
+          workflowType: i_WorkflowType,
+          workflowId: 0,
+          control: 0,
+          input: 0,
+          executionStartToCloseTimeout: 0,
+          taskList: i_TaskList,
+          taskPriority: 0,
+          taskStartToCloseTimeout: 0,
+          childPolicy: 0,
+          tagList: 0,
+          lambdaRole: 0,
+        },
+        scheduleLambdaFunctionDecisionAttributes: {
+          id: 0,
+          name: 0,
+          control: 0,
+          input: 0,
+          startToCloseTimeout: 0,
+        },
+      }),
+      executionContext: 0,
+      taskList: i_TaskList,
+      taskListScheduleToStartTimeout: 0,
+    },
+  },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2940,7 +3165,10 @@ export const signalWorkflowExecution: API.OperationMethod<
   SignalWorkflowExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { domain: 0, workflowId: 0, runId: 0, signalName: 0, input: 0 },
+  },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3006,7 +3234,22 @@ export const startWorkflowExecution: API.OperationMethod<
   StartWorkflowExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      domain: 0,
+      workflowId: 0,
+      workflowType: i_WorkflowType,
+      taskList: i_TaskList,
+      taskPriority: 0,
+      input: 0,
+      executionStartToCloseTimeout: 0,
+      tagList: 0,
+      taskStartToCloseTimeout: 0,
+      childPolicy: 0,
+      lambdaRole: 0,
+    },
+  },
   errors: [
     DefaultUndefinedFault,
     LimitExceededFault,
@@ -3037,7 +3280,10 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { resourceArn: 0, tags: D.list(i_ResourceTag) },
+  },
   errors: [
     LimitExceededFault,
     OperationNotPermittedFault,
@@ -3094,7 +3340,17 @@ export const terminateWorkflowExecution: API.OperationMethod<
   TerminateWorkflowExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      domain: 0,
+      workflowId: 0,
+      runId: 0,
+      reason: 0,
+      details: 0,
+      childPolicy: 0,
+    },
+  },
   errors: [OperationNotPermittedFault, UnknownResourceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3145,7 +3401,10 @@ export const undeprecateActivityType: API.OperationMethod<
   UndeprecateActivityTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { domain: 0, activityType: i_ActivityType },
+  },
   errors: [
     OperationNotPermittedFault,
     TypeAlreadyExistsFault,
@@ -3193,7 +3452,7 @@ export const undeprecateDomain: API.OperationMethod<
   UndeprecateDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [
     DomainAlreadyExistsFault,
     OperationNotPermittedFault,
@@ -3248,7 +3507,10 @@ export const undeprecateWorkflowType: API.OperationMethod<
   UndeprecateWorkflowTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { domain: 0, workflowType: i_WorkflowType },
+  },
   errors: [
     OperationNotPermittedFault,
     TypeAlreadyExistsFault,
@@ -3273,7 +3535,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [
     LimitExceededFault,
     OperationNotPermittedFault,
@@ -3284,6 +3546,19 @@ export const untagResource: API.OperationMethod<
   operationName: "UntagResource",
 })) as any;
 
+const i_ActivityType: D.LazyStruct = () => ({ name: 0, version: 0 });
+const i_CloseStatusFilter: D.LazyStruct = () => ({ status: 0 });
+const i_ExecutionTimeFilter: D.LazyStruct = () => ({
+  oldestDate: 0,
+  latestDate: 0,
+});
+const i_ResourceTag: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_TagFilter: D.LazyStruct = () => ({ tag: 0 });
+const i_TaskList: D.LazyStruct = () => ({ name: 0 });
+const i_WorkflowExecution: D.LazyStruct = () => ({ workflowId: 0, runId: 0 });
+const i_WorkflowExecutionFilter: D.LazyStruct = () => ({ workflowId: 0 });
+const i_WorkflowType: D.LazyStruct = () => ({ name: 0, version: 0 });
+const i_WorkflowTypeFilter: D.LazyStruct = () => ({ name: 0, version: 0 });
 const o_ActivityTypeInfo: D.LazyStruct = () => ({
   creationDate: D.ts,
   deprecationDate: D.ts,

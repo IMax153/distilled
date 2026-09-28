@@ -8674,6 +8674,7 @@ export const acceptInputDeviceTransfer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prod/inputDevices/{InputDeviceId}/accept",
+    input: { InputDeviceId: 0 },
   },
   errors: [
     BadGatewayException,
@@ -8866,6 +8867,7 @@ export const batchUpdateSchedule: API.OperationMethod<
     service: svc,
     http: "PUT /prod/channels/{ChannelId}/schedule",
     input: {
+      ChannelId: 0,
       Creates: D.m({
         wire: "creates",
         shape: {
@@ -8924,6 +8926,7 @@ export const batchUpdateSchedule: API.OperationMethod<
                   }),
                   MotionGraphicsImageDeactivateSettings: D.m({
                     wire: "motionGraphicsImageDeactivateSettings",
+                    shape: {},
                   }),
                   PauseStateSettings: D.m({
                     wire: "pauseStateSettings",
@@ -9097,6 +9100,7 @@ export const batchUpdateSchedule: API.OperationMethod<
                   }),
                   ImmediateModeScheduleActionStartSettings: D.m({
                     wire: "immediateModeScheduleActionStartSettings",
+                    shape: {},
                   }),
                 },
               }),
@@ -9169,6 +9173,7 @@ export const cancelInputDeviceTransfer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prod/inputDevices/{InputDeviceId}/cancel",
+    input: { InputDeviceId: 0 },
   },
   errors: [
     BadGatewayException,
@@ -9354,6 +9359,7 @@ export const createChannelPlacementGroup: API.OperationMethod<
     service: svc,
     http: "POST /prod/clusters/{ClusterId}/channelplacementgroups",
     input: {
+      ClusterId: 0,
       Name: D.m({ wire: "name" }),
       Nodes: D.m({ wire: "nodes" }),
       RequestId: D.m({ idempotency: true, wire: "requestId" }),
@@ -9903,6 +9909,7 @@ export const createMultiplexProgram: API.OperationMethod<
     service: svc,
     http: "POST /prod/multiplexes/{MultiplexId}/programs",
     input: {
+      MultiplexId: 0,
       MultiplexProgramSettings: D.m({
         wire: "multiplexProgramSettings",
         shape: i_MultiplexProgramSettings,
@@ -10017,6 +10024,7 @@ export const createNode: API.OperationMethod<
     service: svc,
     http: "POST /prod/clusters/{ClusterId}/nodes",
     input: {
+      ClusterId: 0,
       Name: D.m({ wire: "name" }),
       NodeInterfaceMappings: D.m({
         wire: "nodeInterfaceMappings",
@@ -10087,6 +10095,7 @@ export const createNodeRegistrationScript: API.OperationMethod<
     service: svc,
     http: "POST /prod/clusters/{ClusterId}/nodeRegistrationScript",
     input: {
+      ClusterId: 0,
       Id: D.m({ wire: "id" }),
       Name: D.m({ wire: "name" }),
       NodeInterfaceMappings: D.m({
@@ -10141,6 +10150,7 @@ export const createPartnerInput: API.OperationMethod<
     service: svc,
     http: "POST /prod/inputs/{InputId}/partners",
     input: {
+      InputId: 0,
       RequestId: D.m({ idempotency: true, wire: "requestId" }),
       Tags: D.m({ wire: "tags" }),
     },
@@ -10309,7 +10319,7 @@ export const createTags: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prod/tags/{ResourceArn}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: { ResourceArn: 0, Tags: D.m({ wire: "tags" }) },
     body: true,
   },
   errors: [
@@ -10345,6 +10355,7 @@ export const deleteChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prod/channels/{ChannelId}",
+    input: { ChannelId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CdiInputSpecification: D.m({
@@ -10441,6 +10452,7 @@ export const deleteChannelPlacementGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prod/clusters/{ClusterId}/channelplacementgroups/{ChannelPlacementGroupId}",
+    input: { ChannelPlacementGroupId: 0, ClusterId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       Channels: D.m({ wire: "channels" }),
@@ -10486,6 +10498,7 @@ export const deleteCloudWatchAlarmTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prod/cloudwatch-alarm-templates/{Identifier}",
+    input: { Identifier: 0 },
   },
   errors: [
     BadRequestException,
@@ -10520,6 +10533,7 @@ export const deleteCloudWatchAlarmTemplateGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prod/cloudwatch-alarm-template-groups/{Identifier}",
+    input: { Identifier: 0 },
   },
   errors: [
     BadRequestException,
@@ -10556,6 +10570,7 @@ export const deleteCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prod/clusters/{ClusterId}",
+    input: { ClusterId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       ChannelIds: D.m({ wire: "channelIds" }),
@@ -10605,6 +10620,7 @@ export const deleteEventBridgeRuleTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prod/eventbridge-rule-templates/{Identifier}",
+    input: { Identifier: 0 },
   },
   errors: [
     BadRequestException,
@@ -10639,6 +10655,7 @@ export const deleteEventBridgeRuleTemplateGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prod/eventbridge-rule-template-groups/{Identifier}",
+    input: { Identifier: 0 },
   },
   errors: [
     BadRequestException,
@@ -10672,7 +10689,11 @@ export const deleteInput: API.OperationMethod<
   DeleteInputError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /prod/inputs/{InputId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /prod/inputs/{InputId}",
+    input: { InputId: 0 },
+  },
   errors: [
     BadGatewayException,
     BadRequestException,
@@ -10709,6 +10730,7 @@ export const deleteInputSecurityGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prod/inputSecurityGroups/{InputSecurityGroupId}",
+    input: { InputSecurityGroupId: 0 },
   },
   errors: [
     BadGatewayException,
@@ -10746,6 +10768,7 @@ export const deleteMultiplex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prod/multiplexes/{MultiplexId}",
+    input: { MultiplexId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       AvailabilityZones: D.m({ wire: "availabilityZones" }),
@@ -10802,6 +10825,7 @@ export const deleteMultiplexProgram: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prod/multiplexes/{MultiplexId}/programs/{ProgramName}",
+    input: { MultiplexId: 0, ProgramName: 0 },
     output: {
       ChannelId: D.m({ wire: "channelId" }),
       MultiplexProgramSettings: D.m({
@@ -10856,6 +10880,7 @@ export const deleteNetwork: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prod/networks/{NetworkId}",
+    input: { NetworkId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       AssociatedClusterIds: D.m({ wire: "associatedClusterIds" }),
@@ -10903,6 +10928,7 @@ export const deleteNode: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prod/clusters/{ClusterId}/nodes/{NodeId}",
+    input: { ClusterId: 0, NodeId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       ChannelPlacementGroups: D.m({ wire: "channelPlacementGroups" }),
@@ -10960,6 +10986,7 @@ export const deleteReservation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prod/reservations/{ReservationId}",
+    input: { ReservationId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       Count: D.m({ wire: "count" }),
@@ -11024,6 +11051,7 @@ export const deleteSchedule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prod/channels/{ChannelId}/schedule",
+    input: { ChannelId: 0 },
   },
   errors: [
     BadGatewayException,
@@ -11061,6 +11089,7 @@ export const deleteSdiSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prod/sdiSources/{SdiSourceId}",
+    input: { SdiSourceId: 0 },
     output: { SdiSource: D.m({ wire: "sdiSource", shape: o_SdiSource }) },
   },
   errors: [
@@ -11095,7 +11124,11 @@ export const deleteSignalMap: API.OperationMethod<
   DeleteSignalMapError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /prod/signal-maps/{Identifier}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /prod/signal-maps/{Identifier}",
+    input: { Identifier: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -11127,7 +11160,7 @@ export const deleteTags: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prod/tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     BadRequestException,
@@ -11160,6 +11193,7 @@ export const describeAccountConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/accountConfiguration",
+    input: {},
     output: {
       AccountConfiguration: D.m({
         wire: "accountConfiguration",
@@ -11201,6 +11235,7 @@ export const describeChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/channels/{ChannelId}",
+    input: { ChannelId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CdiInputSpecification: D.m({
@@ -11295,6 +11330,7 @@ export const describeChannelPlacementGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/clusters/{ClusterId}/channelplacementgroups/{ChannelPlacementGroupId}",
+    input: { ChannelPlacementGroupId: 0, ClusterId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       Channels: D.m({ wire: "channels" }),
@@ -11340,6 +11376,7 @@ export const describeCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/clusters/{ClusterId}",
+    input: { ClusterId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       ChannelIds: D.m({ wire: "channelIds" }),
@@ -11389,6 +11426,7 @@ export const describeInput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/inputs/{InputId}",
+    input: { InputId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       AttachedChannels: D.m({ wire: "attachedChannels" }),
@@ -11467,6 +11505,7 @@ export const describeInputDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/inputDevices/{InputDeviceId}",
+    input: { InputDeviceId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       ConnectionState: D.m({ wire: "connectionState" }),
@@ -11530,7 +11569,7 @@ export const describeInputDeviceThumbnail: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/inputDevices/{InputDeviceId}/thumbnailData",
-    input: { Accept: D.m({ header: "accept" }) },
+    input: { InputDeviceId: 0, Accept: D.m({ header: "accept" }) },
     output: {
       Body: D.m({ payload: true, wire: "body", shape: D.stream }),
       ContentType: D.m({ header: "Content-Type" }),
@@ -11574,6 +11613,7 @@ export const describeInputSecurityGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/inputSecurityGroups/{InputSecurityGroupId}",
+    input: { InputSecurityGroupId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       Id: D.m({ wire: "id" }),
@@ -11622,6 +11662,7 @@ export const describeMultiplex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/multiplexes/{MultiplexId}",
+    input: { MultiplexId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       AvailabilityZones: D.m({ wire: "availabilityZones" }),
@@ -11676,6 +11717,7 @@ export const describeMultiplexProgram: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/multiplexes/{MultiplexId}/programs/{ProgramName}",
+    input: { MultiplexId: 0, ProgramName: 0 },
     output: {
       ChannelId: D.m({ wire: "channelId" }),
       MultiplexProgramSettings: D.m({
@@ -11728,6 +11770,7 @@ export const describeNetwork: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/networks/{NetworkId}",
+    input: { NetworkId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       AssociatedClusterIds: D.m({ wire: "associatedClusterIds" }),
@@ -11773,6 +11816,7 @@ export const describeNode: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/clusters/{ClusterId}/nodes/{NodeId}",
+    input: { ClusterId: 0, NodeId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       ChannelPlacementGroups: D.m({ wire: "channelPlacementGroups" }),
@@ -11828,6 +11872,7 @@ export const describeOffering: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/offerings/{OfferingId}",
+    input: { OfferingId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CurrencyCode: D.m({ wire: "currencyCode" }),
@@ -11880,6 +11925,7 @@ export const describeReservation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/reservations/{ReservationId}",
+    input: { ReservationId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       Count: D.m({ wire: "count" }),
@@ -11945,6 +11991,7 @@ export const describeSchedule: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /prod/channels/{ChannelId}/schedule",
     input: {
+      ChannelId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -11997,6 +12044,7 @@ export const describeSdiSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/sdiSources/{SdiSourceId}",
+    input: { SdiSourceId: 0 },
     output: { SdiSource: D.m({ wire: "sdiSource", shape: o_SdiSource }) },
   },
   errors: [
@@ -12036,6 +12084,7 @@ export const describeThumbnails: API.OperationMethod<
     service: svc,
     http: "GET /prod/channels/{ChannelId}/thumbnails",
     input: {
+      ChannelId: 0,
       PipelineId: D.m({ query: "pipelineId" }),
       ThumbnailType: D.m({ query: "thumbnailType" }),
     },
@@ -12091,6 +12140,7 @@ export const getCloudWatchAlarmTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/cloudwatch-alarm-templates/{Identifier}",
+    input: { Identifier: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       ComparisonOperator: D.m({ wire: "comparisonOperator" }),
@@ -12142,6 +12192,7 @@ export const getCloudWatchAlarmTemplateGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/cloudwatch-alarm-template-groups/{Identifier}",
+    input: { Identifier: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CreatedAt: D.m({ wire: "createdAt", shape: D.ts }),
@@ -12183,6 +12234,7 @@ export const getEventBridgeRuleTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/eventbridge-rule-templates/{Identifier}",
+    input: { Identifier: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CreatedAt: D.m({ wire: "createdAt", shape: D.ts }),
@@ -12230,6 +12282,7 @@ export const getEventBridgeRuleTemplateGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/eventbridge-rule-template-groups/{Identifier}",
+    input: { Identifier: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CreatedAt: D.m({ wire: "createdAt", shape: D.ts }),
@@ -12271,6 +12324,7 @@ export const getSignalMap: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/signal-maps/{Identifier}",
+    input: { Identifier: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CloudWatchAlarmTemplateGroupIds: D.m({
@@ -12345,6 +12399,7 @@ export const listAlerts: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /prod/channels/{ChannelId}/alerts",
     input: {
+      ChannelId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
       StateFilter: D.m({ query: "stateFilter" }),
@@ -12407,6 +12462,7 @@ export const listChannelPlacementGroups: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /prod/clusters/{ClusterId}/channelplacementgroups",
     input: {
+      ClusterId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -12705,6 +12761,7 @@ export const listClusterAlerts: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /prod/clusters/{ClusterId}/alerts",
     input: {
+      ClusterId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
       StateFilter: D.m({ query: "stateFilter" }),
@@ -13196,6 +13253,7 @@ export const listMultiplexAlerts: API.PaginatedOperationMethod<
     http: "GET /prod/multiplexes/{MultiplexId}/alerts",
     input: {
       MaxResults: D.m({ query: "maxResults" }),
+      MultiplexId: 0,
       NextToken: D.m({ query: "nextToken" }),
       StateFilter: D.m({ query: "stateFilter" }),
     },
@@ -13326,6 +13384,7 @@ export const listMultiplexPrograms: API.PaginatedOperationMethod<
     http: "GET /prod/multiplexes/{MultiplexId}/programs",
     input: {
       MaxResults: D.m({ query: "maxResults" }),
+      MultiplexId: 0,
       NextToken: D.m({ query: "nextToken" }),
     },
     output: {
@@ -13441,6 +13500,7 @@ export const listNodes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /prod/clusters/{ClusterId}/nodes",
     input: {
+      ClusterId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -13768,6 +13828,7 @@ export const listTagsForResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
   },
   errors: [
@@ -13803,6 +13864,7 @@ export const listVersions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prod/versions",
+    input: {},
     output: {
       Versions: D.m({
         wire: "versions",
@@ -13850,6 +13912,7 @@ export const purchaseOffering: API.OperationMethod<
     input: {
       Count: D.m({ wire: "count" }),
       Name: D.m({ wire: "name" }),
+      OfferingId: 0,
       RenewalSettings: D.m({
         wire: "renewalSettings",
         shape: i_RenewalSettings,
@@ -13898,7 +13961,7 @@ export const rebootInputDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prod/inputDevices/{InputDeviceId}/reboot",
-    input: { Force: D.m({ wire: "force" }) },
+    input: { Force: D.m({ wire: "force" }), InputDeviceId: 0 },
     body: true,
   },
   errors: [
@@ -13939,6 +14002,7 @@ export const rejectInputDeviceTransfer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prod/inputDevices/{InputDeviceId}/reject",
+    input: { InputDeviceId: 0 },
   },
   errors: [
     BadGatewayException,
@@ -13978,7 +14042,7 @@ export const restartChannelPipelines: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prod/channels/{ChannelId}/restartChannelPipelines",
-    input: { PipelineIds: D.m({ wire: "pipelineIds" }) },
+    input: { ChannelId: 0, PipelineIds: D.m({ wire: "pipelineIds" }) },
     output: {
       Arn: D.m({ wire: "arn" }),
       CdiInputSpecification: D.m({
@@ -14077,6 +14141,7 @@ export const startChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prod/channels/{ChannelId}/start",
+    input: { ChannelId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CdiInputSpecification: D.m({
@@ -14171,6 +14236,7 @@ export const startDeleteMonitorDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prod/signal-maps/{Identifier}/monitor-deployment",
+    input: { Identifier: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CloudWatchAlarmTemplateGroupIds: D.m({
@@ -14245,6 +14311,7 @@ export const startInputDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prod/inputDevices/{InputDeviceId}/start",
+    input: { InputDeviceId: 0 },
   },
   errors: [
     BadGatewayException,
@@ -14283,6 +14350,7 @@ export const startInputDeviceMaintenanceWindow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prod/inputDevices/{InputDeviceId}/startInputDeviceMaintenanceWindow",
+    input: { InputDeviceId: 0 },
   },
   errors: [
     BadGatewayException,
@@ -14319,7 +14387,7 @@ export const startMonitorDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prod/signal-maps/{Identifier}/monitor-deployment",
-    input: { DryRun: D.m({ wire: "dryRun" }) },
+    input: { DryRun: D.m({ wire: "dryRun" }), Identifier: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CloudWatchAlarmTemplateGroupIds: D.m({
@@ -14395,6 +14463,7 @@ export const startMultiplex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prod/multiplexes/{MultiplexId}/start",
+    input: { MultiplexId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       AvailabilityZones: D.m({ wire: "availabilityZones" }),
@@ -14459,6 +14528,7 @@ export const startUpdateSignalMap: API.OperationMethod<
         wire: "eventBridgeRuleTemplateGroupIdentifiers",
       }),
       ForceRediscovery: D.m({ wire: "forceRediscovery" }),
+      Identifier: 0,
       Name: D.m({ wire: "name" }),
     },
     output: {
@@ -14536,6 +14606,7 @@ export const stopChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prod/channels/{ChannelId}/stop",
+    input: { ChannelId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CdiInputSpecification: D.m({
@@ -14632,6 +14703,7 @@ export const stopInputDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prod/inputDevices/{InputDeviceId}/stop",
+    input: { InputDeviceId: 0 },
   },
   errors: [
     BadGatewayException,
@@ -14670,6 +14742,7 @@ export const stopMultiplex: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prod/multiplexes/{MultiplexId}/stop",
+    input: { MultiplexId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       AvailabilityZones: D.m({ wire: "availabilityZones" }),
@@ -14728,6 +14801,7 @@ export const transferInputDevice: API.OperationMethod<
     service: svc,
     http: "POST /prod/inputDevices/{InputDeviceId}/transfer",
     input: {
+      InputDeviceId: 0,
       TargetCustomerId: D.m({ wire: "targetCustomerId" }),
       TargetRegion: D.m({ wire: "targetRegion" }),
       TransferMessage: D.m({ wire: "transferMessage" }),
@@ -14825,6 +14899,7 @@ export const updateChannel: API.OperationMethod<
         wire: "cdiInputSpecification",
         shape: i_CdiInputSpecification,
       }),
+      ChannelId: 0,
       Destinations: D.m({
         wire: "destinations",
         shape: D.list(i_OutputDestination),
@@ -14917,6 +14992,7 @@ export const updateChannelClass: API.OperationMethod<
     http: "PUT /prod/channels/{ChannelId}/channelClass",
     input: {
       ChannelClass: D.m({ wire: "channelClass" }),
+      ChannelId: 0,
       Destinations: D.m({
         wire: "destinations",
         shape: D.list(i_OutputDestination),
@@ -14963,7 +15039,12 @@ export const updateChannelPlacementGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /prod/clusters/{ClusterId}/channelplacementgroups/{ChannelPlacementGroupId}",
-    input: { Name: D.m({ wire: "name" }), Nodes: D.m({ wire: "nodes" }) },
+    input: {
+      ChannelPlacementGroupId: 0,
+      ClusterId: 0,
+      Name: D.m({ wire: "name" }),
+      Nodes: D.m({ wire: "nodes" }),
+    },
     output: {
       Arn: D.m({ wire: "arn" }),
       Channels: D.m({ wire: "channels" }),
@@ -15016,6 +15097,7 @@ export const updateCloudWatchAlarmTemplate: API.OperationMethod<
       Description: D.m({ wire: "description" }),
       EvaluationPeriods: D.m({ wire: "evaluationPeriods" }),
       GroupIdentifier: D.m({ wire: "groupIdentifier" }),
+      Identifier: 0,
       MetricName: D.m({ wire: "metricName" }),
       Name: D.m({ wire: "name" }),
       Period: D.m({ wire: "period" }),
@@ -15078,7 +15160,7 @@ export const updateCloudWatchAlarmTemplateGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /prod/cloudwatch-alarm-template-groups/{Identifier}",
-    input: { Description: D.m({ wire: "description" }) },
+    input: { Description: D.m({ wire: "description" }), Identifier: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CreatedAt: D.m({ wire: "createdAt", shape: D.ts }),
@@ -15125,6 +15207,7 @@ export const updateCluster: API.OperationMethod<
     service: svc,
     http: "PUT /prod/clusters/{ClusterId}",
     input: {
+      ClusterId: 0,
       Name: D.m({ wire: "name" }),
       NetworkSettings: D.m({
         wire: "networkSettings",
@@ -15196,6 +15279,7 @@ export const updateEventBridgeRuleTemplate: API.OperationMethod<
       }),
       EventType: D.m({ wire: "eventType" }),
       GroupIdentifier: D.m({ wire: "groupIdentifier" }),
+      Identifier: 0,
       Name: D.m({ wire: "name" }),
     },
     output: {
@@ -15248,7 +15332,7 @@ export const updateEventBridgeRuleTemplateGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /prod/eventbridge-rule-template-groups/{Identifier}",
-    input: { Description: D.m({ wire: "description" }) },
+    input: { Description: D.m({ wire: "description" }), Identifier: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CreatedAt: D.m({ wire: "createdAt", shape: D.ts }),
@@ -15303,6 +15387,7 @@ export const updateInput: API.OperationMethod<
         wire: "inputDevices",
         shape: D.list({ Id: D.m({ wire: "id" }) }),
       }),
+      InputId: 0,
       InputSecurityGroups: D.m({ wire: "inputSecurityGroups" }),
       MediaConnectFlows: D.m({
         wire: "mediaConnectFlows",
@@ -15378,6 +15463,7 @@ export const updateInputDevice: API.OperationMethod<
         wire: "hdDeviceSettings",
         shape: i_InputDeviceConfigurableSettings,
       }),
+      InputDeviceId: 0,
       Name: D.m({ wire: "name" }),
       UhdDeviceSettings: D.m({
         wire: "uhdDeviceSettings",
@@ -15451,6 +15537,7 @@ export const updateInputSecurityGroup: API.OperationMethod<
     service: svc,
     http: "PUT /prod/inputSecurityGroups/{InputSecurityGroupId}",
     input: {
+      InputSecurityGroupId: 0,
       Tags: D.m({ wire: "tags" }),
       WhitelistRules: D.m({
         wire: "whitelistRules",
@@ -15502,6 +15589,7 @@ export const updateMultiplex: API.OperationMethod<
     service: svc,
     http: "PUT /prod/multiplexes/{MultiplexId}",
     input: {
+      MultiplexId: 0,
       MultiplexSettings: D.m({
         wire: "multiplexSettings",
         shape: i_MultiplexSettings,
@@ -15571,10 +15659,12 @@ export const updateMultiplexProgram: API.OperationMethod<
     service: svc,
     http: "PUT /prod/multiplexes/{MultiplexId}/programs/{ProgramName}",
     input: {
+      MultiplexId: 0,
       MultiplexProgramSettings: D.m({
         wire: "multiplexProgramSettings",
         shape: i_MultiplexProgramSettings,
       }),
+      ProgramName: 0,
     },
     output: {
       MultiplexProgram: D.m({
@@ -15626,6 +15716,7 @@ export const updateNetwork: API.OperationMethod<
         shape: D.list({ Cidr: D.m({ wire: "cidr" }) }),
       }),
       Name: D.m({ wire: "name" }),
+      NetworkId: 0,
       Routes: D.m({
         wire: "routes",
         shape: D.list({
@@ -15681,7 +15772,9 @@ export const updateNode: API.OperationMethod<
     service: svc,
     http: "PUT /prod/clusters/{ClusterId}/nodes/{NodeId}",
     input: {
+      ClusterId: 0,
       Name: D.m({ wire: "name" }),
+      NodeId: 0,
       Role: D.m({ wire: "role" }),
       SdiSourceMappings: D.m({
         wire: "sdiSourceMappings",
@@ -15749,7 +15842,7 @@ export const updateNodeState: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /prod/clusters/{ClusterId}/nodes/{NodeId}/state",
-    input: { State: D.m({ wire: "state" }) },
+    input: { ClusterId: 0, NodeId: 0, State: D.m({ wire: "state" }) },
     output: {
       Arn: D.m({ wire: "arn" }),
       ChannelPlacementGroups: D.m({ wire: "channelPlacementGroups" }),
@@ -15814,6 +15907,7 @@ export const updateReservation: API.OperationMethod<
         wire: "renewalSettings",
         shape: i_RenewalSettings,
       }),
+      ReservationId: 0,
     },
     output: { Reservation: D.m({ wire: "reservation", shape: o_Reservation }) },
     body: true,
@@ -15857,6 +15951,7 @@ export const updateSdiSource: API.OperationMethod<
     input: {
       Mode: D.m({ wire: "mode" }),
       Name: D.m({ wire: "name" }),
+      SdiSourceId: 0,
       Type: D.m({ wire: "type" }),
     },
     output: { SdiSource: D.m({ wire: "sdiSource", shape: o_SdiSource }) },
@@ -16007,7 +16102,7 @@ const i_EncoderSettings: D.LazyStruct = () => ({
               SampleRate: D.m({ wire: "sampleRate" }),
             },
           }),
-          PassThroughSettings: D.m({ wire: "passThroughSettings" }),
+          PassThroughSettings: D.m({ wire: "passThroughSettings", shape: {} }),
           WavSettings: D.m({
             wire: "wavSettings",
             shape: {
@@ -16099,7 +16194,10 @@ const i_EncoderSettings: D.LazyStruct = () => ({
       DestinationSettings: D.m({
         wire: "destinationSettings",
         shape: {
-          AribDestinationSettings: D.m({ wire: "aribDestinationSettings" }),
+          AribDestinationSettings: D.m({
+            wire: "aribDestinationSettings",
+            shape: {},
+          }),
           BurnInDestinationSettings: D.m({
             wire: "burnInDestinationSettings",
             shape: {
@@ -16159,22 +16257,31 @@ const i_EncoderSettings: D.LazyStruct = () => ({
           }),
           EmbeddedDestinationSettings: D.m({
             wire: "embeddedDestinationSettings",
+            shape: {},
           }),
           EmbeddedPlusScte20DestinationSettings: D.m({
             wire: "embeddedPlusScte20DestinationSettings",
+            shape: {},
           }),
           RtmpCaptionInfoDestinationSettings: D.m({
             wire: "rtmpCaptionInfoDestinationSettings",
+            shape: {},
           }),
           Scte20PlusEmbeddedDestinationSettings: D.m({
             wire: "scte20PlusEmbeddedDestinationSettings",
+            shape: {},
           }),
-          Scte27DestinationSettings: D.m({ wire: "scte27DestinationSettings" }),
+          Scte27DestinationSettings: D.m({
+            wire: "scte27DestinationSettings",
+            shape: {},
+          }),
           SmpteTtDestinationSettings: D.m({
             wire: "smpteTtDestinationSettings",
+            shape: {},
           }),
           TeletextDestinationSettings: D.m({
             wire: "teletextDestinationSettings",
+            shape: {},
           }),
           TtmlDestinationSettings: D.m({
             wire: "ttmlDestinationSettings",
@@ -16257,6 +16364,7 @@ const i_EncoderSettings: D.LazyStruct = () => ({
         shape: {
           HtmlMotionGraphicsSettings: D.m({
             wire: "htmlMotionGraphicsSettings",
+            shape: {},
           }),
         },
       }),
@@ -16513,7 +16621,10 @@ const i_EncoderSettings: D.LazyStruct = () => ({
               TimestampOffsetMode: D.m({ wire: "timestampOffsetMode" }),
             },
           }),
-          MultiplexGroupSettings: D.m({ wire: "multiplexGroupSettings" }),
+          MultiplexGroupSettings: D.m({
+            wire: "multiplexGroupSettings",
+            shape: {},
+          }),
           RtmpGroupSettings: D.m({
             wire: "rtmpGroupSettings",
             shape: {
@@ -16605,7 +16716,7 @@ const i_EncoderSettings: D.LazyStruct = () => ({
                         wire: "m2tsSettings",
                         shape: i_M2tsSettings,
                       }),
-                      RawSettings: D.m({ wire: "rawSettings" }),
+                      RawSettings: D.m({ wire: "rawSettings", shape: {} }),
                     },
                   }),
                   Extension: D.m({ wire: "extension" }),
@@ -16651,6 +16762,7 @@ const i_EncoderSettings: D.LazyStruct = () => ({
                       }),
                       FrameCaptureHlsSettings: D.m({
                         wire: "frameCaptureHlsSettings",
+                        shape: {},
                       }),
                       StandardHlsSettings: D.m({
                         wire: "standardHlsSettings",
@@ -16886,9 +16998,16 @@ const i_EncoderSettings: D.LazyStruct = () => ({
                 shape: {
                   ColorSpacePassthroughSettings: D.m({
                     wire: "colorSpacePassthroughSettings",
+                    shape: i_ColorSpacePassthroughSettings,
                   }),
-                  Rec601Settings: D.m({ wire: "rec601Settings" }),
-                  Rec709Settings: D.m({ wire: "rec709Settings" }),
+                  Rec601Settings: D.m({
+                    wire: "rec601Settings",
+                    shape: i_Rec601Settings,
+                  }),
+                  Rec709Settings: D.m({
+                    wire: "rec709Settings",
+                    shape: i_Rec709Settings,
+                  }),
                 },
               }),
               EntropyEncoding: D.m({ wire: "entropyEncoding" }),
@@ -16961,15 +17080,28 @@ const i_EncoderSettings: D.LazyStruct = () => ({
                 shape: {
                   ColorSpacePassthroughSettings: D.m({
                     wire: "colorSpacePassthroughSettings",
+                    shape: i_ColorSpacePassthroughSettings,
                   }),
-                  DolbyVision81Settings: D.m({ wire: "dolbyVision81Settings" }),
+                  DolbyVision81Settings: D.m({
+                    wire: "dolbyVision81Settings",
+                    shape: {},
+                  }),
                   Hdr10Settings: D.m({
                     wire: "hdr10Settings",
                     shape: i_Hdr10Settings,
                   }),
-                  Rec601Settings: D.m({ wire: "rec601Settings" }),
-                  Rec709Settings: D.m({ wire: "rec709Settings" }),
-                  Hlg2020Settings: D.m({ wire: "hlg2020Settings" }),
+                  Rec601Settings: D.m({
+                    wire: "rec601Settings",
+                    shape: i_Rec601Settings,
+                  }),
+                  Rec709Settings: D.m({
+                    wire: "rec709Settings",
+                    shape: i_Rec709Settings,
+                  }),
+                  Hlg2020Settings: D.m({
+                    wire: "hlg2020Settings",
+                    shape: i_Hlg2020Settings,
+                  }),
                 },
               }),
               FilterSettings: D.m({
@@ -17067,14 +17199,24 @@ const i_EncoderSettings: D.LazyStruct = () => ({
                 shape: {
                   ColorSpacePassthroughSettings: D.m({
                     wire: "colorSpacePassthroughSettings",
+                    shape: i_ColorSpacePassthroughSettings,
                   }),
                   Hdr10Settings: D.m({
                     wire: "hdr10Settings",
                     shape: i_Hdr10Settings,
                   }),
-                  Rec601Settings: D.m({ wire: "rec601Settings" }),
-                  Rec709Settings: D.m({ wire: "rec709Settings" }),
-                  Hlg2020Settings: D.m({ wire: "hlg2020Settings" }),
+                  Rec601Settings: D.m({
+                    wire: "rec601Settings",
+                    shape: i_Rec601Settings,
+                  }),
+                  Rec709Settings: D.m({
+                    wire: "rec709Settings",
+                    shape: i_Rec709Settings,
+                  }),
+                  Hlg2020Settings: D.m({
+                    wire: "hlg2020Settings",
+                    shape: i_Hlg2020Settings,
+                  }),
                 },
               }),
               FixedAfd: D.m({ wire: "fixedAfd" }),
@@ -17284,7 +17426,10 @@ const i_InputAttachment: D.LazyStruct = () => ({
                   }),
                 },
               }),
-              AribSourceSettings: D.m({ wire: "aribSourceSettings" }),
+              AribSourceSettings: D.m({
+                wire: "aribSourceSettings",
+                shape: {},
+              }),
               DvbSubSourceSettings: D.m({
                 wire: "dvbSubSourceSettings",
                 shape: {
@@ -19970,10 +20115,12 @@ const i_CaptionLanguageMapping: D.LazyStruct = () => ({
   LanguageCode: D.m({ wire: "languageCode" }),
   LanguageDescription: D.m({ wire: "languageDescription" }),
 });
+const i_ColorSpacePassthroughSettings: D.LazyStruct = () => ({});
 const i_Hdr10Settings: D.LazyStruct = () => ({
   MaxCll: D.m({ wire: "maxCll" }),
   MaxFall: D.m({ wire: "maxFall" }),
 });
+const i_Hlg2020Settings: D.LazyStruct = () => ({});
 const i_InputSdpLocation: D.LazyStruct = () => ({
   MediaIndex: D.m({ wire: "mediaIndex" }),
   SdpUrl: D.m({ wire: "sdpUrl" }),
@@ -20051,6 +20198,8 @@ const i_M2tsSettings: D.LazyStruct = () => ({
 const i_OutputLocationRef: D.LazyStruct = () => ({
   DestinationRefId: D.m({ wire: "destinationRefId" }),
 });
+const i_Rec601Settings: D.LazyStruct = () => ({});
+const i_Rec709Settings: D.LazyStruct = () => ({});
 const i_RemixSettings: D.LazyStruct = () => ({
   ChannelMappings: D.m({
     wire: "channelMappings",

@@ -9521,6 +9521,7 @@ export const activateEvaluationForm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /evaluation-forms/{InstanceId}/{EvaluationFormId}/activate",
+    input: { InstanceId: 0, EvaluationFormId: 0, EvaluationFormVersion: 0 },
     body: true,
   },
   errors: [
@@ -9555,6 +9556,7 @@ export const associateAnalyticsDataSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /analytics-data/instance/{InstanceId}/association",
+    input: { InstanceId: 0, DataSetId: 0, TargetAccountId: 0 },
     body: true,
   },
   errors: [
@@ -9592,7 +9594,11 @@ export const associateApprovedOrigin: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /instance/{InstanceId}/approved-origin",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      Origin: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -9633,7 +9639,12 @@ export const associateBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /instance/{InstanceId}/bot",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      LexBot: i_LexBot,
+      LexV2Bot: i_LexV2Bot,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -9702,6 +9713,7 @@ export const associateContactWithUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contacts/{InstanceId}/{ContactId}/associate-user",
+    input: { InstanceId: 0, ContactId: 0, UserId: 0 },
     body: true,
   },
   errors: [
@@ -9737,6 +9749,7 @@ export const associateDefaultVocabulary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /default-vocabulary/{InstanceId}/{LanguageCode}",
+    input: { InstanceId: 0, LanguageCode: 0, VocabularyId: 0 },
     body: true,
   },
   errors: [
@@ -9824,7 +9837,12 @@ export const associateEmailAddressAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /email-addresses/{InstanceId}/{EmailAddressId}/associate-alias",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      EmailAddressId: 0,
+      InstanceId: 0,
+      AliasConfiguration: i_AliasConfiguration,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -9862,6 +9880,7 @@ export const associateFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /flow-associations/{InstanceId}",
+    input: { InstanceId: 0, ResourceId: 0, FlowId: 0, ResourceType: 0 },
     body: true,
   },
   errors: [
@@ -9898,6 +9917,11 @@ export const associateHoursOfOperations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /hours-of-operations/{InstanceId}/{HoursOfOperationId}/associate-hours",
+    input: {
+      InstanceId: 0,
+      HoursOfOperationId: 0,
+      ParentHoursOfOperationConfigs: D.list(i_ParentHoursOfOperationConfig),
+    },
     body: true,
   },
   errors: [
@@ -9942,7 +9966,12 @@ export const associateInstanceStorageConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /instance/{InstanceId}/storage-config",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      ResourceType: 0,
+      StorageConfig: i_InstanceStorageConfig,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -9981,7 +10010,11 @@ export const associateLambdaFunction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /instance/{InstanceId}/lambda-function",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      FunctionArn: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -10022,7 +10055,11 @@ export const associateLexBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /instance/{InstanceId}/lex-bot",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      LexBot: i_LexBot,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -10065,6 +10102,7 @@ export const associatePhoneNumberContactFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /phone-number/{PhoneNumberId}/contact-flow",
+    input: { PhoneNumberId: 0, InstanceId: 0, ContactFlowId: 0 },
     body: true,
   },
   errors: [
@@ -10112,7 +10150,12 @@ export const associateQueueEmailAddresses: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /queues/{InstanceId}/{QueueId}/associate-email-addresses",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      QueueId: 0,
+      EmailAddressesConfig: D.list(i_EmailAddressConfig),
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -10149,6 +10192,7 @@ export const associateQueueQuickConnects: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /queues/{InstanceId}/{QueueId}/associate-quick-connects",
+    input: { InstanceId: 0, QueueId: 0, QuickConnectIds: 0 },
     body: true,
   },
   errors: [
@@ -10183,6 +10227,14 @@ export const associateRoutingProfileQueues: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /routing-profiles/{InstanceId}/{RoutingProfileId}/associate-queues",
+    input: {
+      InstanceId: 0,
+      RoutingProfileId: 0,
+      QueueConfigs: D.list(i_RoutingProfileQueueConfig),
+      ManualAssignmentQueueConfigs: D.list(
+        i_RoutingProfileManualAssignmentQueueConfig,
+      ),
+    },
     body: true,
   },
   errors: [
@@ -10220,7 +10272,7 @@ export const associateSecurityKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /instance/{InstanceId}/security-key",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: { InstanceId: 0, Key: 0, ClientToken: D.m({ idempotency: true }) },
     body: true,
   },
   errors: [
@@ -10258,6 +10310,12 @@ export const associateSecurityProfiles: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /associate-security-profiles/{InstanceId}",
+    input: {
+      InstanceId: 0,
+      SecurityProfiles: D.list(i_SecurityProfileItem),
+      EntityType: 0,
+      EntityArn: 0,
+    },
     body: true,
   },
   errors: [
@@ -10295,6 +10353,7 @@ export const associateTrafficDistributionGroupUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /traffic-distribution-group/{TrafficDistributionGroupId}/user",
+    input: { TrafficDistributionGroupId: 0, UserId: 0, InstanceId: 0 },
     body: true,
   },
   errors: [
@@ -10329,6 +10388,11 @@ export const associateUserProficiencies: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /users/{InstanceId}/{UserId}/associate-proficiencies",
+    input: {
+      InstanceId: 0,
+      UserId: 0,
+      UserProficiencies: D.list(i_UserProficiency),
+    },
     body: true,
   },
   errors: [
@@ -10365,6 +10429,7 @@ export const associateWorkspace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{InstanceId}/{WorkspaceId}/associate",
+    input: { InstanceId: 0, WorkspaceId: 0, ResourceArns: 0 },
     body: true,
   },
   errors: [
@@ -10401,6 +10466,7 @@ export const batchAssociateAnalyticsDataSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /analytics-data/instance/{InstanceId}/associations",
+    input: { InstanceId: 0, DataSetIds: 0, TargetAccountId: 0 },
     body: true,
   },
   errors: [
@@ -10443,6 +10509,7 @@ export const batchCreateDataTableValue: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /data-tables/{InstanceId}/{DataTableId}/values/create",
+    input: { InstanceId: 0, DataTableId: 0, Values: D.list(i_DataTableValue) },
     body: true,
   },
   errors: [
@@ -10484,6 +10551,15 @@ export const batchDeleteDataTableValue: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /data-tables/{InstanceId}/{DataTableId}/values/delete",
+    input: {
+      InstanceId: 0,
+      DataTableId: 0,
+      Values: D.list({
+        PrimaryValues: D.list(i_PrimaryValue),
+        AttributeName: 0,
+        LockVersion: i_DataTableLockVersion,
+      }),
+    },
     body: true,
   },
   errors: [
@@ -10522,6 +10598,14 @@ export const batchDescribeDataTableValue: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /data-tables/{InstanceId}/{DataTableId}/values/describe",
+    input: {
+      InstanceId: 0,
+      DataTableId: 0,
+      Values: D.list({
+        PrimaryValues: D.list(i_PrimaryValue),
+        AttributeName: 0,
+      }),
+    },
     output: { Successful: D.list({ LastModifiedTime: D.ts }) },
     body: true,
   },
@@ -10558,6 +10642,7 @@ export const batchDisassociateAnalyticsDataSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /analytics-data/instance/{InstanceId}/associations",
+    input: { InstanceId: 0, DataSetIds: 0, TargetAccountId: 0 },
     body: true,
   },
   errors: [
@@ -10592,7 +10677,11 @@ export const batchGetAttachedFileMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /attached-files/{InstanceId}",
-    input: { AssociatedResourceArn: D.m({ query: "associatedResourceArn" }) },
+    input: {
+      FileIds: 0,
+      InstanceId: 0,
+      AssociatedResourceArn: D.m({ query: "associatedResourceArn" }),
+    },
     body: true,
   },
   errors: [
@@ -10627,6 +10716,7 @@ export const batchGetFlowAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /flow-associations-batch/{InstanceId}",
+    input: { InstanceId: 0, ResourceIds: 0, ResourceType: 0 },
     body: true,
   },
   errors: [
@@ -10668,7 +10758,19 @@ export const batchPutContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contact/batch/{InstanceId}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      InstanceId: 0,
+      ContactDataRequestList: D.list({
+        SystemEndpoint: i_Endpoint,
+        CustomerEndpoint: i_Endpoint,
+        RequestIdentifier: 0,
+        QueueId: 0,
+        Attributes: 0,
+        Campaign: { CampaignId: 0 },
+        OutboundStrategy: i_OutboundStrategy,
+      }),
+    },
     body: true,
   },
   errors: [
@@ -10707,6 +10809,7 @@ export const batchUpdateDataTableValue: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /data-tables/{InstanceId}/{DataTableId}/values/update",
+    input: { InstanceId: 0, DataTableId: 0, Values: D.list(i_DataTableValue) },
     body: true,
   },
   errors: [
@@ -10769,7 +10872,14 @@ export const claimPhoneNumber: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /phone-number/claim",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      TargetArn: 0,
+      InstanceId: 0,
+      PhoneNumber: 0,
+      PhoneNumberDescription: 0,
+      Tags: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -10805,7 +10915,11 @@ export const completeAttachedFileUpload: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /attached-files/{InstanceId}/{FileId}",
-    input: { AssociatedResourceArn: D.m({ query: "associatedResourceArn" }) },
+    input: {
+      InstanceId: 0,
+      FileId: 0,
+      AssociatedResourceArn: D.m({ query: "associatedResourceArn" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -10840,6 +10954,14 @@ export const createAgentStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /agent-status/{InstanceId}",
+    input: {
+      InstanceId: 0,
+      Name: 0,
+      Description: 0,
+      State: 0,
+      DisplayOrder: 0,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -10887,7 +11009,11 @@ export const createAttachedFile: API.OperationMethod<
     http: "PUT /attached-files/{InstanceId}/files",
     input: {
       ClientToken: D.m({ idempotency: true }),
+      InstanceId: 0,
+      FileUseCaseType: 0,
+      FileSourceUri: 0,
       AssociatedResourceArn: D.m({ query: "associatedResourceArn" }),
+      Tags: 0,
     },
     body: true,
   },
@@ -10925,6 +11051,17 @@ export const createAuthCode: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /auth/code/{InstanceId}",
+    input: {
+      InstanceId: 0,
+      Scope: {
+        SecurityProfileIds: 0,
+        EntityType: 0,
+        EntityId: 0,
+        DomainName: 0,
+      },
+      MaxSessionDurationMinutes: 0,
+      SessionInactivityDurationMinutes: 0,
+    },
     output: { AuthCode: D.secret },
     body: true,
   },
@@ -10979,7 +11116,22 @@ export const createContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contact/create-contact",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      ClientToken: D.m({ idempotency: true }),
+      RelatedContactId: 0,
+      Attributes: 0,
+      References: D.map(i_Reference),
+      Channel: 0,
+      InitiationMethod: 0,
+      ExpiryDurationInMinutes: 0,
+      UserInfo: i_UserInfo,
+      InitiateAs: 0,
+      Name: 0,
+      Description: 0,
+      SegmentAttributes: D.map(i_SegmentAttributeValue),
+      PreviousContactId: 0,
+    },
     body: true,
   },
   errors: [
@@ -11023,6 +11175,15 @@ export const createContactFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contact-flows/{InstanceId}",
+    input: {
+      InstanceId: 0,
+      Name: 0,
+      Type: 0,
+      Description: 0,
+      Content: 0,
+      Status: 0,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -11064,7 +11225,16 @@ export const createContactFlowModule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contact-flow-modules/{InstanceId}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      Name: 0,
+      Description: 0,
+      Content: 0,
+      Tags: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Settings: 0,
+      ExternalInvocationConfiguration: { Enabled: 0 },
+    },
     body: true,
   },
   errors: [
@@ -11106,6 +11276,13 @@ export const createContactFlowModuleAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contact-flow-modules/{InstanceId}/{ContactFlowModuleId}/alias",
+    input: {
+      InstanceId: 0,
+      Description: 0,
+      ContactFlowModuleId: 0,
+      ContactFlowModuleVersion: 0,
+      AliasName: 0,
+    },
     body: true,
   },
   errors: [
@@ -11145,6 +11322,12 @@ export const createContactFlowModuleVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contact-flow-modules/{InstanceId}/{ContactFlowModuleId}/version",
+    input: {
+      InstanceId: 0,
+      Description: 0,
+      ContactFlowModuleId: 0,
+      FlowModuleContentSha256: 0,
+    },
     body: true,
   },
   errors: [
@@ -11185,6 +11368,15 @@ export const createContactFlowVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contact-flows/{InstanceId}/{ContactFlowId}/version",
+    input: {
+      InstanceId: 0,
+      Description: 0,
+      ContactFlowId: 0,
+      FlowContentSha256: 0,
+      ContactFlowVersion: 0,
+      LastModifiedTime: 0,
+      LastModifiedRegion: 0,
+    },
     body: true,
   },
   errors: [
@@ -11226,6 +11418,15 @@ export const createDataTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /data-tables/{InstanceId}",
+    input: {
+      InstanceId: 0,
+      Name: 0,
+      Description: 0,
+      TimeZone: 0,
+      ValueLockLevel: 0,
+      Status: 0,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -11270,6 +11471,15 @@ export const createDataTableAttribute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /data-tables/{InstanceId}/{DataTableId}/attributes",
+    input: {
+      InstanceId: 0,
+      DataTableId: 0,
+      Name: 0,
+      ValueType: 0,
+      Description: 0,
+      Primary: 0,
+      Validation: i_Validation,
+    },
     body: true,
   },
   errors: [
@@ -11314,6 +11524,14 @@ export const createEmailAddress: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /email-addresses/{InstanceId}",
+    input: {
+      Description: 0,
+      InstanceId: 0,
+      EmailAddress: 0,
+      DisplayName: 0,
+      Tags: 0,
+      ClientToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -11355,7 +11573,20 @@ export const createEvaluationForm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /evaluation-forms/{InstanceId}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      Title: 0,
+      Description: 0,
+      Items: D.list(i_EvaluationFormItem),
+      ScoringStrategy: i_EvaluationFormScoringStrategy,
+      AutoEvaluationConfiguration: i_EvaluationFormAutoEvaluationConfiguration,
+      ClientToken: D.m({ idempotency: true }),
+      AsDraft: 0,
+      Tags: 0,
+      ReviewConfiguration: i_EvaluationReviewConfiguration,
+      TargetConfiguration: i_EvaluationFormTargetConfiguration,
+      LanguageConfiguration: i_EvaluationFormLanguageConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -11395,7 +11626,14 @@ export const createExtractionDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /extraction-definitions/{InstanceId}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      InstanceId: 0,
+      Name: 0,
+      ExtractionConfiguration: i_ExtractionConfiguration,
+      Display: i_ExtractionDefinitionDisplay,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -11434,6 +11672,15 @@ export const createHoursOfOperation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /hours-of-operations/{InstanceId}",
+    input: {
+      InstanceId: 0,
+      Name: 0,
+      Description: 0,
+      TimeZone: 0,
+      Config: D.list(i_HoursOfOperationConfig),
+      ParentHoursOfOperationConfigs: D.list(i_ParentHoursOfOperationConfig),
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -11472,6 +11719,17 @@ export const createHoursOfOperationOverride: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /hours-of-operations/{InstanceId}/{HoursOfOperationId}/overrides",
+    input: {
+      InstanceId: 0,
+      HoursOfOperationId: 0,
+      Name: 0,
+      Description: 0,
+      Config: D.list(i_HoursOfOperationOverrideConfig),
+      EffectiveFrom: 0,
+      EffectiveTill: 0,
+      RecurrenceConfig: i_RecurrenceConfig,
+      OverrideType: 0,
+    },
     body: true,
   },
   errors: [
@@ -11518,7 +11776,15 @@ export const createInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /instance",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      IdentityManagementType: 0,
+      InstanceAlias: 0,
+      DirectoryId: 0,
+      InboundCallsEnabled: 0,
+      OutboundCallsEnabled: 0,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -11552,6 +11818,15 @@ export const createIntegrationAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /instance/{InstanceId}/integration-associations",
+    input: {
+      InstanceId: 0,
+      IntegrationType: 0,
+      IntegrationArn: 0,
+      SourceApplicationUrl: 0,
+      SourceApplicationName: 0,
+      SourceType: 0,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -11589,7 +11864,17 @@ export const createMetric: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /metrics/definitions/{InstanceId}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      Name: 0,
+      MetricCalculation: i_MetricCalculation,
+      Unit: 0,
+      Status: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Description: 0,
+      PositiveTrendIndicator: 0,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -11628,7 +11913,16 @@ export const createNotification: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /notifications/{InstanceId}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      ExpiresAt: 0,
+      Recipients: 0,
+      Priority: 0,
+      Content: 0,
+      Tags: 0,
+      PredefinedNotificationId: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -11667,7 +11961,16 @@ export const createParticipant: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact/create-participant",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      ContactId: 0,
+      ClientToken: D.m({ idempotency: true }),
+      ParticipantDetails: {
+        ParticipantRole: 0,
+        DisplayName: 0,
+        ParticipantCapabilities: i_ParticipantCapabilities,
+      },
+    },
     body: true,
   },
   errors: [
@@ -11705,6 +12008,13 @@ export const createPersistentContactAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact/persistent-contact-association/{InstanceId}/{InitialContactId}",
+    input: {
+      InstanceId: 0,
+      InitialContactId: 0,
+      RehydrationType: 0,
+      SourceContactId: 0,
+      ClientToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -11759,6 +12069,13 @@ export const createPredefinedAttribute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /predefined-attributes/{InstanceId}",
+    input: {
+      InstanceId: 0,
+      Name: 0,
+      Values: i_PredefinedAttributeValues,
+      Purposes: 0,
+      AttributeConfiguration: i_InputPredefinedAttributeConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -11794,7 +12111,12 @@ export const createPrompt: API.OperationMethod<
   CreatePromptError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /prompts/{InstanceId}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /prompts/{InstanceId}",
+    input: { InstanceId: 0, Name: 0, Description: 0, S3Uri: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     DuplicateResourceException,
     InternalServiceException,
@@ -11829,7 +12151,18 @@ export const createPushNotificationRegistration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /push-notification/{InstanceId}/registrations",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      ClientToken: D.m({ idempotency: true }),
+      PinpointAppArn: 0,
+      DeviceToken: 0,
+      DeviceType: 0,
+      ContactConfiguration: {
+        ContactId: 0,
+        ParticipantRole: 0,
+        IncludeRawMessage: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -11877,7 +12210,23 @@ export const createQueue: API.OperationMethod<
   CreateQueueError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /queues/{InstanceId}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /queues/{InstanceId}",
+    input: {
+      InstanceId: 0,
+      Name: 0,
+      Description: 0,
+      OutboundCallerConfig: i_OutboundCallerConfig,
+      OutboundEmailConfig: i_OutboundEmailConfig,
+      HoursOfOperationId: 0,
+      MaxContacts: 0,
+      QuickConnectIds: 0,
+      EmailAddressesConfig: D.list(i_EmailAddressConfig),
+      Tags: 0,
+    },
+    body: true,
+  },
   errors: [
     DuplicateResourceException,
     InternalServiceException,
@@ -11913,6 +12262,13 @@ export const createQuickConnect: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /quick-connects/{InstanceId}",
+    input: {
+      InstanceId: 0,
+      Name: 0,
+      Description: 0,
+      QuickConnectConfig: i_QuickConnectConfig,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -11950,6 +12306,19 @@ export const createRoutingProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /routing-profiles/{InstanceId}",
+    input: {
+      InstanceId: 0,
+      Name: 0,
+      Description: 0,
+      DefaultOutboundQueueId: 0,
+      QueueConfigs: D.list(i_RoutingProfileQueueConfig),
+      ManualAssignmentQueueConfigs: D.list(
+        i_RoutingProfileManualAssignmentQueueConfig,
+      ),
+      MediaConcurrencies: D.list(i_MediaConcurrency),
+      Tags: 0,
+      AgentAvailabilityTimer: 0,
+    },
     body: true,
   },
   errors: [
@@ -11990,7 +12359,15 @@ export const createRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /rules/{InstanceId}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      Name: 0,
+      TriggerEventSource: { EventSourceName: 0, IntegrationAssociationId: 0 },
+      Function: 0,
+      Actions: D.list(i_RuleAction),
+      PublishStatus: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -12032,6 +12409,20 @@ export const createSecurityProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /security-profiles/{InstanceId}",
+    input: {
+      SecurityProfileName: 0,
+      Description: 0,
+      Permissions: 0,
+      InstanceId: 0,
+      Tags: 0,
+      AllowedAccessControlTags: 0,
+      TagRestrictedResources: 0,
+      Applications: D.list(i_Application),
+      HierarchyRestrictedResources: 0,
+      AllowedAccessControlHierarchyGroupId: 0,
+      AllowedFlowModules: D.list(i_FlowModule),
+      GranularAccessControlConfiguration: i_GranularAccessControlConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -12068,7 +12459,18 @@ export const createTaskTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /instance/{InstanceId}/task/template",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      Name: 0,
+      Description: 0,
+      ContactFlowId: 0,
+      SelfAssignFlowId: 0,
+      Constraints: i_TaskTemplateConstraints,
+      Defaults: i_TaskTemplateDefaults,
+      Status: 0,
+      Fields: D.list(i_TaskTemplateField),
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -12110,7 +12512,15 @@ export const createTestCase: API.OperationMethod<
     service: svc,
     http: "PUT /test-cases/{InstanceId}",
     input: {
+      InstanceId: 0,
+      Name: 0,
+      Description: 0,
+      Content: 0,
+      EntryPoint: i_TestCaseEntryPoint,
+      InitializationData: 0,
+      Status: 0,
       TestCaseId: D.m({ header: "x-amz-resource-id" }),
+      Tags: 0,
       LastModifiedTime: D.m({ header: "x-amz-last-modified-time" }),
       LastModifiedRegion: D.m({ header: "x-amz-last-modified-region" }),
     },
@@ -12166,7 +12576,13 @@ export const createTrafficDistributionGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /traffic-distribution-group",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Description: 0,
+      InstanceId: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -12203,6 +12619,12 @@ export const createUseCase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /instance/{InstanceId}/integration-associations/{IntegrationAssociationId}/use-cases",
+    input: {
+      InstanceId: 0,
+      IntegrationAssociationId: 0,
+      UseCaseType: 0,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -12254,7 +12676,28 @@ export const createUser: API.OperationMethod<
   CreateUserError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /users/{InstanceId}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /users/{InstanceId}",
+    input: {
+      Username: 0,
+      Password: 0,
+      IdentityInfo: i_UserIdentityInfo,
+      PhoneConfig: i_UserPhoneConfig,
+      DirectoryUserId: 0,
+      SecurityProfileIds: 0,
+      RoutingProfileId: 0,
+      HierarchyGroupId: 0,
+      InstanceId: 0,
+      AutoAcceptConfigs: D.list(i_AutoAcceptConfig),
+      AfterContactWorkConfigs: D.list(i_AfterContactWorkConfigPerChannel),
+      PhoneNumberConfigs: D.list(i_PhoneNumberConfig),
+      PersistentConnectionConfigs: D.list(i_PersistentConnectionConfig),
+      VoiceEnhancementConfigs: D.list(i_VoiceEnhancementConfig),
+      Tags: 0,
+    },
+    body: true,
+  },
   errors: [
     DuplicateResourceException,
     InternalServiceException,
@@ -12290,6 +12733,7 @@ export const createUserHierarchyGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /user-hierarchy-groups/{InstanceId}",
+    input: { Name: 0, ParentGroupId: 0, InstanceId: 0, Tags: 0 },
     body: true,
   },
   errors: [
@@ -12336,6 +12780,15 @@ export const createView: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /views/{InstanceId}",
+    input: {
+      InstanceId: 0,
+      ClientToken: 0,
+      Status: 0,
+      Content: i_ViewInputContent,
+      Description: 0,
+      Name: 0,
+      Tags: 0,
+    },
     output: { View: o_View },
     body: true,
   },
@@ -12382,6 +12835,12 @@ export const createViewVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /views/{InstanceId}/{ViewId}/versions",
+    input: {
+      InstanceId: 0,
+      ViewId: 0,
+      VersionDescription: 0,
+      ViewContentSha256: 0,
+    },
     output: { View: o_View },
     body: true,
   },
@@ -12423,7 +12882,14 @@ export const createVocabulary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /vocabulary/{InstanceId}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      InstanceId: 0,
+      VocabularyName: 0,
+      LanguageCode: 0,
+      Content: 0,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -12464,6 +12930,14 @@ export const createWorkspace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workspaces/{InstanceId}",
+    input: {
+      InstanceId: 0,
+      Name: 0,
+      Description: 0,
+      Theme: i_WorkspaceTheme,
+      Title: 0,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -12506,6 +12980,14 @@ export const createWorkspacePage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workspaces/{InstanceId}/{WorkspaceId}/pages",
+    input: {
+      InstanceId: 0,
+      WorkspaceId: 0,
+      ResourceArn: 0,
+      Page: 0,
+      Slug: 0,
+      InputData: 0,
+    },
     body: true,
   },
   errors: [
@@ -12545,6 +13027,7 @@ export const deactivateEvaluationForm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /evaluation-forms/{InstanceId}/{EvaluationFormId}/deactivate",
+    input: { InstanceId: 0, EvaluationFormId: 0, EvaluationFormVersion: 0 },
     body: true,
   },
   errors: [
@@ -12581,7 +13064,11 @@ export const deleteAttachedFile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /attached-files/{InstanceId}/{FileId}",
-    input: { AssociatedResourceArn: D.m({ query: "associatedResourceArn" }) },
+    input: {
+      InstanceId: 0,
+      FileId: 0,
+      AssociatedResourceArn: D.m({ query: "associatedResourceArn" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -12624,6 +13111,7 @@ export const deleteContactData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact/delete/{InstanceId}/{ContactId}",
+    input: { InstanceId: 0, ContactId: 0, ContactFields: 0 },
     body: true,
   },
   errors: [
@@ -12658,6 +13146,7 @@ export const deleteContactEvaluation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /contact-evaluations/{InstanceId}/{EvaluationId}",
+    input: { InstanceId: 0, EvaluationId: 0 },
   },
   errors: [
     InternalServiceException,
@@ -12691,6 +13180,7 @@ export const deleteContactFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /contact-flows/{InstanceId}/{ContactFlowId}",
+    input: { InstanceId: 0, ContactFlowId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -12725,6 +13215,7 @@ export const deleteContactFlowModule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /contact-flow-modules/{InstanceId}/{ContactFlowModuleId}",
+    input: { InstanceId: 0, ContactFlowModuleId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -12760,6 +13251,7 @@ export const deleteContactFlowModuleAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /contact-flow-modules/{InstanceId}/{ContactFlowModuleId}/alias/{AliasId}",
+    input: { InstanceId: 0, ContactFlowModuleId: 0, AliasId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -12794,6 +13286,11 @@ export const deleteContactFlowModuleVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /contact-flow-modules/{InstanceId}/{ContactFlowModuleId}/version/{ContactFlowModuleVersion}",
+    input: {
+      InstanceId: 0,
+      ContactFlowModuleId: 0,
+      ContactFlowModuleVersion: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -12828,6 +13325,7 @@ export const deleteContactFlowVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /contact-flows/{InstanceId}/{ContactFlowId}/version/{ContactFlowVersion}",
+    input: { InstanceId: 0, ContactFlowId: 0, ContactFlowVersion: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -12867,6 +13365,7 @@ export const deleteDataTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /data-tables/{InstanceId}/{DataTableId}",
+    input: { InstanceId: 0, DataTableId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -12903,6 +13402,7 @@ export const deleteDataTableAttribute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /data-tables/{InstanceId}/{DataTableId}/attributes/{AttributeName}",
+    input: { InstanceId: 0, DataTableId: 0, AttributeName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -12939,6 +13439,7 @@ export const deleteEmailAddress: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /email-addresses/{InstanceId}/{EmailAddressId}",
+    input: { InstanceId: 0, EmailAddressId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -12977,7 +13478,11 @@ export const deleteEvaluationForm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /evaluation-forms/{InstanceId}/{EvaluationFormId}",
-    input: { EvaluationFormVersion: D.m({ query: "version" }) },
+    input: {
+      InstanceId: 0,
+      EvaluationFormId: 0,
+      EvaluationFormVersion: D.m({ query: "version" }),
+    },
   },
   errors: [
     InternalServiceException,
@@ -13010,6 +13515,7 @@ export const deleteExtractionDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /extraction-definitions/{InstanceId}/{ExtractionDefinitionId}",
+    input: { InstanceId: 0, ExtractionDefinitionId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -13042,6 +13548,7 @@ export const deleteHoursOfOperation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /hours-of-operations/{InstanceId}/{HoursOfOperationId}",
+    input: { InstanceId: 0, HoursOfOperationId: 0 },
   },
   errors: [
     InternalServiceException,
@@ -13074,6 +13581,11 @@ export const deleteHoursOfOperationOverride: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /hours-of-operations/{InstanceId}/{HoursOfOperationId}/overrides/{HoursOfOperationOverrideId}",
+    input: {
+      InstanceId: 0,
+      HoursOfOperationId: 0,
+      HoursOfOperationOverrideId: 0,
+    },
   },
   errors: [
     InternalServiceException,
@@ -13111,7 +13623,10 @@ export const deleteInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /instance/{InstanceId}",
-    input: { ClientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      ClientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     InternalServiceException,
@@ -13142,6 +13657,7 @@ export const deleteIntegrationAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /instance/{InstanceId}/integration-associations/{IntegrationAssociationId}",
+    input: { InstanceId: 0, IntegrationAssociationId: 0 },
   },
   errors: [
     InternalServiceException,
@@ -13175,6 +13691,7 @@ export const deleteMetric: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /metrics/definitions/{InstanceId}/{MetricId}",
+    input: { InstanceId: 0, MetricId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -13210,6 +13727,7 @@ export const deleteNotification: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /notifications/{InstanceId}/{NotificationId}",
+    input: { InstanceId: 0, NotificationId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -13244,6 +13762,7 @@ export const deletePredefinedAttribute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /predefined-attributes/{InstanceId}/{Name}",
+    input: { InstanceId: 0, Name: 0 },
   },
   errors: [
     InternalServiceException,
@@ -13274,7 +13793,11 @@ export const deletePrompt: API.OperationMethod<
   DeletePromptError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /prompts/{InstanceId}/{PromptId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /prompts/{InstanceId}/{PromptId}",
+    input: { InstanceId: 0, PromptId: 0 },
+  },
   errors: [
     InternalServiceException,
     InvalidParameterException,
@@ -13306,7 +13829,11 @@ export const deletePushNotificationRegistration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /push-notification/{InstanceId}/registrations/{RegistrationId}",
-    input: { ContactId: D.m({ query: "contactId" }) },
+    input: {
+      InstanceId: 0,
+      RegistrationId: 0,
+      ContactId: D.m({ query: "contactId" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -13337,7 +13864,11 @@ export const deleteQueue: API.OperationMethod<
   DeleteQueueError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /queues/{InstanceId}/{QueueId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /queues/{InstanceId}/{QueueId}",
+    input: { InstanceId: 0, QueueId: 0 },
+  },
   errors: [
     InternalServiceException,
     InvalidParameterException,
@@ -13380,6 +13911,7 @@ export const deleteQuickConnect: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /quick-connects/{InstanceId}/{QuickConnectId}",
+    input: { InstanceId: 0, QuickConnectId: 0 },
   },
   errors: [
     InternalServiceException,
@@ -13413,6 +13945,7 @@ export const deleteRoutingProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /routing-profiles/{InstanceId}/{RoutingProfileId}",
+    input: { InstanceId: 0, RoutingProfileId: 0 },
   },
   errors: [
     InternalServiceException,
@@ -13443,7 +13976,11 @@ export const deleteRule: API.OperationMethod<
   DeleteRuleError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /rules/{InstanceId}/{RuleId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /rules/{InstanceId}/{RuleId}",
+    input: { InstanceId: 0, RuleId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -13477,6 +14014,7 @@ export const deleteSecurityProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /security-profiles/{InstanceId}/{SecurityProfileId}",
+    input: { InstanceId: 0, SecurityProfileId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -13512,6 +14050,7 @@ export const deleteSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /auth/sessions/{InstanceId}/{SessionId}",
+    input: { InstanceId: 0, SessionId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -13545,6 +14084,7 @@ export const deleteTaskTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /instance/{InstanceId}/task/template/{TaskTemplateId}",
+    input: { InstanceId: 0, TaskTemplateId: 0 },
   },
   errors: [
     InternalServiceException,
@@ -13578,6 +14118,7 @@ export const deleteTestCase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /test-cases/{InstanceId}/{TestCaseId}",
+    input: { InstanceId: 0, TestCaseId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -13614,6 +14155,7 @@ export const deleteTrafficDistributionGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /traffic-distribution-group/{TrafficDistributionGroupId}",
+    input: { TrafficDistributionGroupId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -13645,6 +14187,7 @@ export const deleteUseCase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /instance/{InstanceId}/integration-associations/{IntegrationAssociationId}/use-cases/{UseCaseId}",
+    input: { InstanceId: 0, IntegrationAssociationId: 0, UseCaseId: 0 },
   },
   errors: [
     InternalServiceException,
@@ -13686,7 +14229,11 @@ export const deleteUser: API.OperationMethod<
   DeleteUserError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /users/{InstanceId}/{UserId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /users/{InstanceId}/{UserId}",
+    input: { InstanceId: 0, UserId: 0 },
+  },
   errors: [
     InternalServiceException,
     InvalidParameterException,
@@ -13720,6 +14267,7 @@ export const deleteUserHierarchyGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /user-hierarchy-groups/{InstanceId}/{HierarchyGroupId}",
+    input: { HierarchyGroupId: 0, InstanceId: 0 },
   },
   errors: [
     InternalServiceException,
@@ -13752,7 +14300,11 @@ export const deleteView: API.OperationMethod<
   DeleteViewError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /views/{InstanceId}/{ViewId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /views/{InstanceId}/{ViewId}",
+    input: { InstanceId: 0, ViewId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -13788,6 +14340,7 @@ export const deleteViewVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /views/{InstanceId}/{ViewId}/versions/{ViewVersion}",
+    input: { InstanceId: 0, ViewId: 0, ViewVersion: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -13823,6 +14376,7 @@ export const deleteVocabulary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /vocabulary-remove/{InstanceId}/{VocabularyId}",
+    input: { InstanceId: 0, VocabularyId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -13857,6 +14411,7 @@ export const deleteWorkspace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{InstanceId}/{WorkspaceId}",
+    input: { InstanceId: 0, WorkspaceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -13890,7 +14445,11 @@ export const deleteWorkspaceMedia: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{InstanceId}/{WorkspaceId}/media",
-    input: { MediaType: D.m({ query: "mediaType" }) },
+    input: {
+      InstanceId: 0,
+      WorkspaceId: 0,
+      MediaType: D.m({ query: "mediaType" }),
+    },
   },
   errors: [
     InternalServiceException,
@@ -13926,6 +14485,7 @@ export const deleteWorkspacePage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{InstanceId}/{WorkspaceId}/pages/{Page}",
+    input: { InstanceId: 0, WorkspaceId: 0, Page: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -13960,6 +14520,7 @@ export const describeAgentStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /agent-status/{InstanceId}/{AgentStatusId}",
+    input: { InstanceId: 0, AgentStatusId: 0 },
     output: { AgentStatus: o_AgentStatus },
   },
   errors: [
@@ -13995,6 +14556,7 @@ export const describeAttachedFilesConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /attached-files-configurations/{InstanceId}/{AttachmentScope}",
+    input: { InstanceId: 0, AttachmentScope: 0 },
     output: { AttachedFilesConfiguration: { LastModifiedTime: D.ts } },
   },
   errors: [
@@ -14031,6 +14593,7 @@ export const describeAuthenticationProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /authentication-profiles/{InstanceId}/{AuthenticationProfileId}",
+    input: { AuthenticationProfileId: 0, InstanceId: 0 },
     output: {
       AuthenticationProfile: { CreatedTime: D.ts, LastModifiedTime: D.ts },
     },
@@ -14093,6 +14656,7 @@ export const describeContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /contacts/{InstanceId}/{ContactId}",
+    input: { InstanceId: 0, ContactId: 0 },
     output: {
       Contact: {
         Name: D.secret,
@@ -14171,6 +14735,7 @@ export const describeContactEvaluation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /contact-evaluations/{InstanceId}/{EvaluationId}",
+    input: { InstanceId: 0, EvaluationId: 0 },
     output: {
       Evaluation: {
         Metadata: {
@@ -14231,6 +14796,7 @@ export const describeContactFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /contact-flows/{InstanceId}/{ContactFlowId}",
+    input: { InstanceId: 0, ContactFlowId: 0 },
     output: { ContactFlow: o_ContactFlow },
   },
   errors: [
@@ -14270,6 +14836,7 @@ export const describeContactFlowModule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /contact-flow-modules/{InstanceId}/{ContactFlowModuleId}",
+    input: { InstanceId: 0, ContactFlowModuleId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -14305,6 +14872,7 @@ export const describeContactFlowModuleAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /contact-flow-modules/{InstanceId}/{ContactFlowModuleId}/alias/{AliasId}",
+    input: { InstanceId: 0, ContactFlowModuleId: 0, AliasId: 0 },
     output: { ContactFlowModuleAlias: { LastModifiedTime: D.ts } },
   },
   errors: [
@@ -14342,6 +14910,7 @@ export const describeDataTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /data-tables/{InstanceId}/{DataTableId}",
+    input: { InstanceId: 0, DataTableId: 0 },
     output: { DataTable: o_DataTable },
   },
   errors: [
@@ -14378,6 +14947,7 @@ export const describeDataTableAttribute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /data-tables/{InstanceId}/{DataTableId}/attributes/{AttributeName}",
+    input: { InstanceId: 0, DataTableId: 0, AttributeName: 0 },
     output: { Attribute: o_DataTableAttribute },
   },
   errors: [
@@ -14413,6 +14983,7 @@ export const describeEmailAddress: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /email-addresses/{InstanceId}/{EmailAddressId}",
+    input: { InstanceId: 0, EmailAddressId: 0 },
     output: {
       EmailAddress: D.secret,
       DisplayName: D.secret,
@@ -14451,7 +15022,11 @@ export const describeEvaluationForm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /evaluation-forms/{InstanceId}/{EvaluationFormId}",
-    input: { EvaluationFormVersion: D.m({ query: "version" }) },
+    input: {
+      InstanceId: 0,
+      EvaluationFormId: 0,
+      EvaluationFormVersion: D.m({ query: "version" }),
+    },
     output: {
       EvaluationForm: {
         CreatedTime: D.ts,
@@ -14490,6 +15065,7 @@ export const describeExtractionDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /extraction-definitions/{InstanceId}/{ExtractionDefinitionId}",
+    input: { InstanceId: 0, ExtractionDefinitionId: 0 },
     output: {
       ExtractionDefinition: { CreatedTime: D.ts, LastUpdatedTime: D.ts },
     },
@@ -14525,6 +15101,7 @@ export const describeHoursOfOperation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /hours-of-operations/{InstanceId}/{HoursOfOperationId}",
+    input: { InstanceId: 0, HoursOfOperationId: 0 },
     output: { HoursOfOperation: o_HoursOfOperation },
   },
   errors: [
@@ -14558,6 +15135,11 @@ export const describeHoursOfOperationOverride: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /hours-of-operations/{InstanceId}/{HoursOfOperationId}/overrides/{HoursOfOperationOverrideId}",
+    input: {
+      InstanceId: 0,
+      HoursOfOperationId: 0,
+      HoursOfOperationOverrideId: 0,
+    },
   },
   errors: [
     InternalServiceException,
@@ -14594,6 +15176,7 @@ export const describeInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /instance/{InstanceId}",
+    input: { InstanceId: 0 },
     output: { Instance: { InstanceAlias: D.secret, CreatedTime: D.ts } },
   },
   errors: [
@@ -14627,6 +15210,7 @@ export const describeInstanceAttribute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /instance/{InstanceId}/attribute/{AttributeType}",
+    input: { InstanceId: 0, AttributeType: 0 },
   },
   errors: [
     InternalServiceException,
@@ -14662,7 +15246,11 @@ export const describeInstanceStorageConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /instance/{InstanceId}/storage-config/{AssociationId}",
-    input: { ResourceType: D.m({ query: "resourceType" }) },
+    input: {
+      InstanceId: 0,
+      AssociationId: 0,
+      ResourceType: D.m({ query: "resourceType" }),
+    },
   },
   errors: [
     InternalServiceException,
@@ -14696,6 +15284,7 @@ export const describeMetric: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /metrics/definitions/{InstanceId}/{MetricId}",
+    input: { InstanceId: 0, MetricId: 0 },
     output: { Metric: o_MetricDefinition },
   },
   errors: [
@@ -14731,6 +15320,7 @@ export const describeNotification: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /notifications/{InstanceId}/{NotificationId}",
+    input: { InstanceId: 0, NotificationId: 0 },
     output: { Notification: o_Notification },
   },
   errors: [
@@ -14768,7 +15358,11 @@ export const describePhoneNumber: API.OperationMethod<
   DescribePhoneNumberError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /phone-number/{PhoneNumberId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /phone-number/{PhoneNumberId}",
+    input: { PhoneNumberId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -14813,6 +15407,7 @@ export const describePredefinedAttribute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /predefined-attributes/{InstanceId}/{Name}",
+    input: { InstanceId: 0, Name: 0 },
     output: { PredefinedAttribute: o_PredefinedAttribute },
   },
   errors: [
@@ -14846,6 +15441,7 @@ export const describePrompt: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prompts/{InstanceId}/{PromptId}",
+    input: { InstanceId: 0, PromptId: 0 },
     output: { Prompt: o_Prompt },
   },
   errors: [
@@ -14879,6 +15475,7 @@ export const describeQueue: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /queues/{InstanceId}/{QueueId}",
+    input: { InstanceId: 0, QueueId: 0 },
     output: { Queue: o_Queue },
   },
   errors: [
@@ -14912,6 +15509,7 @@ export const describeQuickConnect: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /quick-connects/{InstanceId}/{QuickConnectId}",
+    input: { InstanceId: 0, QuickConnectId: 0 },
     output: { QuickConnect: o_QuickConnect },
   },
   errors: [
@@ -14949,6 +15547,7 @@ export const describeRoutingProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /routing-profiles/{InstanceId}/{RoutingProfileId}",
+    input: { InstanceId: 0, RoutingProfileId: 0 },
     output: { RoutingProfile: o_RoutingProfile },
   },
   errors: [
@@ -14982,6 +15581,7 @@ export const describeRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /rules/{InstanceId}/{RuleId}",
+    input: { InstanceId: 0, RuleId: 0 },
     output: { Rule: { CreatedTime: D.ts, LastUpdatedTime: D.ts } },
   },
   errors: [
@@ -15019,6 +15619,7 @@ export const describeSecurityProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /security-profiles/{InstanceId}/{SecurityProfileId}",
+    input: { SecurityProfileId: 0, InstanceId: 0 },
     output: { SecurityProfile: { LastModifiedTime: D.ts } },
   },
   errors: [
@@ -15053,7 +15654,7 @@ export const describeTestCase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /test-cases/{InstanceId}/{TestCaseId}",
-    input: { Status: D.m({ query: "status" }) },
+    input: { InstanceId: 0, TestCaseId: 0, Status: D.m({ query: "status" }) },
     output: { TestCase: o_TestCase },
   },
   errors: [
@@ -15088,6 +15689,7 @@ export const describeTrafficDistributionGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /traffic-distribution-group/{TrafficDistributionGroupId}",
+    input: { TrafficDistributionGroupId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -15122,6 +15724,7 @@ export const describeUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /users/{InstanceId}/{UserId}",
+    input: { UserId: 0, InstanceId: 0 },
     output: {
       User: {
         IdentityInfo: {
@@ -15167,6 +15770,7 @@ export const describeUserHierarchyGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /user-hierarchy-groups/{InstanceId}/{HierarchyGroupId}",
+    input: { HierarchyGroupId: 0, InstanceId: 0 },
     output: { HierarchyGroup: o_HierarchyGroup },
   },
   errors: [
@@ -15200,6 +15804,7 @@ export const describeUserHierarchyStructure: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /user-hierarchy-structure/{InstanceId}",
+    input: { InstanceId: 0 },
     output: {
       HierarchyStructure: {
         LevelOne: o_HierarchyLevel,
@@ -15251,6 +15856,7 @@ export const describeView: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /views/{InstanceId}/{ViewId}",
+    input: { InstanceId: 0, ViewId: 0 },
     output: { View: o_View },
   },
   errors: [
@@ -15285,6 +15891,7 @@ export const describeVocabulary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /vocabulary/{InstanceId}/{VocabularyId}",
+    input: { InstanceId: 0, VocabularyId: 0 },
     output: { Vocabulary: { LastModifiedTime: D.ts } },
   },
   errors: [
@@ -15319,6 +15926,7 @@ export const describeWorkspace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{InstanceId}/{WorkspaceId}",
+    input: { InstanceId: 0, WorkspaceId: 0 },
     output: { Workspace: { LastModifiedTime: D.ts } },
   },
   errors: [
@@ -15353,6 +15961,7 @@ export const disassociateAnalyticsDataSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /analytics-data/instance/{InstanceId}/association",
+    input: { InstanceId: 0, DataSetId: 0, TargetAccountId: 0 },
     body: true,
   },
   errors: [
@@ -15389,6 +15998,7 @@ export const disassociateApprovedOrigin: API.OperationMethod<
     service: svc,
     http: "DELETE /instance/{InstanceId}/approved-origin",
     input: {
+      InstanceId: 0,
       Origin: D.m({ query: "origin" }),
       ClientToken: D.m({ query: "clientToken", idempotency: true }),
     },
@@ -15425,7 +16035,12 @@ export const disassociateBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /instance/{InstanceId}/bot",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      LexBot: i_LexBot,
+      LexV2Bot: i_LexV2Bot,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -15513,7 +16128,12 @@ export const disassociateEmailAddressAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /email-addresses/{InstanceId}/{EmailAddressId}/disassociate-alias",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      EmailAddressId: 0,
+      InstanceId: 0,
+      AliasConfiguration: i_AliasConfiguration,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -15550,6 +16170,7 @@ export const disassociateFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /flow-associations/{InstanceId}/{ResourceId}/{ResourceType}",
+    input: { InstanceId: 0, ResourceId: 0, ResourceType: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -15584,6 +16205,11 @@ export const disassociateHoursOfOperations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /hours-of-operations/{InstanceId}/{HoursOfOperationId}/disassociate-hours",
+    input: {
+      InstanceId: 0,
+      HoursOfOperationId: 0,
+      ParentHoursOfOperationIds: 0,
+    },
     body: true,
   },
   errors: [
@@ -15621,6 +16247,8 @@ export const disassociateInstanceStorageConfig: API.OperationMethod<
     service: svc,
     http: "DELETE /instance/{InstanceId}/storage-config/{AssociationId}",
     input: {
+      InstanceId: 0,
+      AssociationId: 0,
       ResourceType: D.m({ query: "resourceType" }),
       ClientToken: D.m({ query: "clientToken", idempotency: true }),
     },
@@ -15659,6 +16287,7 @@ export const disassociateLambdaFunction: API.OperationMethod<
     service: svc,
     http: "DELETE /instance/{InstanceId}/lambda-function",
     input: {
+      InstanceId: 0,
       FunctionArn: D.m({ query: "functionArn" }),
       ClientToken: D.m({ query: "clientToken", idempotency: true }),
     },
@@ -15697,6 +16326,7 @@ export const disassociateLexBot: API.OperationMethod<
     service: svc,
     http: "DELETE /instance/{InstanceId}/lex-bot",
     input: {
+      InstanceId: 0,
       BotName: D.m({ query: "botName" }),
       LexRegion: D.m({ query: "lexRegion" }),
       ClientToken: D.m({ query: "clientToken", idempotency: true }),
@@ -15739,7 +16369,7 @@ export const disassociatePhoneNumberContactFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /phone-number/{PhoneNumberId}/contact-flow",
-    input: { InstanceId: D.m({ query: "instanceId" }) },
+    input: { PhoneNumberId: 0, InstanceId: D.m({ query: "instanceId" }) },
   },
   errors: [
     AccessDeniedException,
@@ -15781,7 +16411,12 @@ export const disassociateQueueEmailAddresses: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /queues/{InstanceId}/{QueueId}/disassociate-email-addresses",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      QueueId: 0,
+      EmailAddressesId: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -15816,6 +16451,7 @@ export const disassociateQueueQuickConnects: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /queues/{InstanceId}/{QueueId}/disassociate-quick-connects",
+    input: { InstanceId: 0, QueueId: 0, QuickConnectIds: 0 },
     body: true,
   },
   errors: [
@@ -15852,6 +16488,12 @@ export const disassociateRoutingProfileQueues: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /routing-profiles/{InstanceId}/{RoutingProfileId}/disassociate-queues",
+    input: {
+      InstanceId: 0,
+      RoutingProfileId: 0,
+      QueueReferences: D.list(i_RoutingProfileQueueReference),
+      ManualAssignmentQueueReferences: D.list(i_RoutingProfileQueueReference),
+    },
     body: true,
   },
   errors: [
@@ -15887,7 +16529,11 @@ export const disassociateSecurityKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /instance/{InstanceId}/security-key/{AssociationId}",
-    input: { ClientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      AssociationId: 0,
+      ClientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     InternalServiceException,
@@ -15922,6 +16568,12 @@ export const disassociateSecurityProfiles: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /disassociate-security-profiles/{InstanceId}",
+    input: {
+      InstanceId: 0,
+      SecurityProfiles: D.list(i_SecurityProfileItem),
+      EntityType: 0,
+      EntityArn: 0,
+    },
     body: true,
   },
   errors: [
@@ -15960,6 +16612,7 @@ export const disassociateTrafficDistributionGroupUser: API.OperationMethod<
     service: svc,
     http: "DELETE /traffic-distribution-group/{TrafficDistributionGroupId}/user",
     input: {
+      TrafficDistributionGroupId: 0,
       UserId: D.m({ query: "UserId" }),
       InstanceId: D.m({ query: "InstanceId" }),
     },
@@ -15996,6 +16649,11 @@ export const disassociateUserProficiencies: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /users/{InstanceId}/{UserId}/disassociate-proficiencies",
+    input: {
+      InstanceId: 0,
+      UserId: 0,
+      UserProficiencies: D.list({ AttributeName: 0, AttributeValue: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -16030,6 +16688,7 @@ export const disassociateWorkspace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{InstanceId}/{WorkspaceId}/disassociate",
+    input: { InstanceId: 0, WorkspaceId: 0, ResourceArns: 0 },
     body: true,
   },
   errors: [
@@ -16067,6 +16726,7 @@ export const dismissUserContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /users/{InstanceId}/{UserId}/contact",
+    input: { UserId: 0, InstanceId: 0, ContactId: 0 },
     body: true,
   },
   errors: [
@@ -16108,6 +16768,13 @@ export const evaluateDataTableValues: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /data-tables/{InstanceId}/{DataTableId}/values/evaluate",
     input: {
+      InstanceId: 0,
+      DataTableId: 0,
+      Values: D.list({
+        PrimaryValues: D.list(i_PrimaryValue),
+        AttributeNames: 0,
+      }),
+      TimeZone: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -16152,6 +16819,8 @@ export const getAttachedFile: API.OperationMethod<
     service: svc,
     http: "GET /attached-files/{InstanceId}/{FileId}",
     input: {
+      InstanceId: 0,
+      FileId: 0,
       UrlExpiryInSeconds: D.m({ query: "urlExpiryInSeconds" }),
       AssociatedResourceArn: D.m({ query: "associatedResourceArn" }),
     },
@@ -16185,6 +16854,7 @@ export const getContactAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /contact/attributes/{InstanceId}/{InitialContactId}",
+    input: { InstanceId: 0, InitialContactId: 0 },
   },
   errors: [
     InternalServiceException,
@@ -16233,7 +16903,12 @@ export const getContactMetrics: API.OperationMethod<
   GetContactMetricsError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /metrics/contact", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /metrics/contact",
+    input: { InstanceId: 0, ContactId: 0, Metrics: D.list({ Name: 0 }) },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -16290,6 +16965,15 @@ export const getCurrentMetricData: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /metrics/current/{InstanceId}",
+    input: {
+      InstanceId: 0,
+      Filters: i_Filters,
+      Groupings: 0,
+      CurrentMetrics: D.list({ Name: 0, MetricId: 0, Unit: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+      SortCriteria: D.list({ SortByMetric: 0, SortOrder: 0 }),
+    },
     output: { DataSnapshotTime: D.ts },
     body: true,
   },
@@ -16330,6 +17014,18 @@ export const getCurrentUserData: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /metrics/userdata/{InstanceId}",
+    input: {
+      InstanceId: 0,
+      Filters: {
+        Queues: 0,
+        ContactFilter: { ContactStates: 0 },
+        RoutingProfiles: 0,
+        Agents: 0,
+        UserHierarchyGroups: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       UserDataList: D.list({
         Status: { StatusStartTimestamp: D.ts },
@@ -16378,6 +17074,8 @@ export const getEffectiveHoursOfOperations: API.OperationMethod<
     service: svc,
     http: "GET /effective-hours-of-operations/{InstanceId}/{HoursOfOperationId}",
     input: {
+      InstanceId: 0,
+      HoursOfOperationId: 0,
       FromDate: D.m({ query: "fromDate" }),
       ToDate: D.m({ query: "toDate" }),
     },
@@ -16416,7 +17114,11 @@ export const getEvaluationFormValidation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /evaluation-forms/{InstanceId}/{EvaluationFormId}/validation-results",
-    input: { EvaluationFormVersion: D.m({ query: "version" }) },
+    input: {
+      InstanceId: 0,
+      EvaluationFormId: 0,
+      EvaluationFormVersion: D.m({ query: "version" }),
+    },
     output: { StartedTime: D.ts },
   },
   errors: [
@@ -16459,6 +17161,7 @@ export const getFederationToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /user/federate/{InstanceId}",
+    input: { InstanceId: 0 },
     output: {
       Credentials: {
         AccessToken: D.secret,
@@ -16502,6 +17205,7 @@ export const getFlowAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /flow-associations/{InstanceId}/{ResourceId}/{ResourceType}",
+    input: { InstanceId: 0, ResourceId: 0, ResourceType: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -16544,6 +17248,21 @@ export const getMetricData: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /metrics/historical/{InstanceId}",
+    input: {
+      InstanceId: 0,
+      StartTime: 0,
+      EndTime: 0,
+      Filters: i_Filters,
+      Groupings: 0,
+      HistoricalMetrics: D.list({
+        Name: 0,
+        Threshold: { Comparison: 0, ThresholdValue: 0 },
+        Statistic: 0,
+        Unit: 0,
+      }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -16614,6 +17333,30 @@ export const getMetricDataV2: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /metrics/data",
+    input: {
+      ResourceArn: 0,
+      StartTime: 0,
+      EndTime: 0,
+      Interval: { TimeZone: 0, IntervalPeriod: 0 },
+      Filters: D.list({
+        FilterKey: 0,
+        FilterValues: 0,
+        StringCondition: { Comparison: 0 },
+      }),
+      Groupings: 0,
+      Metrics: D.list({
+        Name: 0,
+        Threshold: D.list({ Comparison: 0, ThresholdValue: 0 }),
+        MetricId: 0,
+        MetricFilters: D.list({
+          MetricFilterKey: 0,
+          MetricFilterValues: 0,
+          Negate: 0,
+        }),
+      }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       MetricResults: D.list({
         MetricInterval: { StartTime: D.ts, EndTime: D.ts },
@@ -16657,6 +17400,7 @@ export const getPromptFile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prompts/{InstanceId}/{PromptId}/file",
+    input: { InstanceId: 0, PromptId: 0 },
     output: { LastModifiedTime: D.ts },
   },
   errors: [
@@ -16690,7 +17434,11 @@ export const getTaskTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /instance/{InstanceId}/task/template/{TaskTemplateId}",
-    input: { SnapshotVersion: D.m({ query: "snapshotVersion" }) },
+    input: {
+      InstanceId: 0,
+      TaskTemplateId: 0,
+      SnapshotVersion: D.m({ query: "snapshotVersion" }),
+    },
     output: { LastModifiedTime: D.ts, CreatedTime: D.ts },
   },
   errors: [
@@ -16725,6 +17473,7 @@ export const getTestCaseExecutionSummary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /test-cases/{InstanceId}/{TestCaseId}/{TestCaseExecutionId}/summary",
+    input: { InstanceId: 0, TestCaseId: 0, TestCaseExecutionId: 0 },
     output: { StartTime: D.ts, EndTime: D.ts },
   },
   errors: [
@@ -16756,7 +17505,11 @@ export const getTrafficDistribution: API.OperationMethod<
   GetTrafficDistributionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /traffic-distribution/{Id}" },
+  descriptor: {
+    service: svc,
+    http: "GET /traffic-distribution/{Id}",
+    input: { Id: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -16805,7 +17558,13 @@ export const importPhoneNumber: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /phone-number/import",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      SourcePhoneNumberArn: 0,
+      PhoneNumberDescription: 0,
+      Tags: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -16840,6 +17599,7 @@ export const importWorkspaceMedia: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{InstanceId}/{WorkspaceId}/media",
+    input: { InstanceId: 0, WorkspaceId: 0, MediaType: 0, MediaSource: 0 },
     body: true,
   },
   errors: [
@@ -16875,6 +17635,7 @@ export const listAgentStatuses: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /agent-status/{InstanceId}",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
       AgentStatusTypes: D.m({ query: "AgentStatusTypes" }),
@@ -16919,6 +17680,7 @@ export const listAnalyticsDataAssociations: API.OperationMethod<
     service: svc,
     http: "GET /analytics-data/instance/{InstanceId}/association",
     input: {
+      InstanceId: 0,
       DataSetId: D.m({ query: "DataSetId" }),
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
@@ -16956,6 +17718,7 @@ export const listAnalyticsDataLakeDataSets: API.OperationMethod<
     service: svc,
     http: "GET /analytics-data/instance/{InstanceId}/datasets",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -16995,6 +17758,7 @@ export const listApprovedOrigins: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /instance/{InstanceId}/approved-origins",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -17037,6 +17801,7 @@ export const listAssociatedContacts: API.OperationMethod<
     service: svc,
     http: "GET /contact/associated/{InstanceId}",
     input: {
+      InstanceId: 0,
       ContactId: D.m({ query: "contactId" }),
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
@@ -17083,6 +17848,7 @@ export const listAttachedFilesConfigurations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /attached-files-configurations/{InstanceId}",
     input: {
+      InstanceId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -17130,6 +17896,7 @@ export const listAuthenticationProfiles: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /authentication-profiles-summary/{InstanceId}",
     input: {
+      InstanceId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -17179,6 +17946,7 @@ export const listBots: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /instance/{InstanceId}/bots",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
       LexVersion: D.m({ query: "lexVersion" }),
@@ -17225,6 +17993,8 @@ export const listChildHoursOfOperations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /hours-of-operations/{InstanceId}/{HoursOfOperationId}/hours",
     input: {
+      InstanceId: 0,
+      HoursOfOperationId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -17268,6 +18038,7 @@ export const listContactEvaluations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /contact-evaluations/{InstanceId}",
     input: {
+      InstanceId: 0,
       ContactId: D.m({ query: "contactId" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -17318,6 +18089,8 @@ export const listContactFlowModuleAliases: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /contact-flow-modules/{InstanceId}/{ContactFlowModuleId}/aliases",
     input: {
+      InstanceId: 0,
+      ContactFlowModuleId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -17366,6 +18139,7 @@ export const listContactFlowModules: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /contact-flow-modules-summary/{InstanceId}",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
       ContactFlowModuleState: D.m({ query: "state" }),
@@ -17412,6 +18186,8 @@ export const listContactFlowModuleVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /contact-flow-modules/{InstanceId}/{ContactFlowModuleId}/versions",
     input: {
+      InstanceId: 0,
+      ContactFlowModuleId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -17462,6 +18238,7 @@ export const listContactFlows: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /contact-flows-summary/{InstanceId}",
     input: {
+      InstanceId: 0,
       ContactFlowTypes: D.m({ query: "contactFlowTypes" }),
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
@@ -17507,6 +18284,8 @@ export const listContactFlowVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /contact-flows/{InstanceId}/{ContactFlowId}/versions",
     input: {
+      InstanceId: 0,
+      ContactFlowId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -17555,6 +18334,8 @@ export const listContactReferences: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /contact/references/{InstanceId}/{ContactId}",
     input: {
+      InstanceId: 0,
+      ContactId: 0,
       ReferenceTypes: D.m({ query: "referenceTypes" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -17600,6 +18381,9 @@ export const listDataTableAttributes: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /data-tables/{InstanceId}/{DataTableId}/attributes",
     input: {
+      InstanceId: 0,
+      DataTableId: 0,
+      AttributeIds: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -17648,6 +18432,10 @@ export const listDataTablePrimaryValues: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /data-tables/{InstanceId}/{DataTableId}/values/list-primary",
     input: {
+      InstanceId: 0,
+      DataTableId: 0,
+      RecordIds: 0,
+      PrimaryAttributeValues: D.list(i_PrimaryAttributeValueFilter),
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -17696,6 +18484,7 @@ export const listDataTables: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /data-tables/{InstanceId}",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -17743,6 +18532,10 @@ export const listDataTableValues: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /data-tables/{InstanceId}/{DataTableId}/values/list",
     input: {
+      InstanceId: 0,
+      DataTableId: 0,
+      RecordIds: 0,
+      PrimaryAttributeValues: D.list(i_PrimaryAttributeValueFilter),
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -17787,6 +18580,7 @@ export const listDefaultVocabularies: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /default-vocabulary-summary/{InstanceId}",
+    input: { InstanceId: 0, LanguageCode: 0, MaxResults: 0, NextToken: 0 },
     body: true,
   },
   errors: [
@@ -17826,6 +18620,13 @@ export const listEntitySecurityProfiles: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /entity-security-profiles-summary/{InstanceId}",
+    input: {
+      InstanceId: 0,
+      EntityType: 0,
+      EntityArn: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -17866,6 +18667,7 @@ export const listEvaluationForms: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /evaluation-forms/{InstanceId}",
     input: {
+      InstanceId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -17914,6 +18716,8 @@ export const listEvaluationFormVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /evaluation-forms/{InstanceId}/{EvaluationFormId}/versions",
     input: {
+      InstanceId: 0,
+      EvaluationFormId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -17962,6 +18766,7 @@ export const listExtractionDefinitions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /extraction-definitions/{InstanceId}",
     input: {
+      InstanceId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -18012,6 +18817,7 @@ export const listFlowAssociations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /flow-associations-summary/{InstanceId}",
     input: {
+      InstanceId: 0,
       ResourceType: D.m({ query: "ResourceType" }),
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
@@ -18057,6 +18863,8 @@ export const listHoursOfOperationOverrides: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /hours-of-operations/{InstanceId}/{HoursOfOperationId}/overrides",
     input: {
+      InstanceId: 0,
+      HoursOfOperationId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -18104,6 +18912,7 @@ export const listHoursOfOperations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /hours-of-operations-summary/{InstanceId}",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -18150,6 +18959,7 @@ export const listInstanceAttributes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /instance/{InstanceId}/attributes",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -18239,6 +19049,7 @@ export const listInstanceStorageConfigs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /instance/{InstanceId}/storage-configs",
     input: {
+      InstanceId: 0,
       ResourceType: D.m({ query: "resourceType" }),
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
@@ -18282,6 +19093,7 @@ export const listIntegrationAssociations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /instance/{InstanceId}/integration-associations",
     input: {
+      InstanceId: 0,
       IntegrationType: D.m({ query: "integrationType" }),
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
@@ -18329,6 +19141,7 @@ export const listLambdaFunctions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /instance/{InstanceId}/lambda-functions",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -18375,6 +19188,7 @@ export const listLexBots: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /instance/{InstanceId}/lex-bots",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -18419,6 +19233,7 @@ export const listMetrics: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /metrics/definitions/{InstanceId}",
     input: {
+      InstanceId: 0,
       Type: D.m({ query: "type" }),
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
@@ -18465,6 +19280,7 @@ export const listNotifications: API.OperationMethod<
     service: svc,
     http: "GET /notifications/{InstanceId}",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -18515,6 +19331,7 @@ export const listPhoneNumbers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /phone-numbers-summary/{InstanceId}",
     input: {
+      InstanceId: 0,
       PhoneNumberTypes: D.m({ query: "phoneNumberTypes" }),
       PhoneNumberCountryCodes: D.m({ query: "phoneNumberCountryCodes" }),
       NextToken: D.m({ query: "nextToken" }),
@@ -18566,7 +19383,20 @@ export const listPhoneNumbersV2: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   ListPhoneNumbersSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /phone-number/list", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /phone-number/list",
+    input: {
+      TargetArn: 0,
+      InstanceId: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      PhoneNumberCountryCodes: 0,
+      PhoneNumberTypes: 0,
+      PhoneNumberPrefix: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -18619,6 +19449,7 @@ export const listPredefinedAttributes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /predefined-attributes/{InstanceId}",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -18665,6 +19496,7 @@ export const listPrompts: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /prompts-summary/{InstanceId}",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -18719,6 +19551,8 @@ export const listQueueEmailAddresses: API.OperationMethod<
     service: svc,
     http: "GET /queues/{InstanceId}/{QueueId}/email-addresses",
     input: {
+      InstanceId: 0,
+      QueueId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -18758,6 +19592,8 @@ export const listQueueQuickConnects: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /queues/{InstanceId}/{QueueId}/quick-connects",
     input: {
+      InstanceId: 0,
+      QueueId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -18812,6 +19648,7 @@ export const listQueues: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /queues-summary/{InstanceId}",
     input: {
+      InstanceId: 0,
       QueueTypes: D.m({ query: "queueTypes" }),
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
@@ -18857,6 +19694,7 @@ export const listQuickConnects: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /quick-connects/{InstanceId}",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
       QuickConnectTypes: D.m({ query: "QuickConnectTypes" }),
@@ -18906,6 +19744,14 @@ export const listRealtimeContactAnalysisSegmentsV2: API.PaginatedOperationMethod
   descriptor: {
     service: svc,
     http: "POST /contact/list-real-time-analysis-segments-v2/{InstanceId}/{ContactId}",
+    input: {
+      InstanceId: 0,
+      ContactId: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      OutputType: 0,
+      SegmentTypes: 0,
+    },
     output: {
       Segments: D.list({
         Transcript: { Time: o_RealTimeContactAnalysisTimeData },
@@ -18971,6 +19817,8 @@ export const listRoutingProfileManualAssignmentQueues: API.PaginatedOperationMet
     service: svc,
     http: "GET /routing-profiles/{InstanceId}/{RoutingProfileId}/manual-assignment-queues",
     input: {
+      InstanceId: 0,
+      RoutingProfileId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -19015,6 +19863,8 @@ export const listRoutingProfileQueues: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /routing-profiles/{InstanceId}/{RoutingProfileId}/queues",
     input: {
+      InstanceId: 0,
+      RoutingProfileId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -19061,6 +19911,7 @@ export const listRoutingProfiles: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /routing-profiles-summary/{InstanceId}",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -19105,6 +19956,7 @@ export const listRules: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /rules/{InstanceId}",
     input: {
+      InstanceId: 0,
       PublishStatus: D.m({ query: "publishStatus" }),
       EventSourceName: D.m({ query: "eventSourceName" }),
       MaxResults: D.m({ query: "maxResults" }),
@@ -19155,6 +20007,7 @@ export const listSecurityKeys: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /instance/{InstanceId}/security-keys",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -19199,6 +20052,8 @@ export const listSecurityProfileApplications: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /security-profiles-applications/{InstanceId}/{SecurityProfileId}",
     input: {
+      SecurityProfileId: 0,
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -19243,6 +20098,8 @@ export const listSecurityProfileFlowModules: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /security-profiles-flow-modules/{InstanceId}/{SecurityProfileId}",
     input: {
+      SecurityProfileId: 0,
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -19291,6 +20148,8 @@ export const listSecurityProfilePermissions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /security-profiles-permissions/{InstanceId}/{SecurityProfileId}",
     input: {
+      SecurityProfileId: 0,
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -19339,6 +20198,7 @@ export const listSecurityProfiles: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /security-profiles-summary/{InstanceId}",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -19381,7 +20241,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServiceException,
     InvalidParameterException,
@@ -19415,6 +20279,7 @@ export const listTaskTemplates: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /instance/{InstanceId}/task/template",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
       Status: D.m({ query: "status" }),
@@ -19463,6 +20328,9 @@ export const listTestCaseExecutionRecords: API.OperationMethod<
     service: svc,
     http: "GET /test-cases/{InstanceId}/{TestCaseId}/{TestCaseExecutionId}/records",
     input: {
+      InstanceId: 0,
+      TestCaseId: 0,
+      TestCaseExecutionId: 0,
       Status: D.m({ query: "status" }),
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
@@ -19503,6 +20371,7 @@ export const listTestCaseExecutions: API.OperationMethod<
     service: svc,
     http: "GET /test-case-executions/{InstanceId}",
     input: {
+      InstanceId: 0,
       TestCaseId: D.m({ query: "testCaseId" }),
       TestCaseName: D.m({ query: "testCaseName" }),
       StartTime: D.m({ query: "startTime" }),
@@ -19548,6 +20417,7 @@ export const listTestCases: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /test-cases-summary/{InstanceId}",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -19635,6 +20505,7 @@ export const listTrafficDistributionGroupUsers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /traffic-distribution-group/{TrafficDistributionGroupId}/user",
     input: {
+      TrafficDistributionGroupId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -19677,6 +20548,8 @@ export const listUseCases: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /instance/{InstanceId}/integration-associations/{IntegrationAssociationId}/use-cases",
     input: {
+      InstanceId: 0,
+      IntegrationAssociationId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -19721,6 +20594,7 @@ export const listUserHierarchyGroups: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /user-hierarchy-groups-summary/{InstanceId}",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -19765,8 +20639,10 @@ export const listUserNotifications: API.OperationMethod<
     service: svc,
     http: "GET /users/{InstanceId}/{UserId}/notifications",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
+      UserId: 0,
     },
     output: { UserNotifications: D.list({ CreatedAt: D.ts, ExpiresAt: D.ts }) },
   },
@@ -19804,6 +20680,8 @@ export const listUserProficiencies: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /users/{InstanceId}/{UserId}/proficiencies",
     input: {
+      InstanceId: 0,
+      UserId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -19848,6 +20726,7 @@ export const listUsers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /users-summary/{InstanceId}",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -19895,6 +20774,7 @@ export const listViews: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /views/{InstanceId}",
     input: {
+      InstanceId: 0,
       Type: D.m({ query: "type" }),
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
@@ -19944,6 +20824,8 @@ export const listViewVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /views/{InstanceId}/{ViewId}/versions",
     input: {
+      InstanceId: 0,
+      ViewId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -19988,6 +20870,7 @@ export const listWorkspaceMedia: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{InstanceId}/{WorkspaceId}/media",
+    input: { InstanceId: 0, WorkspaceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -20024,6 +20907,8 @@ export const listWorkspacePages: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /workspaces/{InstanceId}/{WorkspaceId}/pages",
     input: {
+      InstanceId: 0,
+      WorkspaceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -20069,6 +20954,7 @@ export const listWorkspaces: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /workspaces/{InstanceId}",
     input: {
+      InstanceId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -20115,7 +21001,13 @@ export const monitorContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact/monitor",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      ContactId: 0,
+      UserId: 0,
+      AllowedMonitorCapabilities: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -20151,7 +21043,12 @@ export const pauseContact: API.OperationMethod<
   PauseContactError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /contact/pause", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /contact/pause",
+    input: { ContactId: 0, InstanceId: 0, ContactFlowId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -20191,6 +21088,7 @@ export const putUserStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /users/{InstanceId}/{UserId}/status",
+    input: { UserId: 0, InstanceId: 0, AgentStatusId: 0 },
     body: true,
   },
   errors: [
@@ -20250,7 +21148,10 @@ export const releasePhoneNumber: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /phone-number/{PhoneNumberId}",
-    input: { ClientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      PhoneNumberId: 0,
+      ClientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -20292,7 +21193,12 @@ export const replicateInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /instance/{InstanceId}/replicate",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      ReplicaRegion: 0,
+      ClientToken: D.m({ idempotency: true }),
+      ReplicaAlias: 0,
+    },
     body: true,
   },
   errors: [
@@ -20328,7 +21234,12 @@ export const resumeContact: API.OperationMethod<
   ResumeContactError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /contact/resume", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /contact/resume",
+    input: { ContactId: 0, InstanceId: 0, ContactFlowId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -20365,6 +21276,12 @@ export const resumeContactRecording: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact/resume-recording",
+    input: {
+      InstanceId: 0,
+      ContactId: 0,
+      InitialContactId: 0,
+      ContactRecordingType: 0,
+    },
     body: true,
   },
   errors: [
@@ -20398,6 +21315,13 @@ export const searchAgentStatuses: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-agent-statuses",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchFilter: { AttributeFilter: i_ControlPlaneAttributeFilter },
+      SearchCriteria: i_AgentStatusSearchCriteria,
+    },
     output: { AgentStatuses: D.list(o_AgentStatus) },
     body: true,
   },
@@ -20440,6 +21364,15 @@ export const searchAvailablePhoneNumbers: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /phone-number/search-available",
+    input: {
+      TargetArn: 0,
+      InstanceId: 0,
+      PhoneNumberCountryCode: 0,
+      PhoneNumberType: 0,
+      PhoneNumberPrefix: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -20494,6 +21427,22 @@ export const searchContactEvaluations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-contact-evaluations",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchCriteria: i_EvaluationSearchCriteria,
+      SearchFilter: {
+        AttributeFilter: i_ControlPlaneAttributeFilter,
+        ContactEvaluationAttributeFilter: {
+          OrConditions: D.list(i_ContactEvaluationAttributeAndCondition),
+          AndCondition: i_ContactEvaluationAttributeAndCondition,
+          TagCondition: i_TagCondition,
+          ContactEvaluationAttributeCondition:
+            i_ContactEvaluationAttributeCondition,
+        },
+      },
+    },
     output: {
       EvaluationSearchSummaryList: D.list({
         Metadata: { AcknowledgedTime: D.ts },
@@ -20535,6 +21484,13 @@ export const searchContactFlowModules: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-contact-flow-modules",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchFilter: { TagFilter: i_ControlPlaneTagFilter },
+      SearchCriteria: i_ContactFlowModuleSearchCriteria,
+    },
     body: true,
   },
   errors: [
@@ -20575,6 +21531,21 @@ export const searchContactFlows: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-contact-flows",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchFilter: {
+        TagFilter: i_ControlPlaneTagFilter,
+        FlowAttributeFilter: {
+          OrConditions: D.list(i_ContactFlowAttributeAndCondition),
+          AndCondition: i_ContactFlowAttributeAndCondition,
+          TagCondition: i_TagCondition,
+          ContactFlowTypeCondition: i_ContactFlowTypeCondition,
+        },
+      },
+      SearchCriteria: i_ContactFlowSearchCriteria,
+    },
     output: { ContactFlows: D.list(o_ContactFlow) },
     body: true,
   },
@@ -20616,6 +21587,65 @@ export const searchContacts: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-contacts",
+    input: {
+      InstanceId: 0,
+      TimeRange: i_SearchContactsTimeRange,
+      SearchCriteria: {
+        Name: { SearchText: 0, MatchType: 0 },
+        AgentIds: 0,
+        AgentHierarchyGroups: {
+          L1Ids: 0,
+          L2Ids: 0,
+          L3Ids: 0,
+          L4Ids: 0,
+          L5Ids: 0,
+        },
+        Channels: 0,
+        ContactAnalysis: {
+          Transcript: {
+            Criteria: D.list({
+              ParticipantRole: 0,
+              SearchText: 0,
+              MatchType: 0,
+            }),
+            MatchType: 0,
+          },
+        },
+        InitiationMethods: 0,
+        QueueIds: 0,
+        RoutingCriteria: {
+          Steps: D.list({ AgentCriteria: { AgentIds: 0, MatchType: 0 } }),
+        },
+        AdditionalTimeRange: {
+          Criteria: D.list({
+            TimeRange: i_SearchContactsTimeRange,
+            TimestampCondition: { Type: 0, ConditionType: 0 },
+          }),
+          MatchType: 0,
+        },
+        SearchableContactAttributes: {
+          Criteria: D.list({ Key: 0, Values: 0 }),
+          MatchType: 0,
+        },
+        SearchableSegmentAttributes: {
+          Criteria: D.list({ Key: 0, Values: 0 }),
+          MatchType: 0,
+        },
+        ActiveRegions: 0,
+        ContactTags: i_ControlPlaneTagFilter,
+        AiAgents: {
+          Criteria: D.list({
+            Id: 0,
+            VersionNumber: 0,
+            AiAgentEscalated: 0,
+            AiUseCase: 0,
+          }),
+        },
+      },
+      MaxResults: 0,
+      NextToken: 0,
+      Sort: { FieldName: 0, Order: 0 },
+    },
     output: {
       Contacts: D.list({
         QueueInfo: { EnqueueTimestamp: D.ts },
@@ -20669,6 +21699,13 @@ export const searchDataTables: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-data-tables",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchFilter: { AttributeFilter: i_ControlPlaneAttributeFilter },
+      SearchCriteria: i_DataTableSearchCriteria,
+    },
     output: { DataTables: D.list(o_DataTable) },
     body: true,
   },
@@ -20710,6 +21747,13 @@ export const searchEmailAddresses: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-email-addresses",
+    input: {
+      InstanceId: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      SearchCriteria: i_EmailAddressSearchCriteria,
+      SearchFilter: { TagFilter: i_ControlPlaneTagFilter },
+    },
     output: {
       EmailAddresses: D.list({
         EmailAddress: D.secret,
@@ -20769,6 +21813,13 @@ export const searchEvaluationForms: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-evaluation-forms",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchCriteria: i_EvaluationFormSearchCriteria,
+      SearchFilter: { AttributeFilter: i_ControlPlaneAttributeFilter },
+    },
     output: {
       EvaluationFormSearchSummaryList: D.list({
         CreatedTime: D.ts,
@@ -20810,6 +21861,13 @@ export const searchHoursOfOperationOverrides: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-hours-of-operation-overrides",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchFilter: i_HoursOfOperationSearchFilter,
+      SearchCriteria: i_HoursOfOperationOverrideSearchCriteria,
+    },
     body: true,
   },
   errors: [
@@ -20850,6 +21908,13 @@ export const searchHoursOfOperations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-hours-of-operations",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchFilter: i_HoursOfOperationSearchFilter,
+      SearchCriteria: i_HoursOfOperationSearchCriteria,
+    },
     output: { HoursOfOperations: D.list(o_HoursOfOperation) },
     body: true,
   },
@@ -20892,6 +21957,13 @@ export const searchMetrics: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-metrics",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchFilter: { TagFilter: i_ControlPlaneTagFilter },
+      SearchCriteria: i_MetricSearchCriteria,
+    },
     output: { Metrics: D.list(o_MetricDefinition) },
     body: true,
   },
@@ -20934,6 +22006,13 @@ export const searchNotifications: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-notifications",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchFilter: { AttributeFilter: i_ControlPlaneAttributeFilter },
+      SearchCriteria: i_NotificationSearchCriteria,
+    },
     output: {
       Notifications: D.list({
         CreatedAt: D.ts,
@@ -20989,6 +22068,12 @@ export const searchPredefinedAttributes: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-predefined-attributes",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchCriteria: i_PredefinedAttributeSearchCriteria,
+    },
     output: { PredefinedAttributes: D.list(o_PredefinedAttribute) },
     body: true,
   },
@@ -21030,6 +22115,13 @@ export const searchPrompts: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-prompts",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchFilter: { TagFilter: i_ControlPlaneTagFilter },
+      SearchCriteria: i_PromptSearchCriteria,
+    },
     output: { Prompts: D.list(o_Prompt) },
     body: true,
   },
@@ -21071,6 +22163,13 @@ export const searchQueues: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-queues",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchFilter: { TagFilter: i_ControlPlaneTagFilter },
+      SearchCriteria: i_QueueSearchCriteria,
+    },
     output: { Queues: D.list(o_Queue) },
     body: true,
   },
@@ -21112,6 +22211,13 @@ export const searchQuickConnects: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-quick-connects",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchFilter: { TagFilter: i_ControlPlaneTagFilter },
+      SearchCriteria: i_QuickConnectSearchCriteria,
+    },
     output: { QuickConnects: D.list(o_QuickConnect) },
     body: true,
   },
@@ -21151,7 +22257,25 @@ export const searchResourceTags: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   TagSet
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /search-resource-tags", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /search-resource-tags",
+    input: {
+      InstanceId: 0,
+      ResourceTypes: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchCriteria: {
+        TagSearchCondition: {
+          tagKey: 0,
+          tagValue: 0,
+          tagKeyComparisonType: 0,
+          tagValueComparisonType: 0,
+        },
+      },
+    },
+    body: true,
+  },
   errors: [
     InternalServiceException,
     InvalidParameterException,
@@ -21194,6 +22318,13 @@ export const searchRoutingProfiles: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-routing-profiles",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchFilter: { TagFilter: i_ControlPlaneTagFilter },
+      SearchCriteria: i_RoutingProfileSearchCriteria,
+    },
     output: { RoutingProfiles: D.list(o_RoutingProfile) },
     body: true,
   },
@@ -21236,6 +22367,19 @@ export const searchRules: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-rules",
+    input: {
+      InstanceId: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      SearchCriteria: i_RulesSearchCriteria,
+      SearchFilter: {
+        AttributeFilter: {
+          OrConditions: D.list(i_RuleAttributeAndCondition),
+          AndCondition: i_RuleAttributeAndCondition,
+          TagCondition: i_TagCondition,
+        },
+      },
+    },
     output: { Rules: D.list({ CreatedTime: D.ts, LastUpdatedTime: D.ts }) },
     body: true,
   },
@@ -21282,6 +22426,13 @@ export const searchSecurityProfiles: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-security-profiles",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchCriteria: i_SecurityProfileSearchCriteria,
+      SearchFilter: { TagFilter: i_ControlPlaneTagFilter },
+    },
     body: true,
   },
   errors: [
@@ -21323,6 +22474,13 @@ export const searchTestCases: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-test-cases",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchFilter: { TagFilter: i_ControlPlaneTagFilter },
+      SearchCriteria: i_TestCaseSearchCriteria,
+    },
     output: { TestCases: D.list(o_TestCase) },
     body: true,
   },
@@ -21368,6 +22526,13 @@ export const searchUserHierarchyGroups: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-user-hierarchy-groups",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchFilter: { AttributeFilter: i_ControlPlaneAttributeFilter },
+      SearchCriteria: i_UserHierarchyGroupSearchCriteria,
+    },
     output: { UserHierarchyGroups: D.list(o_HierarchyGroup) },
     body: true,
   },
@@ -21411,6 +22576,21 @@ export const searchUsers: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-users",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchFilter: {
+        TagFilter: i_ControlPlaneTagFilter,
+        UserAttributeFilter: {
+          OrConditions: D.list(i_AttributeAndCondition),
+          AndCondition: i_AttributeAndCondition,
+          TagCondition: i_TagCondition,
+          HierarchyGroupCondition: i_HierarchyGroupCondition,
+        },
+      },
+      SearchCriteria: i_UserSearchCriteria,
+    },
     output: {
       Users: D.list({
         IdentityInfo: { FirstName: D.secret, LastName: D.secret },
@@ -21459,6 +22639,13 @@ export const searchViews: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-views",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchFilter: { AttributeFilter: i_ControlPlaneAttributeFilter },
+      SearchCriteria: i_ViewSearchCriteria,
+    },
     output: { Views: D.list(o_View) },
     body: true,
   },
@@ -21501,6 +22688,14 @@ export const searchVocabularies: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /vocabulary-summary/{InstanceId}",
+    input: {
+      InstanceId: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      State: 0,
+      NameStartsWith: 0,
+      LanguageCode: 0,
+    },
     output: { VocabularySummaryList: D.list({ LastModifiedTime: D.ts }) },
     body: true,
   },
@@ -21542,6 +22737,13 @@ export const searchWorkspaceAssociations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-workspace-associations",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchFilter: { AttributeFilter: i_ControlPlaneAttributeFilter },
+      SearchCriteria: i_WorkspaceAssociationSearchCriteria,
+    },
     body: true,
   },
   errors: [
@@ -21584,6 +22786,13 @@ export const searchWorkspaces: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /search-workspaces",
+    input: {
+      InstanceId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SearchFilter: { AttributeFilter: i_ControlPlaneAttributeFilter },
+      SearchCriteria: i_WorkspaceSearchCriteria,
+    },
     output: { Workspaces: D.list({ CreatedAt: D.ts }) },
     body: true,
   },
@@ -21637,6 +22846,18 @@ export const sendChatIntegrationEvent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /chat-integration-event",
+    input: {
+      SourceId: 0,
+      DestinationId: 0,
+      Subtype: 0,
+      Event: { Type: 0, ContentType: 0, Content: 0 },
+      NewSessionDetails: {
+        SupportedMessagingContentTypes: 0,
+        ParticipantDetails: i_ParticipantDetails,
+        Attributes: 0,
+        StreamingConfiguration: i_ChatStreamingConfiguration,
+      },
+    },
     body: true,
   },
   errors: [
@@ -21676,7 +22897,16 @@ export const sendOutboundEmail: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /instance/{InstanceId}/outbound-email",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      FromEmailAddress: i_EmailAddressInfo,
+      DestinationEmailAddress: i_EmailAddressInfo,
+      AdditionalRecipients: i_OutboundAdditionalRecipients,
+      EmailMessage: i_OutboundEmailContent,
+      TrafficType: 0,
+      SourceCampaign: i_SourceCampaign,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -21717,7 +22947,22 @@ export const sendOutboundWebNotification: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /instance/{InstanceId}/outbound-web-notification",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      ClientToken: D.m({ idempotency: true }),
+      BrowserId: 0,
+      SessionId: 0,
+      ExpiresAt: 0,
+      Source: { SourceCampaign: i_SourceCampaign },
+      Destination: { WidgetId: 0, ProfileId: 0 },
+      Content: {
+        Type: 0,
+        ViewArn: 0,
+        Attributes: {
+          RecommenderConfig: { DomainName: 0, RecommenderName: 0, Context: 0 },
+        },
+      },
+    },
     body: true,
   },
   errors: [
@@ -21762,7 +23007,16 @@ export const startAssistantContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contact/assistant",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      AiAgent: { AiAgentId: 0 },
+      ParticipantDetails: i_ParticipantDetails,
+      InitialMessage: i_ChatMessage,
+      Attributes: 0,
+      ClientToken: D.m({ idempotency: true }),
+      PersistentChat: i_PersistentChat,
+      RelatedContactId: 0,
+    },
     body: true,
   },
   errors: [
@@ -21804,7 +23058,14 @@ export const startAttachedFileUpload: API.OperationMethod<
     http: "PUT /attached-files/{InstanceId}",
     input: {
       ClientToken: D.m({ idempotency: true }),
+      InstanceId: 0,
+      FileName: 0,
+      FileSizeInBytes: 0,
+      UrlExpiryInSeconds: 0,
+      FileUseCaseType: 0,
       AssociatedResourceArn: D.m({ query: "associatedResourceArn" }),
+      CreatedBy: { ConnectUserArn: 0, AWSIdentityArn: 0 },
+      Tags: 0,
     },
     body: true,
   },
@@ -21862,7 +23123,22 @@ export const startChatContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contact/chat",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      ContactFlowId: 0,
+      Attributes: 0,
+      ParticipantDetails: i_ParticipantDetails,
+      ParticipantConfiguration: { ResponseMode: 0 },
+      InitialMessage: i_ChatMessage,
+      ClientToken: D.m({ idempotency: true }),
+      ChatDurationInMinutes: 0,
+      SupportedMessagingContentTypes: 0,
+      PersistentChat: i_PersistentChat,
+      RelatedContactId: 0,
+      SegmentAttributes: D.map(i_SegmentAttributeValue),
+      CustomerId: 0,
+      DisconnectOnCustomerExit: 0,
+    },
     body: true,
   },
   errors: [
@@ -21906,6 +23182,24 @@ export const startContactConversationalAnalyticsJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact/start-conversational-analytics-job/{InstanceId}/{ContactId}",
+    input: {
+      InstanceId: 0,
+      ContactId: 0,
+      AnalyticsModes: 0,
+      AnalyticsConfiguration: {
+        LanguageConfiguration: { LanguageLocale: 0 },
+        RedactionConfiguration: {
+          Behavior: 0,
+          Policy: 0,
+          Entities: 0,
+          MaskMode: 0,
+        },
+        SentimentConfiguration: { Behavior: 0 },
+        SummaryConfiguration: { SummaryModes: 0 },
+        RulesConfiguration: { Behavior: 0 },
+      },
+      ClientToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -21945,7 +23239,14 @@ export const startContactEvaluation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contact-evaluations/{InstanceId}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      ContactId: 0,
+      EvaluationFormId: 0,
+      AutoEvaluationConfiguration: { Enabled: 0 },
+      ClientToken: D.m({ idempotency: true }),
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -21983,6 +23284,7 @@ export const startContactMediaProcessing: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact/start-contact-media-processing",
+    input: { InstanceId: 0, ContactId: 0, ProcessorArn: 0, FailureMode: 0 },
     body: true,
   },
   errors: [
@@ -22033,6 +23335,15 @@ export const startContactRecording: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact/start-recording",
+    input: {
+      InstanceId: 0,
+      ContactId: 0,
+      InitialContactId: 0,
+      VoiceRecordingConfiguration: {
+        VoiceRecordingTrack: 0,
+        IvrRecordingTrack: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -22076,7 +23387,12 @@ export const startContactStreaming: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact/start-streaming",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      ContactId: 0,
+      ChatStreamingConfiguration: i_ChatStreamingConfiguration,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -22113,7 +23429,28 @@ export const startEmailContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contact/email",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      FromEmailAddress: i_EmailAddressInfo,
+      DestinationEmailAddress: 0,
+      Description: 0,
+      References: D.map(i_Reference),
+      Name: 0,
+      EmailMessage: {
+        MessageSourceType: 0,
+        RawMessage: { Subject: 0, Body: 0, ContentType: 0, Headers: 0 },
+      },
+      AdditionalRecipients: {
+        ToAddresses: D.list(i_EmailAddressInfo),
+        CcAddresses: D.list(i_EmailAddressInfo),
+      },
+      Attachments: D.list({ FileName: 0, S3Url: 0 }),
+      ContactFlowId: 0,
+      RelatedContactId: 0,
+      Attributes: 0,
+      SegmentAttributes: D.map(i_SegmentAttributeValue),
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -22154,6 +23491,7 @@ export const startEvaluationFormValidation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /evaluation-forms/{InstanceId}/{EvaluationFormId}/validate",
+    input: { InstanceId: 0, EvaluationFormId: 0, EvaluationFormVersion: 0 },
     body: true,
   },
   errors: [
@@ -22212,7 +23550,21 @@ export const startOutboundChatContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contact/outbound-chat",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      SourceEndpoint: i_Endpoint,
+      DestinationEndpoint: i_Endpoint,
+      InstanceId: 0,
+      SegmentAttributes: D.map(i_SegmentAttributeValue),
+      Attributes: 0,
+      ContactFlowId: 0,
+      ChatDurationInMinutes: 0,
+      ParticipantDetails: i_ParticipantDetails,
+      InitialSystemMessage: i_ChatMessage,
+      InitialTemplatedSystemMessage: i_TemplatedMessageConfig,
+      RelatedContactId: 0,
+      SupportedMessagingContentTypes: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -22251,7 +23603,15 @@ export const startOutboundEmailContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contact/outbound-email",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      ContactId: 0,
+      FromEmailAddress: i_EmailAddressInfo,
+      DestinationEmailAddress: i_EmailAddressInfo,
+      AdditionalRecipients: i_OutboundAdditionalRecipients,
+      EmailMessage: i_OutboundEmailContent,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -22308,7 +23668,27 @@ export const startOutboundVoiceContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contact/outbound-voice",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Description: 0,
+      References: D.map(i_Reference),
+      RelatedContactId: 0,
+      DestinationPhoneNumber: 0,
+      ContactFlowId: 0,
+      InstanceId: 0,
+      ClientToken: D.m({ idempotency: true }),
+      SourcePhoneNumber: 0,
+      QueueId: 0,
+      Attributes: 0,
+      AnswerMachineDetectionConfig: {
+        EnableAnswerMachineDetection: 0,
+        AwaitAnswerMachinePrompt: 0,
+      },
+      CampaignId: 0,
+      TrafficType: 0,
+      OutboundStrategy: i_OutboundStrategy,
+      RingTimeoutInSeconds: 0,
+    },
     body: true,
   },
   errors: [
@@ -22346,7 +23726,11 @@ export const startScreenSharing: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contact/screen-sharing",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      InstanceId: 0,
+      ContactId: 0,
+    },
     body: true,
   },
   errors: [
@@ -22414,7 +23798,22 @@ export const startTaskContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contact/task",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      PreviousContactId: 0,
+      ContactFlowId: 0,
+      Attributes: 0,
+      Name: 0,
+      References: D.map(i_Reference),
+      Description: 0,
+      ClientToken: D.m({ idempotency: true }),
+      ScheduledTime: 0,
+      TaskTemplateId: 0,
+      QuickConnectId: 0,
+      RelatedContactId: 0,
+      SegmentAttributes: D.map(i_SegmentAttributeValue),
+      Attachments: D.list({ FileName: 0, S3Url: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -22451,7 +23850,11 @@ export const startTestCaseExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /test-cases/{InstanceId}/{TestCaseId}/start-execution",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      TestCaseId: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -22490,7 +23893,21 @@ export const startWebRTCContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contact/webrtc",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Attributes: 0,
+      ClientToken: D.m({ idempotency: true }),
+      ContactFlowId: 0,
+      InstanceId: 0,
+      AllowedCapabilities: {
+        Customer: i_ParticipantCapabilities,
+        Agent: i_ParticipantCapabilities,
+      },
+      ParticipantDetails: i_ParticipantDetails,
+      RelatedContactId: 0,
+      References: D.map(i_Reference),
+      Description: 0,
+      SegmentAttributes: D.map(i_SegmentAttributeValue),
+    },
     output: { ConnectionData: { Attendee: { JoinToken: D.secret } } },
     body: true,
   },
@@ -22537,7 +23954,12 @@ export const stopContact: API.OperationMethod<
   StopContactError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /contact/stop", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /contact/stop",
+    input: { ContactId: 0, InstanceId: 0, DisconnectReason: { Code: 0 } },
+    body: true,
+  },
   errors: [
     ContactNotFoundException,
     InternalServiceException,
@@ -22571,6 +23993,7 @@ export const stopContactMediaProcessing: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact/stop-contact-media-processing",
+    input: { InstanceId: 0, ContactId: 0 },
     body: true,
   },
   errors: [
@@ -22609,6 +24032,12 @@ export const stopContactRecording: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact/stop-recording",
+    input: {
+      InstanceId: 0,
+      ContactId: 0,
+      InitialContactId: 0,
+      ContactRecordingType: 0,
+    },
     body: true,
   },
   errors: [
@@ -22641,6 +24070,7 @@ export const stopContactStreaming: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact/stop-streaming",
+    input: { InstanceId: 0, ContactId: 0, StreamingId: 0 },
     body: true,
   },
   errors: [
@@ -22674,7 +24104,12 @@ export const stopTestCaseExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /test-cases/{InstanceId}/{TestCaseId}/{TestCaseExecutionId}/stop-execution",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      TestCaseExecutionId: 0,
+      TestCaseId: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -22714,6 +24149,13 @@ export const submitContactEvaluation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact-evaluations/{InstanceId}/{EvaluationId}/submit",
+    input: {
+      InstanceId: 0,
+      EvaluationId: 0,
+      Answers: D.map(i_EvaluationAnswerInput),
+      Notes: D.map(i_EvaluationNote),
+      SubmittedBy: i_EvaluatorUserUnion,
+    },
     body: true,
   },
   errors: [
@@ -22754,6 +24196,12 @@ export const suspendContactRecording: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact/suspend-recording",
+    input: {
+      InstanceId: 0,
+      ContactId: 0,
+      InitialContactId: 0,
+      ContactRecordingType: 0,
+    },
     body: true,
   },
   errors: [
@@ -22785,7 +24233,12 @@ export const tagContact: API.OperationMethod<
   TagContactError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /contact/tags", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /contact/tags",
+    input: { ContactId: 0, InstanceId: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServiceException,
     InvalidActiveRegionException,
@@ -22821,7 +24274,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServiceException,
     InvalidParameterException,
@@ -22872,7 +24330,14 @@ export const transferContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact/transfer",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      ContactId: 0,
+      QueueId: 0,
+      UserId: 0,
+      ContactFlowId: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -22910,7 +24375,7 @@ export const untagContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /contact/tags/{InstanceId}/{ContactId}",
-    input: { TagKeys: D.m({ query: "TagKeys" }) },
+    input: { ContactId: 0, InstanceId: 0, TagKeys: D.m({ query: "TagKeys" }) },
   },
   errors: [
     InternalServiceException,
@@ -22944,7 +24409,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServiceException,
@@ -22979,6 +24444,15 @@ export const updateAgentStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /agent-status/{InstanceId}/{AgentStatusId}",
+    input: {
+      InstanceId: 0,
+      AgentStatusId: 0,
+      Name: 0,
+      Description: 0,
+      State: 0,
+      DisplayOrder: 0,
+      ResetOrderNumber: 0,
+    },
     body: true,
   },
   errors: [
@@ -23016,6 +24490,12 @@ export const updateAttachedFilesConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /attached-files-configurations/{InstanceId}/{AttachmentScope}",
+    input: {
+      InstanceId: 0,
+      AttachmentScope: 0,
+      MaximumSizeLimitInBytes: 0,
+      ExtensionConfiguration: { AllowedExtensions: D.list({ Extension: 0 }) },
+    },
     output: { LastModifiedTime: D.ts },
     body: true,
   },
@@ -23053,6 +24533,17 @@ export const updateAuthenticationProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /authentication-profiles/{InstanceId}/{AuthenticationProfileId}",
+    input: {
+      AuthenticationProfileId: 0,
+      InstanceId: 0,
+      Name: 0,
+      Description: 0,
+      AllowedIps: 0,
+      BlockedIps: 0,
+      PeriodicSessionDuration: 0,
+      SessionInactivityDuration: 0,
+      SessionInactivityHandlingEnabled: 0,
+    },
     body: true,
   },
   errors: [
@@ -23094,6 +24585,18 @@ export const updateContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contacts/{InstanceId}/{ContactId}",
+    input: {
+      InstanceId: 0,
+      ContactId: 0,
+      Name: 0,
+      Description: 0,
+      References: D.map(i_Reference),
+      SegmentAttributes: D.map(i_SegmentAttributeValue),
+      QueueInfo: { Id: 0 },
+      UserInfo: i_UserInfo,
+      CustomerEndpoint: i_Endpoint,
+      SystemEndpoint: i_Endpoint,
+    },
     body: true,
   },
   errors: [
@@ -23137,7 +24640,12 @@ export const updateContactAttributes: API.OperationMethod<
   UpdateContactAttributesError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /contact/attributes", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /contact/attributes",
+    input: { InitialContactId: 0, InstanceId: 0, Attributes: 0 },
+    body: true,
+  },
   errors: [
     InternalServiceException,
     InvalidActiveRegionException,
@@ -23171,6 +24679,13 @@ export const updateContactEvaluation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact-evaluations/{InstanceId}/{EvaluationId}",
+    input: {
+      InstanceId: 0,
+      EvaluationId: 0,
+      Answers: D.map(i_EvaluationAnswerInput),
+      Notes: D.map(i_EvaluationNote),
+      UpdatedBy: i_EvaluatorUserUnion,
+    },
     body: true,
   },
   errors: [
@@ -23212,6 +24727,7 @@ export const updateContactFlowContent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact-flows/{InstanceId}/{ContactFlowId}/content",
+    input: { InstanceId: 0, ContactFlowId: 0, Content: 0 },
     body: true,
   },
   errors: [
@@ -23247,6 +24763,13 @@ export const updateContactFlowMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact-flows/{InstanceId}/{ContactFlowId}/metadata",
+    input: {
+      InstanceId: 0,
+      ContactFlowId: 0,
+      Name: 0,
+      Description: 0,
+      ContactFlowState: 0,
+    },
     body: true,
   },
   errors: [
@@ -23284,6 +24807,14 @@ export const updateContactFlowModuleAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact-flow-modules/{InstanceId}/{ContactFlowModuleId}/alias/{AliasId}",
+    input: {
+      InstanceId: 0,
+      ContactFlowModuleId: 0,
+      AliasId: 0,
+      Name: 0,
+      Description: 0,
+      ContactFlowModuleVersion: 0,
+    },
     body: true,
   },
   errors: [
@@ -23325,6 +24856,7 @@ export const updateContactFlowModuleContent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact-flow-modules/{InstanceId}/{ContactFlowModuleId}/content",
+    input: { InstanceId: 0, ContactFlowModuleId: 0, Content: 0, Settings: 0 },
     body: true,
   },
   errors: [
@@ -23361,6 +24893,13 @@ export const updateContactFlowModuleMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact-flow-modules/{InstanceId}/{ContactFlowModuleId}/metadata",
+    input: {
+      InstanceId: 0,
+      ContactFlowModuleId: 0,
+      Name: 0,
+      Description: 0,
+      State: 0,
+    },
     body: true,
   },
   errors: [
@@ -23400,6 +24939,7 @@ export const updateContactFlowName: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact-flows/{InstanceId}/{ContactFlowId}/name",
+    input: { InstanceId: 0, ContactFlowId: 0, Name: 0, Description: 0 },
     body: true,
   },
   errors: [
@@ -23444,6 +24984,18 @@ export const updateContactRoutingData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contacts/{InstanceId}/{ContactId}/routing-data",
+    input: {
+      InstanceId: 0,
+      ContactId: 0,
+      QueueTimeAdjustmentSeconds: 0,
+      QueuePriority: 0,
+      RoutingCriteria: {
+        Steps: D.list({
+          Expiry: { DurationInSeconds: 0 },
+          Expression: i_Expression,
+        }),
+      },
+    },
     body: true,
   },
   errors: [
@@ -23477,7 +25029,12 @@ export const updateContactSchedule: API.OperationMethod<
   UpdateContactScheduleError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /contact/schedule", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /contact/schedule",
+    input: { InstanceId: 0, ContactId: 0, ScheduledTime: 0 },
+    body: true,
+  },
   errors: [
     InternalServiceException,
     InvalidParameterException,
@@ -23540,7 +25097,12 @@ export const updateContactTaskTemplate: API.OperationMethod<
   UpdateContactTaskTemplateError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /contact/task-template", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /contact/task-template",
+    input: { InstanceId: 0, TaskTemplateId: 0, ContactId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -23581,6 +25143,16 @@ export const updateDataTableAttribute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /data-tables/{InstanceId}/{DataTableId}/attributes/{AttributeName}",
+    input: {
+      InstanceId: 0,
+      DataTableId: 0,
+      AttributeName: 0,
+      Name: 0,
+      ValueType: 0,
+      Description: 0,
+      Primary: 0,
+      Validation: i_Validation,
+    },
     body: true,
   },
   errors: [
@@ -23623,6 +25195,14 @@ export const updateDataTableMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /data-tables/{InstanceId}/{DataTableId}",
+    input: {
+      InstanceId: 0,
+      DataTableId: 0,
+      Name: 0,
+      Description: 0,
+      ValueLockLevel: 0,
+      TimeZone: 0,
+    },
     body: true,
   },
   errors: [
@@ -23663,6 +25243,13 @@ export const updateDataTablePrimaryValues: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /data-tables/{InstanceId}/{DataTableId}/values/update-primary",
+    input: {
+      InstanceId: 0,
+      DataTableId: 0,
+      PrimaryValues: D.list(i_PrimaryValue),
+      NewPrimaryValues: D.list(i_PrimaryValue),
+      LockVersion: i_DataTableLockVersion,
+    },
     body: true,
   },
   errors: [
@@ -23701,6 +25288,13 @@ export const updateEmailAddressMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /email-addresses/{InstanceId}/{EmailAddressId}",
+    input: {
+      InstanceId: 0,
+      EmailAddressId: 0,
+      Description: 0,
+      DisplayName: 0,
+      ClientToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -23741,7 +25335,22 @@ export const updateEvaluationForm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /evaluation-forms/{InstanceId}/{EvaluationFormId}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      EvaluationFormId: 0,
+      EvaluationFormVersion: 0,
+      CreateNewVersion: 0,
+      Title: 0,
+      Description: 0,
+      Items: D.list(i_EvaluationFormItem),
+      ScoringStrategy: i_EvaluationFormScoringStrategy,
+      AutoEvaluationConfiguration: i_EvaluationFormAutoEvaluationConfiguration,
+      ReviewConfiguration: i_EvaluationReviewConfiguration,
+      AsDraft: 0,
+      ClientToken: D.m({ idempotency: true }),
+      TargetConfiguration: i_EvaluationFormTargetConfiguration,
+      LanguageConfiguration: i_EvaluationFormLanguageConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -23777,7 +25386,14 @@ export const updateExtractionDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /extraction-definitions/{InstanceId}/{ExtractionDefinitionId}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      ExtractionDefinitionId: 0,
+      InstanceId: 0,
+      Name: 0,
+      ExtractionConfiguration: i_ExtractionConfiguration,
+      Display: i_ExtractionDefinitionDisplay,
+    },
     body: true,
   },
   errors: [
@@ -23813,6 +25429,14 @@ export const updateHoursOfOperation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /hours-of-operations/{InstanceId}/{HoursOfOperationId}",
+    input: {
+      InstanceId: 0,
+      HoursOfOperationId: 0,
+      Name: 0,
+      Description: 0,
+      TimeZone: 0,
+      Config: D.list(i_HoursOfOperationConfig),
+    },
     body: true,
   },
   errors: [
@@ -23849,6 +25473,18 @@ export const updateHoursOfOperationOverride: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /hours-of-operations/{InstanceId}/{HoursOfOperationId}/overrides/{HoursOfOperationOverrideId}",
+    input: {
+      InstanceId: 0,
+      HoursOfOperationId: 0,
+      HoursOfOperationOverrideId: 0,
+      Name: 0,
+      Description: 0,
+      Config: D.list(i_HoursOfOperationOverrideConfig),
+      EffectiveFrom: 0,
+      EffectiveTill: 0,
+      RecurrenceConfig: i_RecurrenceConfig,
+      OverrideType: 0,
+    },
     body: true,
   },
   errors: [
@@ -23886,7 +25522,12 @@ export const updateInstanceAttribute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /instance/{InstanceId}/attribute/{AttributeType}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceId: 0,
+      AttributeType: 0,
+      Value: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -23923,7 +25564,10 @@ export const updateInstanceStorageConfig: API.OperationMethod<
     service: svc,
     http: "POST /instance/{InstanceId}/storage-config/{AssociationId}",
     input: {
+      InstanceId: 0,
+      AssociationId: 0,
       ResourceType: D.m({ query: "resourceType" }),
+      StorageConfig: i_InstanceStorageConfig,
       ClientToken: D.m({ idempotency: true }),
     },
     body: true,
@@ -23960,6 +25604,13 @@ export const updateMetricContent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /metrics/definitions/{InstanceId}/{MetricId}/content",
+    input: {
+      InstanceId: 0,
+      MetricId: 0,
+      MetricCalculation: i_MetricCalculation,
+      Unit: 0,
+      PositiveTrendIndicator: 0,
+    },
     body: true,
   },
   errors: [
@@ -23996,6 +25647,7 @@ export const updateMetricMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /metrics/definitions/{InstanceId}/{MetricId}/metadata",
+    input: { InstanceId: 0, MetricId: 0, Name: 0, Description: 0 },
     body: true,
   },
   errors: [
@@ -24032,6 +25684,7 @@ export const updateNotificationContent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /notifications/{InstanceId}/{NotificationId}",
+    input: { InstanceId: 0, NotificationId: 0, Content: 0 },
     body: true,
   },
   errors: [
@@ -24077,6 +25730,7 @@ export const updateParticipantAuthentication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact/update-participant-authentication",
+    input: { State: 0, InstanceId: 0, Code: 0, Error: 0, ErrorDescription: 0 },
     body: true,
   },
   errors: [
@@ -24124,6 +25778,22 @@ export const updateParticipantRoleConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contact/participant-role-config/{InstanceId}/{ContactId}",
+    input: {
+      InstanceId: 0,
+      ContactId: 0,
+      ChannelConfiguration: {
+        Chat: {
+          ParticipantTimerConfigList: D.list({
+            ParticipantRole: 0,
+            TimerType: 0,
+            TimerValue: {
+              ParticipantTimerAction: 0,
+              ParticipantTimerDurationInMinutes: 0,
+            },
+          }),
+        },
+      },
+    },
     body: true,
   },
   errors: [
@@ -24166,7 +25836,12 @@ export const updatePhoneNumber: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /phone-number/{PhoneNumberId}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      PhoneNumberId: 0,
+      TargetArn: 0,
+      InstanceId: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -24207,7 +25882,11 @@ export const updatePhoneNumberMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /phone-number/{PhoneNumberId}/metadata",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      PhoneNumberId: 0,
+      PhoneNumberDescription: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -24262,6 +25941,13 @@ export const updatePredefinedAttribute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /predefined-attributes/{InstanceId}/{Name}",
+    input: {
+      InstanceId: 0,
+      Name: 0,
+      Values: i_PredefinedAttributeValues,
+      Purposes: 0,
+      AttributeConfiguration: i_InputPredefinedAttributeConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -24295,6 +25981,7 @@ export const updatePrompt: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prompts/{InstanceId}/{PromptId}",
+    input: { InstanceId: 0, PromptId: 0, Name: 0, Description: 0, S3Uri: 0 },
     body: true,
   },
   errors: [
@@ -24328,6 +26015,7 @@ export const updateQueueHoursOfOperation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /queues/{InstanceId}/{QueueId}/hours-of-operation",
+    input: { InstanceId: 0, QueueId: 0, HoursOfOperationId: 0 },
     body: true,
   },
   errors: [
@@ -24361,6 +26049,7 @@ export const updateQueueMaxContacts: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /queues/{InstanceId}/{QueueId}/max-contacts",
+    input: { InstanceId: 0, QueueId: 0, MaxContacts: 0 },
     body: true,
   },
   errors: [
@@ -24395,6 +26084,7 @@ export const updateQueueName: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /queues/{InstanceId}/{QueueId}/name",
+    input: { InstanceId: 0, QueueId: 0, Name: 0, Description: 0 },
     body: true,
   },
   errors: [
@@ -24443,6 +26133,11 @@ export const updateQueueOutboundCallerConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /queues/{InstanceId}/{QueueId}/outbound-caller-config",
+    input: {
+      InstanceId: 0,
+      QueueId: 0,
+      OutboundCallerConfig: i_OutboundCallerConfig,
+    },
     body: true,
   },
   errors: [
@@ -24478,6 +26173,11 @@ export const updateQueueOutboundEmailConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /queues/{InstanceId}/{QueueId}/outbound-email-config",
+    input: {
+      InstanceId: 0,
+      QueueId: 0,
+      OutboundEmailConfig: i_OutboundEmailConfig,
+    },
     body: true,
   },
   errors: [
@@ -24513,6 +26213,7 @@ export const updateQueueStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /queues/{InstanceId}/{QueueId}/status",
+    input: { InstanceId: 0, QueueId: 0, Status: 0 },
     body: true,
   },
   errors: [
@@ -24546,6 +26247,11 @@ export const updateQuickConnectConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /quick-connects/{InstanceId}/{QuickConnectId}/config",
+    input: {
+      InstanceId: 0,
+      QuickConnectId: 0,
+      QuickConnectConfig: i_QuickConnectConfig,
+    },
     body: true,
   },
   errors: [
@@ -24579,6 +26285,7 @@ export const updateQuickConnectName: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /quick-connects/{InstanceId}/{QuickConnectId}/name",
+    input: { InstanceId: 0, QuickConnectId: 0, Name: 0, Description: 0 },
     body: true,
   },
   errors: [
@@ -24613,6 +26320,7 @@ export const updateRoutingProfileAgentAvailabilityTimer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /routing-profiles/{InstanceId}/{RoutingProfileId}/agent-availability-timer",
+    input: { InstanceId: 0, RoutingProfileId: 0, AgentAvailabilityTimer: 0 },
     body: true,
   },
   errors: [
@@ -24646,6 +26354,11 @@ export const updateRoutingProfileConcurrency: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /routing-profiles/{InstanceId}/{RoutingProfileId}/concurrency",
+    input: {
+      InstanceId: 0,
+      RoutingProfileId: 0,
+      MediaConcurrencies: D.list(i_MediaConcurrency),
+    },
     body: true,
   },
   errors: [
@@ -24679,6 +26392,7 @@ export const updateRoutingProfileDefaultOutboundQueue: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /routing-profiles/{InstanceId}/{RoutingProfileId}/default-outbound-queue",
+    input: { InstanceId: 0, RoutingProfileId: 0, DefaultOutboundQueueId: 0 },
     body: true,
   },
   errors: [
@@ -24713,6 +26427,7 @@ export const updateRoutingProfileName: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /routing-profiles/{InstanceId}/{RoutingProfileId}/name",
+    input: { InstanceId: 0, RoutingProfileId: 0, Name: 0, Description: 0 },
     body: true,
   },
   errors: [
@@ -24747,6 +26462,11 @@ export const updateRoutingProfileQueues: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /routing-profiles/{InstanceId}/{RoutingProfileId}/queues",
+    input: {
+      InstanceId: 0,
+      RoutingProfileId: 0,
+      QueueConfigs: D.list(i_RoutingProfileQueueConfig),
+    },
     body: true,
   },
   errors: [
@@ -24784,6 +26504,14 @@ export const updateRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /rules/{InstanceId}/{RuleId}",
+    input: {
+      RuleId: 0,
+      InstanceId: 0,
+      Name: 0,
+      Function: 0,
+      Actions: D.list(i_RuleAction),
+      PublishStatus: 0,
+    },
     body: true,
   },
   errors: [
@@ -24822,6 +26550,19 @@ export const updateSecurityProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /security-profiles/{InstanceId}/{SecurityProfileId}",
+    input: {
+      Description: 0,
+      Permissions: 0,
+      SecurityProfileId: 0,
+      InstanceId: 0,
+      AllowedAccessControlTags: 0,
+      TagRestrictedResources: 0,
+      Applications: D.list(i_Application),
+      HierarchyRestrictedResources: 0,
+      AllowedAccessControlHierarchyGroupId: 0,
+      AllowedFlowModules: D.list(i_FlowModule),
+      GranularAccessControlConfiguration: i_GranularAccessControlConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -24857,6 +26598,18 @@ export const updateTaskTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /instance/{InstanceId}/task/template/{TaskTemplateId}",
+    input: {
+      TaskTemplateId: 0,
+      InstanceId: 0,
+      Name: 0,
+      Description: 0,
+      ContactFlowId: 0,
+      SelfAssignFlowId: 0,
+      Constraints: i_TaskTemplateConstraints,
+      Defaults: i_TaskTemplateDefaults,
+      Status: 0,
+      Fields: D.list(i_TaskTemplateField),
+    },
     output: { LastModifiedTime: D.ts, CreatedTime: D.ts },
     body: true,
   },
@@ -24896,6 +26649,14 @@ export const updateTestCase: API.OperationMethod<
     service: svc,
     http: "POST /test-cases/{InstanceId}/{TestCaseId}",
     input: {
+      InstanceId: 0,
+      TestCaseId: 0,
+      Content: 0,
+      EntryPoint: i_TestCaseEntryPoint,
+      InitializationData: 0,
+      Name: 0,
+      Description: 0,
+      Status: 0,
       LastModifiedTime: D.m({ header: "x-amz-last-modified-time" }),
       LastModifiedRegion: D.m({ header: "x-amz-last-modified-region" }),
     },
@@ -24955,6 +26716,12 @@ export const updateTrafficDistribution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /traffic-distribution/{Id}",
+    input: {
+      Id: 0,
+      TelephonyConfig: { Distributions: D.list(i_Distribution) },
+      SignInConfig: { Distributions: D.list({ Region: 0, Enabled: 0 }) },
+      AgentConfig: { Distributions: D.list(i_Distribution) },
+    },
     body: true,
   },
   errors: [
@@ -24992,6 +26759,15 @@ export const updateUserConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /users/{InstanceId}/{UserId}/config",
+    input: {
+      AutoAcceptConfigs: D.list(i_AutoAcceptConfig),
+      AfterContactWorkConfigs: D.list(i_AfterContactWorkConfigPerChannel),
+      PhoneNumberConfigs: D.list(i_PhoneNumberConfig),
+      PersistentConnectionConfigs: D.list(i_PersistentConnectionConfig),
+      VoiceEnhancementConfigs: D.list(i_VoiceEnhancementConfig),
+      UserId: 0,
+      InstanceId: 0,
+    },
     body: true,
   },
   errors: [
@@ -25026,6 +26802,7 @@ export const updateUserHierarchy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /users/{InstanceId}/{UserId}/hierarchy",
+    input: { HierarchyGroupId: 0, UserId: 0, InstanceId: 0 },
     body: true,
   },
   errors: [
@@ -25060,6 +26837,7 @@ export const updateUserHierarchyGroupName: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /user-hierarchy-groups/{InstanceId}/{HierarchyGroupId}/name",
+    input: { Name: 0, HierarchyGroupId: 0, InstanceId: 0 },
     body: true,
   },
   errors: [
@@ -25095,6 +26873,16 @@ export const updateUserHierarchyStructure: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /user-hierarchy-structure/{InstanceId}",
+    input: {
+      HierarchyStructure: {
+        LevelOne: i_HierarchyLevelUpdate,
+        LevelTwo: i_HierarchyLevelUpdate,
+        LevelThree: i_HierarchyLevelUpdate,
+        LevelFour: i_HierarchyLevelUpdate,
+        LevelFive: i_HierarchyLevelUpdate,
+      },
+      InstanceId: 0,
+    },
     body: true,
   },
   errors: [
@@ -25135,6 +26923,7 @@ export const updateUserIdentityInfo: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /users/{InstanceId}/{UserId}/identity-info",
+    input: { IdentityInfo: i_UserIdentityInfo, UserId: 0, InstanceId: 0 },
     body: true,
   },
   errors: [
@@ -25170,6 +26959,10 @@ export const updateUserNotificationStatus: API.OperationMethod<
     service: svc,
     http: "POST /users/{InstanceId}/{UserId}/notifications/{NotificationId}",
     input: {
+      InstanceId: 0,
+      NotificationId: 0,
+      UserId: 0,
+      Status: 0,
       LastModifiedTime: D.m({ header: "x-amz-last-modified-time" }),
       LastModifiedRegion: D.m({ header: "x-amz-last-modified-region" }),
     },
@@ -25209,6 +27002,7 @@ export const updateUserPhoneConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /users/{InstanceId}/{UserId}/phone-config",
+    input: { PhoneConfig: i_UserPhoneConfig, UserId: 0, InstanceId: 0 },
     body: true,
   },
   errors: [
@@ -25242,6 +27036,11 @@ export const updateUserProficiencies: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /users/{InstanceId}/{UserId}/proficiencies",
+    input: {
+      InstanceId: 0,
+      UserId: 0,
+      UserProficiencies: D.list(i_UserProficiency),
+    },
     body: true,
   },
   errors: [
@@ -25275,6 +27074,7 @@ export const updateUserRoutingProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /users/{InstanceId}/{UserId}/routing-profile",
+    input: { RoutingProfileId: 0, UserId: 0, InstanceId: 0 },
     body: true,
   },
   errors: [
@@ -25308,6 +27108,7 @@ export const updateUserSecurityProfiles: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /users/{InstanceId}/{UserId}/security-profiles",
+    input: { SecurityProfileIds: 0, UserId: 0, InstanceId: 0 },
     body: true,
   },
   errors: [
@@ -25348,6 +27149,7 @@ export const updateViewContent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /views/{InstanceId}/{ViewId}",
+    input: { InstanceId: 0, ViewId: 0, Status: 0, Content: i_ViewInputContent },
     output: { View: o_View },
     body: true,
   },
@@ -25388,6 +27190,7 @@ export const updateViewMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /views/{InstanceId}/{ViewId}/metadata",
+    input: { InstanceId: 0, ViewId: 0, Name: 0, Description: 0 },
     body: true,
   },
   errors: [
@@ -25426,6 +27229,7 @@ export const updateWorkspaceMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{InstanceId}/{WorkspaceId}/metadata",
+    input: { InstanceId: 0, WorkspaceId: 0, Name: 0, Description: 0, Title: 0 },
     body: true,
   },
   errors: [
@@ -25464,6 +27268,15 @@ export const updateWorkspacePage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{InstanceId}/{WorkspaceId}/pages/{Page}",
+    input: {
+      InstanceId: 0,
+      WorkspaceId: 0,
+      Page: 0,
+      NewPage: 0,
+      ResourceArn: 0,
+      Slug: 0,
+      InputData: 0,
+    },
     body: true,
   },
   errors: [
@@ -25501,6 +27314,7 @@ export const updateWorkspaceTheme: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{InstanceId}/{WorkspaceId}/theme",
+    input: { InstanceId: 0, WorkspaceId: 0, Theme: i_WorkspaceTheme },
     body: true,
   },
   errors: [
@@ -25537,6 +27351,7 @@ export const updateWorkspaceVisibility: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{InstanceId}/{WorkspaceId}/visibility",
+    input: { InstanceId: 0, WorkspaceId: 0, Visibility: 0 },
     body: true,
   },
   errors: [
@@ -25552,6 +27367,653 @@ export const updateWorkspaceVisibility: API.OperationMethod<
   operationName: "UpdateWorkspaceVisibility",
 })) as any;
 
+const i_AfterContactWorkConfigPerChannel: D.LazyStruct = () => ({
+  Channel: 0,
+  AfterContactWorkConfig: i_AfterContactWorkConfig,
+  AgentFirstCallbackAfterContactWorkConfig: i_AfterContactWorkConfig,
+});
+const i_AgentStatusSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_AgentStatusSearchCriteria),
+  AndConditions: D.list(i_AgentStatusSearchCriteria),
+  StringCondition: i_StringCondition,
+});
+const i_AliasConfiguration: D.LazyStruct = () => ({ EmailAddressId: 0 });
+const i_Application: D.LazyStruct = () => ({
+  Namespace: 0,
+  ApplicationPermissions: 0,
+  Type: 0,
+});
+const i_AttributeAndCondition: D.LazyStruct = () => ({
+  TagConditions: D.list(i_TagCondition),
+  HierarchyGroupCondition: i_HierarchyGroupCondition,
+});
+const i_AutoAcceptConfig: D.LazyStruct = () => ({
+  Channel: 0,
+  AutoAccept: 0,
+  AgentFirstCallbackAutoAccept: 0,
+});
+const i_ChatMessage: D.LazyStruct = () => ({ ContentType: 0, Content: 0 });
+const i_ChatStreamingConfiguration: D.LazyStruct = () => ({
+  StreamingEndpointArn: 0,
+});
+const i_ContactEvaluationAttributeAndCondition: D.LazyStruct = () => ({
+  TagConditions: D.list(i_TagCondition),
+  AttributeConditions: D.list(i_ContactEvaluationAttributeCondition),
+});
+const i_ContactEvaluationAttributeCondition: D.LazyStruct = () => ({
+  AttributeKey: 0,
+  AttributeValue: { StringValue: 0 },
+  ComparisonType: 0,
+});
+const i_ContactFlowAttributeAndCondition: D.LazyStruct = () => ({
+  TagConditions: D.list(i_TagCondition),
+  ContactFlowTypeCondition: i_ContactFlowTypeCondition,
+});
+const i_ContactFlowModuleSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_ContactFlowModuleSearchCriteria),
+  AndConditions: D.list(i_ContactFlowModuleSearchCriteria),
+  StringCondition: i_StringCondition,
+  StateCondition: 0,
+  StatusCondition: 0,
+});
+const i_ContactFlowSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_ContactFlowSearchCriteria),
+  AndConditions: D.list(i_ContactFlowSearchCriteria),
+  StringCondition: i_StringCondition,
+  TypeCondition: 0,
+  StateCondition: 0,
+  StatusCondition: 0,
+});
+const i_ContactFlowTypeCondition: D.LazyStruct = () => ({ ContactFlowType: 0 });
+const i_ControlPlaneAttributeFilter: D.LazyStruct = () => ({
+  OrConditions: D.list(i_CommonAttributeAndCondition),
+  AndCondition: i_CommonAttributeAndCondition,
+  TagCondition: i_TagCondition,
+});
+const i_ControlPlaneTagFilter: D.LazyStruct = () => ({
+  OrConditions: D.list(D.list(i_TagCondition)),
+  AndConditions: D.list(i_TagCondition),
+  TagCondition: i_TagCondition,
+});
+const i_DataTableLockVersion: D.LazyStruct = () => ({
+  DataTable: 0,
+  Attribute: 0,
+  PrimaryValues: 0,
+  Value: 0,
+});
+const i_DataTableSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_DataTableSearchCriteria),
+  AndConditions: D.list(i_DataTableSearchCriteria),
+  StringCondition: i_StringCondition,
+});
+const i_DataTableValue: D.LazyStruct = () => ({
+  PrimaryValues: D.list(i_PrimaryValue),
+  AttributeName: 0,
+  Value: 0,
+  LockVersion: i_DataTableLockVersion,
+  LastModifiedTime: 0,
+  LastModifiedRegion: 0,
+});
+const i_Distribution: D.LazyStruct = () => ({ Region: 0, Percentage: 0 });
+const i_EmailAddressConfig: D.LazyStruct = () => ({ EmailAddressId: 0 });
+const i_EmailAddressInfo: D.LazyStruct = () => ({
+  EmailAddress: 0,
+  DisplayName: 0,
+});
+const i_EmailAddressSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_EmailAddressSearchCriteria),
+  AndConditions: D.list(i_EmailAddressSearchCriteria),
+  StringCondition: i_StringCondition,
+});
+const i_Endpoint: D.LazyStruct = () => ({ Type: 0, Address: 0 });
+const i_EvaluationAnswerInput: D.LazyStruct = () => ({
+  Value: {
+    StringValue: 0,
+    NumericValue: 0,
+    StringValues: 0,
+    DateTimeValue: 0,
+    NotApplicable: 0,
+  },
+});
+const i_EvaluationFormAutoEvaluationConfiguration: D.LazyStruct = () => ({
+  Enabled: 0,
+});
+const i_EvaluationFormItem: D.LazyStruct = () => ({
+  Section: {
+    Title: 0,
+    RefId: 0,
+    Instructions: 0,
+    Items: D.list(i_EvaluationFormItem),
+    Weight: 0,
+    IsExcludedFromScoring: 0,
+    ScoreThresholds: D.list(i_EvaluationFormScoreThreshold),
+  },
+  Question: {
+    Title: 0,
+    Instructions: 0,
+    RefId: 0,
+    NotApplicableEnabled: 0,
+    QuestionType: 0,
+    QuestionTypeProperties: {
+      Numeric: {
+        MinValue: 0,
+        MaxValue: 0,
+        Options: D.list({
+          MinValue: 0,
+          MaxValue: 0,
+          Score: 0,
+          AutomaticFail: 0,
+          AutomaticFailConfiguration: i_AutomaticFailConfiguration,
+          PointsConfiguration: i_QuestionOptionPointsConfiguration,
+        }),
+        Automation: {
+          PropertyValue: { Label: 0 },
+          AnswerSource: i_EvaluationFormQuestionAutomationAnswerSource,
+        },
+      },
+      SingleSelect: {
+        Options: D.list({
+          RefId: 0,
+          Text: 0,
+          Score: 0,
+          AutomaticFail: 0,
+          AutomaticFailConfiguration: i_AutomaticFailConfiguration,
+          PointsConfiguration: i_QuestionOptionPointsConfiguration,
+        }),
+        DisplayAs: 0,
+        Automation: {
+          Options: D.list({
+            RuleCategory: { Category: 0, Condition: 0, OptionRefId: 0 },
+          }),
+          DefaultOptionRefId: 0,
+          AnswerSource: i_EvaluationFormQuestionAutomationAnswerSource,
+        },
+      },
+      Text: {
+        Automation: {
+          AnswerSource: i_EvaluationFormQuestionAutomationAnswerSource,
+        },
+      },
+      MultiSelect: {
+        Options: D.list({
+          RefId: 0,
+          Text: 0,
+          Score: 0,
+          AutomaticFail: 0,
+          AutomaticFailConfiguration: i_AutomaticFailConfiguration,
+          PointsConfiguration: i_QuestionOptionPointsConfiguration,
+        }),
+        DisplayAs: 0,
+        Automation: {
+          Options: D.list({
+            RuleCategory: { Category: 0, Condition: 0, OptionRefIds: 0 },
+          }),
+          DefaultOptionRefIds: 0,
+          AnswerSource: i_EvaluationFormQuestionAutomationAnswerSource,
+        },
+      },
+    },
+    Enablement: {
+      Condition: i_EvaluationFormItemEnablementCondition,
+      Action: 0,
+      DefaultAction: 0,
+    },
+    Weight: 0,
+    ScoringConfiguration: {
+      PointsConfiguration: { MaxPointValue: 0, MinPointValue: 0, IsBonus: 0 },
+      IsExcludedFromScoring: 0,
+      ScoreThresholds: D.list(i_EvaluationFormScoreThreshold),
+    },
+  },
+});
+const i_EvaluationFormLanguageConfiguration: D.LazyStruct = () => ({
+  FormLanguage: 0,
+});
+const i_EvaluationFormScoringStrategy: D.LazyStruct = () => ({
+  Mode: 0,
+  Status: 0,
+  ScoreThresholds: D.list(i_EvaluationFormScoreThreshold),
+});
+const i_EvaluationFormSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_EvaluationFormSearchCriteria),
+  AndConditions: D.list(i_EvaluationFormSearchCriteria),
+  StringCondition: i_StringCondition,
+  NumberCondition: i_NumberCondition,
+  BooleanCondition: i_BooleanCondition,
+  DateTimeCondition: i_DateTimeCondition,
+});
+const i_EvaluationFormTargetConfiguration: D.LazyStruct = () => ({
+  ContactInteractionType: 0,
+});
+const i_EvaluationNote: D.LazyStruct = () => ({ Value: 0 });
+const i_EvaluationReviewConfiguration: D.LazyStruct = () => ({
+  ReviewNotificationRecipients: D.list({ Type: 0, Value: { UserId: 0 } }),
+  EligibilityDays: 0,
+});
+const i_EvaluationSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_EvaluationSearchCriteria),
+  AndConditions: D.list(i_EvaluationSearchCriteria),
+  StringCondition: i_StringCondition,
+  NumberCondition: i_NumberCondition,
+  BooleanCondition: i_BooleanCondition,
+  DateTimeCondition: i_DateTimeCondition,
+  DecimalCondition: {
+    FieldName: 0,
+    MinValue: 0,
+    MaxValue: 0,
+    ComparisonType: 0,
+  },
+});
+const i_EvaluatorUserUnion: D.LazyStruct = () => ({ ConnectUserArn: 0 });
+const i_Expression: D.LazyStruct = () => ({
+  AttributeCondition: i_AttributeCondition,
+  AndExpression: D.list(i_Expression),
+  OrExpression: D.list(i_Expression),
+  NotAttributeCondition: i_AttributeCondition,
+});
+const i_ExtractionConfiguration: D.LazyStruct = () => ({
+  PromptHint: 0,
+  NotFoundBehavior: { Behavior: 0, DefaultValue: 0 },
+});
+const i_ExtractionDefinitionDisplay: D.LazyStruct = () => ({ Label: 0 });
+const i_Filters: D.LazyStruct = () => ({
+  Queues: 0,
+  Channels: 0,
+  RoutingProfiles: 0,
+  RoutingStepExpressions: 0,
+  AgentStatuses: 0,
+  Subtypes: 0,
+  ValidationTestTypes: 0,
+});
+const i_FlowModule: D.LazyStruct = () => ({ Type: 0, FlowModuleId: 0 });
+const i_GranularAccessControlConfiguration: D.LazyStruct = () => ({
+  DataTableAccessControlConfiguration: {
+    PrimaryAttributeAccessControlConfiguration: {
+      PrimaryAttributeValues: D.list({
+        AccessType: 0,
+        AttributeName: 0,
+        Values: 0,
+      }),
+    },
+  },
+});
+const i_HierarchyGroupCondition: D.LazyStruct = () => ({
+  Value: 0,
+  HierarchyGroupMatchType: 0,
+});
+const i_HierarchyLevelUpdate: D.LazyStruct = () => ({ Name: 0 });
+const i_HoursOfOperationConfig: D.LazyStruct = () => ({
+  Day: 0,
+  StartTime: i_HoursOfOperationTimeSlice,
+  EndTime: i_HoursOfOperationTimeSlice,
+});
+const i_HoursOfOperationOverrideConfig: D.LazyStruct = () => ({
+  Day: 0,
+  StartTime: i_OverrideTimeSlice,
+  EndTime: i_OverrideTimeSlice,
+});
+const i_HoursOfOperationOverrideSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_HoursOfOperationOverrideSearchCriteria),
+  AndConditions: D.list(i_HoursOfOperationOverrideSearchCriteria),
+  StringCondition: i_StringCondition,
+  DateCondition: { FieldName: 0, Value: 0, ComparisonType: 0 },
+});
+const i_HoursOfOperationSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_HoursOfOperationSearchCriteria),
+  AndConditions: D.list(i_HoursOfOperationSearchCriteria),
+  StringCondition: i_StringCondition,
+});
+const i_HoursOfOperationSearchFilter: D.LazyStruct = () => ({
+  TagFilter: i_ControlPlaneTagFilter,
+});
+const i_InputPredefinedAttributeConfiguration: D.LazyStruct = () => ({
+  EnableValueValidationOnAssociation: 0,
+});
+const i_InstanceStorageConfig: D.LazyStruct = () => ({
+  AssociationId: 0,
+  StorageType: 0,
+  S3Config: {
+    BucketName: 0,
+    BucketPrefix: 0,
+    EncryptionConfig: i_EncryptionConfig,
+  },
+  KinesisVideoStreamConfig: {
+    Prefix: 0,
+    RetentionPeriodHours: 0,
+    EncryptionConfig: i_EncryptionConfig,
+  },
+  KinesisStreamConfig: { StreamArn: 0 },
+  KinesisFirehoseConfig: { FirehoseArn: 0 },
+});
+const i_LexBot: D.LazyStruct = () => ({ Name: 0, LexRegion: 0 });
+const i_LexV2Bot: D.LazyStruct = () => ({ AliasArn: 0 });
+const i_MediaConcurrency: D.LazyStruct = () => ({
+  Channel: 0,
+  Concurrency: 0,
+  CrossChannelBehavior: { BehaviorType: 0 },
+});
+const i_MetricCalculation: D.LazyStruct = () => ({
+  CalculationComponents: D.list({
+    Alias: 0,
+    MetricName: 0,
+    MetricId: 0,
+    MetricFilters: D.list({
+      MetricFilterKey: 0,
+      Negate: 0,
+      NumberCondition: { Comparison: 0, Values: 0 },
+      StringCondition: { Comparison: 0, Values: 0 },
+      BooleanCondition: { Comparison: 0 },
+    }),
+  }),
+  Calculation: 0,
+});
+const i_MetricSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_MetricSearchCriteria),
+  AndConditions: D.list(i_MetricSearchCriteria),
+  StringCondition: i_StringCondition,
+  BooleanCondition: i_BooleanCondition,
+});
+const i_NotificationSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_NotificationSearchCriteria),
+  AndConditions: D.list(i_NotificationSearchCriteria),
+  StringCondition: i_StringCondition,
+});
+const i_OutboundAdditionalRecipients: D.LazyStruct = () => ({
+  CcEmailAddresses: D.list(i_EmailAddressInfo),
+});
+const i_OutboundCallerConfig: D.LazyStruct = () => ({
+  OutboundCallerIdName: 0,
+  OutboundCallerIdNumberId: 0,
+  OutboundFlowId: 0,
+});
+const i_OutboundEmailConfig: D.LazyStruct = () => ({
+  OutboundEmailAddressId: 0,
+});
+const i_OutboundEmailContent: D.LazyStruct = () => ({
+  MessageSourceType: 0,
+  TemplatedMessageConfig: i_TemplatedMessageConfig,
+  RawMessage: { Subject: 0, Body: 0, ContentType: 0 },
+});
+const i_OutboundStrategy: D.LazyStruct = () => ({
+  Type: 0,
+  Config: {
+    AgentFirst: {
+      Preview: {
+        PostAcceptTimeoutConfig: { DurationInSeconds: 0 },
+        AllowedUserActions: 0,
+      },
+    },
+  },
+});
+const i_ParentHoursOfOperationConfig: D.LazyStruct = () => ({
+  HoursOfOperationId: 0,
+});
+const i_ParticipantCapabilities: D.LazyStruct = () => ({
+  Video: 0,
+  ScreenShare: 0,
+});
+const i_ParticipantDetails: D.LazyStruct = () => ({ DisplayName: 0 });
+const i_PersistentChat: D.LazyStruct = () => ({
+  RehydrationType: 0,
+  SourceContactId: 0,
+});
+const i_PersistentConnectionConfig: D.LazyStruct = () => ({
+  Channel: 0,
+  PersistentConnection: 0,
+});
+const i_PhoneNumberConfig: D.LazyStruct = () => ({
+  Channel: 0,
+  PhoneType: 0,
+  PhoneNumber: 0,
+});
+const i_PredefinedAttributeSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_PredefinedAttributeSearchCriteria),
+  AndConditions: D.list(i_PredefinedAttributeSearchCriteria),
+  StringCondition: i_StringCondition,
+});
+const i_PredefinedAttributeValues: D.LazyStruct = () => ({ StringList: 0 });
+const i_PrimaryAttributeValueFilter: D.LazyStruct = () => ({
+  AttributeName: 0,
+  Values: 0,
+});
+const i_PrimaryValue: D.LazyStruct = () => ({ AttributeName: 0, Value: 0 });
+const i_PromptSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_PromptSearchCriteria),
+  AndConditions: D.list(i_PromptSearchCriteria),
+  StringCondition: i_StringCondition,
+});
+const i_QueueSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_QueueSearchCriteria),
+  AndConditions: D.list(i_QueueSearchCriteria),
+  StringCondition: i_StringCondition,
+  QueueTypeCondition: 0,
+});
+const i_QuickConnectConfig: D.LazyStruct = () => ({
+  QuickConnectType: 0,
+  UserConfig: { UserId: 0, ContactFlowId: 0 },
+  QueueConfig: { QueueId: 0, ContactFlowId: 0 },
+  PhoneConfig: { PhoneNumber: 0 },
+  FlowConfig: { ContactFlowId: 0 },
+});
+const i_QuickConnectSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_QuickConnectSearchCriteria),
+  AndConditions: D.list(i_QuickConnectSearchCriteria),
+  StringCondition: i_StringCondition,
+});
+const i_RecurrenceConfig: D.LazyStruct = () => ({
+  RecurrencePattern: {
+    Frequency: 0,
+    Interval: 0,
+    ByMonth: 0,
+    ByMonthDay: 0,
+    ByWeekdayOccurrence: 0,
+  },
+});
+const i_Reference: D.LazyStruct = () => ({
+  Value: 0,
+  Type: 0,
+  Status: 0,
+  Arn: 0,
+  StatusReason: 0,
+});
+const i_RoutingProfileManualAssignmentQueueConfig: D.LazyStruct = () => ({
+  QueueReference: i_RoutingProfileQueueReference,
+});
+const i_RoutingProfileQueueConfig: D.LazyStruct = () => ({
+  QueueReference: i_RoutingProfileQueueReference,
+  Priority: 0,
+  Delay: 0,
+});
+const i_RoutingProfileQueueReference: D.LazyStruct = () => ({
+  QueueId: 0,
+  Channel: 0,
+});
+const i_RoutingProfileSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_RoutingProfileSearchCriteria),
+  AndConditions: D.list(i_RoutingProfileSearchCriteria),
+  StringCondition: i_StringCondition,
+});
+const i_RuleAction: D.LazyStruct = () => ({
+  ActionType: 0,
+  TaskAction: {
+    Name: 0,
+    Description: 0,
+    ContactFlowId: 0,
+    References: D.map(i_Reference),
+  },
+  EventBridgeAction: { Name: 0 },
+  AssignContactCategoryAction: {},
+  SendNotificationAction: {
+    DeliveryMethod: 0,
+    Subject: 0,
+    Content: 0,
+    ContentType: 0,
+    Recipient: i_NotificationRecipientType,
+    Exclusion: i_NotificationRecipientType,
+  },
+  CreateCaseAction: { Fields: D.list(i_FieldValue), TemplateId: 0 },
+  UpdateCaseAction: { Fields: D.list(i_FieldValue) },
+  AssignSlaAction: {
+    SlaAssignmentType: 0,
+    CaseSlaConfiguration: {
+      Name: 0,
+      Type: 0,
+      FieldId: 0,
+      TargetFieldValues: D.list(i_FieldValueUnion),
+      TargetSlaMinutes: 0,
+    },
+  },
+  EndAssociatedTasksAction: {},
+  SubmitAutoEvaluationAction: { EvaluationFormId: 0 },
+  ExtractInformationAction: {
+    RulesExtractionDefinitions: D.list({ Identifier: 0 }),
+  },
+});
+const i_RuleAttributeAndCondition: D.LazyStruct = () => ({
+  TagConditions: D.list(i_TagCondition),
+});
+const i_RulesSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_RulesSearchCriteria),
+  AndConditions: D.list(i_RulesSearchCriteria),
+  StringCondition: i_StringCondition,
+});
+const i_SearchContactsTimeRange: D.LazyStruct = () => ({
+  Type: 0,
+  StartTime: 0,
+  EndTime: 0,
+});
+const i_SecurityProfileItem: D.LazyStruct = () => ({ Id: 0 });
+const i_SecurityProfileSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_SecurityProfileSearchCriteria),
+  AndConditions: D.list(i_SecurityProfileSearchCriteria),
+  StringCondition: i_StringCondition,
+});
+const i_SegmentAttributeValue: D.LazyStruct = () => ({
+  ValueString: 0,
+  ValueMap: D.map(i_SegmentAttributeValue),
+  ValueInteger: 0,
+  ValueList: D.list(i_SegmentAttributeValue),
+  ValueArn: 0,
+});
+const i_SourceCampaign: D.LazyStruct = () => ({
+  CampaignId: 0,
+  OutboundRequestId: 0,
+});
+const i_TagCondition: D.LazyStruct = () => ({ TagKey: 0, TagValue: 0 });
+const i_TaskTemplateConstraints: D.LazyStruct = () => ({
+  RequiredFields: D.list({ Id: i_TaskTemplateFieldIdentifier }),
+  ReadOnlyFields: D.list({ Id: i_TaskTemplateFieldIdentifier }),
+  InvisibleFields: D.list({ Id: i_TaskTemplateFieldIdentifier }),
+});
+const i_TaskTemplateDefaults: D.LazyStruct = () => ({
+  DefaultFieldValues: D.list({
+    Id: i_TaskTemplateFieldIdentifier,
+    DefaultValue: 0,
+  }),
+});
+const i_TaskTemplateField: D.LazyStruct = () => ({
+  Id: i_TaskTemplateFieldIdentifier,
+  Description: 0,
+  Type: 0,
+  SingleSelectOptions: 0,
+});
+const i_TemplatedMessageConfig: D.LazyStruct = () => ({
+  KnowledgeBaseId: 0,
+  MessageTemplateId: 0,
+  TemplateAttributes: { CustomAttributes: 0, CustomerProfileAttributes: 0 },
+});
+const i_TestCaseEntryPoint: D.LazyStruct = () => ({
+  Type: 0,
+  VoiceCallEntryPointParameters: {
+    SourcePhoneNumber: 0,
+    DestinationPhoneNumber: 0,
+    FlowId: 0,
+  },
+  ChatEntryPointParameters: { FlowId: 0 },
+});
+const i_TestCaseSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_TestCaseSearchCriteria),
+  AndConditions: D.list(i_TestCaseSearchCriteria),
+  StringCondition: i_StringCondition,
+  StatusCondition: 0,
+});
+const i_UserHierarchyGroupSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_UserHierarchyGroupSearchCriteria),
+  AndConditions: D.list(i_UserHierarchyGroupSearchCriteria),
+  StringCondition: i_StringCondition,
+});
+const i_UserIdentityInfo: D.LazyStruct = () => ({
+  FirstName: 0,
+  LastName: 0,
+  Email: 0,
+  SecondaryEmail: 0,
+  Mobile: 0,
+});
+const i_UserInfo: D.LazyStruct = () => ({ UserId: 0 });
+const i_UserPhoneConfig: D.LazyStruct = () => ({
+  PhoneType: 0,
+  AutoAccept: 0,
+  AfterContactWorkTimeLimit: 0,
+  DeskPhoneNumber: 0,
+  PersistentConnection: 0,
+});
+const i_UserProficiency: D.LazyStruct = () => ({
+  AttributeName: 0,
+  AttributeValue: 0,
+  Level: 0,
+});
+const i_UserSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_UserSearchCriteria),
+  AndConditions: D.list(i_UserSearchCriteria),
+  StringCondition: i_StringCondition,
+  ListCondition: {
+    TargetListType: 0,
+    Conditions: D.list({
+      StringCondition: i_StringCondition,
+      NumberCondition: i_NumberCondition,
+    }),
+  },
+  HierarchyGroupCondition: i_HierarchyGroupCondition,
+});
+const i_Validation: D.LazyStruct = () => ({
+  MinLength: 0,
+  MaxLength: 0,
+  MinValues: 0,
+  MaxValues: 0,
+  IgnoreCase: 0,
+  Minimum: 0,
+  Maximum: 0,
+  ExclusiveMinimum: 0,
+  ExclusiveMaximum: 0,
+  MultipleOf: 0,
+  Enum: { Strict: 0, Values: 0 },
+});
+const i_ViewInputContent: D.LazyStruct = () => ({ Template: 0, Actions: 0 });
+const i_ViewSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_ViewSearchCriteria),
+  AndConditions: D.list(i_ViewSearchCriteria),
+  StringCondition: i_StringCondition,
+  ViewTypeCondition: 0,
+  ViewStatusCondition: 0,
+});
+const i_VoiceEnhancementConfig: D.LazyStruct = () => ({
+  Channel: 0,
+  VoiceEnhancementMode: 0,
+});
+const i_WorkspaceAssociationSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_WorkspaceAssociationSearchCriteria),
+  AndConditions: D.list(i_WorkspaceAssociationSearchCriteria),
+  StringCondition: i_StringCondition,
+});
+const i_WorkspaceSearchCriteria: D.LazyStruct = () => ({
+  OrConditions: D.list(i_WorkspaceSearchCriteria),
+  AndConditions: D.list(i_WorkspaceSearchCriteria),
+  StringCondition: i_StringCondition,
+});
+const i_WorkspaceTheme: D.LazyStruct = () => ({
+  Light: i_WorkspaceThemeConfig,
+  Dark: i_WorkspaceThemeConfig,
+});
 const o_AgentStatus: D.LazyStruct = () => ({ LastModifiedTime: D.ts });
 const o_ContactFlow: D.LazyStruct = () => ({ LastModifiedTime: D.ts });
 const o_DataTable: D.LazyStruct = () => ({
@@ -25608,4 +28070,102 @@ const o_View: D.LazyStruct = () => ({
   Content: { InputSchema: D.secret, Actions: D.list(D.secret) },
   CreatedTime: D.ts,
   LastModifiedTime: D.ts,
+});
+const i_AfterContactWorkConfig: D.LazyStruct = () => ({
+  AfterContactWorkTimeLimit: 0,
+});
+const i_AttributeCondition: D.LazyStruct = () => ({
+  Name: 0,
+  Value: 0,
+  ProficiencyLevel: 0,
+  Range: { MinProficiencyLevel: 0, MaxProficiencyLevel: 0 },
+  MatchCriteria: { AgentsCriteria: { AgentIds: 0 } },
+  ComparisonOperator: 0,
+});
+const i_AutomaticFailConfiguration: D.LazyStruct = () => ({ TargetSection: 0 });
+const i_BooleanCondition: D.LazyStruct = () => ({
+  FieldName: 0,
+  ComparisonType: 0,
+});
+const i_CommonAttributeAndCondition: D.LazyStruct = () => ({
+  TagConditions: D.list(i_TagCondition),
+});
+const i_DateTimeCondition: D.LazyStruct = () => ({
+  FieldName: 0,
+  MinValue: 0,
+  MaxValue: 0,
+  ComparisonType: 0,
+});
+const i_EncryptionConfig: D.LazyStruct = () => ({
+  EncryptionType: 0,
+  KeyId: 0,
+});
+const i_EvaluationFormItemEnablementCondition: D.LazyStruct = () => ({
+  Operands: D.list({
+    Expression: {
+      Source: { Type: 0, RefId: 0 },
+      Values: D.list({ Type: 0, RefId: 0 }),
+      Comparator: 0,
+    },
+    Condition: i_EvaluationFormItemEnablementCondition,
+  }),
+  Operator: 0,
+});
+const i_EvaluationFormQuestionAutomationAnswerSource: D.LazyStruct = () => ({
+  SourceType: 0,
+});
+const i_EvaluationFormScoreThreshold: D.LazyStruct = () => ({
+  PerformanceCategory: 0,
+  MinScorePercentage: 0,
+  MaxScorePercentage: 0,
+});
+const i_FieldValue: D.LazyStruct = () => ({ Id: 0, Value: i_FieldValueUnion });
+const i_FieldValueUnion: D.LazyStruct = () => ({
+  BooleanValue: 0,
+  DoubleValue: 0,
+  EmptyValue: {},
+  StringValue: 0,
+});
+const i_HoursOfOperationTimeSlice: D.LazyStruct = () => ({
+  Hours: 0,
+  Minutes: 0,
+});
+const i_NotificationRecipientType: D.LazyStruct = () => ({
+  UserTags: 0,
+  UserIds: 0,
+});
+const i_NumberCondition: D.LazyStruct = () => ({
+  FieldName: 0,
+  MinValue: 0,
+  MaxValue: 0,
+  ComparisonType: 0,
+});
+const i_OverrideTimeSlice: D.LazyStruct = () => ({ Hours: 0, Minutes: 0 });
+const i_QuestionOptionPointsConfiguration: D.LazyStruct = () => ({
+  PointValue: 0,
+  IsBonus: 0,
+});
+const i_StringCondition: D.LazyStruct = () => ({
+  FieldName: 0,
+  Value: 0,
+  ComparisonType: 0,
+});
+const i_TaskTemplateFieldIdentifier: D.LazyStruct = () => ({ Name: 0 });
+const i_WorkspaceThemeConfig: D.LazyStruct = () => ({
+  Palette: {
+    Header: { Background: 0, Text: 0, TextHover: 0, InvertActionsColors: 0 },
+    Navigation: {
+      Background: 0,
+      TextBackgroundHover: 0,
+      TextBackgroundActive: 0,
+      Text: 0,
+      TextHover: 0,
+      TextActive: 0,
+      InvertActionsColors: 0,
+    },
+    Canvas: { ContainerBackground: 0, PageBackground: 0, ActiveBackground: 0 },
+    Primary: { Default: 0, Active: 0, ContrastText: 0 },
+  },
+  Images: { Logo: { Default: 0, Favicon: 0 } },
+  Typography: { FontFamily: { Default: 0 } },
 });

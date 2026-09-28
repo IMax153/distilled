@@ -441,7 +441,7 @@ export const cancelParticipantAuthentication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /participant/cancel-authentication",
-    input: { ConnectionToken: D.m({ header: "X-Amz-Bearer" }) },
+    input: { SessionId: 0, ConnectionToken: D.m({ header: "X-Amz-Bearer" }) },
     body: true,
   },
   errors: [
@@ -486,6 +486,7 @@ export const completeAttachmentUpload: API.OperationMethod<
     service: svc,
     http: "POST /participant/complete-attachment-upload",
     input: {
+      AttachmentIds: 0,
       ClientToken: D.m({ idempotency: true }),
       ConnectionToken: D.m({ header: "X-Amz-Bearer" }),
     },
@@ -585,7 +586,11 @@ export const createParticipantConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /participant/connection",
-    input: { ParticipantToken: D.m({ header: "X-Amz-Bearer" }) },
+    input: {
+      Type: 0,
+      ParticipantToken: D.m({ header: "X-Amz-Bearer" }),
+      ConnectParticipant: 0,
+    },
     output: { WebRTCConnection: { Attendee: { JoinToken: D.secret } } },
     body: true,
   },
@@ -621,7 +626,7 @@ export const describeView: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /participant/views/{ViewToken}",
-    input: { ConnectionToken: D.m({ header: "X-Amz-Bearer" }) },
+    input: { ViewToken: 0, ConnectionToken: D.m({ header: "X-Amz-Bearer" }) },
     output: {
       View: {
         Name: D.secret,
@@ -720,7 +725,11 @@ export const getAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /participant/attachment",
-    input: { ConnectionToken: D.m({ header: "X-Amz-Bearer" }) },
+    input: {
+      AttachmentId: 0,
+      ConnectionToken: D.m({ header: "X-Amz-Bearer" }),
+      UrlExpiryInSeconds: 0,
+    },
     body: true,
   },
   errors: [
@@ -767,7 +776,11 @@ export const getAuthenticationUrl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /participant/authentication-url",
-    input: { ConnectionToken: D.m({ header: "X-Amz-Bearer" }) },
+    input: {
+      SessionId: 0,
+      RedirectUri: 0,
+      ConnectionToken: D.m({ header: "X-Amz-Bearer" }),
+    },
     body: true,
   },
   errors: [
@@ -826,7 +839,15 @@ export const getTranscript: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /participant/transcript",
-    input: { ConnectionToken: D.m({ header: "X-Amz-Bearer" }) },
+    input: {
+      ContactId: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      ScanDirection: 0,
+      SortOrder: 0,
+      StartPosition: { Id: 0, AbsoluteTime: 0, MostRecent: 0 },
+      ConnectionToken: D.m({ header: "X-Amz-Bearer" }),
+    },
     body: true,
   },
   errors: [
@@ -880,6 +901,8 @@ export const sendEvent: API.OperationMethod<
     service: svc,
     http: "POST /participant/event",
     input: {
+      ContentType: 0,
+      Content: 0,
       ClientToken: D.m({ idempotency: true }),
       ConnectionToken: D.m({ header: "X-Amz-Bearer" }),
     },
@@ -924,6 +947,8 @@ export const sendMessage: API.OperationMethod<
     service: svc,
     http: "POST /participant/message",
     input: {
+      ContentType: 0,
+      Content: 0,
       ClientToken: D.m({ idempotency: true }),
       ConnectionToken: D.m({ header: "X-Amz-Bearer" }),
     },
@@ -969,6 +994,9 @@ export const startAttachmentUpload: API.OperationMethod<
     service: svc,
     http: "POST /participant/start-attachment-upload",
     input: {
+      ContentType: 0,
+      AttachmentSizeInBytes: 0,
+      AttachmentName: 0,
       ClientToken: D.m({ idempotency: true }),
       ConnectionToken: D.m({ header: "X-Amz-Bearer" }),
     },

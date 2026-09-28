@@ -400,7 +400,12 @@ export const applyPendingMaintenanceAction: API.OperationMethod<
   ApplyPendingMaintenanceActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /pending-action", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /pending-action",
+    input: { resourceArn: 0, applyAction: 0, optInType: 0, applyOn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -435,6 +440,13 @@ export const copyClusterSnapshot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cluster-snapshot/{snapshotArn}/copy",
+    input: {
+      snapshotArn: 0,
+      targetSnapshotName: 0,
+      kmsKeyId: 0,
+      copyTags: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -471,7 +483,23 @@ export const createCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cluster",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clusterName: 0,
+      authType: 0,
+      adminUserName: 0,
+      adminUserPassword: 0,
+      shardCapacity: 0,
+      shardCount: 0,
+      vpcSecurityGroupIds: 0,
+      subnetIds: 0,
+      kmsKeyId: 0,
+      clientToken: D.m({ idempotency: true }),
+      preferredMaintenanceWindow: 0,
+      tags: 0,
+      backupRetentionPeriod: 0,
+      preferredBackupWindow: 0,
+      shardInstanceCount: 0,
+    },
     body: true,
   },
   errors: [
@@ -505,7 +533,12 @@ export const createClusterSnapshot: API.OperationMethod<
   CreateClusterSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /cluster-snapshot", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /cluster-snapshot",
+    input: { clusterArn: 0, snapshotName: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -537,7 +570,11 @@ export const deleteCluster: API.OperationMethod<
   DeleteClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /cluster/{clusterArn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /cluster/{clusterArn}",
+    input: { clusterArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -568,7 +605,11 @@ export const deleteClusterSnapshot: API.OperationMethod<
   DeleteClusterSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /cluster-snapshot/{snapshotArn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /cluster-snapshot/{snapshotArn}",
+    input: { snapshotArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -598,7 +639,11 @@ export const getCluster: API.OperationMethod<
   GetClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /cluster/{clusterArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /cluster/{clusterArn}",
+    input: { clusterArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -627,7 +672,11 @@ export const getClusterSnapshot: API.OperationMethod<
   GetClusterSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /cluster-snapshot/{snapshotArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /cluster-snapshot/{snapshotArn}",
+    input: { snapshotArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -657,7 +706,11 @@ export const getPendingMaintenanceAction: API.OperationMethod<
   GetPendingMaintenanceActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /pending-action/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /pending-action/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -811,7 +864,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -844,6 +901,16 @@ export const restoreClusterFromSnapshot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cluster-snapshot/{snapshotArn}/restore",
+    input: {
+      clusterName: 0,
+      snapshotArn: 0,
+      vpcSecurityGroupIds: 0,
+      subnetIds: 0,
+      kmsKeyId: 0,
+      tags: 0,
+      shardCapacity: 0,
+      shardInstanceCount: 0,
+    },
     body: true,
   },
   errors: [
@@ -876,7 +943,11 @@ export const startCluster: API.OperationMethod<
   StartClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /cluster/{clusterArn}/start" },
+  descriptor: {
+    service: svc,
+    http: "POST /cluster/{clusterArn}/start",
+    input: { clusterArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -906,7 +977,11 @@ export const stopCluster: API.OperationMethod<
   StopClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /cluster/{clusterArn}/stop" },
+  descriptor: {
+    service: svc,
+    http: "POST /cluster/{clusterArn}/stop",
+    input: { clusterArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -934,7 +1009,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -964,7 +1044,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -998,7 +1078,20 @@ export const updateCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /cluster/{clusterArn}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clusterArn: 0,
+      authType: 0,
+      shardCapacity: 0,
+      shardCount: 0,
+      vpcSecurityGroupIds: 0,
+      subnetIds: 0,
+      adminUserPassword: 0,
+      clientToken: D.m({ idempotency: true }),
+      preferredMaintenanceWindow: 0,
+      backupRetentionPeriod: 0,
+      preferredBackupWindow: 0,
+      shardInstanceCount: 0,
+    },
     body: true,
   },
   errors: [

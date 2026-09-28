@@ -470,6 +470,9 @@ export const addGroupMember: API.OperationMethod<
     http: "POST /GroupMemberships/AddGroupMember",
     input: {
       DirectoryId: D.m({ query: "DirectoryId" }),
+      GroupName: 0,
+      MemberName: 0,
+      MemberRealm: 0,
       ClientToken: D.m({ idempotency: true }),
     },
     body: true,
@@ -510,6 +513,10 @@ export const createGroup: API.OperationMethod<
     http: "POST /Groups/CreateGroup",
     input: {
       DirectoryId: D.m({ query: "DirectoryId" }),
+      SAMAccountName: 0,
+      GroupType: 0,
+      GroupScope: 0,
+      OtherAttributes: D.map(i_AttributeValue),
       ClientToken: D.m({ idempotency: true }),
     },
     body: true,
@@ -549,6 +556,11 @@ export const createUser: API.OperationMethod<
     http: "POST /Users/CreateUser",
     input: {
       DirectoryId: D.m({ query: "DirectoryId" }),
+      SAMAccountName: 0,
+      EmailAddress: 0,
+      GivenName: 0,
+      Surname: 0,
+      OtherAttributes: D.map(i_AttributeValue),
       ClientToken: D.m({ idempotency: true }),
     },
     body: true,
@@ -589,6 +601,7 @@ export const deleteGroup: API.OperationMethod<
     http: "POST /Groups/DeleteGroup",
     input: {
       DirectoryId: D.m({ query: "DirectoryId" }),
+      SAMAccountName: 0,
       ClientToken: D.m({ idempotency: true }),
     },
     body: true,
@@ -630,6 +643,7 @@ export const deleteUser: API.OperationMethod<
     http: "POST /Users/DeleteUser",
     input: {
       DirectoryId: D.m({ query: "DirectoryId" }),
+      SAMAccountName: 0,
       ClientToken: D.m({ idempotency: true }),
     },
     body: true,
@@ -668,7 +682,12 @@ export const describeGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /Groups/DescribeGroup",
-    input: { DirectoryId: D.m({ query: "DirectoryId" }) },
+    input: {
+      DirectoryId: D.m({ query: "DirectoryId" }),
+      Realm: 0,
+      SAMAccountName: 0,
+      OtherAttributes: 0,
+    },
     output: {
       DistinguishedName: D.secret,
       OtherAttributes: D.map(o_AttributeValue),
@@ -708,7 +727,12 @@ export const describeUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /Users/DescribeUser",
-    input: { DirectoryId: D.m({ query: "DirectoryId" }) },
+    input: {
+      DirectoryId: D.m({ query: "DirectoryId" }),
+      SAMAccountName: 0,
+      OtherAttributes: 0,
+      Realm: 0,
+    },
     output: {
       DistinguishedName: D.secret,
       UserPrincipalName: D.secret,
@@ -757,6 +781,7 @@ export const disableUser: API.OperationMethod<
     http: "POST /Users/DisableUser",
     input: {
       DirectoryId: D.m({ query: "DirectoryId" }),
+      SAMAccountName: 0,
       ClientToken: D.m({ idempotency: true }),
     },
     body: true,
@@ -804,7 +829,14 @@ export const listGroupMembers: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GroupMemberships/ListGroupMembers",
-    input: { DirectoryId: D.m({ query: "DirectoryId" }) },
+    input: {
+      DirectoryId: D.m({ query: "DirectoryId" }),
+      Realm: 0,
+      MemberRealm: 0,
+      SAMAccountName: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { NextToken: D.secret },
     body: true,
   },
@@ -855,7 +887,12 @@ export const listGroups: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /Groups/ListGroups",
-    input: { DirectoryId: D.m({ query: "DirectoryId" }) },
+    input: {
+      DirectoryId: D.m({ query: "DirectoryId" }),
+      Realm: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { NextToken: D.secret },
     body: true,
   },
@@ -906,7 +943,14 @@ export const listGroupsForMember: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GroupMemberships/ListGroupsForMember",
-    input: { DirectoryId: D.m({ query: "DirectoryId" }) },
+    input: {
+      DirectoryId: D.m({ query: "DirectoryId" }),
+      Realm: 0,
+      MemberRealm: 0,
+      SAMAccountName: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { NextToken: D.secret },
     body: true,
   },
@@ -957,7 +1001,12 @@ export const listUsers: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /Users/ListUsers",
-    input: { DirectoryId: D.m({ query: "DirectoryId" }) },
+    input: {
+      DirectoryId: D.m({ query: "DirectoryId" }),
+      Realm: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       Users: D.list({ GivenName: D.secret, Surname: D.secret }),
       NextToken: D.secret,
@@ -1005,6 +1054,9 @@ export const removeGroupMember: API.OperationMethod<
     http: "POST /GroupMemberships/RemoveGroupMember",
     input: {
       DirectoryId: D.m({ query: "DirectoryId" }),
+      GroupName: 0,
+      MemberName: 0,
+      MemberRealm: 0,
       ClientToken: D.m({ idempotency: true }),
     },
     body: true,
@@ -1053,7 +1105,14 @@ export const searchGroups: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /Groups/SearchGroups",
-    input: { DirectoryId: D.m({ query: "DirectoryId" }) },
+    input: {
+      DirectoryId: D.m({ query: "DirectoryId" }),
+      SearchString: 0,
+      SearchAttributes: 0,
+      Realm: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       Groups: D.list({
         DistinguishedName: D.secret,
@@ -1111,7 +1170,14 @@ export const searchUsers: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /Users/SearchUsers",
-    input: { DirectoryId: D.m({ query: "DirectoryId" }) },
+    input: {
+      DirectoryId: D.m({ query: "DirectoryId" }),
+      Realm: 0,
+      SearchString: 0,
+      SearchAttributes: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       Users: D.list({
         DistinguishedName: D.secret,
@@ -1166,6 +1232,11 @@ export const updateGroup: API.OperationMethod<
     http: "POST /Groups/UpdateGroup",
     input: {
       DirectoryId: D.m({ query: "DirectoryId" }),
+      SAMAccountName: 0,
+      GroupType: 0,
+      GroupScope: 0,
+      OtherAttributes: D.map(i_AttributeValue),
+      UpdateType: 0,
       ClientToken: D.m({ idempotency: true }),
     },
     body: true,
@@ -1207,6 +1278,12 @@ export const updateUser: API.OperationMethod<
     http: "POST /Users/UpdateUser",
     input: {
       DirectoryId: D.m({ query: "DirectoryId" }),
+      SAMAccountName: 0,
+      EmailAddress: 0,
+      GivenName: 0,
+      Surname: 0,
+      OtherAttributes: D.map(i_AttributeValue),
+      UpdateType: 0,
       ClientToken: D.m({ idempotency: true }),
     },
     body: true,
@@ -1225,6 +1302,7 @@ export const updateUser: API.OperationMethod<
   operationName: "UpdateUser",
 })) as any;
 
+const i_AttributeValue: D.LazyStruct = () => ({ S: 0, N: 0, BOOL: 0, SS: 0 });
 const o_AttributeValue: D.LazyStruct = () => ({
   S: D.secret,
   SS: D.list(D.secret),

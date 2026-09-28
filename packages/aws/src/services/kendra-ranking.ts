@@ -273,7 +273,13 @@ export const createRescoreExecutionPlan: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Description: 0,
+      CapacityUnits: i_CapacityUnitsConfiguration,
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -307,7 +313,7 @@ export const deleteRescoreExecutionPlan: API.OperationMethod<
   DeleteRescoreExecutionPlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -339,7 +345,11 @@ export const describeRescoreExecutionPlan: API.OperationMethod<
   DescribeRescoreExecutionPlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedAt: D.ts, UpdatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { Id: 0 },
+    output: { CreatedAt: D.ts, UpdatedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -372,6 +382,7 @@ export const listRescoreExecutionPlans: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: { SummaryItems: D.list({ CreatedAt: D.ts, UpdatedAt: D.ts }) },
   },
   errors: [
@@ -408,7 +419,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -441,7 +452,22 @@ export const rescore: API.OperationMethod<
   RescoreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      RescoreExecutionPlanId: 0,
+      SearchQuery: 0,
+      Documents: D.list({
+        Id: 0,
+        GroupId: 0,
+        Title: 0,
+        Body: 0,
+        TokenizedTitle: 0,
+        TokenizedBody: 0,
+        OriginalScore: 0,
+      }),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -475,7 +501,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -507,7 +533,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -543,7 +569,15 @@ export const updateRescoreExecutionPlan: API.OperationMethod<
   UpdateRescoreExecutionPlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Id: 0,
+      Name: 0,
+      Description: 0,
+      CapacityUnits: i_CapacityUnitsConfiguration,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -557,3 +591,8 @@ export const updateRescoreExecutionPlan: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateRescoreExecutionPlan",
 })) as any;
+
+const i_CapacityUnitsConfiguration: D.LazyStruct = () => ({
+  RescoreCapacityUnits: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });

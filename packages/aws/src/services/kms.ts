@@ -1314,7 +1314,7 @@ export const cancelKeyDeletion: API.OperationMethod<
   CancelKeyDeletionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { KeyId: 0 } },
   errors: [
     DependencyTimeoutException,
     InvalidArnException,
@@ -1424,7 +1424,7 @@ export const connectCustomKeyStore: API.OperationMethod<
   ConnectCustomKeyStoreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CustomKeyStoreId: 0 } },
   errors: [
     CloudHsmClusterInvalidConfigurationException,
     CloudHsmClusterNotActiveException,
@@ -1499,7 +1499,7 @@ export const createAlias: API.OperationMethod<
   CreateAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AliasName: 0, TargetKeyId: 0 } },
   errors: [
     AlreadyExistsException,
     DependencyTimeoutException,
@@ -1614,7 +1614,22 @@ export const createCustomKeyStore: API.OperationMethod<
   CreateCustomKeyStoreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CustomKeyStoreName: 0,
+      CloudHsmClusterId: 0,
+      TrustAnchorCertificate: 0,
+      KeyStorePassword: 0,
+      CustomKeyStoreType: 0,
+      XksProxyUriEndpoint: 0,
+      XksProxyUriPath: 0,
+      XksProxyVpcEndpointServiceName: 0,
+      XksProxyVpcEndpointServiceOwner: 0,
+      XksProxyAuthenticationCredential: i_XksProxyAuthenticationCredentialType,
+      XksProxyConnectivity: 0,
+    },
+  },
   errors: [
     CloudHsmClusterInUseException,
     CloudHsmClusterInvalidConfigurationException,
@@ -1714,7 +1729,25 @@ export const createGrant: API.OperationMethod<
   CreateGrantError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      KeyId: 0,
+      GranteePrincipal: 0,
+      RetiringPrincipal: 0,
+      Operations: 0,
+      Constraints: {
+        EncryptionContextSubset: 0,
+        EncryptionContextEquals: 0,
+        SourceArn: 0,
+      },
+      GrantTokens: 0,
+      Name: 0,
+      DryRun: 0,
+      GranteeServicePrincipal: 0,
+      RetiringServicePrincipal: 0,
+    },
+  },
   errors: [
     DependencyTimeoutException,
     DisabledException,
@@ -1919,7 +1952,23 @@ export const createKey: API.OperationMethod<
   CreateKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { KeyMetadata: o_KeyMetadata } },
+  descriptor: {
+    service: svc,
+    input: {
+      Policy: 0,
+      Description: 0,
+      KeyUsage: 0,
+      CustomerMasterKeySpec: 0,
+      KeySpec: 0,
+      Origin: 0,
+      CustomKeyStoreId: 0,
+      BypassPolicyLockoutSafetyCheck: 0,
+      Tags: D.list(i_Tag),
+      MultiRegion: 0,
+      XksKeyId: 0,
+    },
+    output: { KeyMetadata: o_KeyMetadata },
+  },
   errors: [
     CloudHsmClusterInvalidConfigurationException,
     CustomKeyStoreInvalidStateException,
@@ -2035,6 +2084,16 @@ export const decrypt: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CiphertextBlob: 0,
+      EncryptionContext: 0,
+      GrantTokens: 0,
+      KeyId: 0,
+      EncryptionAlgorithm: 0,
+      Recipient: i_RecipientInfo,
+      DryRun: 0,
+      DryRunModifiers: 0,
+    },
     output: { Plaintext: D.secretBlob, CiphertextForRecipient: D.blob },
   },
   errors: [
@@ -2103,7 +2162,7 @@ export const deleteAlias: API.OperationMethod<
   DeleteAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AliasName: 0 } },
   errors: [
     DependencyTimeoutException,
     KMSInternalException,
@@ -2178,7 +2237,7 @@ export const deleteCustomKeyStore: API.OperationMethod<
   DeleteCustomKeyStoreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CustomKeyStoreId: 0 } },
   errors: [
     CustomKeyStoreHasCMKsException,
     CustomKeyStoreInvalidStateException,
@@ -2241,7 +2300,7 @@ export const deleteImportedKeyMaterial: API.OperationMethod<
   DeleteImportedKeyMaterialError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { KeyId: 0, KeyMaterialId: 0 } },
   errors: [
     DependencyTimeoutException,
     InvalidArnException,
@@ -2350,6 +2409,14 @@ export const deriveSharedSecret: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      KeyId: 0,
+      KeyAgreementAlgorithm: 0,
+      PublicKey: 0,
+      GrantTokens: 0,
+      DryRun: 0,
+      Recipient: i_RecipientInfo,
+    },
     output: { SharedSecret: D.secretBlob, CiphertextForRecipient: D.blob },
   },
   errors: [
@@ -2433,6 +2500,7 @@ export const describeCustomKeyStores: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { CustomKeyStoreId: 0, CustomKeyStoreName: 0, Limit: 0, Marker: 0 },
     output: {
       CustomKeyStores: D.list({
         CreationDate: D.ts,
@@ -2527,7 +2595,11 @@ export const describeKey: API.OperationMethod<
   DescribeKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { KeyMetadata: o_KeyMetadata } },
+  descriptor: {
+    service: svc,
+    input: { KeyId: 0, GrantTokens: 0 },
+    output: { KeyMetadata: o_KeyMetadata },
+  },
   errors: [
     DependencyTimeoutException,
     InvalidArnException,
@@ -2571,7 +2643,7 @@ export const disableKey: API.OperationMethod<
   DisableKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { KeyId: 0 } },
   errors: [
     DependencyTimeoutException,
     InvalidArnException,
@@ -2634,7 +2706,7 @@ export const disableKeyRotation: API.OperationMethod<
   DisableKeyRotationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { KeyId: 0 } },
   errors: [
     DependencyTimeoutException,
     DisabledException,
@@ -2702,7 +2774,7 @@ export const disconnectCustomKeyStore: API.OperationMethod<
   DisconnectCustomKeyStoreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CustomKeyStoreId: 0 } },
   errors: [
     CustomKeyStoreInvalidStateException,
     CustomKeyStoreNotFoundException,
@@ -2743,7 +2815,7 @@ export const enableKey: API.OperationMethod<
   EnableKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { KeyId: 0 } },
   errors: [
     DependencyTimeoutException,
     InvalidArnException,
@@ -2827,7 +2899,7 @@ export const enableKeyRotation: API.OperationMethod<
   EnableKeyRotationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { KeyId: 0, RotationPeriodInDays: 0 } },
   errors: [
     DependencyTimeoutException,
     DisabledException,
@@ -2930,7 +3002,18 @@ export const encrypt: API.OperationMethod<
   EncryptError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CiphertextBlob: D.blob } },
+  descriptor: {
+    service: svc,
+    input: {
+      KeyId: 0,
+      Plaintext: 0,
+      EncryptionContext: 0,
+      GrantTokens: 0,
+      EncryptionAlgorithm: 0,
+      DryRun: 0,
+    },
+    output: { CiphertextBlob: D.blob },
+  },
   errors: [
     DependencyTimeoutException,
     DisabledException,
@@ -3055,6 +3138,15 @@ export const generateDataKey: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      KeyId: 0,
+      EncryptionContext: 0,
+      NumberOfBytes: 0,
+      KeySpec: 0,
+      GrantTokens: 0,
+      Recipient: i_RecipientInfo,
+      DryRun: 0,
+    },
     output: {
       CiphertextBlob: D.blob,
       Plaintext: D.secretBlob,
@@ -3172,6 +3264,14 @@ export const generateDataKeyPair: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      EncryptionContext: 0,
+      KeyId: 0,
+      KeyPairSpec: 0,
+      GrantTokens: 0,
+      Recipient: i_RecipientInfo,
+      DryRun: 0,
+    },
     output: {
       PrivateKeyCiphertextBlob: D.blob,
       PrivateKeyPlaintext: D.secretBlob,
@@ -3272,6 +3372,13 @@ export const generateDataKeyPairWithoutPlaintext: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      EncryptionContext: 0,
+      KeyId: 0,
+      KeyPairSpec: 0,
+      GrantTokens: 0,
+      DryRun: 0,
+    },
     output: { PrivateKeyCiphertextBlob: D.blob, PublicKey: D.blob },
   },
   errors: [
@@ -3377,7 +3484,18 @@ export const generateDataKeyWithoutPlaintext: API.OperationMethod<
   GenerateDataKeyWithoutPlaintextError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CiphertextBlob: D.blob } },
+  descriptor: {
+    service: svc,
+    input: {
+      KeyId: 0,
+      EncryptionContext: 0,
+      KeySpec: 0,
+      NumberOfBytes: 0,
+      GrantTokens: 0,
+      DryRun: 0,
+    },
+    output: { CiphertextBlob: D.blob },
+  },
   errors: [
     DependencyTimeoutException,
     DisabledException,
@@ -3444,7 +3562,11 @@ export const generateMac: API.OperationMethod<
   GenerateMacError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Mac: D.blob } },
+  descriptor: {
+    service: svc,
+    input: { Message: 0, KeyId: 0, MacAlgorithm: 0, GrantTokens: 0, DryRun: 0 },
+    output: { Mac: D.blob },
+  },
   errors: [
     DisabledException,
     DryRunOperationException,
@@ -3503,6 +3625,11 @@ export const generateRandom: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NumberOfBytes: 0,
+      CustomKeyStoreId: 0,
+      Recipient: i_RecipientInfo,
+    },
     output: { Plaintext: D.secretBlob, CiphertextForRecipient: D.blob },
   },
   errors: [
@@ -3586,6 +3713,7 @@ export const getKeyLastUsage: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { KeyId: 0 },
     output: {
       KeyLastUsage: { Timestamp: D.ts },
       TrackingStartDate: D.ts,
@@ -3628,7 +3756,7 @@ export const getKeyPolicy: API.OperationMethod<
   GetKeyPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { KeyId: 0, PolicyName: 0 } },
   errors: [
     DependencyTimeoutException,
     InvalidArnException,
@@ -3712,6 +3840,7 @@ export const getKeyRotationStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { KeyId: 0 },
     output: { NextRotationDate: D.ts, OnDemandRotationStartDate: D.ts },
   },
   errors: [
@@ -3810,6 +3939,7 @@ export const getParametersForImport: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { KeyId: 0, WrappingAlgorithm: 0, WrappingKeySpec: 0 },
     output: {
       ImportToken: D.blob,
       PublicKey: D.secretBlob,
@@ -3897,7 +4027,11 @@ export const getPublicKey: API.OperationMethod<
   GetPublicKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { PublicKey: D.blob } },
+  descriptor: {
+    service: svc,
+    input: { KeyId: 0, GrantTokens: 0 },
+    output: { PublicKey: D.blob },
+  },
   errors: [
     DependencyTimeoutException,
     DisabledException,
@@ -4049,7 +4183,19 @@ export const importKeyMaterial: API.OperationMethod<
   ImportKeyMaterialError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      KeyId: 0,
+      ImportToken: 0,
+      EncryptedKeyMaterial: 0,
+      ValidTo: 0,
+      ExpirationModel: 0,
+      ImportType: 0,
+      KeyMaterialDescription: 0,
+      KeyMaterialId: 0,
+    },
+  },
   errors: [
     DependencyTimeoutException,
     ExpiredImportTokenException,
@@ -4120,6 +4266,7 @@ export const listAliases: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { KeyId: 0, Limit: 0, Marker: 0 },
     output: { Aliases: D.list({ CreationDate: D.ts, LastUpdatedDate: D.ts }) },
   },
   errors: [
@@ -4195,7 +4342,18 @@ export const listGrants: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   GrantListEntry
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Grants: D.list(o_GrantListEntry) } },
+  descriptor: {
+    service: svc,
+    input: {
+      Limit: 0,
+      Marker: 0,
+      KeyId: 0,
+      GrantId: 0,
+      GranteePrincipal: 0,
+      GranteeServicePrincipal: 0,
+    },
+    output: { Grants: D.list(o_GrantListEntry) },
+  },
   errors: [
     DependencyTimeoutException,
     InvalidArnException,
@@ -4248,7 +4406,7 @@ export const listKeyPolicies: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   PolicyNameType
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { KeyId: 0, Limit: 0, Marker: 0 } },
   errors: [
     DependencyTimeoutException,
     InvalidArnException,
@@ -4316,6 +4474,7 @@ export const listKeyRotations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { KeyId: 0, IncludeKeyMaterial: 0, Limit: 0, Marker: 0 },
     output: { Rotations: D.list({ ValidTo: D.ts, RotationDate: D.ts }) },
   },
   errors: [
@@ -4369,7 +4528,7 @@ export const listKeys: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   KeyListEntry
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Limit: 0, Marker: 0 } },
   errors: [
     DependencyTimeoutException,
     InvalidMarkerException,
@@ -4424,7 +4583,7 @@ export const listResourceTags: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Tag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { KeyId: 0, Limit: 0, Marker: 0 } },
   errors: [
     InvalidArnException,
     InvalidMarkerException,
@@ -4503,7 +4662,16 @@ export const listRetirableGrants: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   GrantListEntry
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Grants: D.list(o_GrantListEntry) } },
+  descriptor: {
+    service: svc,
+    input: {
+      Limit: 0,
+      Marker: 0,
+      RetiringPrincipal: 0,
+      RetiringServicePrincipal: 0,
+    },
+    output: { Grants: D.list(o_GrantListEntry) },
+  },
   errors: [
     DependencyTimeoutException,
     InvalidArnException,
@@ -4557,7 +4725,15 @@ export const putKeyPolicy: API.OperationMethod<
   PutKeyPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      KeyId: 0,
+      PolicyName: 0,
+      Policy: 0,
+      BypassPolicyLockoutSafetyCheck: 0,
+    },
+  },
   errors: [
     DependencyTimeoutException,
     InvalidArnException,
@@ -4674,7 +4850,22 @@ export const reEncrypt: API.OperationMethod<
   ReEncryptError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CiphertextBlob: D.blob } },
+  descriptor: {
+    service: svc,
+    input: {
+      CiphertextBlob: 0,
+      SourceEncryptionContext: 0,
+      SourceKeyId: 0,
+      DestinationKeyId: 0,
+      DestinationEncryptionContext: 0,
+      SourceEncryptionAlgorithm: 0,
+      DestinationEncryptionAlgorithm: 0,
+      GrantTokens: 0,
+      DryRun: 0,
+      DryRunModifiers: 0,
+    },
+    output: { CiphertextBlob: D.blob },
+  },
   errors: [
     DependencyTimeoutException,
     DisabledException,
@@ -4784,7 +4975,18 @@ export const replicateKey: API.OperationMethod<
   ReplicateKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ReplicaKeyMetadata: o_KeyMetadata } },
+  descriptor: {
+    service: svc,
+    input: {
+      KeyId: 0,
+      ReplicaRegion: 0,
+      Policy: 0,
+      BypassPolicyLockoutSafetyCheck: 0,
+      Description: 0,
+      Tags: D.list(i_Tag),
+    },
+    output: { ReplicaKeyMetadata: o_KeyMetadata },
+  },
   errors: [
     AlreadyExistsException,
     DisabledException,
@@ -4855,7 +5057,10 @@ export const retireGrant: API.OperationMethod<
   RetireGrantError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { GrantToken: 0, KeyId: 0, GrantId: 0, DryRun: 0 },
+  },
   errors: [
     DependencyTimeoutException,
     DryRunOperationException,
@@ -4922,7 +5127,7 @@ export const revokeGrant: API.OperationMethod<
   RevokeGrantError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { KeyId: 0, GrantId: 0, DryRun: 0 } },
   errors: [
     DependencyTimeoutException,
     DryRunOperationException,
@@ -5011,7 +5216,7 @@ export const rotateKeyOnDemand: API.OperationMethod<
   RotateKeyOnDemandError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { KeyId: 0 } },
   errors: [
     ConflictException,
     DependencyTimeoutException,
@@ -5097,7 +5302,11 @@ export const scheduleKeyDeletion: API.OperationMethod<
   ScheduleKeyDeletionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DeletionDate: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { KeyId: 0, PendingWindowInDays: 0 },
+    output: { DeletionDate: D.ts },
+  },
   errors: [
     DependencyTimeoutException,
     InvalidArnException,
@@ -5180,7 +5389,18 @@ export const sign: API.OperationMethod<
   SignError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Signature: D.blob } },
+  descriptor: {
+    service: svc,
+    input: {
+      KeyId: 0,
+      Message: 0,
+      MessageType: 0,
+      GrantTokens: 0,
+      SigningAlgorithm: 0,
+      DryRun: 0,
+    },
+    output: { Signature: D.blob },
+  },
   errors: [
     DependencyTimeoutException,
     DisabledException,
@@ -5251,7 +5471,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { KeyId: 0, Tags: D.list(i_Tag) } },
   errors: [
     InvalidArnException,
     KMSInternalException,
@@ -5312,7 +5532,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { KeyId: 0, TagKeys: 0 } },
   errors: [
     InvalidArnException,
     KMSInternalException,
@@ -5389,7 +5609,7 @@ export const updateAlias: API.OperationMethod<
   UpdateAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AliasName: 0, TargetKeyId: 0 } },
   errors: [
     DependencyTimeoutException,
     KMSInternalException,
@@ -5514,7 +5734,21 @@ export const updateCustomKeyStore: API.OperationMethod<
   UpdateCustomKeyStoreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CustomKeyStoreId: 0,
+      NewCustomKeyStoreName: 0,
+      KeyStorePassword: 0,
+      CloudHsmClusterId: 0,
+      XksProxyUriEndpoint: 0,
+      XksProxyUriPath: 0,
+      XksProxyVpcEndpointServiceName: 0,
+      XksProxyVpcEndpointServiceOwner: 0,
+      XksProxyAuthenticationCredential: i_XksProxyAuthenticationCredentialType,
+      XksProxyConnectivity: 0,
+    },
+  },
   errors: [
     CloudHsmClusterInvalidConfigurationException,
     CloudHsmClusterNotActiveException,
@@ -5571,7 +5805,7 @@ export const updateKeyDescription: API.OperationMethod<
   UpdateKeyDescriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { KeyId: 0, Description: 0 } },
   errors: [
     DependencyTimeoutException,
     InvalidArnException,
@@ -5661,7 +5895,7 @@ export const updatePrimaryRegion: API.OperationMethod<
   UpdatePrimaryRegionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { KeyId: 0, PrimaryRegion: 0 } },
   errors: [
     DisabledException,
     InvalidArnException,
@@ -5737,7 +5971,18 @@ export const verify: API.OperationMethod<
   VerifyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      KeyId: 0,
+      Message: 0,
+      MessageType: 0,
+      Signature: 0,
+      SigningAlgorithm: 0,
+      GrantTokens: 0,
+      DryRun: 0,
+    },
+  },
   errors: [
     DependencyTimeoutException,
     DisabledException,
@@ -5800,7 +6045,17 @@ export const verifyMac: API.OperationMethod<
   VerifyMacError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Message: 0,
+      KeyId: 0,
+      MacAlgorithm: 0,
+      Mac: 0,
+      GrantTokens: 0,
+      DryRun: 0,
+    },
+  },
   errors: [
     DisabledException,
     DryRunOperationException,
@@ -5817,6 +6072,15 @@ export const verifyMac: API.OperationMethod<
   operationName: "VerifyMac",
 })) as any;
 
+const i_RecipientInfo: D.LazyStruct = () => ({
+  KeyEncryptionAlgorithm: 0,
+  AttestationDocument: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ TagKey: 0, TagValue: 0 });
+const i_XksProxyAuthenticationCredentialType: D.LazyStruct = () => ({
+  AccessKeyId: 0,
+  RawSecretAccessKey: 0,
+});
 const o_GrantListEntry: D.LazyStruct = () => ({ CreationDate: D.ts });
 const o_KeyMetadata: D.LazyStruct = () => ({
   CreationDate: D.ts,

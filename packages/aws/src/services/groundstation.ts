@@ -1248,7 +1248,11 @@ export const cancelContact: API.OperationMethod<
   CancelContactError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /contact/{contactId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /contact/{contactId}",
+    input: { contactId: 0 },
+  },
   errors: [
     DependencyException,
     InvalidParameterException,
@@ -1276,7 +1280,12 @@ export const createConfig: API.OperationMethod<
   CreateConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /config", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /config",
+    input: { name: 0, configData: i_ConfigTypeData, tags: 0 },
+    body: true,
+  },
   errors: [
     DependencyException,
     InvalidParameterException,
@@ -1306,7 +1315,41 @@ export const createDataflowEndpointGroup: API.OperationMethod<
   CreateDataflowEndpointGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /dataflowEndpointGroup", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /dataflowEndpointGroup",
+    input: {
+      endpointDetails: D.list({
+        securityDetails: { subnetIds: 0, securityGroupIds: 0, roleArn: 0 },
+        endpoint: { name: 0, address: i_SocketAddress, status: 0, mtu: 0 },
+        awsGroundStationAgentEndpoint: {
+          name: 0,
+          egressAddress: i_ConnectionDetails,
+          ingressAddress: i_RangedConnectionDetails,
+          agentStatus: 0,
+          auditResults: 0,
+        },
+        uplinkAwsGroundStationAgentEndpoint: {
+          name: 0,
+          dataflowDetails: i_UplinkDataflowDetails,
+          agentStatus: 0,
+          auditResults: 0,
+        },
+        downlinkAwsGroundStationAgentEndpoint: {
+          name: 0,
+          dataflowDetails: i_DownlinkDataflowDetails,
+          agentStatus: 0,
+          auditResults: 0,
+        },
+        healthStatus: 0,
+        healthReasons: 0,
+      }),
+      tags: 0,
+      contactPrePassDurationSeconds: 0,
+      contactPostPassDurationSeconds: 0,
+    },
+    body: true,
+  },
   errors: [
     DependencyException,
     InvalidParameterException,
@@ -1339,6 +1382,21 @@ export const createDataflowEndpointGroupV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /dataflowEndpointGroupV2",
+    input: {
+      endpoints: D.list({
+        uplinkAwsGroundStationAgentEndpoint: {
+          name: 0,
+          dataflowDetails: i_UplinkDataflowDetails,
+        },
+        downlinkAwsGroundStationAgentEndpoint: {
+          name: 0,
+          dataflowDetails: i_DownlinkDataflowDetails,
+        },
+      }),
+      contactPrePassDurationSeconds: 0,
+      contactPostPassDurationSeconds: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1370,21 +1428,41 @@ export const createEphemeris: API.OperationMethod<
     service: svc,
     http: "POST /ephemeris",
     input: {
+      satelliteId: 0,
+      enabled: 0,
+      priority: 0,
+      expirationTime: 0,
+      name: 0,
+      kmsKeyArn: 0,
       ephemeris: {
+        tle: {
+          s3Object: i_S3Object,
+          tleData: D.list({
+            tleLine1: 0,
+            tleLine2: 0,
+            validTimeRange: { startTime: 0, endTime: 0 },
+          }),
+        },
+        oem: { s3Object: i_S3Object, oemData: 0 },
         azEl: {
+          groundStation: 0,
           data: {
+            s3Object: i_S3Object,
             azElData: {
+              angleUnit: 0,
               azElSegmentList: D.list({
                 referenceEpoch: D.tsAs("date-time"),
                 validTimeRange: {
                   startTime: D.tsAs("date-time"),
                   endTime: D.tsAs("date-time"),
                 },
+                azElList: D.list({ dt: 0, az: 0, el: 0 }),
               }),
             },
           },
         },
       },
+      tags: 0,
     },
     body: true,
   },
@@ -1414,7 +1492,23 @@ export const createMissionProfile: API.OperationMethod<
   CreateMissionProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /missionprofile", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /missionprofile",
+    input: {
+      name: 0,
+      contactPrePassDurationSeconds: 0,
+      contactPostPassDurationSeconds: 0,
+      minimumViableContactDurationSeconds: 0,
+      dataflowEdges: 0,
+      trackingConfigArn: 0,
+      telemetrySinkConfigArn: 0,
+      tags: 0,
+      streamsKmsKey: i_KmsKey,
+      streamsKmsRole: 0,
+    },
+    body: true,
+  },
   errors: [
     DependencyException,
     InvalidParameterException,
@@ -1439,7 +1533,11 @@ export const deleteConfig: API.OperationMethod<
   DeleteConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /config/{configType}/{configId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /config/{configType}/{configId}",
+    input: { configId: 0, configType: 0 },
+  },
   errors: [
     DependencyException,
     InvalidParameterException,
@@ -1467,6 +1565,7 @@ export const deleteDataflowEndpointGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /dataflowEndpointGroup/{dataflowEndpointGroupId}",
+    input: { dataflowEndpointGroupId: 0 },
   },
   errors: [
     DependencyException,
@@ -1493,7 +1592,11 @@ export const deleteEphemeris: API.OperationMethod<
   DeleteEphemerisError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /ephemeris/{ephemerisId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /ephemeris/{ephemerisId}",
+    input: { ephemerisId: 0 },
+  },
   errors: [
     DependencyException,
     InvalidParameterException,
@@ -1522,6 +1625,7 @@ export const deleteMissionProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /missionprofile/{missionProfileId}",
+    input: { missionProfileId: 0 },
   },
   errors: [
     DependencyException,
@@ -1550,6 +1654,7 @@ export const describeContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /contact/{contactId}",
+    input: { contactId: 0 },
     output: {
       startTime: D.ts,
       endTime: D.ts,
@@ -1587,6 +1692,7 @@ export const describeContactVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /contact/{contactId}/versions/{versionId}",
+    input: { contactId: 0, versionId: 0 },
     output: {
       startTime: D.ts,
       endTime: D.ts,
@@ -1624,6 +1730,7 @@ export const describeEphemeris: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /ephemeris/{ephemerisId}",
+    input: { ephemerisId: 0 },
     output: { creationTime: D.ts },
   },
   errors: [
@@ -1652,7 +1759,11 @@ export const getAgentConfiguration: API.OperationMethod<
   GetAgentConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /agent/{agentId}/configuration" },
+  descriptor: {
+    service: svc,
+    http: "GET /agent/{agentId}/configuration",
+    input: { agentId: 0 },
+  },
   errors: [
     DependencyException,
     InvalidParameterException,
@@ -1682,6 +1793,7 @@ export const getAgentTaskResponseUrl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /agentResponseUrl/{agentId}/{taskId}",
+    input: { agentId: 0, taskId: 0 },
   },
   errors: [
     DependencyException,
@@ -1709,7 +1821,11 @@ export const getConfig: API.OperationMethod<
   GetConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /config/{configType}/{configId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /config/{configType}/{configId}",
+    input: { configId: 0, configType: 0 },
+  },
   errors: [
     DependencyException,
     InvalidParameterException,
@@ -1737,6 +1853,7 @@ export const getDataflowEndpointGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /dataflowEndpointGroup/{dataflowEndpointGroupId}",
+    input: { dataflowEndpointGroupId: 0 },
   },
   errors: [
     DependencyException,
@@ -1762,7 +1879,12 @@ export const getMinuteUsage: API.OperationMethod<
   GetMinuteUsageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /minute-usage", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /minute-usage",
+    input: { month: 0, year: 0 },
+    body: true,
+  },
   errors: [
     DependencyException,
     InvalidParameterException,
@@ -1787,7 +1909,11 @@ export const getMissionProfile: API.OperationMethod<
   GetMissionProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /missionprofile/{missionProfileId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /missionprofile/{missionProfileId}",
+    input: { missionProfileId: 0 },
+  },
   errors: [
     DependencyException,
     InvalidParameterException,
@@ -1815,6 +1941,7 @@ export const getSatellite: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /satellite/{satelliteId}",
+    input: { satelliteId: 0 },
     output: { currentEphemeris: o_EphemerisMetaData },
   },
   errors: [
@@ -1845,6 +1972,7 @@ export const listAntennas: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /groundstation/{groundStationId}/antenna",
     input: {
+      groundStationId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -1920,6 +2048,17 @@ export const listContacts: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contacts",
+    input: {
+      maxResults: 0,
+      nextToken: 0,
+      statusList: 0,
+      startTime: 0,
+      endTime: 0,
+      groundStation: 0,
+      satelliteArn: 0,
+      missionProfileArn: 0,
+      ephemeris: { azEl: { id: 0 } },
+    },
     output: {
       contactList: D.list({
         startTime: D.ts,
@@ -1968,6 +2107,7 @@ export const listContactVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /contact/{contactId}/versions",
     input: {
+      contactId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -2047,6 +2187,11 @@ export const listEphemerides: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /ephemerides",
     input: {
+      satelliteId: 0,
+      ephemerisType: 0,
+      startTime: 0,
+      endTime: 0,
+      statusList: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -2087,6 +2232,7 @@ export const listGroundStationReservations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /groundstation/{groundStationId}/reservation",
     input: {
+      groundStationId: 0,
       startTime: D.m({ query: "startTime", shape: D.tsAs("epoch-seconds") }),
       endTime: D.m({ query: "endTime", shape: D.tsAs("epoch-seconds") }),
       reservationTypes: D.m({ query: "reservationTypes" }),
@@ -2240,7 +2386,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     DependencyException,
     InvalidParameterException,
@@ -2267,7 +2417,27 @@ export const registerAgent: API.OperationMethod<
   RegisterAgentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /agent", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /agent",
+    input: {
+      discoveryData: {
+        publicIpAddresses: 0,
+        privateIpAddresses: 0,
+        capabilityArns: 0,
+      },
+      agentDetails: {
+        agentVersion: 0,
+        instanceId: 0,
+        instanceType: 0,
+        reservedCpuCores: 0,
+        agentCpuCores: 0,
+        componentVersions: D.list({ componentType: 0, versions: 0 }),
+      },
+      tags: 0,
+    },
+    body: true,
+  },
   errors: [
     DependencyException,
     InvalidParameterException,
@@ -2293,7 +2463,20 @@ export const reserveContact: API.OperationMethod<
   ReserveContactError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /contact", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /contact",
+    input: {
+      missionProfileArn: 0,
+      satelliteArn: 0,
+      startTime: 0,
+      endTime: 0,
+      groundStation: 0,
+      tags: 0,
+      trackingOverrides: i_TrackingOverrides,
+    },
+    body: true,
+  },
   errors: [
     DependencyException,
     InvalidParameterException,
@@ -2319,7 +2502,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     DependencyException,
     InvalidParameterException,
@@ -2347,7 +2535,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     DependencyException,
@@ -2375,7 +2563,25 @@ export const updateAgentStatus: API.OperationMethod<
   UpdateAgentStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /agent/{agentId}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /agent/{agentId}",
+    input: {
+      agentId: 0,
+      taskId: 0,
+      aggregateStatus: { status: 0, signatureMap: 0 },
+      componentStatuses: D.list({
+        componentType: 0,
+        capabilityArn: 0,
+        status: 0,
+        bytesSent: 0,
+        bytesReceived: 0,
+        packetsDropped: 0,
+        dataflowId: 0,
+      }),
+    },
+    body: true,
+  },
   errors: [
     DependencyException,
     InvalidParameterException,
@@ -2405,6 +2611,12 @@ export const updateConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /config/{configType}/{configId}",
+    input: {
+      configId: 0,
+      name: 0,
+      configType: 0,
+      configData: i_ConfigTypeData,
+    },
     body: true,
   },
   errors: [
@@ -2435,7 +2647,12 @@ export const updateContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /contact/{contactId}/versions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      contactId: 0,
+      clientToken: D.m({ idempotency: true }),
+      trackingOverrides: i_TrackingOverrides,
+      satelliteArn: 0,
+    },
     body: true,
   },
   errors: [
@@ -2466,6 +2683,7 @@ export const updateEphemeris: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /ephemeris/{ephemerisId}",
+    input: { ephemerisId: 0, enabled: 0, name: 0, priority: 0 },
     body: true,
   },
   errors: [
@@ -2497,6 +2715,18 @@ export const updateMissionProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /missionprofile/{missionProfileId}",
+    input: {
+      missionProfileId: 0,
+      name: 0,
+      contactPrePassDurationSeconds: 0,
+      contactPostPassDurationSeconds: 0,
+      minimumViableContactDurationSeconds: 0,
+      dataflowEdges: 0,
+      trackingConfigArn: 0,
+      telemetrySinkConfigArn: 0,
+      streamsKmsKey: i_KmsKey,
+      streamsKmsRole: 0,
+    },
     body: true,
   },
   errors: [
@@ -2509,6 +2739,66 @@ export const updateMissionProfile: API.OperationMethod<
   operationName: "UpdateMissionProfile",
 })) as any;
 
+const i_ConfigTypeData: D.LazyStruct = () => ({
+  antennaDownlinkConfig: { spectrumConfig: i_SpectrumConfig },
+  trackingConfig: { autotrack: 0 },
+  dataflowEndpointConfig: {
+    dataflowEndpointName: 0,
+    dataflowEndpointRegion: 0,
+  },
+  antennaDownlinkDemodDecodeConfig: {
+    spectrumConfig: i_SpectrumConfig,
+    demodulationConfig: { unvalidatedJSON: 0 },
+    decodeConfig: { unvalidatedJSON: 0 },
+  },
+  antennaUplinkConfig: {
+    transmitDisabled: 0,
+    spectrumConfig: { centerFrequency: i_Frequency, polarization: 0 },
+    targetEirp: { value: 0, units: 0 },
+  },
+  uplinkEchoConfig: { enabled: 0, antennaUplinkConfigArn: 0 },
+  s3RecordingConfig: { bucketArn: 0, roleArn: 0, prefix: 0 },
+  telemetrySinkConfig: {
+    telemetrySinkType: 0,
+    telemetrySinkData: {
+      kinesisDataStreamData: { kinesisRoleArn: 0, kinesisDataStreamArn: 0 },
+    },
+  },
+});
+const i_ConnectionDetails: D.LazyStruct = () => ({
+  socketAddress: i_SocketAddress,
+  mtu: 0,
+});
+const i_DownlinkDataflowDetails: D.LazyStruct = () => ({
+  agentConnectionDetails: {
+    agentIpAndPortAddress: i_RangedConnectionDetails,
+    egressAddressAndPort: i_ConnectionDetails,
+  },
+});
+const i_KmsKey: D.LazyStruct = () => ({
+  kmsKeyArn: 0,
+  kmsAliasArn: 0,
+  kmsAliasName: 0,
+});
+const i_RangedConnectionDetails: D.LazyStruct = () => ({
+  socketAddress: { name: 0, portRange: { minimum: 0, maximum: 0 } },
+  mtu: 0,
+});
+const i_S3Object: D.LazyStruct = () => ({ bucket: 0, key: 0, version: 0 });
+const i_SocketAddress: D.LazyStruct = () => ({ name: 0, port: 0 });
+const i_TrackingOverrides: D.LazyStruct = () => ({
+  programTrackSettings: {
+    azEl: { ephemerisId: 0 },
+    oem: { ephemerisId: 0 },
+    tle: { ephemerisId: 0 },
+  },
+});
+const i_UplinkDataflowDetails: D.LazyStruct = () => ({
+  agentConnectionDetails: {
+    ingressAddressAndPort: i_ConnectionDetails,
+    agentIpAndPortAddress: i_RangedConnectionDetails,
+  },
+});
 const o_ContactVersion: D.LazyStruct = () => ({
   created: D.ts,
   activated: D.ts,
@@ -2516,3 +2806,9 @@ const o_ContactVersion: D.LazyStruct = () => ({
   lastUpdated: D.ts,
 });
 const o_EphemerisMetaData: D.LazyStruct = () => ({ epoch: D.ts });
+const i_Frequency: D.LazyStruct = () => ({ value: 0, units: 0 });
+const i_SpectrumConfig: D.LazyStruct = () => ({
+  centerFrequency: i_Frequency,
+  bandwidth: { value: 0, units: 0 },
+  polarization: 0,
+});

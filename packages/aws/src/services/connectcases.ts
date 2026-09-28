@@ -1306,6 +1306,7 @@ export const batchGetCaseRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/rules-batch",
+    input: { domainId: 0, caseRules: D.list({ id: 0 }) },
     output: {
       caseRules: D.list({ createdTime: D.ts, lastModifiedTime: D.ts }),
     },
@@ -1342,6 +1343,7 @@ export const batchGetField: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/fields-batch",
+    input: { domainId: 0, fields: D.list(i_FieldIdentifier) },
     output: { fields: D.list({ createdTime: D.ts, lastModifiedTime: D.ts }) },
     body: true,
   },
@@ -1377,6 +1379,11 @@ export const batchPutFieldOptions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{domainId}/fields/{fieldId}/options",
+    input: {
+      domainId: 0,
+      fieldId: 0,
+      options: D.list({ name: 0, value: 0, active: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -1422,7 +1429,14 @@ export const createCase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/cases",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainId: 0,
+      templateId: 0,
+      fields: D.list(i_FieldValue),
+      clientToken: D.m({ idempotency: true }),
+      performedBy: i_UserUnion,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1459,6 +1473,7 @@ export const createCaseRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/case-rules",
+    input: { domainId: 0, name: 0, description: 0, rule: i_CaseRuleDetails },
     body: true,
   },
   errors: [
@@ -1494,7 +1509,12 @@ export const createDomain: API.OperationMethod<
   CreateDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /domains", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /domains",
+    input: { name: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1529,6 +1549,13 @@ export const createField: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/fields",
+    input: {
+      domainId: 0,
+      name: 0,
+      type: 0,
+      description: 0,
+      attributes: i_FieldAttributes,
+    },
     body: true,
   },
   errors: [
@@ -1572,6 +1599,7 @@ export const createLayout: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/layouts",
+    input: { domainId: 0, name: 0, content: i_LayoutContent },
     body: true,
   },
   errors: [
@@ -1638,6 +1666,28 @@ export const createRelatedItem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/cases/{caseId}/related-items/",
+    input: {
+      domainId: 0,
+      caseId: 0,
+      type: 0,
+      content: {
+        contact: { contactArn: 0 },
+        comment: { body: 0, contentType: 0 },
+        file: { fileArn: 0 },
+        sla: {
+          slaInputConfiguration: {
+            name: 0,
+            type: 0,
+            fieldId: 0,
+            targetFieldValues: D.list(i_FieldValueUnion),
+            targetSlaMinutes: 0,
+          },
+        },
+        connectCase: { caseId: 0 },
+        custom: { fields: D.list(i_FieldValue) },
+      },
+      performedBy: i_UserUnion,
+    },
     body: true,
   },
   errors: [
@@ -1684,6 +1734,16 @@ export const createTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/templates",
+    input: {
+      domainId: 0,
+      name: 0,
+      description: 0,
+      layoutConfiguration: i_LayoutConfiguration,
+      requiredFields: D.list(i_RequiredField),
+      status: 0,
+      rules: D.list(i_TemplateRule),
+      tagPropagationConfigurations: D.list(i_TagPropagationConfiguration),
+    },
     body: true,
   },
   errors: [
@@ -1727,6 +1787,7 @@ export const deleteCase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domains/{domainId}/cases/{caseId}",
+    input: { domainId: 0, caseId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1759,6 +1820,7 @@ export const deleteCaseRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domains/{domainId}/case-rules/{caseRuleId}",
+    input: { domainId: 0, caseRuleId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1791,7 +1853,11 @@ export const deleteDomain: API.OperationMethod<
   DeleteDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /domains/{domainId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /domains/{domainId}",
+    input: { domainId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1852,6 +1918,7 @@ export const deleteField: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domains/{domainId}/fields/{fieldId}",
+    input: { domainId: 0, fieldId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1895,6 +1962,7 @@ export const deleteLayout: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domains/{domainId}/layouts/{layoutId}",
+    input: { domainId: 0, layoutId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1930,6 +1998,7 @@ export const deleteRelatedItem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domains/{domainId}/cases/{caseId}/related-items/{relatedItemId}",
+    input: { domainId: 0, caseId: 0, relatedItemId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1973,6 +2042,7 @@ export const deleteTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domains/{domainId}/templates/{templateId}",
+    input: { domainId: 0, templateId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2007,6 +2077,12 @@ export const getCase: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/cases/{caseId}",
+    input: {
+      caseId: 0,
+      domainId: 0,
+      fields: D.list(i_FieldIdentifier),
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -2042,6 +2118,7 @@ export const getCaseAuditEvents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/cases/{caseId}/audit-history",
+    input: { caseId: 0, domainId: 0, maxResults: 0, nextToken: 0 },
     output: {
       auditEvents: D.list({
         performedTime: D.ts,
@@ -2086,6 +2163,7 @@ export const getCaseEventConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/case-event-configuration",
+    input: { domainId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2118,6 +2196,7 @@ export const getDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}",
+    input: { domainId: 0 },
     output: { createdTime: D.ts },
   },
   errors: [
@@ -2151,6 +2230,7 @@ export const getLayout: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/layouts/{layoutId}",
+    input: { domainId: 0, layoutId: 0 },
     output: { createdTime: D.ts, lastModifiedTime: D.ts },
   },
   errors: [
@@ -2192,6 +2272,7 @@ export const getTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/templates/{templateId}",
+    input: { domainId: 0, templateId: 0 },
     output: { createdTime: D.ts, lastModifiedTime: D.ts },
   },
   errors: [
@@ -2227,6 +2308,7 @@ export const listCaseRules: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /domains/{domainId}/rules-list/",
     input: {
+      domainId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -2269,6 +2351,7 @@ export const listCasesForContact: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/list-cases-for-contact",
+    input: { domainId: 0, contactArn: 0, maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [
@@ -2349,6 +2432,8 @@ export const listFieldOptions: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /domains/{domainId}/fields/{fieldId}/options-list",
     input: {
+      domainId: 0,
+      fieldId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
       values: D.m({ query: "values" }),
@@ -2392,6 +2477,7 @@ export const listFields: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /domains/{domainId}/fields-list",
     input: {
+      domainId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -2434,6 +2520,7 @@ export const listLayouts: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /domains/{domainId}/layouts-list",
     input: {
+      domainId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -2471,7 +2558,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{arn}" },
+  descriptor: { service: svc, http: "GET /tags/{arn}", input: { arn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2515,6 +2602,7 @@ export const listTemplates: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /domains/{domainId}/templates-list",
     input: {
+      domainId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
       status: D.m({ query: "status" }),
@@ -2557,6 +2645,16 @@ export const putCaseEventConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{domainId}/case-event-configuration",
+    input: {
+      domainId: 0,
+      eventBridge: {
+        enabled: 0,
+        includedData: {
+          caseData: { fields: D.list(i_FieldIdentifier) },
+          relatedItemData: { includeContent: 0 },
+        },
+      },
+    },
     body: true,
   },
   errors: [
@@ -2610,6 +2708,13 @@ export const searchAllRelatedItems: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/related-items-search",
+    input: {
+      domainId: 0,
+      maxResults: 0,
+      nextToken: 0,
+      filters: D.list(i_RelatedItemTypeFilter),
+      sorts: D.list({ sortProperty: 0, sortOrder: 0 }),
+    },
     output: {
       relatedItems: D.list({
         associationTime: D.ts,
@@ -2659,6 +2764,15 @@ export const searchCases: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/cases-search",
+    input: {
+      domainId: 0,
+      maxResults: 0,
+      nextToken: 0,
+      searchTerm: 0,
+      filter: i_CaseFilter,
+      sorts: D.list({ fieldId: 0, sortOrder: 0 }),
+      fields: D.list(i_FieldIdentifier),
+    },
     body: true,
   },
   errors: [
@@ -2701,6 +2815,13 @@ export const searchRelatedItems: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{domainId}/cases/{caseId}/related-items-search",
+    input: {
+      domainId: 0,
+      caseId: 0,
+      maxResults: 0,
+      nextToken: 0,
+      filters: D.list(i_RelatedItemTypeFilter),
+    },
     output: {
       relatedItems: D.list({
         associationTime: D.ts,
@@ -2744,7 +2865,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{arn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{arn}",
+    input: { arn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2776,7 +2902,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{arn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { arn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -2813,6 +2939,12 @@ export const updateCase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{domainId}/cases/{caseId}",
+    input: {
+      domainId: 0,
+      caseId: 0,
+      fields: D.list(i_FieldValue),
+      performedBy: i_UserUnion,
+    },
     body: true,
   },
   errors: [
@@ -2848,6 +2980,13 @@ export const updateCaseRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{domainId}/case-rules/{caseRuleId}",
+    input: {
+      domainId: 0,
+      caseRuleId: 0,
+      name: 0,
+      description: 0,
+      rule: i_CaseRuleDetails,
+    },
     body: true,
   },
   errors: [
@@ -2884,6 +3023,13 @@ export const updateField: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{domainId}/fields/{fieldId}",
+    input: {
+      domainId: 0,
+      fieldId: 0,
+      name: 0,
+      description: 0,
+      attributes: i_FieldAttributes,
+    },
     body: true,
   },
   errors: [
@@ -2926,6 +3072,7 @@ export const updateLayout: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{domainId}/layouts/{layoutId}",
+    input: { domainId: 0, layoutId: 0, name: 0, content: i_LayoutContent },
     body: true,
   },
   errors: [
@@ -2976,6 +3123,16 @@ export const updateRelatedItem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{domainId}/cases/{caseId}/related-items/{relatedItemId}",
+    input: {
+      domainId: 0,
+      caseId: 0,
+      relatedItemId: 0,
+      content: {
+        comment: { body: 0, contentType: 0 },
+        custom: { fields: D.list(i_FieldValue) },
+      },
+      performedBy: i_UserUnion,
+    },
     output: {
       content: o_RelatedItemContent,
       associationTime: D.ts,
@@ -3028,6 +3185,17 @@ export const updateTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{domainId}/templates/{templateId}",
+    input: {
+      domainId: 0,
+      templateId: 0,
+      name: 0,
+      description: 0,
+      layoutConfiguration: i_LayoutConfiguration,
+      requiredFields: D.list(i_RequiredField),
+      status: 0,
+      rules: D.list(i_TemplateRule),
+      tagPropagationConfigurations: D.list(i_TagPropagationConfiguration),
+    },
     body: true,
   },
   errors: [
@@ -3044,6 +3212,54 @@ export const updateTemplate: API.OperationMethod<
   operationName: "UpdateTemplate",
 })) as any;
 
+const i_CaseFilter: D.LazyStruct = () => ({
+  field: i_FieldFilter,
+  not: i_CaseFilter,
+  tag: { equalTo: { key: 0, value: 0 } },
+  andAll: D.list(i_CaseFilter),
+  orAll: D.list(i_CaseFilter),
+});
+const i_CaseRuleDetails: D.LazyStruct = () => ({
+  required: { defaultValue: 0, conditions: D.list(i_BooleanCondition) },
+  fieldOptions: {
+    parentFieldId: 0,
+    childFieldId: 0,
+    parentChildFieldOptionsMappings: D.list({
+      parentFieldOptionValue: 0,
+      childFieldOptionValues: 0,
+    }),
+  },
+  hidden: { defaultValue: 0, conditions: D.list(i_BooleanCondition) },
+});
+const i_FieldAttributes: D.LazyStruct = () => ({ text: { isMultiline: 0 } });
+const i_FieldIdentifier: D.LazyStruct = () => ({ id: 0 });
+const i_FieldValue: D.LazyStruct = () => ({ id: 0, value: i_FieldValueUnion });
+const i_FieldValueUnion: D.LazyStruct = () => ({
+  stringValue: 0,
+  doubleValue: 0,
+  booleanValue: 0,
+  emptyValue: {},
+  userArnValue: 0,
+});
+const i_LayoutConfiguration: D.LazyStruct = () => ({ defaultLayout: 0 });
+const i_LayoutContent: D.LazyStruct = () => ({
+  basic: { topPanel: i_LayoutSections, moreInfo: i_LayoutSections },
+});
+const i_RelatedItemTypeFilter: D.LazyStruct = () => ({
+  contact: { channel: 0, contactArn: 0 },
+  comment: {},
+  file: { fileArn: 0 },
+  sla: { name: 0, status: 0 },
+  connectCase: { caseId: 0 },
+  custom: { fields: i_CustomFieldsFilter },
+});
+const i_RequiredField: D.LazyStruct = () => ({ fieldId: 0 });
+const i_TagPropagationConfiguration: D.LazyStruct = () => ({
+  resourceType: 0,
+  tagMap: 0,
+});
+const i_TemplateRule: D.LazyStruct = () => ({ caseRuleId: 0, fieldId: 0 });
+const i_UserUnion: D.LazyStruct = () => ({ userArn: 0, customEntity: 0 });
 const o_RelatedItemContent: D.LazyStruct = () => ({
   contact: { connectedToSystemTime: D.ts },
   sla: {
@@ -3055,3 +3271,39 @@ const o_RelatedItemContent: D.LazyStruct = () => ({
   },
 });
 const o_UserUnion: D.LazyStruct = () => ({ customEntity: D.secret });
+const i_BooleanCondition: D.LazyStruct = () => ({
+  equalTo: i_BooleanOperands,
+  notEqualTo: i_BooleanOperands,
+  andAll: i_CompoundCondition,
+  orAll: i_CompoundCondition,
+});
+const i_CustomFieldsFilter: D.LazyStruct = () => ({
+  field: i_FieldFilter,
+  not: i_CustomFieldsFilter,
+  andAll: D.list(i_CustomFieldsFilter),
+  orAll: D.list(i_CustomFieldsFilter),
+});
+const i_FieldFilter: D.LazyStruct = () => ({
+  equalTo: i_FieldValue,
+  contains: i_FieldValue,
+  greaterThan: i_FieldValue,
+  greaterThanOrEqualTo: i_FieldValue,
+  lessThan: i_FieldValue,
+  lessThanOrEqualTo: i_FieldValue,
+});
+const i_LayoutSections: D.LazyStruct = () => ({
+  sections: D.list({ fieldGroup: { name: 0, fields: D.list({ id: 0 }) } }),
+});
+const i_BooleanOperands: D.LazyStruct = () => ({
+  operandOne: { fieldId: 0 },
+  operandTwo: {
+    stringValue: 0,
+    booleanValue: 0,
+    doubleValue: 0,
+    emptyValue: {},
+  },
+  result: 0,
+});
+const i_CompoundCondition: D.LazyStruct = () => ({
+  conditions: D.list(i_BooleanCondition),
+});

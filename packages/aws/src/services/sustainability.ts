@@ -279,7 +279,16 @@ export const getEstimatedCarbonEmissions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/estimated-carbon-emissions",
-    input: { TimePeriod: i_TimePeriod },
+    input: {
+      TimePeriod: i_TimePeriod,
+      GroupBy: 0,
+      FilterBy: i_FilterExpression,
+      EmissionsTypes: 0,
+      Granularity: 0,
+      GranularityConfiguration: { FiscalYearStartMonth: 0 },
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { Results: D.list({ TimePeriod: o_TimePeriod }) },
     body: true,
   },
@@ -319,7 +328,12 @@ export const getEstimatedCarbonEmissionsDimensionValues: API.PaginatedOperationM
   descriptor: {
     service: svc,
     http: "POST /v1/estimated-carbon-emissions-dimension-values",
-    input: { TimePeriod: i_TimePeriod },
+    input: {
+      TimePeriod: i_TimePeriod,
+      Dimensions: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -358,7 +372,15 @@ export const getEstimatedWaterAllocation: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/estimated-water-allocation",
-    input: { TimePeriod: i_TimePeriod },
+    input: {
+      TimePeriod: i_TimePeriod,
+      GroupBy: 0,
+      FilterBy: i_FilterExpression,
+      AllocationTypes: 0,
+      Granularity: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { Results: D.list({ TimePeriod: o_TimePeriod }) },
     body: true,
   },
@@ -398,7 +420,12 @@ export const getEstimatedWaterAllocationDimensionValues: API.PaginatedOperationM
   descriptor: {
     service: svc,
     http: "POST /v1/estimated-water-allocation-dimension-values",
-    input: { TimePeriod: i_TimePeriod },
+    input: {
+      TimePeriod: i_TimePeriod,
+      Dimensions: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -418,6 +445,7 @@ export const getEstimatedWaterAllocationDimensionValues: API.PaginatedOperationM
   } as const,
 })) as any;
 
+const i_FilterExpression: D.LazyStruct = () => ({ Dimensions: 0 });
 const i_TimePeriod: D.LazyStruct = () => ({
   Start: D.tsAs("date-time"),
   End: D.tsAs("date-time"),

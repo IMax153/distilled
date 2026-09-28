@@ -492,6 +492,7 @@ export const associateAttributeGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /applications/{application}/attribute-groups/{attributeGroup}",
+    input: { application: 0, attributeGroup: 0 },
   },
   errors: [
     ConflictException,
@@ -548,6 +549,7 @@ export const associateResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /applications/{application}/resources/{resourceType}/{resource}",
+    input: { application: 0, resourceType: 0, resource: 0, options: 0 },
     body: true,
   },
   errors: [
@@ -582,7 +584,12 @@ export const createApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { application: o_Application },
     body: true,
   },
@@ -619,7 +626,13 @@ export const createAttributeGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /attribute-groups",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      attributes: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { attributeGroup: o_AttributeGroup },
     body: true,
   },
@@ -651,6 +664,7 @@ export const deleteApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{application}",
+    input: { application: 0 },
     output: { application: o_ApplicationSummary },
   },
   errors: [
@@ -680,6 +694,7 @@ export const deleteAttributeGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /attribute-groups/{attributeGroup}",
+    input: { attributeGroup: 0 },
     output: { attributeGroup: o_AttributeGroupSummary },
   },
   errors: [
@@ -709,6 +724,7 @@ export const disassociateAttributeGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{application}/attribute-groups/{attributeGroup}",
+    input: { application: 0, attributeGroup: 0 },
   },
   errors: [
     InternalServerException,
@@ -759,6 +775,7 @@ export const disassociateResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{application}/resources/{resourceType}/{resource}",
+    input: { application: 0, resourceType: 0, resource: 0 },
   },
   errors: [
     InternalServerException,
@@ -805,6 +822,7 @@ export const getApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{application}",
+    input: { application: 0 },
     output: { creationTime: D.ts, lastUpdateTime: D.ts },
   },
   errors: [
@@ -836,6 +854,9 @@ export const getAssociatedResource: API.OperationMethod<
     service: svc,
     http: "GET /applications/{application}/resources/{resourceType}/{resource}",
     input: {
+      application: 0,
+      resourceType: 0,
+      resource: 0,
       nextToken: D.m({ query: "nextToken" }),
       resourceTagStatus: D.m({ query: "resourceTagStatus" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -873,6 +894,7 @@ export const getAttributeGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /attribute-groups/{attributeGroup}",
+    input: { attributeGroup: 0 },
     output: { creationTime: D.ts, lastUpdateTime: D.ts },
   },
   errors: [
@@ -958,6 +980,7 @@ export const listAssociatedAttributeGroups: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{application}/attribute-groups",
     input: {
+      application: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1012,6 +1035,7 @@ export const listAssociatedResources: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{application}/resources",
     input: {
+      application: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1086,6 +1110,7 @@ export const listAttributeGroupsForApplication: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{application}/attribute-group-details",
     input: {
+      application: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1120,7 +1145,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1146,7 +1175,12 @@ export const putConfiguration: API.OperationMethod<
   PutConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /configuration", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /configuration",
+    input: { configuration: { tagQueryConfiguration: { tagKey: 0 } } },
+    body: true,
+  },
   errors: [ConflictException, InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1171,7 +1205,11 @@ export const syncResource: API.OperationMethod<
   SyncResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /sync/{resourceType}/{resource}" },
+  descriptor: {
+    service: svc,
+    http: "POST /sync/{resourceType}/{resource}",
+    input: { resourceType: 0, resource: 0 },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1202,7 +1240,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1232,7 +1275,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -1263,6 +1306,7 @@ export const updateApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /applications/{application}",
+    input: { application: 0, name: 0, description: 0 },
     output: { application: o_Application },
     body: true,
   },
@@ -1296,6 +1340,7 @@ export const updateAttributeGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /attribute-groups/{attributeGroup}",
+    input: { attributeGroup: 0, name: 0, description: 0, attributes: 0 },
     output: { attributeGroup: o_AttributeGroup },
     body: true,
   },

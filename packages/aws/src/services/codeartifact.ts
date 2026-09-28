@@ -1088,6 +1088,10 @@ export const copyPackageVersions: API.OperationMethod<
       format: D.m({ query: "format" }),
       namespace: D.m({ query: "namespace" }),
       package: D.m({ query: "package" }),
+      versions: 0,
+      versionRevisions: 0,
+      allowOverwrite: 0,
+      includeFromUpstream: 0,
     },
     body: true,
   },
@@ -1133,7 +1137,11 @@ export const createDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/domain",
-    input: { domain: D.m({ query: "domain" }) },
+    input: {
+      domain: D.m({ query: "domain" }),
+      encryptionKey: 0,
+      tags: D.list(i_Tag),
+    },
     output: { domain: o_DomainDescription },
     body: true,
   },
@@ -1175,6 +1183,10 @@ export const createPackageGroup: API.OperationMethod<
     input: {
       domain: D.m({ query: "domain" }),
       domainOwner: D.m({ query: "domain-owner" }),
+      packageGroup: 0,
+      contactInfo: 0,
+      description: 0,
+      tags: D.list(i_Tag),
     },
     output: { packageGroup: o_PackageGroupDescription },
     body: true,
@@ -1218,6 +1230,9 @@ export const createRepository: API.OperationMethod<
       domain: D.m({ query: "domain" }),
       domainOwner: D.m({ query: "domain-owner" }),
       repository: D.m({ query: "repository" }),
+      description: 0,
+      upstreams: D.list(i_UpstreamRepository),
+      tags: D.list(i_Tag),
     },
     output: { repository: o_RepositoryDescription },
     body: true,
@@ -1433,6 +1448,8 @@ export const deletePackageVersions: API.OperationMethod<
       format: D.m({ query: "format" }),
       namespace: D.m({ query: "namespace" }),
       package: D.m({ query: "package" }),
+      versions: 0,
+      expectedStatus: 0,
     },
     body: true,
   },
@@ -1815,6 +1832,9 @@ export const disposePackageVersions: API.OperationMethod<
       format: D.m({ query: "format" }),
       namespace: D.m({ query: "namespace" }),
       package: D.m({ query: "package" }),
+      versions: 0,
+      versionRevisions: 0,
+      expectedStatus: 0,
     },
     body: true,
   },
@@ -2279,6 +2299,7 @@ export const listDomains: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/domains",
+    input: { maxResults: 0, nextToken: 0 },
     output: { domains: D.list({ createdTime: D.ts }) },
     body: true,
   },
@@ -2813,6 +2834,7 @@ export const putDomainPermissionsPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/domain/permissions/policy",
+    input: { domain: 0, domainOwner: 0, policyRevision: 0, policyDocument: 0 },
     body: true,
   },
   errors: [
@@ -2864,6 +2886,7 @@ export const putPackageOriginConfiguration: API.OperationMethod<
       format: D.m({ query: "format" }),
       namespace: D.m({ query: "namespace" }),
       package: D.m({ query: "package" }),
+      restrictions: { publish: 0, upstream: 0 },
     },
     body: true,
   },
@@ -2908,6 +2931,8 @@ export const putRepositoryPermissionsPolicy: API.OperationMethod<
       domain: D.m({ query: "domain" }),
       domainOwner: D.m({ query: "domain-owner" }),
       repository: D.m({ query: "repository" }),
+      policyRevision: 0,
+      policyDocument: 0,
     },
     body: true,
   },
@@ -2944,7 +2969,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/tag",
-    input: { resourceArn: D.m({ query: "resourceArn" }) },
+    input: { resourceArn: D.m({ query: "resourceArn" }), tags: D.list(i_Tag) },
     body: true,
   },
   errors: [
@@ -2977,7 +3002,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/untag",
-    input: { resourceArn: D.m({ query: "resourceArn" }) },
+    input: { resourceArn: D.m({ query: "resourceArn" }), tagKeys: 0 },
     body: true,
   },
   errors: [
@@ -3015,6 +3040,9 @@ export const updatePackageGroup: API.OperationMethod<
     input: {
       domain: D.m({ query: "domain" }),
       domainOwner: D.m({ query: "domain-owner" }),
+      packageGroup: 0,
+      contactInfo: 0,
+      description: 0,
     },
     output: { packageGroup: o_PackageGroupDescription },
     body: true,
@@ -3062,6 +3090,9 @@ export const updatePackageGroupOriginConfiguration: API.OperationMethod<
       domain: D.m({ query: "domain" }),
       domainOwner: D.m({ query: "domain-owner" }),
       packageGroup: D.m({ query: "package-group" }),
+      restrictions: 0,
+      addAllowedRepositories: D.list(i_PackageGroupAllowedRepository),
+      removeAllowedRepositories: D.list(i_PackageGroupAllowedRepository),
     },
     output: { packageGroup: o_PackageGroupDescription },
     body: true,
@@ -3109,6 +3140,10 @@ export const updatePackageVersionsStatus: API.OperationMethod<
       format: D.m({ query: "format" }),
       namespace: D.m({ query: "namespace" }),
       package: D.m({ query: "package" }),
+      versions: 0,
+      versionRevisions: 0,
+      expectedStatus: 0,
+      targetStatus: 0,
     },
     body: true,
   },
@@ -3150,6 +3185,8 @@ export const updateRepository: API.OperationMethod<
       domain: D.m({ query: "domain" }),
       domainOwner: D.m({ query: "domain-owner" }),
       repository: D.m({ query: "repository" }),
+      description: 0,
+      upstreams: D.list(i_UpstreamRepository),
     },
     output: { repository: o_RepositoryDescription },
     body: true,
@@ -3168,6 +3205,12 @@ export const updateRepository: API.OperationMethod<
   operationName: "UpdateRepository",
 })) as any;
 
+const i_PackageGroupAllowedRepository: D.LazyStruct = () => ({
+  repositoryName: 0,
+  originRestrictionType: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_UpstreamRepository: D.LazyStruct = () => ({ repositoryName: 0 });
 const o_DomainDescription: D.LazyStruct = () => ({ createdTime: D.ts });
 const o_PackageGroupDescription: D.LazyStruct = () => ({ createdTime: D.ts });
 const o_PackageGroupSummary: D.LazyStruct = () => ({ createdTime: D.ts });

@@ -624,7 +624,11 @@ export const cancelSession: API.OperationMethod<
   CancelSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /sessions/{SessionArn}" },
+  descriptor: {
+    service: svc,
+    http: "PUT /sessions/{SessionArn}",
+    input: { SessionArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -658,7 +662,15 @@ export const createApprovalTeam: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /approval-teams",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      ApprovalStrategy: i_ApprovalStrategy,
+      Approvers: D.list(i_ApprovalTeamRequestApprover),
+      Description: 0,
+      Policies: D.list({ PolicyArn: 0 }),
+      Name: 0,
+      Tags: 0,
+    },
     output: { CreationTime: D.ts },
     body: true,
   },
@@ -694,7 +706,13 @@ export const createIdentitySource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identity-sources",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      IdentitySourceParameters: {
+        IamIdentityCenter: { InstanceArn: 0, Region: 0 },
+      },
+      ClientToken: D.m({ idempotency: true }),
+      Tags: 0,
+    },
     output: { CreationTime: D.ts },
     body: true,
   },
@@ -729,6 +747,7 @@ export const deleteIdentitySource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /identity-sources/{IdentitySourceArn}",
+    input: { IdentitySourceArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -764,6 +783,7 @@ export const deleteInactiveApprovalTeamVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /approval-teams/{Arn}/{VersionId}",
+    input: { Arn: 0, VersionId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -797,6 +817,7 @@ export const getApprovalTeam: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /approval-teams/{Arn}",
+    input: { Arn: 0 },
     output: {
       CreationTime: D.ts,
       Approvers: D.list(o_GetApprovalTeamResponseApprover),
@@ -839,6 +860,7 @@ export const getIdentitySource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /identity-sources/{IdentitySourceArn}",
+    input: { IdentitySourceArn: 0 },
     output: { CreationTime: D.ts },
   },
   errors: [
@@ -872,6 +894,7 @@ export const getPolicyVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /policy-versions/{PolicyVersionArn}",
+    input: { PolicyVersionArn: 0 },
     output: {
       PolicyVersion: {
         CreationTime: D.ts,
@@ -911,6 +934,7 @@ export const getResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetResourcePolicy",
+    input: { ResourceArn: 0, PolicyName: 0, PolicyType: 0 },
     output: { PolicyDocument: D.secret },
     body: true,
   },
@@ -945,6 +969,7 @@ export const getSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sessions/{SessionArn}",
+    input: { SessionArn: 0 },
     output: {
       InitiationTime: D.ts,
       ExpirationTime: D.ts,
@@ -1117,6 +1142,7 @@ export const listPolicyVersions: API.PaginatedOperationMethod<
     input: {
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
+      PolicyArn: 0,
     },
     output: {
       PolicyVersions: D.list({ CreationTime: D.ts, LastUpdatedTime: D.ts }),
@@ -1161,6 +1187,7 @@ export const listResourcePolicies: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /resource-policies/{ResourceArn}/?List",
     input: {
+      ResourceArn: 0,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
     },
@@ -1203,6 +1230,12 @@ export const listSessions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /approval-teams/{ApprovalTeamArn}/sessions/?List",
+    input: {
+      ApprovalTeamArn: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list({ FieldName: 0, Operator: 0, Value: 0 }),
+    },
     output: {
       Sessions: D.list({
         InitiationTime: D.ts,
@@ -1250,6 +1283,7 @@ export const listTagsForResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
     output: { Tags: D.map(D.secret) },
   },
   errors: [
@@ -1288,6 +1322,7 @@ export const startActiveApprovalTeamDeletion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /approval-teams/{Arn}?Delete",
+    input: { PendingWindowDays: 0, Arn: 0 },
     output: { DeletionCompletionTime: D.ts, DeletionStartTime: D.ts },
     body: true,
   },
@@ -1323,6 +1358,7 @@ export const startApprovalTeamBaseline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /approval-teams/{Arn}/baseline",
+    input: { Arn: 0, ApproverIds: 0 },
     body: true,
   },
   errors: [
@@ -1354,7 +1390,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1384,7 +1425,12 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, TagKeys: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1419,7 +1465,18 @@ export const updateApprovalTeam: API.OperationMethod<
   UpdateApprovalTeamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /approval-teams/{Arn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /approval-teams/{Arn}",
+    input: {
+      ApprovalStrategy: i_ApprovalStrategy,
+      Approvers: D.list(i_ApprovalTeamRequestApprover),
+      Description: 0,
+      Arn: 0,
+      UpdateActions: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1434,6 +1491,13 @@ export const updateApprovalTeam: API.OperationMethod<
   operationName: "UpdateApprovalTeam",
 })) as any;
 
+const i_ApprovalStrategy: D.LazyStruct = () => ({
+  MofN: { MinApprovalsRequired: 0 },
+});
+const i_ApprovalTeamRequestApprover: D.LazyStruct = () => ({
+  PrimaryIdentityId: 0,
+  PrimaryIdentitySourceArn: 0,
+});
 const o_GetApprovalTeamResponseApprover: D.LazyStruct = () => ({
   ResponseTime: D.ts,
   LastActivityTime: D.ts,

@@ -1109,7 +1109,13 @@ export const createDataset: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      DatasetName: 0,
+      DatasetSchema: i_DatasetSchema,
+      ServerSideKmsKeyId: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1148,7 +1154,18 @@ export const createInferenceScheduler: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ModelName: 0,
+      InferenceSchedulerName: 0,
+      DataDelayOffsetInMinutes: 0,
+      DataUploadFrequency: 0,
+      DataInputConfiguration: i_InferenceInputConfiguration,
+      DataOutputConfiguration: i_InferenceOutputConfiguration,
+      RoleArn: 0,
+      ServerSideKmsKeyId: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1184,7 +1201,16 @@ export const createLabel: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      LabelGroupName: 0,
+      StartTime: 0,
+      EndTime: 0,
+      Rating: 0,
+      FaultCode: 0,
+      Notes: 0,
+      Equipment: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1219,7 +1245,12 @@ export const createLabelGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      LabelGroupName: 0,
+      FaultCodes: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1264,7 +1295,24 @@ export const createModel: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ModelName: 0,
+      DatasetName: 0,
+      DatasetSchema: i_DatasetSchema,
+      LabelsInputConfiguration: i_LabelsInputConfiguration,
+      ClientToken: D.m({ idempotency: true }),
+      TrainingDataStartTime: 0,
+      TrainingDataEndTime: 0,
+      EvaluationDataStartTime: 0,
+      EvaluationDataEndTime: 0,
+      RoleArn: 0,
+      DataPreProcessingConfiguration: { TargetSamplingRate: 0 },
+      ServerSideKmsKeyId: 0,
+      Tags: D.list(i_Tag),
+      OffCondition: 0,
+      ModelDiagnosticsOutputConfiguration:
+        i_ModelDiagnosticsOutputConfiguration,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1299,7 +1347,14 @@ export const createRetrainingScheduler: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ModelName: 0,
+      RetrainingStartDate: 0,
+      RetrainingFrequency: 0,
+      LookbackWindow: 0,
+      PromoteMode: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1335,7 +1390,7 @@ export const deleteDataset: API.OperationMethod<
   DeleteDatasetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DatasetName: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1367,7 +1422,7 @@ export const deleteInferenceScheduler: API.OperationMethod<
   DeleteInferenceSchedulerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InferenceSchedulerName: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1398,7 +1453,7 @@ export const deleteLabel: API.OperationMethod<
   DeleteLabelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LabelGroupName: 0, LabelId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1429,7 +1484,7 @@ export const deleteLabelGroup: API.OperationMethod<
   DeleteLabelGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LabelGroupName: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1461,7 +1516,7 @@ export const deleteModel: API.OperationMethod<
   DeleteModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ModelName: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1492,7 +1547,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1524,7 +1579,7 @@ export const deleteRetrainingScheduler: API.OperationMethod<
   DeleteRetrainingSchedulerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ModelName: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1557,6 +1612,7 @@ export const describeDataIngestionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: { CreatedAt: D.ts, DataStartTime: D.ts, DataEndTime: D.ts },
   },
   errors: [
@@ -1590,6 +1646,7 @@ export const describeDataset: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DatasetName: 0 },
     output: {
       CreatedAt: D.ts,
       LastUpdatedAt: D.ts,
@@ -1626,7 +1683,11 @@ export const describeInferenceScheduler: API.OperationMethod<
   DescribeInferenceSchedulerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedAt: D.ts, UpdatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { InferenceSchedulerName: 0 },
+    output: { CreatedAt: D.ts, UpdatedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1657,6 +1718,7 @@ export const describeLabel: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { LabelGroupName: 0, LabelId: 0 },
     output: { StartTime: D.ts, EndTime: D.ts, CreatedAt: D.ts },
   },
   errors: [
@@ -1687,7 +1749,11 @@ export const describeLabelGroup: API.OperationMethod<
   DescribeLabelGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedAt: D.ts, UpdatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { LabelGroupName: 0 },
+    output: { CreatedAt: D.ts, UpdatedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1720,6 +1786,7 @@ export const describeModel: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ModelName: 0 },
     output: {
       TrainingDataStartTime: D.ts,
       TrainingDataEndTime: D.ts,
@@ -1769,6 +1836,7 @@ export const describeModelVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ModelName: 0, ModelVersion: 0 },
     output: {
       TrainingDataStartTime: D.ts,
       TrainingDataEndTime: D.ts,
@@ -1812,6 +1880,7 @@ export const describeResourcePolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResourceArn: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [
@@ -1845,6 +1914,7 @@ export const describeRetrainingScheduler: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ModelName: 0 },
     output: { RetrainingStartDate: D.ts, CreatedAt: D.ts, UpdatedAt: D.ts },
   },
   errors: [
@@ -1879,7 +1949,13 @@ export const importDataset: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      SourceDatasetArn: 0,
+      DatasetName: 0,
+      ClientToken: D.m({ idempotency: true }),
+      ServerSideKmsKeyId: 0,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1915,7 +1991,17 @@ export const importModelVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      SourceModelVersionArn: 0,
+      ModelName: 0,
+      DatasetName: 0,
+      LabelsInputConfiguration: i_LabelsInputConfiguration,
+      ClientToken: D.m({ idempotency: true }),
+      RoleArn: 0,
+      ServerSideKmsKeyId: 0,
+      Tags: D.list(i_Tag),
+      InferenceDataImportStrategy: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1948,7 +2034,10 @@ export const listDataIngestionJobs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DatasetName: 0, NextToken: 0, MaxResults: 0, Status: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1983,6 +2072,7 @@ export const listDatasets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, DatasetNameBeginsWith: 0 },
     output: { DatasetSummaries: D.list({ CreatedAt: D.ts }) },
   },
   errors: [
@@ -2020,6 +2110,13 @@ export const listInferenceEvents: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      InferenceSchedulerName: 0,
+      IntervalStartTime: 0,
+      IntervalEndTime: 0,
+    },
     output: {
       InferenceEventSummaries: D.list({
         EventStartTime: D.ts,
@@ -2064,6 +2161,14 @@ export const listInferenceExecutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      InferenceSchedulerName: 0,
+      DataStartTimeAfter: 0,
+      DataEndTimeBefore: 0,
+      Status: 0,
+    },
     output: {
       InferenceExecutionSummaries: D.list({
         ScheduledStartTime: D.ts,
@@ -2105,7 +2210,16 @@ export const listInferenceSchedulers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      InferenceSchedulerNameBeginsWith: 0,
+      ModelName: 0,
+      Status: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2140,6 +2254,7 @@ export const listLabelGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { LabelGroupNameBeginsWith: 0, NextToken: 0, MaxResults: 0 },
     output: {
       LabelGroupSummaries: D.list({ CreatedAt: D.ts, UpdatedAt: D.ts }),
     },
@@ -2178,6 +2293,15 @@ export const listLabels: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      LabelGroupName: 0,
+      IntervalStartTime: 0,
+      IntervalEndTime: 0,
+      FaultCode: 0,
+      Equipment: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       LabelSummaries: D.list({
         StartTime: D.ts,
@@ -2221,6 +2345,13 @@ export const listModels: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      Status: 0,
+      ModelNameBeginsWith: 0,
+      DatasetNameBeginsWith: 0,
+    },
     output: {
       ModelSummaries: D.list({
         CreatedAt: D.ts,
@@ -2266,6 +2397,17 @@ export const listModelVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ModelName: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      Status: 0,
+      SourceType: 0,
+      CreatedAtEndTime: 0,
+      CreatedAtStartTime: 0,
+      MaxModelVersion: 0,
+      MinModelVersion: 0,
+    },
     output: { ModelVersionSummaries: D.list({ CreatedAt: D.ts }) },
   },
   errors: [
@@ -2304,6 +2446,7 @@ export const listRetrainingSchedulers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ModelNameBeginsWith: 0, Status: 0, NextToken: 0, MaxResults: 0 },
     output: {
       RetrainingSchedulerSummaries: D.list({ RetrainingStartDate: D.ts }),
     },
@@ -2345,6 +2488,7 @@ export const listSensorStatistics: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DatasetName: 0, IngestionJobId: 0, MaxResults: 0, NextToken: 0 },
     output: {
       SensorStatisticsSummaries: D.list({
         DataStartTime: D.ts,
@@ -2385,7 +2529,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2418,7 +2562,12 @@ export const putResourcePolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ResourceArn: 0,
+      ResourcePolicy: 0,
+      PolicyRevisionId: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2454,7 +2603,14 @@ export const startDataIngestionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      DatasetName: 0,
+      IngestionInputConfiguration: {
+        S3InputConfiguration: { Bucket: 0, Prefix: 0, KeyPattern: 0 },
+      },
+      RoleArn: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2487,7 +2643,7 @@ export const startInferenceScheduler: API.OperationMethod<
   StartInferenceSchedulerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InferenceSchedulerName: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2518,7 +2674,7 @@ export const startRetrainingScheduler: API.OperationMethod<
   StartRetrainingSchedulerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ModelName: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2549,7 +2705,7 @@ export const stopInferenceScheduler: API.OperationMethod<
   StopInferenceSchedulerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InferenceSchedulerName: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2580,7 +2736,7 @@ export const stopRetrainingScheduler: API.OperationMethod<
   StopRetrainingSchedulerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ModelName: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2615,7 +2771,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2645,7 +2801,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2675,7 +2831,7 @@ export const updateActiveModelVersion: API.OperationMethod<
   UpdateActiveModelVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ModelName: 0, ModelVersion: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2706,7 +2862,17 @@ export const updateInferenceScheduler: API.OperationMethod<
   UpdateInferenceSchedulerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InferenceSchedulerName: 0,
+      DataDelayOffsetInMinutes: 0,
+      DataUploadFrequency: 0,
+      DataInputConfiguration: i_InferenceInputConfiguration,
+      DataOutputConfiguration: i_InferenceOutputConfiguration,
+      RoleArn: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2737,7 +2903,7 @@ export const updateLabelGroup: API.OperationMethod<
   UpdateLabelGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LabelGroupName: 0, FaultCodes: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2768,7 +2934,16 @@ export const updateModel: API.OperationMethod<
   UpdateModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ModelName: 0,
+      LabelsInputConfiguration: i_LabelsInputConfiguration,
+      RoleArn: 0,
+      ModelDiagnosticsOutputConfiguration:
+        i_ModelDiagnosticsOutputConfiguration,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2799,7 +2974,16 @@ export const updateRetrainingScheduler: API.OperationMethod<
   UpdateRetrainingSchedulerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ModelName: 0,
+      RetrainingStartDate: 0,
+      RetrainingFrequency: 0,
+      LookbackWindow: 0,
+      PromoteMode: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2812,3 +2996,26 @@ export const updateRetrainingScheduler: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateRetrainingScheduler",
 })) as any;
+
+const i_DatasetSchema: D.LazyStruct = () => ({ InlineDataSchema: 0 });
+const i_InferenceInputConfiguration: D.LazyStruct = () => ({
+  S3InputConfiguration: { Bucket: 0, Prefix: 0 },
+  InputTimeZoneOffset: 0,
+  InferenceInputNameConfiguration: {
+    TimestampFormat: 0,
+    ComponentTimestampDelimiter: 0,
+  },
+});
+const i_InferenceOutputConfiguration: D.LazyStruct = () => ({
+  S3OutputConfiguration: { Bucket: 0, Prefix: 0 },
+  KmsKeyId: 0,
+});
+const i_LabelsInputConfiguration: D.LazyStruct = () => ({
+  S3InputConfiguration: { Bucket: 0, Prefix: 0 },
+  LabelGroupName: 0,
+});
+const i_ModelDiagnosticsOutputConfiguration: D.LazyStruct = () => ({
+  S3OutputConfiguration: { Bucket: 0, Prefix: 0 },
+  KmsKeyId: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });

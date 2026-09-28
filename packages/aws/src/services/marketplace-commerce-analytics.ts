@@ -172,7 +172,18 @@ export const generateDataSet: API.OperationMethod<
   GenerateDataSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      dataSetType: 0,
+      dataSetPublicationDate: 0,
+      roleNameArn: 0,
+      destinationS3BucketName: 0,
+      destinationS3Prefix: 0,
+      snsTopicArn: 0,
+      customerDefinedValues: 0,
+    },
+  },
   errors: [MarketplaceCommerceAnalyticsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -198,7 +209,18 @@ export const startSupportDataExport: API.OperationMethod<
   StartSupportDataExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      dataSetType: 0,
+      fromDate: 0,
+      roleNameArn: 0,
+      destinationS3BucketName: 0,
+      destinationS3Prefix: 0,
+      snsTopicArn: 0,
+      customerDefinedValues: 0,
+    },
+  },
   errors: [MarketplaceCommerceAnalyticsException],
   protocol: AwsProtocol,
   retry: Retry,

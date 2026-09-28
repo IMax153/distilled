@@ -1681,7 +1681,11 @@ export const cancelTrainedModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /memberships/{membershipIdentifier}/trained-models/{trainedModelArn}",
-    input: { versionIdentifier: D.m({ query: "versionIdentifier" }) },
+    input: {
+      membershipIdentifier: 0,
+      trainedModelArn: 0,
+      versionIdentifier: D.m({ query: "versionIdentifier" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1714,6 +1718,7 @@ export const cancelTrainedModelInferenceJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /memberships/{membershipIdentifier}/trained-model-inference-jobs/{trainedModelInferenceJobArn}",
+    input: { membershipIdentifier: 0, trainedModelInferenceJobArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1750,6 +1755,11 @@ export const createAudienceModel: API.OperationMethod<
     input: {
       trainingDataStartTime: D.tsAs("date-time"),
       trainingDataEndTime: D.tsAs("date-time"),
+      name: 0,
+      trainingDatasetArn: 0,
+      kmsKeyArn: 0,
+      tags: 0,
+      description: 0,
     },
     body: true,
   },
@@ -1786,6 +1796,17 @@ export const createConfiguredAudienceModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /configured-audience-model",
+    input: {
+      name: 0,
+      audienceModelArn: 0,
+      outputConfig: i_ConfiguredAudienceModelOutputConfig,
+      description: 0,
+      sharedAudienceMetrics: 0,
+      minMatchingSeedSize: 0,
+      audienceSizeConfig: i_AudienceSizeConfig,
+      tags: 0,
+      childResourceTagOnCreatePolicy: 0,
+    },
     body: true,
   },
   errors: [
@@ -1820,6 +1841,20 @@ export const createConfiguredModelAlgorithm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /configured-model-algorithms",
+    input: {
+      name: 0,
+      description: 0,
+      roleArn: 0,
+      trainingContainerConfig: {
+        imageUri: 0,
+        entrypoint: 0,
+        arguments: 0,
+        metricDefinitions: D.list({ name: 0, regex: 0 }),
+      },
+      inferenceContainerConfig: { imageUri: 0 },
+      tags: 0,
+      kmsKeyArn: 0,
+    },
     body: true,
   },
   errors: [
@@ -1854,6 +1889,30 @@ export const createConfiguredModelAlgorithmAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/configured-model-algorithm-associations",
+    input: {
+      membershipIdentifier: 0,
+      configuredModelAlgorithmArn: 0,
+      name: 0,
+      description: 0,
+      privacyConfiguration: {
+        policies: {
+          trainedModels: {
+            containerLogs: D.list(i_LogsConfigurationPolicy),
+            containerMetrics: { noiseLevel: 0 },
+            maxArtifactSize: { unit: 0, value: 0 },
+          },
+          trainedModelExports: {
+            maxSize: { unit: 0, value: 0 },
+            filesToExport: 0,
+          },
+          trainedModelInferenceJobs: {
+            containerLogs: D.list(i_LogsConfigurationPolicy),
+            maxOutputSize: { unit: 0, value: 0 },
+          },
+        },
+      },
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1889,6 +1948,29 @@ export const createMLInputChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/ml-input-channels",
+    input: {
+      membershipIdentifier: 0,
+      configuredModelAlgorithmAssociations: 0,
+      inputChannel: {
+        dataSource: {
+          protectedQueryInputParameters: {
+            sqlParameters: i_ProtectedQuerySQLParameters,
+            computeConfiguration: i_ComputeConfiguration,
+            resultFormat: 0,
+          },
+        },
+        roleArn: 0,
+      },
+      name: 0,
+      retentionInDays: 0,
+      description: 0,
+      kmsKeyArn: 0,
+      tags: 0,
+      payerConfiguration: {
+        computePayerAccountId: 0,
+        syntheticDataPayerAccountId: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -1925,6 +2007,30 @@ export const createTrainedModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/trained-models",
+    input: {
+      membershipIdentifier: 0,
+      name: 0,
+      configuredModelAlgorithmAssociationArn: 0,
+      hyperparameters: 0,
+      environment: 0,
+      resourceConfig: { instanceCount: 0, instanceType: 0, volumeSizeInGB: 0 },
+      stoppingCondition: { maxRuntimeInSeconds: 0 },
+      incrementalTrainingDataChannels: D.list({
+        trainedModelArn: 0,
+        versionIdentifier: 0,
+        channelName: 0,
+      }),
+      dataChannels: D.list({
+        mlInputChannelArn: 0,
+        channelName: 0,
+        s3DataDistributionType: 0,
+      }),
+      trainingInputMode: 0,
+      description: 0,
+      kmsKeyArn: 0,
+      tags: 0,
+      mlModelTrainingPayerAccountId: 0,
+    },
     body: true,
   },
   errors: [
@@ -1956,7 +2062,26 @@ export const createTrainingDataset: API.OperationMethod<
   CreateTrainingDatasetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /training-dataset", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /training-dataset",
+    input: {
+      name: 0,
+      roleArn: 0,
+      trainingData: D.list({
+        type: 0,
+        inputConfig: {
+          schema: D.list({ columnName: 0, columnTypes: 0 }),
+          dataSource: {
+            glueDataSource: { tableName: 0, databaseName: 0, catalogId: 0 },
+          },
+        },
+      }),
+      tags: 0,
+      description: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1987,6 +2112,7 @@ export const deleteAudienceGenerationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /audience-generation-job/{audienceGenerationJobArn}",
+    input: { audienceGenerationJobArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2019,6 +2145,7 @@ export const deleteAudienceModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /audience-model/{audienceModelArn}",
+    input: { audienceModelArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2051,6 +2178,7 @@ export const deleteConfiguredAudienceModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /configured-audience-model/{configuredAudienceModelArn}",
+    input: { configuredAudienceModelArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2082,6 +2210,7 @@ export const deleteConfiguredAudienceModelPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /configured-audience-model/{configuredAudienceModelArn}/policy",
+    input: { configuredAudienceModelArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2113,6 +2242,7 @@ export const deleteConfiguredModelAlgorithm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /configured-model-algorithms/{configuredModelAlgorithmArn}",
+    input: { configuredModelAlgorithmArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2145,6 +2275,10 @@ export const deleteConfiguredModelAlgorithmAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /memberships/{membershipIdentifier}/configured-model-algorithm-associations/{configuredModelAlgorithmAssociationArn}",
+    input: {
+      configuredModelAlgorithmAssociationArn: 0,
+      membershipIdentifier: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2176,6 +2310,7 @@ export const deleteMLConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /memberships/{membershipIdentifier}/ml-configurations",
+    input: { membershipIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2207,6 +2342,7 @@ export const deleteMLInputChannelData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /memberships/{membershipIdentifier}/ml-input-channels/{mlInputChannelArn}",
+    input: { mlInputChannelArn: 0, membershipIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2239,7 +2375,11 @@ export const deleteTrainedModelOutput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /memberships/{membershipIdentifier}/trained-models/{trainedModelArn}",
-    input: { versionIdentifier: D.m({ query: "versionIdentifier" }) },
+    input: {
+      trainedModelArn: 0,
+      membershipIdentifier: 0,
+      versionIdentifier: D.m({ query: "versionIdentifier" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2272,6 +2412,7 @@ export const deleteTrainingDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /training-dataset/{trainingDatasetArn}",
+    input: { trainingDatasetArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2303,6 +2444,7 @@ export const getAudienceGenerationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /audience-generation-job/{audienceGenerationJobArn}",
+    input: { audienceGenerationJobArn: 0 },
     output: { createTime: D.ts, updateTime: D.ts },
   },
   errors: [
@@ -2334,6 +2476,7 @@ export const getAudienceModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /audience-model/{audienceModelArn}",
+    input: { audienceModelArn: 0 },
     output: {
       createTime: D.ts,
       updateTime: D.ts,
@@ -2370,6 +2513,10 @@ export const getCollaborationConfiguredModelAlgorithmAssociation: API.OperationM
   descriptor: {
     service: svc,
     http: "GET /collaborations/{collaborationIdentifier}/configured-model-algorithm-associations/{configuredModelAlgorithmAssociationArn}",
+    input: {
+      configuredModelAlgorithmAssociationArn: 0,
+      collaborationIdentifier: 0,
+    },
     output: { createTime: D.ts, updateTime: D.ts },
   },
   errors: [
@@ -2401,6 +2548,7 @@ export const getCollaborationMLInputChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /collaborations/{collaborationIdentifier}/ml-input-channels/{mlInputChannelArn}",
+    input: { mlInputChannelArn: 0, collaborationIdentifier: 0 },
     output: {
       privacyBudgets: o_PrivacyBudgets,
       createTime: D.ts,
@@ -2436,7 +2584,11 @@ export const getCollaborationTrainedModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /collaborations/{collaborationIdentifier}/trained-models/{trainedModelArn}",
-    input: { versionIdentifier: D.m({ query: "versionIdentifier" }) },
+    input: {
+      trainedModelArn: 0,
+      collaborationIdentifier: 0,
+      versionIdentifier: D.m({ query: "versionIdentifier" }),
+    },
     output: { createTime: D.ts, updateTime: D.ts },
   },
   errors: [
@@ -2468,6 +2620,7 @@ export const getConfiguredAudienceModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /configured-audience-model/{configuredAudienceModelArn}",
+    input: { configuredAudienceModelArn: 0 },
     output: { createTime: D.ts, updateTime: D.ts },
   },
   errors: [
@@ -2499,6 +2652,7 @@ export const getConfiguredAudienceModelPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /configured-audience-model/{configuredAudienceModelArn}/policy",
+    input: { configuredAudienceModelArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2529,6 +2683,7 @@ export const getConfiguredModelAlgorithm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /configured-model-algorithms/{configuredModelAlgorithmArn}",
+    input: { configuredModelAlgorithmArn: 0 },
     output: { createTime: D.ts, updateTime: D.ts },
   },
   errors: [
@@ -2560,6 +2715,10 @@ export const getConfiguredModelAlgorithmAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/configured-model-algorithm-associations/{configuredModelAlgorithmAssociationArn}",
+    input: {
+      configuredModelAlgorithmAssociationArn: 0,
+      membershipIdentifier: 0,
+    },
     output: { createTime: D.ts, updateTime: D.ts },
   },
   errors: [
@@ -2591,6 +2750,7 @@ export const getMLConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/ml-configurations",
+    input: { membershipIdentifier: 0 },
     output: { createTime: D.ts, updateTime: D.ts },
   },
   errors: [
@@ -2622,6 +2782,7 @@ export const getMLInputChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/ml-input-channels/{mlInputChannelArn}",
+    input: { mlInputChannelArn: 0, membershipIdentifier: 0 },
     output: {
       privacyBudgets: o_PrivacyBudgets,
       createTime: D.ts,
@@ -2657,7 +2818,11 @@ export const getTrainedModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/trained-models/{trainedModelArn}",
-    input: { versionIdentifier: D.m({ query: "versionIdentifier" }) },
+    input: {
+      trainedModelArn: 0,
+      membershipIdentifier: 0,
+      versionIdentifier: D.m({ query: "versionIdentifier" }),
+    },
     output: { createTime: D.ts, updateTime: D.ts },
   },
   errors: [
@@ -2689,6 +2854,7 @@ export const getTrainedModelInferenceJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/trained-model-inference-jobs/{trainedModelInferenceJobArn}",
+    input: { membershipIdentifier: 0, trainedModelInferenceJobArn: 0 },
     output: { createTime: D.ts, updateTime: D.ts },
   },
   errors: [
@@ -2720,6 +2886,7 @@ export const getTrainingDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /training-dataset/{trainingDatasetArn}",
+    input: { trainingDatasetArn: 0 },
     output: { createTime: D.ts, updateTime: D.ts },
   },
   errors: [
@@ -2869,6 +3036,7 @@ export const listCollaborationConfiguredModelAlgorithmAssociations: API.Paginate
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      collaborationIdentifier: 0,
     },
     output: {
       collaborationConfiguredModelAlgorithmAssociations: D.list({
@@ -2910,6 +3078,7 @@ export const listCollaborationMLInputChannels: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      collaborationIdentifier: 0,
     },
     output: {
       collaborationMLInputChannelsList: D.list({
@@ -2951,6 +3120,8 @@ export const listCollaborationTrainedModelExportJobs: API.PaginatedOperationMeth
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      collaborationIdentifier: 0,
+      trainedModelArn: 0,
       trainedModelVersionIdentifier: D.m({
         query: "trainedModelVersionIdentifier",
       }),
@@ -2995,6 +3166,7 @@ export const listCollaborationTrainedModelInferenceJobs: API.PaginatedOperationM
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      collaborationIdentifier: 0,
       trainedModelArn: D.m({ query: "trainedModelArn" }),
       trainedModelVersionIdentifier: D.m({
         query: "trainedModelVersionIdentifier",
@@ -3040,6 +3212,7 @@ export const listCollaborationTrainedModels: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      collaborationIdentifier: 0,
     },
     output: {
       collaborationTrainedModels: D.list({
@@ -3119,6 +3292,7 @@ export const listConfiguredModelAlgorithmAssociations: API.PaginatedOperationMet
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      membershipIdentifier: 0,
     },
     output: {
       configuredModelAlgorithmAssociations: D.list({
@@ -3198,6 +3372,7 @@ export const listMLInputChannels: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      membershipIdentifier: 0,
     },
     output: {
       mlInputChannelsList: D.list({ createTime: D.ts, updateTime: D.ts }),
@@ -3229,7 +3404,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -3261,6 +3440,7 @@ export const listTrainedModelInferenceJobs: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      membershipIdentifier: 0,
       trainedModelArn: D.m({ query: "trainedModelArn" }),
       trainedModelVersionIdentifier: D.m({
         query: "trainedModelVersionIdentifier",
@@ -3303,6 +3483,7 @@ export const listTrainedModels: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      membershipIdentifier: 0,
     },
     output: { trainedModels: D.list(o_TrainedModelSummary) },
   },
@@ -3340,6 +3521,8 @@ export const listTrainedModelVersions: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      membershipIdentifier: 0,
+      trainedModelArn: 0,
       status: D.m({ query: "status" }),
     },
     output: { trainedModels: D.list(o_TrainedModelSummary) },
@@ -3417,6 +3600,12 @@ export const putConfiguredAudienceModelPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /configured-audience-model/{configuredAudienceModelArn}/policy",
+    input: {
+      configuredAudienceModelArn: 0,
+      configuredAudienceModelPolicy: 0,
+      previousPolicyHash: 0,
+      policyExistenceCondition: 0,
+    },
     body: true,
   },
   errors: [
@@ -3447,6 +3636,13 @@ export const putMLConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /memberships/{membershipIdentifier}/ml-configurations",
+    input: {
+      membershipIdentifier: 0,
+      defaultOutputLocation: {
+        destination: { s3Destination: i_S3ConfigMap },
+        roleArn: 0,
+      },
+    },
     body: true,
   },
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
@@ -3472,7 +3668,17 @@ export const startAudienceExportJob: API.OperationMethod<
   StartAudienceExportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /audience-export-job", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /audience-export-job",
+    input: {
+      name: 0,
+      audienceGenerationJobArn: 0,
+      audienceSize: { type: 0, value: 0 },
+      description: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3506,6 +3712,20 @@ export const startAudienceGenerationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /audience-generation-job",
+    input: {
+      name: 0,
+      configuredAudienceModelArn: 0,
+      seedAudience: {
+        dataSource: i_S3ConfigMap,
+        roleArn: 0,
+        sqlParameters: i_ProtectedQuerySQLParameters,
+        sqlComputeConfiguration: i_ComputeConfiguration,
+      },
+      includeSeedInOutput: 0,
+      collaborationId: 0,
+      description: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -3540,6 +3760,14 @@ export const startTrainedModelExportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/trained-models/{trainedModelArn}/export-jobs",
+    input: {
+      name: 0,
+      trainedModelArn: 0,
+      trainedModelVersionIdentifier: 0,
+      membershipIdentifier: 0,
+      outputConfiguration: { members: D.list({ accountId: 0 }) },
+      description: 0,
+    },
     body: true,
   },
   errors: [
@@ -3574,6 +3802,22 @@ export const startTrainedModelInferenceJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/trained-model-inference-jobs",
+    input: {
+      membershipIdentifier: 0,
+      name: 0,
+      trainedModelArn: 0,
+      trainedModelVersionIdentifier: 0,
+      configuredModelAlgorithmAssociationArn: 0,
+      resourceConfig: { instanceType: 0, instanceCount: 0 },
+      outputConfiguration: { accept: 0, members: D.list({ accountId: 0 }) },
+      dataSource: { mlInputChannelArn: 0 },
+      description: 0,
+      containerExecutionParameters: { maxPayloadInMB: 0 },
+      environment: 0,
+      kmsKeyArn: 0,
+      tags: 0,
+      mlModelInferencePayerAccountId: 0,
+    },
     body: true,
   },
   errors: [
@@ -3603,7 +3847,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -3631,7 +3880,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -3662,6 +3911,15 @@ export const updateConfiguredAudienceModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /configured-audience-model/{configuredAudienceModelArn}",
+    input: {
+      configuredAudienceModelArn: 0,
+      outputConfig: i_ConfiguredAudienceModelOutputConfig,
+      audienceModelArn: 0,
+      sharedAudienceMetrics: 0,
+      minMatchingSeedSize: 0,
+      audienceSizeConfig: i_AudienceSizeConfig,
+      description: 0,
+    },
     body: true,
   },
   errors: [
@@ -3676,6 +3934,32 @@ export const updateConfiguredAudienceModel: API.OperationMethod<
   operationName: "UpdateConfiguredAudienceModel",
 })) as any;
 
+const i_AudienceSizeConfig: D.LazyStruct = () => ({
+  audienceSizeType: 0,
+  audienceSizeBins: 0,
+});
+const i_ComputeConfiguration: D.LazyStruct = () => ({
+  worker: { type: 0, number: 0, properties: { spark: 0 } },
+});
+const i_ConfiguredAudienceModelOutputConfig: D.LazyStruct = () => ({
+  destination: { s3Destination: i_S3ConfigMap },
+  roleArn: 0,
+});
+const i_LogsConfigurationPolicy: D.LazyStruct = () => ({
+  allowedAccountIds: 0,
+  filterPattern: 0,
+  logType: 0,
+  logRedactionConfiguration: {
+    entitiesToRedact: 0,
+    customEntityConfig: { customDataIdentifiers: 0 },
+  },
+});
+const i_ProtectedQuerySQLParameters: D.LazyStruct = () => ({
+  queryString: 0,
+  analysisTemplateArn: 0,
+  parameters: 0,
+});
+const i_S3ConfigMap: D.LazyStruct = () => ({ s3Uri: 0 });
 const o_PrivacyBudgets: D.LazyStruct = () => ({
   accessBudgets: D.list({
     details: D.list({ startTime: D.ts, endTime: D.ts }),

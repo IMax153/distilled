@@ -1064,6 +1064,7 @@ export const createBotVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bots/{name}/versions",
+    input: { name: 0, checksum: 0 },
     output: { lastUpdatedDate: D.ts, createdDate: D.ts },
     body: true,
   },
@@ -1114,6 +1115,7 @@ export const createIntentVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /intents/{name}/versions",
+    input: { name: 0, checksum: 0 },
     output: { lastUpdatedDate: D.ts, createdDate: D.ts },
     body: true,
   },
@@ -1164,6 +1166,7 @@ export const createSlotTypeVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /slottypes/{name}/versions",
+    input: { name: 0, checksum: 0 },
     output: { lastUpdatedDate: D.ts, createdDate: D.ts },
     body: true,
   },
@@ -1215,7 +1218,7 @@ export const deleteBot: API.OperationMethod<
   DeleteBotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /bots/{name}" },
+  descriptor: { service: svc, http: "DELETE /bots/{name}", input: { name: 0 } },
   errors: [
     BadRequestException,
     ConflictException,
@@ -1255,7 +1258,11 @@ export const deleteBotAlias: API.OperationMethod<
   DeleteBotAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /bots/{botName}/aliases/{name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /bots/{botName}/aliases/{name}",
+    input: { name: 0, botName: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -1292,6 +1299,7 @@ export const deleteBotChannelAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /bots/{botName}/aliases/{botAlias}/channels/{name}",
+    input: { name: 0, botName: 0, botAlias: 0 },
   },
   errors: [
     BadRequestException,
@@ -1326,7 +1334,11 @@ export const deleteBotVersion: API.OperationMethod<
   DeleteBotVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /bots/{name}/versions/{version}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /bots/{name}/versions/{version}",
+    input: { name: 0, version: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -1374,7 +1386,11 @@ export const deleteIntent: API.OperationMethod<
   DeleteIntentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /intents/{name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /intents/{name}",
+    input: { name: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -1412,6 +1428,7 @@ export const deleteIntentVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /intents/{name}/versions/{version}",
+    input: { name: 0, version: 0 },
   },
   errors: [
     BadRequestException,
@@ -1460,7 +1477,11 @@ export const deleteSlotType: API.OperationMethod<
   DeleteSlotTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /slottypes/{name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /slottypes/{name}",
+    input: { name: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -1498,6 +1519,7 @@ export const deleteSlotTypeVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /slottypes/{name}/version/{version}",
+    input: { name: 0, version: 0 },
   },
   errors: [
     BadRequestException,
@@ -1544,6 +1566,7 @@ export const deleteUtterances: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /bots/{botName}/utterances/{userId}",
+    input: { botName: 0, userId: 0 },
   },
   errors: [
     BadRequestException,
@@ -1578,6 +1601,7 @@ export const getBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /bots/{name}/versions/{versionOrAlias}",
+    input: { name: 0, versionOrAlias: 0 },
     output: { lastUpdatedDate: D.ts, createdDate: D.ts },
   },
   errors: [
@@ -1613,6 +1637,7 @@ export const getBotAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /bots/{botName}/aliases/{name}",
+    input: { name: 0, botName: 0 },
     output: { lastUpdatedDate: D.ts, createdDate: D.ts },
   },
   errors: [
@@ -1648,6 +1673,7 @@ export const getBotAliases: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /bots/{botName}/aliases",
     input: {
+      botName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       nameContains: D.m({ query: "nameContains" }),
@@ -1693,6 +1719,7 @@ export const getBotChannelAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /bots/{botName}/aliases/{botAlias}/channels/{name}",
+    input: { name: 0, botName: 0, botAlias: 0 },
     output: { createdDate: D.ts },
   },
   errors: [
@@ -1730,6 +1757,8 @@ export const getBotChannelAssociations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /bots/{botName}/aliases/{botAlias}/channels",
     input: {
+      botName: 0,
+      botAlias: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       nameContains: D.m({ query: "nameContains" }),
@@ -1837,6 +1866,7 @@ export const getBotVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /bots/{name}/versions",
     input: {
+      name: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1876,7 +1906,11 @@ export const getBuiltinIntent: API.OperationMethod<
   GetBuiltinIntentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /builtins/intents/{signature}" },
+  descriptor: {
+    service: svc,
+    http: "GET /builtins/intents/{signature}",
+    input: { signature: 0 },
+  },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -2034,6 +2068,7 @@ export const getImport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /imports/{importId}",
+    input: { importId: 0 },
     output: { createdDate: D.ts },
   },
   errors: [
@@ -2069,6 +2104,7 @@ export const getIntent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /intents/{name}/versions/{version}",
+    input: { name: 0, version: 0 },
     output: { lastUpdatedDate: D.ts, createdDate: D.ts },
   },
   errors: [
@@ -2168,6 +2204,7 @@ export const getIntentVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /intents/{name}/versions",
     input: {
+      name: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -2209,6 +2246,7 @@ export const getMigration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /migrations/{migrationId}",
+    input: { migrationId: 0 },
     output: { migrationTimestamp: D.ts },
   },
   errors: [
@@ -2288,6 +2326,7 @@ export const getSlotType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /slottypes/{name}/versions/{version}",
+    input: { name: 0, version: 0 },
     output: { lastUpdatedDate: D.ts, createdDate: D.ts },
   },
   errors: [
@@ -2387,6 +2426,7 @@ export const getSlotTypeVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /slottypes/{name}/versions",
     input: {
+      name: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -2454,6 +2494,7 @@ export const getUtterancesView: API.OperationMethod<
     service: svc,
     http: "GET /bots/{botName}/utterances?view=aggregation",
     input: {
+      botName: 0,
       botVersions: D.m({ query: "bot_versions" }),
       statusType: D.m({ query: "status_type" }),
     },
@@ -2489,7 +2530,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -2538,6 +2583,24 @@ export const putBot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{name}/versions/$LATEST",
+    input: {
+      name: 0,
+      description: 0,
+      intents: D.list({ intentName: 0, intentVersion: 0 }),
+      enableModelImprovements: 0,
+      nluIntentConfidenceThreshold: 0,
+      clarificationPrompt: i_Prompt,
+      abortStatement: i_Statement,
+      idleSessionTTLInSeconds: 0,
+      voiceId: 0,
+      checksum: 0,
+      processBehavior: 0,
+      locale: 0,
+      childDirected: 0,
+      detectSentiment: 0,
+      createVersion: 0,
+      tags: D.list(i_Tag),
+    },
     output: { lastUpdatedDate: D.ts, createdDate: D.ts },
     body: true,
   },
@@ -2578,6 +2641,23 @@ export const putBotAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /bots/{botName}/aliases/{name}",
+    input: {
+      name: 0,
+      description: 0,
+      botVersion: 0,
+      botName: 0,
+      checksum: 0,
+      conversationLogs: {
+        logSettings: D.list({
+          logType: 0,
+          destination: 0,
+          kmsKeyArn: 0,
+          resourceArn: 0,
+        }),
+        iamRoleArn: 0,
+      },
+      tags: D.list(i_Tag),
+    },
     output: { lastUpdatedDate: D.ts, createdDate: D.ts },
     body: true,
   },
@@ -2663,6 +2743,40 @@ export const putIntent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /intents/{name}/versions/$LATEST",
+    input: {
+      name: 0,
+      description: 0,
+      slots: D.list({
+        name: 0,
+        description: 0,
+        slotConstraint: 0,
+        slotType: 0,
+        slotTypeVersion: 0,
+        valueElicitationPrompt: i_Prompt,
+        priority: 0,
+        sampleUtterances: 0,
+        responseCard: 0,
+        obfuscationSetting: 0,
+        defaultValueSpec: { defaultValueList: D.list({ defaultValue: 0 }) },
+      }),
+      sampleUtterances: 0,
+      confirmationPrompt: i_Prompt,
+      rejectionStatement: i_Statement,
+      followUpPrompt: { prompt: i_Prompt, rejectionStatement: i_Statement },
+      conclusionStatement: i_Statement,
+      dialogCodeHook: i_CodeHook,
+      fulfillmentActivity: { type: 0, codeHook: i_CodeHook },
+      parentIntentSignature: 0,
+      checksum: 0,
+      createVersion: 0,
+      kendraConfiguration: { kendraIndex: 0, queryFilterString: 0, role: 0 },
+      inputContexts: D.list({ name: 0 }),
+      outputContexts: D.list({
+        name: 0,
+        timeToLiveInSeconds: 0,
+        turnsToLive: 0,
+      }),
+    },
     output: { lastUpdatedDate: D.ts, createdDate: D.ts },
     body: true,
   },
@@ -2714,6 +2828,16 @@ export const putSlotType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /slottypes/{name}/versions/$LATEST",
+    input: {
+      name: 0,
+      description: 0,
+      enumerationValues: D.list({ value: 0, synonyms: 0 }),
+      checksum: 0,
+      valueSelectionStrategy: 0,
+      createVersion: 0,
+      parentSlotTypeSignature: 0,
+      slotTypeConfigurations: D.list({ regexConfiguration: { pattern: 0 } }),
+    },
     output: { lastUpdatedDate: D.ts, createdDate: D.ts },
     body: true,
   },
@@ -2746,6 +2870,12 @@ export const startImport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /imports",
+    input: {
+      payload: 0,
+      resourceType: 0,
+      mergeStrategy: 0,
+      tags: D.list(i_Tag),
+    },
     output: { createdDate: D.ts },
     body: true,
   },
@@ -2782,6 +2912,13 @@ export const startMigration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /migrations",
+    input: {
+      v1BotName: 0,
+      v1BotVersion: 0,
+      v2BotName: 0,
+      v2BotRole: 0,
+      migrationStrategy: 0,
+    },
     output: { migrationTimestamp: D.ts },
     body: true,
   },
@@ -2814,7 +2951,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -2846,7 +2988,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     BadRequestException,
@@ -2860,6 +3002,17 @@ export const untagResource: API.OperationMethod<
   operationName: "UntagResource",
 })) as any;
 
+const i_CodeHook: D.LazyStruct = () => ({ uri: 0, messageVersion: 0 });
+const i_Prompt: D.LazyStruct = () => ({
+  messages: D.list(i_Message),
+  maxAttempts: 0,
+  responseCard: 0,
+});
+const i_Statement: D.LazyStruct = () => ({
+  messages: D.list(i_Message),
+  responseCard: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
 const o_BotMetadata: D.LazyStruct = () => ({
   lastUpdatedDate: D.ts,
   createdDate: D.ts,
@@ -2871,4 +3024,9 @@ const o_IntentMetadata: D.LazyStruct = () => ({
 const o_SlotTypeMetadata: D.LazyStruct = () => ({
   lastUpdatedDate: D.ts,
   createdDate: D.ts,
+});
+const i_Message: D.LazyStruct = () => ({
+  contentType: 0,
+  content: 0,
+  groupNumber: 0,
 });

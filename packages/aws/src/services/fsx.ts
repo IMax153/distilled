@@ -3356,7 +3356,11 @@ export const associateFileSystemAliases: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      FileSystemId: 0,
+      Aliases: 0,
+    },
   },
   errors: [BadRequest, FileSystemNotFound, InternalServerError],
   protocol: AwsProtocol,
@@ -3391,7 +3395,7 @@ export const cancelDataRepositoryTask: API.OperationMethod<
   CancelDataRepositoryTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TaskId: 0 } },
   errors: [
     BadRequest,
     DataRepositoryTaskEnded,
@@ -3452,7 +3456,14 @@ export const copyBackup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      SourceBackupId: 0,
+      SourceRegion: 0,
+      KmsKeyId: 0,
+      CopyTags: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { Backup: o_Backup },
   },
   errors: [
@@ -3492,7 +3503,13 @@ export const copySnapshotAndUpdateVolume: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      VolumeId: 0,
+      SourceSnapshotARN: 0,
+      CopyStrategy: 0,
+      Options: 0,
+    },
     output: { AdministrativeActions: D.list(o_AdministrativeAction) },
   },
   errors: [
@@ -3550,7 +3567,27 @@ export const createAndAttachS3AccessPoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      Name: 0,
+      Type: 0,
+      OpenZFSConfiguration: {
+        VolumeId: 0,
+        FileSystemIdentity: {
+          Type: 0,
+          PosixUser: { Uid: 0, Gid: 0, SecondaryGids: 0 },
+        },
+      },
+      OntapConfiguration: {
+        VolumeId: 0,
+        FileSystemIdentity: {
+          Type: 0,
+          UnixUser: { Name: 0 },
+          WindowsUser: { Name: 0 },
+        },
+      },
+      S3AccessPoint: { VpcConfiguration: { VpcId: 0 }, Policy: 0 },
+    },
     output: { S3AccessPointAttachment: o_S3AccessPointAttachment },
   },
   errors: [
@@ -3636,7 +3673,12 @@ export const createBackup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      FileSystemId: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+      VolumeId: 0,
+    },
     output: { Backup: o_Backup },
   },
   errors: [
@@ -3689,7 +3731,16 @@ export const createDataRepositoryAssociation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      FileSystemId: 0,
+      FileSystemPath: 0,
+      DataRepositoryPath: 0,
+      BatchImportMetaDataOnCreate: 0,
+      ImportedFileChunkSize: 0,
+      S3: i_S3DataRepositoryConfiguration,
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
     output: { Association: o_DataRepositoryAssociation },
   },
   errors: [
@@ -3742,7 +3793,16 @@ export const createDataRepositoryTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Type: 0,
+      Paths: 0,
+      FileSystemId: 0,
+      Report: { Enabled: 0, Path: 0, Format: 0, Scope: 0 },
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+      CapacityToRelease: 0,
+      ReleaseConfiguration: { DurationSinceLastAccess: { Unit: 0, Value: 0 } },
+    },
     output: { DataRepositoryTask: o_DataRepositoryTask },
   },
   errors: [
@@ -3798,7 +3858,29 @@ export const createFileCache: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      FileCacheType: 0,
+      FileCacheTypeVersion: 0,
+      StorageCapacity: 0,
+      SubnetIds: 0,
+      SecurityGroupIds: 0,
+      Tags: D.list(i_Tag),
+      CopyTagsToDataRepositoryAssociations: 0,
+      KmsKeyId: 0,
+      LustreConfiguration: {
+        PerUnitStorageThroughput: 0,
+        DeploymentType: 0,
+        WeeklyMaintenanceStartTime: 0,
+        MetadataConfiguration: { StorageCapacity: 0 },
+      },
+      DataRepositoryAssociations: D.list({
+        FileCachePath: 0,
+        DataRepositoryPath: 0,
+        DataRepositorySubdirectories: 0,
+        NFS: { Version: 0, DnsIps: 0 },
+      }),
+    },
     output: { FileCache: { CreationTime: D.ts } },
   },
   errors: [
@@ -3874,7 +3956,36 @@ export const createFileSystem: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      FileSystemType: 0,
+      StorageCapacity: 0,
+      StorageType: 0,
+      SubnetIds: 0,
+      SecurityGroupIds: 0,
+      Tags: D.list(i_Tag),
+      KmsKeyId: 0,
+      WindowsConfiguration: i_CreateFileSystemWindowsConfiguration,
+      LustreConfiguration: i_CreateFileSystemLustreConfiguration,
+      OntapConfiguration: {
+        AutomaticBackupRetentionDays: 0,
+        DailyAutomaticBackupStartTime: 0,
+        DeploymentType: 0,
+        EndpointIpAddressRange: 0,
+        FsxAdminPassword: 0,
+        DiskIopsConfiguration: i_DiskIopsConfiguration,
+        PreferredSubnetId: 0,
+        RouteTableIds: 0,
+        ThroughputCapacity: 0,
+        WeeklyMaintenanceStartTime: 0,
+        HAPairs: 0,
+        ThroughputCapacityPerHAPair: 0,
+        EndpointIpv6AddressRange: 0,
+      },
+      FileSystemTypeVersion: 0,
+      OpenZFSConfiguration: i_CreateFileSystemOpenZFSConfiguration,
+      NetworkType: 0,
+    },
     output: { FileSystem: o_FileSystem },
   },
   errors: [
@@ -3946,7 +4057,21 @@ export const createFileSystemFromBackup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      BackupId: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      SubnetIds: 0,
+      SecurityGroupIds: 0,
+      Tags: D.list(i_Tag),
+      WindowsConfiguration: i_CreateFileSystemWindowsConfiguration,
+      LustreConfiguration: i_CreateFileSystemLustreConfiguration,
+      StorageType: 0,
+      KmsKeyId: 0,
+      FileSystemTypeVersion: 0,
+      OpenZFSConfiguration: i_CreateFileSystemOpenZFSConfiguration,
+      StorageCapacity: 0,
+      NetworkType: 0,
+    },
     output: { FileSystem: o_FileSystem },
   },
   errors: [
@@ -4009,7 +4134,12 @@ export const createSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      Name: 0,
+      VolumeId: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { Snapshot: o_Snapshot },
   },
   errors: [
@@ -4044,7 +4174,19 @@ export const createStorageVirtualMachine: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ActiveDirectoryConfiguration: {
+        NetBiosName: 0,
+        SelfManagedActiveDirectoryConfiguration:
+          i_SelfManagedActiveDirectoryConfiguration,
+      },
+      ClientRequestToken: D.m({ idempotency: true }),
+      FileSystemId: 0,
+      Name: 0,
+      SvmAdminPassword: 0,
+      Tags: D.list(i_Tag),
+      RootVolumeSecurityStyle: 0,
+    },
     output: { StorageVirtualMachine: o_StorageVirtualMachine },
   },
   errors: [
@@ -4082,7 +4224,25 @@ export const createVolume: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      VolumeType: 0,
+      Name: 0,
+      OntapConfiguration: i_CreateOntapVolumeConfiguration,
+      Tags: D.list(i_Tag),
+      OpenZFSConfiguration: {
+        ParentVolumeId: 0,
+        StorageCapacityReservationGiB: 0,
+        StorageCapacityQuotaGiB: 0,
+        RecordSizeKiB: 0,
+        DataCompressionType: 0,
+        CopyTagsToSnapshots: 0,
+        OriginSnapshot: { SnapshotARN: 0, CopyStrategy: 0 },
+        ReadOnly: 0,
+        NfsExports: D.list(i_OpenZFSNfsExport),
+        UserAndGroupQuotas: D.list(i_OpenZFSUserOrGroupQuota),
+      },
+    },
     output: { Volume: o_Volume },
   },
   errors: [
@@ -4122,7 +4282,13 @@ export const createVolumeFromBackup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      BackupId: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      Name: 0,
+      OntapConfiguration: i_CreateOntapVolumeConfiguration,
+      Tags: D.list(i_Tag),
+    },
     output: { Volume: o_Volume },
   },
   errors: [
@@ -4167,7 +4333,7 @@ export const deleteBackup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: { BackupId: 0, ClientRequestToken: D.m({ idempotency: true }) },
   },
   errors: [
     BackupBeingCopied,
@@ -4207,7 +4373,11 @@ export const deleteDataRepositoryAssociation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      AssociationId: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      DeleteDataInFileSystem: 0,
+    },
   },
   errors: [
     BadRequest,
@@ -4250,7 +4420,7 @@ export const deleteFileCache: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: { FileCacheId: 0, ClientRequestToken: D.m({ idempotency: true }) },
   },
   errors: [
     BadRequest,
@@ -4327,7 +4497,23 @@ export const deleteFileSystem: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      FileSystemId: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      WindowsConfiguration: {
+        SkipFinalBackup: 0,
+        FinalBackupTags: D.list(i_Tag),
+      },
+      LustreConfiguration: {
+        SkipFinalBackup: 0,
+        FinalBackupTags: D.list(i_Tag),
+      },
+      OpenZFSConfiguration: {
+        SkipFinalBackup: 0,
+        FinalBackupTags: D.list(i_Tag),
+        Options: 0,
+      },
+    },
   },
   errors: [
     BadRequest,
@@ -4362,7 +4548,7 @@ export const deleteSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: { ClientRequestToken: D.m({ idempotency: true }), SnapshotId: 0 },
   },
   errors: [BadRequest, InternalServerError, SnapshotNotFound],
   protocol: AwsProtocol,
@@ -4388,7 +4574,10 @@ export const deleteStorageVirtualMachine: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      StorageVirtualMachineId: 0,
+    },
   },
   errors: [
     BadRequest,
@@ -4420,7 +4609,16 @@ export const deleteVolume: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      VolumeId: 0,
+      OntapConfiguration: {
+        SkipFinalBackup: 0,
+        FinalBackupTags: D.list(i_Tag),
+        BypassSnaplockEnterpriseRetention: 0,
+      },
+      OpenZFSConfiguration: { Options: 0 },
+    },
   },
   errors: [
     BadRequest,
@@ -4475,7 +4673,16 @@ export const describeBackups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Backups: D.list(o_Backup) } },
+  descriptor: {
+    service: svc,
+    input: {
+      BackupIds: 0,
+      Filters: D.list(i_Filter),
+      MaxResults: 0,
+      NextToken: 0,
+    },
+    output: { Backups: D.list(o_Backup) },
+  },
   errors: [
     BackupNotFound,
     BadRequest,
@@ -4532,6 +4739,12 @@ export const describeDataRepositoryAssociations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AssociationIds: 0,
+      Filters: D.list(i_Filter),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { Associations: D.list(o_DataRepositoryAssociation) },
   },
   errors: [
@@ -4579,6 +4792,12 @@ export const describeDataRepositoryTasks: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TaskIds: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { DataRepositoryTasks: D.list(o_DataRepositoryTask) },
   },
   errors: [
@@ -4638,7 +4857,11 @@ export const describeFileCaches: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { FileCaches: D.list(o_FileCache) } },
+  descriptor: {
+    service: svc,
+    input: { FileCacheIds: 0, MaxResults: 0, NextToken: 0 },
+    output: { FileCaches: D.list(o_FileCache) },
+  },
   errors: [BadRequest, FileCacheNotFound, InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4669,7 +4892,12 @@ export const describeFileSystemAliases: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      FileSystemId: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
   },
   errors: [BadRequest, FileSystemNotFound, InternalServerError],
   protocol: AwsProtocol,
@@ -4723,7 +4951,11 @@ export const describeFileSystems: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { FileSystems: D.list(o_FileSystem) } },
+  descriptor: {
+    service: svc,
+    input: { FileSystemIds: 0, MaxResults: 0, NextToken: 0 },
+    output: { FileSystems: D.list(o_FileSystem) },
+  },
   errors: [BadRequest, FileSystemNotFound, InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4757,6 +4989,12 @@ export const describeS3AccessPointAttachments: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Names: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { S3AccessPointAttachments: D.list(o_S3AccessPointAttachment) },
   },
   errors: [
@@ -4790,7 +5028,7 @@ export const describeSharedVpcConfiguration: API.OperationMethod<
   DescribeSharedVpcConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [BadRequest, InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4837,7 +5075,17 @@ export const describeSnapshots: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Snapshot
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Snapshots: D.list(o_Snapshot) } },
+  descriptor: {
+    service: svc,
+    input: {
+      SnapshotIds: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+      IncludeShared: 0,
+    },
+    output: { Snapshots: D.list(o_Snapshot) },
+  },
   errors: [BadRequest, InternalServerError, SnapshotNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4867,6 +5115,12 @@ export const describeStorageVirtualMachines: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      StorageVirtualMachineIds: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { StorageVirtualMachines: D.list(o_StorageVirtualMachine) },
   },
   errors: [BadRequest, InternalServerError, StorageVirtualMachineNotFound],
@@ -4897,7 +5151,16 @@ export const describeVolumes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Volume
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Volumes: D.list(o_Volume) } },
+  descriptor: {
+    service: svc,
+    input: {
+      VolumeIds: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
+    output: { Volumes: D.list(o_Volume) },
+  },
   errors: [BadRequest, InternalServerError, VolumeNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4934,7 +5197,7 @@ export const detachAndDeleteS3AccessPoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: { ClientRequestToken: D.m({ idempotency: true }), Name: 0 },
   },
   errors: [
     BadRequest,
@@ -4973,7 +5236,11 @@ export const disassociateFileSystemAliases: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      FileSystemId: 0,
+      Aliases: 0,
+    },
   },
   errors: [BadRequest, FileSystemNotFound, InternalServerError],
   protocol: AwsProtocol,
@@ -5020,7 +5287,10 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceARN: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     BadRequest,
     InternalServerError,
@@ -5057,7 +5327,7 @@ export const releaseFileSystemNfsV3Locks: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: { FileSystemId: 0, ClientRequestToken: D.m({ idempotency: true }) },
     output: { FileSystem: o_FileSystem },
   },
   errors: [
@@ -5090,7 +5360,12 @@ export const restoreVolumeFromSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      VolumeId: 0,
+      SnapshotId: 0,
+      Options: 0,
+    },
     output: { AdministrativeActions: D.list(o_AdministrativeAction) },
   },
   errors: [
@@ -5121,7 +5396,7 @@ export const startMisconfiguredStateRecovery: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: { ClientRequestToken: D.m({ idempotency: true }), FileSystemId: 0 },
     output: { FileSystem: o_FileSystem },
   },
   errors: [BadRequest, FileSystemNotFound, InternalServerError],
@@ -5146,7 +5421,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [
     BadRequest,
     InternalServerError,
@@ -5175,7 +5450,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [
     BadRequest,
     InternalServerError,
@@ -5209,7 +5484,12 @@ export const updateDataRepositoryAssociation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      AssociationId: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      ImportedFileChunkSize: 0,
+      S3: i_S3DataRepositoryConfiguration,
+    },
     output: { Association: o_DataRepositoryAssociation },
   },
   errors: [
@@ -5245,7 +5525,11 @@ export const updateFileCache: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      FileCacheId: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      LustreConfiguration: { WeeklyMaintenanceStartTime: 0 },
+    },
     output: { FileCache: o_FileCache },
   },
   errors: [
@@ -5388,7 +5672,64 @@ export const updateFileSystem: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      FileSystemId: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      StorageCapacity: 0,
+      WindowsConfiguration: {
+        WeeklyMaintenanceStartTime: 0,
+        DailyAutomaticBackupStartTime: 0,
+        AutomaticBackupRetentionDays: 0,
+        ThroughputCapacity: 0,
+        SelfManagedActiveDirectoryConfiguration:
+          i_SelfManagedActiveDirectoryConfigurationUpdates,
+        AuditLogConfiguration: i_WindowsAuditLogCreateConfiguration,
+        DiskIopsConfiguration: i_DiskIopsConfiguration,
+        FsrmConfiguration: i_WindowsFsrmConfiguration,
+      },
+      LustreConfiguration: {
+        WeeklyMaintenanceStartTime: 0,
+        DailyAutomaticBackupStartTime: 0,
+        AutomaticBackupRetentionDays: 0,
+        AutoImportPolicy: 0,
+        DataCompressionType: 0,
+        LogConfiguration: i_LustreLogCreateConfiguration,
+        RootSquashConfiguration: i_LustreRootSquashConfiguration,
+        PerUnitStorageThroughput: 0,
+        MetadataConfiguration: { Iops: 0, Mode: 0 },
+        ThroughputCapacity: 0,
+        DataReadCacheConfiguration: i_LustreReadCacheConfiguration,
+      },
+      OntapConfiguration: {
+        AutomaticBackupRetentionDays: 0,
+        DailyAutomaticBackupStartTime: 0,
+        FsxAdminPassword: 0,
+        WeeklyMaintenanceStartTime: 0,
+        DiskIopsConfiguration: i_DiskIopsConfiguration,
+        ThroughputCapacity: 0,
+        AddRouteTableIds: 0,
+        RemoveRouteTableIds: 0,
+        ThroughputCapacityPerHAPair: 0,
+        HAPairs: 0,
+        EndpointIpv6AddressRange: 0,
+      },
+      OpenZFSConfiguration: {
+        AutomaticBackupRetentionDays: 0,
+        CopyTagsToBackups: 0,
+        CopyTagsToVolumes: 0,
+        DailyAutomaticBackupStartTime: 0,
+        ThroughputCapacity: 0,
+        WeeklyMaintenanceStartTime: 0,
+        DiskIopsConfiguration: i_DiskIopsConfiguration,
+        AddRouteTableIds: 0,
+        RemoveRouteTableIds: 0,
+        ReadCacheConfiguration: i_OpenZFSReadCacheConfiguration,
+        EndpointIpv6AddressRange: 0,
+      },
+      StorageType: 0,
+      FileSystemTypeVersion: 0,
+      NetworkType: 0,
+    },
     output: { FileSystem: o_FileSystem },
   },
   errors: [
@@ -5430,7 +5771,10 @@ export const updateSharedVpcConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      EnableFsxRouteTableUpdatesFromParticipantAccounts: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
   },
   errors: [BadRequest, IncompatibleParameterError, InternalServerError],
   protocol: AwsProtocol,
@@ -5455,7 +5799,11 @@ export const updateSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      Name: 0,
+      SnapshotId: 0,
+    },
     output: { Snapshot: o_Snapshot },
   },
   errors: [
@@ -5487,7 +5835,16 @@ export const updateStorageVirtualMachine: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ActiveDirectoryConfiguration: {
+        SelfManagedActiveDirectoryConfiguration:
+          i_SelfManagedActiveDirectoryConfigurationUpdates,
+        NetBiosName: 0,
+      },
+      ClientRequestToken: D.m({ idempotency: true }),
+      StorageVirtualMachineId: 0,
+      SvmAdminPassword: 0,
+    },
     output: { StorageVirtualMachine: o_StorageVirtualMachine },
   },
   errors: [
@@ -5520,7 +5877,37 @@ export const updateVolume: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      VolumeId: 0,
+      OntapConfiguration: {
+        JunctionPath: 0,
+        SecurityStyle: 0,
+        SizeInMegabytes: 0,
+        StorageEfficiencyEnabled: 0,
+        TieringPolicy: i_TieringPolicy,
+        SnapshotPolicy: 0,
+        CopyTagsToBackups: 0,
+        SnaplockConfiguration: {
+          AuditLogVolume: 0,
+          AutocommitPeriod: i_AutocommitPeriod,
+          PrivilegedDelete: 0,
+          RetentionPeriod: i_SnaplockRetentionPeriod,
+          VolumeAppendModeEnabled: 0,
+        },
+        SizeInBytes: 0,
+      },
+      Name: 0,
+      OpenZFSConfiguration: {
+        StorageCapacityReservationGiB: 0,
+        StorageCapacityQuotaGiB: 0,
+        RecordSizeKiB: 0,
+        DataCompressionType: 0,
+        NfsExports: D.list(i_OpenZFSNfsExport),
+        UserAndGroupQuotas: D.list(i_OpenZFSUserOrGroupQuota),
+        ReadOnly: 0,
+      },
+    },
     output: { Volume: o_Volume },
   },
   errors: [
@@ -5535,6 +5922,152 @@ export const updateVolume: API.OperationMethod<
   operationName: "UpdateVolume",
 })) as any;
 
+const i_AutocommitPeriod: D.LazyStruct = () => ({ Type: 0, Value: 0 });
+const i_CreateFileSystemLustreConfiguration: D.LazyStruct = () => ({
+  WeeklyMaintenanceStartTime: 0,
+  ImportPath: 0,
+  ExportPath: 0,
+  ImportedFileChunkSize: 0,
+  DeploymentType: 0,
+  AutoImportPolicy: 0,
+  PerUnitStorageThroughput: 0,
+  DailyAutomaticBackupStartTime: 0,
+  AutomaticBackupRetentionDays: 0,
+  CopyTagsToBackups: 0,
+  DriveCacheType: 0,
+  DataCompressionType: 0,
+  EfaEnabled: 0,
+  LogConfiguration: i_LustreLogCreateConfiguration,
+  RootSquashConfiguration: i_LustreRootSquashConfiguration,
+  MetadataConfiguration: { Iops: 0, Mode: 0 },
+  ThroughputCapacity: 0,
+  DataReadCacheConfiguration: i_LustreReadCacheConfiguration,
+});
+const i_CreateFileSystemOpenZFSConfiguration: D.LazyStruct = () => ({
+  AutomaticBackupRetentionDays: 0,
+  CopyTagsToBackups: 0,
+  CopyTagsToVolumes: 0,
+  DailyAutomaticBackupStartTime: 0,
+  DeploymentType: 0,
+  ThroughputCapacity: 0,
+  WeeklyMaintenanceStartTime: 0,
+  DiskIopsConfiguration: i_DiskIopsConfiguration,
+  RootVolumeConfiguration: {
+    RecordSizeKiB: 0,
+    DataCompressionType: 0,
+    NfsExports: D.list(i_OpenZFSNfsExport),
+    UserAndGroupQuotas: D.list(i_OpenZFSUserOrGroupQuota),
+    CopyTagsToSnapshots: 0,
+    ReadOnly: 0,
+  },
+  PreferredSubnetId: 0,
+  EndpointIpAddressRange: 0,
+  EndpointIpv6AddressRange: 0,
+  RouteTableIds: 0,
+  ReadCacheConfiguration: i_OpenZFSReadCacheConfiguration,
+});
+const i_CreateFileSystemWindowsConfiguration: D.LazyStruct = () => ({
+  ActiveDirectoryId: 0,
+  SelfManagedActiveDirectoryConfiguration:
+    i_SelfManagedActiveDirectoryConfiguration,
+  DeploymentType: 0,
+  PreferredSubnetId: 0,
+  ThroughputCapacity: 0,
+  WeeklyMaintenanceStartTime: 0,
+  DailyAutomaticBackupStartTime: 0,
+  AutomaticBackupRetentionDays: 0,
+  CopyTagsToBackups: 0,
+  Aliases: 0,
+  AuditLogConfiguration: i_WindowsAuditLogCreateConfiguration,
+  DiskIopsConfiguration: i_DiskIopsConfiguration,
+  FsrmConfiguration: i_WindowsFsrmConfiguration,
+});
+const i_CreateOntapVolumeConfiguration: D.LazyStruct = () => ({
+  JunctionPath: 0,
+  SecurityStyle: 0,
+  SizeInMegabytes: 0,
+  StorageEfficiencyEnabled: 0,
+  StorageVirtualMachineId: 0,
+  TieringPolicy: i_TieringPolicy,
+  OntapVolumeType: 0,
+  SnapshotPolicy: 0,
+  CopyTagsToBackups: 0,
+  SnaplockConfiguration: {
+    AuditLogVolume: 0,
+    AutocommitPeriod: i_AutocommitPeriod,
+    PrivilegedDelete: 0,
+    RetentionPeriod: i_SnaplockRetentionPeriod,
+    SnaplockType: 0,
+    VolumeAppendModeEnabled: 0,
+  },
+  VolumeStyle: 0,
+  AggregateConfiguration: { Aggregates: 0, ConstituentsPerAggregate: 0 },
+  SizeInBytes: 0,
+});
+const i_DiskIopsConfiguration: D.LazyStruct = () => ({ Mode: 0, Iops: 0 });
+const i_Filter: D.LazyStruct = () => ({ Name: 0, Values: 0 });
+const i_LustreLogCreateConfiguration: D.LazyStruct = () => ({
+  Level: 0,
+  Destination: 0,
+});
+const i_LustreReadCacheConfiguration: D.LazyStruct = () => ({
+  SizingMode: 0,
+  SizeGiB: 0,
+});
+const i_LustreRootSquashConfiguration: D.LazyStruct = () => ({
+  RootSquash: 0,
+  NoSquashNids: 0,
+});
+const i_OpenZFSNfsExport: D.LazyStruct = () => ({
+  ClientConfigurations: D.list({ Clients: 0, Options: 0 }),
+});
+const i_OpenZFSReadCacheConfiguration: D.LazyStruct = () => ({
+  SizingMode: 0,
+  SizeGiB: 0,
+});
+const i_OpenZFSUserOrGroupQuota: D.LazyStruct = () => ({
+  Type: 0,
+  Id: 0,
+  StorageCapacityQuotaGiB: 0,
+});
+const i_S3DataRepositoryConfiguration: D.LazyStruct = () => ({
+  AutoImportPolicy: { Events: 0 },
+  AutoExportPolicy: { Events: 0 },
+});
+const i_SelfManagedActiveDirectoryConfiguration: D.LazyStruct = () => ({
+  DomainName: 0,
+  OrganizationalUnitDistinguishedName: 0,
+  FileSystemAdministratorsGroup: 0,
+  UserName: 0,
+  Password: 0,
+  DnsIps: 0,
+  DomainJoinServiceAccountSecret: 0,
+});
+const i_SelfManagedActiveDirectoryConfigurationUpdates: D.LazyStruct = () => ({
+  UserName: 0,
+  Password: 0,
+  DnsIps: 0,
+  DomainName: 0,
+  OrganizationalUnitDistinguishedName: 0,
+  FileSystemAdministratorsGroup: 0,
+  DomainJoinServiceAccountSecret: 0,
+});
+const i_SnaplockRetentionPeriod: D.LazyStruct = () => ({
+  DefaultRetention: i_RetentionPeriod,
+  MinimumRetention: i_RetentionPeriod,
+  MaximumRetention: i_RetentionPeriod,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_TieringPolicy: D.LazyStruct = () => ({ CoolingPeriod: 0, Name: 0 });
+const i_WindowsAuditLogCreateConfiguration: D.LazyStruct = () => ({
+  FileAccessAuditLogLevel: 0,
+  FileShareAccessAuditLogLevel: 0,
+  AuditLogDestination: 0,
+});
+const i_WindowsFsrmConfiguration: D.LazyStruct = () => ({
+  FsrmServiceEnabled: 0,
+  EventLogDestination: 0,
+});
 const o_AdministrativeAction: D.LazyStruct = () => ({
   RequestTime: D.ts,
   TargetFileSystemValues: o_FileSystem,
@@ -5571,3 +6104,4 @@ const o_Volume: D.LazyStruct = () => ({
   CreationTime: D.ts,
   AdministrativeActions: D.list(o_AdministrativeAction),
 });
+const i_RetentionPeriod: D.LazyStruct = () => ({ Type: 0, Value: 0 });

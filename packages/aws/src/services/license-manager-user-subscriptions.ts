@@ -417,7 +417,18 @@ export const associateUser: API.OperationMethod<
   AssociateUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /user/AssociateUser", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /user/AssociateUser",
+    input: {
+      Username: 0,
+      InstanceId: 0,
+      IdentityProvider: i_IdentityProvider,
+      Domain: 0,
+      Tags: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -453,6 +464,16 @@ export const createLicenseServerEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /license-server/CreateLicenseServerEndpoint",
+    input: {
+      IdentityProviderArn: 0,
+      LicenseServerSettings: {
+        ServerType: 0,
+        ServerSettings: {
+          RdsSalSettings: { RdsSalCredentialsProvider: i_CredentialsProvider },
+        },
+      },
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -490,6 +511,7 @@ export const deleteLicenseServerEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /license-server/DeleteLicenseServerEndpoint",
+    input: { LicenseServerEndpointArn: 0, ServerType: 0 },
     output: { LicenseServerEndpoint: o_LicenseServerEndpoint },
     body: true,
   },
@@ -528,6 +550,11 @@ export const deregisterIdentityProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identity-provider/DeregisterIdentityProvider",
+    input: {
+      IdentityProvider: i_IdentityProvider,
+      Product: 0,
+      IdentityProviderArn: 0,
+    },
     body: true,
   },
   errors: [
@@ -562,7 +589,18 @@ export const disassociateUser: API.OperationMethod<
   DisassociateUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /user/DisassociateUser", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /user/DisassociateUser",
+    input: {
+      Username: 0,
+      InstanceId: 0,
+      IdentityProvider: i_IdentityProvider,
+      InstanceUserArn: 0,
+      Domain: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -599,6 +637,7 @@ export const listIdentityProviders: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identity-provider/ListIdentityProviders",
+    input: { MaxResults: 0, Filters: D.list(i_Filter), NextToken: 0 },
     body: true,
   },
   errors: [
@@ -643,6 +682,7 @@ export const listInstances: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /instance/ListInstances",
+    input: { MaxResults: 0, NextToken: 0, Filters: D.list(i_Filter) },
     body: true,
   },
   errors: [
@@ -686,6 +726,7 @@ export const listLicenseServerEndpoints: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /license-server/ListLicenseServerEndpoints",
+    input: { MaxResults: 0, Filters: D.list(i_Filter), NextToken: 0 },
     output: { LicenseServerEndpoints: D.list(o_LicenseServerEndpoint) },
     body: true,
   },
@@ -730,6 +771,13 @@ export const listProductSubscriptions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /user/ListProductSubscriptions",
+    input: {
+      Product: 0,
+      IdentityProvider: i_IdentityProvider,
+      MaxResults: 0,
+      Filters: D.list(i_Filter),
+      NextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -766,7 +814,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -799,6 +851,13 @@ export const listUserAssociations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /user/ListUserAssociations",
+    input: {
+      InstanceId: 0,
+      IdentityProvider: i_IdentityProvider,
+      MaxResults: 0,
+      Filters: D.list(i_Filter),
+      NextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -842,6 +901,12 @@ export const registerIdentityProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identity-provider/RegisterIdentityProvider",
+    input: {
+      IdentityProvider: i_IdentityProvider,
+      Product: 0,
+      Settings: { Subnets: 0, SecurityGroupId: 0 },
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -881,6 +946,13 @@ export const startProductSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /user/StartProductSubscription",
+    input: {
+      Username: 0,
+      IdentityProvider: i_IdentityProvider,
+      Product: 0,
+      Domain: 0,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -918,6 +990,13 @@ export const stopProductSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /user/StopProductSubscription",
+    input: {
+      Username: 0,
+      IdentityProvider: i_IdentityProvider,
+      Product: 0,
+      ProductUserArn: 0,
+      Domain: 0,
+    },
     body: true,
   },
   errors: [
@@ -948,7 +1027,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -975,7 +1059,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [InternalServerException, ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -1001,6 +1085,12 @@ export const updateIdentityProviderSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identity-provider/UpdateIdentityProviderSettings",
+    input: {
+      IdentityProvider: i_IdentityProvider,
+      Product: 0,
+      IdentityProviderArn: 0,
+      UpdateSettings: { AddSubnets: 0, RemoveSubnets: 0, SecurityGroupId: 0 },
+    },
     body: true,
   },
   errors: [
@@ -1014,4 +1104,22 @@ export const updateIdentityProviderSettings: API.OperationMethod<
   operationName: "UpdateIdentityProviderSettings",
 })) as any;
 
+const i_CredentialsProvider: D.LazyStruct = () => ({
+  SecretsManagerCredentialsProvider: { SecretId: 0 },
+});
+const i_Filter: D.LazyStruct = () => ({ Attribute: 0, Operation: 0, Value: 0 });
+const i_IdentityProvider: D.LazyStruct = () => ({
+  ActiveDirectoryIdentityProvider: {
+    DirectoryId: 0,
+    ActiveDirectorySettings: {
+      DomainName: 0,
+      DomainIpv4List: 0,
+      DomainIpv6List: 0,
+      DomainCredentialsProvider: i_CredentialsProvider,
+      DomainNetworkSettings: { Subnets: 0 },
+    },
+    ActiveDirectoryType: 0,
+    IsSharedActiveDirectory: 0,
+  },
+});
 const o_LicenseServerEndpoint: D.LazyStruct = () => ({ CreationTime: D.ts });

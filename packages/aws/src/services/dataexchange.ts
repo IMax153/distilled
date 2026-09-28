@@ -1081,6 +1081,7 @@ export const acceptDataGrant: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/data-grants/{DataGrantArn}/accept",
+    input: { DataGrantArn: 0 },
     output: {
       AcceptedAt: D.ts,
       EndsAt: D.ts,
@@ -1117,7 +1118,11 @@ export const cancelJob: API.OperationMethod<
   CancelJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v1/jobs/{JobId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v1/jobs/{JobId}",
+    input: { JobId: 0 },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1150,7 +1155,15 @@ export const createDataGrant: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/data-grants",
-    input: { EndsAt: D.tsAs("date-time") },
+    input: {
+      Name: 0,
+      GrantDistributionScope: 0,
+      ReceiverPrincipal: 0,
+      SourceDataSetId: 0,
+      EndsAt: D.tsAs("date-time"),
+      Description: 0,
+      Tags: 0,
+    },
     output: {
       AcceptedAt: D.ts,
       EndsAt: D.ts,
@@ -1191,6 +1204,7 @@ export const createDataSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/data-sets",
+    input: { AssetType: 0, Description: 0, Name: 0, Tags: 0 },
     output: { CreatedAt: D.ts, UpdatedAt: D.ts },
     body: true,
   },
@@ -1225,6 +1239,11 @@ export const createEventAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/event-actions",
+    input: {
+      Action: i_Action,
+      Event: { RevisionPublished: { DataSetId: 0 } },
+      Tags: 0,
+    },
     output: { CreatedAt: D.ts, UpdatedAt: D.ts },
     body: true,
   },
@@ -1260,6 +1279,73 @@ export const createJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/jobs",
+    input: {
+      AssetConfiguration: { Tags: D.list({ Key: 0, Value: 0 }) },
+      Details: {
+        ExportAssetToSignedUrl: { AssetId: 0, DataSetId: 0, RevisionId: 0 },
+        ExportAssetsToS3: {
+          AssetDestinations: D.list({ AssetId: 0, Bucket: 0, Key: 0 }),
+          DataSetId: 0,
+          Encryption: i_ExportServerSideEncryption,
+          RevisionId: 0,
+        },
+        ExportRevisionsToS3: {
+          DataSetId: 0,
+          Encryption: i_ExportServerSideEncryption,
+          RevisionDestinations: D.list({
+            Bucket: 0,
+            KeyPattern: 0,
+            RevisionId: 0,
+          }),
+        },
+        ImportAssetFromSignedUrl: {
+          AssetName: 0,
+          DataSetId: 0,
+          Md5Hash: 0,
+          RevisionId: 0,
+        },
+        ImportAssetsFromS3: {
+          AssetSources: D.list({ Bucket: 0, Key: 0 }),
+          DataSetId: 0,
+          RevisionId: 0,
+        },
+        ImportAssetsFromRedshiftDataShares: {
+          AssetSources: D.list({ DataShareArn: 0 }),
+          DataSetId: 0,
+          RevisionId: 0,
+        },
+        ImportAssetFromApiGatewayApi: {
+          ApiDescription: 0,
+          ApiId: 0,
+          ApiKey: 0,
+          ApiName: 0,
+          ApiSpecificationMd5Hash: 0,
+          DataSetId: 0,
+          ProtocolType: 0,
+          RevisionId: 0,
+          Stage: 0,
+        },
+        CreateS3DataAccessFromS3Bucket: {
+          AssetSource: {
+            Bucket: 0,
+            KeyPrefixes: 0,
+            Keys: 0,
+            KmsKeysToGrant: D.list({ KmsKeyArn: 0 }),
+          },
+          DataSetId: 0,
+          RevisionId: 0,
+        },
+        ImportAssetsFromLakeFormationTagPolicy: {
+          CatalogId: 0,
+          Database: { Expression: D.list(i_LFTag), Permissions: 0 },
+          Table: { Expression: D.list(i_LFTag), Permissions: 0 },
+          RoleArn: 0,
+          DataSetId: 0,
+          RevisionId: 0,
+        },
+      },
+      Type: 0,
+    },
     output: { CreatedAt: D.ts, Details: o_ResponseDetails, UpdatedAt: D.ts },
     body: true,
   },
@@ -1295,6 +1381,7 @@ export const createRevision: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/data-sets/{DataSetId}/revisions",
+    input: { Comment: 0, DataSetId: 0, Tags: 0 },
     output: { CreatedAt: D.ts, UpdatedAt: D.ts, RevokedAt: D.ts },
     body: true,
   },
@@ -1330,6 +1417,7 @@ export const deleteAsset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/data-sets/{DataSetId}/revisions/{RevisionId}/assets/{AssetId}",
+    input: { AssetId: 0, DataSetId: 0, RevisionId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1360,7 +1448,11 @@ export const deleteDataGrant: API.OperationMethod<
   DeleteDataGrantError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v1/data-grants/{DataGrantId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v1/data-grants/{DataGrantId}",
+    input: { DataGrantId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1390,7 +1482,11 @@ export const deleteDataSet: API.OperationMethod<
   DeleteDataSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v1/data-sets/{DataSetId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v1/data-sets/{DataSetId}",
+    input: { DataSetId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1422,6 +1518,7 @@ export const deleteEventAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/event-actions/{EventActionId}",
+    input: { EventActionId: 0 },
   },
   errors: [
     InternalServerException,
@@ -1454,6 +1551,7 @@ export const deleteRevision: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/data-sets/{DataSetId}/revisions/{RevisionId}",
+    input: { DataSetId: 0, RevisionId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1486,6 +1584,7 @@ export const getAsset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/data-sets/{DataSetId}/revisions/{RevisionId}/assets/{AssetId}",
+    input: { AssetId: 0, DataSetId: 0, RevisionId: 0 },
     output: { AssetDetails: o_AssetDetails, CreatedAt: D.ts, UpdatedAt: D.ts },
   },
   errors: [
@@ -1518,6 +1617,7 @@ export const getDataGrant: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/data-grants/{DataGrantId}",
+    input: { DataGrantId: 0 },
     output: {
       AcceptedAt: D.ts,
       EndsAt: D.ts,
@@ -1555,6 +1655,7 @@ export const getDataSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/data-sets/{DataSetId}",
+    input: { DataSetId: 0 },
     output: { CreatedAt: D.ts, UpdatedAt: D.ts },
   },
   errors: [
@@ -1586,6 +1687,7 @@ export const getEventAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/event-actions/{EventActionId}",
+    input: { EventActionId: 0 },
     output: { CreatedAt: D.ts, UpdatedAt: D.ts },
   },
   errors: [
@@ -1617,6 +1719,7 @@ export const getJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/jobs/{JobId}",
+    input: { JobId: 0 },
     output: { CreatedAt: D.ts, Details: o_ResponseDetails, UpdatedAt: D.ts },
   },
   errors: [
@@ -1649,6 +1752,7 @@ export const getReceivedDataGrant: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/received-data-grants/{DataGrantArn}",
+    input: { DataGrantArn: 0 },
     output: {
       AcceptedAt: D.ts,
       EndsAt: D.ts,
@@ -1686,6 +1790,7 @@ export const getRevision: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/data-sets/{DataSetId}/revisions/{RevisionId}",
+    input: { DataSetId: 0, RevisionId: 0 },
     output: { CreatedAt: D.ts, UpdatedAt: D.ts, RevokedAt: D.ts },
   },
   errors: [
@@ -1770,6 +1875,7 @@ export const listDataSetRevisions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/data-sets/{DataSetId}/revisions",
     input: {
+      DataSetId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -2002,8 +2108,10 @@ export const listRevisionAssets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/data-sets/{DataSetId}/revisions/{RevisionId}/assets",
     input: {
+      DataSetId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
+      RevisionId: 0,
     },
     output: {
       Assets: D.list({
@@ -2043,6 +2151,7 @@ export const listTagsForResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
   },
   errors: [],
@@ -2071,6 +2180,7 @@ export const revokeRevision: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/data-sets/{DataSetId}/revisions/{RevisionId}/revoke",
+    input: { DataSetId: 0, RevisionId: 0, RevocationComment: 0 },
     output: { CreatedAt: D.ts, UpdatedAt: D.ts, RevokedAt: D.ts },
     body: true,
   },
@@ -2155,12 +2265,30 @@ export const sendDataSetNotification: API.OperationMethod<
     service: svc,
     http: "POST /v1/data-sets/{DataSetId}/notification",
     input: {
+      Scope: {
+        LakeFormationTagPolicies: D.list({ Database: 0, Table: 0 }),
+        RedshiftDataShares: D.list({
+          Arn: 0,
+          Database: 0,
+          Function: 0,
+          Table: 0,
+          Schema: 0,
+          View: 0,
+        }),
+        S3DataAccesses: D.list({ KeyPrefixes: 0, Keys: 0 }),
+      },
       ClientToken: D.m({ idempotency: true }),
+      Comment: 0,
+      DataSetId: 0,
       Details: {
         DataUpdate: { DataUpdatedAt: D.tsAs("date-time") },
         Deprecation: { DeprecationAt: D.tsAs("date-time") },
-        SchemaChange: { SchemaChangeAt: D.tsAs("date-time") },
+        SchemaChange: {
+          Changes: D.list({ Name: 0, Type: 0, Description: 0 }),
+          SchemaChangeAt: D.tsAs("date-time"),
+        },
       },
+      Type: 0,
     },
     body: true,
   },
@@ -2194,7 +2322,11 @@ export const startJob: API.OperationMethod<
   StartJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /v1/jobs/{JobId}" },
+  descriptor: {
+    service: svc,
+    http: "PATCH /v1/jobs/{JobId}",
+    input: { JobId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2221,7 +2353,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags/{ResourceArn}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: { ResourceArn: 0, Tags: D.m({ wire: "tags" }) },
     body: true,
   },
   errors: [],
@@ -2243,7 +2375,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [],
   protocol: AwsProtocol,
@@ -2271,6 +2403,7 @@ export const updateAsset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v1/data-sets/{DataSetId}/revisions/{RevisionId}/assets/{AssetId}",
+    input: { AssetId: 0, DataSetId: 0, Name: 0, RevisionId: 0 },
     output: { AssetDetails: o_AssetDetails, CreatedAt: D.ts, UpdatedAt: D.ts },
     body: true,
   },
@@ -2306,6 +2439,7 @@ export const updateDataSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v1/data-sets/{DataSetId}",
+    input: { DataSetId: 0, Description: 0, Name: 0 },
     output: { CreatedAt: D.ts, UpdatedAt: D.ts },
     body: true,
   },
@@ -2340,6 +2474,7 @@ export const updateEventAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v1/event-actions/{EventActionId}",
+    input: { Action: i_Action, EventActionId: 0 },
     output: { CreatedAt: D.ts, UpdatedAt: D.ts },
     body: true,
   },
@@ -2375,6 +2510,7 @@ export const updateRevision: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v1/data-sets/{DataSetId}/revisions/{RevisionId}",
+    input: { Comment: 0, DataSetId: 0, Finalized: 0, RevisionId: 0 },
     output: { CreatedAt: D.ts, UpdatedAt: D.ts, RevokedAt: D.ts },
     body: true,
   },
@@ -2391,6 +2527,17 @@ export const updateRevision: API.OperationMethod<
   operationName: "UpdateRevision",
 })) as any;
 
+const i_Action: D.LazyStruct = () => ({
+  ExportRevisionToS3: {
+    Encryption: i_ExportServerSideEncryption,
+    RevisionDestination: { Bucket: 0, KeyPattern: 0 },
+  },
+});
+const i_ExportServerSideEncryption: D.LazyStruct = () => ({
+  KmsKeyArn: 0,
+  Type: 0,
+});
+const i_LFTag: D.LazyStruct = () => ({ TagKey: 0, TagValues: 0 });
 const o_AssetDetails: D.LazyStruct = () => ({
   ApiGatewayApiAsset: {
     ApiKey: D.secret,

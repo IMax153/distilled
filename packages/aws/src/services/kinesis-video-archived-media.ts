@@ -379,6 +379,14 @@ export const getClip: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getClip",
+    input: {
+      StreamName: 0,
+      StreamARN: 0,
+      ClipFragmentSelector: {
+        FragmentSelectorType: 0,
+        TimestampRange: { StartTimestamp: 0, EndTimestamp: 0 },
+      },
+    },
     output: {
       ContentType: D.m({ header: "Content-Type" }),
       Payload: D.m({ payload: true, shape: D.stream }),
@@ -545,6 +553,19 @@ export const getDASHStreamingSessionURL: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getDASHStreamingSessionURL",
+    input: {
+      StreamName: 0,
+      StreamARN: 0,
+      PlaybackMode: 0,
+      DisplayFragmentTimestamp: 0,
+      DisplayFragmentNumber: 0,
+      DASHFragmentSelector: {
+        FragmentSelectorType: 0,
+        TimestampRange: { StartTimestamp: 0, EndTimestamp: 0 },
+      },
+      Expires: 0,
+      MaxManifestFragmentResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -746,6 +767,20 @@ export const getHLSStreamingSessionURL: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getHLSStreamingSessionURL",
+    input: {
+      StreamName: 0,
+      StreamARN: 0,
+      PlaybackMode: 0,
+      HLSFragmentSelector: {
+        FragmentSelectorType: 0,
+        TimestampRange: { StartTimestamp: 0, EndTimestamp: 0 },
+      },
+      ContainerFormat: 0,
+      DiscontinuityMode: 0,
+      DisplayFragmentTimestamp: 0,
+      Expires: 0,
+      MaxMediaPlaylistFragmentResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -784,6 +819,20 @@ export const getImages: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getImages",
+    input: {
+      StreamName: 0,
+      StreamARN: 0,
+      ImageSelectorType: 0,
+      StartTimestamp: 0,
+      EndTimestamp: 0,
+      SamplingInterval: 0,
+      Format: 0,
+      FormatConfig: 0,
+      WidthPixels: 0,
+      HeightPixels: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { Images: D.list({ TimeStamp: D.ts }) },
     body: true,
   },
@@ -850,6 +899,7 @@ export const getMediaForFragmentList: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getMediaForFragmentList",
+    input: { StreamName: 0, StreamARN: 0, Fragments: 0 },
     output: {
       ContentType: D.m({ header: "Content-Type" }),
       Payload: D.m({ payload: true, shape: D.stream }),
@@ -915,6 +965,16 @@ export const listFragments: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listFragments",
+    input: {
+      StreamName: 0,
+      StreamARN: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      FragmentSelector: {
+        FragmentSelectorType: 0,
+        TimestampRange: { StartTimestamp: 0, EndTimestamp: 0 },
+      },
+    },
     output: {
       Fragments: D.list({ ProducerTimestamp: D.ts, ServerTimestamp: D.ts }),
     },

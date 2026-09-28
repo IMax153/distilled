@@ -2485,6 +2485,15 @@ export const batchExecuteStatement: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Statements: D.list({
+        Statement: 0,
+        Parameters: D.list(i_AttributeValue),
+        ConsistentRead: 0,
+        ReturnValuesOnConditionCheckFailure: 0,
+      }),
+      ReturnConsumedCapacity: 0,
+    },
     output: {
       Responses: D.list({
         Error: { Item: D.map(o_AttributeValue) },
@@ -2572,6 +2581,16 @@ export const batchGetItem: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      RequestItems: D.map({
+        Keys: D.list(D.map(i_AttributeValue)),
+        AttributesToGet: 0,
+        ConsistentRead: 0,
+        ProjectionExpression: 0,
+        ExpressionAttributeNames: 0,
+      }),
+      ReturnConsumedCapacity: 0,
+    },
     output: {
       Responses: D.map(D.list(D.map(o_AttributeValue))),
       UnprocessedKeys: D.map({ Keys: D.list(D.map(o_AttributeValue)) }),
@@ -2693,6 +2712,16 @@ export const batchWriteItem: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      RequestItems: D.map(
+        D.list({
+          PutRequest: { Item: D.map(i_AttributeValue) },
+          DeleteRequest: { Key: D.map(i_AttributeValue) },
+        }),
+      ),
+      ReturnConsumedCapacity: 0,
+      ReturnItemCollectionMetrics: 0,
+    },
     output: {
       UnprocessedItems: D.map(
         D.list({
@@ -2767,7 +2796,7 @@ export const createBackup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: { TableName: D.m({ context: "ResourceArn" }), BackupName: 0 },
     output: { BackupDetails: o_BackupDetails },
   },
   errors: [
@@ -2845,7 +2874,10 @@ export const createGlobalTable: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { GlobalTableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      GlobalTableName: D.m({ context: "ResourceArn" }),
+      ReplicationGroup: D.list({ RegionName: 0 }),
+    },
     output: { GlobalTableDescription: o_GlobalTableDescription },
   },
   errors: [
@@ -2891,7 +2923,26 @@ export const createTable: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      AttributeDefinitions: D.list(i_AttributeDefinition),
+      TableName: D.m({ context: "ResourceArn" }),
+      KeySchema: D.list(i_KeySchemaElement),
+      LocalSecondaryIndexes: D.list(i_LocalSecondaryIndex),
+      GlobalSecondaryIndexes: D.list(i_GlobalSecondaryIndex),
+      BillingMode: 0,
+      ProvisionedThroughput: i_ProvisionedThroughput,
+      StreamSpecification: i_StreamSpecification,
+      SSESpecification: i_SSESpecification,
+      Tags: D.list(i_Tag),
+      TableClass: 0,
+      DeletionProtectionEnabled: 0,
+      WarmThroughput: i_WarmThroughput,
+      ResourcePolicy: 0,
+      OnDemandThroughput: i_OnDemandThroughput,
+      GlobalTableSourceArn: 0,
+      GlobalTableSettingsReplicationMode: 0,
+      VectorIndexes: D.list(i_VectorIndex),
+    },
     output: { TableDescription: o_TableDescription },
   },
   errors: [
@@ -2977,7 +3028,19 @@ export const deleteItem: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      TableName: D.m({ context: "ResourceArn" }),
+      Key: D.map(i_AttributeValue),
+      Expected: D.map(i_ExpectedAttributeValue),
+      ConditionalOperator: 0,
+      ReturnValues: 0,
+      ReturnConsumedCapacity: 0,
+      ReturnItemCollectionMetrics: 0,
+      ConditionExpression: 0,
+      ExpressionAttributeNames: 0,
+      ExpressionAttributeValues: D.map(i_AttributeValue),
+      ReturnValuesOnConditionCheckFailure: 0,
+    },
     output: {
       Attributes: D.map(o_AttributeValue),
       ItemCollectionMetrics: o_ItemCollectionMetrics,
@@ -3037,7 +3100,10 @@ export const deleteResourcePolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ResourceArn: D.m({ context: "ResourceArn" }) },
+    input: {
+      ResourceArn: D.m({ context: "ResourceArn" }),
+      ExpectedRevisionId: 0,
+    },
   },
   errors: [
     InternalServerError,
@@ -3196,7 +3262,7 @@ export const describeContributorInsights: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: { TableName: D.m({ context: "ResourceArn" }), IndexName: 0 },
     output: { LastUpdateDateTime: D.ts },
   },
   errors: [InternalServerError, ResourceNotFoundException],
@@ -3216,7 +3282,7 @@ export const describeEndpoints: API.OperationMethod<
   DescribeEndpointsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3442,7 +3508,7 @@ export const describeLimits: API.OperationMethod<
   DescribeLimitsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [InternalServerError, InvalidEndpointException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3556,7 +3622,12 @@ export const disableKinesisStreamingDestination: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      TableName: D.m({ context: "ResourceArn" }),
+      StreamArn: 0,
+      EnableKinesisStreamingConfiguration:
+        i_EnableKinesisStreamingConfiguration,
+    },
   },
   errors: [
     InternalServerError,
@@ -3591,7 +3662,12 @@ export const enableKinesisStreamingDestination: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      TableName: D.m({ context: "ResourceArn" }),
+      StreamArn: 0,
+      EnableKinesisStreamingConfiguration:
+        i_EnableKinesisStreamingConfiguration,
+    },
   },
   errors: [
     InternalServerError,
@@ -3641,6 +3717,15 @@ export const executeStatement: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Statement: 0,
+      Parameters: D.list(i_AttributeValue),
+      ConsistentRead: 0,
+      NextToken: 0,
+      ReturnConsumedCapacity: 0,
+      Limit: 0,
+      ReturnValuesOnConditionCheckFailure: 0,
+    },
     output: {
       Items: D.list(D.map(o_AttributeValue)),
       LastEvaluatedKey: D.map(o_AttributeValue),
@@ -3689,7 +3774,15 @@ export const executeTransaction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      TransactStatements: D.list({
+        Statement: 0,
+        Parameters: D.list(i_AttributeValue),
+        ReturnValuesOnConditionCheckFailure: 0,
+      }),
+      ClientRequestToken: D.m({ idempotency: true }),
+      ReturnConsumedCapacity: 0,
+    },
     output: { Responses: D.list(o_ItemResponse) },
   },
   errors: [
@@ -3730,7 +3823,20 @@ export const exportTableToPointInTime: API.OperationMethod<
     service: svc,
     input: {
       TableArn: D.m({ context: "ResourceArn" }),
+      ExportTime: 0,
       ClientToken: D.m({ idempotency: true }),
+      S3Bucket: 0,
+      S3BucketOwner: 0,
+      S3Prefix: 0,
+      S3SseAlgorithm: 0,
+      S3SseKmsKeyId: 0,
+      ExportFormat: 0,
+      ExportType: 0,
+      IncrementalExportSpecification: {
+        ExportFromTime: 0,
+        ExportToTime: 0,
+        ExportViewType: 0,
+      },
     },
     output: { ExportDescription: o_ExportDescription },
   },
@@ -3773,7 +3879,15 @@ export const getItem: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      TableName: D.m({ context: "ResourceArn" }),
+      Key: D.map(i_AttributeValue),
+      AttributesToGet: 0,
+      ConsistentRead: 0,
+      ReturnConsumedCapacity: 0,
+      ProjectionExpression: 0,
+      ExpressionAttributeNames: 0,
+    },
     output: { Item: D.map(o_AttributeValue) },
   },
   errors: [
@@ -3867,7 +3981,24 @@ export const importTable: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      S3BucketSource: { S3BucketOwner: 0, S3Bucket: 0, S3KeyPrefix: 0 },
+      InputFormat: 0,
+      InputFormatOptions: { Csv: { Delimiter: 0, HeaderList: 0 } },
+      InputCompressionType: 0,
+      TableCreationParameters: {
+        TableName: 0,
+        AttributeDefinitions: D.list(i_AttributeDefinition),
+        KeySchema: D.list(i_KeySchemaElement),
+        BillingMode: 0,
+        ProvisionedThroughput: i_ProvisionedThroughput,
+        OnDemandThroughput: i_OnDemandThroughput,
+        SSESpecification: i_SSESpecification,
+        GlobalSecondaryIndexes: D.list(i_GlobalSecondaryIndex),
+        VectorIndexes: D.list(i_VectorIndex),
+      },
+    },
     output: { ImportTableDescription: o_ImportTableDescription },
   },
   errors: [
@@ -3908,7 +4039,14 @@ export const listBackups: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      TableName: D.m({ context: "ResourceArn" }),
+      Limit: 0,
+      TimeRangeLowerBound: 0,
+      TimeRangeUpperBound: 0,
+      ExclusiveStartBackupArn: 0,
+      BackupType: 0,
+    },
     output: {
       BackupSummaries: D.list({
         BackupCreationDateTime: D.ts,
@@ -3939,7 +4077,11 @@ export const listContributorInsights: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      TableName: D.m({ context: "ResourceArn" }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
   },
   errors: [InternalServerError, ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -3968,7 +4110,11 @@ export const listExports: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { TableArn: D.m({ context: "ResourceArn" }) },
+    input: {
+      TableArn: D.m({ context: "ResourceArn" }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
   },
   errors: [InternalServerError, LimitExceededException],
   protocol: AwsProtocol,
@@ -3998,7 +4144,10 @@ export const listGlobalTables: API.OperationMethod<
   ListGlobalTablesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ExclusiveStartGlobalTableName: 0, Limit: 0, RegionName: 0 },
+  },
   errors: [InternalServerError, InvalidEndpointException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4018,7 +4167,11 @@ export const listImports: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { TableArn: D.m({ context: "ResourceArn" }) },
+    input: {
+      TableArn: D.m({ context: "ResourceArn" }),
+      PageSize: 0,
+      NextToken: 0,
+    },
     output: { ImportSummaryList: D.list({ StartTime: D.ts, EndTime: D.ts }) },
   },
   errors: [LimitExceededException],
@@ -4048,7 +4201,7 @@ export const listTables: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TableName
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ExclusiveStartTableName: 0, Limit: 0 } },
   errors: [InternalServerError, InvalidEndpointException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4081,7 +4234,7 @@ export const listTagsOfResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ResourceArn: D.m({ context: "ResourceArn" }) },
+    input: { ResourceArn: D.m({ context: "ResourceArn" }), NextToken: 0 },
   },
   errors: [
     InternalServerError,
@@ -4143,7 +4296,19 @@ export const putItem: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      TableName: D.m({ context: "ResourceArn" }),
+      Item: D.map(i_AttributeValue),
+      Expected: D.map(i_ExpectedAttributeValue),
+      ReturnValues: 0,
+      ReturnConsumedCapacity: 0,
+      ReturnItemCollectionMetrics: 0,
+      ConditionalOperator: 0,
+      ConditionExpression: 0,
+      ExpressionAttributeNames: 0,
+      ExpressionAttributeValues: D.map(i_AttributeValue),
+      ReturnValuesOnConditionCheckFailure: 0,
+    },
     output: {
       Attributes: D.map(o_AttributeValue),
       ItemCollectionMetrics: o_ItemCollectionMetrics,
@@ -4204,7 +4369,12 @@ export const putResourcePolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ResourceArn: D.m({ context: "ResourceArn" }) },
+    input: {
+      ResourceArn: D.m({ context: "ResourceArn" }),
+      Policy: 0,
+      ExpectedRevisionId: 0,
+      ConfirmRemoveSelfResourceAccess: 0,
+    },
   },
   errors: [
     InternalServerError,
@@ -4290,7 +4460,25 @@ export const query: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      TableName: D.m({ context: "ResourceArn" }),
+      IndexName: 0,
+      Select: 0,
+      AttributesToGet: 0,
+      Limit: 0,
+      ConsistentRead: 0,
+      KeyConditions: D.map(i_Condition),
+      QueryFilter: D.map(i_Condition),
+      ConditionalOperator: 0,
+      ScanIndexForward: 0,
+      ExclusiveStartKey: D.map(i_AttributeValue),
+      ReturnConsumedCapacity: 0,
+      ProjectionExpression: 0,
+      FilterExpression: 0,
+      KeyConditionExpression: 0,
+      ExpressionAttributeNames: 0,
+      ExpressionAttributeValues: D.map(i_AttributeValue),
+    },
     output: {
       Items: D.list(D.map(o_AttributeValue)),
       LastEvaluatedKey: D.map(o_AttributeValue),
@@ -4353,7 +4541,17 @@ export const restoreTableFromBackup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TargetTableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      TargetTableName: D.m({ context: "ResourceArn" }),
+      BackupArn: 0,
+      BillingModeOverride: 0,
+      GlobalSecondaryIndexOverride: D.list(i_GlobalSecondaryIndex),
+      LocalSecondaryIndexOverride: D.list(i_LocalSecondaryIndex),
+      ProvisionedThroughputOverride: i_ProvisionedThroughput,
+      OnDemandThroughputOverride: i_OnDemandThroughput,
+      SSESpecificationOverride: i_SSESpecification,
+      VectorIndexOverride: D.list(i_VectorIndex),
+    },
     output: { TableDescription: o_TableDescription },
   },
   errors: [
@@ -4428,7 +4626,20 @@ export const restoreTableToPointInTime: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TargetTableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      SourceTableArn: 0,
+      SourceTableName: 0,
+      TargetTableName: D.m({ context: "ResourceArn" }),
+      UseLatestRestorableTime: 0,
+      RestoreDateTime: 0,
+      BillingModeOverride: 0,
+      GlobalSecondaryIndexOverride: D.list(i_GlobalSecondaryIndex),
+      LocalSecondaryIndexOverride: D.list(i_LocalSecondaryIndex),
+      ProvisionedThroughputOverride: i_ProvisionedThroughput,
+      OnDemandThroughputOverride: i_OnDemandThroughput,
+      SSESpecificationOverride: i_SSESpecification,
+      VectorIndexOverride: D.list(i_VectorIndex),
+    },
     output: { TableDescription: o_TableDescription },
   },
   errors: [
@@ -4508,7 +4719,24 @@ export const scan: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      TableName: D.m({ context: "ResourceArn" }),
+      IndexName: 0,
+      AttributesToGet: 0,
+      Limit: 0,
+      Select: 0,
+      ScanFilter: D.map(i_Condition),
+      ConditionalOperator: 0,
+      ExclusiveStartKey: D.map(i_AttributeValue),
+      ReturnConsumedCapacity: 0,
+      TotalSegments: 0,
+      Segment: 0,
+      ProjectionExpression: 0,
+      FilterExpression: 0,
+      ExpressionAttributeNames: 0,
+      ExpressionAttributeValues: D.map(i_AttributeValue),
+      ConsistentRead: 0,
+    },
     output: {
       Items: D.list(D.map(o_AttributeValue)),
       LastEvaluatedKey: D.map(o_AttributeValue),
@@ -4565,7 +4793,17 @@ export const searchVectors: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      TableName: D.m({ context: "ResourceArn" }),
+      IndexName: 0,
+      ReturnConsumedCapacity: 0,
+      ExpressionAttributeNames: 0,
+      ExpressionAttributeValues: D.map(i_AttributeValue),
+      ProjectionExpression: 0,
+      SearchVector: D.list(i_AttributeValue),
+      SearchConditionExpression: 0,
+      TopK: 0,
+    },
     output: { SearchResults: D.list({ Item: D.map(o_AttributeValue) }) },
     staticContext: { IsSearchOperation: { value: true } },
   },
@@ -4617,7 +4855,10 @@ export const tagResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ResourceArn: D.m({ context: "ResourceArn" }) },
+    input: {
+      ResourceArn: D.m({ context: "ResourceArn" }),
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     InternalServerError,
@@ -4669,7 +4910,21 @@ export const transactGetItems: API.OperationMethod<
   TransactGetItemsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Responses: D.list(o_ItemResponse) } },
+  descriptor: {
+    service: svc,
+    input: {
+      TransactItems: D.list({
+        Get: {
+          Key: D.map(i_AttributeValue),
+          TableName: 0,
+          ProjectionExpression: 0,
+          ExpressionAttributeNames: 0,
+        },
+      }),
+      ReturnConsumedCapacity: 0,
+    },
+    output: { Responses: D.list(o_ItemResponse) },
+  },
   errors: [
     InternalServerError,
     InvalidEndpointException,
@@ -4761,7 +5016,46 @@ export const transactWriteItems: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      TransactItems: D.list({
+        ConditionCheck: {
+          Key: D.map(i_AttributeValue),
+          TableName: 0,
+          ConditionExpression: 0,
+          ExpressionAttributeNames: 0,
+          ExpressionAttributeValues: D.map(i_AttributeValue),
+          ReturnValuesOnConditionCheckFailure: 0,
+        },
+        Put: {
+          Item: D.map(i_AttributeValue),
+          TableName: 0,
+          ConditionExpression: 0,
+          ExpressionAttributeNames: 0,
+          ExpressionAttributeValues: D.map(i_AttributeValue),
+          ReturnValuesOnConditionCheckFailure: 0,
+        },
+        Delete: {
+          Key: D.map(i_AttributeValue),
+          TableName: 0,
+          ConditionExpression: 0,
+          ExpressionAttributeNames: 0,
+          ExpressionAttributeValues: D.map(i_AttributeValue),
+          ReturnValuesOnConditionCheckFailure: 0,
+        },
+        Update: {
+          Key: D.map(i_AttributeValue),
+          UpdateExpression: 0,
+          TableName: 0,
+          ConditionExpression: 0,
+          ExpressionAttributeNames: 0,
+          ExpressionAttributeValues: D.map(i_AttributeValue),
+          ReturnValuesOnConditionCheckFailure: 0,
+        },
+      }),
+      ReturnConsumedCapacity: 0,
+      ReturnItemCollectionMetrics: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
     output: { ItemCollectionMetrics: D.map(D.list(o_ItemCollectionMetrics)) },
   },
   errors: [
@@ -4815,7 +5109,7 @@ export const untagResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ResourceArn: D.m({ context: "ResourceArn" }) },
+    input: { ResourceArn: D.m({ context: "ResourceArn" }), TagKeys: 0 },
   },
   errors: [
     InternalServerError,
@@ -4858,7 +5152,13 @@ export const updateContinuousBackups: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      TableName: D.m({ context: "ResourceArn" }),
+      PointInTimeRecoverySpecification: {
+        PointInTimeRecoveryEnabled: 0,
+        RecoveryPeriodInDays: 0,
+      },
+    },
     output: { ContinuousBackupsDescription: o_ContinuousBackupsDescription },
   },
   errors: [
@@ -4893,7 +5193,12 @@ export const updateContributorInsights: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      TableName: D.m({ context: "ResourceArn" }),
+      IndexName: 0,
+      ContributorInsightsAction: 0,
+      ContributorInsightsMode: 0,
+    },
   },
   errors: [InternalServerError, ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -4945,7 +5250,13 @@ export const updateGlobalTable: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { GlobalTableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      GlobalTableName: D.m({ context: "ResourceArn" }),
+      ReplicaUpdates: D.list({
+        Create: { RegionName: 0 },
+        Delete: { RegionName: 0 },
+      }),
+    },
     output: { GlobalTableDescription: o_GlobalTableDescription },
   },
   errors: [
@@ -4985,7 +5296,32 @@ export const updateGlobalTableSettings: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { GlobalTableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      GlobalTableName: D.m({ context: "ResourceArn" }),
+      GlobalTableBillingMode: 0,
+      GlobalTableProvisionedWriteCapacityUnits: 0,
+      GlobalTableProvisionedWriteCapacityAutoScalingSettingsUpdate:
+        i_AutoScalingSettingsUpdate,
+      GlobalTableGlobalSecondaryIndexSettingsUpdate: D.list({
+        IndexName: 0,
+        ProvisionedWriteCapacityUnits: 0,
+        ProvisionedWriteCapacityAutoScalingSettingsUpdate:
+          i_AutoScalingSettingsUpdate,
+      }),
+      ReplicaSettingsUpdate: D.list({
+        RegionName: 0,
+        ReplicaProvisionedReadCapacityUnits: 0,
+        ReplicaProvisionedReadCapacityAutoScalingSettingsUpdate:
+          i_AutoScalingSettingsUpdate,
+        ReplicaGlobalSecondaryIndexSettingsUpdate: D.list({
+          IndexName: 0,
+          ProvisionedReadCapacityUnits: 0,
+          ProvisionedReadCapacityAutoScalingSettingsUpdate:
+            i_AutoScalingSettingsUpdate,
+        }),
+        ReplicaTableClass: 0,
+      }),
+    },
     output: { ReplicaSettings: D.list(o_ReplicaSettingsDescription) },
   },
   errors: [
@@ -5032,7 +5368,21 @@ export const updateItem: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      TableName: D.m({ context: "ResourceArn" }),
+      Key: D.map(i_AttributeValue),
+      AttributeUpdates: D.map({ Value: i_AttributeValue, Action: 0 }),
+      Expected: D.map(i_ExpectedAttributeValue),
+      ConditionalOperator: 0,
+      ReturnValues: 0,
+      ReturnConsumedCapacity: 0,
+      ReturnItemCollectionMetrics: 0,
+      UpdateExpression: 0,
+      ConditionExpression: 0,
+      ExpressionAttributeNames: 0,
+      ExpressionAttributeValues: D.map(i_AttributeValue),
+      ReturnValuesOnConditionCheckFailure: 0,
+    },
     output: {
       Attributes: D.map(o_AttributeValue),
       ItemCollectionMetrics: o_ItemCollectionMetrics,
@@ -5073,7 +5423,13 @@ export const updateKinesisStreamingDestination: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      TableName: D.m({ context: "ResourceArn" }),
+      StreamArn: 0,
+      UpdateKinesisStreamingConfiguration: {
+        ApproximateCreationDateTimePrecision: 0,
+      },
+    },
   },
   errors: [
     InternalServerError,
@@ -5122,7 +5478,71 @@ export const updateTable: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      AttributeDefinitions: D.list(i_AttributeDefinition),
+      TableName: D.m({ context: "ResourceArn" }),
+      BillingMode: 0,
+      ProvisionedThroughput: i_ProvisionedThroughput,
+      GlobalSecondaryIndexUpdates: D.list({
+        Update: {
+          IndexName: 0,
+          ProvisionedThroughput: i_ProvisionedThroughput,
+          OnDemandThroughput: i_OnDemandThroughput,
+          WarmThroughput: i_WarmThroughput,
+        },
+        Create: {
+          IndexName: 0,
+          KeySchema: D.list(i_KeySchemaElement),
+          Projection: i_Projection,
+          ProvisionedThroughput: i_ProvisionedThroughput,
+          OnDemandThroughput: i_OnDemandThroughput,
+          WarmThroughput: i_WarmThroughput,
+        },
+        Delete: { IndexName: 0 },
+      }),
+      StreamSpecification: i_StreamSpecification,
+      SSESpecification: i_SSESpecification,
+      ReplicaUpdates: D.list({
+        Create: {
+          RegionName: 0,
+          KMSMasterKeyId: 0,
+          ProvisionedThroughputOverride: i_ProvisionedThroughputOverride,
+          OnDemandThroughputOverride: i_OnDemandThroughputOverride,
+          GlobalSecondaryIndexes: D.list(i_ReplicaGlobalSecondaryIndex),
+          TableClassOverride: 0,
+        },
+        Update: {
+          RegionName: 0,
+          KMSMasterKeyId: 0,
+          ProvisionedThroughputOverride: i_ProvisionedThroughputOverride,
+          OnDemandThroughputOverride: i_OnDemandThroughputOverride,
+          GlobalSecondaryIndexes: D.list(i_ReplicaGlobalSecondaryIndex),
+          TableClassOverride: 0,
+        },
+        Delete: { RegionName: 0 },
+      }),
+      TableClass: 0,
+      DeletionProtectionEnabled: 0,
+      MultiRegionConsistency: 0,
+      GlobalTableWitnessUpdates: D.list({
+        Create: { RegionName: 0 },
+        Delete: { RegionName: 0 },
+      }),
+      OnDemandThroughput: i_OnDemandThroughput,
+      WarmThroughput: i_WarmThroughput,
+      GlobalTableSettingsReplicationMode: 0,
+      VectorIndexUpdates: D.list({
+        Create: {
+          IndexName: 0,
+          VectorAttribute: i_VectorAttributeDefinition,
+          SearchSchema: D.list(i_SearchSchemaElement),
+          Projection: i_Projection,
+          Dimensions: 0,
+          DistanceFunction: 0,
+        },
+        Delete: { IndexName: 0 },
+      }),
+    },
     output: { TableDescription: o_TableDescription },
   },
   errors: [
@@ -5154,7 +5574,23 @@ export const updateTableReplicaAutoScaling: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      GlobalSecondaryIndexUpdates: D.list({
+        IndexName: 0,
+        ProvisionedWriteCapacityAutoScalingUpdate: i_AutoScalingSettingsUpdate,
+      }),
+      TableName: D.m({ context: "ResourceArn" }),
+      ProvisionedWriteCapacityAutoScalingUpdate: i_AutoScalingSettingsUpdate,
+      ReplicaUpdates: D.list({
+        RegionName: 0,
+        ReplicaGlobalSecondaryIndexUpdates: D.list({
+          IndexName: 0,
+          ProvisionedReadCapacityAutoScalingUpdate: i_AutoScalingSettingsUpdate,
+        }),
+        ReplicaProvisionedReadCapacityAutoScalingUpdate:
+          i_AutoScalingSettingsUpdate,
+      }),
+    },
   },
   errors: [
     InternalServerError,
@@ -5211,7 +5647,10 @@ export const updateTimeToLive: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TableName: D.m({ context: "ResourceArn" }) },
+    input: {
+      TableName: D.m({ context: "ResourceArn" }),
+      TimeToLiveSpecification: { Enabled: 0, AttributeName: 0 },
+    },
   },
   errors: [
     InternalServerError,
@@ -5225,6 +5664,117 @@ export const updateTimeToLive: API.OperationMethod<
   operationName: "UpdateTimeToLive",
 })) as any;
 
+const i_AttributeDefinition: D.LazyStruct = () => ({
+  AttributeName: 0,
+  AttributeType: 0,
+});
+const i_AttributeValue: D.LazyStruct = () => ({
+  S: 0,
+  N: 0,
+  B: 0,
+  SS: 0,
+  NS: 0,
+  BS: 0,
+  M: D.map(i_AttributeValue),
+  L: D.list(i_AttributeValue),
+  NULL: 0,
+  BOOL: 0,
+});
+const i_AutoScalingSettingsUpdate: D.LazyStruct = () => ({
+  MinimumUnits: 0,
+  MaximumUnits: 0,
+  AutoScalingDisabled: 0,
+  AutoScalingRoleArn: 0,
+  ScalingPolicyUpdate: {
+    PolicyName: 0,
+    TargetTrackingScalingPolicyConfiguration: {
+      DisableScaleIn: 0,
+      ScaleInCooldown: 0,
+      ScaleOutCooldown: 0,
+      TargetValue: 0,
+    },
+  },
+});
+const i_Condition: D.LazyStruct = () => ({
+  AttributeValueList: D.list(i_AttributeValue),
+  ComparisonOperator: 0,
+});
+const i_EnableKinesisStreamingConfiguration: D.LazyStruct = () => ({
+  ApproximateCreationDateTimePrecision: 0,
+});
+const i_ExpectedAttributeValue: D.LazyStruct = () => ({
+  Value: i_AttributeValue,
+  Exists: 0,
+  ComparisonOperator: 0,
+  AttributeValueList: D.list(i_AttributeValue),
+});
+const i_GlobalSecondaryIndex: D.LazyStruct = () => ({
+  IndexName: 0,
+  KeySchema: D.list(i_KeySchemaElement),
+  Projection: i_Projection,
+  ProvisionedThroughput: i_ProvisionedThroughput,
+  OnDemandThroughput: i_OnDemandThroughput,
+  WarmThroughput: i_WarmThroughput,
+});
+const i_KeySchemaElement: D.LazyStruct = () => ({
+  AttributeName: 0,
+  KeyType: 0,
+});
+const i_LocalSecondaryIndex: D.LazyStruct = () => ({
+  IndexName: 0,
+  KeySchema: D.list(i_KeySchemaElement),
+  Projection: i_Projection,
+});
+const i_OnDemandThroughput: D.LazyStruct = () => ({
+  MaxReadRequestUnits: 0,
+  MaxWriteRequestUnits: 0,
+});
+const i_OnDemandThroughputOverride: D.LazyStruct = () => ({
+  MaxReadRequestUnits: 0,
+});
+const i_Projection: D.LazyStruct = () => ({
+  ProjectionType: 0,
+  NonKeyAttributes: 0,
+});
+const i_ProvisionedThroughput: D.LazyStruct = () => ({
+  ReadCapacityUnits: 0,
+  WriteCapacityUnits: 0,
+});
+const i_ProvisionedThroughputOverride: D.LazyStruct = () => ({
+  ReadCapacityUnits: 0,
+});
+const i_ReplicaGlobalSecondaryIndex: D.LazyStruct = () => ({
+  IndexName: 0,
+  ProvisionedThroughputOverride: i_ProvisionedThroughputOverride,
+  OnDemandThroughputOverride: i_OnDemandThroughputOverride,
+});
+const i_SSESpecification: D.LazyStruct = () => ({
+  Enabled: 0,
+  SSEType: 0,
+  KMSMasterKeyId: 0,
+});
+const i_SearchSchemaElement: D.LazyStruct = () => ({
+  AttributeName: 0,
+  SearchSchemaElementType: 0,
+});
+const i_StreamSpecification: D.LazyStruct = () => ({
+  StreamEnabled: 0,
+  StreamViewType: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_VectorAttributeDefinition: D.LazyStruct = () => ({ AttributeName: 0 });
+const i_VectorIndex: D.LazyStruct = () => ({
+  IndexName: 0,
+  VectorAttribute: i_VectorAttributeDefinition,
+  SearchSchema: D.list(i_SearchSchemaElement),
+  Projection: i_Projection,
+  Dimensions: 0,
+  DistanceFunction: 0,
+});
+const i_WarmThroughput: D.LazyStruct = () => ({
+  ReadUnitsPerSecond: 0,
+  WriteUnitsPerSecond: 0,
+});
 const o_AttributeValue: D.LazyStruct = () => ({
   B: D.blob,
   BS: D.list(D.blob),

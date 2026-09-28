@@ -752,7 +752,7 @@ export const associateAccounts: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { accountIds: 0, clientToken: D.m({ idempotency: true }) },
   },
   errors: [
     AccessDeniedException,
@@ -795,7 +795,19 @@ export const createAutomationRule: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      ruleType: 0,
+      organizationConfiguration: i_OrganizationConfiguration,
+      priority: 0,
+      recommendedActionTypes: 0,
+      criteria: i_Criteria,
+      schedule: i_Schedule,
+      status: 0,
+      tags: D.list(i_Tag),
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { createdTimestamp: D.ts },
   },
   errors: [
@@ -839,7 +851,11 @@ export const deleteAutomationRule: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      ruleArn: 0,
+      ruleRevision: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -883,7 +899,7 @@ export const disassociateAccounts: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { accountIds: 0, clientToken: D.m({ idempotency: true }) },
   },
   errors: [
     AccessDeniedException,
@@ -923,6 +939,7 @@ export const getAutomationEvent: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { eventId: 0 },
     output: { createdTimestamp: D.ts, completedTimestamp: D.ts },
   },
   errors: [
@@ -961,6 +978,7 @@ export const getAutomationRule: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ruleArn: 0 },
     output: { createdTimestamp: D.ts, lastUpdatedTimestamp: D.ts },
   },
   errors: [
@@ -997,7 +1015,11 @@ export const getEnrollmentConfiguration: API.OperationMethod<
   GetEnrollmentConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { lastUpdatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {},
+    output: { lastUpdatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ForbiddenException,
@@ -1037,6 +1059,7 @@ export const listAccounts: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { maxResults: 0, nextToken: 0 },
     output: { accounts: D.list({ lastUpdatedTimestamp: D.ts }) },
   },
   errors: [
@@ -1081,6 +1104,13 @@ export const listAutomationEvents: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      filters: D.list(i_AutomationEventFilter),
+      startTimeInclusive: 0,
+      endTimeExclusive: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       automationEvents: D.list({
         createdTimestamp: D.ts,
@@ -1130,6 +1160,7 @@ export const listAutomationEventSteps: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { eventId: 0, maxResults: 0, nextToken: 0 },
     output: {
       automationEventSteps: D.list({
         startTimestamp: D.ts,
@@ -1179,6 +1210,13 @@ export const listAutomationEventSummaries: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      filters: D.list(i_AutomationEventFilter),
+      startDateInclusive: 0,
+      endDateExclusive: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       automationEventSummaries: D.list({
         timePeriod: { startTimeInclusive: D.ts, endTimeExclusive: D.ts },
@@ -1224,7 +1262,17 @@ export const listAutomationRulePreview: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   PreviewResult
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ruleType: 0,
+      organizationScope: i_OrganizationScope,
+      recommendedActionTypes: 0,
+      criteria: i_Criteria,
+      maxResults: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ForbiddenException,
@@ -1264,7 +1312,17 @@ export const listAutomationRulePreviewSummaries: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   PreviewResultSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ruleType: 0,
+      organizationScope: i_OrganizationScope,
+      recommendedActionTypes: 0,
+      criteria: i_Criteria,
+      maxResults: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ForbiddenException,
@@ -1306,6 +1364,11 @@ export const listAutomationRules: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      filters: D.list({ name: 0, values: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       automationRules: D.list({
         createdTimestamp: D.ts,
@@ -1354,7 +1417,14 @@ export const listRecommendedActions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RecommendedAction
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      filters: D.list(i_RecommendedActionFilter),
+      maxResults: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ForbiddenException,
@@ -1396,7 +1466,14 @@ export const listRecommendedActionSummaries: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RecommendedActionSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      filters: D.list(i_RecommendedActionFilter),
+      maxResults: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ForbiddenException,
@@ -1436,7 +1513,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [
     AccessDeniedException,
     ForbiddenException,
@@ -1477,7 +1554,7 @@ export const rollbackAutomationEvent: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { eventId: 0, clientToken: D.m({ idempotency: true }) },
   },
   errors: [
     AccessDeniedException,
@@ -1522,7 +1599,7 @@ export const startAutomationEvent: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { recommendedActionId: 0, clientToken: D.m({ idempotency: true }) },
   },
   errors: [
     AccessDeniedException,
@@ -1565,7 +1642,12 @@ export const tagResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      resourceArn: 0,
+      ruleRevision: 0,
+      tags: D.list(i_Tag),
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1607,7 +1689,12 @@ export const untagResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      resourceArn: 0,
+      ruleRevision: 0,
+      tagKeys: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1649,7 +1736,20 @@ export const updateAutomationRule: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      ruleArn: 0,
+      ruleRevision: 0,
+      name: 0,
+      description: 0,
+      ruleType: 0,
+      organizationConfiguration: i_OrganizationConfiguration,
+      priority: 0,
+      recommendedActionTypes: 0,
+      criteria: i_Criteria,
+      schedule: i_Schedule,
+      status: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { createdTimestamp: D.ts, lastUpdatedTimestamp: D.ts },
   },
   errors: [
@@ -1693,7 +1793,7 @@ export const updateEnrollmentConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { status: 0, clientToken: D.m({ idempotency: true }) },
     output: { lastUpdatedTimestamp: D.ts },
   },
   errors: [
@@ -1713,3 +1813,35 @@ export const updateEnrollmentConfiguration: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateEnrollmentConfiguration",
 })) as any;
+
+const i_AutomationEventFilter: D.LazyStruct = () => ({ name: 0, values: 0 });
+const i_Criteria: D.LazyStruct = () => ({
+  region: D.list(i_StringCriteriaCondition),
+  resourceArn: D.list(i_StringCriteriaCondition),
+  ebsVolumeType: D.list(i_StringCriteriaCondition),
+  ebsVolumeSizeInGib: D.list(i_IntegerCriteriaCondition),
+  estimatedMonthlySavings: D.list({ comparison: 0, values: 0 }),
+  resourceTag: D.list({ comparison: 0, key: 0, values: 0 }),
+  lookBackPeriodInDays: D.list(i_IntegerCriteriaCondition),
+  restartNeeded: D.list(i_StringCriteriaCondition),
+});
+const i_OrganizationConfiguration: D.LazyStruct = () => ({
+  ruleApplyOrder: 0,
+  accountIds: 0,
+});
+const i_OrganizationScope: D.LazyStruct = () => ({ accountIds: 0 });
+const i_RecommendedActionFilter: D.LazyStruct = () => ({ name: 0, values: 0 });
+const i_Schedule: D.LazyStruct = () => ({
+  scheduleExpression: 0,
+  scheduleExpressionTimezone: 0,
+  executionWindowInMinutes: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_IntegerCriteriaCondition: D.LazyStruct = () => ({
+  comparison: 0,
+  values: 0,
+});
+const i_StringCriteriaCondition: D.LazyStruct = () => ({
+  comparison: 0,
+  values: 0,
+});

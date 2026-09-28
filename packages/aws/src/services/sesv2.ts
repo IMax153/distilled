@@ -2145,6 +2145,16 @@ export const batchGetMetricData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/metrics/batch",
+    input: {
+      Queries: D.list({
+        Id: 0,
+        Namespace: 0,
+        Metric: 0,
+        Dimensions: 0,
+        StartDate: 0,
+        EndDate: 0,
+      }),
+    },
     output: { Results: D.list({ Timestamps: D.list(D.ts) }) },
     body: true,
   },
@@ -2176,6 +2186,7 @@ export const cancelExportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/export-jobs/{JobId}/cancel",
+    input: { JobId: 0 },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -2207,6 +2218,25 @@ export const createConfigurationSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/configuration-sets",
+    input: {
+      ConfigurationSetName: 0,
+      TrackingOptions: { CustomRedirectDomain: 0, HttpsPolicy: 0 },
+      DeliveryOptions: {
+        TlsPolicy: 0,
+        SendingPoolName: 0,
+        MaxDeliverySeconds: 0,
+      },
+      ReputationOptions: { ReputationMetricsEnabled: 0, LastFreshStart: 0 },
+      SendingOptions: { SendingEnabled: 0 },
+      Tags: D.list(i_Tag),
+      SuppressionOptions: {
+        SuppressedReasons: 0,
+        SuppressionScope: 0,
+        ValidationOptions: i_SuppressionValidationOptions,
+      },
+      VdmOptions: i_VdmOptions,
+      ArchivingOptions: { ArchiveArn: 0 },
+    },
     body: true,
   },
   errors: [
@@ -2247,6 +2277,11 @@ export const createConfigurationSetEventDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/configuration-sets/{ConfigurationSetName}/event-destinations",
+    input: {
+      ConfigurationSetName: 0,
+      EventDestinationName: 0,
+      EventDestination: i_EventDestinationDefinition,
+    },
     body: true,
   },
   errors: [
@@ -2280,6 +2315,13 @@ export const createContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/contact-lists/{ContactListName}/contacts",
+    input: {
+      ContactListName: 0,
+      EmailAddress: 0,
+      TopicPreferences: D.list(i_TopicPreference),
+      UnsubscribeAll: 0,
+      AttributesData: 0,
+    },
     body: true,
   },
   errors: [
@@ -2311,6 +2353,12 @@ export const createContactList: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/contact-lists",
+    input: {
+      ContactListName: 0,
+      Topics: D.list(i_Topic),
+      Description: 0,
+      Tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -2349,6 +2397,15 @@ export const createCustomVerificationEmailTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/custom-verification-email-templates",
+    input: {
+      TemplateName: 0,
+      FromEmailAddress: 0,
+      TemplateSubject: 0,
+      TemplateContent: 0,
+      Tags: D.list(i_Tag),
+      SuccessRedirectionURL: 0,
+      FailureRedirectionURL: 0,
+    },
     body: true,
   },
   errors: [
@@ -2385,6 +2442,7 @@ export const createDedicatedIpPool: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/dedicated-ip-pools",
+    input: { PoolName: 0, Tags: D.list(i_Tag), ScalingMode: 0 },
     body: true,
   },
   errors: [
@@ -2428,6 +2486,12 @@ export const createDeliverabilityTestReport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/deliverability-dashboard/test",
+    input: {
+      ReportName: 0,
+      FromEmailAddress: 0,
+      Content: i_EmailContent,
+      Tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -2494,6 +2558,12 @@ export const createEmailIdentity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/identities",
+    input: {
+      EmailIdentity: 0,
+      Tags: D.list(i_Tag),
+      DkimSigningAttributes: i_DkimSigningAttributes,
+      ConfigurationSetName: 0,
+    },
     output: { DkimAttributes: o_DkimAttributes },
     body: true,
   },
@@ -2540,6 +2610,7 @@ export const createEmailIdentityPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/identities/{EmailIdentity}/policies/{PolicyName}",
+    input: { EmailIdentity: 0, PolicyName: 0, Policy: 0 },
     body: true,
   },
   errors: [
@@ -2573,7 +2644,16 @@ export const createEmailTemplate: API.OperationMethod<
   CreateEmailTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/email/templates", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/email/templates",
+    input: {
+      TemplateName: 0,
+      TemplateContent: i_EmailTemplateContent,
+      Tags: D.list(i_Tag),
+    },
+    body: true,
+  },
   errors: [
     AlreadyExistsException,
     BadRequestException,
@@ -2602,7 +2682,30 @@ export const createExportJob: API.OperationMethod<
   CreateExportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/email/export-jobs", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/email/export-jobs",
+    input: {
+      ExportDataSource: {
+        MetricsDataSource: {
+          Dimensions: 0,
+          Namespace: 0,
+          Metrics: D.list({ Name: 0, Aggregation: 0 }),
+          StartDate: 0,
+          EndDate: 0,
+        },
+        MessageInsightsDataSource: {
+          StartDate: 0,
+          EndDate: 0,
+          Include: i_MessageInsightsFilters,
+          Exclude: i_MessageInsightsFilters,
+          MaxResults: 0,
+        },
+      },
+      ExportDestination: { DataFormat: 0, S3Url: 0 },
+    },
+    body: true,
+  },
   errors: [
     BadRequestException,
     LimitExceededException,
@@ -2628,7 +2731,21 @@ export const createImportJob: API.OperationMethod<
   CreateImportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/email/import-jobs", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/email/import-jobs",
+    input: {
+      ImportDestination: {
+        SuppressionListDestination: { SuppressionListImportAction: 0 },
+        ContactListDestination: {
+          ContactListName: 0,
+          ContactListImportAction: 0,
+        },
+      },
+      ImportDataSource: { S3Url: 0, DataFormat: 0 },
+    },
+    body: true,
+  },
   errors: [
     BadRequestException,
     LimitExceededException,
@@ -2663,6 +2780,11 @@ export const createMultiRegionEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/multi-region-endpoints",
+    input: {
+      EndpointName: 0,
+      Details: { RoutesDetails: D.list({ Region: 0 }) },
+      Tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -2703,6 +2825,11 @@ export const createTenant: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/tenants",
+    input: {
+      TenantName: 0,
+      Tags: D.list(i_Tag),
+      SuppressionAttributes: { SuppressedReasons: 0, SuppressionScope: 0 },
+    },
     output: { CreatedTimestamp: D.ts },
     body: true,
   },
@@ -2742,6 +2869,7 @@ export const createTenantResourceAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/tenants/resources",
+    input: { TenantName: 0, ResourceArn: 0 },
     body: true,
   },
   errors: [
@@ -2778,6 +2906,7 @@ export const deleteConfigurationSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/email/configuration-sets/{ConfigurationSetName}",
+    input: { ConfigurationSetName: 0 },
   },
   errors: [
     BadRequestException,
@@ -2812,6 +2941,7 @@ export const deleteConfigurationSetEventDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/email/configuration-sets/{ConfigurationSetName}/event-destinations/{EventDestinationName}",
+    input: { ConfigurationSetName: 0, EventDestinationName: 0 },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -2836,6 +2966,7 @@ export const deleteContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/email/contact-lists/{ContactListName}/contacts/{EmailAddress}",
+    input: { ContactListName: 0, EmailAddress: 0 },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -2861,6 +2992,7 @@ export const deleteContactList: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/email/contact-lists/{ContactListName}",
+    input: { ContactListName: 0 },
   },
   errors: [
     BadRequestException,
@@ -2896,6 +3028,7 @@ export const deleteCustomVerificationEmailTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/email/custom-verification-email-templates/{TemplateName}",
+    input: { TemplateName: 0 },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -2921,6 +3054,7 @@ export const deleteDedicatedIpPool: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/email/dedicated-ip-pools/{PoolName}",
+    input: { PoolName: 0 },
   },
   errors: [
     BadRequestException,
@@ -2952,6 +3086,7 @@ export const deleteEmailIdentity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/email/identities/{EmailIdentity}",
+    input: { EmailIdentity: 0 },
   },
   errors: [
     BadRequestException,
@@ -2993,6 +3128,7 @@ export const deleteEmailIdentityPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/email/identities/{EmailIdentity}/policies/{PolicyName}",
+    input: { EmailIdentity: 0, PolicyName: 0 },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3019,6 +3155,7 @@ export const deleteEmailTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/email/templates/{TemplateName}",
+    input: { TemplateName: 0 },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3047,6 +3184,7 @@ export const deleteMultiRegionEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/email/multi-region-endpoints/{EndpointName}",
+    input: { EndpointName: 0 },
   },
   errors: [
     BadRequestException,
@@ -3079,7 +3217,7 @@ export const deleteSuppressedDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/email/suppression/addresses/{EmailAddress}",
-    input: { TenantName: D.m({ query: "TenantName" }) },
+    input: { EmailAddress: 0, TenantName: D.m({ query: "TenantName" }) },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3107,6 +3245,7 @@ export const deleteTenant: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/tenants/delete",
+    input: { TenantName: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -3136,6 +3275,7 @@ export const deleteTenantResourceAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/tenants/resources/delete",
+    input: { TenantName: 0, ResourceArn: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -3161,6 +3301,7 @@ export const getAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/email/account",
+    input: {},
     output: {
       Details: {
         WebsiteURL: D.secret,
@@ -3225,6 +3366,7 @@ export const getConfigurationSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/email/configuration-sets/{ConfigurationSetName}",
+    input: { ConfigurationSetName: 0 },
     output: { ReputationOptions: { LastFreshStart: D.ts } },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -3256,6 +3398,7 @@ export const getConfigurationSetEventDestinations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/email/configuration-sets/{ConfigurationSetName}/event-destinations",
+    input: { ConfigurationSetName: 0 },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3280,6 +3423,7 @@ export const getContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/email/contact-lists/{ContactListName}/contacts/{EmailAddress}",
+    input: { ContactListName: 0, EmailAddress: 0 },
     output: { CreatedTimestamp: D.ts, LastUpdatedTimestamp: D.ts },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -3306,6 +3450,7 @@ export const getContactList: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/email/contact-lists/{ContactListName}",
+    input: { ContactListName: 0 },
     output: { CreatedTimestamp: D.ts, LastUpdatedTimestamp: D.ts },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -3338,6 +3483,7 @@ export const getCustomVerificationEmailTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/email/custom-verification-email-templates/{TemplateName}",
+    input: { TemplateName: 0 },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3361,7 +3507,11 @@ export const getDedicatedIp: API.OperationMethod<
   GetDedicatedIpError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v2/email/dedicated-ips/{Ip}" },
+  descriptor: {
+    service: svc,
+    http: "GET /v2/email/dedicated-ips/{Ip}",
+    input: { Ip: 0 },
+  },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3385,6 +3535,7 @@ export const getDedicatedIpPool: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/email/dedicated-ip-pools/{PoolName}",
+    input: { PoolName: 0 },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3452,6 +3603,7 @@ export const getDeliverabilityDashboardOptions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/email/deliverability-dashboard",
+    input: {},
     output: {
       SubscriptionExpiryDate: D.ts,
       ActiveSubscribedDomains: D.list(o_DomainDeliverabilityTrackingOption),
@@ -3487,6 +3639,7 @@ export const getDeliverabilityTestReport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/email/deliverability-dashboard/test-reports/{ReportId}",
+    input: { ReportId: 0 },
     output: { DeliverabilityTestReport: o_DeliverabilityTestReport },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -3514,6 +3667,7 @@ export const getDomainDeliverabilityCampaign: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/email/deliverability-dashboard/campaigns/{CampaignId}",
+    input: { CampaignId: 0 },
     output: { DomainDeliverabilityCampaign: o_DomainDeliverabilityCampaign },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -3541,8 +3695,9 @@ export const getDomainStatisticsReport: API.OperationMethod<
     service: svc,
     http: "GET /v2/email/deliverability-dashboard/statistics-report/{Domain}",
     input: {
-      StartDate: D.m({ query: "StartDate" }),
-      EndDate: D.m({ query: "EndDate" }),
+      Domain: 0,
+      StartDate: D.m({ query: "StartDate", shape: D.tsAs("epoch-seconds") }),
+      EndDate: D.m({ query: "EndDate", shape: D.tsAs("epoch-seconds") }),
     },
     output: { DailyVolumes: D.list({ StartDate: D.ts }) },
   },
@@ -3568,6 +3723,7 @@ export const getEmailAddressInsights: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/email-address-insights",
+    input: { EmailAddress: 0 },
     body: true,
   },
   errors: [BadRequestException, TooManyRequestsException],
@@ -3595,6 +3751,7 @@ export const getEmailIdentity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/email/identities/{EmailIdentity}",
+    input: { EmailIdentity: 0 },
     output: {
       DkimAttributes: o_DkimAttributes,
       VerificationInfo: {
@@ -3638,6 +3795,7 @@ export const getEmailIdentityPolicies: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/email/identities/{EmailIdentity}/policies",
+    input: { EmailIdentity: 0 },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -3662,7 +3820,11 @@ export const getEmailTemplate: API.OperationMethod<
   GetEmailTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v2/email/templates/{TemplateName}" },
+  descriptor: {
+    service: svc,
+    http: "GET /v2/email/templates/{TemplateName}",
+    input: { TemplateName: 0 },
+  },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3686,6 +3848,7 @@ export const getExportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/email/export-jobs/{JobId}",
+    input: { JobId: 0 },
     output: {
       ExportDataSource: {
         MetricsDataSource: { StartDate: D.ts, EndDate: D.ts },
@@ -3723,6 +3886,7 @@ export const getImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/email/import-jobs/{JobId}",
+    input: { JobId: 0 },
     output: { CreatedTimestamp: D.ts, CompletedTimestamp: D.ts },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -3751,6 +3915,7 @@ export const getMessageInsights: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/email/insights/{MessageId}",
+    input: { MessageId: 0 },
     output: {
       FromEmailAddress: D.secret,
       Subject: D.secret,
@@ -3786,6 +3951,7 @@ export const getMultiRegionEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/email/multi-region-endpoints/{EndpointName}",
+    input: { EndpointName: 0 },
     output: { CreatedTimestamp: D.ts, LastUpdatedTimestamp: D.ts },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -3818,6 +3984,7 @@ export const getReputationEntity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/email/reputation/entities/{ReputationEntityType}/{ReputationEntityReference}",
+    input: { ReputationEntityReference: 0, ReputationEntityType: 0 },
     output: { ReputationEntity: o_ReputationEntity },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -3846,7 +4013,7 @@ export const getSuppressedDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/email/suppression/addresses/{EmailAddress}",
-    input: { TenantName: D.m({ query: "TenantName" }) },
+    input: { EmailAddress: 0, TenantName: D.m({ query: "TenantName" }) },
     output: { SuppressedDestination: { LastUpdateTime: D.ts } },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -3873,6 +4040,7 @@ export const getTenant: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/tenants/get",
+    input: { TenantName: 0 },
     output: { Tenant: { CreatedTimestamp: D.ts } },
     body: true,
   },
@@ -3976,6 +4144,15 @@ export const listContacts: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/contact-lists/{ContactListName}/contacts/list",
+    input: {
+      ContactListName: 0,
+      Filter: {
+        FilteredStatus: 0,
+        TopicFilter: { TopicName: 0, UseDefaultIfPreferenceUnavailable: 0 },
+      },
+      PageSize: 0,
+      NextToken: 0,
+    },
     output: { Contacts: D.list({ LastUpdatedTimestamp: D.ts }) },
     body: true,
   },
@@ -4122,8 +4299,9 @@ export const listDomainDeliverabilityCampaigns: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/email/deliverability-dashboard/domains/{SubscribedDomain}/campaigns",
     input: {
-      StartDate: D.m({ query: "StartDate" }),
-      EndDate: D.m({ query: "EndDate" }),
+      StartDate: D.m({ query: "StartDate", shape: D.tsAs("epoch-seconds") }),
+      EndDate: D.m({ query: "EndDate", shape: D.tsAs("epoch-seconds") }),
+      SubscribedDomain: 0,
       NextToken: D.m({ query: "NextToken" }),
       PageSize: D.m({ query: "PageSize" }),
     },
@@ -4232,6 +4410,7 @@ export const listExportJobs: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/list-export-jobs",
+    input: { NextToken: 0, PageSize: 0, ExportSourceType: 0, JobStatus: 0 },
     output: {
       ExportJobs: D.list({ CreatedTimestamp: D.ts, CompletedTimestamp: D.ts }),
     },
@@ -4265,6 +4444,7 @@ export const listImportJobs: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/import-jobs/list",
+    input: { ImportDestinationType: 0, NextToken: 0, PageSize: 0 },
     output: { ImportJobs: D.list({ CreatedTimestamp: D.ts }) },
     body: true,
   },
@@ -4342,6 +4522,7 @@ export const listRecommendations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/vdm/recommendations",
+    input: { Filter: 0, NextToken: 0, PageSize: 0 },
     output: {
       Recommendations: D.list({
         CreatedTimestamp: D.ts,
@@ -4384,6 +4565,7 @@ export const listReputationEntities: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/reputation/entities",
+    input: { Filter: 0, NextToken: 0, PageSize: 0 },
     output: { ReputationEntities: D.list(o_ReputationEntity) },
     body: true,
   },
@@ -4421,6 +4603,7 @@ export const listResourceTenants: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/resources/tenants/list",
+    input: { ResourceArn: 0, PageSize: 0, NextToken: 0 },
     output: { ResourceTenants: D.list({ AssociatedTimestamp: D.ts }) },
     body: true,
   },
@@ -4461,8 +4644,8 @@ export const listSuppressedDestinations: API.PaginatedOperationMethod<
     input: {
       TenantName: D.m({ query: "TenantName" }),
       Reasons: D.m({ query: "Reason" }),
-      StartDate: D.m({ query: "StartDate" }),
-      EndDate: D.m({ query: "EndDate" }),
+      StartDate: D.m({ query: "StartDate", shape: D.tsAs("epoch-seconds") }),
+      EndDate: D.m({ query: "EndDate", shape: D.tsAs("epoch-seconds") }),
       NextToken: D.m({ query: "NextToken" }),
       PageSize: D.m({ query: "PageSize" }),
     },
@@ -4538,6 +4721,7 @@ export const listTenantResources: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/tenants/resources/list",
+    input: { TenantName: 0, Filter: 0, PageSize: 0, NextToken: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -4572,6 +4756,7 @@ export const listTenants: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/tenants/list",
+    input: { NextToken: 0, PageSize: 0 },
     output: { Tenants: D.list({ CreatedTimestamp: D.ts }) },
     body: true,
   },
@@ -4603,6 +4788,7 @@ export const putAccountDedicatedIpWarmupAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/account/dedicated-ips/warmup",
+    input: { AutoWarmupEnabled: 0 },
     body: true,
   },
   errors: [BadRequestException, TooManyRequestsException],
@@ -4628,6 +4814,14 @@ export const putAccountDetails: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/account/details",
+    input: {
+      MailType: 0,
+      WebsiteURL: 0,
+      ContactLanguage: 0,
+      UseCaseDescription: 0,
+      AdditionalContactEmailAddresses: 0,
+      ProductionAccessEnabled: 0,
+    },
     body: true,
   },
   errors: [BadRequestException, ConflictException, TooManyRequestsException],
@@ -4653,6 +4847,7 @@ export const putAccountPricingAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/account/pricing-attributes",
+    input: { Plan: 0 },
     body: true,
   },
   errors: [BadRequestException, ConflictException, TooManyRequestsException],
@@ -4677,6 +4872,7 @@ export const putAccountSendingAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/account/sending",
+    input: { SendingEnabled: 0 },
     body: true,
   },
   errors: [BadRequestException, TooManyRequestsException],
@@ -4701,6 +4897,12 @@ export const putAccountSuppressionAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/account/suppression",
+    input: {
+      SuppressedReasons: 0,
+      ValidationAttributes: {
+        ConditionThreshold: i_SuppressionConditionThreshold,
+      },
+    },
     body: true,
   },
   errors: [BadRequestException, TooManyRequestsException],
@@ -4724,7 +4926,18 @@ export const putAccountVdmAttributes: API.OperationMethod<
   PutAccountVdmAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /v2/email/account/vdm", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /v2/email/account/vdm",
+    input: {
+      VdmAttributes: {
+        VdmEnabled: 0,
+        DashboardAttributes: { EngagementMetrics: 0 },
+        GuardianAttributes: { OptimizedSharedDelivery: 0 },
+      },
+    },
+    body: true,
+  },
   errors: [BadRequestException, TooManyRequestsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4750,6 +4963,7 @@ export const putConfigurationSetArchivingOptions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/configuration-sets/{ConfigurationSetName}/archiving-options",
+    input: { ConfigurationSetName: 0, ArchiveArn: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -4776,6 +4990,12 @@ export const putConfigurationSetDeliveryOptions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/configuration-sets/{ConfigurationSetName}/delivery-options",
+    input: {
+      ConfigurationSetName: 0,
+      TlsPolicy: 0,
+      SendingPoolName: 0,
+      MaxDeliverySeconds: 0,
+    },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -4802,6 +5022,7 @@ export const putConfigurationSetReputationOptions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/configuration-sets/{ConfigurationSetName}/reputation-options",
+    input: { ConfigurationSetName: 0, ReputationMetricsEnabled: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -4828,6 +5049,7 @@ export const putConfigurationSetSendingOptions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/configuration-sets/{ConfigurationSetName}/sending",
+    input: { ConfigurationSetName: 0, SendingEnabled: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -4856,6 +5078,12 @@ export const putConfigurationSetSuppressionOptions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/configuration-sets/{ConfigurationSetName}/suppression-options",
+    input: {
+      ConfigurationSetName: 0,
+      SuppressionScope: 0,
+      SuppressedReasons: 0,
+      ValidationOptions: i_SuppressionValidationOptions,
+    },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -4882,6 +5110,7 @@ export const putConfigurationSetTrackingOptions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/configuration-sets/{ConfigurationSetName}/tracking-options",
+    input: { ConfigurationSetName: 0, CustomRedirectDomain: 0, HttpsPolicy: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -4909,6 +5138,7 @@ export const putConfigurationSetVdmOptions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/configuration-sets/{ConfigurationSetName}/vdm-options",
+    input: { ConfigurationSetName: 0, VdmOptions: i_VdmOptions },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -4940,6 +5170,7 @@ export const putDedicatedIpInPool: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/dedicated-ips/{Ip}/pool",
+    input: { Ip: 0, DestinationPoolName: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -4968,6 +5199,7 @@ export const putDedicatedIpPoolScalingAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/dedicated-ip-pools/{PoolName}/scaling",
+    input: { PoolName: 0, ScalingMode: 0 },
     body: true,
   },
   errors: [
@@ -4998,6 +5230,7 @@ export const putDedicatedIpWarmupAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/dedicated-ips/{Ip}/warmup",
+    input: { Ip: 0, WarmupPercentage: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -5031,6 +5264,14 @@ export const putDeliverabilityDashboardOption: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/deliverability-dashboard",
+    input: {
+      DashboardEnabled: 0,
+      SubscribedDomains: D.list({
+        Domain: 0,
+        SubscriptionStartDate: 0,
+        InboxPlacementTrackingOption: { Global: 0, TrackedIsps: 0 },
+      }),
+    },
     body: true,
   },
   errors: [
@@ -5062,6 +5303,7 @@ export const putEmailIdentityConfigurationSetAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/identities/{EmailIdentity}/configuration-set",
+    input: { EmailIdentity: 0, ConfigurationSetName: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -5087,6 +5329,7 @@ export const putEmailIdentityDkimAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/identities/{EmailIdentity}/dkim",
+    input: { EmailIdentity: 0, SigningEnabled: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -5126,6 +5369,11 @@ export const putEmailIdentityDkimSigningAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/identities/{EmailIdentity}/dkim/signing",
+    input: {
+      EmailIdentity: 0,
+      SigningAttributesOrigin: 0,
+      SigningAttributes: i_DkimSigningAttributes,
+    },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -5162,6 +5410,7 @@ export const putEmailIdentityFeedbackAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/identities/{EmailIdentity}/feedback",
+    input: { EmailIdentity: 0, EmailForwardingEnabled: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -5188,6 +5437,7 @@ export const putEmailIdentityMailFromAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/identities/{EmailIdentity}/mail-from",
+    input: { EmailIdentity: 0, MailFromDomain: 0, BehaviorOnMxFailure: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -5216,6 +5466,7 @@ export const putSuppressedDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/suppression/addresses",
+    input: { EmailAddress: 0, Reason: 0, TenantName: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -5246,6 +5497,7 @@ export const putTenantSuppressionAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/tenant/suppression",
+    input: { TenantName: 0, SuppressedReasons: 0, SuppressionScope: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -5276,7 +5528,27 @@ export const sendBulkEmail: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/outbound-bulk-emails",
-    input: { EndpointId: D.m({ context: "EndpointId" }) },
+    input: {
+      FromEmailAddress: 0,
+      FromEmailAddressIdentityArn: 0,
+      ReplyToAddresses: 0,
+      FeedbackForwardingEmailAddress: 0,
+      FeedbackForwardingEmailAddressIdentityArn: 0,
+      DefaultEmailTags: D.list(i_MessageTag),
+      DefaultContent: { Template: i_Template },
+      BulkEmailEntries: D.list({
+        Destination: i_Destination,
+        ReplacementTags: D.list(i_MessageTag),
+        ReplacementEmailContent: {
+          ReplacementTemplate: { ReplacementTemplateData: 0 },
+        },
+        ReplacementHeaders: D.list(i_MessageHeader),
+      }),
+      ConfigurationSetName: 0,
+      EndpointId: D.m({ context: "EndpointId" }),
+      TenantName: 0,
+      ConfigurationOverrides: i_ConfigurationOverrides,
+    },
     body: true,
   },
   errors: [
@@ -5325,6 +5597,7 @@ export const sendCustomVerificationEmail: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/outbound-custom-verification-emails",
+    input: { EmailAddress: 0, TemplateName: 0, ConfigurationSetName: 0 },
     body: true,
   },
   errors: [
@@ -5378,7 +5651,21 @@ export const sendEmail: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/outbound-emails",
-    input: { EndpointId: D.m({ context: "EndpointId" }) },
+    input: {
+      FromEmailAddress: 0,
+      FromEmailAddressIdentityArn: 0,
+      Destination: i_Destination,
+      ReplyToAddresses: 0,
+      FeedbackForwardingEmailAddress: 0,
+      FeedbackForwardingEmailAddressIdentityArn: 0,
+      Content: i_EmailContent,
+      EmailTags: D.list(i_MessageTag),
+      ConfigurationSetName: 0,
+      EndpointId: D.m({ context: "EndpointId" }),
+      TenantName: 0,
+      ListManagementOptions: { ContactListName: 0, TopicName: 0 },
+      ConfigurationOverrides: i_ConfigurationOverrides,
+    },
     body: true,
   },
   errors: [
@@ -5420,7 +5707,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/email/tags", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/email/tags",
+    input: { ResourceArn: 0, Tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ConcurrentModificationException,
@@ -5452,6 +5744,7 @@ export const testRenderEmailTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/email/templates/{TemplateName}/render",
+    input: { TemplateName: 0, TemplateData: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -5516,6 +5809,11 @@ export const updateConfigurationSetEventDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/configuration-sets/{ConfigurationSetName}/event-destinations/{EventDestinationName}",
+    input: {
+      ConfigurationSetName: 0,
+      EventDestinationName: 0,
+      EventDestination: i_EventDestinationDefinition,
+    },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -5546,6 +5844,13 @@ export const updateContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/contact-lists/{ContactListName}/contacts/{EmailAddress}",
+    input: {
+      ContactListName: 0,
+      EmailAddress: 0,
+      TopicPreferences: D.list(i_TopicPreference),
+      UnsubscribeAll: 0,
+      AttributesData: 0,
+    },
     body: true,
   },
   errors: [
@@ -5577,6 +5882,7 @@ export const updateContactList: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/contact-lists/{ContactListName}",
+    input: { ContactListName: 0, Topics: D.list(i_Topic), Description: 0 },
     body: true,
   },
   errors: [
@@ -5613,6 +5919,14 @@ export const updateCustomVerificationEmailTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/custom-verification-email-templates/{TemplateName}",
+    input: {
+      TemplateName: 0,
+      FromEmailAddress: 0,
+      TemplateSubject: 0,
+      TemplateContent: 0,
+      SuccessRedirectionURL: 0,
+      FailureRedirectionURL: 0,
+    },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -5650,6 +5964,7 @@ export const updateEmailIdentityPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/identities/{EmailIdentity}/policies/{PolicyName}",
+    input: { EmailIdentity: 0, PolicyName: 0, Policy: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -5679,6 +5994,7 @@ export const updateEmailTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/templates/{TemplateName}",
+    input: { TemplateName: 0, TemplateContent: i_EmailTemplateContent },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -5713,6 +6029,11 @@ export const updateReputationEntityCustomerManagedStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/reputation/entities/{ReputationEntityType}/{ReputationEntityReference}/customer-managed-status",
+    input: {
+      ReputationEntityType: 0,
+      ReputationEntityReference: 0,
+      SendingStatus: 0,
+    },
     body: true,
   },
   errors: [BadRequestException, ConflictException, TooManyRequestsException],
@@ -5743,6 +6064,11 @@ export const updateReputationEntityPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/email/reputation/entities/{ReputationEntityType}/{ReputationEntityReference}/policy",
+    input: {
+      ReputationEntityType: 0,
+      ReputationEntityReference: 0,
+      ReputationEntityPolicy: 0,
+    },
     body: true,
   },
   errors: [BadRequestException, ConflictException, TooManyRequestsException],
@@ -5751,6 +6077,90 @@ export const updateReputationEntityPolicy: API.OperationMethod<
   operationName: "UpdateReputationEntityPolicy",
 })) as any;
 
+const i_ConfigurationOverrides: D.LazyStruct = () => ({
+  Tracking: { OpenTrackingEnabled: 0, ClickTrackingEnabled: 0 },
+});
+const i_Destination: D.LazyStruct = () => ({
+  ToAddresses: 0,
+  CcAddresses: 0,
+  BccAddresses: 0,
+});
+const i_DkimSigningAttributes: D.LazyStruct = () => ({
+  DomainSigningSelector: 0,
+  DomainSigningPrivateKey: 0,
+  NextSigningKeyLength: 0,
+  DomainSigningAttributesOrigin: 0,
+});
+const i_EmailContent: D.LazyStruct = () => ({
+  Simple: {
+    Subject: i_Content,
+    Body: { Text: i_Content, Html: i_Content },
+    Headers: D.list(i_MessageHeader),
+    Attachments: D.list(i_Attachment),
+  },
+  Raw: { Data: 0 },
+  Template: i_Template,
+});
+const i_EmailTemplateContent: D.LazyStruct = () => ({
+  Subject: 0,
+  Text: 0,
+  Html: 0,
+});
+const i_EventDestinationDefinition: D.LazyStruct = () => ({
+  Enabled: 0,
+  MatchingEventTypes: 0,
+  KinesisFirehoseDestination: { IamRoleArn: 0, DeliveryStreamArn: 0 },
+  CloudWatchDestination: {
+    DimensionConfigurations: D.list({
+      DimensionName: 0,
+      DimensionValueSource: 0,
+      DefaultDimensionValue: 0,
+    }),
+  },
+  SnsDestination: { TopicArn: 0 },
+  EventBridgeDestination: { EventBusArn: 0 },
+  PinpointDestination: { ApplicationArn: 0 },
+});
+const i_MessageHeader: D.LazyStruct = () => ({ Name: 0, Value: 0 });
+const i_MessageInsightsFilters: D.LazyStruct = () => ({
+  FromEmailAddress: 0,
+  Destination: 0,
+  Subject: 0,
+  Isp: 0,
+  LastDeliveryEvent: 0,
+  LastEngagementEvent: 0,
+});
+const i_MessageTag: D.LazyStruct = () => ({ Name: 0, Value: 0 });
+const i_SuppressionConditionThreshold: D.LazyStruct = () => ({
+  ConditionThresholdEnabled: 0,
+  OverallConfidenceThreshold: { ConfidenceVerdictThreshold: 0 },
+});
+const i_SuppressionValidationOptions: D.LazyStruct = () => ({
+  ConditionThreshold: i_SuppressionConditionThreshold,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_Template: D.LazyStruct = () => ({
+  TemplateName: 0,
+  TemplateArn: 0,
+  TemplateContent: i_EmailTemplateContent,
+  TemplateData: 0,
+  Headers: D.list(i_MessageHeader),
+  Attachments: D.list(i_Attachment),
+});
+const i_Topic: D.LazyStruct = () => ({
+  TopicName: 0,
+  DisplayName: 0,
+  Description: 0,
+  DefaultSubscriptionStatus: 0,
+});
+const i_TopicPreference: D.LazyStruct = () => ({
+  TopicName: 0,
+  SubscriptionStatus: 0,
+});
+const i_VdmOptions: D.LazyStruct = () => ({
+  DashboardOptions: { EngagementMetrics: 0 },
+  GuardianOptions: { OptimizedSharedDelivery: 0 },
+});
 const o_DeliverabilityTestReport: D.LazyStruct = () => ({ CreateDate: D.ts });
 const o_DkimAttributes: D.LazyStruct = () => ({
   LastKeyGenerationTimestamp: D.ts,
@@ -5771,4 +6181,14 @@ const o_ReputationEntity: D.LazyStruct = () => ({
   CustomerManagedStatus: o_StatusRecord,
   AwsSesManagedStatus: o_StatusRecord,
 });
+const i_Attachment: D.LazyStruct = () => ({
+  RawContent: 0,
+  ContentDisposition: 0,
+  FileName: 0,
+  ContentDescription: 0,
+  ContentId: 0,
+  ContentTransferEncoding: 0,
+  ContentType: 0,
+});
+const i_Content: D.LazyStruct = () => ({ Data: 0, Charset: 0 });
 const o_StatusRecord: D.LazyStruct = () => ({ LastUpdatedTimestamp: D.ts });

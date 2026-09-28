@@ -981,7 +981,7 @@ export const awsDescriptorProtocol = (protocol: string): DescriptorProtocol => {
       return {
         xml: false,
         rest: false,
-        orderedRequests: false,
+        closedRequests: true,
         markRequestMaps: false,
         listItemNames: false,
         bodyTimestamp: "epoch-seconds",
@@ -992,7 +992,7 @@ export const awsDescriptorProtocol = (protocol: string): DescriptorProtocol => {
       return {
         xml: false,
         rest: true,
-        orderedRequests: false,
+        closedRequests: true,
         markRequestMaps: false,
         listItemNames: false,
         bodyTimestamp: "epoch-seconds",
@@ -1005,7 +1005,7 @@ export const awsDescriptorProtocol = (protocol: string): DescriptorProtocol => {
       return {
         xml: true,
         rest: true,
-        orderedRequests: true,
+        closedRequests: true,
         markRequestMaps: true,
         listItemNames: true,
         bodyTimestamp: "date-time",
@@ -1018,7 +1018,7 @@ export const awsDescriptorProtocol = (protocol: string): DescriptorProtocol => {
       return {
         xml: true,
         rest: false,
-        orderedRequests: false,
+        closedRequests: true,
         markRequestMaps: true,
         listItemNames: true,
         bodyTimestamp: "date-time",
@@ -1031,7 +1031,7 @@ export const awsDescriptorProtocol = (protocol: string): DescriptorProtocol => {
       return {
         xml: true,
         rest: false,
-        orderedRequests: false,
+        closedRequests: true,
         markRequestMaps: true,
         listItemNames: false,
         bodyTimestamp: "date-time",

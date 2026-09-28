@@ -429,7 +429,19 @@ export const createDeployment: API.OperationMethod<
   CreateDeploymentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /createDeployment", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /createDeployment",
+    input: {
+      workloadName: 0,
+      deploymentPatternName: 0,
+      name: 0,
+      specifications: 0,
+      dryRun: 0,
+      tags: 0,
+    },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceLimitException,
@@ -456,7 +468,12 @@ export const deleteDeployment: API.OperationMethod<
   DeleteDeploymentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /deleteDeployment", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /deleteDeployment",
+    input: { deploymentId: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceLimitException,
@@ -485,6 +502,7 @@ export const getDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getDeployment",
+    input: { deploymentId: 0 },
     output: {
       deployment: { createdAt: D.ts, modifiedAt: D.ts, deletedAt: D.ts },
     },
@@ -516,6 +534,11 @@ export const getDeploymentPatternVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getDeploymentPatternVersion",
+    input: {
+      workloadName: 0,
+      deploymentPatternName: 0,
+      deploymentPatternVersionName: 0,
+    },
     body: true,
   },
   errors: [InternalServerException, ResourceNotFoundException],
@@ -538,7 +561,12 @@ export const getWorkload: API.OperationMethod<
   GetWorkloadError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /getWorkload", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /getWorkload",
+    input: { workloadName: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -566,6 +594,7 @@ export const getWorkloadDeploymentPattern: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /getWorkloadDeploymentPattern",
+    input: { workloadName: 0, deploymentPatternName: 0 },
     body: true,
   },
   errors: [
@@ -596,6 +625,7 @@ export const listDeploymentEvents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listDeploymentEvents",
+    input: { deploymentId: 0, maxResults: 0, nextToken: 0 },
     output: { deploymentEvents: D.list({ timestamp: D.ts }) },
     body: true,
   },
@@ -633,6 +663,13 @@ export const listDeploymentPatternVersions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listDeploymentPatternVersions",
+    input: {
+      workloadName: 0,
+      deploymentPatternName: 0,
+      maxResults: 0,
+      nextToken: 0,
+      filters: D.list({ name: 0, values: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -668,6 +705,11 @@ export const listDeployments: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listDeployments",
+    input: {
+      filters: D.list({ name: 0, values: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { deployments: D.list(o_DeploymentDataSummary) },
     body: true,
   },
@@ -697,7 +739,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -726,6 +772,7 @@ export const listWorkloadDeploymentPatterns: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /listWorkloadDeploymentPatterns",
+    input: { workloadName: 0, maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [
@@ -758,7 +805,12 @@ export const listWorkloads: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   WorkloadDataSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /listWorkloads", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /listWorkloads",
+    input: { maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -785,7 +837,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -813,7 +870,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -843,6 +900,14 @@ export const updateDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /updateDeployment",
+    input: {
+      deploymentId: 0,
+      specifications: 0,
+      workloadVersionName: 0,
+      deploymentPatternVersionName: 0,
+      dryRun: 0,
+      force: 0,
+    },
     output: { deployment: o_DeploymentDataSummary },
     body: true,
   },

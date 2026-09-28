@@ -759,6 +759,7 @@ export const getApplicationComponentDetails: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /get-applicationcomponent-details/{applicationComponentId}",
+    input: { applicationComponentId: 0 },
     output: { applicationComponentDetail: o_ApplicationComponentDetail },
   },
   errors: [
@@ -789,6 +790,7 @@ export const getApplicationComponentStrategies: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /get-applicationcomponent-strategies/{applicationComponentId}",
+    input: { applicationComponentId: 0 },
   },
   errors: [
     InternalServerException,
@@ -818,6 +820,7 @@ export const getAssessment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /get-assessment/{id}",
+    input: { id: 0 },
     output: {
       dataCollectionDetails: { startTime: D.ts, completionTime: D.ts },
     },
@@ -852,6 +855,7 @@ export const getImportFileTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /get-import-file-task/{id}",
+    input: { id: 0 },
     output: { startTime: D.ts, completionTime: D.ts },
   },
   errors: [
@@ -881,7 +885,11 @@ export const getLatestAssessmentId: API.OperationMethod<
   GetLatestAssessmentIdError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /get-latest-assessment-id" },
+  descriptor: {
+    service: svc,
+    http: "GET /get-latest-assessment-id",
+    input: {},
+  },
   errors: [
     AccessDeniedException,
     DependencyException,
@@ -908,7 +916,11 @@ export const getPortfolioPreferences: API.OperationMethod<
   GetPortfolioPreferencesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /get-portfolio-preferences" },
+  descriptor: {
+    service: svc,
+    http: "GET /get-portfolio-preferences",
+    input: {},
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -938,6 +950,7 @@ export const getPortfolioSummary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /get-portfolio-summary",
+    input: {},
     output: { assessmentSummary: { lastAnalyzedTimestamp: D.ts } },
   },
   errors: [AccessDeniedException, InternalServerException, ThrottlingException],
@@ -965,6 +978,7 @@ export const getRecommendationReportDetails: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /get-recommendation-report-details/{id}",
+    input: { id: 0 },
     output: {
       recommendationReportDetails: { startTime: D.ts, completionTime: D.ts },
     },
@@ -1002,6 +1016,7 @@ export const getServerDetails: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /get-server-details/{serverId}",
     input: {
+      serverId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1041,7 +1056,11 @@ export const getServerStrategies: API.OperationMethod<
   GetServerStrategiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /get-server-strategies/{serverId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /get-server-strategies/{serverId}",
+    input: { serverId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1073,6 +1092,7 @@ export const listAnalyzableServers: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-analyzable-servers",
+    input: { sort: 0, nextToken: 0, maxResults: 0 },
     body: true,
   },
   errors: [
@@ -1111,6 +1131,14 @@ export const listApplicationComponents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-applicationcomponents",
+    input: {
+      applicationComponentCriteria: 0,
+      filterValue: 0,
+      sort: 0,
+      groupIdFilter: D.list(i_Group),
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { applicationComponentInfos: D.list(o_ApplicationComponentDetail) },
     body: true,
   },
@@ -1233,6 +1261,14 @@ export const listServers: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-servers",
+    input: {
+      serverCriteria: 0,
+      filterValue: 0,
+      sort: 0,
+      groupIdFilter: D.list(i_Group),
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { serverInfos: D.list(o_ServerDetail) },
     body: true,
   },
@@ -1272,6 +1308,32 @@ export const putPortfolioPreferences: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /put-portfolio-preferences",
+    input: {
+      prioritizeBusinessGoals: {
+        businessGoals: {
+          speedOfMigration: 0,
+          reduceOperationalOverheadWithManagedServices: 0,
+          modernizeInfrastructureWithCloudNativeTechnologies: 0,
+          licenseCostReduction: 0,
+        },
+      },
+      applicationPreferences: {
+        managementPreference: {
+          awsManagedResources: { targetDestination: 0 },
+          selfManageResources: { targetDestination: 0 },
+          noPreference: { targetDestination: 0 },
+        },
+      },
+      databasePreferences: {
+        databaseManagementPreference: 0,
+        databaseMigrationPreference: {
+          heterogeneous: { targetDatabaseEngine: 0 },
+          homogeneous: { targetDatabaseEngine: 0 },
+          noPreference: { targetDatabaseEngine: 0 },
+        },
+      },
+      applicationMode: 0,
+    },
     body: true,
   },
   errors: [
@@ -1301,7 +1363,17 @@ export const startAssessment: API.OperationMethod<
   StartAssessmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /start-assessment", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /start-assessment",
+    input: {
+      s3bucketForAnalysisData: 0,
+      s3bucketForReportData: 0,
+      assessmentTargets: D.list({ condition: 0, name: 0, values: 0 }),
+      assessmentDataSourceType: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1332,6 +1404,14 @@ export const startImportFileTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /start-import-file-task",
+    input: {
+      name: 0,
+      S3Bucket: 0,
+      s3key: 0,
+      dataSourceType: 0,
+      groupId: D.list(i_Group),
+      s3bucketForReportData: 0,
+    },
     body: true,
   },
   errors: [
@@ -1365,6 +1445,7 @@ export const startRecommendationReportGeneration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /start-recommendation-report-generation",
+    input: { outputFormat: 0, groupIdFilter: D.list(i_Group) },
     body: true,
   },
   errors: [
@@ -1394,7 +1475,12 @@ export const stopAssessment: API.OperationMethod<
   StopAssessmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /stop-assessment", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /stop-assessment",
+    input: { assessmentId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1424,6 +1510,20 @@ export const updateApplicationComponentConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /update-applicationcomponent-config/",
+    input: {
+      applicationComponentId: 0,
+      inclusionStatus: 0,
+      strategyOption: i_StrategyOption,
+      sourceCodeList: D.list({
+        versionControl: 0,
+        sourceVersion: 0,
+        location: 0,
+        projectName: 0,
+      }),
+      secretsManagerKey: 0,
+      configureOnly: 0,
+      appType: 0,
+    },
     body: true,
   },
   errors: [
@@ -1452,7 +1552,12 @@ export const updateServerConfig: API.OperationMethod<
   UpdateServerConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /update-server-config/", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /update-server-config/",
+    input: { serverId: 0, strategyOption: i_StrategyOption },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1464,6 +1569,13 @@ export const updateServerConfig: API.OperationMethod<
   operationName: "UpdateServerConfig",
 })) as any;
 
+const i_Group: D.LazyStruct = () => ({ name: 0, value: 0 });
+const i_StrategyOption: D.LazyStruct = () => ({
+  strategy: 0,
+  toolName: 0,
+  targetDestination: 0,
+  isPreferred: 0,
+});
 const o_ApplicationComponentDetail: D.LazyStruct = () => ({
   lastAnalyzedTimestamp: D.ts,
 });

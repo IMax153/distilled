@@ -642,7 +642,17 @@ export const createRegistry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /registries",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      discoveryConfiguration: {
+        authorizerConfiguration: i_AuthorizerConfiguration,
+        authorizerType: 0,
+      },
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+      approvalConfiguration: i_ApprovalConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -679,7 +689,41 @@ export const createRegistryRecord: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /registries/{registryId}/records",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      registryId: 0,
+      name: 0,
+      displayName: 0,
+      description: 0,
+      recordType: 0,
+      descriptors: {
+        mcpServer: {
+          data: 0,
+          dataSchemaVersion: 0,
+          additionalData: { tools: { data: 0, dataSchemaVersion: 0 } },
+          source: i_DescriptorSource,
+        },
+        a2aAgentCard: {
+          data: 0,
+          dataSchemaVersion: 0,
+          source: i_DescriptorSource,
+        },
+        agentSkillsDefinition: {
+          data: 0,
+          dataSchemaVersion: 0,
+          additionalData: {
+            skillMd: {
+              data: 0,
+              dataSchemaVersion: 0,
+              source: i_DescriptorSource,
+            },
+          },
+        },
+        custom: { data: 0 },
+      },
+      recordVersion: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -713,7 +757,11 @@ export const deleteRegistry: API.OperationMethod<
   DeleteRegistryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /registries/{registryId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /registries/{registryId}",
+    input: { registryId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -747,6 +795,7 @@ export const deleteRegistryRecord: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /registries/{registryId}/records/{recordId}",
+    input: { registryId: 0, recordId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -780,6 +829,7 @@ export const getRegistry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /registries/{registryId}",
+    input: { registryId: 0 },
     output: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -814,6 +864,7 @@ export const getRegistryRecord: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /registries/{registryId}/records/{recordId}",
+    input: { registryId: 0, recordId: 0 },
     output: {
       description: D.secret,
       descriptors: o_Descriptors,
@@ -853,6 +904,11 @@ export const listRegistries: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /registries-list",
+    input: {
+      maxResults: 0,
+      nextToken: 0,
+      filters: D.list({ name: 0, values: 0 }),
+    },
     output: {
       registries: D.list({
         description: D.secret,
@@ -900,6 +956,12 @@ export const listRegistryRecords: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /registries/{registryId}/records-list",
+    input: {
+      registryId: 0,
+      maxResults: 0,
+      nextToken: 0,
+      filters: D.list({ name: 0, values: 0 }),
+    },
     output: {
       registryRecords: D.list({
         description: D.secret,
@@ -944,7 +1006,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn+}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn+}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -977,6 +1043,7 @@ export const submitRegistryRecordForApproval: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /registries/{registryId}/records/{recordId}/submit-for-approval",
+    input: { registryId: 0, recordId: 0 },
     output: { updatedAt: D.ts },
   },
   errors: [
@@ -1009,7 +1076,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn+}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn+}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1042,7 +1114,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn+}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1077,6 +1149,15 @@ export const updateRegistry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /registries/{registryId}",
+    input: {
+      registryId: 0,
+      name: 0,
+      description: i_UpdatedDescription,
+      discoveryConfiguration: {
+        authorizerConfiguration: { optionalValue: i_AuthorizerConfiguration },
+      },
+      approvalConfiguration: { optionalValue: i_ApprovalConfiguration },
+    },
     output: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -1114,6 +1195,62 @@ export const updateRegistryRecord: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /registries/{registryId}/records/{recordId}",
+    input: {
+      registryId: 0,
+      recordId: 0,
+      name: 0,
+      displayName: { optionalValue: 0 },
+      description: i_UpdatedDescription,
+      recordType: 0,
+      descriptors: {
+        optionalValue: {
+          mcpServer: {
+            optionalValue: {
+              data: i_UpdatedDescriptorData,
+              dataSchemaVersion: i_UpdatedDataSchemaVersion,
+              source: i_UpdatedDescriptorSource,
+              additionalData: {
+                optionalValue: {
+                  tools: {
+                    optionalValue: {
+                      data: i_UpdatedDescriptorData,
+                      dataSchemaVersion: i_UpdatedDataSchemaVersion,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          a2aAgentCard: {
+            optionalValue: {
+              data: i_UpdatedDescriptorData,
+              dataSchemaVersion: i_UpdatedDataSchemaVersion,
+              source: i_UpdatedDescriptorSource,
+            },
+          },
+          agentSkillsDefinition: {
+            optionalValue: {
+              data: i_UpdatedDescriptorData,
+              dataSchemaVersion: i_UpdatedDataSchemaVersion,
+              additionalData: {
+                optionalValue: {
+                  skillMd: {
+                    optionalValue: {
+                      data: i_UpdatedDescriptorData,
+                      dataSchemaVersion: i_UpdatedDataSchemaVersion,
+                      source: i_UpdatedDescriptorSource,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          custom: { optionalValue: { data: i_UpdatedDescriptorData } },
+        },
+      },
+      recordVersion: 0,
+      triggerSynchronization: 0,
+    },
     output: {
       description: D.secret,
       descriptors: o_Descriptors,
@@ -1155,6 +1292,7 @@ export const updateRegistryRecordStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /registries/{registryId}/records/{recordId}/status",
+    input: { registryId: 0, recordId: 0, status: 0, statusReason: 0 },
     output: { updatedAt: D.ts },
     body: true,
   },
@@ -1171,6 +1309,51 @@ export const updateRegistryRecordStatus: API.OperationMethod<
   operationName: "UpdateRegistryRecordStatus",
 })) as any;
 
+const i_ApprovalConfiguration: D.LazyStruct = () => ({ autoApprovalRules: 0 });
+const i_AuthorizerConfiguration: D.LazyStruct = () => ({
+  customJWTAuthorizer: {
+    discoveryUrl: 0,
+    allowedAudience: 0,
+    allowedClients: 0,
+    allowedScopes: 0,
+    customClaims: D.list({
+      inboundTokenClaimName: 0,
+      inboundTokenClaimValueType: 0,
+      authorizingClaimMatchValue: {
+        claimMatchValue: { matchValueString: 0, matchValueStringList: 0 },
+        claimMatchOperator: 0,
+      },
+    }),
+    privateEndpoint: i_PrivateEndpoint,
+    privateEndpointOverrides: D.list({
+      domain: 0,
+      privateEndpoint: i_PrivateEndpoint,
+    }),
+  },
+});
+const i_DescriptorSource: D.LazyStruct = () => ({
+  fromUrl: {
+    url: 0,
+    credentialProviderConfigurations: D.list({
+      credentialProviderType: 0,
+      credentialProvider: {
+        oauthCredentialProvider: {
+          providerArn: 0,
+          grantType: 0,
+          scopes: 0,
+          customParameters: 0,
+        },
+        iamCredentialProvider: { roleArn: 0, service: 0, region: 0 },
+      },
+    }),
+  },
+});
+const i_UpdatedDataSchemaVersion: D.LazyStruct = () => ({ optionalValue: 0 });
+const i_UpdatedDescription: D.LazyStruct = () => ({ optionalValue: 0 });
+const i_UpdatedDescriptorData: D.LazyStruct = () => ({ optionalValue: 0 });
+const i_UpdatedDescriptorSource: D.LazyStruct = () => ({
+  optionalValue: i_DescriptorSource,
+});
 const o_Descriptors: D.LazyStruct = () => ({
   mcpServer: { data: D.secret, additionalData: { tools: { data: D.secret } } },
   a2aAgentCard: { data: D.secret },
@@ -1179,4 +1362,15 @@ const o_Descriptors: D.LazyStruct = () => ({
     additionalData: { skillMd: { data: D.secret } },
   },
   custom: { data: D.secret },
+});
+const i_PrivateEndpoint: D.LazyStruct = () => ({
+  selfManagedLatticeResource: { resourceConfigurationIdentifier: 0 },
+  managedVpcResource: {
+    vpcIdentifier: 0,
+    subnetIds: 0,
+    endpointIpAddressType: 0,
+    securityGroupIds: 0,
+    tags: 0,
+    routingDomain: 0,
+  },
 });

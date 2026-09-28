@@ -352,7 +352,18 @@ export const createLink: API.OperationMethod<
   CreateLinkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CreateLink", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CreateLink",
+    input: {
+      LabelTemplate: 0,
+      ResourceTypes: 0,
+      SinkIdentifier: 0,
+      Tags: 0,
+      LinkConfiguration: i_LinkConfiguration,
+    },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServiceFault,
@@ -387,7 +398,12 @@ export const createSink: API.OperationMethod<
   CreateSinkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CreateSink", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CreateSink",
+    input: { Name: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServiceFault,
@@ -417,7 +433,12 @@ export const deleteLink: API.OperationMethod<
   DeleteLinkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteLink", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteLink",
+    input: { Identifier: 0 },
+    body: true,
+  },
   errors: [
     InternalServiceFault,
     InvalidParameterException,
@@ -447,7 +468,12 @@ export const deleteSink: API.OperationMethod<
   DeleteSinkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteSink", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteSink",
+    input: { Identifier: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServiceFault,
@@ -479,7 +505,12 @@ export const getLink: API.OperationMethod<
   GetLinkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetLink", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetLink",
+    input: { Identifier: 0, IncludeTags: 0 },
+    body: true,
+  },
   errors: [
     InternalServiceFault,
     InvalidParameterException,
@@ -510,7 +541,12 @@ export const getSink: API.OperationMethod<
   GetSinkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetSink", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetSink",
+    input: { Identifier: 0, IncludeTags: 0 },
+    body: true,
+  },
   errors: [
     InternalServiceFault,
     InvalidParameterException,
@@ -539,7 +575,12 @@ export const getSinkPolicy: API.OperationMethod<
   GetSinkPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetSinkPolicy", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetSinkPolicy",
+    input: { SinkIdentifier: 0 },
+    body: true,
+  },
   errors: [
     InternalServiceFault,
     InvalidParameterException,
@@ -573,7 +614,12 @@ export const listAttachedLinks: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ListAttachedLinksItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListAttachedLinks", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListAttachedLinks",
+    input: { MaxResults: 0, NextToken: 0, SinkIdentifier: 0 },
+    body: true,
+  },
   errors: [
     InternalServiceFault,
     InvalidParameterException,
@@ -610,7 +656,12 @@ export const listLinks: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ListLinksItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListLinks", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListLinks",
+    input: { MaxResults: 0, NextToken: 0 },
+    body: true,
+  },
   errors: [
     InternalServiceFault,
     InvalidParameterException,
@@ -644,7 +695,12 @@ export const listSinks: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ListSinksItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListSinks", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListSinks",
+    input: { MaxResults: 0, NextToken: 0 },
+    body: true,
+  },
   errors: [
     InternalServiceFault,
     InvalidParameterException,
@@ -676,7 +732,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     ResourceNotFoundException,
     ValidationException,
@@ -719,7 +779,12 @@ export const putSinkPolicy: API.OperationMethod<
   PutSinkPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /PutSinkPolicy", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /PutSinkPolicy",
+    input: { SinkIdentifier: 0, Policy: 0 },
+    body: true,
+  },
   errors: [
     InternalServiceFault,
     InvalidParameterException,
@@ -757,7 +822,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     ResourceNotFoundException,
     TooManyTagsException,
@@ -788,7 +858,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     ResourceNotFoundException,
@@ -820,7 +890,17 @@ export const updateLink: API.OperationMethod<
   UpdateLinkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UpdateLink", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UpdateLink",
+    input: {
+      Identifier: 0,
+      ResourceTypes: 0,
+      LinkConfiguration: i_LinkConfiguration,
+      IncludeTags: 0,
+    },
+    body: true,
+  },
   errors: [
     InternalServiceFault,
     InvalidParameterException,
@@ -832,3 +912,8 @@ export const updateLink: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateLink",
 })) as any;
+
+const i_LinkConfiguration: D.LazyStruct = () => ({
+  LogGroupConfiguration: { Filter: 0 },
+  MetricConfiguration: { Filter: 0 },
+});

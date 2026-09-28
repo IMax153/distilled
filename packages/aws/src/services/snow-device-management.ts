@@ -376,7 +376,11 @@ export const cancelTask: API.OperationMethod<
   CancelTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /task/{taskId}/cancel" },
+  descriptor: {
+    service: svc,
+    http: "POST /task/{taskId}/cancel",
+    input: { taskId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -409,7 +413,13 @@ export const createTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /task",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      targets: 0,
+      command: { unlock: {}, reboot: {} },
+      description: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -445,6 +455,7 @@ export const describeDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /managed-device/{managedDeviceId}/describe",
+    input: { managedDeviceId: 0 },
     output: { lastReachedOutAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -480,6 +491,7 @@ export const describeDeviceEc2Instances: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /managed-device/{managedDeviceId}/resources/ec2/describe",
+    input: { managedDeviceId: 0, instanceIds: 0 },
     output: {
       instances: D.list({
         instance: {
@@ -523,6 +535,7 @@ export const describeExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /task/{taskId}/execution/{managedDeviceId}",
+    input: { taskId: 0, managedDeviceId: 0 },
     output: { startedAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -556,6 +569,7 @@ export const describeTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /task/{taskId}",
+    input: { taskId: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts, completedAt: D.ts },
   },
   errors: [
@@ -591,6 +605,7 @@ export const listDeviceResources: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /managed-device/{managedDeviceId}/resources",
     input: {
+      managedDeviceId: 0,
       type: D.m({ query: "type" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -716,7 +731,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -783,7 +802,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -811,7 +835,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,

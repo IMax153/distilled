@@ -533,7 +533,25 @@ export const createLifecyclePolicy: API.OperationMethod<
   CreateLifecyclePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /policies", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /policies",
+    input: {
+      ExecutionRoleArn: 0,
+      Description: 0,
+      State: 0,
+      PolicyDetails: i_PolicyDetails,
+      Tags: 0,
+      DefaultPolicy: 0,
+      CreateInterval: 0,
+      RetainInterval: 0,
+      CopyTags: 0,
+      ExtendDeletion: 0,
+      CrossRegionCopyTargets: D.list(i_CrossRegionCopyTarget),
+      Exclusions: i_Exclusions,
+    },
+    body: true,
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -562,7 +580,11 @@ export const deleteLifecyclePolicy: API.OperationMethod<
   DeleteLifecyclePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /policies/{PolicyId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /policies/{PolicyId}",
+    input: { PolicyId: 0 },
+  },
   errors: [
     InternalServerException,
     LimitExceededException,
@@ -630,6 +652,7 @@ export const getLifecyclePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /policies/{PolicyId}",
+    input: { PolicyId: 0 },
     output: { Policy: { DateCreated: D.ts, DateModified: D.ts } },
   },
   errors: [
@@ -656,7 +679,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -681,7 +708,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -709,7 +741,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -739,7 +771,24 @@ export const updateLifecyclePolicy: API.OperationMethod<
   UpdateLifecyclePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /policies/{PolicyId}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /policies/{PolicyId}",
+    input: {
+      PolicyId: 0,
+      ExecutionRoleArn: 0,
+      State: 0,
+      Description: 0,
+      PolicyDetails: i_PolicyDetails,
+      CreateInterval: 0,
+      RetainInterval: 0,
+      CopyTags: 0,
+      ExtendDeletion: 0,
+      CrossRegionCopyTargets: D.list(i_CrossRegionCopyTarget),
+      Exclusions: i_Exclusions,
+    },
+    body: true,
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -750,3 +799,95 @@ export const updateLifecyclePolicy: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateLifecyclePolicy",
 })) as any;
+
+const i_CrossRegionCopyTarget: D.LazyStruct = () => ({ TargetRegion: 0 });
+const i_Exclusions: D.LazyStruct = () => ({
+  ExcludeBootVolumes: 0,
+  ExcludeVolumeTypes: 0,
+  ExcludeTags: D.list(i_Tag),
+});
+const i_PolicyDetails: D.LazyStruct = () => ({
+  PolicyType: 0,
+  ResourceTypes: 0,
+  ResourceLocations: 0,
+  TargetTags: D.list(i_Tag),
+  Schedules: D.list({
+    Name: 0,
+    CopyTags: 0,
+    TagsToAdd: D.list(i_Tag),
+    VariableTags: D.list(i_Tag),
+    CreateRule: {
+      Location: 0,
+      Interval: 0,
+      IntervalUnit: 0,
+      Times: 0,
+      CronExpression: 0,
+      Scripts: D.list({
+        Stages: 0,
+        ExecutionHandlerService: 0,
+        ExecutionHandler: 0,
+        ExecuteOperationOnScriptFailure: 0,
+        ExecutionTimeout: 0,
+        MaximumRetryCount: 0,
+      }),
+    },
+    RetainRule: { Count: 0, Interval: 0, IntervalUnit: 0 },
+    FastRestoreRule: {
+      Count: 0,
+      Interval: 0,
+      IntervalUnit: 0,
+      AvailabilityZones: 0,
+      AvailabilityZoneIds: 0,
+    },
+    CrossRegionCopyRules: D.list({
+      TargetRegion: 0,
+      Target: 0,
+      Encrypted: 0,
+      CmkArn: 0,
+      CopyTags: 0,
+      RetainRule: i_CrossRegionCopyRetainRule,
+      DeprecateRule: { Interval: 0, IntervalUnit: 0 },
+    }),
+    ShareRules: D.list({
+      TargetAccounts: 0,
+      UnshareInterval: 0,
+      UnshareIntervalUnit: 0,
+    }),
+    DeprecateRule: { Count: 0, Interval: 0, IntervalUnit: 0 },
+    ArchiveRule: {
+      RetainRule: {
+        RetentionArchiveTier: { Count: 0, Interval: 0, IntervalUnit: 0 },
+      },
+    },
+  }),
+  Parameters: {
+    ExcludeBootVolume: 0,
+    NoReboot: 0,
+    ExcludeDataVolumeTags: D.list(i_Tag),
+  },
+  EventSource: {
+    Type: 0,
+    Parameters: { EventType: 0, SnapshotOwner: 0, DescriptionRegex: 0 },
+  },
+  Actions: D.list({
+    Name: 0,
+    CrossRegionCopy: D.list({
+      Target: 0,
+      EncryptionConfiguration: { Encrypted: 0, CmkArn: 0 },
+      RetainRule: i_CrossRegionCopyRetainRule,
+    }),
+  }),
+  PolicyLanguage: 0,
+  ResourceType: 0,
+  CreateInterval: 0,
+  RetainInterval: 0,
+  CopyTags: 0,
+  CrossRegionCopyTargets: D.list(i_CrossRegionCopyTarget),
+  ExtendDeletion: 0,
+  Exclusions: i_Exclusions,
+});
+const i_CrossRegionCopyRetainRule: D.LazyStruct = () => ({
+  Interval: 0,
+  IntervalUnit: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });

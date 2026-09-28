@@ -2753,7 +2753,7 @@ export const acceptDelegationRequest: API.OperationMethod<
   AcceptDelegationRequestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DelegationRequestId: 0 } },
   errors: [
     ConcurrentModificationException,
     NoSuchEntityException,
@@ -2795,7 +2795,11 @@ export const acquireRole: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ReplacementValues: D.map() },
+    input: {
+      TemplateArn: 0,
+      TemplateMinorVersion: 0,
+      ReplacementValues: D.map({ Values: 0 }),
+    },
     output: { Role: o_Role },
   },
   errors: [
@@ -2835,7 +2839,10 @@ export const addClientIDToOpenIDConnectProvider: API.OperationMethod<
   AddClientIDToOpenIDConnectProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OpenIDConnectProviderArn: 0, ClientID: 0 },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -2883,7 +2890,7 @@ export const addRoleToInstanceProfile: API.OperationMethod<
   AddRoleToInstanceProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InstanceProfileName: 0, RoleName: 0 } },
   errors: [
     EntityAlreadyExistsException,
     LimitExceededException,
@@ -2910,7 +2917,7 @@ export const addUserToGroup: API.OperationMethod<
   AddUserToGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GroupName: 0, UserName: 0 } },
   errors: [
     LimitExceededException,
     NoSuchEntityException,
@@ -2955,7 +2962,7 @@ export const associateDelegationRequest: API.OperationMethod<
   AssociateDelegationRequestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DelegationRequestId: 0 } },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -2995,7 +3002,7 @@ export const attachGroupPolicy: API.OperationMethod<
   AttachGroupPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GroupName: 0, PolicyArn: 0 } },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -3046,7 +3053,7 @@ export const attachRolePolicy: API.OperationMethod<
   AttachRolePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RoleName: 0, PolicyArn: 0 } },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -3088,7 +3095,7 @@ export const attachUserPolicy: API.OperationMethod<
   AttachUserPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserName: 0, PolicyArn: 0 } },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -3127,7 +3134,7 @@ export const changePassword: API.OperationMethod<
   ChangePasswordError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OldPassword: 0, NewPassword: 0 } },
   errors: [
     EntityTemporarilyUnmodifiableException,
     InvalidUserTypeException,
@@ -3171,6 +3178,7 @@ export const createAccessKey: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserName: 0 },
     output: { AccessKey: { SecretAccessKey: D.secret, CreateDate: D.ts } },
   },
   errors: [
@@ -3201,7 +3209,7 @@ export const createAccountAlias: API.OperationMethod<
   CreateAccountAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AccountAlias: 0 } },
   errors: [
     ConcurrentModificationException,
     EntityAlreadyExistsException,
@@ -3233,7 +3241,23 @@ export const createDelegationRequest: API.OperationMethod<
   CreateDelegationRequestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OwnerAccountId: 0,
+      Description: 0,
+      Permissions: {
+        PolicyTemplateArn: 0,
+        Parameters: D.list({ Name: 0, Values: 0, Type: 0 }),
+      },
+      RequestMessage: 0,
+      RequestorWorkflowId: 0,
+      RedirectUrl: 0,
+      NotificationChannel: 0,
+      SessionDuration: 0,
+      OnlySendByOwner: 0,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     EntityAlreadyExistsException,
@@ -3264,7 +3288,11 @@ export const createGroup: API.OperationMethod<
   CreateGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Group: o_Group } },
+  descriptor: {
+    service: svc,
+    input: { Path: 0, GroupName: 0 },
+    output: { Group: o_Group },
+  },
   errors: [
     EntityAlreadyExistsException,
     LimitExceededException,
@@ -3297,7 +3325,11 @@ export const createInstanceProfile: API.OperationMethod<
   CreateInstanceProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { InstanceProfile: o_InstanceProfile } },
+  descriptor: {
+    service: svc,
+    input: { InstanceProfileName: 0, Path: 0, Tags: D.list(i_Tag) },
+    output: { InstanceProfile: o_InstanceProfile },
+  },
   errors: [
     ConcurrentModificationException,
     EntityAlreadyExistsException,
@@ -3333,7 +3365,11 @@ export const createLoginProfile: API.OperationMethod<
   CreateLoginProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LoginProfile: o_LoginProfile } },
+  descriptor: {
+    service: svc,
+    input: { UserName: 0, Password: 0, PasswordResetRequired: 0 },
+    output: { LoginProfile: o_LoginProfile },
+  },
   errors: [
     EntityAlreadyExistsException,
     LimitExceededException,
@@ -3399,7 +3435,11 @@ export const createOpenIDConnectProvider: API.OperationMethod<
   CreateOpenIDConnectProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Tags: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { Url: 0, ClientIDList: 0, ThumbprintList: 0, Tags: D.list(i_Tag) },
+    output: { Tags: D.list({}) },
+  },
   errors: [
     ConcurrentModificationException,
     EntityAlreadyExistsException,
@@ -3443,7 +3483,17 @@ export const createPolicy: API.OperationMethod<
   CreatePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Policy: o_Policy } },
+  descriptor: {
+    service: svc,
+    input: {
+      PolicyName: 0,
+      Path: 0,
+      PolicyDocument: 0,
+      Description: 0,
+      Tags: D.list(i_Tag),
+    },
+    output: { Policy: o_Policy },
+  },
   errors: [
     ConcurrentModificationException,
     EntityAlreadyExistsException,
@@ -3482,7 +3532,11 @@ export const createPolicyVersion: API.OperationMethod<
   CreatePolicyVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { PolicyVersion: o_PolicyVersion } },
+  descriptor: {
+    service: svc,
+    input: { PolicyArn: 0, PolicyDocument: 0, SetAsDefault: 0 },
+    output: { PolicyVersion: o_PolicyVersion },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -3517,7 +3571,19 @@ export const createRole: API.OperationMethod<
   CreateRoleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Role: o_Role } },
+  descriptor: {
+    service: svc,
+    input: {
+      Path: 0,
+      RoleName: 0,
+      AssumeRolePolicyDocument: 0,
+      Description: 0,
+      MaxSessionDuration: 0,
+      PermissionsBoundary: 0,
+      Tags: D.list(i_Tag),
+    },
+    output: { Role: o_Role },
+  },
   errors: [
     ConcurrentModificationException,
     EntityAlreadyExistsException,
@@ -3566,7 +3632,17 @@ export const createSAMLProvider: API.OperationMethod<
   CreateSAMLProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Tags: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: {
+      SAMLMetadataDocument: 0,
+      Name: 0,
+      Tags: D.list(i_Tag),
+      AssertionEncryptionMode: 0,
+      AddPrivateKey: 0,
+    },
+    output: { Tags: D.list({}) },
+  },
   errors: [
     ConcurrentModificationException,
     EntityAlreadyExistsException,
@@ -3603,7 +3679,11 @@ export const createServiceLinkedRole: API.OperationMethod<
   CreateServiceLinkedRoleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Role: o_Role } },
+  descriptor: {
+    service: svc,
+    input: { AWSServiceName: 0, Description: 0, CustomSuffix: 0 },
+    output: { Role: o_Role },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -3652,6 +3732,7 @@ export const createServiceSpecificCredential: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserName: 0, ServiceName: 0, CredentialAgeDays: 0 },
     output: { ServiceSpecificCredential: o_ServiceSpecificCredential },
   },
   errors: [
@@ -3684,7 +3765,16 @@ export const createUser: API.OperationMethod<
   CreateUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { User: o_User } },
+  descriptor: {
+    service: svc,
+    input: {
+      Path: 0,
+      UserName: 0,
+      PermissionsBoundary: 0,
+      Tags: D.list(i_Tag),
+    },
+    output: { User: o_User },
+  },
   errors: [
     ConcurrentModificationException,
     EntityAlreadyExistsException,
@@ -3729,6 +3819,7 @@ export const createVirtualMFADevice: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Path: 0, VirtualMFADeviceName: 0, Tags: D.list(i_Tag) },
     output: { VirtualMFADevice: o_VirtualMFADevice },
   },
   errors: [
@@ -3764,7 +3855,7 @@ export const deactivateMFADevice: API.OperationMethod<
   DeactivateMFADeviceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserName: 0, SerialNumber: 0 } },
   errors: [
     ConcurrentModificationException,
     EntityTemporarilyUnmodifiableException,
@@ -3796,7 +3887,7 @@ export const deleteAccessKey: API.OperationMethod<
   DeleteAccessKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserName: 0, AccessKeyId: 0 } },
   errors: [
     LimitExceededException,
     NoSuchEntityException,
@@ -3825,7 +3916,7 @@ export const deleteAccountAlias: API.OperationMethod<
   DeleteAccountAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AccountAlias: 0 } },
   errors: [
     ConcurrentModificationException,
     LimitExceededException,
@@ -3878,7 +3969,7 @@ export const deleteGroup: API.OperationMethod<
   DeleteGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GroupName: 0 } },
   errors: [
     DeleteConflictException,
     LimitExceededException,
@@ -3910,7 +4001,7 @@ export const deleteGroupPolicy: API.OperationMethod<
   DeleteGroupPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GroupName: 0, PolicyName: 0 } },
   errors: [
     LimitExceededException,
     NoSuchEntityException,
@@ -3945,7 +4036,7 @@ export const deleteInstanceProfile: API.OperationMethod<
   DeleteInstanceProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InstanceProfileName: 0 } },
   errors: [
     DeleteConflictException,
     LimitExceededException,
@@ -3985,7 +4076,7 @@ export const deleteLoginProfile: API.OperationMethod<
   DeleteLoginProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserName: 0 } },
   errors: [
     EntityTemporarilyUnmodifiableException,
     LimitExceededException,
@@ -4018,7 +4109,7 @@ export const deleteOpenIDConnectProvider: API.OperationMethod<
   DeleteOpenIDConnectProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OpenIDConnectProviderArn: 0 } },
   errors: [
     InvalidInputException,
     NoSuchEntityException,
@@ -4064,7 +4155,7 @@ export const deletePolicy: API.OperationMethod<
   DeletePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PolicyArn: 0 } },
   errors: [
     DeleteConflictException,
     InvalidInputException,
@@ -4100,7 +4191,7 @@ export const deletePolicyVersion: API.OperationMethod<
   DeletePolicyVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PolicyArn: 0, VersionId: 0 } },
   errors: [
     DeleteConflictException,
     InvalidInputException,
@@ -4146,7 +4237,7 @@ export const deleteRole: API.OperationMethod<
   DeleteRoleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RoleName: 0 } },
   errors: [
     ConcurrentModificationException,
     DeleteConflictException,
@@ -4180,7 +4271,7 @@ export const deleteRolePermissionsBoundary: API.OperationMethod<
   DeleteRolePermissionsBoundaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RoleName: 0 } },
   errors: [
     NoSuchEntityException,
     ServiceFailureException,
@@ -4212,7 +4303,7 @@ export const deleteRolePolicy: API.OperationMethod<
   DeleteRolePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RoleName: 0, PolicyName: 0 } },
   errors: [
     LimitExceededException,
     NoSuchEntityException,
@@ -4245,7 +4336,7 @@ export const deleteSAMLProvider: API.OperationMethod<
   DeleteSAMLProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SAMLProviderArn: 0 } },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -4286,7 +4377,7 @@ export const deleteServerCertificate: API.OperationMethod<
   DeleteServerCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServerCertificateName: 0 } },
   errors: [
     DeleteConflictException,
     LimitExceededException,
@@ -4330,7 +4421,7 @@ export const deleteServiceLinkedRole: API.OperationMethod<
   DeleteServiceLinkedRoleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RoleName: 0 } },
   errors: [
     LimitExceededException,
     NoSuchEntityException,
@@ -4353,7 +4444,10 @@ export const deleteServiceSpecificCredential: API.OperationMethod<
   DeleteServiceSpecificCredentialError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserName: 0, ServiceSpecificCredentialId: 0 },
+  },
   errors: [NoSuchEntityException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4380,7 +4474,7 @@ export const deleteSigningCertificate: API.OperationMethod<
   DeleteSigningCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserName: 0, CertificateId: 0 } },
   errors: [
     ConcurrentModificationException,
     LimitExceededException,
@@ -4407,7 +4501,7 @@ export const deleteSSHPublicKey: API.OperationMethod<
   DeleteSSHPublicKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserName: 0, SSHPublicKeyId: 0 } },
   errors: [NoSuchEntityException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4451,7 +4545,7 @@ export const deleteUser: API.OperationMethod<
   DeleteUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserName: 0 } },
   errors: [
     ConcurrentModificationException,
     DeleteConflictException,
@@ -4480,7 +4574,7 @@ export const deleteUserPermissionsBoundary: API.OperationMethod<
   DeleteUserPermissionsBoundaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserName: 0 } },
   errors: [NoSuchEntityException, ServiceFailureException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4507,7 +4601,7 @@ export const deleteUserPolicy: API.OperationMethod<
   DeleteUserPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserName: 0, PolicyName: 0 } },
   errors: [
     LimitExceededException,
     NoSuchEntityException,
@@ -4537,7 +4631,7 @@ export const deleteVirtualMFADevice: API.OperationMethod<
   DeleteVirtualMFADeviceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SerialNumber: 0 } },
   errors: [
     ConcurrentModificationException,
     DeleteConflictException,
@@ -4570,7 +4664,7 @@ export const detachGroupPolicy: API.OperationMethod<
   DetachGroupPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GroupName: 0, PolicyArn: 0 } },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -4603,7 +4697,7 @@ export const detachRolePolicy: API.OperationMethod<
   DetachRolePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RoleName: 0, PolicyArn: 0 } },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -4636,7 +4730,7 @@ export const detachUserPolicy: API.OperationMethod<
   DetachUserPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserName: 0, PolicyArn: 0 } },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -4666,7 +4760,11 @@ export const disableOrganizationsRootCredentialsManagement: API.OperationMethod<
   DisableOrganizationsRootCredentialsManagementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { EnabledFeatures: D.list() } },
+  descriptor: {
+    service: svc,
+    input: {},
+    output: { EnabledFeatures: D.list() },
+  },
   errors: [
     AccountNotManagementOrDelegatedAdministratorException,
     OrganizationNotFoundException,
@@ -4696,7 +4794,11 @@ export const disableOrganizationsRootSessions: API.OperationMethod<
   DisableOrganizationsRootSessionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { EnabledFeatures: D.list() } },
+  descriptor: {
+    service: svc,
+    input: {},
+    output: { EnabledFeatures: D.list() },
+  },
   errors: [
     AccountNotManagementOrDelegatedAdministratorException,
     OrganizationNotFoundException,
@@ -4749,7 +4851,15 @@ export const enableMFADevice: API.OperationMethod<
   EnableMFADeviceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UserName: 0,
+      SerialNumber: 0,
+      AuthenticationCode1: 0,
+      AuthenticationCode2: 0,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     EntityAlreadyExistsException,
@@ -4792,7 +4902,11 @@ export const enableOrganizationsRootCredentialsManagement: API.OperationMethod<
   EnableOrganizationsRootCredentialsManagementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { EnabledFeatures: D.list() } },
+  descriptor: {
+    service: svc,
+    input: {},
+    output: { EnabledFeatures: D.list() },
+  },
   errors: [
     AccountNotManagementOrDelegatedAdministratorException,
     CallerIsNotManagementAccountException,
@@ -4832,7 +4946,11 @@ export const enableOrganizationsRootSessions: API.OperationMethod<
   EnableOrganizationsRootSessionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { EnabledFeatures: D.list() } },
+  descriptor: {
+    service: svc,
+    input: {},
+    output: { EnabledFeatures: D.list() },
+  },
   errors: [
     AccountNotManagementOrDelegatedAdministratorException,
     CallerIsNotManagementAccountException,
@@ -5016,7 +5134,10 @@ export const generateOrganizationsAccessReport: API.OperationMethod<
   GenerateOrganizationsAccessReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { EntityPath: 0, OrganizationsPolicyId: 0 },
+  },
   errors: [ReportGenerationLimitExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5087,7 +5208,7 @@ export const generateServiceLastAccessedDetails: API.OperationMethod<
   GenerateServiceLastAccessedDetailsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Arn: 0, Granularity: 0 } },
   errors: [InvalidInputException, NoSuchEntityException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5108,6 +5229,7 @@ export const getAccessKeyLastUsed: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AccessKeyId: 0 },
     output: { AccessKeyLastUsed: { LastUsedDate: D.ts } },
   },
   errors: [],
@@ -5145,6 +5267,7 @@ export const getAccountAuthorizationDetails: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Filter: 0, MaxItems: 0, Marker: 0 },
     output: {
       UserDetailList: D.list({
         CreateDate: D.ts,
@@ -5248,7 +5371,7 @@ export const getAccountProperties: API.OperationMethod<
   GetAccountPropertiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Properties: D.map() } },
+  descriptor: { service: svc, input: {}, output: { Properties: D.map() } },
   errors: [InvalidInputException, ServiceFailureException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5298,7 +5421,11 @@ export const getContextKeysForCustomPolicy: API.OperationMethod<
   GetContextKeysForCustomPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ContextKeyNames: D.list() } },
+  descriptor: {
+    service: svc,
+    input: { PolicyInputList: 0 },
+    output: { ContextKeyNames: D.list() },
+  },
   errors: [InvalidInputException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5337,7 +5464,11 @@ export const getContextKeysForPrincipalPolicy: API.OperationMethod<
   GetContextKeysForPrincipalPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ContextKeyNames: D.list() } },
+  descriptor: {
+    service: svc,
+    input: { PolicySourceArn: 0, PolicyInputList: 0 },
+    output: { ContextKeyNames: D.list() },
+  },
   errors: [InvalidInputException, NoSuchEntityException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5399,6 +5530,7 @@ export const getDelegationRequest: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DelegationRequestId: 0, DelegationPermissionCheck: 0 },
     output: { DelegationRequest: o_DelegationRequest },
   },
   errors: [NoSuchEntityException, ServiceFailureException],
@@ -5424,6 +5556,7 @@ export const getGroup: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { GroupName: 0, Marker: 0, MaxItems: 0 },
     output: { Group: o_Group, Users: D.list(o_User), IsTruncated: D.bool },
   },
   errors: [NoSuchEntityException, ServiceFailureException],
@@ -5467,7 +5600,7 @@ export const getGroupPolicy: API.OperationMethod<
   GetGroupPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GroupName: 0, PolicyName: 0 } },
   errors: [NoSuchEntityException, ServiceFailureException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5503,7 +5636,7 @@ export const getHumanReadableSummary: API.OperationMethod<
   GetHumanReadableSummaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EntityArn: 0, Locale: 0 } },
   errors: [
     InvalidInputException,
     NoSuchEntityException,
@@ -5530,7 +5663,11 @@ export const getInstanceProfile: API.OperationMethod<
   GetInstanceProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { InstanceProfile: o_InstanceProfile } },
+  descriptor: {
+    service: svc,
+    input: { InstanceProfileName: 0 },
+    output: { InstanceProfile: o_InstanceProfile },
+  },
   errors: [NoSuchEntityException, ServiceFailureException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5561,7 +5698,11 @@ export const getLoginProfile: API.OperationMethod<
   GetLoginProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LoginProfile: o_LoginProfile } },
+  descriptor: {
+    service: svc,
+    input: { UserName: 0 },
+    output: { LoginProfile: o_LoginProfile },
+  },
   errors: [NoSuchEntityException, ServiceFailureException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5583,6 +5724,7 @@ export const getMFADevice: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SerialNumber: 0, UserName: 0 },
     output: { EnableDate: D.ts, Certifications: D.map() },
   },
   errors: [NoSuchEntityException, ServiceFailureException],
@@ -5608,6 +5750,7 @@ export const getOpenIDConnectProvider: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { OpenIDConnectProviderArn: 0 },
     output: {
       ClientIDList: D.list(),
       ThumbprintList: D.list(),
@@ -5660,6 +5803,7 @@ export const getOrganizationsAccessReport: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0, MaxItems: 0, Marker: 0, SortKey: 0 },
     output: {
       JobCreationDate: D.ts,
       JobCompletionDate: D.ts,
@@ -5724,7 +5868,11 @@ export const getPolicy: API.OperationMethod<
   GetPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Policy: o_Policy } },
+  descriptor: {
+    service: svc,
+    input: { PolicyArn: 0 },
+    output: { Policy: o_Policy },
+  },
   errors: [
     InvalidInputException,
     NoSuchEntityException,
@@ -5769,7 +5917,11 @@ export const getPolicyVersion: API.OperationMethod<
   GetPolicyVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { PolicyVersion: o_PolicyVersion } },
+  descriptor: {
+    service: svc,
+    input: { PolicyArn: 0, VersionId: 0 },
+    output: { PolicyVersion: o_PolicyVersion },
+  },
   errors: [
     InvalidInputException,
     NoSuchEntityException,
@@ -5803,7 +5955,11 @@ export const getRole: API.OperationMethod<
   GetRoleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Role: o_Role } },
+  descriptor: {
+    service: svc,
+    input: { RoleName: 0 },
+    output: { Role: o_Role },
+  },
   errors: [NoSuchEntityException, ServiceFailureException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5842,7 +5998,7 @@ export const getRolePolicy: API.OperationMethod<
   GetRolePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RoleName: 0, PolicyName: 0 } },
   errors: [NoSuchEntityException, ServiceFailureException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5871,6 +6027,7 @@ export const getRoleTemplateVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TemplateArn: 0, MinorVersion: 0 },
     output: {
       RoleTemplateVersion: {
         MajorVersion: D.num,
@@ -5917,6 +6074,7 @@ export const getSAMLProvider: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SAMLProviderArn: 0 },
     output: {
       CreateDate: D.ts,
       ValidUntil: D.ts,
@@ -5954,6 +6112,7 @@ export const getServerCertificate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ServerCertificateName: 0 },
     output: {
       ServerCertificate: {
         ServerCertificateMetadata: o_ServerCertificateMetadata,
@@ -6027,6 +6186,7 @@ export const getServiceLastAccessedDetails: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0, MaxItems: 0, Marker: 0 },
     output: {
       JobCreationDate: D.ts,
       ServicesLastAccessed: D.list({
@@ -6082,6 +6242,7 @@ export const getServiceLastAccessedDetailsWithEntities: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0, ServiceNamespace: 0, MaxItems: 0, Marker: 0 },
     output: {
       JobCreationDate: D.ts,
       JobCompletionDate: D.ts,
@@ -6116,6 +6277,7 @@ export const getServiceLinkedRoleDeletionStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DeletionTaskId: 0 },
     output: { Reason: { RoleUsageList: D.list({ Resources: D.list() }) } },
   },
   errors: [
@@ -6146,7 +6308,11 @@ export const getSSHPublicKey: API.OperationMethod<
   GetSSHPublicKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { SSHPublicKey: o_SSHPublicKey } },
+  descriptor: {
+    service: svc,
+    input: { UserName: 0, SSHPublicKeyId: 0, Encoding: 0 },
+    output: { SSHPublicKey: o_SSHPublicKey },
+  },
   errors: [NoSuchEntityException, UnrecognizedPublicKeyEncodingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6170,7 +6336,11 @@ export const getUser: API.OperationMethod<
   GetUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { User: o_User } },
+  descriptor: {
+    service: svc,
+    input: { UserName: 0 },
+    output: { User: o_User },
+  },
   errors: [NoSuchEntityException, ServiceFailureException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6206,7 +6376,7 @@ export const getUserPolicy: API.OperationMethod<
   GetUserPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserName: 0, PolicyName: 0 } },
   errors: [NoSuchEntityException, ServiceFailureException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6245,6 +6415,7 @@ export const listAccessKeys: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { UserName: 0, Marker: 0, MaxItems: 0 },
     output: {
       AccessKeyMetadata: D.list({ CreateDate: D.ts }),
       IsTruncated: D.bool,
@@ -6278,6 +6449,7 @@ export const listAccountAliases: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Marker: 0, MaxItems: 0 },
     output: { AccountAliases: D.list(), IsTruncated: D.bool },
   },
   errors: [ServiceFailureException],
@@ -6320,6 +6492,7 @@ export const listAttachedGroupPolicies: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { GroupName: 0, PathPrefix: 0, Marker: 0, MaxItems: 0 },
     output: { AttachedPolicies: D.list({}), IsTruncated: D.bool },
   },
   errors: [
@@ -6366,6 +6539,7 @@ export const listAttachedRolePolicies: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { RoleName: 0, PathPrefix: 0, Marker: 0, MaxItems: 0 },
     output: { AttachedPolicies: D.list({}), IsTruncated: D.bool },
   },
   errors: [
@@ -6412,6 +6586,7 @@ export const listAttachedUserPolicies: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { UserName: 0, PathPrefix: 0, Marker: 0, MaxItems: 0 },
     output: { AttachedPolicies: D.list({}), IsTruncated: D.bool },
   },
   errors: [
@@ -6453,6 +6628,7 @@ export const listDelegationRequests: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { OwnerId: 0, Marker: 0, MaxItems: 0 },
     output: {
       DelegationRequests: D.list(o_DelegationRequest),
       isTruncated: D.bool,
@@ -6494,6 +6670,14 @@ export const listEntitiesForPolicy: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      PolicyArn: 0,
+      EntityFilter: 0,
+      PathPrefix: 0,
+      PolicyUsageFilter: 0,
+      Marker: 0,
+      MaxItems: 0,
+    },
     output: {
       PolicyGroups: D.list({}),
       PolicyUsers: D.list({}),
@@ -6542,6 +6726,7 @@ export const listGroupPolicies: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { GroupName: 0, Marker: 0, MaxItems: 0 },
     output: { PolicyNames: D.list(), IsTruncated: D.bool },
   },
   errors: [NoSuchEntityException, ServiceFailureException],
@@ -6572,6 +6757,7 @@ export const listGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { PathPrefix: 0, Marker: 0, MaxItems: 0 },
     output: { Groups: D.list(o_Group), IsTruncated: D.bool },
   },
   errors: [ServiceFailureException],
@@ -6605,6 +6791,7 @@ export const listGroupsForUser: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { UserName: 0, Marker: 0, MaxItems: 0 },
     output: { Groups: D.list(o_Group), IsTruncated: D.bool },
   },
   errors: [NoSuchEntityException, ServiceFailureException],
@@ -6642,6 +6829,7 @@ export const listInstanceProfiles: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { PathPrefix: 0, Marker: 0, MaxItems: 0 },
     output: {
       InstanceProfiles: D.list(o_InstanceProfile),
       IsTruncated: D.bool,
@@ -6681,6 +6869,7 @@ export const listInstanceProfilesForRole: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { RoleName: 0, Marker: 0, MaxItems: 0 },
     output: {
       InstanceProfiles: D.list(o_InstanceProfile),
       IsTruncated: D.bool,
@@ -6716,6 +6905,7 @@ export const listInstanceProfileTags: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { InstanceProfileName: 0, Marker: 0, MaxItems: 0 },
     output: { Tags: D.list({}), IsTruncated: D.bool },
   },
   errors: [NoSuchEntityException, ServiceFailureException],
@@ -6752,6 +6942,7 @@ export const listMFADevices: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { UserName: 0, Marker: 0, MaxItems: 0 },
     output: { MFADevices: D.list({ EnableDate: D.ts }), IsTruncated: D.bool },
   },
   errors: [NoSuchEntityException, ServiceFailureException],
@@ -6785,6 +6976,7 @@ export const listMFADeviceTags: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { SerialNumber: 0, Marker: 0, MaxItems: 0 },
     output: { Tags: D.list({}), IsTruncated: D.bool },
   },
   errors: [
@@ -6821,6 +7013,7 @@ export const listOpenIDConnectProviders: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {},
     output: { OpenIDConnectProviderList: D.list({}) },
   },
   errors: [ServiceFailureException],
@@ -6851,6 +7044,7 @@ export const listOpenIDConnectProviderTags: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { OpenIDConnectProviderArn: 0, Marker: 0, MaxItems: 0 },
     output: { Tags: D.list({}), IsTruncated: D.bool },
   },
   errors: [
@@ -6885,7 +7079,11 @@ export const listOrganizationsFeatures: API.OperationMethod<
   ListOrganizationsFeaturesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { EnabledFeatures: D.list() } },
+  descriptor: {
+    service: svc,
+    input: {},
+    output: { EnabledFeatures: D.list() },
+  },
   errors: [
     AccountNotManagementOrDelegatedAdministratorException,
     OrganizationNotFoundException,
@@ -6927,6 +7125,14 @@ export const listPolicies: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Scope: 0,
+      OnlyAttached: 0,
+      PathPrefix: 0,
+      PolicyUsageFilter: 0,
+      Marker: 0,
+      MaxItems: 0,
+    },
     output: { Policies: D.list(o_Policy), IsTruncated: D.bool },
   },
   errors: [ServiceFailureException],
@@ -6989,6 +7195,7 @@ export const listPoliciesGrantingServiceAccess: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Marker: 0, Arn: 0, ServiceNamespaces: 0 },
     output: {
       PoliciesGrantingServiceAccess: D.list({ Policies: D.list({}) }),
       IsTruncated: D.bool,
@@ -7019,6 +7226,7 @@ export const listPolicyTags: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { PolicyArn: 0, Marker: 0, MaxItems: 0 },
     output: { Tags: D.list({}), IsTruncated: D.bool },
   },
   errors: [
@@ -7058,6 +7266,7 @@ export const listPolicyVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { PolicyArn: 0, Marker: 0, MaxItems: 0 },
     output: { Versions: D.list(o_PolicyVersion), IsTruncated: D.bool },
   },
   errors: [
@@ -7102,6 +7311,7 @@ export const listRolePolicies: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { RoleName: 0, Marker: 0, MaxItems: 0 },
     output: { PolicyNames: D.list(), IsTruncated: D.bool },
   },
   errors: [NoSuchEntityException, ServiceFailureException],
@@ -7145,6 +7355,7 @@ export const listRoles: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { PathPrefix: 0, Marker: 0, MaxItems: 0 },
     output: { Roles: D.list(o_Role), IsTruncated: D.bool },
   },
   errors: [ServiceFailureException],
@@ -7177,6 +7388,7 @@ export const listRoleTags: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { RoleName: 0, Marker: 0, MaxItems: 0 },
     output: { Tags: D.list({}), IsTruncated: D.bool },
   },
   errors: [NoSuchEntityException, ServiceFailureException],
@@ -7207,6 +7419,7 @@ export const listSAMLProviders: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {},
     output: {
       SAMLProviderList: D.list({ ValidUntil: D.ts, CreateDate: D.ts }),
     },
@@ -7239,6 +7452,7 @@ export const listSAMLProviderTags: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { SAMLProviderArn: 0, Marker: 0, MaxItems: 0 },
     output: { Tags: D.list({}), IsTruncated: D.bool },
   },
   errors: [
@@ -7285,6 +7499,7 @@ export const listServerCertificates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { PathPrefix: 0, Marker: 0, MaxItems: 0 },
     output: {
       ServerCertificateMetadataList: D.list(o_ServerCertificateMetadata),
       IsTruncated: D.bool,
@@ -7326,6 +7541,7 @@ export const listServerCertificateTags: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ServerCertificateName: 0, Marker: 0, MaxItems: 0 },
     output: { Tags: D.list({}), IsTruncated: D.bool },
   },
   errors: [NoSuchEntityException, ServiceFailureException],
@@ -7372,6 +7588,7 @@ export const listServiceSpecificCredentials: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserName: 0, ServiceName: 0, AllUsers: 0, Marker: 0, MaxItems: 0 },
     output: {
       ServiceSpecificCredentials: D.list({
         CreateDate: D.ts,
@@ -7418,6 +7635,7 @@ export const listSigningCertificates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { UserName: 0, Marker: 0, MaxItems: 0 },
     output: { Certificates: D.list(o_SigningCertificate), IsTruncated: D.bool },
   },
   errors: [NoSuchEntityException, ServiceFailureException],
@@ -7454,6 +7672,7 @@ export const listSSHPublicKeys: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { UserName: 0, Marker: 0, MaxItems: 0 },
     output: {
       SSHPublicKeys: D.list({ UploadDate: D.ts }),
       IsTruncated: D.bool,
@@ -7496,6 +7715,7 @@ export const listUserPolicies: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { UserName: 0, Marker: 0, MaxItems: 0 },
     output: { PolicyNames: D.list(), IsTruncated: D.bool },
   },
   errors: [NoSuchEntityException, ServiceFailureException],
@@ -7537,6 +7757,7 @@ export const listUsers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { PathPrefix: 0, Marker: 0, MaxItems: 0 },
     output: { Users: D.list(o_User), IsTruncated: D.bool },
   },
   errors: [ServiceFailureException],
@@ -7568,6 +7789,7 @@ export const listUserTags: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { UserName: 0, Marker: 0, MaxItems: 0 },
     output: { Tags: D.list({}), IsTruncated: D.bool },
   },
   errors: [NoSuchEntityException, ServiceFailureException],
@@ -7604,6 +7826,7 @@ export const listVirtualMFADevices: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { AssignmentStatus: 0, Marker: 0, MaxItems: 0 },
     output: {
       VirtualMFADevices: D.list(o_VirtualMFADevice),
       IsTruncated: D.bool,
@@ -7686,7 +7909,10 @@ export const putGroupPolicy: API.OperationMethod<
   PutGroupPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { GroupName: 0, PolicyName: 0, PolicyDocument: 0 },
+  },
   errors: [
     LimitExceededException,
     MalformedPolicyDocumentException,
@@ -7725,7 +7951,7 @@ export const putRolePermissionsBoundary: API.OperationMethod<
   PutRolePermissionsBoundaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RoleName: 0, PermissionsBoundary: 0 } },
   errors: [
     InvalidInputException,
     NoSuchEntityException,
@@ -7784,7 +8010,10 @@ export const putRolePolicy: API.OperationMethod<
   PutRolePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { RoleName: 0, PolicyName: 0, PolicyDocument: 0 },
+  },
   errors: [
     LimitExceededException,
     MalformedPolicyDocumentException,
@@ -7821,7 +8050,7 @@ export const putUserPermissionsBoundary: API.OperationMethod<
   PutUserPermissionsBoundaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserName: 0, PermissionsBoundary: 0 } },
   errors: [
     InvalidInputException,
     NoSuchEntityException,
@@ -7867,7 +8096,10 @@ export const putUserPolicy: API.OperationMethod<
   PutUserPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserName: 0, PolicyName: 0, PolicyDocument: 0 },
+  },
   errors: [
     LimitExceededException,
     MalformedPolicyDocumentException,
@@ -7902,7 +8134,7 @@ export const rejectDelegationRequest: API.OperationMethod<
   RejectDelegationRequestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DelegationRequestId: 0, Notes: 0 } },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -7934,7 +8166,10 @@ export const removeClientIDFromOpenIDConnectProvider: API.OperationMethod<
   RemoveClientIDFromOpenIDConnectProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OpenIDConnectProviderArn: 0, ClientID: 0 },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -7971,7 +8206,7 @@ export const removeRoleFromInstanceProfile: API.OperationMethod<
   RemoveRoleFromInstanceProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InstanceProfileName: 0, RoleName: 0 } },
   errors: [
     LimitExceededException,
     NoSuchEntityException,
@@ -7997,7 +8232,7 @@ export const removeUserFromGroup: API.OperationMethod<
   RemoveUserFromGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GroupName: 0, UserName: 0 } },
   errors: [
     LimitExceededException,
     NoSuchEntityException,
@@ -8025,6 +8260,7 @@ export const resetServiceSpecificCredential: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserName: 0, ServiceSpecificCredentialId: 0 },
     output: { ServiceSpecificCredential: o_ServiceSpecificCredential },
   },
   errors: [NoSuchEntityException],
@@ -8053,7 +8289,15 @@ export const resyncMFADevice: API.OperationMethod<
   ResyncMFADeviceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UserName: 0,
+      SerialNumber: 0,
+      AuthenticationCode1: 0,
+      AuthenticationCode2: 0,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidAuthenticationCodeException,
@@ -8092,7 +8336,7 @@ export const sendDelegationToken: API.OperationMethod<
   SendDelegationTokenError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DelegationRequestId: 0 } },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -8126,7 +8370,7 @@ export const setDefaultPolicyVersion: API.OperationMethod<
   SetDefaultPolicyVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PolicyArn: 0, VersionId: 0 } },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -8171,7 +8415,7 @@ export const setSecurityTokenServicePreferences: API.OperationMethod<
   SetSecurityTokenServicePreferencesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GlobalEndpointTokenVersion: 0 } },
   errors: [ServiceFailureException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -8221,6 +8465,22 @@ export const simulateCustomPolicy: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      PolicyInputList: 0,
+      PermissionsBoundaryPolicyInputList: 0,
+      OrderedOrganizationPolicyInputList: D.list({
+        ServiceControlPolicyInputList: 0,
+      }),
+      ActionNames: 0,
+      ResourceArns: 0,
+      ResourcePolicy: 0,
+      ResourceOwner: 0,
+      CallerArn: 0,
+      ContextEntries: D.list(i_ContextEntry),
+      ResourceHandlingOption: 0,
+      MaxItems: 0,
+      Marker: 0,
+    },
     output: {
       EvaluationResults: D.list(o_EvaluationResult),
       IsTruncated: D.bool,
@@ -8296,6 +8556,29 @@ export const simulatePrincipalPolicy: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      PolicySourceArn: 0,
+      PolicyInputList: 0,
+      PermissionsBoundaryPolicyInputList: 0,
+      PolicyExclusionList: D.list({
+        PolicyType: 0,
+        PolicyArn: 0,
+        InlinePolicyIdentifier: {
+          PolicyName: 0,
+          AttachmentType: 0,
+          AttachmentName: 0,
+        },
+      }),
+      ActionNames: 0,
+      ResourceArns: 0,
+      ResourcePolicy: 0,
+      ResourceOwner: 0,
+      CallerArn: 0,
+      ContextEntries: D.list(i_ContextEntry),
+      ResourceHandlingOption: 0,
+      MaxItems: 0,
+      Marker: 0,
+    },
     output: {
       EvaluationResults: D.list(o_EvaluationResult),
       IsTruncated: D.bool,
@@ -8357,7 +8640,10 @@ export const tagInstanceProfile: API.OperationMethod<
   TagInstanceProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceProfileName: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -8411,7 +8697,7 @@ export const tagMFADevice: API.OperationMethod<
   TagMFADeviceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SerialNumber: 0, Tags: D.list(i_Tag) } },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -8466,7 +8752,10 @@ export const tagOpenIDConnectProvider: API.OperationMethod<
   TagOpenIDConnectProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OpenIDConnectProviderArn: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -8519,7 +8808,7 @@ export const tagPolicy: API.OperationMethod<
   TagPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PolicyArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -8580,7 +8869,7 @@ export const tagRole: API.OperationMethod<
   TagRoleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RoleName: 0, Tags: D.list(i_Tag) } },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -8635,7 +8924,10 @@ export const tagSAMLProvider: API.OperationMethod<
   TagSAMLProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SAMLProviderArn: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -8697,7 +8989,10 @@ export const tagServerCertificate: API.OperationMethod<
   TagServerCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServerCertificateName: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -8757,7 +9052,7 @@ export const tagUser: API.OperationMethod<
   TagUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserName: 0, Tags: D.list(i_Tag) } },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -8786,7 +9081,7 @@ export const untagInstanceProfile: API.OperationMethod<
   UntagInstanceProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InstanceProfileName: 0, TagKeys: 0 } },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -8815,7 +9110,7 @@ export const untagMFADevice: API.OperationMethod<
   UntagMFADeviceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SerialNumber: 0, TagKeys: 0 } },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -8845,7 +9140,10 @@ export const untagOpenIDConnectProvider: API.OperationMethod<
   UntagOpenIDConnectProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OpenIDConnectProviderArn: 0, TagKeys: 0 },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -8873,7 +9171,7 @@ export const untagPolicy: API.OperationMethod<
   UntagPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PolicyArn: 0, TagKeys: 0 } },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -8900,7 +9198,7 @@ export const untagRole: API.OperationMethod<
   UntagRoleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RoleName: 0, TagKeys: 0 } },
   errors: [
     ConcurrentModificationException,
     NoSuchEntityException,
@@ -8929,7 +9227,7 @@ export const untagSAMLProvider: API.OperationMethod<
   UntagSAMLProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SAMLProviderArn: 0, TagKeys: 0 } },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -8964,7 +9262,7 @@ export const untagServerCertificate: API.OperationMethod<
   UntagServerCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServerCertificateName: 0, TagKeys: 0 } },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -8991,7 +9289,7 @@ export const untagUser: API.OperationMethod<
   UntagUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { UserName: 0, TagKeys: 0 } },
   errors: [
     ConcurrentModificationException,
     NoSuchEntityException,
@@ -9029,7 +9327,10 @@ export const updateAccessKey: API.OperationMethod<
   UpdateAccessKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserName: 0, AccessKeyId: 0, Status: 0 },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -9066,7 +9367,20 @@ export const updateAccountPasswordPolicy: API.OperationMethod<
   UpdateAccountPasswordPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MinimumPasswordLength: 0,
+      RequireSymbols: 0,
+      RequireNumbers: 0,
+      RequireUppercaseCharacters: 0,
+      RequireLowercaseCharacters: 0,
+      AllowUsersToChangePassword: 0,
+      MaxPasswordAge: 0,
+      PasswordReusePrevention: 0,
+      HardExpiry: 0,
+    },
+  },
   errors: [
     LimitExceededException,
     MalformedPolicyDocumentException,
@@ -9097,7 +9411,7 @@ export const updateAssumeRolePolicy: API.OperationMethod<
   UpdateAssumeRolePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RoleName: 0, PolicyDocument: 0 } },
   errors: [
     LimitExceededException,
     MalformedPolicyDocumentException,
@@ -9131,7 +9445,7 @@ export const updateDelegationRequest: API.OperationMethod<
   UpdateDelegationRequestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DelegationRequestId: 0, Notes: 0 } },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -9169,7 +9483,10 @@ export const updateGroup: API.OperationMethod<
   UpdateGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { GroupName: 0, NewPath: 0, NewGroupName: 0 },
+  },
   errors: [
     EntityAlreadyExistsException,
     LimitExceededException,
@@ -9204,7 +9521,10 @@ export const updateLoginProfile: API.OperationMethod<
   UpdateLoginProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserName: 0, Password: 0, PasswordResetRequired: 0 },
+  },
   errors: [
     EntityTemporarilyUnmodifiableException,
     LimitExceededException,
@@ -9253,7 +9573,10 @@ export const updateOpenIDConnectProviderThumbprint: API.OperationMethod<
   UpdateOpenIDConnectProviderThumbprintError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OpenIDConnectProviderArn: 0, ThumbprintList: 0 },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -9279,7 +9602,10 @@ export const updateRole: API.OperationMethod<
   UpdateRoleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { RoleName: 0, Description: 0, MaxSessionDuration: 0 },
+  },
   errors: [
     NoSuchEntityException,
     ServiceFailureException,
@@ -9307,7 +9633,11 @@ export const updateRoleDescription: API.OperationMethod<
   UpdateRoleDescriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Role: o_Role } },
+  descriptor: {
+    service: svc,
+    input: { RoleName: 0, Description: 0 },
+    output: { Role: o_Role },
+  },
   errors: [
     NoSuchEntityException,
     ServiceFailureException,
@@ -9336,7 +9666,16 @@ export const updateSAMLProvider: API.OperationMethod<
   UpdateSAMLProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SAMLMetadataDocument: 0,
+      SAMLProviderArn: 0,
+      AssertionEncryptionMode: 0,
+      AddPrivateKey: 0,
+      RemovePrivateKey: 0,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidInputException,
@@ -9382,7 +9721,14 @@ export const updateServerCertificate: API.OperationMethod<
   UpdateServerCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ServerCertificateName: 0,
+      NewPath: 0,
+      NewServerCertificateName: 0,
+    },
+  },
   errors: [
     EntityAlreadyExistsException,
     LimitExceededException,
@@ -9409,7 +9755,10 @@ export const updateServiceSpecificCredential: API.OperationMethod<
   UpdateServiceSpecificCredentialError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserName: 0, ServiceSpecificCredentialId: 0, Status: 0 },
+  },
   errors: [NoSuchEntityException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -9439,7 +9788,10 @@ export const updateSigningCertificate: API.OperationMethod<
   UpdateSigningCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserName: 0, CertificateId: 0, Status: 0 },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -9471,7 +9823,10 @@ export const updateSSHPublicKey: API.OperationMethod<
   UpdateSSHPublicKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserName: 0, SSHPublicKeyId: 0, Status: 0 },
+  },
   errors: [InvalidInputException, NoSuchEntityException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -9505,7 +9860,10 @@ export const updateUser: API.OperationMethod<
   UpdateUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UserName: 0, NewPath: 0, NewUserName: 0 },
+  },
   errors: [
     ConcurrentModificationException,
     EntityAlreadyExistsException,
@@ -9564,6 +9922,14 @@ export const uploadServerCertificate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Path: 0,
+      ServerCertificateName: 0,
+      CertificateBody: 0,
+      PrivateKey: 0,
+      CertificateChain: 0,
+      Tags: D.list(i_Tag),
+    },
     output: {
       ServerCertificateMetadata: o_ServerCertificateMetadata,
       Tags: D.list({}),
@@ -9622,7 +9988,11 @@ export const uploadSigningCertificate: API.OperationMethod<
   UploadSigningCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Certificate: o_SigningCertificate } },
+  descriptor: {
+    service: svc,
+    input: { UserName: 0, CertificateBody: 0 },
+    output: { Certificate: o_SigningCertificate },
+  },
   errors: [
     ConcurrentModificationException,
     DuplicateCertificateException,
@@ -9659,7 +10029,11 @@ export const uploadSSHPublicKey: API.OperationMethod<
   UploadSSHPublicKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { SSHPublicKey: o_SSHPublicKey } },
+  descriptor: {
+    service: svc,
+    input: { UserName: 0, SSHPublicKeyBody: 0 },
+    output: { SSHPublicKey: o_SSHPublicKey },
+  },
   errors: [
     DuplicateSSHPublicKeyException,
     InvalidPublicKeyException,
@@ -9672,6 +10046,12 @@ export const uploadSSHPublicKey: API.OperationMethod<
   operationName: "UploadSSHPublicKey",
 })) as any;
 
+const i_ContextEntry: D.LazyStruct = () => ({
+  ContextKeyName: 0,
+  ContextKeyValues: 0,
+  ContextKeyType: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_DelegationRequest: D.LazyStruct = () => ({
   Permissions: { Parameters: D.list({ Values: D.list() }) },
   RolePermissionRestrictionArns: D.list(),

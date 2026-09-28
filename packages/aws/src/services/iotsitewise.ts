@@ -3714,7 +3714,12 @@ export const associateAssets: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assets/{assetId}/associate",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      assetId: 0,
+      hierarchyId: 0,
+      childAssetId: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -3795,7 +3800,17 @@ export const batchAssociateDataSegmentsToDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datasets/{datasetId}/data-segments/associate",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      datasetId: 0,
+      workspaceName: 0,
+      associateDataSegmentEntries: D.list({
+        sourceDatasetId: 0,
+        timeSeriesId: 0,
+        startTimestamp: i_TimeInNanos,
+        endTimestamp: i_TimeInNanos,
+      }),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -3836,7 +3851,11 @@ export const batchAssociateProjectAssets: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /projects/{projectId}/assets/associate",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      projectId: 0,
+      assetIds: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -3872,7 +3891,16 @@ export const batchDeleteDatasetDataSegments: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datasets/{datasetId}/data-segments/batch-delete",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      datasetId: 0,
+      workspaceName: 0,
+      deleteDataSegmentEntries: D.list({
+        timeSeriesId: 0,
+        startTimestamp: i_TimeInNanos,
+        endTimestamp: i_TimeInNanos,
+      }),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -3908,7 +3936,17 @@ export const batchDisassociateDataSegmentsFromDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datasets/{datasetId}/data-segments/disassociate",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      datasetId: 0,
+      workspaceName: 0,
+      disassociateDataSegmentEntries: D.list({
+        sourceDatasetId: 0,
+        timeSeriesId: 0,
+        startTimestamp: i_TimeInNanos,
+        endTimestamp: i_TimeInNanos,
+      }),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -3942,7 +3980,11 @@ export const batchDisassociateProjectAssets: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /projects/{projectId}/assets/disassociate",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      projectId: 0,
+      assetIds: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -3978,6 +4020,22 @@ export const batchGetAssetPropertyAggregates: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /properties/batch/aggregates",
+    input: {
+      entries: D.list({
+        entryId: 0,
+        assetId: 0,
+        propertyId: 0,
+        propertyAlias: 0,
+        aggregateTypes: 0,
+        resolution: 0,
+        startDate: 0,
+        endDate: 0,
+        qualities: 0,
+        timeOrdering: 0,
+      }),
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       successEntries: D.list({ aggregatedValues: D.list(o_AggregatedValue) }),
       skippedEntries: D.list({ errorInfo: { errorTimestamp: D.ts } }),
@@ -4021,6 +4079,15 @@ export const batchGetAssetPropertyValue: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /properties/batch/latest",
+    input: {
+      entries: D.list({
+        entryId: 0,
+        assetId: 0,
+        propertyId: 0,
+        propertyAlias: 0,
+      }),
+      nextToken: 0,
+    },
     output: { skippedEntries: D.list({ errorInfo: { errorTimestamp: D.ts } }) },
     body: true,
   },
@@ -4057,6 +4124,20 @@ export const batchGetAssetPropertyValueHistory: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /properties/batch/history",
+    input: {
+      entries: D.list({
+        entryId: 0,
+        assetId: 0,
+        propertyId: 0,
+        propertyAlias: 0,
+        startDate: 0,
+        endDate: 0,
+        qualities: 0,
+        timeOrdering: 0,
+      }),
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { skippedEntries: D.list({ errorInfo: { errorTimestamp: D.ts } }) },
     body: true,
   },
@@ -4117,7 +4198,31 @@ export const batchPutAssetPropertyValue: API.OperationMethod<
   BatchPutAssetPropertyValueError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /properties", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /properties",
+    input: {
+      enablePartialEntryProcessing: 0,
+      entries: D.list({
+        entryId: 0,
+        assetId: 0,
+        propertyId: 0,
+        propertyAlias: 0,
+        propertyValues: D.list({
+          value: {
+            stringValue: 0,
+            integerValue: 0,
+            doubleValue: 0,
+            booleanValue: 0,
+            nullValue: { valueType: 0 },
+          },
+          timestamp: i_TimeInNanos,
+          quality: 0,
+        }),
+      }),
+    },
+    body: true,
+  },
   errors: [
     ConflictingOperationException,
     InternalFailureException,
@@ -4186,6 +4291,7 @@ export const cancelEnrichmentJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceName}/enrichment-jobs/{jobId}/cancel",
+    input: { workspaceName: 0, jobId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4228,6 +4334,12 @@ export const cancelPipelineExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceName}/pipelines/{pipelineName}/executions/{pipelineExecutionId}/cancel",
+    input: {
+      workspaceName: 0,
+      pipelineName: 0,
+      pipelineExecutionId: 0,
+      reason: 0,
+    },
     body: true,
   },
   errors: [
@@ -4264,6 +4376,7 @@ export const cancelQuery: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceName}/queries/{queryId}/cancel",
+    input: { workspaceName: 0, queryId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4306,7 +4419,13 @@ export const createAccessPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /access-policies",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      accessPolicyIdentity: i_Identity,
+      accessPolicyResource: i_Resource,
+      accessPolicyPermission: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -4343,7 +4462,14 @@ export const createApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      idcInstanceArn: 0,
+      workspaceName: 0,
+      name: 0,
+      description: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -4383,7 +4509,15 @@ export const createAsset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assets",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      assetName: 0,
+      assetModelId: 0,
+      assetId: 0,
+      assetExternalId: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+      assetDescription: 0,
+    },
     body: true,
   },
   errors: [
@@ -4440,7 +4574,30 @@ export const createAssetModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /asset-models",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      assetModelName: 0,
+      assetModelType: 0,
+      assetModelId: 0,
+      assetModelExternalId: 0,
+      assetModelDescription: 0,
+      assetModelProperties: D.list(i_AssetModelPropertyDefinition),
+      assetModelHierarchies: D.list({
+        id: 0,
+        externalId: 0,
+        name: 0,
+        childAssetModelId: 0,
+      }),
+      assetModelCompositeModels: D.list({
+        id: 0,
+        externalId: 0,
+        name: 0,
+        description: 0,
+        type: 0,
+        properties: D.list(i_AssetModelPropertyDefinition),
+      }),
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -4501,7 +4658,18 @@ export const createAssetModelCompositeModel: API.OperationMethod<
     service: svc,
     http: "POST /asset-models/{assetModelId}/composite-models",
     input: {
+      assetModelId: 0,
+      assetModelCompositeModelExternalId: 0,
+      parentAssetModelCompositeModelId: 0,
+      assetModelCompositeModelId: 0,
+      assetModelCompositeModelDescription: 0,
+      assetModelCompositeModelName: 0,
+      assetModelCompositeModelType: 0,
       clientToken: D.m({ idempotency: true }),
+      composedAssetModelId: 0,
+      assetModelCompositeModelProperties: D.list(
+        i_AssetModelPropertyDefinition,
+      ),
       ifMatch: D.m({ header: "If-Match" }),
       ifNoneMatch: D.m({ header: "If-None-Match" }),
       matchForVersionType: D.m({ header: "Match-For-Version-Type" }),
@@ -4559,7 +4727,29 @@ export const createBulkImportJob: API.OperationMethod<
   CreateBulkImportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /jobs", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /jobs",
+    input: {
+      jobName: 0,
+      jobRoleArn: 0,
+      files: D.list({
+        bucket: 0,
+        key: 0,
+        versionId: 0,
+        alias: 0,
+        startTime: i_TimeInNanos,
+        fileFormat: i_FileFormat,
+      }),
+      errorReportLocation: { bucket: 0, prefix: 0 },
+      jobConfiguration: { fileFormat: i_FileFormat },
+      adaptiveIngestion: 0,
+      deleteFilesAfterImport: 0,
+      datasetId: 0,
+      workspaceName: 0,
+    },
+    body: true,
+  },
   errors: [
     ConflictingOperationException,
     InternalFailureException,
@@ -4596,7 +4786,14 @@ export const createComputationModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /computation-models",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      computationModelName: 0,
+      computationModelDescription: 0,
+      computationModelConfiguration: i_ComputationModelConfiguration,
+      computationModelDataBinding: D.map(i_ComputationModelDataBindingValue),
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -4638,7 +4835,14 @@ export const createDashboard: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /dashboards",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      projectId: 0,
+      dashboardName: 0,
+      dashboardDescription: 0,
+      dashboardDefinition: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -4675,7 +4879,18 @@ export const createDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datasets",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      datasetId: 0,
+      datasetName: 0,
+      datasetDescription: 0,
+      datasetType: 0,
+      datasetConfig: i_DatasetConfig,
+      workspaceName: 0,
+      metadata: 0,
+      datasetSource: i_DatasetSource,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -4715,7 +4930,25 @@ export const createDatasetExportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceName}/dataset-export-jobs",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workspaceName: 0,
+      clientToken: D.m({ idempotency: true }),
+      destinationS3Uri: 0,
+      input: {
+        timeseries: D.list({
+          timeSeriesId: 0,
+          propertyAlias: 0,
+          trimSettings: i_TrimSettings,
+          formatSettings: i_FormatSettings,
+        }),
+        dataset: {
+          datasetId: 0,
+          trimSettings: i_TrimSettings,
+          exportDataTypes: 0,
+        },
+      },
+      errorReportLocation: { s3Uri: 0 },
+    },
     body: true,
   },
   errors: [
@@ -4793,7 +5026,18 @@ export const createEnrichmentJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceName}/enrichment-jobs",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workspaceName: 0,
+      jobConfiguration: {
+        eventDetection: {
+          datasetId: 0,
+          timeSeriesId: 0,
+          propertyAlias: 0,
+          trimSettings: { startTime: i_TimeInNanos, endTime: i_TimeInNanos },
+        },
+      },
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -4830,7 +5074,21 @@ export const createGateway: API.OperationMethod<
   CreateGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /20200301/gateways", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /20200301/gateways",
+    input: {
+      gatewayName: 0,
+      gatewayPlatform: {
+        greengrass: { groupArn: 0 },
+        greengrassV2: { coreDeviceThingName: 0, coreDeviceOperatingSystem: 0 },
+        siemensIE: { iotCoreThingName: 0 },
+      },
+      gatewayVersion: 0,
+      tags: 0,
+    },
+    body: true,
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -4872,7 +5130,15 @@ export const createPipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceName}/pipelines",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workspaceName: 0,
+      pipelineName: 0,
+      description: 0,
+      environmentVariables: 0,
+      computations: D.list(i_ComputeNode),
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -4919,7 +5185,20 @@ export const createPortal: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /portals",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      portalName: 0,
+      portalDescription: 0,
+      portalContactEmail: 0,
+      clientToken: D.m({ idempotency: true }),
+      portalLogoImageFile: i_ImageFile,
+      roleArn: 0,
+      tags: 0,
+      portalAuthMode: 0,
+      notificationSenderEmail: 0,
+      alarms: i_Alarms,
+      portalType: 0,
+      portalTypeConfiguration: D.map(i_PortalTypeEntry),
+    },
     body: true,
   },
   errors: [
@@ -4962,7 +5241,13 @@ export const createProject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /projects",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      portalId: 0,
+      projectName: 0,
+      projectDescription: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -5003,7 +5288,14 @@ export const createTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceName}/tasks",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workspaceName: 0,
+      taskName: 0,
+      description: 0,
+      taskConfiguration: i_TaskConfiguration,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -5046,7 +5338,13 @@ export const createWorkspace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workspaceName: 0,
+      workspaceDescription: 0,
+      encryptionConfiguration: i_WorkspaceEncryptionConfiguration,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -5083,7 +5381,10 @@ export const deleteAccessPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /access-policies/{accessPolicyId}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      accessPolicyId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     InternalFailureException,
@@ -5117,6 +5418,7 @@ export const deleteApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{workspaceName}/applications/{id}",
+    input: { workspaceName: 0, id: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5155,7 +5457,10 @@ export const deleteAsset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /assets/{assetId}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      assetId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     ConflictingOperationException,
@@ -5195,6 +5500,7 @@ export const deleteAssetModel: API.OperationMethod<
     service: svc,
     http: "DELETE /asset-models/{assetModelId}",
     input: {
+      assetModelId: 0,
       clientToken: D.m({ query: "clientToken", idempotency: true }),
       ifMatch: D.m({ header: "If-Match" }),
       ifNoneMatch: D.m({ header: "If-None-Match" }),
@@ -5240,6 +5546,8 @@ export const deleteAssetModelCompositeModel: API.OperationMethod<
     service: svc,
     http: "DELETE /asset-models/{assetModelId}/composite-models/{assetModelCompositeModelId}",
     input: {
+      assetModelId: 0,
+      assetModelCompositeModelId: 0,
       clientToken: D.m({ query: "clientToken", idempotency: true }),
       ifMatch: D.m({ header: "If-Match" }),
       ifNoneMatch: D.m({ header: "If-None-Match" }),
@@ -5280,7 +5588,11 @@ export const deleteAssetModelInterfaceRelationship: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /asset-models/{assetModelId}/interface/{interfaceAssetModelId}/asset-model-interface-relationship",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      assetModelId: 0,
+      interfaceAssetModelId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     ConflictingOperationException,
@@ -5314,7 +5626,10 @@ export const deleteComputationModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /computation-models/{computationModelId}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      computationModelId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     ConflictingOperationException,
@@ -5347,7 +5662,10 @@ export const deleteDashboard: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /dashboards/{dashboardId}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      dashboardId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     InternalFailureException,
@@ -5381,6 +5699,7 @@ export const deleteDataset: API.OperationMethod<
     service: svc,
     http: "DELETE /datasets/{datasetId}",
     input: {
+      datasetId: 0,
       workspaceName: D.m({ query: "workspaceName" }),
       clientToken: D.m({ query: "clientToken", idempotency: true }),
     },
@@ -5415,7 +5734,11 @@ export const deleteGateway: API.OperationMethod<
   DeleteGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /20200301/gateways/{gatewayId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /20200301/gateways/{gatewayId}",
+    input: { gatewayId: 0 },
+  },
   errors: [
     ConflictingOperationException,
     InternalFailureException,
@@ -5452,6 +5775,7 @@ export const deletePipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{workspaceName}/pipelines/{pipelineName}",
+    input: { workspaceName: 0, pipelineName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5486,7 +5810,10 @@ export const deletePortal: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /portals/{portalId}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      portalId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     ConflictingOperationException,
@@ -5519,7 +5846,10 @@ export const deleteProject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /projects/{projectId}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      projectId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     InternalFailureException,
@@ -5555,6 +5885,7 @@ export const deleteTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{workspaceName}/tasks/{taskName}",
+    input: { workspaceName: 0, taskName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5648,7 +5979,10 @@ export const deleteWorkspace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{workspaceName}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      workspaceName: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -5683,6 +6017,7 @@ export const describeAccessPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /access-policies/{accessPolicyId}",
+    input: { accessPolicyId: 0 },
     output: {
       accessPolicyCreationDate: D.ts,
       accessPolicyLastUpdateDate: D.ts,
@@ -5718,6 +6053,7 @@ export const describeAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /actions/{actionId}",
+    input: { actionId: 0 },
     output: { executionTime: D.ts },
   },
   errors: [
@@ -5751,6 +6087,7 @@ export const describeApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceName}/applications/{id}",
+    input: { workspaceName: 0, id: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -5784,7 +6121,10 @@ export const describeAsset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /assets/{assetId}",
-    input: { excludeProperties: D.m({ query: "excludeProperties" }) },
+    input: {
+      assetId: 0,
+      excludeProperties: D.m({ query: "excludeProperties" }),
+    },
     output: { assetCreationDate: D.ts, assetLastUpdateDate: D.ts },
   },
   errors: [
@@ -5820,6 +6160,7 @@ export const describeAssetCompositeModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /assets/{assetId}/composite-models/{assetCompositeModelId}",
+    input: { assetId: 0, assetCompositeModelId: 0 },
   },
   errors: [
     InternalFailureException,
@@ -5854,6 +6195,7 @@ export const describeAssetModel: API.OperationMethod<
     service: svc,
     http: "GET /asset-models/{assetModelId}",
     input: {
+      assetModelId: 0,
       excludeProperties: D.m({ query: "excludeProperties" }),
       assetModelVersion: D.m({ query: "assetModelVersion" }),
     },
@@ -5895,7 +6237,11 @@ export const describeAssetModelCompositeModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /asset-models/{assetModelId}/composite-models/{assetModelCompositeModelId}",
-    input: { assetModelVersion: D.m({ query: "assetModelVersion" }) },
+    input: {
+      assetModelId: 0,
+      assetModelCompositeModelId: 0,
+      assetModelVersion: D.m({ query: "assetModelVersion" }),
+    },
   },
   errors: [
     InternalFailureException,
@@ -5928,6 +6274,7 @@ export const describeAssetModelInterfaceRelationship: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /asset-models/{assetModelId}/interface/{interfaceAssetModelId}/asset-model-interface-relationship",
+    input: { assetModelId: 0, interfaceAssetModelId: 0 },
   },
   errors: [
     InternalFailureException,
@@ -5966,6 +6313,7 @@ export const describeAssetProperty: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /assets/{assetId}/properties/{propertyId}",
+    input: { assetId: 0, propertyId: 0 },
   },
   errors: [
     InternalFailureException,
@@ -5998,7 +6346,7 @@ export const describeBulkImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /jobs/{jobId}",
-    input: { workspaceName: D.m({ query: "workspaceName" }) },
+    input: { jobId: 0, workspaceName: D.m({ query: "workspaceName" }) },
     output: { jobCreationDate: D.ts, jobLastUpdateDate: D.ts },
   },
   errors: [
@@ -6032,6 +6380,7 @@ export const describeComputationModel: API.OperationMethod<
     service: svc,
     http: "GET /computation-models/{computationModelId}",
     input: {
+      computationModelId: 0,
       computationModelVersion: D.m({ query: "computationModelVersion" }),
     },
     output: {
@@ -6070,6 +6419,7 @@ export const describeComputationModelExecutionSummary: API.OperationMethod<
     service: svc,
     http: "GET /computation-models/{computationModelId}/execution-summary",
     input: {
+      computationModelId: 0,
       resolveToResourceType: D.m({ query: "resolveToResourceType" }),
       resolveToResourceId: D.m({ query: "resolveToResourceId" }),
     },
@@ -6104,6 +6454,7 @@ export const describeDashboard: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /dashboards/{dashboardId}",
+    input: { dashboardId: 0 },
     output: { dashboardCreationDate: D.ts, dashboardLastUpdateDate: D.ts },
   },
   errors: [
@@ -6137,6 +6488,7 @@ export const describeDataset: API.OperationMethod<
     service: svc,
     http: "GET /datasets/{datasetId}",
     input: {
+      datasetId: 0,
       workspaceName: D.m({ query: "workspaceName" }),
       datasetVersion: D.m({ query: "datasetVersion" }),
     },
@@ -6177,6 +6529,7 @@ export const describeDatasetExportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceName}/dataset-export-jobs/{jobId}",
+    input: { workspaceName: 0, jobId: 0 },
     output: { startedAt: D.ts, completedAt: D.ts },
   },
   errors: [
@@ -6209,7 +6562,11 @@ export const describeDefaultEncryptionConfiguration: API.OperationMethod<
   DescribeDefaultEncryptionConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /configuration/account/encryption" },
+  descriptor: {
+    service: svc,
+    http: "GET /configuration/account/encryption",
+    input: {},
+  },
   errors: [
     InternalFailureException,
     InvalidRequestException,
@@ -6280,6 +6637,7 @@ export const describeEnrichmentJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceName}/enrichment-jobs/{jobId}",
+    input: { workspaceName: 0, jobId: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -6320,6 +6678,7 @@ export const describeExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /executions/{executionId}",
+    input: { executionId: 0 },
     output: { executionStartTime: D.ts, executionEndTime: D.ts },
   },
   errors: [
@@ -6352,6 +6711,7 @@ export const describeGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /20200301/gateways/{gatewayId}",
+    input: { gatewayId: 0 },
     output: { creationDate: D.ts, lastUpdateDate: D.ts },
   },
   errors: [
@@ -6396,6 +6756,7 @@ export const describeGatewayCapabilityConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /20200301/gateways/{gatewayId}/capability/{capabilityNamespace}",
+    input: { gatewayId: 0, capabilityNamespace: 0 },
   },
   errors: [
     InternalFailureException,
@@ -6460,7 +6821,11 @@ export const describePipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceName}/pipelines/{pipelineName}",
-    input: { pipelineVersion: D.m({ query: "version" }) },
+    input: {
+      workspaceName: 0,
+      pipelineName: 0,
+      pipelineVersion: D.m({ query: "version" }),
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -6500,6 +6865,9 @@ export const describePipelineExecution: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /workspaces/{workspaceName}/pipelines/{pipelineName}/executions/{pipelineExecutionId}",
     input: {
+      workspaceName: 0,
+      pipelineName: 0,
+      pipelineExecutionId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -6546,6 +6914,7 @@ export const describePortal: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /portals/{portalId}",
+    input: { portalId: 0 },
     output: {
       portalContactEmail: D.secret,
       portalCreationDate: D.ts,
@@ -6583,6 +6952,7 @@ export const describeProject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /projects/{projectId}",
+    input: { projectId: 0 },
     output: { projectCreationDate: D.ts, projectLastUpdateDate: D.ts },
   },
   errors: [
@@ -6616,6 +6986,7 @@ export const describeQuery: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceName}/queries/{queryId}",
+    input: { workspaceName: 0, queryId: 0 },
     output: { submittedAt: D.ts, completedAt: D.ts },
   },
   errors: [
@@ -6653,6 +7024,7 @@ export const describeSearch: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceName}/searches/{searchId}",
+    input: { workspaceName: 0, searchId: 0 },
     output: { queryStatement: D.secret, startedAt: D.ts },
   },
   errors: [
@@ -6688,6 +7060,7 @@ export const describeStorageConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /configuration/account/storage",
+    input: {},
     output: { lastUpdateDate: D.ts },
   },
   errors: [
@@ -6723,7 +7096,11 @@ export const describeTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceName}/tasks/{taskName}",
-    input: { taskVersion: D.m({ query: "version" }) },
+    input: {
+      workspaceName: 0,
+      taskName: 0,
+      taskVersion: D.m({ query: "version" }),
+    },
     output: {
       taskConfiguration: {
         containerTaskConfiguration: {
@@ -6817,6 +7194,7 @@ export const describeWorkspace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceName}",
+    input: { workspaceName: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -6852,7 +7230,12 @@ export const disassociateAssets: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assets/{assetId}/disassociate",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      assetId: 0,
+      hierarchyId: 0,
+      childAssetId: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -6925,7 +7308,18 @@ export const executeAction: API.OperationMethod<
   ExecuteActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /actions", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /actions",
+    input: {
+      targetResource: { assetId: 0, computationModelId: 0 },
+      actionDefinitionId: 0,
+      actionPayload: { stringValue: 0 },
+      clientToken: 0,
+      resolveTo: { assetId: 0 },
+    },
+    body: true,
+  },
   errors: [
     ConflictingOperationException,
     InternalFailureException,
@@ -6963,7 +7357,12 @@ export const executeQuery: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /queries/execution",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      queryStatement: 0,
+      nextToken: 0,
+      maxResults: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -7022,8 +7421,8 @@ export const getAssetPropertyAggregates: API.PaginatedOperationMethod<
       aggregateTypes: D.m({ query: "aggregateTypes" }),
       resolution: D.m({ query: "resolution" }),
       qualities: D.m({ query: "qualities" }),
-      startDate: D.m({ query: "startDate" }),
-      endDate: D.m({ query: "endDate" }),
+      startDate: D.m({ query: "startDate", shape: D.tsAs("epoch-seconds") }),
+      endDate: D.m({ query: "endDate", shape: D.tsAs("epoch-seconds") }),
       timeOrdering: D.m({ query: "timeOrdering" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -7127,8 +7526,8 @@ export const getAssetPropertyValueHistory: API.PaginatedOperationMethod<
       assetId: D.m({ query: "assetId" }),
       propertyId: D.m({ query: "propertyId" }),
       propertyAlias: D.m({ query: "propertyAlias" }),
-      startDate: D.m({ query: "startDate" }),
-      endDate: D.m({ query: "endDate" }),
+      startDate: D.m({ query: "startDate", shape: D.tsAs("epoch-seconds") }),
+      endDate: D.m({ query: "endDate", shape: D.tsAs("epoch-seconds") }),
       qualities: D.m({ query: "qualities" }),
       timeOrdering: D.m({ query: "timeOrdering" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -7173,6 +7572,15 @@ export const getCaptureData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceName}/get-capture-data",
+    input: {
+      workspaceName: 0,
+      startTime: i_TimeInNanos,
+      endTime: i_TimeInNanos,
+      timeSeriesId: 0,
+      propertyAlias: 0,
+      formatSettings: i_FormatSettings,
+      nextToken: 0,
+    },
     output: { data: D.blob },
     body: true,
   },
@@ -7277,6 +7685,8 @@ export const getQueryResults: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /workspaces/{workspaceName}/queries/{queryId}/results",
     input: {
+      workspaceName: 0,
+      queryId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -7325,6 +7735,8 @@ export const getSearchResults: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /workspaces/{workspaceName}/searches/{searchId}/results",
     input: {
+      searchId: 0,
+      workspaceName: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -7369,6 +7781,7 @@ export const invokeAssistant: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistant/invocation",
+    input: { conversationId: 0, message: 0, enableTrace: 0 },
     output: {
       body: D.m({
         payload: true,
@@ -7568,6 +7981,7 @@ export const listAssetModelCompositeModels: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /asset-models/{assetModelId}/composite-models",
     input: {
+      assetModelId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       assetModelVersion: D.m({ query: "assetModelVersion" }),
@@ -7613,6 +8027,7 @@ export const listAssetModelProperties: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /asset-models/{assetModelId}/properties",
     input: {
+      assetModelId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       filter: D.m({ query: "filter" }),
@@ -7706,6 +8121,7 @@ export const listAssetProperties: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /assets/{assetId}/properties",
     input: {
+      assetId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       filter: D.m({ query: "filter" }),
@@ -7751,6 +8167,7 @@ export const listAssetRelationships: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /assets/{assetId}/assetRelationships",
     input: {
+      assetId: 0,
       traversalType: D.m({ query: "traversalType" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -7857,6 +8274,7 @@ export const listAssociatedAssets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /assets/{assetId}/hierarchies",
     input: {
+      assetId: 0,
       hierarchyId: D.m({ query: "hierarchyId" }),
       traversalDirection: D.m({ query: "traversalDirection" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -7950,6 +8368,7 @@ export const listCompositionRelationships: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /asset-models/{assetModelId}/composition-relationships",
     input: {
+      assetModelId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -7992,6 +8411,16 @@ export const listComputationModelDataBindingUsages: API.PaginatedOperationMethod
   descriptor: {
     service: svc,
     http: "POST /computation-models/data-binding-usages",
+    input: {
+      dataBindingValueFilter: {
+        asset: { assetId: 0 },
+        assetModel: { assetModelId: 0 },
+        assetProperty: { assetId: 0, propertyId: 0 },
+        assetModelProperty: { assetModelId: 0, propertyId: 0 },
+      },
+      nextToken: 0,
+      maxResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -8032,6 +8461,7 @@ export const listComputationModelResolveToResources: API.PaginatedOperationMetho
     service: svc,
     http: "GET /computation-models/{computationModelId}/resolve-to-resources",
     input: {
+      computationModelId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -8167,6 +8597,7 @@ export const listDatasetDataSegmentRelationships: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /datasets/{datasetId}/data-segment-relationships",
     input: {
+      datasetId: 0,
       workspaceName: D.m({ query: "workspaceName" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -8210,6 +8641,7 @@ export const listDatasetDataSegments: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /datasets/{datasetId}/data-segments",
     input: {
+      datasetId: 0,
       workspaceName: D.m({ query: "workspaceName" }),
       datasetVersion: D.m({ query: "datasetVersion" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -8256,6 +8688,7 @@ export const listDatasetExportJobs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /workspaces/{workspaceName}/dataset-export-jobs",
     input: {
+      workspaceName: 0,
       filter: D.m({ query: "filter" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -8400,13 +8833,14 @@ export const listEnrichmentJobs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /workspaces/{workspaceName}/enrichment-jobs",
     input: {
+      workspaceName: 0,
       datasetId: D.m({ query: "datasetId" }),
       propertyAlias: D.m({ query: "propertyAlias" }),
       timeSeriesId: D.m({ query: "timeSeriesId" }),
       status: D.m({ query: "status" }),
       jobType: D.m({ query: "jobType" }),
-      startDate: D.m({ query: "startDate" }),
-      endDate: D.m({ query: "endDate" }),
+      startDate: D.m({ query: "startDate", shape: D.tsAs("epoch-seconds") }),
+      endDate: D.m({ query: "endDate", shape: D.tsAs("epoch-seconds") }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -8550,6 +8984,7 @@ export const listInterfaceRelationships: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /interface/{interfaceAssetModelId}/asset-models",
     input: {
+      interfaceAssetModelId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -8599,13 +9034,27 @@ export const listPipelineExecutions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /workspaces/{workspaceName}/pipelines/{pipelineName}/executions",
     input: {
+      workspaceName: 0,
+      pipelineName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
       state: D.m({ query: "state" }),
-      startTimeAfter: D.m({ query: "startTimeAfter" }),
-      startTimeBefore: D.m({ query: "startTimeBefore" }),
-      endTimeAfter: D.m({ query: "endTimeAfter" }),
-      endTimeBefore: D.m({ query: "endTimeBefore" }),
+      startTimeAfter: D.m({
+        query: "startTimeAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      startTimeBefore: D.m({
+        query: "startTimeBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      endTimeAfter: D.m({
+        query: "endTimeAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      endTimeBefore: D.m({
+        query: "endTimeBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
     },
     output: {
       pipelineExecutionSummaries: D.list({ startTime: D.ts, endTime: D.ts }),
@@ -8651,6 +9100,7 @@ export const listPipelines: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /workspaces/{workspaceName}/pipelines",
     input: {
+      workspaceName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -8737,6 +9187,7 @@ export const listProjectAssets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /projects/{projectId}/assets",
     input: {
+      projectId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -8823,6 +9274,7 @@ export const listQueries: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /workspaces/{workspaceName}/queries",
     input: {
+      workspaceName: 0,
       filter: D.m({ query: "filter" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -8870,6 +9322,18 @@ export const listSearches: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceName}/searches/list",
+    input: {
+      workspaceName: 0,
+      maxResults: 0,
+      nextToken: 0,
+      listSearchesFilters: {
+        statusFilter: 0,
+        startedAfter: 0,
+        startedBefore: 0,
+        groupIdFilter: 0,
+        searchTypeFilter: 0,
+      },
+    },
     output: {
       searchSummaries: D.list({ queryStatement: D.secret, startedAt: D.ts }),
     },
@@ -8953,6 +9417,7 @@ export const listTasks: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /workspaces/{workspaceName}/tasks",
     input: {
+      workspaceName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -9095,7 +9560,19 @@ export const putAssetModelInterfaceRelationship: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /asset-models/{assetModelId}/interface/{interfaceAssetModelId}/asset-model-interface-relationship",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      assetModelId: 0,
+      interfaceAssetModelId: 0,
+      propertyMappingConfiguration: {
+        matchByPropertyName: 0,
+        createMissingProperty: 0,
+        overrides: D.list({
+          assetModelPropertyId: 0,
+          interfaceAssetModelPropertyId: 0,
+        }),
+      },
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -9134,6 +9611,7 @@ export const putDefaultEncryptionConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /configuration/account/encryption",
+    input: { encryptionType: 0, kmsKeyId: 0 },
     body: true,
   },
   errors: [
@@ -9166,7 +9644,12 @@ export const putLoggingOptions: API.OperationMethod<
   PutLoggingOptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /logging", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /logging",
+    input: { loggingOptions: { level: 0 }, workspaceName: 0 },
+    body: true,
+  },
   errors: [
     ConflictingOperationException,
     InternalFailureException,
@@ -9201,6 +9684,17 @@ export const putStorageConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /configuration/account/storage",
+    input: {
+      storageType: 0,
+      multiLayerStorage: {
+        customerManagedS3Storage: { s3ResourceArn: 0, roleArn: 0 },
+      },
+      disassociatedDataStorage: 0,
+      retentionPeriod: { numberOfDays: 0, unlimited: 0 },
+      warmTier: 0,
+      warmTierRetentionPeriod: { numberOfDays: 0, unlimited: 0 },
+      disallowIngestNullNaN: 0,
+    },
     body: true,
   },
   errors: [
@@ -9245,7 +9739,13 @@ export const startPipelineExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceName}/pipelines/{pipelineName}/executions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workspaceName: 0,
+      pipelineName: 0,
+      executionEnvironmentVariableOverrides: { global: 0, computeNodes: 0 },
+      executionPriority: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -9283,7 +9783,11 @@ export const startQuery: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceName}/queries",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      workspaceName: 0,
+      queryStatement: 0,
+    },
     body: true,
   },
   errors: [
@@ -9325,7 +9829,21 @@ export const startSearch: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceName}/searches",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workspaceName: 0,
+      queryStatement: 0,
+      clientToken: D.m({ idempotency: true }),
+      searchType: 0,
+      searchFilters: {
+        timeSeriesIds: 0,
+        datasetIds: 0,
+        timeIntervals: D.list({
+          startTime: i_TimeInNanos,
+          endTime: i_TimeInNanos,
+        }),
+      },
+      groupId: 0,
+    },
     body: true,
   },
   errors: [
@@ -9366,7 +9884,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags",
-    input: { resourceArn: D.m({ query: "resourceArn" }) },
+    input: { resourceArn: D.m({ query: "resourceArn" }), tags: 0 },
     body: true,
   },
   errors: [
@@ -9450,7 +9968,13 @@ export const updateAccessPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /access-policies/{accessPolicyId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      accessPolicyId: 0,
+      accessPolicyIdentity: i_Identity,
+      accessPolicyResource: i_Resource,
+      accessPolicyPermission: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -9486,7 +10010,13 @@ export const updateAsset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /assets/{assetId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      assetId: 0,
+      assetExternalId: 0,
+      assetName: 0,
+      clientToken: D.m({ idempotency: true }),
+      assetDescription: 0,
+    },
     body: true,
   },
   errors: [
@@ -9542,6 +10072,25 @@ export const updateAssetModel: API.OperationMethod<
     service: svc,
     http: "PUT /asset-models/{assetModelId}",
     input: {
+      assetModelId: 0,
+      assetModelExternalId: 0,
+      assetModelName: 0,
+      assetModelDescription: 0,
+      assetModelProperties: D.list(i_AssetModelProperty),
+      assetModelHierarchies: D.list({
+        id: 0,
+        externalId: 0,
+        name: 0,
+        childAssetModelId: 0,
+      }),
+      assetModelCompositeModels: D.list({
+        name: 0,
+        description: 0,
+        type: 0,
+        properties: D.list(i_AssetModelProperty),
+        id: 0,
+        externalId: 0,
+      }),
       clientToken: D.m({ idempotency: true }),
       ifMatch: D.m({ header: "If-Match" }),
       ifNoneMatch: D.m({ header: "If-None-Match" }),
@@ -9604,7 +10153,13 @@ export const updateAssetModelCompositeModel: API.OperationMethod<
     service: svc,
     http: "PUT /asset-models/{assetModelId}/composite-models/{assetModelCompositeModelId}",
     input: {
+      assetModelId: 0,
+      assetModelCompositeModelId: 0,
+      assetModelCompositeModelExternalId: 0,
+      assetModelCompositeModelDescription: 0,
+      assetModelCompositeModelName: 0,
       clientToken: D.m({ idempotency: true }),
+      assetModelCompositeModelProperties: D.list(i_AssetModelProperty),
       ifMatch: D.m({ header: "If-Match" }),
       ifNoneMatch: D.m({ header: "If-None-Match" }),
       matchForVersionType: D.m({ header: "Match-For-Version-Type" }),
@@ -9650,7 +10205,14 @@ export const updateAssetProperty: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /assets/{assetId}/properties/{propertyId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      assetId: 0,
+      propertyId: 0,
+      propertyAlias: 0,
+      propertyNotificationState: 0,
+      clientToken: D.m({ idempotency: true }),
+      propertyUnit: 0,
+    },
     body: true,
   },
   errors: [
@@ -9687,7 +10249,14 @@ export const updateComputationModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /computation-models/{computationModelId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      computationModelId: 0,
+      computationModelName: 0,
+      computationModelDescription: 0,
+      computationModelConfiguration: i_ComputationModelConfiguration,
+      computationModelDataBinding: D.map(i_ComputationModelDataBindingValue),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -9728,7 +10297,13 @@ export const updateDashboard: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /dashboards/{dashboardId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      dashboardId: 0,
+      dashboardName: 0,
+      dashboardDescription: 0,
+      dashboardDefinition: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -9764,7 +10339,16 @@ export const updateDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /datasets/{datasetId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      datasetId: 0,
+      workspaceName: 0,
+      datasetName: 0,
+      datasetDescription: 0,
+      datasetConfig: i_DatasetConfig,
+      metadata: 0,
+      datasetSource: i_DatasetSource,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -9801,6 +10385,7 @@ export const updateGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /20200301/gateways/{gatewayId}",
+    input: { gatewayId: 0, gatewayName: 0 },
     body: true,
   },
   errors: [
@@ -9852,6 +10437,7 @@ export const updateGatewayCapabilityConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /20200301/gateways/{gatewayId}/capability",
+    input: { gatewayId: 0, capabilityNamespace: 0, capabilityConfiguration: 0 },
     body: true,
   },
   errors: [
@@ -9892,6 +10478,13 @@ export const updatePipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workspaces/{workspaceName}/pipelines/{pipelineName}",
+    input: {
+      workspaceName: 0,
+      pipelineName: 0,
+      description: 0,
+      environmentVariables: 0,
+      computations: D.list(i_ComputeNode),
+    },
     body: true,
   },
   errors: [
@@ -9933,7 +10526,19 @@ export const updatePortal: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /portals/{portalId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      portalId: 0,
+      portalName: 0,
+      portalDescription: 0,
+      portalContactEmail: 0,
+      portalLogoImage: { id: 0, file: i_ImageFile },
+      roleArn: 0,
+      clientToken: D.m({ idempotency: true }),
+      notificationSenderEmail: 0,
+      alarms: i_Alarms,
+      portalType: 0,
+      portalTypeConfiguration: D.map(i_PortalTypeEntry),
+    },
     body: true,
   },
   errors: [
@@ -9972,7 +10577,12 @@ export const updateProject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /projects/{projectId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      projectId: 0,
+      projectName: 0,
+      projectDescription: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -10009,6 +10619,12 @@ export const updateTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workspaces/{workspaceName}/tasks/{taskName}",
+    input: {
+      workspaceName: 0,
+      taskName: 0,
+      description: 0,
+      taskConfiguration: i_TaskConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -10048,7 +10664,12 @@ export const updateWorkspace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workspaces/{workspaceName}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workspaceName: 0,
+      workspaceDescription: 0,
+      encryptionConfiguration: i_WorkspaceEncryptionConfiguration,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -10065,7 +10686,132 @@ export const updateWorkspace: API.OperationMethod<
   endpointHostPrefix: "api.",
 })) as any;
 
+const i_Alarms: D.LazyStruct = () => ({
+  alarmRoleArn: 0,
+  notificationLambdaArn: 0,
+});
+const i_AssetModelProperty: D.LazyStruct = () => ({
+  id: 0,
+  externalId: 0,
+  name: 0,
+  dataType: 0,
+  dataTypeSpec: 0,
+  unit: 0,
+  type: i_PropertyType,
+  path: D.list(i_AssetModelPropertyPathSegment),
+});
+const i_AssetModelPropertyDefinition: D.LazyStruct = () => ({
+  id: 0,
+  externalId: 0,
+  name: 0,
+  dataType: 0,
+  dataTypeSpec: 0,
+  unit: 0,
+  type: i_PropertyType,
+});
+const i_ComputationModelConfiguration: D.LazyStruct = () => ({
+  anomalyDetection: { inputProperties: 0, resultProperty: 0 },
+});
+const i_ComputationModelDataBindingValue: D.LazyStruct = () => ({
+  assetModelProperty: { assetModelId: 0, propertyId: 0 },
+  assetProperty: { assetId: 0, propertyId: 0 },
+  list: D.list(i_ComputationModelDataBindingValue),
+});
+const i_ComputeNode: D.LazyStruct = () => ({
+  computeNodeName: 0,
+  taskName: 0,
+  environmentVariables: 0,
+  dependsOn: 0,
+});
+const i_DatasetConfig: D.LazyStruct = () => ({
+  session: {
+    sessionStartTimestamp: i_TimeInNanos,
+    sessionEndTimestamp: i_TimeInNanos,
+  },
+});
+const i_DatasetSource: D.LazyStruct = () => ({
+  sourceType: 0,
+  sourceFormat: 0,
+  sourceDetail: { kendra: { knowledgeBaseArn: 0, roleArn: 0 } },
+});
+const i_FileFormat: D.LazyStruct = () => ({
+  csv: { columnNames: 0 },
+  parquet: {},
+  mp4: {},
+  annotation: {},
+});
+const i_FormatSettings: D.LazyStruct = () => ({
+  framesPerSecond: 0,
+  widthInPixels: 0,
+  heightInPixels: 0,
+});
+const i_Identity: D.LazyStruct = () => ({
+  user: { id: 0 },
+  group: { id: 0 },
+  iamUser: { arn: 0 },
+  iamRole: { arn: 0 },
+});
+const i_ImageFile: D.LazyStruct = () => ({ data: 0, type: 0 });
+const i_PortalTypeEntry: D.LazyStruct = () => ({ portalTools: 0 });
+const i_Resource: D.LazyStruct = () => ({
+  portal: { id: 0 },
+  project: { id: 0 },
+});
+const i_TaskConfiguration: D.LazyStruct = () => ({
+  containerTaskConfiguration: {
+    ecrUri: 0,
+    taskExecutionRole: 0,
+    processingType: 0,
+    processingUnit: 0,
+    command: 0,
+    timeoutSeconds: 0,
+    environmentVariables: 0,
+  },
+});
+const i_TimeInNanos: D.LazyStruct = () => ({
+  timeInSeconds: 0,
+  offsetInNanos: 0,
+});
+const i_TrimSettings: D.LazyStruct = () => ({
+  startTime: i_TimeInNanos,
+  endTime: i_TimeInNanos,
+});
+const i_WorkspaceEncryptionConfiguration: D.LazyStruct = () => ({
+  encryptionType: 0,
+  kmsKeyId: 0,
+});
 const o_AggregatedValue: D.LazyStruct = () => ({ timestamp: D.ts });
 const o_DatasetEnrichment: D.LazyStruct = () => ({
   video: { lastEnrichedAt: D.ts },
 });
+const i_AssetModelPropertyPathSegment: D.LazyStruct = () => ({
+  id: 0,
+  name: 0,
+});
+const i_PropertyType: D.LazyStruct = () => ({
+  attribute: { defaultValue: 0 },
+  measurement: { processingConfig: { forwardingConfig: i_ForwardingConfig } },
+  transform: {
+    expression: 0,
+    variables: D.list(i_ExpressionVariable),
+    processingConfig: {
+      computeLocation: 0,
+      forwardingConfig: i_ForwardingConfig,
+    },
+  },
+  metric: {
+    expression: 0,
+    variables: D.list(i_ExpressionVariable),
+    window: { tumbling: { interval: 0, offset: 0 } },
+    processingConfig: { computeLocation: 0 },
+  },
+});
+const i_ExpressionVariable: D.LazyStruct = () => ({
+  name: 0,
+  value: {
+    propertyId: 0,
+    hierarchyId: 0,
+    propertyPath: D.list(i_AssetModelPropertyPathSegment),
+  },
+});
+const i_ForwardingConfig: D.LazyStruct = () => ({ state: 0 });

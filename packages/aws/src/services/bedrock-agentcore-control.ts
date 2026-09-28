@@ -5856,7 +5856,11 @@ export const addDatasetExamples: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datasets/{datasetId}/examples/add",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      datasetId: 0,
+      clientToken: D.m({ idempotency: true }),
+      source: i_DataSourceType,
+    },
     output: { updatedAt: D.ts },
     body: true,
   },
@@ -5895,7 +5899,16 @@ export const batchPutGatewayRateLimits: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /gateways/{gatewayIdentifier}/rate-limits/batch",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      gatewayIdentifier: 0,
+      clientToken: D.m({ idempotency: true }),
+      rateLimits: D.list({
+        rateLimitId: 0,
+        description: 0,
+        dimensionKeys: 0,
+        entries: D.list(i_LimitEntry),
+      }),
+    },
     output: { rateLimits: D.list(o_GatewayRateLimitDetail) },
     body: true,
   },
@@ -5933,7 +5946,22 @@ export const createAgentRuntime: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /runtimes/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      agentRuntimeName: 0,
+      agentRuntimeArtifact: i_AgentRuntimeArtifact,
+      roleArn: 0,
+      networkConfiguration: i_NetworkConfiguration,
+      clientToken: D.m({ idempotency: true }),
+      description: 0,
+      authorizerConfiguration: i_AuthorizerConfiguration,
+      requestHeaderConfiguration: i_RequestHeaderConfiguration,
+      protocolConfiguration: i_ProtocolConfiguration,
+      lifecycleConfiguration: i_LifecycleConfiguration,
+      environmentVariables: 0,
+      filesystemConfigurations: D.list(i_FilesystemConfiguration),
+      capacityProviderConfiguration: i_CapacityProviderConfiguration,
+      tags: 0,
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -5971,7 +5999,14 @@ export const createAgentRuntimeEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /runtimes/{agentRuntimeId}/runtime-endpoints/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      agentRuntimeId: 0,
+      name: 0,
+      agentRuntimeVersion: 0,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { endpointName: D.secret, createdAt: D.ts },
     body: true,
   },
@@ -6014,6 +6049,13 @@ export const createApiKeyCredentialProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/CreateApiKeyCredentialProvider",
+    input: {
+      name: 0,
+      apiKey: 0,
+      apiKeySecretConfig: i_SecretReference,
+      apiKeySecretSource: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -6054,7 +6096,19 @@ export const createBrowser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /browsers",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      executionRoleArn: 0,
+      networkConfiguration: { networkMode: 0, vpcConfig: i_VpcConfig },
+      recording: { enabled: 0, s3Location: i_S3Location },
+      browserSigning: { enabled: 0 },
+      enterprisePolicies: D.list({ location: { s3: i_S3Location }, type: 0 }),
+      certificates: D.list(i_Certificate),
+      filesystemConfigurations: D.list(i_ToolsFileSystemConfiguration),
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -6091,7 +6145,12 @@ export const createBrowserProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /browser-profiles",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -6132,7 +6191,72 @@ export const createCapacityProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /capacity-providers",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      permissionsConfiguration: { capacityProviderOperatorRoleArn: 0 },
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+      computeConfiguration: {
+        ec2Configuration: {
+          launchTemplateSource: {
+            launchParameters: {
+              operatingSystem: 0,
+              instanceRequirements: { allowedInstanceTypes: 0 },
+              ephemeralVolumes: D.list({
+                deviceName: 0,
+                virtualName: 0,
+                ebs: {
+                  volumeType: 0,
+                  iops: 0,
+                  throughput: 0,
+                  encrypted: 0,
+                  kmsKeyId: 0,
+                  snapshotId: 0,
+                  volumeSize: 0,
+                  volumeInitializationRate: 0,
+                  ebsCardIndex: 0,
+                },
+              }),
+              monitoring: 0,
+              licenseSpecifications: D.list({ licenseConfigurationArn: 0 }),
+              capacityReservationSpecification: {
+                capacityReservationPreference: 0,
+                capacityReservationTarget: {
+                  capacityReservationId: 0,
+                  capacityReservationResourceGroupArn: 0,
+                },
+              },
+              sshKeyName: 0,
+              instanceProfileArn: 0,
+              propagatedTags: 0,
+            },
+          },
+          vpcConfiguration: { subnets: 0, securityGroups: 0 },
+          volumes: D.list({
+            ebsConfiguration: {
+              name: 0,
+              sizeGiB: 0,
+              volumeType: 0,
+              iops: 0,
+              throughput: 0,
+              encrypted: 0,
+              kmsKeyId: 0,
+              snapshotId: 0,
+            },
+          }),
+          lifecycleConfiguration: { idleInstanceTimeout: 0, maxLifetime: 0 },
+          rootVolume: {
+            volumeType: 0,
+            iops: 0,
+            throughput: 0,
+            encrypted: 0,
+            kmsKeyId: 0,
+            freeSpaceGiB: 0,
+          },
+        },
+      },
+    },
     body: true,
   },
   errors: [
@@ -6170,7 +6294,16 @@ export const createCodeInterpreter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /code-interpreters",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      executionRoleArn: 0,
+      networkConfiguration: { networkMode: 0, vpcConfig: i_VpcConfig },
+      certificates: D.list(i_Certificate),
+      filesystemConfigurations: D.list(i_ToolsFileSystemConfiguration),
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -6207,7 +6340,17 @@ export const createConfigurationBundle: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /configuration-bundles/create",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      bundleName: 0,
+      description: 0,
+      components: D.map(i_ComponentConfiguration),
+      branchName: 0,
+      commitMessage: 0,
+      createdBy: i_VersionCreatedBySource,
+      kmsKeyArn: 0,
+      tags: 0,
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -6244,7 +6387,15 @@ export const createDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datasets",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      datasetName: 0,
+      description: 0,
+      source: i_DataSourceType,
+      schemaType: 0,
+      kmsKeyArn: 0,
+      tags: 0,
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -6282,7 +6433,7 @@ export const createDatasetVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datasets/{datasetId}/versions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { datasetId: 0, clientToken: D.m({ idempotency: true }) },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -6320,7 +6471,15 @@ export const createEvaluator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /evaluators/create",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      evaluatorName: 0,
+      description: 0,
+      evaluatorConfig: i_EvaluatorConfig,
+      level: 0,
+      kmsKeyArn: 0,
+      tags: 0,
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -6359,7 +6518,21 @@ export const createGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /gateways/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+      roleArn: 0,
+      protocolType: 0,
+      protocolConfiguration: i_GatewayProtocolConfiguration,
+      authorizerType: 0,
+      authorizerConfiguration: i_AuthorizerConfiguration,
+      kmsKeyArn: 0,
+      interceptorConfigurations: D.list(i_GatewayInterceptorConfiguration),
+      policyEngineConfiguration: i_GatewayPolicyEngineConfiguration,
+      exceptionLevel: 0,
+      tags: 0,
+    },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -6402,7 +6575,14 @@ export const createGatewayRateLimit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /gateways/{gatewayIdentifier}/rate-limits",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      gatewayIdentifier: 0,
+      clientToken: D.m({ idempotency: true }),
+      rateLimitId: 0,
+      description: 0,
+      dimensionKeys: 0,
+      entries: D.list(i_LimitEntry),
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -6441,7 +6621,14 @@ export const createGatewayRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /gateways/{gatewayIdentifier}/rules",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      gatewayIdentifier: 0,
+      clientToken: D.m({ idempotency: true }),
+      priority: 0,
+      conditions: D.list(i_Condition),
+      actions: D.list(i_Action),
+      description: 0,
+    },
     output: { actions: D.list(o_Action), createdAt: D.ts },
     body: true,
   },
@@ -6480,7 +6667,18 @@ export const createGatewayTarget: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /gateways/{gatewayIdentifier}/targets/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      gatewayIdentifier: 0,
+      name: 0,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+      targetConfiguration: i_TargetConfiguration,
+      credentialProviderConfigurations: D.list(
+        i_CredentialProviderConfiguration,
+      ),
+      metadataConfiguration: i_MetadataConfiguration,
+      privateEndpoint: i_PrivateEndpoint,
+    },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -6528,7 +6726,26 @@ export const createHarness: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /harnesses",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      harnessName: 0,
+      clientToken: D.m({ idempotency: true }),
+      executionRoleArn: 0,
+      environment: i_HarnessEnvironmentProviderRequest,
+      environmentArtifact: i_HarnessEnvironmentArtifact,
+      environmentVariables: 0,
+      authorizerConfiguration: i_AuthorizerConfiguration,
+      model: i_HarnessModelConfiguration,
+      systemPrompt: D.list(i_HarnessSystemContentBlock),
+      tools: D.list(i_HarnessTool),
+      skills: D.list(i_HarnessSkill),
+      allowedTools: 0,
+      memory: i_HarnessMemoryConfiguration,
+      truncation: i_HarnessTruncationConfiguration,
+      maxIterations: 0,
+      maxTokens: 0,
+      timeoutSeconds: 0,
+      tags: 0,
+    },
     output: { harness: o_Harness },
     body: true,
   },
@@ -6566,7 +6783,14 @@ export const createHarnessEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /harnesses/{harnessId}/endpoints",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      harnessId: 0,
+      endpointName: 0,
+      targetVersion: 0,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { endpoint: o_HarnessEndpoint },
     body: true,
   },
@@ -6605,7 +6829,19 @@ export const createMemory: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memories/create",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      name: 0,
+      description: 0,
+      encryptionKeyArn: 0,
+      memoryExecutionRoleArn: 0,
+      eventExpiryDuration: 0,
+      memoryStrategies: D.list(i_MemoryStrategyInput),
+      indexedKeys: D.list(i_IndexedKey),
+      namespaceKeys: D.list(i_NamespaceKeyEntry),
+      streamDeliveryResources: i_StreamDeliveryResources,
+      tags: 0,
+    },
     output: { memory: o_Memory },
     body: true,
   },
@@ -6648,6 +6884,12 @@ export const createOauth2CredentialProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/CreateOauth2CredentialProvider",
+    input: {
+      name: 0,
+      credentialProviderVendor: 0,
+      oauth2ProviderConfigInput: i_Oauth2ProviderConfigInput,
+      tags: 0,
+    },
     output: { oauth2ProviderConfigOutput: o_Oauth2ProviderConfigOutput },
     body: true,
   },
@@ -6689,7 +6931,19 @@ export const createOnlineEvaluationConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /online-evaluation-configs/create",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      onlineEvaluationConfigName: 0,
+      description: 0,
+      rule: i_Rule,
+      dataSourceConfig: i_DataSourceConfig,
+      evaluators: D.list(i_EvaluatorReference),
+      insights: D.list(i_Insight),
+      clusteringConfig: i_ClusteringConfig,
+      evaluationExecutionRoleArn: 0,
+      enableOnCreate: 0,
+      tags: 0,
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -6728,7 +6982,17 @@ export const createPaymentConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /payments/managers/{paymentManagerId}/connectors",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      paymentManagerId: 0,
+      name: 0,
+      description: 0,
+      type: 0,
+      credentialProviderConfigurations: D.list(
+        i_CredentialsProviderConfiguration,
+      ),
+      provisionMode: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -6772,6 +7036,12 @@ export const createPaymentCredentialProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/CreatePaymentCredentialProvider",
+    input: {
+      name: 0,
+      credentialProviderVendor: 0,
+      providerConfigurationInput: i_PaymentProviderConfigurationInput,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -6814,7 +7084,16 @@ export const createPaymentManager: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /payments/managers",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      authorizerType: 0,
+      authorizerConfiguration: i_AuthorizerConfiguration,
+      roleArn: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+      kmsKeyArn: 0,
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -6854,7 +7133,15 @@ export const createPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /policy-engines/{policyEngineId}/policies",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      definition: i_PolicyDefinition,
+      description: 0,
+      validationMode: 0,
+      enforcementMode: 0,
+      policyEngineId: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { createdAt: D.ts, updatedAt: D.ts, description: D.secret },
     body: true,
   },
@@ -6892,7 +7179,13 @@ export const createPolicyEngine: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /policy-engines",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+      encryptionKeyArn: 0,
+      tags: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts, description: D.secret },
     body: true,
   },
@@ -6931,7 +7224,14 @@ export const createRegistry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /registries",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      authorizerType: 0,
+      authorizerConfiguration: i_AuthorizerConfiguration,
+      clientToken: D.m({ idempotency: true }),
+      approvalConfiguration: i_ApprovalConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -6970,7 +7270,25 @@ export const createRegistryRecord: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /registries/{registryId}/records",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      registryId: 0,
+      name: 0,
+      description: 0,
+      descriptorType: 0,
+      descriptors: {
+        mcp: { server: i_ServerDefinition, tools: i_ToolsDefinition },
+        a2a: i_A2aDescriptor,
+        custom: i_CustomDescriptor,
+        agentSkills: {
+          skillMd: i_SkillMdDefinition,
+          skillDefinition: i_SkillDefinition,
+        },
+      },
+      recordVersion: 0,
+      synchronizationType: 0,
+      synchronizationConfiguration: i_SynchronizationConfiguration,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -7007,6 +7325,7 @@ export const createWorkloadIdentity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/CreateWorkloadIdentity",
+    input: { name: 0, allowedResourceOauth2ReturnUrls: 0, tags: 0 },
     body: true,
   },
   errors: [
@@ -7042,6 +7361,7 @@ export const deleteAgentRuntime: API.OperationMethod<
     service: svc,
     http: "DELETE /runtimes/{agentRuntimeId}/",
     input: {
+      agentRuntimeId: 0,
       agentRuntimeVersion: D.m({ query: "version" }),
       clientToken: D.m({ query: "clientToken", idempotency: true }),
     },
@@ -7077,7 +7397,11 @@ export const deleteAgentRuntimeEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /runtimes/{agentRuntimeId}/runtime-endpoints/{endpointName}/",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      agentRuntimeId: 0,
+      endpointName: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
     output: { endpointName: D.secret },
   },
   errors: [
@@ -7112,6 +7436,7 @@ export const deleteApiKeyCredentialProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/DeleteApiKeyCredentialProvider",
+    input: { name: 0 },
     body: true,
   },
   errors: [
@@ -7148,7 +7473,10 @@ export const deleteBrowser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /browsers/{browserId}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      browserId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
     output: { lastUpdatedAt: D.ts },
   },
   errors: [
@@ -7185,7 +7513,10 @@ export const deleteBrowserProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /browser-profiles/{profileId}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      profileId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
     output: { lastUpdatedAt: D.ts, lastSavedAt: D.ts },
   },
   errors: [
@@ -7222,7 +7553,10 @@ export const deleteCapacityProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /capacity-providers/{capacityProviderId}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      capacityProviderId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -7259,7 +7593,10 @@ export const deleteCodeInterpreter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /code-interpreters/{codeInterpreterId}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      codeInterpreterId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
     output: { lastUpdatedAt: D.ts },
   },
   errors: [
@@ -7296,6 +7633,7 @@ export const deleteConfigurationBundle: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /configuration-bundles/{bundleId}",
+    input: { bundleId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -7330,7 +7668,7 @@ export const deleteDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /datasets/{datasetId}",
-    input: { datasetVersion: D.m({ query: "datasetVersion" }) },
+    input: { datasetId: 0, datasetVersion: D.m({ query: "datasetVersion" }) },
     output: { updatedAt: D.ts },
   },
   errors: [
@@ -7366,7 +7704,11 @@ export const deleteDatasetExamples: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datasets/{datasetId}/examples/delete",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      datasetId: 0,
+      clientToken: D.m({ idempotency: true }),
+      exampleIds: 0,
+    },
     output: { updatedAt: D.ts },
     body: true,
   },
@@ -7400,7 +7742,11 @@ export const deleteEvaluator: API.OperationMethod<
   DeleteEvaluatorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /evaluators/{evaluatorId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /evaluators/{evaluatorId}",
+    input: { evaluatorId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -7431,7 +7777,11 @@ export const deleteGateway: API.OperationMethod<
   DeleteGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /gateways/{gatewayIdentifier}/" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /gateways/{gatewayIdentifier}/",
+    input: { gatewayIdentifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -7465,6 +7815,7 @@ export const deleteGatewayRateLimit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /gateways/{gatewayIdentifier}/rate-limits/{rateLimitId}",
+    input: { gatewayIdentifier: 0, rateLimitId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -7499,6 +7850,7 @@ export const deleteGatewayRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /gateways/{gatewayIdentifier}/rules/{ruleId}",
+    input: { gatewayIdentifier: 0, ruleId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -7535,6 +7887,7 @@ export const deleteGatewayTarget: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /gateways/{gatewayIdentifier}/targets/{targetId}/",
+    input: { gatewayIdentifier: 0, targetId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -7570,6 +7923,7 @@ export const deleteHarness: API.OperationMethod<
     service: svc,
     http: "DELETE /harnesses/{harnessId}",
     input: {
+      harnessId: 0,
       clientToken: D.m({ query: "clientToken", idempotency: true }),
       deleteManagedMemory: D.m({ query: "deleteManagedMemory" }),
     },
@@ -7608,7 +7962,11 @@ export const deleteHarnessEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /harnesses/{harnessId}/endpoints/{endpointName}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      harnessId: 0,
+      endpointName: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
     output: { endpoint: o_HarnessEndpoint },
   },
   errors: [
@@ -7644,7 +8002,10 @@ export const deleteMemory: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /memories/{memoryId}/delete",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+      memoryId: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -7680,6 +8041,7 @@ export const deleteOauth2CredentialProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/DeleteOauth2CredentialProvider",
+    input: { name: 0 },
     body: true,
   },
   errors: [
@@ -7716,6 +8078,7 @@ export const deleteOnlineEvaluationConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /online-evaluation-configs/{onlineEvaluationConfigId}",
+    input: { onlineEvaluationConfigId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -7749,7 +8112,11 @@ export const deletePaymentConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /payments/managers/{paymentManagerId}/connectors/{paymentConnectorId}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      paymentManagerId: 0,
+      paymentConnectorId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -7783,6 +8150,7 @@ export const deletePaymentCredentialProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/DeletePaymentCredentialProvider",
+    input: { name: 0 },
     body: true,
   },
   errors: [
@@ -7817,7 +8185,10 @@ export const deletePaymentManager: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /payments/managers/{paymentManagerId}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      paymentManagerId: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -7851,6 +8222,7 @@ export const deletePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /policy-engines/{policyEngineId}/policies/{policyId}",
+    input: { policyEngineId: 0, policyId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts, description: D.secret },
   },
   errors: [
@@ -7886,6 +8258,7 @@ export const deletePolicyEngine: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /policy-engines/{policyEngineId}",
+    input: { policyEngineId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts, description: D.secret },
   },
   errors: [
@@ -7918,7 +8291,11 @@ export const deleteRegistry: API.OperationMethod<
   DeleteRegistryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /registries/{registryId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /registries/{registryId}",
+    input: { registryId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -7952,6 +8329,7 @@ export const deleteRegistryRecord: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /registries/{registryId}/records/{recordId}",
+    input: { registryId: 0, recordId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -7984,7 +8362,11 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /resourcepolicy/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /resourcepolicy/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -8017,6 +8399,7 @@ export const deleteWorkloadIdentity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/DeleteWorkloadIdentity",
+    input: { name: 0 },
     body: true,
   },
   errors: [
@@ -8051,7 +8434,10 @@ export const getAgentRuntime: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /runtimes/{agentRuntimeId}/",
-    input: { agentRuntimeVersion: D.m({ query: "version" }) },
+    input: {
+      agentRuntimeId: 0,
+      agentRuntimeVersion: D.m({ query: "version" }),
+    },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts, description: D.secret },
   },
   errors: [
@@ -8085,6 +8471,7 @@ export const getAgentRuntimeEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /runtimes/{agentRuntimeId}/runtime-endpoints/{endpointName}/",
+    input: { agentRuntimeId: 0, endpointName: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts, name: D.secret },
   },
   errors: [
@@ -8120,6 +8507,7 @@ export const getApiKeyCredentialProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/GetApiKeyCredentialProvider",
+    input: { name: 0 },
     output: { createdTime: D.ts, lastUpdatedTime: D.ts },
     body: true,
   },
@@ -8156,6 +8544,7 @@ export const getBrowser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /browsers/{browserId}",
+    input: { browserId: 0 },
     output: { description: D.secret, createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -8189,6 +8578,7 @@ export const getBrowserProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /browser-profiles/{profileId}",
+    input: { profileId: 0 },
     output: {
       description: D.secret,
       createdAt: D.ts,
@@ -8227,6 +8617,7 @@ export const getCapacityProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /capacity-providers/{capacityProviderId}",
+    input: { capacityProviderId: 0 },
     output: { description: D.secret, createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -8260,6 +8651,7 @@ export const getCodeInterpreter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /code-interpreters/{codeInterpreterId}",
+    input: { codeInterpreterId: 0 },
     output: { description: D.secret, createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -8293,7 +8685,7 @@ export const getConfigurationBundle: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /configuration-bundles/{bundleId}",
-    input: { branchName: D.m({ query: "branchName" }) },
+    input: { bundleId: 0, branchName: D.m({ query: "branchName" }) },
     output: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -8327,6 +8719,7 @@ export const getConfigurationBundleVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /configuration-bundles/{bundleId}/versions/{versionId}",
+    input: { bundleId: 0, versionId: 0 },
     output: { description: D.secret, createdAt: D.ts, versionCreatedAt: D.ts },
   },
   errors: [
@@ -8361,7 +8754,7 @@ export const getDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /datasets/{datasetId}",
-    input: { datasetVersion: D.m({ query: "datasetVersion" }) },
+    input: { datasetId: 0, datasetVersion: D.m({ query: "datasetVersion" }) },
     output: {
       downloadUrl: D.secret,
       downloadUrlExpiresAt: D.ts,
@@ -8401,7 +8794,7 @@ export const getEvaluator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /evaluators/{evaluatorId}",
-    input: { includedData: D.m({ query: "includedData" }) },
+    input: { evaluatorId: 0, includedData: D.m({ query: "includedData" }) },
     output: {
       description: D.secret,
       evaluatorConfig: { llmAsAJudge: { instructions: D.secret } },
@@ -8440,6 +8833,7 @@ export const getGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /gateways/{gatewayIdentifier}/",
+    input: { gatewayIdentifier: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -8478,6 +8872,7 @@ export const getGatewayRateLimit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /gateways/{gatewayIdentifier}/rate-limits/{rateLimitId}",
+    input: { gatewayIdentifier: 0, rateLimitId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -8511,6 +8906,7 @@ export const getGatewayRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /gateways/{gatewayIdentifier}/rules/{ruleId}",
+    input: { gatewayIdentifier: 0, ruleId: 0 },
     output: { actions: D.list(o_Action), createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -8544,6 +8940,7 @@ export const getGatewayTarget: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /gateways/{gatewayIdentifier}/targets/{targetId}/",
+    input: { gatewayIdentifier: 0, targetId: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -8587,7 +8984,7 @@ export const getHarness: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /harnesses/{harnessId}",
-    input: { harnessVersion: D.m({ query: "harnessVersion" }) },
+    input: { harnessId: 0, harnessVersion: D.m({ query: "harnessVersion" }) },
     output: { harness: o_Harness },
   },
   errors: [
@@ -8621,6 +9018,7 @@ export const getHarnessEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /harnesses/{harnessId}/endpoints/{endpointName}",
+    input: { harnessId: 0, endpointName: 0 },
     output: { endpoint: o_HarnessEndpoint },
   },
   errors: [
@@ -8654,7 +9052,7 @@ export const getMemory: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memories/{memoryId}/details",
-    input: { view: D.m({ query: "view" }) },
+    input: { memoryId: 0, view: D.m({ query: "view" }) },
     output: { memory: o_Memory },
   },
   errors: [
@@ -8690,6 +9088,7 @@ export const getOauth2CredentialProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/GetOauth2CredentialProvider",
+    input: { name: 0 },
     output: {
       oauth2ProviderConfigOutput: o_Oauth2ProviderConfigOutput,
       createdTime: D.ts,
@@ -8730,6 +9129,7 @@ export const getOnlineEvaluationConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /online-evaluation-configs/{onlineEvaluationConfigId}",
+    input: { onlineEvaluationConfigId: 0 },
     output: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -8763,6 +9163,7 @@ export const getPaymentConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /payments/managers/{paymentManagerId}/connectors/{paymentConnectorId}",
+    input: { paymentManagerId: 0, paymentConnectorId: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -8798,6 +9199,7 @@ export const getPaymentCredentialProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/GetPaymentCredentialProvider",
+    input: { name: 0 },
     output: { createdTime: D.ts, lastUpdatedTime: D.ts },
     body: true,
   },
@@ -8834,6 +9236,7 @@ export const getPaymentManager: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /payments/managers/{paymentManagerId}",
+    input: { paymentManagerId: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -8867,6 +9270,7 @@ export const getPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /policy-engines/{policyEngineId}/policies/{policyId}",
+    input: { policyEngineId: 0, policyId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts, description: D.secret },
   },
   errors: [
@@ -8900,6 +9304,7 @@ export const getPolicyEngine: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /policy-engines/{policyEngineId}",
+    input: { policyEngineId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts, description: D.secret },
   },
   errors: [
@@ -8933,6 +9338,7 @@ export const getPolicyEngineSummary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /policy-engine-summaries/{policyEngineId}",
+    input: { policyEngineId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -8966,6 +9372,7 @@ export const getPolicyGeneration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /policy-engines/{policyEngineId}/policy-generations/{policyGenerationId}",
+    input: { policyGenerationId: 0, policyEngineId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -8999,6 +9406,7 @@ export const getPolicyGenerationSummary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /policy-engines/{policyEngineId}/policy-generation-summaries/{policyGenerationId}",
+    input: { policyGenerationId: 0, policyEngineId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -9032,6 +9440,7 @@ export const getPolicySummary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /policy-engines/{policyEngineId}/policy-summaries/{policyId}",
+    input: { policyEngineId: 0, policyId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -9065,6 +9474,7 @@ export const getRegistry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /registries/{registryId}",
+    input: { registryId: 0 },
     output: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -9099,6 +9509,7 @@ export const getRegistryRecord: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /registries/{registryId}/records/{recordId}",
+    input: { registryId: 0, recordId: 0 },
     output: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -9132,7 +9543,11 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /resourcepolicy/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /resourcepolicy/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -9165,6 +9580,7 @@ export const getTokenVault: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/get-token-vault",
+    input: { tokenVaultId: 0 },
     output: { lastModifiedDate: D.ts },
     body: true,
   },
@@ -9201,6 +9617,7 @@ export const getWorkloadIdentity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/GetWorkloadIdentity",
+    input: { name: 0 },
     output: { createdTime: D.ts, lastUpdatedTime: D.ts },
     body: true,
   },
@@ -9237,6 +9654,7 @@ export const listAgentRuntimeEndpoints: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /runtimes/{agentRuntimeId}/runtime-endpoints/",
     input: {
+      agentRuntimeId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -9328,6 +9746,7 @@ export const listAgentRuntimeVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /runtimes/{agentRuntimeId}/versions/",
     input: {
+      agentRuntimeId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -9371,6 +9790,7 @@ export const listAgentRuntimeVersionsByCapacityProvider: API.PaginatedOperationM
     service: svc,
     http: "POST /capacity-providers/{capacityProviderId}/runtime-versions",
     input: {
+      capacityProviderId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -9413,6 +9833,7 @@ export const listApiKeyCredentialProviders: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/ListApiKeyCredentialProviders",
+    input: { nextToken: 0, maxResults: 0 },
     output: {
       credentialProviders: D.list({ createdTime: D.ts, lastUpdatedTime: D.ts }),
     },
@@ -9459,6 +9880,7 @@ export const listBrowserProfiles: API.PaginatedOperationMethod<
     input: {
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      name: 0,
     },
     output: {
       profileSummaries: D.list({
@@ -9690,8 +10112,10 @@ export const listConfigurationBundleVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /configuration-bundles/{bundleId}/versions",
     input: {
+      bundleId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      filter: { branchName: 0, createdByName: 0, latestPerBranch: 0 },
     },
     output: { versions: D.list({ versionCreatedAt: D.ts }) },
     body: true,
@@ -9736,6 +10160,7 @@ export const listDatasetExamples: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /datasets/{datasetId}/examples",
     input: {
+      datasetId: 0,
       datasetVersion: D.m({ query: "datasetVersion" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -9823,6 +10248,7 @@ export const listDatasetVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /datasets/{datasetId}/versions",
     input: {
+      datasetId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -9915,6 +10341,7 @@ export const listGatewayRateLimits: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /gateways/{gatewayIdentifier}/rate-limits",
     input: {
+      gatewayIdentifier: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -9959,6 +10386,7 @@ export const listGatewayRules: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /gateways/{gatewayIdentifier}/rules",
     input: {
+      gatewayIdentifier: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -10057,6 +10485,7 @@ export const listGatewayTargets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /gateways/{gatewayIdentifier}/targets/",
     input: {
+      gatewayIdentifier: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -10109,6 +10538,7 @@ export const listHarnessEndpoints: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /harnesses/{harnessId}/endpoints",
     input: {
+      harnessId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -10195,6 +10625,7 @@ export const listHarnessVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /harnesses/{harnessId}/versions",
     input: {
+      harnessId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -10238,6 +10669,7 @@ export const listMemories: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memories/",
+    input: { maxResults: 0, nextToken: 0 },
     output: { memories: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
     body: true,
   },
@@ -10280,6 +10712,7 @@ export const listOauth2CredentialProviders: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/ListOauth2CredentialProviders",
+    input: { nextToken: 0, maxResults: 0 },
     output: {
       credentialProviders: D.list({ createdTime: D.ts, lastUpdatedTime: D.ts }),
     },
@@ -10372,6 +10805,7 @@ export const listPaymentConnectors: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /payments/managers/{paymentManagerId}/connectors-list",
     input: {
+      paymentManagerId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -10415,6 +10849,7 @@ export const listPaymentCredentialProviders: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/ListPaymentCredentialProviders",
+    input: { nextToken: 0, maxResults: 0 },
     output: {
       credentialProviders: D.list({ createdTime: D.ts, lastUpdatedTime: D.ts }),
     },
@@ -10506,6 +10941,7 @@ export const listPolicies: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      policyEngineId: 0,
       targetResourceScope: D.m({ query: "targetResourceScope" }),
     },
     output: {
@@ -10645,6 +11081,8 @@ export const listPolicyGenerationAssets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /policy-engines/{policyEngineId}/policy-generations/{policyGenerationId}/assets",
     input: {
+      policyGenerationId: 0,
+      policyEngineId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -10690,6 +11128,7 @@ export const listPolicyGenerations: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      policyEngineId: 0,
     },
     output: { policyGenerations: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
   },
@@ -10734,6 +11173,7 @@ export const listPolicyGenerationSummaries: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      policyEngineId: 0,
     },
     output: { policyGenerations: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
   },
@@ -10778,6 +11218,7 @@ export const listPolicySummaries: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      policyEngineId: 0,
       targetResourceScope: D.m({ query: "targetResourceScope" }),
     },
     output: { policies: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
@@ -10872,6 +11313,7 @@ export const listRegistryRecords: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /registries/{registryId}/records",
     input: {
+      registryId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
       name: D.m({ query: "name" }),
@@ -10923,7 +11365,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -10957,6 +11403,7 @@ export const listWorkloadIdentities: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/ListWorkloadIdentities",
+    input: { nextToken: 0, maxResults: 0 },
     body: true,
   },
   errors: [
@@ -10999,6 +11446,7 @@ export const putResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /resourcepolicy/{resourceArn}",
+    input: { resourceArn: 0, policy: 0 },
     body: true,
   },
   errors: [
@@ -11034,6 +11482,7 @@ export const setTokenVaultCMK: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/set-token-vault-cmk",
+    input: { tokenVaultId: 0, kmsConfiguration: { keyType: 0, kmsKeyArn: 0 } },
     output: { lastModifiedDate: D.ts },
     body: true,
   },
@@ -11072,7 +11521,13 @@ export const startPolicyGeneration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /policy-engines/{policyEngineId}/policy-generations",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      policyEngineId: 0,
+      resource: { arn: 0 },
+      content: { rawText: 0 },
+      name: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -11110,6 +11565,7 @@ export const submitRegistryRecordForApproval: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /registries/{registryId}/records/{recordId}/submit-for-approval",
+    input: { registryId: 0, recordId: 0 },
     output: { updatedAt: D.ts },
   },
   errors: [
@@ -11150,6 +11606,7 @@ export const synchronizeGatewayTargets: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /gateways/{gatewayIdentifier}/synchronizeTargets",
+    input: { gatewayIdentifier: 0, targetIdList: 0 },
     output: {
       targets: D.list({
         createdAt: D.ts,
@@ -11198,7 +11655,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -11233,7 +11695,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -11268,7 +11730,22 @@ export const updateAgentRuntime: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /runtimes/{agentRuntimeId}/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      agentRuntimeId: 0,
+      agentRuntimeArtifact: i_AgentRuntimeArtifact,
+      roleArn: 0,
+      networkConfiguration: i_NetworkConfiguration,
+      description: 0,
+      authorizerConfiguration: i_AuthorizerConfiguration,
+      requestHeaderConfiguration: i_RequestHeaderConfiguration,
+      protocolConfiguration: i_ProtocolConfiguration,
+      lifecycleConfiguration: i_LifecycleConfiguration,
+      metadataConfiguration: { requireMMDSV2: 0 },
+      environmentVariables: 0,
+      filesystemConfigurations: D.list(i_FilesystemConfiguration),
+      capacityProviderConfiguration: i_CapacityProviderConfiguration,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
     body: true,
   },
@@ -11307,7 +11784,13 @@ export const updateAgentRuntimeEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /runtimes/{agentRuntimeId}/runtime-endpoints/{endpointName}/",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      agentRuntimeId: 0,
+      endpointName: 0,
+      agentRuntimeVersion: 0,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
     body: true,
   },
@@ -11349,6 +11832,12 @@ export const updateApiKeyCredentialProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/UpdateApiKeyCredentialProvider",
+    input: {
+      name: 0,
+      apiKey: 0,
+      apiKeySecretConfig: i_SecretReference,
+      apiKeySecretSource: 0,
+    },
     output: { createdTime: D.ts, lastUpdatedTime: D.ts },
     body: true,
   },
@@ -11390,7 +11879,11 @@ export const updateCapacityProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /capacity-providers/{capacityProviderId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      capacityProviderId: 0,
+      description: i_UpdatedDescription,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
     body: true,
   },
@@ -11428,7 +11921,18 @@ export const updateConfigurationBundle: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /configuration-bundles/{bundleId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      bundleId: 0,
+      bundleName: 0,
+      description: 0,
+      components: D.map(i_ComponentConfiguration),
+      parentVersionIds: 0,
+      branchName: 0,
+      commitMessage: 0,
+      createdBy: i_VersionCreatedBySource,
+      kmsKeyArn: 0,
+    },
     output: { updatedAt: D.ts },
     body: true,
   },
@@ -11465,7 +11969,11 @@ export const updateDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /datasets/{datasetId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      datasetId: 0,
+      clientToken: D.m({ idempotency: true }),
+      description: 0,
+    },
     output: { updatedAt: D.ts },
     body: true,
   },
@@ -11503,7 +12011,11 @@ export const updateDatasetExamples: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datasets/{datasetId}/examples/update",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      datasetId: 0,
+      clientToken: D.m({ idempotency: true }),
+      examples: 0,
+    },
     output: { updatedAt: D.ts },
     body: true,
   },
@@ -11542,7 +12054,14 @@ export const updateEvaluator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /evaluators/{evaluatorId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      evaluatorId: 0,
+      description: 0,
+      evaluatorConfig: i_EvaluatorConfig,
+      level: 0,
+      kmsKeyArn: 0,
+    },
     output: { updatedAt: D.ts },
     body: true,
   },
@@ -11581,6 +12100,22 @@ export const updateGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /gateways/{gatewayIdentifier}/",
+    input: {
+      gatewayIdentifier: 0,
+      name: 0,
+      description: 0,
+      roleArn: 0,
+      protocolType: 0,
+      protocolConfiguration: i_GatewayProtocolConfiguration,
+      authorizerType: 0,
+      authorizerConfiguration: i_AuthorizerConfiguration,
+      kmsKeyArn: 0,
+      customTransformConfiguration: { lambda: { arn: 0 } },
+      interceptorConfigurations: D.list(i_GatewayInterceptorConfiguration),
+      policyEngineConfiguration: i_GatewayPolicyEngineConfiguration,
+      exceptionLevel: 0,
+      wafConfiguration: { failureMode: 0 },
+    },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -11623,6 +12158,12 @@ export const updateGatewayRateLimit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /gateways/{gatewayIdentifier}/rate-limits/{rateLimitId}",
+    input: {
+      gatewayIdentifier: 0,
+      rateLimitId: 0,
+      description: 0,
+      entries: D.list(i_LimitEntry),
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -11659,6 +12200,14 @@ export const updateGatewayRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /gateways/{gatewayIdentifier}/rules/{ruleId}",
+    input: {
+      gatewayIdentifier: 0,
+      ruleId: 0,
+      priority: 0,
+      conditions: D.list(i_Condition),
+      actions: D.list(i_Action),
+      description: 0,
+    },
     output: { actions: D.list(o_Action), createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -11698,6 +12247,18 @@ export const updateGatewayTarget: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /gateways/{gatewayIdentifier}/targets/{targetId}/",
+    input: {
+      gatewayIdentifier: 0,
+      targetId: 0,
+      name: 0,
+      description: 0,
+      targetConfiguration: i_TargetConfiguration,
+      credentialProviderConfigurations: D.list(
+        i_CredentialProviderConfiguration,
+      ),
+      metadataConfiguration: i_MetadataConfiguration,
+      privateEndpoint: i_PrivateEndpoint,
+    },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -11745,7 +12306,25 @@ export const updateHarness: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /harnesses/{harnessId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      harnessId: 0,
+      clientToken: D.m({ idempotency: true }),
+      executionRoleArn: 0,
+      environment: i_HarnessEnvironmentProviderRequest,
+      environmentArtifact: { optionalValue: i_HarnessEnvironmentArtifact },
+      environmentVariables: 0,
+      authorizerConfiguration: i_UpdatedAuthorizerConfiguration,
+      model: i_HarnessModelConfiguration,
+      systemPrompt: D.list(i_HarnessSystemContentBlock),
+      tools: D.list(i_HarnessTool),
+      skills: D.list(i_HarnessSkill),
+      allowedTools: 0,
+      memory: { optionalValue: i_HarnessMemoryConfiguration },
+      truncation: i_HarnessTruncationConfiguration,
+      maxIterations: 0,
+      maxTokens: 0,
+      timeoutSeconds: 0,
+    },
     output: { harness: o_Harness },
     body: true,
   },
@@ -11783,7 +12362,13 @@ export const updateHarnessEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /harnesses/{harnessId}/endpoints/{endpointName}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      harnessId: 0,
+      endpointName: 0,
+      targetVersion: 0,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { endpoint: o_HarnessEndpoint },
     body: true,
   },
@@ -11822,7 +12407,67 @@ export const updateMemory: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /memories/{memoryId}/update",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      memoryId: 0,
+      description: 0,
+      eventExpiryDuration: 0,
+      memoryExecutionRoleArn: 0,
+      memoryStrategies: {
+        addMemoryStrategies: D.list(i_MemoryStrategyInput),
+        modifyMemoryStrategies: D.list({
+          memoryStrategyId: 0,
+          description: 0,
+          namespaces: 0,
+          namespaceTemplates: 0,
+          configuration: {
+            extraction: {
+              customExtractionConfiguration: {
+                semanticExtractionOverride:
+                  i_SemanticOverrideExtractionConfigurationInput,
+                userPreferenceExtractionOverride:
+                  i_UserPreferenceOverrideExtractionConfigurationInput,
+                episodicExtractionOverride:
+                  i_EpisodicOverrideExtractionConfigurationInput,
+              },
+            },
+            consolidation: {
+              customConsolidationConfiguration: {
+                semanticConsolidationOverride:
+                  i_SemanticOverrideConsolidationConfigurationInput,
+                summaryConsolidationOverride:
+                  i_SummaryOverrideConsolidationConfigurationInput,
+                userPreferenceConsolidationOverride:
+                  i_UserPreferenceOverrideConsolidationConfigurationInput,
+                episodicConsolidationOverride:
+                  i_EpisodicOverrideConsolidationConfigurationInput,
+              },
+            },
+            reflection: {
+              episodicReflectionConfiguration:
+                i_EpisodicReflectionConfigurationInput,
+              customReflectionConfiguration: {
+                episodicReflectionOverride:
+                  i_EpisodicOverrideReflectionConfigurationInput,
+              },
+            },
+            selfManagedConfiguration: {
+              triggerConditions: D.list(i_TriggerConditionInput),
+              invocationConfiguration: {
+                topicArn: 0,
+                payloadDeliveryBucketName: 0,
+              },
+              historicalContextWindowSize: 0,
+            },
+          },
+          memoryRecordSchema: i_MemoryRecordSchema,
+        }),
+        deleteMemoryStrategies: D.list({ memoryStrategyId: 0 }),
+      },
+      addIndexedKeys: D.list(i_IndexedKey),
+      namespaceKeys: D.list(i_NamespaceKeyEntry),
+      streamDeliveryResources: i_StreamDeliveryResources,
+    },
     output: { memory: o_Memory },
     body: true,
   },
@@ -11864,6 +12509,11 @@ export const updateOauth2CredentialProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/UpdateOauth2CredentialProvider",
+    input: {
+      name: 0,
+      credentialProviderVendor: 0,
+      oauth2ProviderConfigInput: i_Oauth2ProviderConfigInput,
+    },
     output: {
       oauth2ProviderConfigOutput: o_Oauth2ProviderConfigOutput,
       createdTime: D.ts,
@@ -11909,7 +12559,18 @@ export const updateOnlineEvaluationConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /online-evaluation-configs/{onlineEvaluationConfigId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      onlineEvaluationConfigId: 0,
+      description: 0,
+      rule: i_Rule,
+      dataSourceConfig: i_DataSourceConfig,
+      evaluators: D.list(i_EvaluatorReference),
+      insights: D.list(i_Insight),
+      clusteringConfig: i_ClusteringConfig,
+      evaluationExecutionRoleArn: 0,
+      executionStatus: 0,
+    },
     output: { updatedAt: D.ts },
     body: true,
   },
@@ -11949,7 +12610,16 @@ export const updatePaymentConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /payments/managers/{paymentManagerId}/connectors/{paymentConnectorId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      paymentManagerId: 0,
+      paymentConnectorId: 0,
+      description: 0,
+      type: 0,
+      credentialProviderConfigurations: D.list(
+        i_CredentialsProviderConfiguration,
+      ),
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { lastUpdatedAt: D.ts },
     body: true,
   },
@@ -11992,6 +12662,11 @@ export const updatePaymentCredentialProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/UpdatePaymentCredentialProvider",
+    input: {
+      name: 0,
+      credentialProviderVendor: 0,
+      providerConfigurationInput: i_PaymentProviderConfigurationInput,
+    },
     output: { createdTime: D.ts, lastUpdatedTime: D.ts },
     body: true,
   },
@@ -12033,7 +12708,15 @@ export const updatePaymentManager: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /payments/managers/{paymentManagerId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      paymentManagerId: 0,
+      description: 0,
+      authorizerType: 0,
+      authorizerConfiguration: i_AuthorizerConfiguration,
+      roleArn: 0,
+      clientToken: D.m({ idempotency: true }),
+      kmsKeyArn: 0,
+    },
     output: { lastUpdatedAt: D.ts },
     body: true,
   },
@@ -12074,6 +12757,14 @@ export const updatePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /policy-engines/{policyEngineId}/policies/{policyId}",
+    input: {
+      policyEngineId: 0,
+      policyId: 0,
+      description: i_UpdatedDescription,
+      definition: i_PolicyDefinition,
+      validationMode: 0,
+      enforcementMode: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts, description: D.secret },
     body: true,
   },
@@ -12111,6 +12802,7 @@ export const updatePolicyEngine: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /policy-engines/{policyEngineId}",
+    input: { policyEngineId: 0, description: i_UpdatedDescription },
     output: { createdAt: D.ts, updatedAt: D.ts, description: D.secret },
     body: true,
   },
@@ -12148,6 +12840,13 @@ export const updateRegistry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /registries/{registryId}",
+    input: {
+      registryId: 0,
+      name: 0,
+      description: i_UpdatedDescription,
+      authorizerConfiguration: i_UpdatedAuthorizerConfiguration,
+      approvalConfiguration: { optionalValue: i_ApprovalConfiguration },
+    },
     output: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -12185,6 +12884,37 @@ export const updateRegistryRecord: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /registries/{registryId}/records/{recordId}",
+    input: {
+      registryId: 0,
+      recordId: 0,
+      name: 0,
+      description: i_UpdatedDescription,
+      descriptorType: 0,
+      descriptors: {
+        optionalValue: {
+          mcp: {
+            optionalValue: {
+              server: { optionalValue: i_ServerDefinition },
+              tools: { optionalValue: i_ToolsDefinition },
+            },
+          },
+          a2a: { optionalValue: i_A2aDescriptor },
+          custom: { optionalValue: i_CustomDescriptor },
+          agentSkills: {
+            optionalValue: {
+              skillMd: { optionalValue: i_SkillMdDefinition },
+              skillDefinition: { optionalValue: i_SkillDefinition },
+            },
+          },
+        },
+      },
+      recordVersion: 0,
+      synchronizationType: { optionalValue: 0 },
+      synchronizationConfiguration: {
+        optionalValue: i_SynchronizationConfiguration,
+      },
+      triggerSynchronization: 0,
+    },
     output: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -12221,6 +12951,7 @@ export const updateRegistryRecordStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /registries/{registryId}/records/{recordId}/status",
+    input: { registryId: 0, recordId: 0, status: 0, statusReason: 0 },
     output: { updatedAt: D.ts },
     body: true,
   },
@@ -12257,6 +12988,7 @@ export const updateWorkloadIdentity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identities/UpdateWorkloadIdentity",
+    input: { name: 0, allowedResourceOauth2ReturnUrls: 0 },
     output: { createdTime: D.ts, lastUpdatedTime: D.ts },
     body: true,
   },
@@ -12273,6 +13005,651 @@ export const updateWorkloadIdentity: API.OperationMethod<
   operationName: "UpdateWorkloadIdentity",
 })) as any;
 
+const i_A2aDescriptor: D.LazyStruct = () => ({
+  agentCard: { schemaVersion: 0, inlineContent: 0 },
+});
+const i_Action: D.LazyStruct = () => ({
+  configurationBundle: {
+    staticOverride: { bundleArn: 0, bundleVersion: 0 },
+    weightedOverride: {
+      trafficSplit: D.list({
+        name: 0,
+        weight: 0,
+        configurationBundle: { bundleArn: 0, bundleVersion: 0 },
+        description: 0,
+        metadata: 0,
+      }),
+    },
+  },
+  routeToTarget: {
+    staticRoute: { targetName: 0 },
+    weightedRoute: {
+      trafficSplit: D.list({
+        name: 0,
+        weight: 0,
+        targetName: 0,
+        description: 0,
+        metadata: 0,
+      }),
+    },
+  },
+});
+const i_AgentRuntimeArtifact: D.LazyStruct = () => ({
+  containerConfiguration: i_ContainerConfiguration,
+  codeConfiguration: { code: { s3: i_S3Location }, runtime: 0, entryPoint: 0 },
+});
+const i_ApprovalConfiguration: D.LazyStruct = () => ({ autoApproval: 0 });
+const i_AuthorizerConfiguration: D.LazyStruct = () => ({
+  customJWTAuthorizer: {
+    discoveryUrl: 0,
+    allowedAudience: 0,
+    allowedClients: 0,
+    allowedScopes: 0,
+    advertisedScopeMapping: 0,
+    customClaims: D.list({
+      inboundTokenClaimName: 0,
+      inboundTokenClaimValueType: 0,
+      authorizingClaimMatchValue: {
+        claimMatchValue: { matchValueString: 0, matchValueStringList: 0 },
+        claimMatchOperator: 0,
+      },
+    }),
+    privateEndpoint: i_PrivateEndpoint,
+    privateEndpointOverrides: D.list(i_PrivateEndpointOverride),
+    allowedWorkloadConfiguration: {
+      hostingEnvironments: D.list({ arn: 0 }),
+      workloadIdentities: 0,
+    },
+  },
+});
+const i_CapacityProviderConfiguration: D.LazyStruct = () => ({
+  capacityProviderArn: 0,
+});
+const i_Certificate: D.LazyStruct = () => ({
+  location: { secretsManager: { secretArn: 0 } },
+});
+const i_ClusteringConfig: D.LazyStruct = () => ({ frequencies: 0 });
+const i_ComponentConfiguration: D.LazyStruct = () => ({ configuration: 0 });
+const i_Condition: D.LazyStruct = () => ({
+  matchPrincipals: { anyOf: D.list({ iamPrincipal: { arn: 0, operator: 0 } }) },
+  matchPaths: { anyOf: 0 },
+});
+const i_CredentialProviderConfiguration: D.LazyStruct = () => ({
+  credentialProviderType: 0,
+  credentialProvider: {
+    oauthCredentialProvider: i_OAuthCredentialProvider,
+    apiKeyCredentialProvider: {
+      providerArn: 0,
+      credentialParameterName: 0,
+      credentialPrefix: 0,
+      credentialLocation: 0,
+    },
+    iamCredentialProvider: { service: 0, region: 0 },
+  },
+});
+const i_CredentialsProviderConfiguration: D.LazyStruct = () => ({
+  coinbaseCDP: i_PaymentCredentialProviderConfiguration,
+  stripePrivy: i_PaymentCredentialProviderConfiguration,
+});
+const i_CustomDescriptor: D.LazyStruct = () => ({ inlineContent: 0 });
+const i_DataSourceConfig: D.LazyStruct = () => ({
+  cloudWatchLogs: { logGroupNames: 0, serviceNames: 0 },
+});
+const i_DataSourceType: D.LazyStruct = () => ({
+  inlineExamples: { examples: 0 },
+  s3Source: { s3Uri: 0 },
+});
+const i_EpisodicOverrideConsolidationConfigurationInput: D.LazyStruct = () => ({
+  appendToPrompt: 0,
+  modelId: 0,
+});
+const i_EpisodicOverrideExtractionConfigurationInput: D.LazyStruct = () => ({
+  appendToPrompt: 0,
+  modelId: 0,
+});
+const i_EpisodicOverrideReflectionConfigurationInput: D.LazyStruct = () => ({
+  appendToPrompt: 0,
+  modelId: 0,
+  namespaces: 0,
+  namespaceTemplates: 0,
+  memoryRecordSchema: i_MemoryRecordSchema,
+});
+const i_EpisodicReflectionConfigurationInput: D.LazyStruct = () => ({
+  namespaces: 0,
+  namespaceTemplates: 0,
+  memoryRecordSchema: i_MemoryRecordSchema,
+});
+const i_EvaluatorConfig: D.LazyStruct = () => ({
+  llmAsAJudge: {
+    instructions: 0,
+    ratingScale: {
+      numerical: D.list({ definition: 0, value: 0, label: 0 }),
+      categorical: D.list({ definition: 0, label: 0 }),
+    },
+    modelConfig: i_EvaluatorModelConfig,
+  },
+  codeBased: { lambdaConfig: { lambdaArn: 0, lambdaTimeoutInSeconds: 0 } },
+  derived: { baseEvaluatorId: 0, modelConfig: i_EvaluatorModelConfig },
+});
+const i_EvaluatorReference: D.LazyStruct = () => ({ evaluatorId: 0 });
+const i_FilesystemConfiguration: D.LazyStruct = () => ({
+  sessionStorage: { mountPath: 0 },
+  s3FilesAccessPoint: { accessPointArn: 0, mountPath: 0 },
+  efsAccessPoint: { accessPointArn: 0, mountPath: 0 },
+  capacityProviderVolume: { volumeName: 0, mountPath: 0 },
+});
+const i_GatewayInterceptorConfiguration: D.LazyStruct = () => ({
+  interceptor: { lambda: { arn: 0 } },
+  interceptionPoints: 0,
+  inputConfiguration: {
+    passRequestHeaders: 0,
+    payloadFilter: { exclude: D.list({ field: 0 }) },
+  },
+});
+const i_GatewayPolicyEngineConfiguration: D.LazyStruct = () => ({
+  arn: 0,
+  mode: 0,
+});
+const i_GatewayProtocolConfiguration: D.LazyStruct = () => ({
+  mcp: {
+    supportedVersions: 0,
+    instructions: 0,
+    searchType: 0,
+    sessionConfiguration: { sessionTimeoutInSeconds: 0 },
+    streamingConfiguration: { enableResponseStreaming: 0 },
+  },
+});
+const i_HarnessEnvironmentArtifact: D.LazyStruct = () => ({
+  containerConfiguration: i_ContainerConfiguration,
+});
+const i_HarnessEnvironmentProviderRequest: D.LazyStruct = () => ({
+  agentCoreRuntimeEnvironment: {
+    lifecycleConfiguration: i_LifecycleConfiguration,
+    networkConfiguration: i_NetworkConfiguration,
+    filesystemConfigurations: D.list(i_FilesystemConfiguration),
+  },
+});
+const i_HarnessMemoryConfiguration: D.LazyStruct = () => ({
+  agentCoreMemoryConfiguration: {
+    arn: 0,
+    actorId: 0,
+    messagesCount: 0,
+    retrievalConfig: D.map({ topK: 0, relevanceScore: 0, strategyId: 0 }),
+  },
+  managedMemoryConfiguration: {
+    arn: 0,
+    strategies: 0,
+    eventExpiryDuration: 0,
+    encryptionKeyArn: 0,
+  },
+  disabled: {},
+});
+const i_HarnessModelConfiguration: D.LazyStruct = () => ({
+  bedrockModelConfig: {
+    modelId: 0,
+    maxTokens: 0,
+    temperature: 0,
+    topP: 0,
+    apiFormat: 0,
+    additionalParams: 0,
+  },
+  openAiModelConfig: {
+    modelId: 0,
+    apiKeyArn: 0,
+    maxTokens: 0,
+    temperature: 0,
+    topP: 0,
+    apiFormat: 0,
+    additionalParams: 0,
+  },
+  geminiModelConfig: {
+    modelId: 0,
+    apiKeyArn: 0,
+    maxTokens: 0,
+    temperature: 0,
+    topP: 0,
+    topK: 0,
+    additionalParams: 0,
+  },
+  liteLlmModelConfig: {
+    modelId: 0,
+    apiKeyArn: 0,
+    apiBase: 0,
+    maxTokens: 0,
+    temperature: 0,
+    topP: 0,
+    additionalParams: 0,
+  },
+});
+const i_HarnessSkill: D.LazyStruct = () => ({
+  path: 0,
+  s3: { uri: 0 },
+  git: { url: 0, path: 0, auth: { credentialArn: 0, username: 0 } },
+  awsSkills: { paths: 0 },
+});
+const i_HarnessSystemContentBlock: D.LazyStruct = () => ({ text: 0 });
+const i_HarnessTool: D.LazyStruct = () => ({
+  type: 0,
+  name: 0,
+  config: {
+    remoteMcp: { url: 0, headers: 0 },
+    agentCoreBrowser: { browserArn: 0 },
+    agentCoreGateway: {
+      gatewayArn: 0,
+      outboundAuth: {
+        awsIam: i_Unit,
+        none: i_Unit,
+        oauth: i_OAuthCredentialProvider,
+      },
+    },
+    inlineFunction: { description: 0, inputSchema: 0 },
+    agentCoreCodeInterpreter: { codeInterpreterArn: 0 },
+  },
+});
+const i_HarnessTruncationConfiguration: D.LazyStruct = () => ({
+  strategy: 0,
+  config: {
+    slidingWindow: { messagesCount: 0 },
+    summarization: {
+      summaryRatio: 0,
+      preserveRecentMessages: 0,
+      summarizationSystemPrompt: 0,
+    },
+  },
+});
+const i_IndexedKey: D.LazyStruct = () => ({ key: 0, type: 0 });
+const i_Insight: D.LazyStruct = () => ({ insightId: 0 });
+const i_LifecycleConfiguration: D.LazyStruct = () => ({
+  idleRuntimeSessionTimeout: 0,
+  maxLifetime: 0,
+});
+const i_LimitEntry: D.LazyStruct = () => ({
+  dimensions: 0,
+  requests: D.list(i_RateConfig),
+  tokens: D.list(i_RateConfig),
+  connections: D.list(i_RateConfig),
+});
+const i_MemoryRecordSchema: D.LazyStruct = () => ({
+  metadataSchema: D.list({
+    key: 0,
+    type: 0,
+    extractionType: 0,
+    extractionConfig: {
+      llmExtractionConfig: {
+        llmExtractionInstruction: 0,
+        definition: 0,
+        validation: {
+          stringValidation: { allowedValues: 0 },
+          stringListValidation: { allowedValues: 0, maxItems: 0 },
+          numberValidation: { minValue: 0, maxValue: 0 },
+        },
+      },
+    },
+  }),
+});
+const i_MemoryStrategyInput: D.LazyStruct = () => ({
+  semanticMemoryStrategy: {
+    name: 0,
+    description: 0,
+    namespaces: 0,
+    namespaceTemplates: 0,
+    memoryRecordSchema: i_MemoryRecordSchema,
+  },
+  summaryMemoryStrategy: {
+    name: 0,
+    description: 0,
+    namespaces: 0,
+    namespaceTemplates: 0,
+    memoryRecordSchema: i_MemoryRecordSchema,
+  },
+  userPreferenceMemoryStrategy: {
+    name: 0,
+    description: 0,
+    namespaces: 0,
+    namespaceTemplates: 0,
+    memoryRecordSchema: i_MemoryRecordSchema,
+  },
+  customMemoryStrategy: {
+    name: 0,
+    description: 0,
+    namespaces: 0,
+    namespaceTemplates: 0,
+    configuration: {
+      semanticOverride: {
+        extraction: i_SemanticOverrideExtractionConfigurationInput,
+        consolidation: i_SemanticOverrideConsolidationConfigurationInput,
+      },
+      summaryOverride: {
+        consolidation: i_SummaryOverrideConsolidationConfigurationInput,
+      },
+      userPreferenceOverride: {
+        extraction: i_UserPreferenceOverrideExtractionConfigurationInput,
+        consolidation: i_UserPreferenceOverrideConsolidationConfigurationInput,
+      },
+      episodicOverride: {
+        extraction: i_EpisodicOverrideExtractionConfigurationInput,
+        consolidation: i_EpisodicOverrideConsolidationConfigurationInput,
+        reflection: i_EpisodicOverrideReflectionConfigurationInput,
+      },
+      selfManagedConfiguration: {
+        triggerConditions: D.list(i_TriggerConditionInput),
+        invocationConfiguration: { topicArn: 0, payloadDeliveryBucketName: 0 },
+        historicalContextWindowSize: 0,
+      },
+    },
+    memoryRecordSchema: i_MemoryRecordSchema,
+  },
+  episodicMemoryStrategy: {
+    name: 0,
+    description: 0,
+    namespaces: 0,
+    namespaceTemplates: 0,
+    reflectionConfiguration: i_EpisodicReflectionConfigurationInput,
+    memoryRecordSchema: i_MemoryRecordSchema,
+  },
+});
+const i_MetadataConfiguration: D.LazyStruct = () => ({
+  allowedRequestHeaders: 0,
+  allowedQueryParameters: 0,
+  allowedResponseHeaders: 0,
+});
+const i_NamespaceKeyEntry: D.LazyStruct = () => ({
+  key: 0,
+  validation: { allowedValues: 0, regexPattern: 0 },
+});
+const i_NetworkConfiguration: D.LazyStruct = () => ({
+  networkMode: 0,
+  networkModeConfig: i_VpcConfig,
+});
+const i_Oauth2ProviderConfigInput: D.LazyStruct = () => ({
+  customOauth2ProviderConfig: {
+    oauthDiscovery: {
+      discoveryUrl: 0,
+      authorizationServerMetadata: {
+        issuer: 0,
+        authorizationEndpoint: 0,
+        tokenEndpoint: 0,
+        responseTypes: 0,
+        tokenEndpointAuthMethods: 0,
+      },
+    },
+    clientId: 0,
+    clientSecret: 0,
+    clientSecretConfig: i_SecretReference,
+    clientSecretSource: 0,
+    onBehalfOfTokenExchangeConfig: {
+      grantType: 0,
+      tokenExchangeGrantTypeConfig: {
+        actorTokenContent: 0,
+        actorTokenScopes: 0,
+      },
+    },
+    clientAuthenticationMethod: 0,
+    privateKeyJwtConfig: {
+      privateKeySource: { kmsKeySource: { kmsKeyArn: 0 } },
+      signingAlgorithm: 0,
+      additionalHeaderClaims: 0,
+      additionalPayloadClaims: 0,
+    },
+    privateEndpoint: i_PrivateEndpoint,
+    privateEndpointOverrides: D.list(i_PrivateEndpointOverride),
+  },
+  googleOauth2ProviderConfig: {
+    clientId: 0,
+    clientSecret: 0,
+    clientSecretConfig: i_SecretReference,
+    clientSecretSource: 0,
+  },
+  githubOauth2ProviderConfig: {
+    clientId: 0,
+    clientSecret: 0,
+    clientSecretConfig: i_SecretReference,
+    clientSecretSource: 0,
+  },
+  slackOauth2ProviderConfig: {
+    clientId: 0,
+    clientSecret: 0,
+    clientSecretConfig: i_SecretReference,
+    clientSecretSource: 0,
+  },
+  salesforceOauth2ProviderConfig: {
+    clientId: 0,
+    clientSecret: 0,
+    clientSecretConfig: i_SecretReference,
+    clientSecretSource: 0,
+  },
+  microsoftOauth2ProviderConfig: {
+    clientId: 0,
+    clientSecret: 0,
+    clientSecretConfig: i_SecretReference,
+    clientSecretSource: 0,
+    tenantId: 0,
+  },
+  atlassianOauth2ProviderConfig: {
+    clientId: 0,
+    clientSecret: 0,
+    clientSecretConfig: i_SecretReference,
+    clientSecretSource: 0,
+  },
+  linkedinOauth2ProviderConfig: {
+    clientId: 0,
+    clientSecret: 0,
+    clientSecretConfig: i_SecretReference,
+    clientSecretSource: 0,
+  },
+  includedOauth2ProviderConfig: {
+    clientId: 0,
+    clientSecret: 0,
+    clientSecretConfig: i_SecretReference,
+    clientSecretSource: 0,
+    issuer: 0,
+    authorizationEndpoint: 0,
+    tokenEndpoint: 0,
+  },
+});
+const i_PaymentProviderConfigurationInput: D.LazyStruct = () => ({
+  coinbaseCdpConfiguration: {
+    apiKeyId: 0,
+    apiKeySecret: 0,
+    apiKeySecretSource: 0,
+    apiKeySecretConfig: i_SecretReference,
+    walletSecret: 0,
+    walletSecretSource: 0,
+    walletSecretConfig: i_SecretReference,
+  },
+  stripePrivyConfiguration: {
+    appId: 0,
+    appSecret: 0,
+    appSecretSource: 0,
+    appSecretConfig: i_SecretReference,
+    authorizationPrivateKey: 0,
+    authorizationPrivateKeySource: 0,
+    authorizationPrivateKeyConfig: i_SecretReference,
+    authorizationId: 0,
+  },
+});
+const i_PolicyDefinition: D.LazyStruct = () => ({
+  cedar: { statement: 0 },
+  policyGeneration: { policyGenerationId: 0, policyGenerationAssetId: 0 },
+  policy: { statement: 0 },
+});
+const i_PrivateEndpoint: D.LazyStruct = () => ({
+  selfManagedLatticeResource: { resourceConfigurationIdentifier: 0 },
+  managedVpcResource: {
+    vpcIdentifier: 0,
+    subnetIds: 0,
+    endpointIpAddressType: 0,
+    securityGroupIds: 0,
+    tags: 0,
+    routingDomain: 0,
+  },
+});
+const i_ProtocolConfiguration: D.LazyStruct = () => ({ serverProtocol: 0 });
+const i_RequestHeaderConfiguration: D.LazyStruct = () => ({
+  requestHeaderAllowlist: 0,
+});
+const i_Rule: D.LazyStruct = () => ({
+  samplingConfig: { samplingPercentage: 0 },
+  filters: D.list({
+    key: 0,
+    operator: 0,
+    value: { stringValue: 0, doubleValue: 0, booleanValue: 0 },
+  }),
+  sessionConfig: { sessionTimeoutMinutes: 0 },
+});
+const i_S3Location: D.LazyStruct = () => ({
+  bucket: 0,
+  prefix: 0,
+  versionId: 0,
+});
+const i_SecretReference: D.LazyStruct = () => ({ secretId: 0, jsonKey: 0 });
+const i_SemanticOverrideConsolidationConfigurationInput: D.LazyStruct = () => ({
+  appendToPrompt: 0,
+  modelId: 0,
+});
+const i_SemanticOverrideExtractionConfigurationInput: D.LazyStruct = () => ({
+  appendToPrompt: 0,
+  modelId: 0,
+});
+const i_ServerDefinition: D.LazyStruct = () => ({
+  schemaVersion: 0,
+  inlineContent: 0,
+});
+const i_SkillDefinition: D.LazyStruct = () => ({
+  schemaVersion: 0,
+  inlineContent: 0,
+});
+const i_SkillMdDefinition: D.LazyStruct = () => ({ inlineContent: 0 });
+const i_StreamDeliveryResources: D.LazyStruct = () => ({
+  resources: D.list({
+    kinesis: {
+      dataStreamArn: 0,
+      contentConfigurations: D.list({ type: 0, level: 0 }),
+    },
+  }),
+});
+const i_SummaryOverrideConsolidationConfigurationInput: D.LazyStruct = () => ({
+  appendToPrompt: 0,
+  modelId: 0,
+});
+const i_SynchronizationConfiguration: D.LazyStruct = () => ({
+  fromUrl: {
+    url: 0,
+    credentialProviderConfigurations: D.list({
+      credentialProviderType: 0,
+      credentialProvider: {
+        oauthCredentialProvider: {
+          providerArn: 0,
+          grantType: 0,
+          scopes: 0,
+          customParameters: 0,
+        },
+        iamCredentialProvider: { roleArn: 0, service: 0, region: 0 },
+      },
+    }),
+  },
+});
+const i_TargetConfiguration: D.LazyStruct = () => ({
+  mcp: {
+    openApiSchema: i_ApiSchemaConfiguration,
+    smithyModel: i_ApiSchemaConfiguration,
+    lambda: {
+      lambdaArn: 0,
+      toolSchema: {
+        s3: i_S3Configuration,
+        inlinePayload: D.list({
+          name: 0,
+          description: 0,
+          inputSchema: i_SchemaDefinition,
+          outputSchema: i_SchemaDefinition,
+        }),
+      },
+    },
+    mcpServer: {
+      endpoint: 0,
+      mcpToolSchema: { s3: i_S3Configuration, inlinePayload: 0 },
+      listingMode: 0,
+      resourcePriority: 0,
+    },
+    apiGateway: {
+      restApiId: 0,
+      stage: 0,
+      apiGatewayToolConfiguration: {
+        toolOverrides: D.list({ name: 0, description: 0, path: 0, method: 0 }),
+        toolFilters: D.list({ filterPath: 0, methods: 0 }),
+      },
+    },
+    connector: {
+      source: { connectorId: 0, version: 0 },
+      enabled: 0,
+      configurations: D.list({
+        name: 0,
+        description: 0,
+        parameterValues: 0,
+        parameterOverrides: D.list({ path: 0, description: 0, visible: 0 }),
+      }),
+    },
+  },
+  http: {
+    agentcoreRuntime: {
+      arn: 0,
+      qualifier: 0,
+      schema: i_HttpApiSchemaConfiguration,
+    },
+    passthrough: {
+      endpoint: 0,
+      protocolType: 0,
+      schema: i_HttpApiSchemaConfiguration,
+      stickinessConfiguration: {
+        identifier: 0,
+        timeout: 0,
+        compositeIdentifier: 0,
+      },
+      staticQueryParameters: 0,
+      staticQueryParameterConflictResolution: 0,
+    },
+    connector: { source: { connectorId: 0 }, parameters: 0 },
+  },
+  inference: {
+    connector: { source: { connectorId: 0 } },
+    provider: {
+      endpoint: 0,
+      modelMapping: { providerPrefix: { strip: 0, separator: 0 } },
+      operations: D.list({
+        path: 0,
+        providerPath: 0,
+        models: D.list({ model: 0 }),
+      }),
+    },
+  },
+});
+const i_ToolsDefinition: D.LazyStruct = () => ({
+  protocolVersion: 0,
+  inlineContent: 0,
+});
+const i_ToolsFileSystemConfiguration: D.LazyStruct = () => ({
+  s3FilesConfiguration: { accessPointArn: 0, mountPath: 0, fileSystemArn: 0 },
+  efsConfiguration: { accessPointArn: 0, mountPath: 0, fileSystemArn: 0 },
+});
+const i_TriggerConditionInput: D.LazyStruct = () => ({
+  messageBasedTrigger: { messageCount: 0 },
+  tokenBasedTrigger: { tokenCount: 0 },
+  timeBasedTrigger: { idleSessionTimeout: 0 },
+});
+const i_UpdatedAuthorizerConfiguration: D.LazyStruct = () => ({
+  optionalValue: i_AuthorizerConfiguration,
+});
+const i_UpdatedDescription: D.LazyStruct = () => ({ optionalValue: 0 });
+const i_UserPreferenceOverrideConsolidationConfigurationInput: D.LazyStruct =
+  () => ({ appendToPrompt: 0, modelId: 0 });
+const i_UserPreferenceOverrideExtractionConfigurationInput: D.LazyStruct =
+  () => ({ appendToPrompt: 0, modelId: 0 });
+const i_VersionCreatedBySource: D.LazyStruct = () => ({ name: 0, arn: 0 });
+const i_VpcConfig: D.LazyStruct = () => ({
+  securityGroups: 0,
+  subnets: 0,
+  requireServiceS3Endpoint: 0,
+});
 const o_Action: D.LazyStruct = () => ({
   routeToTarget: {
     staticRoute: { targetName: D.secret },
@@ -12371,6 +13748,60 @@ const o_TargetConfiguration: D.LazyStruct = () => ({
     },
   },
 });
+const i_ApiSchemaConfiguration: D.LazyStruct = () => ({
+  s3: i_S3Configuration,
+  inlinePayload: 0,
+});
+const i_ContainerConfiguration: D.LazyStruct = () => ({ containerUri: 0 });
+const i_EvaluatorModelConfig: D.LazyStruct = () => ({
+  bedrockEvaluatorModelConfig: {
+    modelId: 0,
+    inferenceConfig: {
+      maxTokens: 0,
+      temperature: 0,
+      topP: 0,
+      stopSequences: 0,
+    },
+    additionalModelRequestFields: 0,
+  },
+  responsesEvaluatorModelConfig: {
+    modelId: 0,
+    maxOutputTokens: 0,
+    temperature: 0,
+    topP: 0,
+    reasoning: { effort: 0 },
+  },
+});
+const i_HttpApiSchemaConfiguration: D.LazyStruct = () => ({
+  source: i_ApiSchemaConfiguration,
+});
+const i_OAuthCredentialProvider: D.LazyStruct = () => ({
+  providerArn: 0,
+  scopes: 0,
+  customParameters: 0,
+  grantType: 0,
+  defaultReturnUrl: 0,
+});
+const i_PaymentCredentialProviderConfiguration: D.LazyStruct = () => ({
+  credentialProviderArn: 0,
+});
+const i_PrivateEndpointOverride: D.LazyStruct = () => ({
+  domain: 0,
+  privateEndpoint: i_PrivateEndpoint,
+});
+const i_RateConfig: D.LazyStruct = () => ({ rate: 0, period: 0 });
+const i_S3Configuration: D.LazyStruct = () => ({
+  uri: 0,
+  bucketOwnerAccountId: 0,
+});
+const i_SchemaDefinition: D.LazyStruct = () => ({
+  type: 0,
+  properties: D.map(i_SchemaDefinition),
+  required: 0,
+  items: i_SchemaDefinition,
+  description: 0,
+});
+const i_Unit: D.LazyStruct = () => ({});
 const o_ApiSchemaConfiguration: D.LazyStruct = () => ({
   inlinePayload: D.secret,
 });

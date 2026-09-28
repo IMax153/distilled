@@ -3969,6 +3969,7 @@ export const batchDeleteAdvancedPromptOptimizationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /advanced-prompt-optimization-job/batch-delete",
+    input: { jobIdentifiers: 0 },
     body: true,
   },
   errors: [
@@ -4002,6 +4003,7 @@ export const batchDeleteEvaluationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /evaluation-jobs/batch-delete",
+    input: { jobIdentifiers: 0 },
     output: {
       errors: D.list({ jobIdentifier: D.secret }),
       evaluationJobs: D.list({ jobIdentifier: D.secret }),
@@ -4040,6 +4042,7 @@ export const cancelAutomatedReasoningPolicyBuildWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /automated-reasoning-policies/{policyArn}/build-workflows/{buildWorkflowId}/cancel",
+    input: { policyArn: 0, buildWorkflowId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4075,7 +4078,25 @@ export const createAdvancedPromptOptimizationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /advanced-prompt-optimization-jobs",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      jobName: 0,
+      jobDescription: 0,
+      clientToken: D.m({ idempotency: true }),
+      inputConfig: { s3Uri: 0 },
+      outputConfig: { s3Uri: 0 },
+      encryptionKeyArn: 0,
+      tags: D.list(i_Tag),
+      modelConfigurations: D.list({
+        modelId: 0,
+        inferenceConfig: {
+          maxTokens: 0,
+          temperature: 0,
+          topP: 0,
+          stopSequences: 0,
+        },
+        additionalModelRequestFields: 0,
+      }),
+    },
     body: true,
   },
   errors: [
@@ -4117,7 +4138,14 @@ export const createAutomatedReasoningPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /automated-reasoning-policies",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      policyDefinition: i_AutomatedReasoningPolicyDefinition,
+      kmsKeyId: 0,
+      tags: D.list(i_Tag),
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -4162,7 +4190,14 @@ export const createAutomatedReasoningPolicyTestCase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /automated-reasoning-policies/{policyArn}/test-cases",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      policyArn: 0,
+      guardContent: 0,
+      queryContent: 0,
+      expectedAggregatedFindingsResult: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      confidenceThreshold: 0,
+    },
     body: true,
   },
   errors: [
@@ -4201,7 +4236,12 @@ export const createAutomatedReasoningPolicyVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /automated-reasoning-policies/{policyArn}/versions",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      policyArn: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      lastUpdatedDefinitionHash: 0,
+      tags: D.list(i_Tag),
+    },
     output: { name: D.secret, description: D.secret, createdAt: D.ts },
     body: true,
   },
@@ -4266,7 +4306,17 @@ export const createCustomModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /custom-models/create-custom-model",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      modelName: 0,
+      modelSourceConfig: i_ModelDataSource,
+      customModelDataSource: {
+        modelPackageArnDataSource: { modelPackageArn: 0 },
+      },
+      modelKmsKeyArn: 0,
+      roleArn: 0,
+      modelTags: D.list(i_Tag),
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -4315,7 +4365,13 @@ export const createCustomModelDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /model-customization/custom-model-deployments",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      modelDeploymentName: 0,
+      modelArn: 0,
+      description: 0,
+      tags: D.list(i_Tag),
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -4353,7 +4409,98 @@ export const createEvaluationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /evaluation-jobs",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      jobName: 0,
+      jobDescription: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      roleArn: 0,
+      customerEncryptionKeyId: 0,
+      jobTags: D.list(i_Tag),
+      applicationType: 0,
+      evaluationConfig: {
+        automated: {
+          datasetMetricConfigs: D.list(i_EvaluationDatasetMetricConfig),
+          evaluatorModelConfig: {
+            bedrockEvaluatorModels: D.list({ modelIdentifier: 0 }),
+          },
+          customMetricConfig: {
+            customMetrics: D.list({
+              customMetricDefinition: {
+                name: 0,
+                instructions: 0,
+                ratingScale: D.list({
+                  definition: 0,
+                  value: { stringValue: 0, floatValue: 0 },
+                }),
+              },
+            }),
+            evaluatorModelConfig: {
+              bedrockEvaluatorModels: D.list({ modelIdentifier: 0 }),
+            },
+          },
+        },
+        human: {
+          humanWorkflowConfig: { flowDefinitionArn: 0, instructions: 0 },
+          customMetrics: D.list({ name: 0, description: 0, ratingMethod: 0 }),
+          datasetMetricConfigs: D.list(i_EvaluationDatasetMetricConfig),
+        },
+      },
+      inferenceConfig: {
+        models: D.list({
+          bedrockModel: {
+            modelIdentifier: 0,
+            inferenceParams: 0,
+            performanceConfig: { latency: 0 },
+          },
+          precomputedInferenceSource: { inferenceSourceIdentifier: 0 },
+        }),
+        ragConfigs: D.list({
+          knowledgeBaseConfig: {
+            retrieveConfig: {
+              knowledgeBaseId: 0,
+              knowledgeBaseRetrievalConfiguration:
+                i_KnowledgeBaseRetrievalConfiguration,
+            },
+            retrieveAndGenerateConfig: {
+              type: 0,
+              knowledgeBaseConfiguration: {
+                knowledgeBaseId: 0,
+                modelArn: 0,
+                retrievalConfiguration: i_KnowledgeBaseRetrievalConfiguration,
+                generationConfiguration: {
+                  promptTemplate: i_PromptTemplate,
+                  guardrailConfiguration: i_GuardrailConfiguration,
+                  kbInferenceConfig: i_KbInferenceConfig,
+                  additionalModelRequestFields: 0,
+                },
+                orchestrationConfiguration: {
+                  queryTransformationConfiguration: { type: 0 },
+                },
+              },
+              externalSourcesConfiguration: {
+                modelArn: 0,
+                sources: D.list({
+                  sourceType: 0,
+                  s3Location: { uri: 0 },
+                  byteContent: { identifier: 0, contentType: 0, data: 0 },
+                }),
+                generationConfiguration: {
+                  promptTemplate: i_PromptTemplate,
+                  guardrailConfiguration: i_GuardrailConfiguration,
+                  kbInferenceConfig: i_KbInferenceConfig,
+                  additionalModelRequestFields: 0,
+                },
+              },
+            },
+          },
+          precomputedRagSourceConfig: {
+            retrieveSourceConfig: { ragSourceIdentifier: 0 },
+            retrieveAndGenerateSourceConfig: { ragSourceIdentifier: 0 },
+          },
+        }),
+      },
+      outputDataConfig: { s3Uri: 0 },
+    },
     body: true,
   },
   errors: [
@@ -4390,6 +4537,7 @@ export const createFoundationModelAgreement: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /create-foundation-model-agreement",
+    input: { offerToken: 0, modelId: 0 },
     body: true,
   },
   errors: [
@@ -4441,7 +4589,24 @@ export const createGuardrail: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /guardrails",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      topicPolicyConfig: i_GuardrailTopicPolicyConfig,
+      contentPolicyConfig: i_GuardrailContentPolicyConfig,
+      wordPolicyConfig: i_GuardrailWordPolicyConfig,
+      sensitiveInformationPolicyConfig:
+        i_GuardrailSensitiveInformationPolicyConfig,
+      contextualGroundingPolicyConfig:
+        i_GuardrailContextualGroundingPolicyConfig,
+      automatedReasoningPolicyConfig: i_GuardrailAutomatedReasoningPolicyConfig,
+      crossRegionConfig: i_GuardrailCrossRegionConfig,
+      blockedInputMessaging: 0,
+      blockedOutputsMessaging: 0,
+      kmsKeyId: 0,
+      tags: D.list(i_Tag),
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -4481,7 +4646,11 @@ export const createGuardrailVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /guardrails/{guardrailIdentifier}",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      guardrailIdentifier: 0,
+      description: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -4520,7 +4689,13 @@ export const createInferenceProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /inference-profiles",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      inferenceProfileName: 0,
+      description: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      modelSource: { copyFrom: 0 },
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -4559,7 +4734,14 @@ export const createMarketplaceModelEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /marketplace-model/endpoints",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      modelSourceIdentifier: 0,
+      endpointConfig: i_EndpointConfig,
+      acceptEula: 0,
+      endpointName: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      tags: D.list(i_Tag),
+    },
     output: { marketplaceModelEndpoint: o_MarketplaceModelEndpoint },
     body: true,
   },
@@ -4595,7 +4777,13 @@ export const createModelCopyJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /model-copy-jobs",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      sourceModelArn: 0,
+      targetModelName: 0,
+      modelKmsKeyId: 0,
+      targetModelTags: D.list(i_Tag),
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -4639,7 +4827,55 @@ export const createModelCustomizationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /model-customization-jobs",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      jobName: 0,
+      customModelName: 0,
+      roleArn: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      baseModelIdentifier: 0,
+      customizationType: 0,
+      customModelKmsKeyId: 0,
+      jobTags: D.list(i_Tag),
+      customModelTags: D.list(i_Tag),
+      trainingDataConfig: {
+        s3Uri: 0,
+        invocationLogsConfig: {
+          usePromptResponse: 0,
+          invocationLogSource: { s3Uri: 0 },
+          requestMetadataFilters: {
+            equals: 0,
+            notEquals: 0,
+            andAll: D.list(i_RequestMetadataBaseFilters),
+            orAll: D.list(i_RequestMetadataBaseFilters),
+          },
+        },
+      },
+      validationDataConfig: { validators: D.list({ s3Uri: 0 }) },
+      outputDataConfig: { s3Uri: 0 },
+      hyperParameters: 0,
+      vpcConfig: i_VpcConfig,
+      customizationConfig: {
+        distillationConfig: {
+          teacherModelConfig: {
+            teacherModelIdentifier: 0,
+            maxResponseLengthForInference: 0,
+          },
+        },
+        rftConfig: {
+          graderConfig: { lambdaGrader: { lambdaArn: 0 } },
+          hyperParameters: {
+            epochCount: 0,
+            batchSize: 0,
+            learningRate: 0,
+            maxPromptLength: 0,
+            trainingSamplePerPrompt: 0,
+            inferenceMaxTokens: 0,
+            reasoningEffort: 0,
+            evalInterval: 0,
+          },
+        },
+      },
+    },
     body: true,
   },
   errors: [
@@ -4676,7 +4912,22 @@ export const createModelImportJob: API.OperationMethod<
   CreateModelImportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /model-import-jobs", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /model-import-jobs",
+    input: {
+      jobName: 0,
+      importedModelName: 0,
+      roleArn: 0,
+      modelDataSource: i_ModelDataSource,
+      jobTags: D.list(i_Tag),
+      importedModelTags: D.list(i_Tag),
+      clientRequestToken: 0,
+      vpcConfig: i_VpcConfig,
+      importedModelKmsKeyId: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4715,7 +4966,26 @@ export const createModelInvocationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /model-invocation-job",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      jobName: 0,
+      roleArn: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      modelId: 0,
+      inputDataConfig: {
+        s3InputDataConfig: { s3InputFormat: 0, s3Uri: 0, s3BucketOwner: 0 },
+      },
+      outputDataConfig: {
+        s3OutputDataConfig: {
+          s3Uri: 0,
+          s3EncryptionKeyId: 0,
+          s3BucketOwner: 0,
+        },
+      },
+      vpcConfig: i_VpcConfig,
+      timeoutDurationInHours: 0,
+      tags: D.list(i_Tag),
+      modelInvocationType: 0,
+    },
     body: true,
   },
   errors: [
@@ -4754,7 +5024,15 @@ export const createPromptRouter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prompt-routers",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      clientRequestToken: D.m({ idempotency: true }),
+      promptRouterName: 0,
+      models: D.list(i_PromptRouterTargetModel),
+      description: 0,
+      routingCriteria: { responseQualityDifference: 0 },
+      fallbackModel: i_PromptRouterTargetModel,
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -4793,7 +5071,14 @@ export const createProvisionedModelThroughput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /provisioned-model-throughput",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      clientRequestToken: D.m({ idempotency: true }),
+      modelUnits: 0,
+      provisionedModelName: 0,
+      modelId: 0,
+      commitmentDuration: 0,
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -4831,7 +5116,7 @@ export const deleteAutomatedReasoningPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /automated-reasoning-policies/{policyArn}",
-    input: { force: D.m({ query: "force" }) },
+    input: { policyArn: 0, force: D.m({ query: "force" }) },
   },
   errors: [
     AccessDeniedException,
@@ -4868,7 +5153,11 @@ export const deleteAutomatedReasoningPolicyBuildWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /automated-reasoning-policies/{policyArn}/build-workflows/{buildWorkflowId}",
-    input: { lastUpdatedAt: D.m({ query: "updatedAt" }) },
+    input: {
+      policyArn: 0,
+      buildWorkflowId: 0,
+      lastUpdatedAt: D.m({ query: "updatedAt" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -4905,7 +5194,11 @@ export const deleteAutomatedReasoningPolicyTestCase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /automated-reasoning-policies/{policyArn}/test-cases/{testCaseId}",
-    input: { lastUpdatedAt: D.m({ query: "updatedAt" }) },
+    input: {
+      policyArn: 0,
+      testCaseId: 0,
+      lastUpdatedAt: D.m({ query: "updatedAt" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -4938,7 +5231,11 @@ export const deleteCustomModel: API.OperationMethod<
   DeleteCustomModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /custom-models/{modelIdentifier}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /custom-models/{modelIdentifier}",
+    input: { modelIdentifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4980,6 +5277,7 @@ export const deleteCustomModelDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /model-customization/custom-model-deployments/{customModelDeploymentIdentifier}",
+    input: { customModelDeploymentIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5013,6 +5311,7 @@ export const deleteEnforcedGuardrailConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /enforcedGuardrailsConfiguration/{configId}",
+    input: { configId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5046,6 +5345,7 @@ export const deleteFoundationModelAgreement: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-foundation-model-agreement",
+    input: { modelId: 0 },
     body: true,
   },
   errors: [
@@ -5086,7 +5386,10 @@ export const deleteGuardrail: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /guardrails/{guardrailIdentifier}",
-    input: { guardrailVersion: D.m({ query: "guardrailVersion" }) },
+    input: {
+      guardrailIdentifier: 0,
+      guardrailVersion: D.m({ query: "guardrailVersion" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -5122,6 +5425,7 @@ export const deleteImportedModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /imported-models/{modelIdentifier}",
+    input: { modelIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5156,6 +5460,7 @@ export const deleteInferenceProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /inference-profiles/{inferenceProfileIdentifier}",
+    input: { inferenceProfileIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5189,6 +5494,7 @@ export const deleteMarketplaceModelEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /marketplace-model/endpoints/{endpointArn}",
+    input: { endpointArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5216,7 +5522,11 @@ export const deleteModelInvocationLoggingConfiguration: API.OperationMethod<
   DeleteModelInvocationLoggingConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /logging/modelinvocations" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /logging/modelinvocations",
+    input: {},
+  },
   errors: [AccessDeniedException, InternalServerException, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5242,6 +5552,7 @@ export const deletePromptRouter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prompt-routers/{promptRouterArn}",
+    input: { promptRouterArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5275,6 +5586,7 @@ export const deleteProvisionedModelThroughput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /provisioned-model-throughput/{provisionedModelId}",
+    input: { provisionedModelId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5305,7 +5617,11 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /resource-policy/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /resource-policy/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5338,6 +5654,7 @@ export const deregisterMarketplaceModelEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /marketplace-model/endpoints/{endpointArn}/registration",
+    input: { endpointArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5371,6 +5688,7 @@ export const exportAutomatedReasoningPolicyVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /automated-reasoning-policies/{policyArn}/export",
+    input: { policyArn: 0 },
     output: {
       policyDefinition: D.m({
         payload: true,
@@ -5408,6 +5726,7 @@ export const getAccountDataRetention: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /data-retention",
+    input: {},
     output: { updatedAt: D.ts },
   },
   errors: [
@@ -5440,6 +5759,7 @@ export const getAdvancedPromptOptimizationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /advanced-prompt-optimization-jobs/{jobIdentifier}",
+    input: { jobIdentifier: 0 },
     output: { creationTime: D.ts, lastModifiedTime: D.ts },
   },
   errors: [
@@ -5473,6 +5793,7 @@ export const getAutomatedReasoningPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /automated-reasoning-policies/{policyArn}",
+    input: { policyArn: 0 },
     output: {
       name: D.secret,
       description: D.secret,
@@ -5511,6 +5832,7 @@ export const getAutomatedReasoningPolicyAnnotations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /automated-reasoning-policies/{policyArn}/build-workflows/{buildWorkflowId}/annotations",
+    input: { policyArn: 0, buildWorkflowId: 0 },
     output: {
       name: D.secret,
       annotations: D.list(o_AutomatedReasoningPolicyAnnotation),
@@ -5548,6 +5870,7 @@ export const getAutomatedReasoningPolicyBuildWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /automated-reasoning-policies/{policyArn}/build-workflows/{buildWorkflowId}",
+    input: { policyArn: 0, buildWorkflowId: 0 },
     output: {
       documentName: D.secret,
       documentDescription: D.secret,
@@ -5587,6 +5910,8 @@ export const getAutomatedReasoningPolicyBuildWorkflowResultAssets: API.Operation
     service: svc,
     http: "GET /automated-reasoning-policies/{policyArn}/build-workflows/{buildWorkflowId}/result-assets",
     input: {
+      policyArn: 0,
+      buildWorkflowId: 0,
       assetType: D.m({ query: "assetType" }),
       assetId: D.m({ query: "assetId" }),
     },
@@ -5699,6 +6024,7 @@ export const getAutomatedReasoningPolicyNextScenario: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /automated-reasoning-policies/{policyArn}/build-workflows/{buildWorkflowId}/scenarios",
+    input: { policyArn: 0, buildWorkflowId: 0 },
     output: { scenario: o_AutomatedReasoningPolicyScenario },
   },
   errors: [
@@ -5732,6 +6058,7 @@ export const getAutomatedReasoningPolicyTestCase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /automated-reasoning-policies/{policyArn}/test-cases/{testCaseId}",
+    input: { policyArn: 0, testCaseId: 0 },
     output: { testCase: o_AutomatedReasoningPolicyTestCase },
   },
   errors: [
@@ -5765,6 +6092,7 @@ export const getAutomatedReasoningPolicyTestResult: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /automated-reasoning-policies/{policyArn}/build-workflows/{buildWorkflowId}/test-cases/{testCaseId}/test-results",
+    input: { policyArn: 0, buildWorkflowId: 0, testCaseId: 0 },
     output: { testResult: o_AutomatedReasoningPolicyTestResult },
   },
   errors: [
@@ -5798,6 +6126,7 @@ export const getCustomModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /custom-models/{modelIdentifier}",
+    input: { modelIdentifier: 0 },
     output: { creationTime: D.ts },
   },
   errors: [
@@ -5839,6 +6168,7 @@ export const getCustomModelDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /model-customization/custom-model-deployments/{customModelDeploymentIdentifier}",
+    input: { customModelDeploymentIdentifier: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -5872,6 +6202,7 @@ export const getEvaluationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /evaluation-jobs/{jobIdentifier}",
+    input: { jobIdentifier: 0 },
     output: {
       jobDescription: D.secret,
       evaluationConfig: {
@@ -5942,6 +6273,7 @@ export const getFoundationModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /foundation-models/{modelIdentifier}",
+    input: { modelIdentifier: 0 },
     output: { modelDetails: { modelLifecycle: o_FoundationModelLifecycle } },
   },
   errors: [
@@ -5975,6 +6307,7 @@ export const getFoundationModelAvailability: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /foundation-model-availability/{modelId}",
+    input: { modelId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -6007,7 +6340,10 @@ export const getGuardrail: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /guardrails/{guardrailIdentifier}",
-    input: { guardrailVersion: D.m({ query: "guardrailVersion" }) },
+    input: {
+      guardrailIdentifier: 0,
+      guardrailVersion: D.m({ query: "guardrailVersion" }),
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -6077,6 +6413,7 @@ export const getImportedModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /imported-models/{modelIdentifier}",
+    input: { modelIdentifier: 0 },
     output: { creationTime: D.ts },
   },
   errors: [
@@ -6110,6 +6447,7 @@ export const getInferenceProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /inference-profiles/{inferenceProfileIdentifier}",
+    input: { inferenceProfileIdentifier: 0 },
     output: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -6143,6 +6481,7 @@ export const getMarketplaceModelEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /marketplace-model/endpoints/{endpointArn}",
+    input: { endpointArn: 0 },
     output: { marketplaceModelEndpoint: o_MarketplaceModelEndpoint },
   },
   errors: [
@@ -6176,6 +6515,7 @@ export const getModelCopyJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /model-copy-jobs/{jobArn}",
+    input: { jobArn: 0 },
     output: { creationTime: D.ts },
   },
   errors: [
@@ -6209,6 +6549,7 @@ export const getModelCustomizationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /model-customization-jobs/{jobIdentifier}",
+    input: { jobIdentifier: 0 },
     output: {
       statusDetails: o_StatusDetails,
       creationTime: D.ts,
@@ -6247,6 +6588,7 @@ export const getModelImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /model-import-jobs/{jobIdentifier}",
+    input: { jobIdentifier: 0 },
     output: { creationTime: D.ts, lastModifiedTime: D.ts, endTime: D.ts },
   },
   errors: [
@@ -6280,6 +6622,7 @@ export const getModelInvocationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /model-invocation-job/{jobIdentifier}",
+    input: { jobIdentifier: 0 },
     output: {
       message: D.secret,
       submitTime: D.ts,
@@ -6314,7 +6657,11 @@ export const getModelInvocationLoggingConfiguration: API.OperationMethod<
   GetModelInvocationLoggingConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /logging/modelinvocations" },
+  descriptor: {
+    service: svc,
+    http: "GET /logging/modelinvocations",
+    input: {},
+  },
   errors: [AccessDeniedException, InternalServerException, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6340,6 +6687,7 @@ export const getPromptRouter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /prompt-routers/{promptRouterArn}",
+    input: { promptRouterArn: 0 },
     output: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -6373,6 +6721,7 @@ export const getProvisionedModelThroughput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /provisioned-model-throughput/{provisionedModelId}",
+    input: { provisionedModelId: 0 },
     output: {
       creationTime: D.ts,
       lastModifiedTime: D.ts,
@@ -6407,7 +6756,11 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /resource-policy/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /resource-policy/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -6438,6 +6791,7 @@ export const getUseCaseForModelAccess: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /use-case-for-model-access",
+    input: {},
     output: { formData: D.blob },
   },
   errors: [
@@ -6570,6 +6924,7 @@ export const listAutomatedReasoningPolicyBuildWorkflows: API.PaginatedOperationM
     service: svc,
     http: "GET /automated-reasoning-policies/{policyArn}/build-workflows",
     input: {
+      policyArn: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -6619,6 +6974,7 @@ export const listAutomatedReasoningPolicyTestCases: API.PaginatedOperationMethod
     service: svc,
     http: "GET /automated-reasoning-policies/{policyArn}/test-cases",
     input: {
+      policyArn: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -6664,6 +7020,8 @@ export const listAutomatedReasoningPolicyTestResults: API.PaginatedOperationMeth
     service: svc,
     http: "GET /automated-reasoning-policies/{policyArn}/build-workflows/{buildWorkflowId}/test-results",
     input: {
+      policyArn: 0,
+      buildWorkflowId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -6913,7 +7271,7 @@ export const listFoundationModelAgreementOffers: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /list-foundation-model-agreement-offers/{modelId}",
-    input: { offerType: D.m({ query: "offerType" }) },
+    input: { modelId: 0, offerType: D.m({ query: "offerType" }) },
   },
   errors: [
     AccessDeniedException,
@@ -7504,7 +7862,12 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /listTagsForResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /listTagsForResource",
+    input: { resourceARN: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -7535,6 +7898,7 @@ export const putAccountDataRetention: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /data-retention",
+    input: { mode: 0 },
     output: { updatedAt: D.ts },
     body: true,
   },
@@ -7569,6 +7933,15 @@ export const putEnforcedGuardrailConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /enforcedGuardrailsConfiguration",
+    input: {
+      configId: 0,
+      guardrailInferenceConfig: {
+        guardrailIdentifier: 0,
+        guardrailVersion: 0,
+        selectiveContentGuarding: { system: 0, messages: 0 },
+        modelEnforcement: { includedModels: 0, excludedModels: 0 },
+      },
+    },
     output: { updatedAt: D.ts },
     body: true,
   },
@@ -7603,6 +7976,21 @@ export const putModelInvocationLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /logging/modelinvocations",
+    input: {
+      loggingConfig: {
+        cloudWatchConfig: {
+          logGroupName: 0,
+          roleArn: 0,
+          largeDataDeliveryS3Config: i_S3Config,
+        },
+        s3Config: i_S3Config,
+        textDataDeliveryEnabled: 0,
+        imageDataDeliveryEnabled: 0,
+        embeddingDataDeliveryEnabled: 0,
+        videoDataDeliveryEnabled: 0,
+        audioDataDeliveryEnabled: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -7632,7 +8020,12 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /resource-policy", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /resource-policy",
+    input: { resourceArn: 0, resourcePolicy: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -7663,6 +8056,7 @@ export const putUseCaseForModelAccess: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /use-case-for-model-access",
+    input: { formData: 0 },
     body: true,
   },
   errors: [
@@ -7696,6 +8090,7 @@ export const registerMarketplaceModelEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /marketplace-model/endpoints/{endpointIdentifier}/registration",
+    input: { endpointIdentifier: 0, modelSourceIdentifier: 0 },
     output: { marketplaceModelEndpoint: o_MarketplaceModelEndpoint },
     body: true,
   },
@@ -7735,11 +8130,35 @@ export const startAutomatedReasoningPolicyBuildWorkflow: API.OperationMethod<
     service: svc,
     http: "POST /automated-reasoning-policies/{policyArn}/build-workflows/{buildWorkflowType}/start",
     input: {
+      policyArn: 0,
+      buildWorkflowType: 0,
       clientRequestToken: D.m({
         header: "x-amz-client-token",
         idempotency: true,
       }),
-      sourceContent: D.m({ payload: true }),
+      sourceContent: D.m({
+        payload: true,
+        shape: {
+          policyDefinition: i_AutomatedReasoningPolicyDefinition,
+          workflowContent: {
+            documents: D.list(i_AutomatedReasoningPolicyBuildWorkflowDocument),
+            policyRepairAssets: {
+              annotations: D.list(i_AutomatedReasoningPolicyAnnotation),
+            },
+            generateFidelityReportContent: {
+              documents: D.list(
+                i_AutomatedReasoningPolicyBuildWorkflowDocument,
+              ),
+            },
+            iterativeRefinementContent: {
+              documents: D.list(
+                i_AutomatedReasoningPolicyBuildWorkflowDocument,
+              ),
+              feedback: 0,
+            },
+          },
+        },
+      }),
     },
   },
   errors: [
@@ -7777,7 +8196,12 @@ export const startAutomatedReasoningPolicyTestWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /automated-reasoning-policies/{policyArn}/build-workflows/{buildWorkflowId}/test-workflows",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      policyArn: 0,
+      buildWorkflowId: 0,
+      testCaseIds: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -7813,6 +8237,7 @@ export const stopAdvancedPromptOptimizationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /advanced-prompt-optimization-jobs/{jobIdentifier}/stop",
+    input: { jobIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -7847,6 +8272,7 @@ export const stopEvaluationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /evaluation-job/{jobIdentifier}/stop",
+    input: { jobIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -7881,6 +8307,7 @@ export const stopModelCustomizationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /model-customization-jobs/{jobIdentifier}/stop",
+    input: { jobIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -7915,6 +8342,7 @@ export const stopModelInvocationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /model-invocation-job/{jobIdentifier}/stop",
+    input: { jobIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -7946,7 +8374,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tagResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tagResource",
+    input: { resourceARN: 0, tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -7976,7 +8409,12 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /untagResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /untagResource",
+    input: { resourceARN: 0, tagKeys: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -8010,6 +8448,12 @@ export const updateAutomatedReasoningPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /automated-reasoning-policies/{policyArn}",
+    input: {
+      policyArn: 0,
+      policyDefinition: i_AutomatedReasoningPolicyDefinition,
+      name: 0,
+      description: 0,
+    },
     output: { name: D.secret, updatedAt: D.ts },
     body: true,
   },
@@ -8047,6 +8491,12 @@ export const updateAutomatedReasoningPolicyAnnotations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /automated-reasoning-policies/{policyArn}/build-workflows/{buildWorkflowId}/annotations",
+    input: {
+      policyArn: 0,
+      buildWorkflowId: 0,
+      annotations: D.list(i_AutomatedReasoningPolicyAnnotation),
+      lastUpdatedAnnotationSetHash: 0,
+    },
     output: { updatedAt: D.ts },
     body: true,
   },
@@ -8085,7 +8535,13 @@ export const updateAutomatedReasoningPolicyTestCase: API.OperationMethod<
     service: svc,
     http: "PATCH /automated-reasoning-policies/{policyArn}/test-cases/{testCaseId}",
     input: {
+      policyArn: 0,
+      testCaseId: 0,
+      guardContent: 0,
+      queryContent: 0,
       lastUpdatedAt: D.tsAs("date-time"),
+      expectedAggregatedFindingsResult: 0,
+      confidenceThreshold: 0,
       clientRequestToken: D.m({ idempotency: true }),
     },
     body: true,
@@ -8123,6 +8579,7 @@ export const updateCustomModelDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /model-customization/custom-model-deployments/{customModelDeploymentIdentifier}",
+    input: { modelArn: 0, customModelDeploymentIdentifier: 0 },
     body: true,
   },
   errors: [
@@ -8178,6 +8635,23 @@ export const updateGuardrail: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /guardrails/{guardrailIdentifier}",
+    input: {
+      guardrailIdentifier: 0,
+      name: 0,
+      description: 0,
+      topicPolicyConfig: i_GuardrailTopicPolicyConfig,
+      contentPolicyConfig: i_GuardrailContentPolicyConfig,
+      wordPolicyConfig: i_GuardrailWordPolicyConfig,
+      sensitiveInformationPolicyConfig:
+        i_GuardrailSensitiveInformationPolicyConfig,
+      contextualGroundingPolicyConfig:
+        i_GuardrailContextualGroundingPolicyConfig,
+      automatedReasoningPolicyConfig: i_GuardrailAutomatedReasoningPolicyConfig,
+      crossRegionConfig: i_GuardrailCrossRegionConfig,
+      blockedInputMessaging: 0,
+      blockedOutputsMessaging: 0,
+      kmsKeyId: 0,
+    },
     output: { updatedAt: D.ts },
     body: true,
   },
@@ -8216,7 +8690,11 @@ export const updateMarketplaceModelEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /marketplace-model/endpoints/{endpointArn}",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      endpointArn: 0,
+      endpointConfig: i_EndpointConfig,
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     output: { marketplaceModelEndpoint: o_MarketplaceModelEndpoint },
     body: true,
   },
@@ -8253,6 +8731,11 @@ export const updateProvisionedModelThroughput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /provisioned-model-throughput/{provisionedModelId}",
+    input: {
+      provisionedModelId: 0,
+      desiredProvisionedModelName: 0,
+      desiredModelId: 0,
+    },
     body: true,
   },
   errors: [
@@ -8267,6 +8750,188 @@ export const updateProvisionedModelThroughput: API.OperationMethod<
   operationName: "UpdateProvisionedModelThroughput",
 })) as any;
 
+const i_AutomatedReasoningPolicyAnnotation: D.LazyStruct = () => ({
+  addType: {
+    name: 0,
+    description: 0,
+    values: D.list(i_AutomatedReasoningPolicyDefinitionTypeValue),
+  },
+  updateType: {
+    name: 0,
+    newName: 0,
+    description: 0,
+    values: D.list({
+      addTypeValue: { value: 0, description: 0 },
+      updateTypeValue: { value: 0, newValue: 0, description: 0 },
+      deleteTypeValue: { value: 0 },
+    }),
+  },
+  deleteType: { name: 0 },
+  addVariable: { name: 0, type: 0, description: 0 },
+  updateVariable: { name: 0, newName: 0, description: 0 },
+  deleteVariable: { name: 0 },
+  addRule: { expression: 0 },
+  updateRule: { ruleId: 0, expression: 0 },
+  deleteRule: { ruleId: 0 },
+  addRuleFromNaturalLanguage: { naturalLanguage: 0 },
+  updateFromRulesFeedback: { ruleIds: 0, feedback: 0 },
+  updateFromScenarioFeedback: {
+    ruleIds: 0,
+    scenarioExpression: 0,
+    feedback: 0,
+  },
+  ingestContent: { content: 0 },
+});
+const i_AutomatedReasoningPolicyBuildWorkflowDocument: D.LazyStruct = () => ({
+  document: 0,
+  documentContentType: 0,
+  documentName: 0,
+  documentDescription: 0,
+});
+const i_AutomatedReasoningPolicyDefinition: D.LazyStruct = () => ({
+  version: 0,
+  types: D.list({
+    name: 0,
+    description: 0,
+    values: D.list(i_AutomatedReasoningPolicyDefinitionTypeValue),
+  }),
+  rules: D.list({ id: 0, expression: 0, alternateExpression: 0 }),
+  variables: D.list({ name: 0, type: 0, description: 0 }),
+});
+const i_EndpointConfig: D.LazyStruct = () => ({
+  sageMaker: {
+    initialInstanceCount: 0,
+    instanceType: 0,
+    executionRole: 0,
+    kmsEncryptionKey: 0,
+    vpc: i_VpcConfig,
+  },
+});
+const i_EvaluationDatasetMetricConfig: D.LazyStruct = () => ({
+  taskType: 0,
+  dataset: { name: 0, datasetLocation: { s3Uri: 0 } },
+  metricNames: 0,
+});
+const i_GuardrailAutomatedReasoningPolicyConfig: D.LazyStruct = () => ({
+  policies: 0,
+  confidenceThreshold: 0,
+});
+const i_GuardrailConfiguration: D.LazyStruct = () => ({
+  guardrailId: 0,
+  guardrailVersion: 0,
+});
+const i_GuardrailContentPolicyConfig: D.LazyStruct = () => ({
+  filtersConfig: D.list({
+    type: 0,
+    inputStrength: 0,
+    outputStrength: 0,
+    inputModalities: 0,
+    outputModalities: 0,
+    inputAction: 0,
+    outputAction: 0,
+    inputEnabled: 0,
+    outputEnabled: 0,
+  }),
+  tierConfig: { tierName: 0 },
+});
+const i_GuardrailContextualGroundingPolicyConfig: D.LazyStruct = () => ({
+  filtersConfig: D.list({ type: 0, threshold: 0, action: 0, enabled: 0 }),
+});
+const i_GuardrailCrossRegionConfig: D.LazyStruct = () => ({
+  guardrailProfileIdentifier: 0,
+});
+const i_GuardrailSensitiveInformationPolicyConfig: D.LazyStruct = () => ({
+  piiEntitiesConfig: D.list({
+    type: 0,
+    action: 0,
+    inputAction: 0,
+    outputAction: 0,
+    inputEnabled: 0,
+    outputEnabled: 0,
+  }),
+  regexesConfig: D.list({
+    name: 0,
+    description: 0,
+    pattern: 0,
+    action: 0,
+    inputAction: 0,
+    outputAction: 0,
+    inputEnabled: 0,
+    outputEnabled: 0,
+  }),
+});
+const i_GuardrailTopicPolicyConfig: D.LazyStruct = () => ({
+  topicsConfig: D.list({
+    name: 0,
+    definition: 0,
+    examples: 0,
+    type: 0,
+    inputAction: 0,
+    outputAction: 0,
+    inputEnabled: 0,
+    outputEnabled: 0,
+  }),
+  tierConfig: { tierName: 0 },
+});
+const i_GuardrailWordPolicyConfig: D.LazyStruct = () => ({
+  wordsConfig: D.list({
+    text: 0,
+    inputAction: 0,
+    outputAction: 0,
+    inputEnabled: 0,
+    outputEnabled: 0,
+  }),
+  managedWordListsConfig: D.list({
+    type: 0,
+    inputAction: 0,
+    outputAction: 0,
+    inputEnabled: 0,
+    outputEnabled: 0,
+  }),
+});
+const i_KbInferenceConfig: D.LazyStruct = () => ({
+  textInferenceConfig: {
+    temperature: 0,
+    topP: 0,
+    maxTokens: 0,
+    stopSequences: 0,
+  },
+});
+const i_KnowledgeBaseRetrievalConfiguration: D.LazyStruct = () => ({
+  vectorSearchConfiguration: {
+    numberOfResults: 0,
+    overrideSearchType: 0,
+    filter: i_RetrievalFilter,
+    implicitFilterConfiguration: {
+      metadataAttributes: D.list({ key: 0, type: 0, description: 0 }),
+      modelArn: 0,
+    },
+    rerankingConfiguration: {
+      type: 0,
+      bedrockRerankingConfiguration: {
+        modelConfiguration: { modelArn: 0, additionalModelRequestFields: 0 },
+        numberOfRerankedResults: 0,
+        metadataConfiguration: {
+          selectionMode: 0,
+          selectiveModeConfiguration: {
+            fieldsToInclude: D.list(i_FieldForReranking),
+            fieldsToExclude: D.list(i_FieldForReranking),
+          },
+        },
+      },
+    },
+  },
+});
+const i_ModelDataSource: D.LazyStruct = () => ({ s3DataSource: { s3Uri: 0 } });
+const i_PromptRouterTargetModel: D.LazyStruct = () => ({ modelArn: 0 });
+const i_PromptTemplate: D.LazyStruct = () => ({ textPromptTemplate: 0 });
+const i_RequestMetadataBaseFilters: D.LazyStruct = () => ({
+  equals: 0,
+  notEquals: 0,
+});
+const i_S3Config: D.LazyStruct = () => ({ bucketName: 0, keyPrefix: 0 });
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_VpcConfig: D.LazyStruct = () => ({ subnetIds: 0, securityGroupIds: 0 });
 const o_AutomatedReasoningPolicyAnnotation: D.LazyStruct = () => ({
   addType: {
     name: D.secret,
@@ -8376,6 +9041,26 @@ const o_StatusDetails: D.LazyStruct = () => ({
   dataProcessingDetails: { creationTime: D.ts, lastModifiedTime: D.ts },
   trainingDetails: { creationTime: D.ts, lastModifiedTime: D.ts },
 });
+const i_AutomatedReasoningPolicyDefinitionTypeValue: D.LazyStruct = () => ({
+  value: 0,
+  description: 0,
+});
+const i_FieldForReranking: D.LazyStruct = () => ({ fieldName: 0 });
+const i_RetrievalFilter: D.LazyStruct = () => ({
+  equals: i_FilterAttribute,
+  notEquals: i_FilterAttribute,
+  greaterThan: i_FilterAttribute,
+  greaterThanOrEquals: i_FilterAttribute,
+  lessThan: i_FilterAttribute,
+  lessThanOrEquals: i_FilterAttribute,
+  in: i_FilterAttribute,
+  notIn: i_FilterAttribute,
+  startsWith: i_FilterAttribute,
+  listContains: i_FilterAttribute,
+  stringContains: i_FilterAttribute,
+  andAll: D.list(i_RetrievalFilter),
+  orAll: D.list(i_RetrievalFilter),
+});
 const o_AutomatedReasoningCheckLogicWarning: D.LazyStruct = () => ({
   premises: D.list(o_AutomatedReasoningLogicStatement),
   claims: D.list(o_AutomatedReasoningLogicStatement),
@@ -8392,6 +9077,7 @@ const o_AutomatedReasoningCheckTranslation: D.LazyStruct = () => ({
 const o_AutomatedReasoningPolicyDefinitionTypeValue: D.LazyStruct = () => ({
   description: D.secret,
 });
+const i_FilterAttribute: D.LazyStruct = () => ({ key: 0, value: 0 });
 const o_AutomatedReasoningCheckInputTextReference: D.LazyStruct = () => ({
   text: D.secret,
 });

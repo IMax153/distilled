@@ -545,6 +545,14 @@ export const addProfilePermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /signing-profiles/{profileName}/permissions",
+    input: {
+      profileName: 0,
+      profileVersion: 0,
+      action: 0,
+      principal: 0,
+      revisionId: 0,
+      statementId: 0,
+    },
     body: true,
   },
   errors: [
@@ -578,7 +586,11 @@ export const cancelSigningProfile: API.OperationMethod<
   CancelSigningProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /signing-profiles/{profileName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /signing-profiles/{profileName}",
+    input: { profileName: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -610,6 +622,7 @@ export const describeSigningJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /signing-jobs/{jobId}",
+    input: { jobId: 0 },
     output: {
       createdAt: D.ts,
       completedAt: D.ts,
@@ -648,7 +661,10 @@ export const getRevocationStatus: API.OperationMethod<
     service: svc,
     http: "GET /revocations",
     input: {
-      signatureTimestamp: D.m({ query: "signatureTimestamp" }),
+      signatureTimestamp: D.m({
+        query: "signatureTimestamp",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       platformId: D.m({ query: "platformId" }),
       profileVersionArn: D.m({ query: "profileVersionArn" }),
       jobArn: D.m({ query: "jobArn" }),
@@ -682,7 +698,11 @@ export const getSigningPlatform: API.OperationMethod<
   GetSigningPlatformError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /signing-platforms/{platformId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /signing-platforms/{platformId}",
+    input: { platformId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -712,7 +732,7 @@ export const getSigningProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /signing-profiles/{profileName}",
-    input: { profileOwner: D.m({ query: "profileOwner" }) },
+    input: { profileName: 0, profileOwner: D.m({ query: "profileOwner" }) },
     output: {
       revocationRecord: { revocationEffectiveFrom: D.ts, revokedAt: D.ts },
     },
@@ -747,7 +767,7 @@ export const listProfilePermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /signing-profiles/{profileName}/permissions",
-    input: { nextToken: D.m({ query: "nextToken" }) },
+    input: { profileName: 0, nextToken: D.m({ query: "nextToken" }) },
   },
   errors: [
     AccessDeniedException,
@@ -793,8 +813,14 @@ export const listSigningJobs: API.PaginatedOperationMethod<
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
       isRevoked: D.m({ query: "isRevoked" }),
-      signatureExpiresBefore: D.m({ query: "signatureExpiresBefore" }),
-      signatureExpiresAfter: D.m({ query: "signatureExpiresAfter" }),
+      signatureExpiresBefore: D.m({
+        query: "signatureExpiresBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      signatureExpiresAfter: D.m({
+        query: "signatureExpiresAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       jobInvoker: D.m({ query: "jobInvoker" }),
     },
     output: { jobs: D.list({ createdAt: D.ts, signatureExpiresAt: D.ts }) },
@@ -927,7 +953,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     BadRequestException,
     InternalServiceErrorException,
@@ -960,6 +990,18 @@ export const putSigningProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /signing-profiles/{profileName}",
+    input: {
+      profileName: 0,
+      signingMaterial: { certificateArn: 0 },
+      signatureValidityPeriod: { value: 0, type: 0 },
+      platformId: 0,
+      overrides: {
+        signingConfiguration: { encryptionAlgorithm: 0, hashAlgorithm: 0 },
+        signingImageFormat: 0,
+      },
+      signingParameters: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -995,7 +1037,11 @@ export const removeProfilePermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /signing-profiles/{profileName}/permissions/{statementId}",
-    input: { revisionId: D.m({ query: "revisionId" }) },
+    input: {
+      profileName: 0,
+      revisionId: D.m({ query: "revisionId" }),
+      statementId: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1030,6 +1076,7 @@ export const revokeSignature: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /signing-jobs/{jobId}/revoke",
+    input: { jobId: 0, jobOwner: 0, reason: 0 },
     body: true,
   },
   errors: [
@@ -1067,6 +1114,7 @@ export const revokeSigningProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /signing-profiles/{profileName}/revoke",
+    input: { profileName: 0, profileVersion: 0, reason: 0, effectiveTime: 0 },
     body: true,
   },
   errors: [
@@ -1100,6 +1148,7 @@ export const signPayload: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /signing-jobs/with-payload",
+    input: { profileName: 0, profileOwner: 0, payload: 0, payloadFormat: 0 },
     output: { signature: D.blob },
     body: true,
   },
@@ -1156,7 +1205,13 @@ export const startSigningJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /signing-jobs",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      source: { s3: { bucketName: 0, key: 0, version: 0 } },
+      destination: { s3: { bucketName: 0, prefix: 0 } },
+      profileName: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      profileOwner: 0,
+    },
     body: true,
   },
   errors: [
@@ -1190,7 +1245,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     InternalServiceErrorException,
@@ -1221,7 +1281,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     BadRequestException,

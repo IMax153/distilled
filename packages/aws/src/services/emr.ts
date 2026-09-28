@@ -2022,7 +2022,10 @@ export const addInstanceFleet: API.OperationMethod<
   AddInstanceFleetError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ClusterId: 0, InstanceFleet: i_InstanceFleetConfig },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2039,7 +2042,10 @@ export const addInstanceGroups: API.OperationMethod<
   AddInstanceGroupsError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceGroups: D.list(i_InstanceGroupConfig), JobFlowId: 0 },
+  },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2077,7 +2083,10 @@ export const addJobFlowSteps: API.OperationMethod<
   AddJobFlowStepsError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { JobFlowId: 0, Steps: D.list(i_StepConfig), ExecutionRoleArn: 0 },
+  },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2101,7 +2110,10 @@ export const addTags: API.OperationMethod<
   AddTagsError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceId: 0, Tags: D.list(i_Tag), ClusterId: 0 },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2125,7 +2137,10 @@ export const cancelSteps: API.OperationMethod<
   CancelStepsError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ClusterId: 0, StepIds: 0, StepCancellationOption: 0 },
+  },
   errors: [InternalServerError, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2145,7 +2160,16 @@ export const createPersistentAppUI: API.OperationMethod<
   CreatePersistentAppUIError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TargetResourceArn: 0,
+      EMRContainersConfig: { JobRunId: 0 },
+      Tags: D.list(i_Tag),
+      XReferer: 0,
+      ProfilerType: 0,
+    },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2167,7 +2191,11 @@ export const createSecurityConfiguration: API.OperationMethod<
   CreateSecurityConfigurationError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationDateTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, SecurityConfiguration: 0 },
+    output: { CreationDateTime: D.ts },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2193,7 +2221,28 @@ export const createStudio: API.OperationMethod<
   CreateStudioError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      AuthMode: 0,
+      VpcId: 0,
+      SubnetIds: 0,
+      ServiceRole: 0,
+      UserRole: 0,
+      WorkspaceSecurityGroupId: 0,
+      EngineSecurityGroupId: 0,
+      DefaultS3Location: 0,
+      IdpAuthUrl: 0,
+      IdpRelayStateParameterName: 0,
+      Tags: D.list(i_Tag),
+      TrustedIdentityPropagationEnabled: 0,
+      IdcUserAssignment: 0,
+      IdcInstanceArn: 0,
+      EncryptionKeyArn: 0,
+    },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2222,7 +2271,16 @@ export const createStudioSessionMapping: API.OperationMethod<
   CreateStudioSessionMappingError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      StudioId: 0,
+      IdentityId: 0,
+      IdentityName: 0,
+      IdentityType: 0,
+      SessionPolicyArn: 0,
+    },
+  },
   errors: [InternalServerError, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2243,7 +2301,7 @@ export const deleteSecurityConfiguration: API.OperationMethod<
   DeleteSecurityConfigurationError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2268,7 +2326,7 @@ export const deleteStudio: API.OperationMethod<
   DeleteStudioError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { StudioId: 0 } },
   errors: [InternalServerException, InvalidRequestException, StudioNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2288,7 +2346,10 @@ export const deleteStudioSessionMapping: API.OperationMethod<
   DeleteStudioSessionMappingError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { StudioId: 0, IdentityId: 0, IdentityName: 0, IdentityType: 0 },
+  },
   errors: [InternalServerError, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2312,6 +2373,7 @@ export const describeCluster: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ClusterId: 0 },
     output: {
       Cluster: {
         Status: o_ClusterStatus,
@@ -2360,6 +2422,12 @@ export const describeJobFlows: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreatedAfter: 0,
+      CreatedBefore: 0,
+      JobFlowIds: 0,
+      JobFlowStates: 0,
+    },
     output: {
       JobFlows: D.list({
         ExecutionStatusDetail: {
@@ -2407,6 +2475,7 @@ export const describeNotebookExecution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { NotebookExecutionId: 0 },
     output: { NotebookExecution: { StartTime: D.ts, EndTime: D.ts } },
   },
   errors: [InternalServerError, InvalidRequestException],
@@ -2430,6 +2499,7 @@ export const describePersistentAppUI: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { PersistentAppUIId: 0 },
     output: { PersistentAppUI: { CreationTime: D.ts, LastModifiedTime: D.ts } },
   },
   errors: [InternalServerException, InvalidRequestException],
@@ -2453,7 +2523,10 @@ export const describeReleaseLabel: API.OperationMethod<
   DescribeReleaseLabelError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ReleaseLabel: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2475,7 +2548,11 @@ export const describeSecurityConfiguration: API.OperationMethod<
   DescribeSecurityConfigurationError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationDateTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0 },
+    output: { CreationDateTime: D.ts },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2499,7 +2576,11 @@ export const describeStep: API.OperationMethod<
   DescribeStepError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Step: { Status: o_StepStatus } } },
+  descriptor: {
+    service: svc,
+    input: { ClusterId: 0, StepId: 0 },
+    output: { Step: { Status: o_StepStatus } },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2521,7 +2602,11 @@ export const describeStudio: API.OperationMethod<
   DescribeStudioError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Studio: { CreationTime: D.ts } } },
+  descriptor: {
+    service: svc,
+    input: { StudioId: 0 },
+    output: { Studio: { CreationTime: D.ts } },
+  },
   errors: [InternalServerException, InvalidRequestException, StudioNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2538,7 +2623,7 @@ export const getAutoTerminationPolicy: API.OperationMethod<
   GetAutoTerminationPolicyError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ClusterId: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2562,6 +2647,7 @@ export const getBlockPublicAccessConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {},
     output: {
       BlockPublicAccessConfigurationMetadata: { CreationDateTime: D.ts },
     },
@@ -2590,6 +2676,7 @@ export const getClusterSessionCredentials: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ClusterId: 0, ExecutionRoleArn: 0 },
     output: { Credentials: o_Credentials, ExpiresAt: D.ts },
   },
   errors: [InternalServerError, InvalidRequestException],
@@ -2608,7 +2695,7 @@ export const getManagedScalingPolicy: API.OperationMethod<
   GetManagedScalingPolicyError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ClusterId: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2628,7 +2715,16 @@ export const getOnClusterAppUIPresignedURL: API.OperationMethod<
   GetOnClusterAppUIPresignedURLError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterId: 0,
+      OnClusterAppUIType: 0,
+      ApplicationId: 0,
+      DryRun: 0,
+      ExecutionRoleArn: 0,
+    },
+  },
   errors: [InternalServerError, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2648,7 +2744,16 @@ export const getPersistentAppUIPresignedURL: API.OperationMethod<
   GetPersistentAppUIPresignedURLError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      PersistentAppUIId: 0,
+      PersistentAppUIType: 0,
+      ApplicationId: 0,
+      AuthProxyCall: 0,
+      ExecutionRoleArn: 0,
+    },
+  },
   errors: [InternalServerError, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2668,7 +2773,11 @@ export const getSession: API.OperationMethod<
   GetSessionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Session: o_Session } },
+  descriptor: {
+    service: svc,
+    input: { ClusterId: 0, SessionId: 0 },
+    output: { Session: o_Session },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2690,6 +2799,7 @@ export const getSessionEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ClusterId: 0, SessionId: 0 },
     output: {
       AuthToken: D.secret,
       AuthTokenExpirationTime: D.ts,
@@ -2718,6 +2828,7 @@ export const getStudioSessionMapping: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { StudioId: 0, IdentityId: 0, IdentityName: 0, IdentityType: 0 },
     output: { SessionMapping: { CreationTime: D.ts, LastModifiedTime: D.ts } },
   },
   errors: [InternalServerError, InvalidRequestException],
@@ -2740,7 +2851,7 @@ export const listBootstrapActions: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   Command
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ClusterId: 0, Marker: 0 } },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2772,6 +2883,7 @@ export const listClusters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { CreatedAfter: 0, CreatedBefore: 0, ClusterStates: 0, Marker: 0 },
     output: { Clusters: D.list({ Status: o_ClusterStatus }) },
   },
   errors: [InternalServerException, InvalidRequestException],
@@ -2804,6 +2916,7 @@ export const listInstanceFleets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ClusterId: 0, Marker: 0 },
     output: {
       InstanceFleets: D.list({
         Status: {
@@ -2843,6 +2956,7 @@ export const listInstanceGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ClusterId: 0, Marker: 0 },
     output: {
       InstanceGroups: D.list({
         Status: {
@@ -2885,6 +2999,15 @@ export const listInstances: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ClusterId: 0,
+      InstanceGroupId: 0,
+      InstanceGroupTypes: 0,
+      InstanceFleetId: 0,
+      InstanceFleetType: 0,
+      InstanceStates: 0,
+      Marker: 0,
+    },
     output: {
       Instances: D.list({
         Status: {
@@ -2927,6 +3050,14 @@ export const listNotebookExecutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      EditorId: 0,
+      Status: 0,
+      From: 0,
+      To: 0,
+      Marker: 0,
+      ExecutionEngineId: 0,
+    },
     output: { NotebookExecutions: D.list({ StartTime: D.ts, EndTime: D.ts }) },
   },
   errors: [InternalServerError, InvalidRequestException],
@@ -2955,7 +3086,14 @@ export const listReleaseLabels: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Filters: { Prefix: 0, Application: 0 },
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2986,6 +3124,7 @@ export const listSecurityConfigurations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Marker: 0 },
     output: { SecurityConfigurations: D.list({ CreationDateTime: D.ts }) },
   },
   errors: [InternalServerException, InvalidRequestException],
@@ -3013,7 +3152,11 @@ export const listSessions: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   Session
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Sessions: D.list(o_Session) } },
+  descriptor: {
+    service: svc,
+    input: { ClusterId: 0, SessionStates: 0, NextToken: 0, MaxResults: 0 },
+    output: { Sessions: D.list(o_Session) },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3046,6 +3189,7 @@ export const listSteps: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ClusterId: 0, StepStates: 0, StepIds: 0, Marker: 0 },
     output: { Steps: D.list({ Status: o_StepStatus }) },
   },
   errors: [InternalServerException, InvalidRequestException],
@@ -3076,6 +3220,7 @@ export const listStudios: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Marker: 0 },
     output: { Studios: D.list({ CreationTime: D.ts }) },
   },
   errors: [InternalServerException, InvalidRequestException],
@@ -3106,6 +3251,7 @@ export const listStudioSessionMappings: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { StudioId: 0, IdentityType: 0, Marker: 0 },
     output: { SessionMappings: D.list({ CreationTime: D.ts }) },
   },
   errors: [InternalServerError, InvalidRequestException],
@@ -3134,7 +3280,7 @@ export const listSupportedInstanceTypes: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ReleaseLabel: 0, Marker: 0 } },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3156,7 +3302,10 @@ export const modifyCluster: API.OperationMethod<
   ModifyClusterError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ClusterId: 0, StepConcurrencyLevel: 0, ExtendedSupport: 0 },
+  },
   errors: [InternalServerError, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3181,7 +3330,20 @@ export const modifyInstanceFleet: API.OperationMethod<
   ModifyInstanceFleetError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterId: 0,
+      InstanceFleet: {
+        InstanceFleetId: 0,
+        TargetOnDemandCapacity: 0,
+        TargetSpotCapacity: 0,
+        ResizeSpecifications: i_InstanceFleetResizingSpecifications,
+        InstanceTypeConfigs: D.list(i_InstanceTypeConfig),
+        Context: 0,
+      },
+    },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3200,7 +3362,27 @@ export const modifyInstanceGroups: API.OperationMethod<
   ModifyInstanceGroupsError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterId: 0,
+      InstanceGroups: D.list({
+        InstanceGroupId: 0,
+        InstanceCount: 0,
+        EC2InstanceIdsToTerminate: 0,
+        ShrinkPolicy: {
+          DecommissionTimeout: 0,
+          InstanceResizePolicy: {
+            InstancesToTerminate: 0,
+            InstancesToProtect: 0,
+            InstanceTerminationTimeout: 0,
+          },
+        },
+        ReconfigurationType: 0,
+        Configurations: D.list(i_Configuration),
+      }),
+    },
+  },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3220,7 +3402,14 @@ export const putAutoScalingPolicy: API.OperationMethod<
   PutAutoScalingPolicyError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterId: 0,
+      InstanceGroupId: 0,
+      AutoScalingPolicy: i_AutoScalingPolicy,
+    },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3244,7 +3433,10 @@ export const putAutoTerminationPolicy: API.OperationMethod<
   PutAutoTerminationPolicyError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ClusterId: 0, AutoTerminationPolicy: i_AutoTerminationPolicy },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3267,7 +3459,21 @@ export const putBlockPublicAccessConfiguration: API.OperationMethod<
   PutBlockPublicAccessConfigurationError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      BlockPublicAccessConfiguration: {
+        BlockPublicSecurityGroupRules: 0,
+        PermittedPublicSecurityGroupRuleRanges: D.list({
+          MinRange: 0,
+          MaxRange: 0,
+        }),
+        Classification: 0,
+        Configurations: D.list(i_Configuration),
+        Properties: 0,
+      },
+    },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3287,7 +3493,10 @@ export const putManagedScalingPolicy: API.OperationMethod<
   PutManagedScalingPolicyError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ClusterId: 0, ManagedScalingPolicy: i_ManagedScalingPolicy },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3304,7 +3513,7 @@ export const removeAutoScalingPolicy: API.OperationMethod<
   RemoveAutoScalingPolicyError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ClusterId: 0, InstanceGroupId: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3321,7 +3530,7 @@ export const removeAutoTerminationPolicy: API.OperationMethod<
   RemoveAutoTerminationPolicyError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ClusterId: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3338,7 +3547,7 @@ export const removeManagedScalingPolicy: API.OperationMethod<
   RemoveManagedScalingPolicyError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ClusterId: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3363,7 +3572,10 @@ export const removeTags: API.OperationMethod<
   RemoveTagsError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceId: 0, TagKeys: 0, ClusterId: 0 },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3404,7 +3616,83 @@ export const runJobFlow: API.OperationMethod<
   RunJobFlowError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      LogUri: 0,
+      LogEncryptionKmsKeyId: 0,
+      AdditionalInfo: 0,
+      AmiVersion: 0,
+      ReleaseLabel: 0,
+      Instances: {
+        MasterInstanceType: 0,
+        SlaveInstanceType: 0,
+        InstanceCount: 0,
+        InstanceGroups: D.list(i_InstanceGroupConfig),
+        InstanceFleets: D.list(i_InstanceFleetConfig),
+        Ec2KeyName: 0,
+        Placement: { AvailabilityZone: 0, AvailabilityZones: 0 },
+        KeepJobFlowAliveWhenNoSteps: 0,
+        TerminationProtected: 0,
+        UnhealthyNodeReplacement: 0,
+        HadoopVersion: 0,
+        Ec2SubnetId: 0,
+        Ec2SubnetIds: 0,
+        EmrManagedMasterSecurityGroup: 0,
+        EmrManagedSlaveSecurityGroup: 0,
+        ServiceAccessSecurityGroup: 0,
+        AdditionalMasterSecurityGroups: 0,
+        AdditionalSlaveSecurityGroups: 0,
+      },
+      Steps: D.list(i_StepConfig),
+      StepExecutionRoleArn: 0,
+      BootstrapActions: D.list({
+        Name: 0,
+        ScriptBootstrapAction: { Path: 0, Args: 0 },
+      }),
+      SupportedProducts: 0,
+      NewSupportedProducts: D.list({ Name: 0, Args: 0 }),
+      Applications: D.list({ Name: 0, Version: 0, Args: 0, AdditionalInfo: 0 }),
+      Configurations: D.list(i_Configuration),
+      VisibleToAllUsers: 0,
+      JobFlowRole: 0,
+      ServiceRole: 0,
+      Tags: D.list(i_Tag),
+      SecurityConfiguration: 0,
+      AutoScalingRole: 0,
+      ScaleDownBehavior: 0,
+      CustomAmiId: 0,
+      EbsRootVolumeSize: 0,
+      RepoUpgradeOnBoot: 0,
+      KerberosAttributes: {
+        Realm: 0,
+        KdcAdminPassword: 0,
+        CrossRealmTrustPrincipalPassword: 0,
+        ADDomainJoinUser: 0,
+        ADDomainJoinPassword: 0,
+      },
+      StepConcurrencyLevel: 0,
+      ManagedScalingPolicy: i_ManagedScalingPolicy,
+      PlacementGroupConfigs: D.list({ InstanceRole: 0, PlacementStrategy: 0 }),
+      AutoTerminationPolicy: i_AutoTerminationPolicy,
+      OSReleaseLabel: 0,
+      EbsRootVolumeIops: 0,
+      EbsRootVolumeThroughput: 0,
+      ExtendedSupport: 0,
+      MonitoringConfiguration: {
+        CloudWatchLogConfiguration: {
+          Enabled: 0,
+          LogGroupName: 0,
+          LogStreamNamePrefix: 0,
+          EncryptionKeyArn: 0,
+          LogTypes: 0,
+        },
+        S3LoggingConfiguration: { LogTypeUploadPolicy: 0 },
+      },
+      SessionEnabled: 0,
+    },
+  },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3427,7 +3715,10 @@ export const setKeepJobFlowAliveWhenNoSteps: API.OperationMethod<
   SetKeepJobFlowAliveWhenNoStepsError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { JobFlowIds: 0, KeepJobFlowAliveWhenNoSteps: 0 },
+  },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3465,7 +3756,10 @@ export const setTerminationProtection: API.OperationMethod<
   SetTerminationProtectionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { JobFlowIds: 0, TerminationProtected: 0 },
+  },
   errors: [InternalServerError, JobFlowNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3497,7 +3791,10 @@ export const setUnhealthyNodeReplacement: API.OperationMethod<
   SetUnhealthyNodeReplacementError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { JobFlowIds: 0, UnhealthyNodeReplacement: 0 },
+  },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3527,7 +3824,7 @@ export const setVisibleToAllUsers: API.OperationMethod<
   SetVisibleToAllUsersError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobFlowIds: 0, VisibleToAllUsers: 0 } },
   errors: [InternalServerError],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3547,7 +3844,28 @@ export const startNotebookExecution: API.OperationMethod<
   StartNotebookExecutionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EditorId: 0,
+      RelativePath: 0,
+      NotebookExecutionName: 0,
+      NotebookParams: 0,
+      ExecutionEngine: {
+        Id: 0,
+        Type: 0,
+        MasterInstanceSecurityGroupId: 0,
+        ExecutionRoleArn: 0,
+      },
+      ServiceRole: 0,
+      NotebookInstanceSecurityGroupId: 0,
+      Tags: D.list(i_Tag),
+      NotebookS3Location: { Bucket: 0, Key: 0 },
+      OutputNotebookS3Location: { Bucket: 0, Key: 0 },
+      OutputNotebookFormat: 0,
+      EnvironmentVariables: 0,
+    },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3567,7 +3885,34 @@ export const startSession: API.OperationMethod<
   StartSessionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      ClusterId: 0,
+      ExecutionRoleArn: 0,
+      EngineConfigurations: D.list(i_Configuration),
+      MonitoringConfiguration: {
+        CloudWatchLoggingConfiguration: {
+          Enabled: 0,
+          LogGroup: 0,
+          LogStreamNamePrefix: 0,
+          EncryptionKeyArn: 0,
+          LogTypes: 0,
+        },
+        ManagedLoggingConfiguration: { Enabled: 0, EncryptionKeyArn: 0 },
+        S3LoggingConfiguration: {
+          Enabled: 0,
+          LogUri: 0,
+          EncryptionKeyArn: 0,
+          LogTypes: 0,
+        },
+      },
+      SessionIdleTimeoutInMinutes: 0,
+      ClientRequestToken: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3587,7 +3932,7 @@ export const stopNotebookExecution: API.OperationMethod<
   StopNotebookExecutionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NotebookExecutionId: 0 } },
   errors: [InternalServerError, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3614,7 +3959,7 @@ export const terminateJobFlows: API.OperationMethod<
   TerminateJobFlowsError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobFlowIds: 0 } },
   errors: [InternalServerError, JobFlowNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3634,7 +3979,7 @@ export const terminateSession: API.OperationMethod<
   TerminateSessionError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ClusterId: 0, SessionId: 0 } },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3656,7 +4001,17 @@ export const updateStudio: API.OperationMethod<
   UpdateStudioError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      StudioId: 0,
+      Name: 0,
+      Description: 0,
+      SubnetIds: 0,
+      DefaultS3Location: 0,
+      EncryptionKeyArn: 0,
+    },
+  },
   errors: [InternalServerException, InvalidRequestException, StudioNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3676,13 +4031,132 @@ export const updateStudioSessionMapping: API.OperationMethod<
   UpdateStudioSessionMappingError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      StudioId: 0,
+      IdentityId: 0,
+      IdentityName: 0,
+      IdentityType: 0,
+      SessionPolicyArn: 0,
+    },
+  },
   errors: [InternalServerError, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "UpdateStudioSessionMapping",
 })) as any;
 
+const i_AutoScalingPolicy: D.LazyStruct = () => ({
+  Constraints: { MinCapacity: 0, MaxCapacity: 0 },
+  Rules: D.list({
+    Name: 0,
+    Description: 0,
+    Action: {
+      Market: 0,
+      SimpleScalingPolicyConfiguration: {
+        AdjustmentType: 0,
+        ScalingAdjustment: 0,
+        CoolDown: 0,
+      },
+    },
+    Trigger: {
+      CloudWatchAlarmDefinition: {
+        ComparisonOperator: 0,
+        EvaluationPeriods: 0,
+        MetricName: 0,
+        Namespace: 0,
+        Period: 0,
+        Statistic: 0,
+        Threshold: 0,
+        Unit: 0,
+        Dimensions: D.list({ Key: 0, Value: 0 }),
+      },
+    },
+  }),
+});
+const i_AutoTerminationPolicy: D.LazyStruct = () => ({ IdleTimeout: 0 });
+const i_Configuration: D.LazyStruct = () => ({
+  Classification: 0,
+  Configurations: D.list(i_Configuration),
+  Properties: 0,
+});
+const i_InstanceFleetConfig: D.LazyStruct = () => ({
+  Name: 0,
+  InstanceFleetType: 0,
+  TargetOnDemandCapacity: 0,
+  TargetSpotCapacity: 0,
+  InstanceTypeConfigs: D.list(i_InstanceTypeConfig),
+  LaunchSpecifications: {
+    SpotSpecification: {
+      TimeoutDurationMinutes: 0,
+      TimeoutAction: 0,
+      BlockDurationMinutes: 0,
+      AllocationStrategy: 0,
+    },
+    OnDemandSpecification: {
+      AllocationStrategy: 0,
+      CapacityReservationOptions: i_OnDemandCapacityReservationOptions,
+    },
+  },
+  ResizeSpecifications: i_InstanceFleetResizingSpecifications,
+  Context: 0,
+});
+const i_InstanceFleetResizingSpecifications: D.LazyStruct = () => ({
+  SpotResizeSpecification: { TimeoutDurationMinutes: 0, AllocationStrategy: 0 },
+  OnDemandResizeSpecification: {
+    TimeoutDurationMinutes: 0,
+    AllocationStrategy: 0,
+    CapacityReservationOptions: i_OnDemandCapacityReservationOptions,
+  },
+});
+const i_InstanceGroupConfig: D.LazyStruct = () => ({
+  Name: 0,
+  Market: 0,
+  InstanceRole: 0,
+  BidPrice: 0,
+  InstanceType: 0,
+  InstanceCount: 0,
+  Configurations: D.list(i_Configuration),
+  EbsConfiguration: i_EbsConfiguration,
+  AutoScalingPolicy: i_AutoScalingPolicy,
+  CustomAmiId: 0,
+});
+const i_InstanceTypeConfig: D.LazyStruct = () => ({
+  InstanceType: 0,
+  WeightedCapacity: 0,
+  BidPrice: 0,
+  BidPriceAsPercentageOfOnDemandPrice: 0,
+  EbsConfiguration: i_EbsConfiguration,
+  Configurations: D.list(i_Configuration),
+  CustomAmiId: 0,
+  Priority: 0,
+});
+const i_ManagedScalingPolicy: D.LazyStruct = () => ({
+  ComputeLimits: {
+    UnitType: 0,
+    MinimumCapacityUnits: 0,
+    MaximumCapacityUnits: 0,
+    MaximumOnDemandCapacityUnits: 0,
+    MaximumCoreCapacityUnits: 0,
+  },
+  UtilizationPerformanceIndex: 0,
+  ScalingStrategy: 0,
+});
+const i_StepConfig: D.LazyStruct = () => ({
+  Name: 0,
+  ActionOnFailure: 0,
+  HadoopJarStep: {
+    Properties: D.list({ Key: 0, Value: 0 }),
+    Jar: 0,
+    MainClass: 0,
+    Args: 0,
+  },
+  StepMonitoringConfiguration: {
+    S3MonitoringConfiguration: { LogUri: 0, EncryptionKeyArn: 0 },
+  },
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_ClusterStatus: D.LazyStruct = () => ({
   Timeline: { CreationDateTime: D.ts, ReadyDateTime: D.ts, EndDateTime: D.ts },
 });
@@ -3698,4 +4172,16 @@ const o_Session: D.LazyStruct = () => ({
 });
 const o_StepStatus: D.LazyStruct = () => ({
   Timeline: { CreationDateTime: D.ts, StartDateTime: D.ts, EndDateTime: D.ts },
+});
+const i_EbsConfiguration: D.LazyStruct = () => ({
+  EbsBlockDeviceConfigs: D.list({
+    VolumeSpecification: { VolumeType: 0, Iops: 0, SizeInGB: 0, Throughput: 0 },
+    VolumesPerInstance: 0,
+  }),
+  EbsOptimized: 0,
+});
+const i_OnDemandCapacityReservationOptions: D.LazyStruct = () => ({
+  UsageStrategy: 0,
+  CapacityReservationPreference: 0,
+  CapacityReservationResourceGroupArn: 0,
 });

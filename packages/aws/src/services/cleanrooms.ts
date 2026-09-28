@@ -3015,6 +3015,7 @@ export const batchGetCollaborationAnalysisTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /collaborations/{collaborationIdentifier}/batch-analysistemplates",
+    input: { collaborationIdentifier: 0, analysisTemplateArns: 0 },
     output: {
       collaborationAnalysisTemplates: D.list(o_CollaborationAnalysisTemplate),
     },
@@ -3051,6 +3052,7 @@ export const batchGetSchema: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /collaborations/{collaborationIdentifier}/batch-schema",
+    input: { collaborationIdentifier: 0, names: 0 },
     output: { schemas: D.list(o_Schema) },
     body: true,
   },
@@ -3085,6 +3087,10 @@ export const batchGetSchemaAnalysisRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /collaborations/{collaborationIdentifier}/batch-schema-analysis-rule",
+    input: {
+      collaborationIdentifier: 0,
+      schemaAnalysisRuleRequests: D.list({ name: 0, type: 0 }),
+    },
     output: { analysisRules: D.list(o_AnalysisRule) },
     body: true,
   },
@@ -3121,6 +3127,37 @@ export const createAnalysisTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/analysistemplates",
+    input: {
+      description: 0,
+      membershipIdentifier: 0,
+      name: 0,
+      format: 0,
+      source: {
+        text: 0,
+        artifacts: {
+          entryPoint: i_AnalysisTemplateArtifact,
+          additionalArtifacts: D.list(i_AnalysisTemplateArtifact),
+          roleArn: 0,
+        },
+      },
+      tags: 0,
+      analysisParameters: D.list({ name: 0, type: 0, defaultValue: 0 }),
+      schema: { referencedTables: 0 },
+      errorMessageConfiguration: { type: 0 },
+      syntheticDataParameters: {
+        mlSyntheticDataParameters: {
+          epsilon: 0,
+          maxMembershipInferenceAttackScore: 0,
+          columnClassification: {
+            columnMapping: D.list({
+              columnName: 0,
+              columnType: 0,
+              isPredictiveValue: 0,
+            }),
+          },
+        },
+      },
+    },
     output: { analysisTemplate: o_AnalysisTemplate },
     body: true,
   },
@@ -3157,6 +3194,34 @@ export const createCollaboration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /collaborations",
+    input: {
+      members: D.list({
+        accountId: 0,
+        memberAbilities: 0,
+        mlMemberAbilities: i_MLMemberAbilities,
+        displayName: 0,
+        paymentConfiguration: i_PaymentConfiguration,
+      }),
+      name: 0,
+      description: 0,
+      creatorMemberAbilities: 0,
+      creatorMLMemberAbilities: i_MLMemberAbilities,
+      creatorDisplayName: 0,
+      dataEncryptionMetadata: {
+        allowCleartext: 0,
+        allowDuplicates: 0,
+        allowJoinsOnColumnsWithDifferentNames: 0,
+        preserveNulls: 0,
+      },
+      queryLogStatus: 0,
+      jobLogStatus: 0,
+      tags: 0,
+      creatorPaymentConfiguration: i_PaymentConfiguration,
+      analyticsEngine: 0,
+      autoApprovedChangeRequestTypes: 0,
+      allowedResultRegions: 0,
+      isMetricsEnabled: 0,
+    },
     output: { collaboration: o_Collaboration },
     body: true,
   },
@@ -3193,6 +3258,22 @@ export const createCollaborationChangeRequest: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /collaborations/{collaborationIdentifier}/changeRequests",
+    input: {
+      collaborationIdentifier: 0,
+      changes: D.list({
+        specificationType: 0,
+        specification: {
+          member: {
+            accountId: 0,
+            memberAbilities: 0,
+            mlMemberAbilities: i_MLMemberAbilities,
+            paymentConfiguration: i_PaymentConfiguration,
+            displayName: 0,
+          },
+          collaboration: { autoApprovedChangeTypes: 0 },
+        },
+      }),
+    },
     output: { collaborationChangeRequest: o_CollaborationChangeRequest },
     body: true,
   },
@@ -3231,6 +3312,14 @@ export const createConfiguredAudienceModelAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/configuredaudiencemodelassociations",
+    input: {
+      membershipIdentifier: 0,
+      configuredAudienceModelArn: 0,
+      configuredAudienceModelAssociationName: 0,
+      manageResourcePolicies: 0,
+      tags: 0,
+      description: 0,
+    },
     output: {
       configuredAudienceModelAssociation: o_ConfiguredAudienceModelAssociation,
     },
@@ -3271,6 +3360,15 @@ export const createConfiguredTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /configuredTables",
+    input: {
+      name: 0,
+      description: 0,
+      tableReference: i_TableReference,
+      allowedColumns: 0,
+      analysisMethod: 0,
+      selectedAnalysisMethods: 0,
+      tags: 0,
+    },
     output: { configuredTable: o_ConfiguredTable },
     body: true,
   },
@@ -3309,6 +3407,11 @@ export const createConfiguredTableAnalysisRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /configuredTables/{configuredTableIdentifier}/analysisRule",
+    input: {
+      configuredTableIdentifier: 0,
+      analysisRuleType: 0,
+      analysisRulePolicy: i_ConfiguredTableAnalysisRulePolicy,
+    },
     output: { analysisRule: o_ConfiguredTableAnalysisRule },
     body: true,
   },
@@ -3347,6 +3450,14 @@ export const createConfiguredTableAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/configuredTableAssociations",
+    input: {
+      name: 0,
+      description: 0,
+      membershipIdentifier: 0,
+      configuredTableIdentifier: 0,
+      roleArn: 0,
+      tags: 0,
+    },
     output: { configuredTableAssociation: o_ConfiguredTableAssociation },
     body: true,
   },
@@ -3384,6 +3495,12 @@ export const createConfiguredTableAssociationAnalysisRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/configuredTableAssociations/{configuredTableAssociationIdentifier}/analysisRule",
+    input: {
+      membershipIdentifier: 0,
+      configuredTableAssociationIdentifier: 0,
+      analysisRuleType: 0,
+      analysisRulePolicy: i_ConfiguredTableAssociationAnalysisRulePolicy,
+    },
     output: { analysisRule: o_ConfiguredTableAssociationAnalysisRule },
     body: true,
   },
@@ -3421,6 +3538,14 @@ export const createIdMappingTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/idmappingtables",
+    input: {
+      membershipIdentifier: 0,
+      name: 0,
+      description: 0,
+      inputReferenceConfig: { inputReferenceArn: 0, manageResourcePolicies: 0 },
+      tags: 0,
+      kmsKeyArn: 0,
+    },
     output: { idMappingTable: o_IdMappingTable },
     body: true,
   },
@@ -3459,6 +3584,14 @@ export const createIdNamespaceAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/idnamespaceassociations",
+    input: {
+      membershipIdentifier: 0,
+      inputReferenceConfig: { inputReferenceArn: 0, manageResourcePolicies: 0 },
+      tags: 0,
+      name: 0,
+      description: 0,
+      idMappingConfig: i_IdMappingConfig,
+    },
     output: { idNamespaceAssociation: o_IdNamespaceAssociation },
     body: true,
   },
@@ -3497,6 +3630,17 @@ export const createIntermediateTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/intermediateTables",
+    input: {
+      membershipIdentifier: 0,
+      name: 0,
+      description: 0,
+      populationAnalysisConfiguration: {
+        sqlParameters: { queryString: 0, analysisTemplateArn: 0 },
+      },
+      kmsKeyArn: 0,
+      retentionInDays: 0,
+      tags: 0,
+    },
     output: { intermediateTable: o_IntermediateTable },
     body: true,
   },
@@ -3535,6 +3679,12 @@ export const createIntermediateTableAnalysisRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/intermediateTables/{intermediateTableIdentifier}/analysisRule",
+    input: {
+      membershipIdentifier: 0,
+      intermediateTableIdentifier: 0,
+      analysisRuleType: 0,
+      analysisRulePolicy: i_IntermediateTableAnalysisRulePolicy,
+    },
     output: { analysisRule: o_IntermediateTableAnalysisRule },
     body: true,
   },
@@ -3573,6 +3723,21 @@ export const createMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships",
+    input: {
+      collaborationIdentifier: 0,
+      queryLogStatus: 0,
+      jobLogStatus: 0,
+      tags: 0,
+      defaultResultConfiguration: i_MembershipProtectedQueryResultConfiguration,
+      defaultJobResultConfiguration:
+        i_MembershipProtectedJobResultConfiguration,
+      paymentConfiguration: {
+        queryCompute: i_MembershipQueryComputePaymentConfig,
+        machineLearning: i_MembershipMLPaymentConfig,
+        jobCompute: i_MembershipJobComputePaymentConfig,
+      },
+      isMetricsEnabled: 0,
+    },
     output: { membership: o_Membership },
     body: true,
   },
@@ -3611,6 +3776,19 @@ export const createPrivacyBudgetTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/privacybudgettemplates",
+    input: {
+      membershipIdentifier: 0,
+      autoRefresh: 0,
+      privacyBudgetType: 0,
+      parameters: {
+        differentialPrivacy: { epsilon: 0, usersNoisePerQuery: 0 },
+        accessBudget: {
+          budgetParameters: D.list(i_BudgetParameter),
+          resourceArn: 0,
+        },
+      },
+      tags: 0,
+    },
     output: { privacyBudgetTemplate: o_PrivacyBudgetTemplate },
     body: true,
   },
@@ -3647,6 +3825,7 @@ export const deleteAnalysisTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /memberships/{membershipIdentifier}/analysistemplates/{analysisTemplateIdentifier}",
+    input: { membershipIdentifier: 0, analysisTemplateIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3678,6 +3857,7 @@ export const deleteCollaboration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /collaborations/{collaborationIdentifier}",
+    input: { collaborationIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3709,6 +3889,10 @@ export const deleteConfiguredAudienceModelAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /memberships/{membershipIdentifier}/configuredaudiencemodelassociations/{configuredAudienceModelAssociationIdentifier}",
+    input: {
+      configuredAudienceModelAssociationIdentifier: 0,
+      membershipIdentifier: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -3742,6 +3926,7 @@ export const deleteConfiguredTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /configuredTables/{configuredTableIdentifier}",
+    input: { configuredTableIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3776,6 +3961,7 @@ export const deleteConfiguredTableAnalysisRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /configuredTables/{configuredTableIdentifier}/analysisRule/{analysisRuleType}",
+    input: { configuredTableIdentifier: 0, analysisRuleType: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3810,6 +3996,7 @@ export const deleteConfiguredTableAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /memberships/{membershipIdentifier}/configuredTableAssociations/{configuredTableAssociationIdentifier}",
+    input: { configuredTableAssociationIdentifier: 0, membershipIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3844,6 +4031,11 @@ export const deleteConfiguredTableAssociationAnalysisRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /memberships/{membershipIdentifier}/configuredTableAssociations/{configuredTableAssociationIdentifier}/analysisRule/{analysisRuleType}",
+    input: {
+      membershipIdentifier: 0,
+      configuredTableAssociationIdentifier: 0,
+      analysisRuleType: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -3877,6 +4069,7 @@ export const deleteIdMappingTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /memberships/{membershipIdentifier}/idmappingtables/{idMappingTableIdentifier}",
+    input: { idMappingTableIdentifier: 0, membershipIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3909,6 +4102,7 @@ export const deleteIdNamespaceAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /memberships/{membershipIdentifier}/idnamespaceassociations/{idNamespaceAssociationIdentifier}",
+    input: { idNamespaceAssociationIdentifier: 0, membershipIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3942,6 +4136,7 @@ export const deleteIntermediateTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /memberships/{membershipIdentifier}/intermediateTables/{intermediateTableIdentifier}",
+    input: { membershipIdentifier: 0, intermediateTableIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3976,6 +4171,11 @@ export const deleteIntermediateTableAnalysisRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /memberships/{membershipIdentifier}/intermediateTables/{intermediateTableIdentifier}/analysisRule/{analysisRuleType}",
+    input: {
+      membershipIdentifier: 0,
+      intermediateTableIdentifier: 0,
+      analysisRuleType: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -4010,6 +4210,7 @@ export const deleteMember: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /collaborations/{collaborationIdentifier}/member/{accountId}",
+    input: { collaborationIdentifier: 0, accountId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4044,6 +4245,7 @@ export const deleteMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /memberships/{membershipIdentifier}",
+    input: { membershipIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4077,6 +4279,7 @@ export const deletePrivacyBudgetTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /memberships/{membershipIdentifier}/privacybudgettemplates/{privacyBudgetTemplateIdentifier}",
+    input: { membershipIdentifier: 0, privacyBudgetTemplateIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4110,6 +4313,11 @@ export const disallowIntermediateTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/disallowIntermediateTable",
+    input: {
+      membershipIdentifier: 0,
+      intermediateTableName: 0,
+      includeDescendants: 0,
+    },
     body: true,
   },
   errors: [
@@ -4146,6 +4354,7 @@ export const getAnalysisLogExport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/analysislogexports/{analysisLogExportIdentifier}",
+    input: { membershipIdentifier: 0, analysisLogExportIdentifier: 0 },
     output: { analysisLogExport: o_AnalysisLogExport },
   },
   errors: [
@@ -4179,6 +4388,7 @@ export const getAnalysisTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/analysistemplates/{analysisTemplateIdentifier}",
+    input: { membershipIdentifier: 0, analysisTemplateIdentifier: 0 },
     output: { analysisTemplate: o_AnalysisTemplate },
   },
   errors: [
@@ -4211,6 +4421,7 @@ export const getCollaboration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /collaborations/{collaborationIdentifier}",
+    input: { collaborationIdentifier: 0 },
     output: { collaboration: o_Collaboration },
   },
   errors: [
@@ -4243,6 +4454,7 @@ export const getCollaborationAnalysisTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /collaborations/{collaborationIdentifier}/analysistemplates/{analysisTemplateArn}",
+    input: { collaborationIdentifier: 0, analysisTemplateArn: 0 },
     output: { collaborationAnalysisTemplate: o_CollaborationAnalysisTemplate },
   },
   errors: [
@@ -4276,6 +4488,7 @@ export const getCollaborationChangeRequest: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /collaborations/{collaborationIdentifier}/changeRequests/{changeRequestIdentifier}",
+    input: { collaborationIdentifier: 0, changeRequestIdentifier: 0 },
     output: { collaborationChangeRequest: o_CollaborationChangeRequest },
   },
   errors: [
@@ -4309,6 +4522,10 @@ export const getCollaborationConfiguredAudienceModelAssociation: API.OperationMe
   descriptor: {
     service: svc,
     http: "GET /collaborations/{collaborationIdentifier}/configuredaudiencemodelassociations/{configuredAudienceModelAssociationIdentifier}",
+    input: {
+      collaborationIdentifier: 0,
+      configuredAudienceModelAssociationIdentifier: 0,
+    },
     output: {
       collaborationConfiguredAudienceModelAssociation: {
         createTime: D.ts,
@@ -4347,6 +4564,7 @@ export const getCollaborationIdNamespaceAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /collaborations/{collaborationIdentifier}/idnamespaceassociations/{idNamespaceAssociationIdentifier}",
+    input: { collaborationIdentifier: 0, idNamespaceAssociationIdentifier: 0 },
     output: {
       collaborationIdNamespaceAssociation: {
         createTime: D.ts,
@@ -4385,6 +4603,7 @@ export const getCollaborationPrivacyBudgetTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /collaborations/{collaborationIdentifier}/privacybudgettemplates/{privacyBudgetTemplateIdentifier}",
+    input: { collaborationIdentifier: 0, privacyBudgetTemplateIdentifier: 0 },
     output: {
       collaborationPrivacyBudgetTemplate: {
         createTime: D.ts,
@@ -4423,6 +4642,10 @@ export const getConfiguredAudienceModelAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/configuredaudiencemodelassociations/{configuredAudienceModelAssociationIdentifier}",
+    input: {
+      configuredAudienceModelAssociationIdentifier: 0,
+      membershipIdentifier: 0,
+    },
     output: {
       configuredAudienceModelAssociation: o_ConfiguredAudienceModelAssociation,
     },
@@ -4458,6 +4681,7 @@ export const getConfiguredTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /configuredTables/{configuredTableIdentifier}",
+    input: { configuredTableIdentifier: 0 },
     output: { configuredTable: o_ConfiguredTable },
   },
   errors: [
@@ -4491,6 +4715,7 @@ export const getConfiguredTableAnalysisRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /configuredTables/{configuredTableIdentifier}/analysisRule/{analysisRuleType}",
+    input: { configuredTableIdentifier: 0, analysisRuleType: 0 },
     output: { analysisRule: o_ConfiguredTableAnalysisRule },
   },
   errors: [
@@ -4524,6 +4749,7 @@ export const getConfiguredTableAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/configuredTableAssociations/{configuredTableAssociationIdentifier}",
+    input: { configuredTableAssociationIdentifier: 0, membershipIdentifier: 0 },
     output: { configuredTableAssociation: o_ConfiguredTableAssociation },
   },
   errors: [
@@ -4557,6 +4783,11 @@ export const getConfiguredTableAssociationAnalysisRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/configuredTableAssociations/{configuredTableAssociationIdentifier}/analysisRule/{analysisRuleType}",
+    input: {
+      membershipIdentifier: 0,
+      configuredTableAssociationIdentifier: 0,
+      analysisRuleType: 0,
+    },
     output: { analysisRule: o_ConfiguredTableAssociationAnalysisRule },
   },
   errors: [
@@ -4590,6 +4821,7 @@ export const getIdMappingTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/idmappingtables/{idMappingTableIdentifier}",
+    input: { idMappingTableIdentifier: 0, membershipIdentifier: 0 },
     output: { idMappingTable: o_IdMappingTable },
   },
   errors: [
@@ -4623,6 +4855,7 @@ export const getIdNamespaceAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/idnamespaceassociations/{idNamespaceAssociationIdentifier}",
+    input: { idNamespaceAssociationIdentifier: 0, membershipIdentifier: 0 },
     output: { idNamespaceAssociation: o_IdNamespaceAssociation },
   },
   errors: [
@@ -4656,6 +4889,7 @@ export const getIntermediateTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/intermediateTables/{intermediateTableIdentifier}",
+    input: { intermediateTableIdentifier: 0, membershipIdentifier: 0 },
     output: { intermediateTable: o_IntermediateTable },
   },
   errors: [
@@ -4689,6 +4923,11 @@ export const getIntermediateTableAnalysisRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/intermediateTables/{intermediateTableIdentifier}/analysisRule/{analysisRuleType}",
+    input: {
+      membershipIdentifier: 0,
+      intermediateTableIdentifier: 0,
+      analysisRuleType: 0,
+    },
     output: { analysisRule: o_IntermediateTableAnalysisRule },
   },
   errors: [
@@ -4722,6 +4961,7 @@ export const getMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memberships/{membershipIdentifier}",
+    input: { membershipIdentifier: 0 },
     output: { membership: o_Membership },
   },
   errors: [
@@ -4755,6 +4995,7 @@ export const getPrivacyBudgetTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/privacybudgettemplates/{privacyBudgetTemplateIdentifier}",
+    input: { membershipIdentifier: 0, privacyBudgetTemplateIdentifier: 0 },
     output: { privacyBudgetTemplate: o_PrivacyBudgetTemplate },
   },
   errors: [
@@ -4788,6 +5029,7 @@ export const getProtectedJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/protectedJobs/{protectedJobIdentifier}",
+    input: { membershipIdentifier: 0, protectedJobIdentifier: 0 },
     output: { protectedJob: o_ProtectedJob },
   },
   errors: [
@@ -4821,6 +5063,7 @@ export const getProtectedQuery: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/protectedQueries/{protectedQueryIdentifier}",
+    input: { membershipIdentifier: 0, protectedQueryIdentifier: 0 },
     output: { protectedQuery: o_ProtectedQuery },
   },
   errors: [
@@ -4854,6 +5097,7 @@ export const getSchema: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /collaborations/{collaborationIdentifier}/schemas/{name}",
+    input: { collaborationIdentifier: 0, name: 0 },
     output: { schema: o_Schema },
   },
   errors: [
@@ -4887,6 +5131,7 @@ export const getSchemaAnalysisRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /collaborations/{collaborationIdentifier}/schemas/{name}/analysisRule/{type}",
+    input: { collaborationIdentifier: 0, name: 0, type: 0 },
     output: { analysisRule: o_AnalysisRule },
   },
   errors: [
@@ -4922,6 +5167,7 @@ export const listAnalysisLogExports: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/analysislogexports",
     input: {
+      membershipIdentifier: 0,
       analysisIdentifier: D.m({ query: "analysisIdentifier" }),
       status: D.m({ query: "status" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -4968,6 +5214,7 @@ export const listAnalysisTemplates: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/analysistemplates",
     input: {
+      membershipIdentifier: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -5014,6 +5261,7 @@ export const listCollaborationAnalysisTemplates: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /collaborations/{collaborationIdentifier}/analysistemplates",
     input: {
+      collaborationIdentifier: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -5063,6 +5311,7 @@ export const listCollaborationChangeRequests: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /collaborations/{collaborationIdentifier}/changeRequests",
     input: {
+      collaborationIdentifier: 0,
       status: D.m({ query: "status" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -5113,6 +5362,7 @@ export const listCollaborationConfiguredAudienceModelAssociations: API.Paginated
     service: svc,
     http: "GET /collaborations/{collaborationIdentifier}/configuredaudiencemodelassociations",
     input: {
+      collaborationIdentifier: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -5162,6 +5412,7 @@ export const listCollaborationIdNamespaceAssociations: API.PaginatedOperationMet
     service: svc,
     http: "GET /collaborations/{collaborationIdentifier}/idnamespaceassociations",
     input: {
+      collaborationIdentifier: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -5211,6 +5462,7 @@ export const listCollaborationPrivacyBudgets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /collaborations/{collaborationIdentifier}/privacybudgets",
     input: {
+      collaborationIdentifier: 0,
       privacyBudgetType: D.m({ query: "privacyBudgetType" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -5263,6 +5515,7 @@ export const listCollaborationPrivacyBudgetTemplates: API.PaginatedOperationMeth
     service: svc,
     http: "GET /collaborations/{collaborationIdentifier}/privacybudgettemplates",
     input: {
+      collaborationIdentifier: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -5357,6 +5610,7 @@ export const listConfiguredAudienceModelAssociations: API.PaginatedOperationMeth
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/configuredaudiencemodelassociations",
     input: {
+      membershipIdentifier: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -5406,6 +5660,7 @@ export const listConfiguredTableAssociations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/configuredTableAssociations",
     input: {
+      membershipIdentifier: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -5499,6 +5754,7 @@ export const listIdMappingTables: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/idmappingtables",
     input: {
+      membershipIdentifier: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -5545,6 +5801,7 @@ export const listIdNamespaceAssociations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/idnamespaceassociations",
     input: {
+      membershipIdentifier: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -5594,6 +5851,7 @@ export const listIntermediateTables: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/intermediateTables",
     input: {
+      membershipIdentifier: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -5643,6 +5901,8 @@ export const listIntermediateTableVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/intermediateTables/{intermediateTableIdentifier}/versions",
     input: {
+      membershipIdentifier: 0,
+      intermediateTableIdentifier: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -5692,6 +5952,7 @@ export const listMembers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /collaborations/{collaborationIdentifier}/members",
     input: {
+      collaborationIdentifier: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -5781,6 +6042,7 @@ export const listPrivacyBudgets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/privacybudgets",
     input: {
+      membershipIdentifier: 0,
       privacyBudgetType: D.m({ query: "privacyBudgetType" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -5833,6 +6095,7 @@ export const listPrivacyBudgetTemplates: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/privacybudgettemplates",
     input: {
+      membershipIdentifier: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -5882,6 +6145,7 @@ export const listProtectedJobs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/protectedJobs",
     input: {
+      membershipIdentifier: 0,
       status: D.m({ query: "status" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -5927,6 +6191,7 @@ export const listProtectedQueries: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /memberships/{membershipIdentifier}/protectedQueries",
     input: {
+      membershipIdentifier: 0,
       status: D.m({ query: "status" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -5972,6 +6237,7 @@ export const listSchemas: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /collaborations/{collaborationIdentifier}/schemas",
     input: {
+      collaborationIdentifier: 0,
       schemaType: D.m({ query: "schemaType" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -6009,7 +6275,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6037,6 +6307,7 @@ export const populateIdMappingTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/idmappingtables/{idMappingTableIdentifier}/populate",
+    input: { idMappingTableIdentifier: 0, membershipIdentifier: 0, jobType: 0 },
     body: true,
   },
   errors: [
@@ -6074,6 +6345,15 @@ export const populateIntermediateTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/intermediateTables/{intermediateTableIdentifier}/populate",
+    input: {
+      intermediateTableIdentifier: 0,
+      membershipIdentifier: 0,
+      parameters: 0,
+      computeConfiguration: {
+        queryComputeConfiguration: i_WorkerComputeConfiguration,
+      },
+      analysisPayerAccountId: 0,
+    },
     body: true,
   },
   errors: [
@@ -6109,6 +6389,12 @@ export const previewPrivacyImpact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/previewprivacyimpact",
+    input: {
+      membershipIdentifier: 0,
+      parameters: {
+        differentialPrivacy: { epsilon: 0, usersNoisePerQuery: 0 },
+      },
+    },
     body: true,
   },
   errors: [
@@ -6157,6 +6443,14 @@ export const startAnalysisLogExport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/analysislogexports",
+    input: {
+      membershipIdentifier: 0,
+      analysisId: 0,
+      analysisType: 0,
+      resultConfiguration: {
+        outputConfiguration: { s3: { bucket: 0, keyPrefix: 0 } },
+      },
+    },
     output: { analysisLogExport: o_AnalysisLogExport },
     body: true,
   },
@@ -6193,6 +6487,22 @@ export const startProtectedJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/protectedJobs",
+    input: {
+      type: 0,
+      membershipIdentifier: 0,
+      jobParameters: { analysisTemplateArn: 0, parameters: 0 },
+      resultConfiguration: {
+        outputConfiguration: { member: { accountId: 0 } },
+      },
+      computeConfiguration: {
+        worker: {
+          type: 0,
+          number: 0,
+          properties: i_WorkerComputeConfigurationProperties,
+        },
+      },
+      jobComputePayerAccountId: 0,
+    },
     output: { protectedJob: o_ProtectedJob },
     body: true,
   },
@@ -6229,6 +6539,26 @@ export const startProtectedQuery: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /memberships/{membershipIdentifier}/protectedQueries",
+    input: {
+      type: 0,
+      membershipIdentifier: 0,
+      sqlParameters: { queryString: 0, analysisTemplateArn: 0, parameters: 0 },
+      resultConfiguration: {
+        outputConfiguration: {
+          s3: i_ProtectedQueryS3OutputConfiguration,
+          member: i_ProtectedQueryMemberOutputConfiguration,
+          distribute: {
+            locations: D.list({
+              s3: i_ProtectedQueryS3OutputConfiguration,
+              member: i_ProtectedQueryMemberOutputConfiguration,
+            }),
+          },
+          intermediateTable: { id: 0, arn: 0, name: 0 },
+        },
+      },
+      computeConfiguration: { worker: i_WorkerComputeConfiguration },
+      queryComputePayerAccountId: 0,
+    },
     output: { protectedQuery: o_ProtectedQuery },
     body: true,
   },
@@ -6258,7 +6588,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6281,7 +6616,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
@@ -6308,6 +6643,11 @@ export const updateAnalysisTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /memberships/{membershipIdentifier}/analysistemplates/{analysisTemplateIdentifier}",
+    input: {
+      membershipIdentifier: 0,
+      analysisTemplateIdentifier: 0,
+      description: 0,
+    },
     output: { analysisTemplate: o_AnalysisTemplate },
     body: true,
   },
@@ -6341,6 +6681,12 @@ export const updateCollaboration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /collaborations/{collaborationIdentifier}",
+    input: {
+      collaborationIdentifier: 0,
+      name: 0,
+      description: 0,
+      analyticsEngine: 0,
+    },
     output: { collaboration: o_Collaboration },
     body: true,
   },
@@ -6377,6 +6723,11 @@ export const updateCollaborationChangeRequest: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /collaborations/{collaborationIdentifier}/changeRequests/{changeRequestIdentifier}",
+    input: {
+      collaborationIdentifier: 0,
+      changeRequestIdentifier: 0,
+      action: 0,
+    },
     output: { collaborationChangeRequest: o_CollaborationChangeRequest },
     body: true,
   },
@@ -6412,6 +6763,12 @@ export const updateConfiguredAudienceModelAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /memberships/{membershipIdentifier}/configuredaudiencemodelassociations/{configuredAudienceModelAssociationIdentifier}",
+    input: {
+      configuredAudienceModelAssociationIdentifier: 0,
+      membershipIdentifier: 0,
+      description: 0,
+      name: 0,
+    },
     output: {
       configuredAudienceModelAssociation: o_ConfiguredAudienceModelAssociation,
     },
@@ -6450,6 +6807,15 @@ export const updateConfiguredTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /configuredTables/{configuredTableIdentifier}",
+    input: {
+      configuredTableIdentifier: 0,
+      name: 0,
+      description: 0,
+      tableReference: i_TableReference,
+      allowedColumns: 0,
+      analysisMethod: 0,
+      selectedAnalysisMethods: 0,
+    },
     output: { configuredTable: o_ConfiguredTable },
     body: true,
   },
@@ -6488,6 +6854,11 @@ export const updateConfiguredTableAnalysisRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /configuredTables/{configuredTableIdentifier}/analysisRule/{analysisRuleType}",
+    input: {
+      configuredTableIdentifier: 0,
+      analysisRuleType: 0,
+      analysisRulePolicy: i_ConfiguredTableAnalysisRulePolicy,
+    },
     output: { analysisRule: o_ConfiguredTableAnalysisRule },
     body: true,
   },
@@ -6525,6 +6896,12 @@ export const updateConfiguredTableAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /memberships/{membershipIdentifier}/configuredTableAssociations/{configuredTableAssociationIdentifier}",
+    input: {
+      configuredTableAssociationIdentifier: 0,
+      membershipIdentifier: 0,
+      description: 0,
+      roleArn: 0,
+    },
     output: { configuredTableAssociation: o_ConfiguredTableAssociation },
     body: true,
   },
@@ -6561,6 +6938,12 @@ export const updateConfiguredTableAssociationAnalysisRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /memberships/{membershipIdentifier}/configuredTableAssociations/{configuredTableAssociationIdentifier}/analysisRule/{analysisRuleType}",
+    input: {
+      membershipIdentifier: 0,
+      configuredTableAssociationIdentifier: 0,
+      analysisRuleType: 0,
+      analysisRulePolicy: i_ConfiguredTableAssociationAnalysisRulePolicy,
+    },
     output: { analysisRule: o_ConfiguredTableAssociationAnalysisRule },
     body: true,
   },
@@ -6596,6 +6979,12 @@ export const updateIdMappingTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /memberships/{membershipIdentifier}/idmappingtables/{idMappingTableIdentifier}",
+    input: {
+      idMappingTableIdentifier: 0,
+      membershipIdentifier: 0,
+      description: 0,
+      kmsKeyArn: 0,
+    },
     output: { idMappingTable: o_IdMappingTable },
     body: true,
   },
@@ -6630,6 +7019,13 @@ export const updateIdNamespaceAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /memberships/{membershipIdentifier}/idnamespaceassociations/{idNamespaceAssociationIdentifier}",
+    input: {
+      idNamespaceAssociationIdentifier: 0,
+      membershipIdentifier: 0,
+      name: 0,
+      description: 0,
+      idMappingConfig: i_IdMappingConfig,
+    },
     output: { idNamespaceAssociation: o_IdNamespaceAssociation },
     body: true,
   },
@@ -6664,6 +7060,13 @@ export const updateIntermediateTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /memberships/{membershipIdentifier}/intermediateTables/{intermediateTableIdentifier}",
+    input: {
+      intermediateTableIdentifier: 0,
+      membershipIdentifier: 0,
+      description: 0,
+      kmsKeyArn: 0,
+      columns: D.list({ name: 0, type: 0 }),
+    },
     output: { intermediateTable: o_IntermediateTable },
     body: true,
   },
@@ -6699,6 +7102,12 @@ export const updateIntermediateTableAnalysisRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /memberships/{membershipIdentifier}/intermediateTables/{intermediateTableIdentifier}/analysisRule/{analysisRuleType}",
+    input: {
+      membershipIdentifier: 0,
+      intermediateTableIdentifier: 0,
+      analysisRuleType: 0,
+      analysisRulePolicy: i_IntermediateTableAnalysisRulePolicy,
+    },
     output: { analysisRule: o_IntermediateTableAnalysisRule },
     body: true,
   },
@@ -6735,6 +7144,19 @@ export const updateMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /memberships/{membershipIdentifier}",
+    input: {
+      membershipIdentifier: 0,
+      queryLogStatus: 0,
+      jobLogStatus: 0,
+      defaultResultConfiguration: i_MembershipProtectedQueryResultConfiguration,
+      defaultJobResultConfiguration:
+        i_MembershipProtectedJobResultConfiguration,
+      membershipPaymentConfiguration: {
+        queryCompute: i_MembershipQueryComputePaymentConfig,
+        machineLearning: i_MembershipMLPaymentConfig,
+        jobCompute: i_MembershipJobComputePaymentConfig,
+      },
+    },
     output: { membership: o_Membership },
     body: true,
   },
@@ -6771,6 +7193,15 @@ export const updatePrivacyBudgetTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /memberships/{membershipIdentifier}/privacybudgettemplates/{privacyBudgetTemplateIdentifier}",
+    input: {
+      membershipIdentifier: 0,
+      privacyBudgetTemplateIdentifier: 0,
+      privacyBudgetType: 0,
+      parameters: {
+        differentialPrivacy: { epsilon: 0, usersNoisePerQuery: 0 },
+        accessBudget: { budgetParameters: D.list(i_BudgetParameter) },
+      },
+    },
     output: { privacyBudgetTemplate: o_PrivacyBudgetTemplate },
     body: true,
   },
@@ -6807,6 +7238,11 @@ export const updateProtectedJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /memberships/{membershipIdentifier}/protectedJobs/{protectedJobIdentifier}",
+    input: {
+      membershipIdentifier: 0,
+      protectedJobIdentifier: 0,
+      targetStatus: 0,
+    },
     output: { protectedJob: o_ProtectedJob },
     body: true,
   },
@@ -6843,6 +7279,11 @@ export const updateProtectedQuery: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /memberships/{membershipIdentifier}/protectedQueries/{protectedQueryIdentifier}",
+    input: {
+      membershipIdentifier: 0,
+      protectedQueryIdentifier: 0,
+      targetStatus: 0,
+    },
     output: { protectedQuery: o_ProtectedQuery },
     body: true,
   },
@@ -6859,6 +7300,137 @@ export const updateProtectedQuery: API.OperationMethod<
   operationName: "UpdateProtectedQuery",
 })) as any;
 
+const i_AnalysisTemplateArtifact: D.LazyStruct = () => ({
+  location: { bucket: 0, key: 0 },
+});
+const i_BudgetParameter: D.LazyStruct = () => ({
+  type: 0,
+  budget: 0,
+  autoRefresh: 0,
+});
+const i_ConfiguredTableAnalysisRulePolicy: D.LazyStruct = () => ({
+  v1: {
+    list: {
+      joinColumns: 0,
+      allowedJoinOperators: 0,
+      listColumns: 0,
+      additionalAnalyses: 0,
+    },
+    aggregation: {
+      aggregateColumns: D.list({ columnNames: 0, function: 0 }),
+      joinColumns: 0,
+      joinRequired: 0,
+      allowedJoinOperators: 0,
+      dimensionColumns: 0,
+      scalarFunctions: 0,
+      outputConstraints: D.list({ columnName: 0, minimum: 0, type: 0 }),
+      additionalAnalyses: 0,
+    },
+    custom: {
+      allowedAnalyses: 0,
+      allowedAnalysisProviders: 0,
+      additionalAnalyses: 0,
+      disallowedOutputColumns: 0,
+      differentialPrivacy: i_DifferentialPrivacyConfiguration,
+      aggregationThresholds: D.list(i_AggregationThreshold),
+      comparisonControls: i_ComparisonControls,
+      allowedResultReceivers: 0,
+      allowedAdditionalAnalyses: 0,
+    },
+  },
+});
+const i_ConfiguredTableAssociationAnalysisRulePolicy: D.LazyStruct = () => ({
+  v1: {
+    list: { allowedResultReceivers: 0, allowedAdditionalAnalyses: 0 },
+    aggregation: { allowedResultReceivers: 0, allowedAdditionalAnalyses: 0 },
+    custom: { allowedResultReceivers: 0, allowedAdditionalAnalyses: 0 },
+  },
+});
+const i_IdMappingConfig: D.LazyStruct = () => ({
+  allowUseAsDimensionColumn: 0,
+});
+const i_IntermediateTableAnalysisRulePolicy: D.LazyStruct = () => ({
+  v1: {
+    custom: {
+      allowedAnalyses: 0,
+      additionalAnalyses: 0,
+      allowedAdditionalAnalyses: 0,
+      allowedAnalysisProviders: 0,
+      allowedResultReceivers: 0,
+      differentialPrivacy: i_DifferentialPrivacyConfiguration,
+      disallowedOutputColumns: 0,
+      aggregationThresholds: D.list(i_AggregationThreshold),
+      comparisonControls: i_ComparisonControls,
+    },
+  },
+});
+const i_MLMemberAbilities: D.LazyStruct = () => ({
+  customMLMemberAbilities: 0,
+});
+const i_MembershipJobComputePaymentConfig: D.LazyStruct = () => ({
+  isResponsible: 0,
+});
+const i_MembershipMLPaymentConfig: D.LazyStruct = () => ({
+  modelTraining: { isResponsible: 0 },
+  modelInference: { isResponsible: 0 },
+  syntheticDataGeneration: { isResponsible: 0 },
+});
+const i_MembershipProtectedJobResultConfiguration: D.LazyStruct = () => ({
+  outputConfiguration: { s3: { bucket: 0, keyPrefix: 0 } },
+  roleArn: 0,
+});
+const i_MembershipProtectedQueryResultConfiguration: D.LazyStruct = () => ({
+  outputConfiguration: { s3: i_ProtectedQueryS3OutputConfiguration },
+  roleArn: 0,
+});
+const i_MembershipQueryComputePaymentConfig: D.LazyStruct = () => ({
+  isResponsible: 0,
+});
+const i_PaymentConfiguration: D.LazyStruct = () => ({
+  queryCompute: { isResponsible: 0 },
+  machineLearning: {
+    modelTraining: { isResponsible: 0 },
+    modelInference: { isResponsible: 0 },
+    syntheticDataGeneration: { isResponsible: 0 },
+  },
+  jobCompute: { isResponsible: 0 },
+});
+const i_ProtectedQueryMemberOutputConfiguration: D.LazyStruct = () => ({
+  accountId: 0,
+});
+const i_ProtectedQueryS3OutputConfiguration: D.LazyStruct = () => ({
+  resultFormat: 0,
+  bucket: 0,
+  keyPrefix: 0,
+  singleFileOutput: 0,
+});
+const i_TableReference: D.LazyStruct = () => ({
+  glue: { region: 0, tableName: 0, databaseName: 0 },
+  snowflake: {
+    secretArn: 0,
+    accountIdentifier: 0,
+    databaseName: 0,
+    tableName: 0,
+    schemaName: 0,
+    tableSchema: { v1: D.list({ columnName: 0, columnType: 0 }) },
+  },
+  athena: {
+    region: 0,
+    workGroup: 0,
+    outputLocation: 0,
+    databaseName: 0,
+    tableName: 0,
+    catalogName: 0,
+  },
+});
+const i_WorkerComputeConfiguration: D.LazyStruct = () => ({
+  type: 0,
+  number: 0,
+  properties: i_WorkerComputeConfigurationProperties,
+});
+const i_WorkerComputeConfigurationProperties: D.LazyStruct = () => ({
+  spark: 0,
+});
 const o_AnalysisLogExport: D.LazyStruct = () => ({
   createTime: D.ts,
   updateTime: D.ts,
@@ -6936,4 +7508,21 @@ const o_PrivacyBudgetTemplate: D.LazyStruct = () => ({
 const o_ProtectedJob: D.LazyStruct = () => ({ createTime: D.ts });
 const o_ProtectedQuery: D.LazyStruct = () => ({ createTime: D.ts });
 const o_Schema: D.LazyStruct = () => ({ createTime: D.ts, updateTime: D.ts });
+const i_AggregationThreshold: D.LazyStruct = () => ({
+  identityColumns: 0,
+  minimumIdentityCount: 0,
+  type: 0,
+  outputColumnThresholds: D.list({
+    outputColumnName: 0,
+    minimumIdentityCount: 0,
+  }),
+  allowedAggregateExpressionType: 0,
+});
+const i_ComparisonControls: D.LazyStruct = () => ({
+  allowedLiteralComparisonColumns: 0,
+  allowedColumnComparisonColumns: 0,
+});
+const i_DifferentialPrivacyConfiguration: D.LazyStruct = () => ({
+  columns: D.list({ name: 0 }),
+});
 const o_AnalysisSource: D.LazyStruct = () => ({ text: D.secret });

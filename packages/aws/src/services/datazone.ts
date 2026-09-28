@@ -7118,7 +7118,15 @@ export const acceptPredictions: API.OperationMethod<
     service: svc,
     http: "PUT /v2/domains/{domainIdentifier}/assets/{identifier}/accept-predictions",
     input: {
+      domainIdentifier: 0,
+      identifier: 0,
       revision: D.m({ query: "revision" }),
+      acceptRule: { rule: 0, threshold: 0 },
+      acceptChoices: D.list({
+        predictionTarget: 0,
+        predictionChoice: 0,
+        editedValue: 0,
+      }),
       clientToken: D.m({ idempotency: true }),
     },
     body: true,
@@ -7157,6 +7165,13 @@ export const acceptSubscriptionRequest: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/domains/{domainIdentifier}/subscription-requests/{identifier}/accept",
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      decisionComment: 0,
+      assetScopes: D.list(i_AcceptedAssetScope),
+      assetPermissions: D.list(i_AssetPermission),
+    },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -7203,7 +7218,13 @@ export const addEntityOwner: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/entities/{entityType}/{entityIdentifier}/addOwner",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      entityType: 0,
+      entityIdentifier: 0,
+      owner: i_OwnerProperties,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -7240,7 +7261,33 @@ export const addPolicyGrant: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/policies/managed/{entityType}/{entityIdentifier}/addGrant",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      entityType: 0,
+      entityIdentifier: 0,
+      policyType: 0,
+      principal: i_PolicyGrantPrincipal,
+      detail: {
+        createDomainUnit: { includeChildDomainUnits: 0 },
+        overrideDomainUnitOwners: { includeChildDomainUnits: 0 },
+        addToProjectMemberPool: { includeChildDomainUnits: 0 },
+        overrideProjectOwners: { includeChildDomainUnits: 0 },
+        createGlossary: { includeChildDomainUnits: 0 },
+        createFormType: { includeChildDomainUnits: 0 },
+        createAssetType: { includeChildDomainUnits: 0 },
+        createProject: { includeChildDomainUnits: 0 },
+        createEnvironmentProfile: { domainUnitId: 0 },
+        delegateCreateEnvironmentProfile: i_Unit,
+        createEnvironment: i_Unit,
+        createEnvironmentFromBlueprint: i_Unit,
+        createProjectFromProjectProfile: {
+          includeChildDomainUnits: 0,
+          projectProfiles: 0,
+        },
+        useAssetType: { domainUnitId: 0 },
+      },
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -7276,6 +7323,11 @@ export const associateEnvironmentRole: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/domains/{domainIdentifier}/environments/{environmentIdentifier}/roles/{environmentRoleArn}",
+    input: {
+      domainIdentifier: 0,
+      environmentIdentifier: 0,
+      environmentRoleArn: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -7310,6 +7362,12 @@ export const associateGovernedTerms: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/entities/{entityType}/{entityIdentifier}/associate-governed-terms",
+    input: {
+      domainIdentifier: 0,
+      entityIdentifier: 0,
+      entityType: 0,
+      governedGlossaryTerms: 0,
+    },
     body: true,
   },
   errors: [
@@ -7345,6 +7403,9 @@ export const batchGetAttributesMetadata: API.OperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/entities/{entityType}/{entityIdentifier}/attributes-metadata",
     input: {
+      domainIdentifier: 0,
+      entityType: 0,
+      entityIdentifier: 0,
       entityRevision: D.m({ query: "entityRevision" }),
       attributeIdentifiers: D.m({ query: "attributeIdentifier" }),
     },
@@ -7382,7 +7443,16 @@ export const batchPutAttributesMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/domains/{domainIdentifier}/entities/{entityType}/{entityIdentifier}/attributes-metadata",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      entityType: 0,
+      entityIdentifier: 0,
+      clientToken: D.m({ idempotency: true }),
+      attributes: D.list({
+        attributeIdentifier: 0,
+        forms: D.list(i_FormInput),
+      }),
+    },
     body: true,
   },
   errors: [
@@ -7426,6 +7496,7 @@ export const cancelMetadataGenerationRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/metadata-generation-runs/{identifier}/cancel",
+    input: { domainIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -7460,6 +7531,7 @@ export const cancelSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/domains/{domainIdentifier}/subscriptions/{identifier}/cancel",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -7501,6 +7573,13 @@ export const createAccountPool: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/account-pools",
+    input: {
+      domainIdentifier: 0,
+      name: 0,
+      description: 0,
+      resolutionStrategy: 0,
+      accountSource: i_AccountSource,
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -7565,7 +7644,19 @@ export const createAsset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/assets",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      domainIdentifier: 0,
+      externalIdentifier: 0,
+      typeIdentifier: 0,
+      typeRevision: 0,
+      description: 0,
+      glossaryTerms: 0,
+      formsInput: D.list(i_FormInput),
+      owningProjectIdentifier: 0,
+      predictionConfiguration: i_PredictionConfiguration,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -7626,7 +7717,14 @@ export const createAssetFilter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/assets/{assetIdentifier}/filters",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      assetIdentifier: 0,
+      name: 0,
+      description: 0,
+      configuration: i_AssetFilterConfiguration,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { name: D.secret, description: D.secret, createdAt: D.ts },
     body: true,
   },
@@ -7678,7 +7776,17 @@ export const createAssetRevision: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/assets/{identifier}/revisions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      domainIdentifier: 0,
+      identifier: 0,
+      typeRevision: 0,
+      description: 0,
+      glossaryTerms: 0,
+      formsInput: D.list(i_FormInput),
+      predictionConfiguration: i_PredictionConfiguration,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -7737,6 +7845,13 @@ export const createAssetType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/asset-types",
+    input: {
+      domainIdentifier: 0,
+      name: 0,
+      description: 0,
+      formsInput: D.map({ typeIdentifier: 0, typeRevision: 0, required: 0 }),
+      owningProjectIdentifier: 0,
+    },
     output: {
       description: D.secret,
       formsOutput: D.map(o_FormEntryOutput),
@@ -7779,7 +7894,100 @@ export const createConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/connections",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      awsLocation: i_AwsLocation,
+      clientToken: D.m({ idempotency: true }),
+      configurations: D.list(i_Configuration),
+      description: 0,
+      domainIdentifier: 0,
+      environmentIdentifier: 0,
+      name: 0,
+      props: {
+        athenaProperties: { workgroupName: 0 },
+        glueProperties: {
+          glueConnectionInput: {
+            connectionProperties: 0,
+            physicalConnectionRequirements: i_PhysicalConnectionRequirements,
+            name: 0,
+            description: 0,
+            connectionType: 0,
+            matchCriteria: 0,
+            validateCredentials: 0,
+            validateForComputeEnvironments: 0,
+            sparkProperties: 0,
+            athenaProperties: 0,
+            pythonProperties: 0,
+            authenticationConfiguration: i_AuthenticationConfigurationInput,
+          },
+        },
+        hyperPodProperties: { clusterName: 0 },
+        iamProperties: { glueLineageSyncEnabled: 0 },
+        redshiftProperties: {
+          storage: i_RedshiftStorageProperties,
+          databaseName: 0,
+          host: 0,
+          port: 0,
+          credentials: i_RedshiftCredentials,
+          lineageSync: i_RedshiftLineageSyncConfigurationInput,
+        },
+        sparkEmrProperties: {
+          computeArn: 0,
+          instanceProfileArn: 0,
+          javaVirtualEnv: 0,
+          logUri: 0,
+          pythonVirtualEnv: 0,
+          runtimeRole: 0,
+          trustedCertificatesS3Uri: 0,
+          managedEndpointArn: 0,
+        },
+        sparkGlueProperties: {
+          additionalArgs: { connection: 0 },
+          glueConnectionName: 0,
+          glueConnectionNames: 0,
+          glueVersion: 0,
+          idleTimeout: 0,
+          javaVirtualEnv: 0,
+          numberOfWorkers: 0,
+          pythonVirtualEnv: 0,
+          workerType: 0,
+        },
+        s3Properties: {
+          s3Uri: 0,
+          s3AccessGrantLocationId: 0,
+          registerS3AccessGrantLocation: 0,
+        },
+        snowflakeProperties: {
+          connectivityProperties: {
+            connectionProperties: 0,
+            physicalConnectionRequirements: i_PhysicalConnectionRequirements,
+            name: 0,
+            description: 0,
+            validateCredentials: 0,
+            validateForComputeEnvironments: 0,
+            sparkProperties: 0,
+            athenaProperties: 0,
+            pythonProperties: 0,
+            authenticationConfiguration: i_AuthenticationConfigurationInput,
+          },
+          snowflakeRole: 0,
+          identityMapping: { usernameAttribute: 0, prefix: 0 },
+          lineageSync: i_LineageSyncInput,
+        },
+        amazonQProperties: { isEnabled: 0, profileArn: 0, authMode: 0 },
+        mlflowProperties: { trackingServerArn: 0 },
+        workflowsMwaaProperties: { mwaaEnvironmentName: 0 },
+        workflowsServerlessProperties: {},
+        lakehouseProperties: { glueLineageSyncEnabled: 0 },
+        vpcProperties: { vpcId: 0, subnetIds: 0, securityGroupId: 0 },
+        gitProperties: {
+          codeConnectionArn: 0,
+          repositoryId: 0,
+          defaultBranch: 0,
+        },
+      },
+      enableTrustedIdentityPropagation: 0,
+      scope: 0,
+    },
     output: {
       description: D.secret,
       physicalEndpoints: D.list(o_PhysicalEndpoint),
@@ -7834,7 +8042,16 @@ export const createDataProduct: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/data-products",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      name: 0,
+      owningProjectIdentifier: 0,
+      description: 0,
+      glossaryTerms: 0,
+      formsInput: D.list(i_FormInput),
+      items: D.list(i_DataProductItem),
+      clientToken: D.m({ idempotency: true }),
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -7888,7 +8105,16 @@ export const createDataProductRevision: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/data-products/{identifier}/revisions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      name: 0,
+      description: 0,
+      glossaryTerms: 0,
+      items: D.list(i_DataProductItem),
+      formsInput: D.list(i_FormInput),
+      clientToken: D.m({ idempotency: true }),
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -7932,7 +8158,22 @@ export const createDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/data-sources",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      domainIdentifier: 0,
+      projectIdentifier: 0,
+      environmentIdentifier: 0,
+      connectionIdentifier: 0,
+      type: 0,
+      configuration: i_DataSourceConfigurationInput,
+      recommendation: i_RecommendationConfiguration,
+      enableSetting: 0,
+      schedule: i_ScheduleConfiguration,
+      publishOnImport: 0,
+      assetFormsInput: D.list(i_FormInput),
+      clientToken: D.m({ idempotency: true }),
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -7978,7 +8219,17 @@ export const createDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      singleSignOn: i_SingleSignOn,
+      domainExecutionRole: 0,
+      kmsKeyIdentifier: 0,
+      tags: 0,
+      domainVersion: 0,
+      serviceRole: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -8015,7 +8266,13 @@ export const createDomainUnit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/domain-units",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      name: 0,
+      parentDomainUnitIdentifier: 0,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { name: D.secret, description: D.secret, createdAt: D.ts },
     body: true,
   },
@@ -8052,6 +8309,21 @@ export const createEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/environments",
+    input: {
+      projectIdentifier: 0,
+      domainIdentifier: 0,
+      description: 0,
+      name: 0,
+      environmentProfileIdentifier: 0,
+      userParameters: D.list(i_EnvironmentParameter),
+      glossaryTerms: 0,
+      environmentAccountIdentifier: 0,
+      environmentAccountRegion: 0,
+      environmentBlueprintIdentifier: 0,
+      deploymentOrder: 0,
+      environmentConfigurationId: 0,
+      environmentConfigurationName: 0,
+    },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -8096,6 +8368,13 @@ export const createEnvironmentAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/environments/{environmentIdentifier}/actions",
+    input: {
+      domainIdentifier: 0,
+      environmentIdentifier: 0,
+      name: 0,
+      parameters: i_ActionParameters,
+      description: 0,
+    },
     body: true,
   },
   errors: [
@@ -8132,6 +8411,13 @@ export const createEnvironmentBlueprint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/environment-blueprints",
+    input: {
+      domainIdentifier: 0,
+      name: 0,
+      description: 0,
+      provisioningProperties: i_ProvisioningProperties,
+      userParameters: D.list(i_CustomParameter),
+    },
     output: {
       description: D.secret,
       userParameters: D.list(o_CustomParameter),
@@ -8175,6 +8461,16 @@ export const createEnvironmentProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/environment-profiles",
+    input: {
+      domainIdentifier: 0,
+      name: 0,
+      description: 0,
+      environmentBlueprintIdentifier: 0,
+      projectIdentifier: 0,
+      userParameters: D.list(i_EnvironmentParameter),
+      awsAccountId: 0,
+      awsAccountRegion: 0,
+    },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -8230,6 +8526,14 @@ export const createFormType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/form-types",
+    input: {
+      domainIdentifier: 0,
+      name: 0,
+      model: { smithy: 0 },
+      owningProjectIdentifier: 0,
+      status: 0,
+      description: 0,
+    },
     output: { name: D.secret, description: D.secret },
     body: true,
   },
@@ -8278,7 +8582,15 @@ export const createGlossary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/glossaries",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      name: 0,
+      owningProjectIdentifier: 0,
+      description: 0,
+      status: 0,
+      usageRestrictions: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { name: D.secret, description: D.secret },
     body: true,
   },
@@ -8328,7 +8640,16 @@ export const createGlossaryTerm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/glossary-terms",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      glossaryIdentifier: 0,
+      name: 0,
+      status: 0,
+      shortDescription: 0,
+      longDescription: 0,
+      termRelations: i_TermRelations,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: {
       name: D.secret,
       shortDescription: D.secret,
@@ -8368,7 +8689,12 @@ export const createGroupProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/group-profiles",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      groupIdentifier: 0,
+      rolePrincipalArn: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { groupName: D.secret },
     body: true,
   },
@@ -8404,7 +8730,14 @@ export const createListingChangeSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/listings/change-set",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      entityIdentifier: 0,
+      entityType: 0,
+      entityRevision: 0,
+      action: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -8442,7 +8775,15 @@ export const createNotebook: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/notebooks",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      owningProjectIdentifier: 0,
+      name: 0,
+      description: 0,
+      metadata: 0,
+      parameters: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -8490,6 +8831,19 @@ export const createProject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/projects",
+    input: {
+      domainIdentifier: 0,
+      name: 0,
+      description: 0,
+      resourceTags: 0,
+      glossaryTerms: 0,
+      domainUnitId: 0,
+      projectProfileId: 0,
+      userParameters: D.list(i_EnvironmentConfigurationUserParameter),
+      projectCategory: 0,
+      projectExecutionRole: 0,
+      membershipAssignments: D.list({ member: i_Member, designation: 0 }),
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -8531,6 +8885,12 @@ export const createProjectMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/projects/{projectIdentifier}/createMembership",
+    input: {
+      domainIdentifier: 0,
+      projectIdentifier: 0,
+      member: i_Member,
+      designation: 0,
+    },
     body: true,
   },
   errors: [
@@ -8565,6 +8925,17 @@ export const createProjectProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/project-profiles",
+    input: {
+      domainIdentifier: 0,
+      name: 0,
+      description: 0,
+      status: 0,
+      projectResourceTags: D.list(i_ResourceTagParameter),
+      allowCustomProjectResourceTags: 0,
+      projectResourceTagsDescription: 0,
+      environmentConfigurations: D.list(i_EnvironmentConfiguration),
+      domainUnitIdentifier: 0,
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -8610,7 +8981,18 @@ export const createRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/rules",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      name: 0,
+      target: {
+        domainUnitTarget: { domainUnitId: 0, includeChildDomainUnits: 0 },
+      },
+      action: 0,
+      scope: i_RuleScope,
+      detail: i_RuleDetail,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { name: D.secret, description: D.secret, createdAt: D.ts },
     body: true,
   },
@@ -8648,7 +9030,14 @@ export const createSubscriptionGrant: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/subscription-grants",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      environmentIdentifier: 0,
+      subscriptionTargetIdentifier: 0,
+      grantedEntity: { listing: { identifier: 0, revision: 0 } },
+      assetTargetNames: D.list({ assetId: 0, targetName: 0 }),
+      clientToken: D.m({ idempotency: true }),
+    },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -8690,7 +9079,21 @@ export const createSubscriptionRequest: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/subscription-requests",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      subscribedPrincipals: D.list({
+        project: { identifier: 0 },
+        user: { identifier: 0 },
+        group: { identifier: 0 },
+        iam: { identifier: 0 },
+      }),
+      subscribedListings: D.list({ identifier: 0 }),
+      requestReason: 0,
+      clientToken: D.m({ idempotency: true }),
+      metadataForms: D.list(i_FormInput),
+      assetPermissions: D.list(i_AssetPermission),
+      assetScopes: D.list(i_AcceptedAssetScope),
+    },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -8736,7 +9139,19 @@ export const createSubscriptionTarget: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/environments/{environmentIdentifier}/subscription-targets",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      environmentIdentifier: 0,
+      name: 0,
+      type: 0,
+      subscriptionTargetConfig: D.list(i_SubscriptionTargetForm),
+      authorizedPrincipals: 0,
+      manageAccessRole: 0,
+      applicableAssetTypes: 0,
+      provider: 0,
+      clientToken: D.m({ idempotency: true }),
+      subscriptionGrantCreationMode: 0,
+    },
     output: { name: D.secret, createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -8771,7 +9186,13 @@ export const createUserProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/user-profiles",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      userIdentifier: 0,
+      userType: 0,
+      sessionName: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { details: o_UserProfileDetails },
     body: true,
   },
@@ -8805,6 +9226,7 @@ export const deleteAccountPool: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/account-pools/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -8848,6 +9270,7 @@ export const deleteAsset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/assets/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -8890,6 +9313,7 @@ export const deleteAssetFilter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/assets/{assetIdentifier}/filters/{identifier}",
+    input: { domainIdentifier: 0, assetIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -8934,6 +9358,7 @@ export const deleteAssetType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/asset-types/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -8967,6 +9392,7 @@ export const deleteConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/connections/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9004,6 +9430,7 @@ export const deleteDataExportConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/data-export-configuration",
+    input: { domainIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9046,6 +9473,7 @@ export const deleteDataProduct: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/data-products/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9082,6 +9510,8 @@ export const deleteDataSource: API.OperationMethod<
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/data-sources/{identifier}",
     input: {
+      domainIdentifier: 0,
+      identifier: 0,
       clientToken: D.m({ query: "clientToken", idempotency: true }),
       retainPermissionsOnRevokeFailure: D.m({
         query: "retainPermissionsOnRevokeFailure",
@@ -9131,6 +9561,7 @@ export const deleteDomain: API.OperationMethod<
     service: svc,
     http: "DELETE /v2/domains/{identifier}",
     input: {
+      identifier: 0,
       clientToken: D.m({ query: "clientToken", idempotency: true }),
       skipDeletionCheck: D.m({ query: "skipDeletionCheck" }),
       cascadeDelete: D.m({ query: "cascadeDelete" }),
@@ -9169,6 +9600,7 @@ export const deleteDomainUnit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/domain-units/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9202,6 +9634,7 @@ export const deleteEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/environments/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9235,6 +9668,7 @@ export const deleteEnvironmentAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/environments/{environmentIdentifier}/actions/{identifier}",
+    input: { domainIdentifier: 0, environmentIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9269,6 +9703,7 @@ export const deleteEnvironmentBlueprint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/environment-blueprints/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9301,6 +9736,7 @@ export const deleteEnvironmentBlueprintConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/environment-blueprint-configurations/{environmentBlueprintIdentifier}",
+    input: { domainIdentifier: 0, environmentBlueprintIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9332,6 +9768,7 @@ export const deleteEnvironmentProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/environment-profiles/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9377,6 +9814,7 @@ export const deleteFormType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/form-types/{formTypeIdentifier}",
+    input: { domainIdentifier: 0, formTypeIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9423,6 +9861,7 @@ export const deleteGlossary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/glossaries/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9467,6 +9906,7 @@ export const deleteGlossaryTerm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/glossary-terms/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9500,6 +9940,7 @@ export const deleteLineageEvent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/lineage/events/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9533,6 +9974,7 @@ export const deleteListing: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/listings/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9566,6 +10008,7 @@ export const deleteNotebook: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/notebooks/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9598,7 +10041,11 @@ export const deleteProject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/projects/{identifier}",
-    input: { skipDeletionCheck: D.m({ query: "skipDeletionCheck" }) },
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      skipDeletionCheck: D.m({ query: "skipDeletionCheck" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -9632,6 +10079,7 @@ export const deleteProjectMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/projects/{projectIdentifier}/deleteMembership",
+    input: { domainIdentifier: 0, projectIdentifier: 0, member: i_Member },
     body: true,
   },
   errors: [
@@ -9666,6 +10114,7 @@ export const deleteProjectProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/project-profiles/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9699,6 +10148,7 @@ export const deleteRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/rules/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9733,6 +10183,7 @@ export const deleteSubscriptionGrant: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/subscription-grants/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -9772,6 +10223,7 @@ export const deleteSubscriptionRequest: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/subscription-requests/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9806,6 +10258,7 @@ export const deleteSubscriptionTarget: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/environments/{environmentIdentifier}/subscription-targets/{identifier}",
+    input: { domainIdentifier: 0, environmentIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9840,6 +10293,9 @@ export const deleteTimeSeriesDataPoints: API.OperationMethod<
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/entities/{entityType}/{entityIdentifier}/time-series-data-points",
     input: {
+      domainIdentifier: 0,
+      entityIdentifier: 0,
+      entityType: 0,
       formName: D.m({ query: "formName" }),
       clientToken: D.m({ query: "clientToken", idempotency: true }),
     },
@@ -9876,6 +10332,11 @@ export const disassociateEnvironmentRole: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/domains/{domainIdentifier}/environments/{environmentIdentifier}/roles/{environmentRoleArn}",
+    input: {
+      domainIdentifier: 0,
+      environmentIdentifier: 0,
+      environmentRoleArn: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -9910,6 +10371,12 @@ export const disassociateGovernedTerms: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/entities/{entityType}/{entityIdentifier}/disassociate-governed-terms",
+    input: {
+      domainIdentifier: 0,
+      entityIdentifier: 0,
+      entityType: 0,
+      governedGlossaryTerms: 0,
+    },
     body: true,
   },
   errors: [
@@ -9944,6 +10411,7 @@ export const getAccountPool: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/account-pools/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       name: D.secret,
       description: D.secret,
@@ -9993,7 +10461,11 @@ export const getAsset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/assets/{identifier}",
-    input: { revision: D.m({ query: "revision" }) },
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      revision: D.m({ query: "revision" }),
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -10045,6 +10517,7 @@ export const getAssetFilter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/assets/{assetIdentifier}/filters/{identifier}",
+    input: { domainIdentifier: 0, assetIdentifier: 0, identifier: 0 },
     output: { name: D.secret, description: D.secret, createdAt: D.ts },
   },
   errors: [
@@ -10088,7 +10561,11 @@ export const getAssetType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/asset-types/{identifier}",
-    input: { revision: D.m({ query: "revision" }) },
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      revision: D.m({ query: "revision" }),
+    },
     output: {
       description: D.secret,
       formsOutput: D.map(o_FormEntryOutput),
@@ -10127,7 +10604,11 @@ export const getConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/connections/{identifier}",
-    input: { withSecret: D.m({ query: "withSecret" }) },
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      withSecret: D.m({ query: "withSecret" }),
+    },
     output: {
       connectionCredentials: {
         secretAccessKey: D.secret,
@@ -10170,6 +10651,7 @@ export const getDataExportConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/data-export-configuration",
+    input: { domainIdentifier: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -10211,7 +10693,11 @@ export const getDataProduct: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/data-products/{identifier}",
-    input: { revision: D.m({ query: "revision" }) },
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      revision: D.m({ query: "revision" }),
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -10253,6 +10739,7 @@ export const getDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/data-sources/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       name: D.secret,
       description: D.secret,
@@ -10297,6 +10784,7 @@ export const getDataSourceRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/data-source-runs/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -10338,6 +10826,7 @@ export const getDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{identifier}",
+    input: { identifier: 0 },
     output: { createdAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -10372,6 +10861,7 @@ export const getDomainUnit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/domain-units/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       name: D.secret,
       description: D.secret,
@@ -10410,6 +10900,7 @@ export const getEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/environments/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -10451,6 +10942,7 @@ export const getEnvironmentAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/environments/{environmentIdentifier}/actions/{identifier}",
+    input: { domainIdentifier: 0, environmentIdentifier: 0, identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -10483,6 +10975,7 @@ export const getEnvironmentBlueprint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/environment-blueprints/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       description: D.secret,
       userParameters: D.list(o_CustomParameter),
@@ -10520,6 +11013,7 @@ export const getEnvironmentBlueprintConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/environment-blueprint-configurations/{environmentBlueprintIdentifier}",
+    input: { domainIdentifier: 0, environmentBlueprintIdentifier: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -10552,6 +11046,7 @@ export const getEnvironmentCredentials: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/environments/{environmentIdentifier}/credentials",
+    input: { domainIdentifier: 0, environmentIdentifier: 0 },
     output: {
       secretAccessKey: D.secret,
       sessionToken: D.secret,
@@ -10589,6 +11084,7 @@ export const getEnvironmentProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/environment-profiles/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -10644,7 +11140,11 @@ export const getFormType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/form-types/{formTypeIdentifier}",
-    input: { revision: D.m({ query: "revision" }) },
+    input: {
+      domainIdentifier: 0,
+      formTypeIdentifier: 0,
+      revision: D.m({ query: "revision" }),
+    },
     output: {
       name: D.secret,
       createdAt: D.ts,
@@ -10689,6 +11189,7 @@ export const getGlossary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/glossaries/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       name: D.secret,
       description: D.secret,
@@ -10735,6 +11236,7 @@ export const getGlossaryTerm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/glossary-terms/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       name: D.secret,
       shortDescription: D.secret,
@@ -10773,6 +11275,7 @@ export const getGroupProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/group-profiles/{groupIdentifier}",
+    input: { domainIdentifier: 0, groupIdentifier: 0 },
     output: { groupName: D.secret },
   },
   errors: [
@@ -10806,6 +11309,7 @@ export const getIamPortalLoginUrl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/get-portal-login-url",
+    input: { domainIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -10839,6 +11343,7 @@ export const getJobRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/jobRuns/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       details: {
         lineageRunDetails: {
@@ -10881,10 +11386,11 @@ export const getLineageEvent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/lineage/events/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       domainId: D.m({ header: "Domain-Id" }),
       id: D.m({ header: "Id" }),
-      event: D.m({ payload: true, shape: D.stream }),
+      event: D.m({ payload: true, shape: D.secretBlob }),
       createdBy: D.m({ header: "Created-By" }),
       processingStatus: D.m({ header: "Processing-Status" }),
       eventTime: D.m({ header: "Event-Time", shape: D.ts }),
@@ -10922,7 +11428,14 @@ export const getLineageNode: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/lineage/nodes/{identifier}",
-    input: { eventTimestamp: D.m({ query: "timestamp" }) },
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      eventTimestamp: D.m({
+        query: "timestamp",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+    },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -10963,7 +11476,11 @@ export const getListing: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/listings/{identifier}",
-    input: { listingRevision: D.m({ query: "listingRevision" }) },
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      listingRevision: D.m({ query: "listingRevision" }),
+    },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -11024,7 +11541,7 @@ export const getMetadataGenerationRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/metadata-generation-runs/{identifier}",
-    input: { type: D.m({ query: "type" }) },
+    input: { domainIdentifier: 0, identifier: 0, type: D.m({ query: "type" }) },
     output: { createdAt: D.ts },
   },
   errors: [
@@ -11058,6 +11575,7 @@ export const getNotebook: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/notebooks/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       name: D.secret,
       description: D.secret,
@@ -11100,6 +11618,7 @@ export const getNotebookExport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/notebook-exports/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       outputLocation: { s3: { uri: D.secret } },
       completedAt: D.ts,
@@ -11137,6 +11656,7 @@ export const getNotebookRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/notebook-runs/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       metadata: D.map(D.secret),
       createdAt: D.ts,
@@ -11176,6 +11696,7 @@ export const getProject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/projects/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       name: D.secret,
       description: D.secret,
@@ -11215,6 +11736,7 @@ export const getProjectProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/project-profiles/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       name: D.secret,
       description: D.secret,
@@ -11255,7 +11777,11 @@ export const getRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/rules/{identifier}",
-    input: { revision: D.m({ query: "revision" }) },
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      revision: D.m({ query: "revision" }),
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -11294,6 +11820,7 @@ export const getSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/subscriptions/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -11332,6 +11859,7 @@ export const getSubscriptionGrant: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/subscription-grants/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -11369,6 +11897,7 @@ export const getSubscriptionRequestDetails: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/subscription-requests/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -11410,6 +11939,7 @@ export const getSubscriptionTarget: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/environments/{environmentIdentifier}/subscription-targets/{identifier}",
+    input: { domainIdentifier: 0, environmentIdentifier: 0, identifier: 0 },
     output: { name: D.secret, createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -11443,7 +11973,13 @@ export const getTimeSeriesDataPoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/entities/{entityType}/{entityIdentifier}/time-series-data-points/{identifier}",
-    input: { formName: D.m({ query: "formName" }) },
+    input: {
+      domainIdentifier: 0,
+      entityIdentifier: 0,
+      entityType: 0,
+      identifier: 0,
+      formName: D.m({ query: "formName" }),
+    },
     output: { form: o_TimeSeriesDataPointFormOutput },
   },
   errors: [
@@ -11477,6 +12013,8 @@ export const getUserProfile: API.OperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/user-profiles/{userIdentifier}",
     input: {
+      domainIdentifier: 0,
+      userIdentifier: 0,
       type: D.m({ query: "type" }),
       sessionName: D.m({ query: "sessionName" }),
     },
@@ -11513,6 +12051,7 @@ export const listAccountPools: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/account-pools",
     input: {
+      domainIdentifier: 0,
       name: D.m({ query: "name" }),
       sortBy: D.m({ query: "sortBy" }),
       sortOrder: D.m({ query: "sortOrder" }),
@@ -11559,6 +12098,8 @@ export const listAccountsInAccountPool: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/account-pools/{identifier}/accounts",
     input: {
+      domainIdentifier: 0,
+      identifier: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -11609,6 +12150,8 @@ export const listAssetFilters: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/assets/{assetIdentifier}/filters",
     input: {
+      domainIdentifier: 0,
+      assetIdentifier: 0,
       status: D.m({ query: "status" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -11666,6 +12209,8 @@ export const listAssetRevisions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/assets/{identifier}/revisions",
     input: {
+      domainIdentifier: 0,
+      identifier: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -11709,6 +12254,7 @@ export const listConnections: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/connections",
     input: {
+      domainIdentifier: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
       sortBy: D.m({ query: "sortBy" }),
@@ -11772,6 +12318,8 @@ export const listDataProductRevisions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/data-products/{identifier}/revisions",
     input: {
+      domainIdentifier: 0,
+      identifier: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -11818,6 +12366,8 @@ export const listDataSourceRunActivities: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/data-source-runs/{identifier}/activities",
     input: {
+      domainIdentifier: 0,
+      identifier: 0,
       status: D.m({ query: "status" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -11875,6 +12425,8 @@ export const listDataSourceRuns: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/data-sources/{dataSourceIdentifier}/runs",
     input: {
+      domainIdentifier: 0,
+      dataSourceIdentifier: 0,
       status: D.m({ query: "status" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -11931,6 +12483,7 @@ export const listDataSources: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/data-sources",
     input: {
+      domainIdentifier: 0,
       projectIdentifier: D.m({ query: "projectIdentifier" }),
       environmentIdentifier: D.m({ query: "environmentIdentifier" }),
       connectionIdentifier: D.m({ query: "connectionIdentifier" }),
@@ -12046,6 +12599,7 @@ export const listDomainUnitsForParent: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/domain-units",
     input: {
+      domainIdentifier: 0,
       parentDomainUnitIdentifier: D.m({ query: "parentDomainUnitIdentifier" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -12088,6 +12642,9 @@ export const listEntityOwners: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/entities/{entityType}/{entityIdentifier}/owners",
     input: {
+      domainIdentifier: 0,
+      entityType: 0,
+      entityIdentifier: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -12129,6 +12686,8 @@ export const listEnvironmentActions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/environments/{environmentIdentifier}/actions",
     input: {
+      domainIdentifier: 0,
+      environmentIdentifier: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -12170,6 +12729,7 @@ export const listEnvironmentBlueprintConfigurations: API.PaginatedOperationMetho
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/environment-blueprint-configurations",
     input: {
+      domainIdentifier: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -12213,6 +12773,7 @@ export const listEnvironmentBlueprints: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/environment-blueprints",
     input: {
+      domainIdentifier: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
       name: D.m({ query: "name" }),
@@ -12264,6 +12825,7 @@ export const listEnvironmentProfiles: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/environment-profiles",
     input: {
+      domainIdentifier: 0,
       awsAccountId: D.m({ query: "awsAccountId" }),
       awsAccountRegion: D.m({ query: "awsAccountRegion" }),
       environmentBlueprintIdentifier: D.m({
@@ -12321,6 +12883,7 @@ export const listEnvironments: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/environments",
     input: {
+      domainIdentifier: 0,
       awsAccountId: D.m({ query: "awsAccountId" }),
       status: D.m({ query: "status" }),
       awsAccountRegion: D.m({ query: "awsAccountRegion" }),
@@ -12386,6 +12949,8 @@ export const listJobRuns: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/jobs/{jobIdentifier}/runs",
     input: {
+      domainIdentifier: 0,
+      jobIdentifier: 0,
       status: D.m({ query: "status" }),
       sortOrder: D.m({ query: "sortOrder" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -12433,9 +12998,16 @@ export const listLineageEvents: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/lineage/events",
     input: {
+      domainIdentifier: 0,
       maxResults: D.m({ query: "maxResults" }),
-      timestampAfter: D.m({ query: "timestampAfter" }),
-      timestampBefore: D.m({ query: "timestampBefore" }),
+      timestampAfter: D.m({
+        query: "timestampAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      timestampBefore: D.m({
+        query: "timestampBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       processingStatus: D.m({ query: "processingStatus" }),
       sortOrder: D.m({ query: "sortOrder" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -12480,11 +13052,19 @@ export const listLineageNodeHistory: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/lineage/nodes/{identifier}/history",
     input: {
+      domainIdentifier: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      identifier: 0,
       direction: D.m({ query: "direction" }),
-      eventTimestampGTE: D.m({ query: "timestampGTE" }),
-      eventTimestampLTE: D.m({ query: "timestampLTE" }),
+      eventTimestampGTE: D.m({
+        query: "timestampGTE",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      eventTimestampLTE: D.m({
+        query: "timestampLTE",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       sortOrder: D.m({ query: "sortOrder" }),
     },
     output: {
@@ -12538,6 +13118,7 @@ export const listMetadataGenerationRuns: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/metadata-generation-runs",
     input: {
+      domainIdentifier: 0,
       status: D.m({ query: "status" }),
       type: D.m({ query: "type" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -12584,6 +13165,7 @@ export const listNotebookRuns: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/notebook-runs",
     input: {
+      domainIdentifier: 0,
       owningProjectIdentifier: D.m({ query: "owningProjectIdentifier" }),
       notebookIdentifier: D.m({ query: "notebookIdentifier" }),
       status: D.m({ query: "status" }),
@@ -12638,6 +13220,7 @@ export const listNotebooks: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/notebooks",
     input: {
+      domainIdentifier: 0,
       owningProjectIdentifier: D.m({ query: "owningProjectIdentifier" }),
       maxResults: D.m({ query: "maxResults" }),
       sortOrder: D.m({ query: "sortOrder" }),
@@ -12691,9 +13274,16 @@ export const listNotifications: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/notifications",
     input: {
+      domainIdentifier: 0,
       type: D.m({ query: "type" }),
-      afterTimestamp: D.m({ query: "afterTimestamp" }),
-      beforeTimestamp: D.m({ query: "beforeTimestamp" }),
+      afterTimestamp: D.m({
+        query: "afterTimestamp",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      beforeTimestamp: D.m({
+        query: "beforeTimestamp",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       subjects: D.m({ query: "subjects" }),
       taskStatus: D.m({ query: "taskStatus" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -12746,6 +13336,9 @@ export const listPolicyGrants: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/policies/managed/{entityType}/{entityIdentifier}/grants",
     input: {
+      domainIdentifier: 0,
+      entityType: 0,
+      entityIdentifier: 0,
       policyType: D.m({ query: "policyType" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -12790,6 +13383,8 @@ export const listProjectMemberships: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/projects/{projectIdentifier}/memberships",
     input: {
+      domainIdentifier: 0,
+      projectIdentifier: 0,
       sortBy: D.m({ query: "sortBy" }),
       sortOrder: D.m({ query: "sortOrder" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -12834,6 +13429,7 @@ export const listProjectProfiles: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/project-profiles",
     input: {
+      domainIdentifier: 0,
       name: D.m({ query: "name" }),
       sortBy: D.m({ query: "sortBy" }),
       sortOrder: D.m({ query: "sortOrder" }),
@@ -12887,6 +13483,7 @@ export const listProjects: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/projects",
     input: {
+      domainIdentifier: 0,
       userIdentifier: D.m({ query: "userIdentifier" }),
       groupIdentifier: D.m({ query: "groupIdentifier" }),
       name: D.m({ query: "name" }),
@@ -12942,6 +13539,9 @@ export const listRules: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/list-rules/{targetType}/{targetIdentifier}",
     input: {
+      domainIdentifier: 0,
+      targetType: 0,
+      targetIdentifier: 0,
       ruleType: D.m({ query: "ruleType" }),
       action: D.m({ query: "ruleAction" }),
       projectIds: D.m({ query: "projectIds" }),
@@ -12992,6 +13592,7 @@ export const listSubscriptionGrants: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/subscription-grants",
     input: {
+      domainIdentifier: 0,
       environmentId: D.m({ query: "environmentId" }),
       subscriptionTargetId: D.m({ query: "subscriptionTargetId" }),
       subscribedListingId: D.m({ query: "subscribedListingId" }),
@@ -13052,6 +13653,7 @@ export const listSubscriptionRequests: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/subscription-requests",
     input: {
+      domainIdentifier: 0,
       status: D.m({ query: "status" }),
       subscribedListingId: D.m({ query: "subscribedListingId" }),
       owningProjectId: D.m({ query: "owningProjectId" }),
@@ -13115,6 +13717,7 @@ export const listSubscriptions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/subscriptions",
     input: {
+      domainIdentifier: 0,
       subscriptionRequestIdentifier: D.m({
         query: "subscriptionRequestIdentifier",
       }),
@@ -13178,6 +13781,8 @@ export const listSubscriptionTargets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/environments/{environmentIdentifier}/subscription-targets",
     input: {
+      domainIdentifier: 0,
+      environmentIdentifier: 0,
       sortBy: D.m({ query: "sortBy" }),
       sortOrder: D.m({ query: "sortOrder" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -13219,7 +13824,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -13251,9 +13860,12 @@ export const listTimeSeriesDataPoints: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/domains/{domainIdentifier}/entities/{entityType}/{entityIdentifier}/time-series-data-points",
     input: {
+      domainIdentifier: 0,
+      entityIdentifier: 0,
+      entityType: 0,
       formName: D.m({ query: "formName" }),
-      startedAt: D.m({ query: "startedAt" }),
-      endedAt: D.m({ query: "endedAt" }),
+      startedAt: D.m({ query: "startedAt", shape: D.tsAs("epoch-seconds") }),
+      endedAt: D.m({ query: "endedAt", shape: D.tsAs("epoch-seconds") }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -13299,7 +13911,8 @@ export const postLineageEvent: API.OperationMethod<
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/lineage/events",
     input: {
-      event: D.m({ payload: true, shape: D.stream }),
+      domainIdentifier: 0,
+      event: D.m({ payload: true, shape: D.blob }),
       clientToken: D.m({ header: "Client-Token", idempotency: true }),
     },
   },
@@ -13338,7 +13951,19 @@ export const postTimeSeriesDataPoints: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/entities/{entityType}/{entityIdentifier}/time-series-data-points",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      entityIdentifier: 0,
+      entityType: 0,
+      forms: D.list({
+        formName: 0,
+        typeIdentifier: 0,
+        typeRevision: 0,
+        timestamp: 0,
+        content: 0,
+      }),
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { forms: D.list(o_TimeSeriesDataPointFormOutput) },
     body: true,
   },
@@ -13387,7 +14012,12 @@ export const putDataExportConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/domains/{domainIdentifier}/data-export-configuration",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      enableExport: 0,
+      encryptionConfiguration: { kmsKeyArn: 0, sseAlgorithm: 0 },
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -13423,6 +14053,29 @@ export const putEnvironmentBlueprintConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/domains/{domainIdentifier}/environment-blueprint-configurations/{environmentBlueprintIdentifier}",
+    input: {
+      domainIdentifier: 0,
+      environmentBlueprintIdentifier: 0,
+      provisioningRoleArn: 0,
+      manageAccessRoleArn: 0,
+      environmentRolePermissionBoundary: 0,
+      enabledRegions: 0,
+      regionalParameters: 0,
+      resourceConfigurations: D.list({
+        name: 0,
+        description: 0,
+        region: 0,
+        parameters: 0,
+      }),
+      allowUserProvidedConfigurations: 0,
+      globalParameters: 0,
+      provisioningConfigurations: D.list({
+        lakeFormationConfiguration: {
+          locationRegistrationRole: 0,
+          locationRegistrationExcludeS3Locations: 0,
+        },
+      }),
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -13458,8 +14111,22 @@ export const queryGraph: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/graph/query",
     input: {
+      domainIdentifier: 0,
+      match: D.list({
+        relationPattern: {
+          relationType: 0,
+          relationDirection: 0,
+          maxPathLength: 0,
+        },
+        entityPattern: {
+          entityType: 0,
+          identifier: 0,
+          filters: i_FilterClause,
+        },
+      }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      additionalAttributes: { formNames: 0 },
     },
     output: {
       items: D.list({
@@ -13511,7 +14178,11 @@ export const rejectPredictions: API.OperationMethod<
     service: svc,
     http: "PUT /v2/domains/{domainIdentifier}/assets/{identifier}/reject-predictions",
     input: {
+      domainIdentifier: 0,
+      identifier: 0,
       revision: D.m({ query: "revision" }),
+      rejectRule: { rule: 0, threshold: 0 },
+      rejectChoices: D.list({ predictionTarget: 0, predictionChoices: 0 }),
       clientToken: D.m({ idempotency: true }),
     },
     body: true,
@@ -13549,6 +14220,7 @@ export const rejectSubscriptionRequest: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/domains/{domainIdentifier}/subscription-requests/{identifier}/reject",
+    input: { domainIdentifier: 0, identifier: 0, decisionComment: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -13592,7 +14264,13 @@ export const removeEntityOwner: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/entities/{entityType}/{entityIdentifier}/removeOwner",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      entityType: 0,
+      entityIdentifier: 0,
+      owner: i_OwnerProperties,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -13625,7 +14303,15 @@ export const removePolicyGrant: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/policies/managed/{entityType}/{entityIdentifier}/removeGrant",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      entityType: 0,
+      entityIdentifier: 0,
+      policyType: 0,
+      principal: i_PolicyGrantPrincipal,
+      grantIdentifier: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -13659,6 +14345,7 @@ export const revokeSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/domains/{domainIdentifier}/subscriptions/{identifier}/revoke",
+    input: { domainIdentifier: 0, identifier: 0, retainPermissions: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -13721,6 +14408,18 @@ export const search: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/search",
+    input: {
+      domainIdentifier: 0,
+      owningProjectIdentifier: 0,
+      maxResults: 0,
+      nextToken: 0,
+      searchScope: 0,
+      searchText: 0,
+      searchIn: D.list(i_SearchInItem),
+      filters: i_FilterClause,
+      sort: i_SearchSort,
+      additionalAttributes: 0,
+    },
     output: {
       items: D.list({
         glossaryItem: {
@@ -13795,6 +14494,13 @@ export const searchGroupProfiles: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/search-group-profiles",
+    input: {
+      domainIdentifier: 0,
+      groupType: 0,
+      searchText: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { items: D.list({ groupName: D.secret }) },
     body: true,
   },
@@ -13846,6 +14552,17 @@ export const searchListings: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/listings/search",
+    input: {
+      domainIdentifier: 0,
+      searchText: 0,
+      searchIn: D.list(i_SearchInItem),
+      maxResults: 0,
+      nextToken: 0,
+      filters: i_FilterClause,
+      aggregations: D.list({ attribute: 0, displayValue: 0 }),
+      sort: i_SearchSort,
+      additionalAttributes: 0,
+    },
     output: {
       items: D.list({
         assetListing: {
@@ -13921,6 +14638,17 @@ export const searchTypes: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/types-search",
+    input: {
+      domainIdentifier: 0,
+      maxResults: 0,
+      nextToken: 0,
+      searchScope: 0,
+      searchText: 0,
+      searchIn: D.list(i_SearchInItem),
+      filters: i_FilterClause,
+      sort: i_SearchSort,
+      managed: 0,
+    },
     output: {
       items: D.list({
         assetTypeItem: {
@@ -13980,6 +14708,13 @@ export const searchUserProfiles: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/search-user-profiles",
+    input: {
+      domainIdentifier: 0,
+      userType: 0,
+      searchText: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { items: D.list({ details: o_UserProfileDetails }) },
     body: true,
   },
@@ -14021,7 +14756,11 @@ export const startDataSourceRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/data-sources/{dataSourceIdentifier}/runs",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      dataSourceIdentifier: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -14077,7 +14816,14 @@ export const startMetadataGenerationRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/metadata-generation-runs",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      type: 0,
+      types: 0,
+      target: { type: 0, identifier: 0, revision: 0 },
+      clientToken: D.m({ idempotency: true }),
+      owningProjectIdentifier: 0,
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -14116,7 +14862,13 @@ export const startNotebookExport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/notebook-exports",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      notebookIdentifier: 0,
+      owningProjectIdentifier: 0,
+      fileFormat: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -14155,7 +14907,14 @@ export const startNotebookImport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/notebook-imports",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      owningProjectIdentifier: 0,
+      sourceLocation: i_SourceLocation,
+      name: 0,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -14199,7 +14958,24 @@ export const startNotebookRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/notebook-runs",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      owningProjectIdentifier: 0,
+      notebookIdentifier: 0,
+      scheduleIdentifier: 0,
+      computeConfiguration: { instanceType: 0, environmentVersion: 0 },
+      networkConfiguration: {
+        networkAccessType: 0,
+        vpcId: 0,
+        subnetIds: 0,
+        securityGroupIds: 0,
+      },
+      timeoutConfiguration: { runTimeoutInMinutes: 0 },
+      triggerSource: { type: 0, name: 0 },
+      metadata: 0,
+      parameters: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: {
       metadata: D.map(D.secret),
       createdAt: D.ts,
@@ -14244,7 +15020,24 @@ export const startNotebookSync: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/domains/{domainIdentifier}/notebook-syncs",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      owningProjectIdentifier: 0,
+      sourceLocation: i_SourceLocation,
+      gitMetadata: {
+        connectionId: 0,
+        repository: 0,
+        branch: 0,
+        commitHash: 0,
+        fileName: 0,
+        committedAt: 0,
+        commitMessage: 0,
+      },
+      notebookId: 0,
+      name: 0,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: {
       sourceLocation: o_SourceLocation,
       gitMetadata: o_GitMetadata,
@@ -14288,7 +15081,11 @@ export const stopNotebookRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/domains/{domainIdentifier}/notebook-runs/{identifier}/stop",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -14318,7 +15115,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -14345,7 +15147,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [InternalServerException, ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -14374,6 +15176,14 @@ export const updateAccountPool: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/account-pools/{identifier}",
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      name: 0,
+      description: 0,
+      resolutionStrategy: 0,
+      accountSource: i_AccountSource,
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -14425,6 +15235,14 @@ export const updateAssetFilter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/assets/{assetIdentifier}/filters/{identifier}",
+    input: {
+      domainIdentifier: 0,
+      assetIdentifier: 0,
+      identifier: 0,
+      name: 0,
+      description: 0,
+      configuration: i_AssetFilterConfiguration,
+    },
     output: { name: D.secret, description: D.secret, createdAt: D.ts },
     body: true,
   },
@@ -14462,6 +15280,61 @@ export const updateConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/connections/{identifier}",
+    input: {
+      configurations: D.list(i_Configuration),
+      domainIdentifier: 0,
+      identifier: 0,
+      description: 0,
+      awsLocation: i_AwsLocation,
+      props: {
+        athenaProperties: { workgroupName: 0 },
+        glueProperties: {
+          glueConnectionInput: {
+            description: 0,
+            connectionProperties: 0,
+            authenticationConfiguration: i_AuthenticationConfigurationPatch,
+          },
+        },
+        iamProperties: { glueLineageSyncEnabled: 0 },
+        redshiftProperties: {
+          storage: i_RedshiftStorageProperties,
+          databaseName: 0,
+          host: 0,
+          port: 0,
+          credentials: i_RedshiftCredentials,
+          lineageSync: i_RedshiftLineageSyncConfigurationInput,
+        },
+        sparkEmrProperties: {
+          computeArn: 0,
+          instanceProfileArn: 0,
+          javaVirtualEnv: 0,
+          logUri: 0,
+          pythonVirtualEnv: 0,
+          runtimeRole: 0,
+          trustedCertificatesS3Uri: 0,
+          managedEndpointArn: 0,
+        },
+        s3Properties: {
+          s3Uri: 0,
+          s3AccessGrantLocationId: 0,
+          registerS3AccessGrantLocation: 0,
+        },
+        snowflakeProperties: {
+          connectivityPropertiesPatch: {
+            description: 0,
+            connectionProperties: 0,
+            authenticationConfiguration: i_AuthenticationConfigurationPatch,
+          },
+          snowflakeRole: 0,
+          lineageSync: i_LineageSyncInput,
+        },
+        amazonQProperties: { isEnabled: 0, profileArn: 0, authMode: 0 },
+        mlflowProperties: { trackingServerArn: 0 },
+        lakehouseProperties: { glueLineageSyncEnabled: 0 },
+        vpcProperties: { vpcId: 0, subnetIds: 0, securityGroupId: 0 },
+        gitProperties: { codeConnectionArn: 0, defaultBranch: 0 },
+      },
+    },
     output: {
       description: D.secret,
       physicalEndpoints: D.list(o_PhysicalEndpoint),
@@ -14504,6 +15377,19 @@ export const updateDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/data-sources/{identifier}",
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      name: 0,
+      description: 0,
+      enableSetting: 0,
+      publishOnImport: 0,
+      assetFormsInput: D.list(i_FormInput),
+      schedule: i_ScheduleConfiguration,
+      configuration: i_DataSourceConfigurationInput,
+      recommendation: i_RecommendationConfiguration,
+      retainPermissionsOnRevokeFailure: 0,
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -14549,7 +15435,15 @@ export const updateDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/domains/{identifier}",
-    input: { clientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      identifier: 0,
+      description: 0,
+      singleSignOn: i_SingleSignOn,
+      domainExecutionRole: 0,
+      serviceRole: 0,
+      name: 0,
+      clientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
     output: { lastUpdatedAt: D.ts },
     body: true,
   },
@@ -14587,6 +15481,7 @@ export const updateDomainUnit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/domains/{domainIdentifier}/domain-units/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0, description: 0, name: 0 },
     output: {
       name: D.secret,
       description: D.secret,
@@ -14628,6 +15523,16 @@ export const updateEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/environments/{identifier}",
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      name: 0,
+      description: 0,
+      glossaryTerms: 0,
+      blueprintVersion: 0,
+      userParameters: D.list(i_EnvironmentParameter),
+      environmentConfigurationName: 0,
+    },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -14672,6 +15577,14 @@ export const updateEnvironmentAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/environments/{environmentIdentifier}/actions/{identifier}",
+    input: {
+      domainIdentifier: 0,
+      environmentIdentifier: 0,
+      identifier: 0,
+      parameters: i_ActionParameters,
+      name: 0,
+      description: 0,
+    },
     body: true,
   },
   errors: [
@@ -14708,6 +15621,13 @@ export const updateEnvironmentBlueprint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/environment-blueprints/{identifier}",
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      description: 0,
+      provisioningProperties: i_ProvisioningProperties,
+      userParameters: D.list(i_CustomParameter),
+    },
     output: {
       description: D.secret,
       userParameters: D.list(o_CustomParameter),
@@ -14751,6 +15671,15 @@ export const updateEnvironmentProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/environment-profiles/{identifier}",
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      name: 0,
+      description: 0,
+      userParameters: D.list(i_EnvironmentParameter),
+      awsAccountId: 0,
+      awsAccountRegion: 0,
+    },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -14804,7 +15733,14 @@ export const updateGlossary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/glossaries/{identifier}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      name: 0,
+      description: 0,
+      status: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { name: D.secret, description: D.secret },
     body: true,
   },
@@ -14851,6 +15787,16 @@ export const updateGlossaryTerm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/glossary-terms/{identifier}",
+    input: {
+      domainIdentifier: 0,
+      glossaryIdentifier: 0,
+      identifier: 0,
+      name: 0,
+      shortDescription: 0,
+      longDescription: 0,
+      termRelations: i_TermRelations,
+      status: 0,
+    },
     output: {
       name: D.secret,
       shortDescription: D.secret,
@@ -14889,6 +15835,7 @@ export const updateGroupProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/domains/{domainIdentifier}/group-profiles/{groupIdentifier}",
+    input: { domainIdentifier: 0, groupIdentifier: 0, status: 0 },
     output: { groupName: D.secret },
     body: true,
   },
@@ -14923,7 +15870,21 @@ export const updateNotebook: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/notebooks/{identifier}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      description: 0,
+      status: 0,
+      name: 0,
+      cellOrder: D.list({}),
+      metadata: 0,
+      parameters: 0,
+      environmentConfiguration: {
+        imageVersion: 0,
+        packageConfig: { packageManager: 0, packageSpecification: 0 },
+      },
+      clientToken: D.m({ idempotency: true }),
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -14970,6 +15931,21 @@ export const updateProject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/projects/{identifier}",
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      name: 0,
+      description: 0,
+      resourceTags: 0,
+      glossaryTerms: 0,
+      domainUnitId: 0,
+      environmentDeploymentDetails: {
+        overallDeploymentStatus: 0,
+        environmentFailureReasons: D.map(D.list({ code: 0, message: 0 })),
+      },
+      userParameters: D.list(i_EnvironmentConfigurationUserParameter),
+      projectProfileVersion: 0,
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -15014,6 +15990,18 @@ export const updateProjectProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/project-profiles/{identifier}",
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      name: 0,
+      description: 0,
+      status: 0,
+      projectResourceTags: D.list(i_ResourceTagParameter),
+      allowCustomProjectResourceTags: 0,
+      projectResourceTagsDescription: 0,
+      environmentConfigurations: D.list(i_EnvironmentConfiguration),
+      domainUnitIdentifier: 0,
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -15058,7 +16046,12 @@ export const updateRootDomainUnitOwner: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/root-domain-unit-owner",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainIdentifier: 0,
+      currentOwner: 0,
+      newOwner: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -15095,6 +16088,15 @@ export const updateRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/rules/{identifier}",
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      name: 0,
+      description: 0,
+      scope: i_RuleScope,
+      detail: i_RuleDetail,
+      includeChildDomainUnits: 0,
+    },
     output: {
       name: D.secret,
       description: D.secret,
@@ -15137,6 +16139,14 @@ export const updateSubscriptionGrantStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/subscription-grants/{identifier}/status/{assetIdentifier}",
+    input: {
+      domainIdentifier: 0,
+      identifier: 0,
+      assetIdentifier: 0,
+      status: 0,
+      failureCause: { message: 0 },
+      targetName: 0,
+    },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -15177,6 +16187,7 @@ export const updateSubscriptionRequest: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/subscription-requests/{identifier}",
+    input: { domainIdentifier: 0, identifier: 0, requestReason: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -15221,6 +16232,18 @@ export const updateSubscriptionTarget: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v2/domains/{domainIdentifier}/environments/{environmentIdentifier}/subscription-targets/{identifier}",
+    input: {
+      domainIdentifier: 0,
+      environmentIdentifier: 0,
+      identifier: 0,
+      name: 0,
+      authorizedPrincipals: 0,
+      applicableAssetTypes: 0,
+      subscriptionTargetConfig: D.list(i_SubscriptionTargetForm),
+      manageAccessRole: 0,
+      provider: 0,
+      subscriptionGrantCreationMode: 0,
+    },
     output: { name: D.secret, createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -15255,6 +16278,13 @@ export const updateUserProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/domains/{domainIdentifier}/user-profiles/{userIdentifier}",
+    input: {
+      domainIdentifier: 0,
+      userIdentifier: 0,
+      type: 0,
+      status: 0,
+      sessionName: 0,
+    },
     output: { details: o_UserProfileDetails },
     body: true,
   },
@@ -15269,6 +16299,219 @@ export const updateUserProfile: API.OperationMethod<
   operationName: "UpdateUserProfile",
 })) as any;
 
+const i_AcceptedAssetScope: D.LazyStruct = () => ({ assetId: 0, filterIds: 0 });
+const i_AccountSource: D.LazyStruct = () => ({
+  accounts: D.list({ awsAccountId: 0, supportedRegions: 0, awsAccountName: 0 }),
+  customAccountPoolHandler: { lambdaFunctionArn: 0, lambdaExecutionRoleArn: 0 },
+});
+const i_ActionParameters: D.LazyStruct = () => ({ awsConsoleLink: { uri: 0 } });
+const i_AssetFilterConfiguration: D.LazyStruct = () => ({
+  columnConfiguration: { includedColumnNames: 0 },
+  rowConfiguration: { rowFilter: i_RowFilter, sensitive: 0 },
+});
+const i_AssetPermission: D.LazyStruct = () => ({
+  assetId: 0,
+  permissions: { s3: 0 },
+});
+const i_AuthenticationConfigurationInput: D.LazyStruct = () => ({
+  authenticationType: 0,
+  oAuth2Properties: {
+    oAuth2GrantType: 0,
+    oAuth2ClientApplication: {
+      userManagedClientApplicationClientId: 0,
+      aWSManagedClientApplicationReference: 0,
+    },
+    tokenUrl: 0,
+    tokenUrlParametersMap: 0,
+    authorizationCodeProperties: { authorizationCode: 0, redirectUri: 0 },
+    oAuth2Credentials: {
+      userManagedClientApplicationClientSecret: 0,
+      accessToken: 0,
+      refreshToken: 0,
+      jwtToken: 0,
+    },
+  },
+  secretArn: 0,
+  kmsKeyArn: 0,
+  basicAuthenticationCredentials: i_BasicAuthenticationCredentials,
+  customAuthenticationCredentials: 0,
+});
+const i_AuthenticationConfigurationPatch: D.LazyStruct = () => ({
+  secretArn: 0,
+  basicAuthenticationCredentials: i_BasicAuthenticationCredentials,
+});
+const i_AwsLocation: D.LazyStruct = () => ({
+  accessRole: 0,
+  awsAccountId: 0,
+  awsRegion: 0,
+  iamConnectionId: 0,
+});
+const i_Configuration: D.LazyStruct = () => ({
+  classification: 0,
+  properties: 0,
+});
+const i_CustomParameter: D.LazyStruct = () => ({
+  keyName: 0,
+  description: 0,
+  fieldType: 0,
+  defaultValue: 0,
+  isEditable: 0,
+  isOptional: 0,
+  isUpdateSupported: 0,
+});
+const i_DataProductItem: D.LazyStruct = () => ({
+  itemType: 0,
+  identifier: 0,
+  revision: 0,
+  glossaryTerms: 0,
+});
+const i_DataSourceConfigurationInput: D.LazyStruct = () => ({
+  glueRunConfiguration: {
+    dataAccessRole: 0,
+    relationalFilterConfigurations: D.list(i_RelationalFilterConfiguration),
+    autoImportDataQualityResult: 0,
+    catalogName: 0,
+  },
+  redshiftRunConfiguration: {
+    dataAccessRole: 0,
+    relationalFilterConfigurations: D.list(i_RelationalFilterConfiguration),
+    redshiftCredentialConfiguration: { secretManagerArn: 0 },
+    redshiftStorage: {
+      redshiftClusterSource: { clusterName: 0 },
+      redshiftServerlessSource: { workgroupName: 0 },
+    },
+  },
+  sageMakerRunConfiguration: { trackingAssets: 0 },
+});
+const i_EnvironmentConfiguration: D.LazyStruct = () => ({
+  name: 0,
+  id: 0,
+  environmentBlueprintId: 0,
+  description: 0,
+  deploymentMode: 0,
+  configurationParameters: {
+    ssmPath: 0,
+    parameterOverrides: D.list(i_EnvironmentConfigurationParameter),
+    resolvedParameters: D.list(i_EnvironmentConfigurationParameter),
+  },
+  awsAccount: { awsAccountId: 0, awsAccountIdPath: 0 },
+  accountPools: 0,
+  awsRegion: { regionName: 0, regionNamePath: 0 },
+  deploymentOrder: 0,
+});
+const i_EnvironmentConfigurationUserParameter: D.LazyStruct = () => ({
+  environmentId: 0,
+  environmentResolvedAccount: {
+    awsAccountId: 0,
+    regionName: 0,
+    sourceAccountPoolId: 0,
+  },
+  environmentConfigurationName: 0,
+  environmentParameters: D.list(i_EnvironmentParameter),
+});
+const i_EnvironmentParameter: D.LazyStruct = () => ({ name: 0, value: 0 });
+const i_FilterClause: D.LazyStruct = () => ({
+  filter: { attribute: 0, value: 0, intValue: 0, operator: 0 },
+  and: D.list(i_FilterClause),
+  or: D.list(i_FilterClause),
+});
+const i_FormInput: D.LazyStruct = () => ({
+  formName: 0,
+  typeIdentifier: 0,
+  typeRevision: 0,
+  content: 0,
+});
+const i_LineageSyncInput: D.LazyStruct = () => ({
+  timezone: 0,
+  enabled: 0,
+  schedule: 0,
+});
+const i_Member: D.LazyStruct = () => ({
+  userIdentifier: 0,
+  groupIdentifier: 0,
+});
+const i_OwnerProperties: D.LazyStruct = () => ({
+  user: { userIdentifier: 0 },
+  group: { groupIdentifier: 0 },
+});
+const i_PhysicalConnectionRequirements: D.LazyStruct = () => ({
+  subnetId: 0,
+  subnetIdList: 0,
+  securityGroupIdList: 0,
+  availabilityZone: 0,
+});
+const i_PolicyGrantPrincipal: D.LazyStruct = () => ({
+  user: { userIdentifier: 0, allUsersGrantFilter: {} },
+  group: { groupIdentifier: 0 },
+  project: {
+    projectDesignation: 0,
+    projectIdentifier: 0,
+    projectGrantFilter: {
+      domainUnitFilter: { domainUnit: 0, includeChildDomainUnits: 0 },
+    },
+  },
+  domainUnit: {
+    domainUnitDesignation: 0,
+    domainUnitIdentifier: 0,
+    domainUnitGrantFilter: { allDomainUnitsGrantFilter: {} },
+  },
+});
+const i_PredictionConfiguration: D.LazyStruct = () => ({
+  businessNameGeneration: { enabled: 0 },
+});
+const i_ProvisioningProperties: D.LazyStruct = () => ({
+  cloudFormation: { templateUrl: 0 },
+  manual: {},
+});
+const i_RecommendationConfiguration: D.LazyStruct = () => ({
+  enableBusinessNameGeneration: 0,
+});
+const i_RedshiftCredentials: D.LazyStruct = () => ({
+  secretArn: 0,
+  usernamePassword: { password: 0, username: 0 },
+});
+const i_RedshiftLineageSyncConfigurationInput: D.LazyStruct = () => ({
+  enabled: 0,
+  schedule: { schedule: 0 },
+});
+const i_RedshiftStorageProperties: D.LazyStruct = () => ({
+  clusterName: 0,
+  workgroupName: 0,
+});
+const i_ResourceTagParameter: D.LazyStruct = () => ({
+  key: 0,
+  value: 0,
+  isValueEditable: 0,
+});
+const i_RuleDetail: D.LazyStruct = () => ({
+  metadataFormEnforcementDetail: {
+    requiredMetadataForms: D.list({ typeIdentifier: 0, typeRevision: 0 }),
+  },
+  glossaryTermEnforcementDetail: { requiredGlossaryTermIds: 0 },
+});
+const i_RuleScope: D.LazyStruct = () => ({
+  assetType: { selectionMode: 0, specificAssetTypes: 0 },
+  dataProduct: 0,
+  project: { selectionMode: 0, specificProjects: 0 },
+});
+const i_ScheduleConfiguration: D.LazyStruct = () => ({
+  timezone: 0,
+  schedule: 0,
+});
+const i_SearchInItem: D.LazyStruct = () => ({ attribute: 0 });
+const i_SearchSort: D.LazyStruct = () => ({ attribute: 0, order: 0 });
+const i_SingleSignOn: D.LazyStruct = () => ({
+  type: 0,
+  userAssignment: 0,
+  idcInstanceArn: 0,
+});
+const i_SourceLocation: D.LazyStruct = () => ({ s3: 0 });
+const i_SubscriptionTargetForm: D.LazyStruct = () => ({
+  formName: 0,
+  content: 0,
+});
+const i_TermRelations: D.LazyStruct = () => ({ isA: 0, classifies: 0 });
+const i_Unit: D.LazyStruct = () => ({});
 const o_AccountInfo: D.LazyStruct = () => ({ awsAccountName: D.secret });
 const o_AccountSource: D.LazyStruct = () => ({
   accounts: D.list(o_AccountInfo),
@@ -15335,5 +16578,37 @@ const o_TimeSeriesDataPointSummaryFormOutput: D.LazyStruct = () => ({
 });
 const o_UserProfileDetails: D.LazyStruct = () => ({
   sso: { username: D.secret, firstName: D.secret, lastName: D.secret },
+});
+const i_BasicAuthenticationCredentials: D.LazyStruct = () => ({
+  userName: 0,
+  password: 0,
+});
+const i_EnvironmentConfigurationParameter: D.LazyStruct = () => ({
+  name: 0,
+  value: 0,
+  isEditable: 0,
+});
+const i_RelationalFilterConfiguration: D.LazyStruct = () => ({
+  databaseName: 0,
+  schemaName: 0,
+  filterExpressions: D.list({ type: 0, expression: 0 }),
+});
+const i_RowFilter: D.LazyStruct = () => ({
+  expression: {
+    equalTo: { columnName: 0, value: 0 },
+    notEqualTo: { columnName: 0, value: 0 },
+    greaterThan: { columnName: 0, value: 0 },
+    lessThan: { columnName: 0, value: 0 },
+    greaterThanOrEqualTo: { columnName: 0, value: 0 },
+    lessThanOrEqualTo: { columnName: 0, value: 0 },
+    isNull: { columnName: 0 },
+    isNotNull: { columnName: 0 },
+    in: { columnName: 0, values: 0 },
+    notIn: { columnName: 0, values: 0 },
+    like: { columnName: 0, value: 0 },
+    notLike: { columnName: 0, value: 0 },
+  },
+  and: D.list(i_RowFilter),
+  or: D.list(i_RowFilter),
 });
 const o_UsernamePassword: D.LazyStruct = () => ({ password: D.secret });

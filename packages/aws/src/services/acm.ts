@@ -1377,6 +1377,7 @@ export const addTagsToCertificate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CertificateArn: 0, Tags: D.list(i_Tag) },
     staticContext: { ServiceType: { value: "ACM" } },
   },
   errors: [
@@ -1414,7 +1415,13 @@ export const createAcmeDomainValidation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      IdempotencyToken: D.m({ idempotency: true }),
+      AcmeEndpointArn: 0,
+      DomainName: 0,
+      PrevalidationOptions: i_PrevalidationOptions,
+      Tags: D.list(i_Tag),
+    },
     staticContext: { ServiceType: { value: "ACM-ACME" } },
   },
   errors: [
@@ -1450,7 +1457,14 @@ export const createAcmeEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      IdempotencyToken: D.m({ idempotency: true }),
+      AuthorizationBehavior: 0,
+      Contact: 0,
+      CertificateAuthority: i_CertificateAuthority,
+      Tags: D.list(i_Tag),
+      CertificateTags: D.list(i_Tag),
+    },
     staticContext: { ServiceType: { value: "ACM-ACME" } },
   },
   errors: [
@@ -1486,7 +1500,13 @@ export const createAcmeExternalAccountBinding: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      IdempotencyToken: D.m({ idempotency: true }),
+      AcmeEndpointArn: 0,
+      RoleArn: 0,
+      Expiration: { Value: 0, Type: 0 },
+      Tags: D.list(i_Tag),
+    },
     output: { ExternalAccountBinding: o_AcmeExternalAccountBinding },
     staticContext: { ServiceType: { value: "ACM-ACME" } },
   },
@@ -1522,6 +1542,7 @@ export const deleteAcmeDomainValidation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AcmeDomainValidationArn: 0 },
     staticContext: { ServiceType: { value: "ACM-ACME" } },
   },
   errors: [
@@ -1554,6 +1575,7 @@ export const deleteAcmeEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AcmeEndpointArn: 0 },
     staticContext: { ServiceType: { value: "ACM-ACME" } },
   },
   errors: [
@@ -1585,6 +1607,7 @@ export const deleteAcmeExternalAccountBinding: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AcmeExternalAccountBindingArn: 0 },
     staticContext: { ServiceType: { value: "ACM-ACME" } },
   },
   errors: [
@@ -1626,6 +1649,7 @@ export const deleteCertificate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CertificateArn: 0 },
     staticContext: { ServiceType: { value: "ACM" } },
   },
   errors: [
@@ -1660,6 +1684,7 @@ export const describeAcmeAccount: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AcmeEndpointArn: 0, AccountUrl: 0 },
     output: { AcmeAccount: { CreatedAt: D.ts } },
     staticContext: { ServiceType: { value: "ACM-ACME" } },
   },
@@ -1693,6 +1718,7 @@ export const describeAcmeDomainValidation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AcmeDomainValidationArn: 0 },
     output: { AcmeDomainValidation: { CreatedAt: D.ts, UpdatedAt: D.ts } },
     staticContext: { ServiceType: { value: "ACM-ACME" } },
   },
@@ -1726,6 +1752,7 @@ export const describeAcmeEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AcmeEndpointArn: 0 },
     output: { AcmeEndpoint: { CreatedAt: D.ts, UpdatedAt: D.ts } },
     staticContext: { ServiceType: { value: "ACM-ACME" } },
   },
@@ -1759,6 +1786,7 @@ export const describeAcmeExternalAccountBinding: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AcmeExternalAccountBindingArn: 0 },
     output: { ExternalAccountBinding: o_AcmeExternalAccountBinding },
     staticContext: { ServiceType: { value: "ACM-ACME" } },
   },
@@ -1792,6 +1820,7 @@ export const describeCertificate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CertificateArn: 0 },
     output: {
       Certificate: {
         CreatedAt: D.ts,
@@ -1834,6 +1863,7 @@ export const exportCertificate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CertificateArn: 0, Passphrase: 0 },
     output: { PrivateKey: D.secret },
     staticContext: { ServiceType: { value: "ACM" } },
   },
@@ -1890,6 +1920,7 @@ export const getAcmeExternalAccountBindingCredentials: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AcmeExternalAccountBindingArn: 0 },
     output: { MacKey: D.secret },
     staticContext: { ServiceType: { value: "ACM-ACME" } },
   },
@@ -1922,6 +1953,7 @@ export const getCertificate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CertificateArn: 0 },
     staticContext: { ServiceType: { value: "ACM" } },
   },
   errors: [
@@ -1985,6 +2017,13 @@ export const importCertificate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CertificateArn: 0,
+      Certificate: 0,
+      PrivateKey: 0,
+      CertificateChain: 0,
+      Tags: D.list(i_Tag),
+    },
     staticContext: { ServiceType: { value: "ACM" } },
   },
   errors: [
@@ -2022,6 +2061,7 @@ export const listAcmeAccounts: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, AcmeEndpointArn: 0 },
     output: { AcmeAccounts: D.list({ CreatedAt: D.ts }) },
     staticContext: { ServiceType: { value: "ACM-ACME" } },
   },
@@ -2062,6 +2102,7 @@ export const listAcmeDomainValidations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, AcmeEndpointArn: 0 },
     output: {
       AcmeDomainValidations: D.list({ CreatedAt: D.ts, UpdatedAt: D.ts }),
     },
@@ -2103,6 +2144,7 @@ export const listAcmeEndpoints: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: { AcmeEndpoints: D.list({ CreatedAt: D.ts, UpdatedAt: D.ts }) },
     staticContext: { ServiceType: { value: "ACM-ACME" } },
   },
@@ -2142,6 +2184,7 @@ export const listAcmeExternalAccountBindings: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, AcmeEndpointArn: 0 },
     output: {
       ExternalAccountBindings: D.list({
         ExpiresAt: D.ts,
@@ -2189,6 +2232,7 @@ export const listCertificateDomainValidations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { CertificateArn: 0, NextToken: 0, MaxItems: 0 },
     staticContext: { ServiceType: { value: "ACM" } },
   },
   errors: [
@@ -2226,6 +2270,21 @@ export const listCertificates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CertificateStatuses: 0,
+      CertificateKeyPairOrigins: 0,
+      Includes: {
+        extendedKeyUsage: 0,
+        keyUsage: 0,
+        keyTypes: 0,
+        exportOption: 0,
+        managedBy: 0,
+      },
+      NextToken: 0,
+      MaxItems: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: {
       CertificateSummaryList: D.list({
         NotBefore: D.ts,
@@ -2268,6 +2327,7 @@ export const listTagsForCertificate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CertificateArn: 0 },
     staticContext: { ServiceType: { value: "ACM" } },
   },
   errors: [InvalidArnException, ResourceNotFoundException, ValidationException],
@@ -2295,6 +2355,7 @@ export const listTagsForResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResourceArn: 0 },
     staticContext: { ServiceType: { value: "ACM" } },
   },
   errors: [ResourceNotFoundException, ValidationException],
@@ -2322,6 +2383,7 @@ export const putAccountConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ExpiryEvents: { DaysBeforeExpiry: 0 }, IdempotencyToken: 0 },
     staticContext: { ServiceType: { value: "ACM" } },
   },
   errors: [
@@ -2359,6 +2421,7 @@ export const removeTagsFromCertificate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CertificateArn: 0, Tags: D.list(i_Tag) },
     staticContext: { ServiceType: { value: "ACM" } },
   },
   errors: [
@@ -2392,6 +2455,7 @@ export const renewCertificate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CertificateArn: 0 },
     staticContext: { ServiceType: { value: "ACM" } },
   },
   errors: [
@@ -2431,6 +2495,18 @@ export const requestCertificate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DomainName: 0,
+      ValidationMethod: 0,
+      SubjectAlternativeNames: 0,
+      IdempotencyToken: 0,
+      DomainValidationOptions: D.list({ DomainName: 0, ValidationDomain: 0 }),
+      Options: i_CertificateOptions,
+      CertificateAuthorityArn: 0,
+      Tags: D.list(i_Tag),
+      KeyAlgorithm: 0,
+      ManagedBy: 0,
+    },
     staticContext: { ServiceType: { value: "ACM" } },
   },
   errors: [
@@ -2465,6 +2541,7 @@ export const resendValidationEmail: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CertificateArn: 0, Domain: 0, ValidationDomain: 0 },
     staticContext: { ServiceType: { value: "ACM" } },
   },
   errors: [
@@ -2498,6 +2575,7 @@ export const revokeAcmeAccount: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AcmeEndpointArn: 0, AccountUrl: 0 },
     staticContext: { ServiceType: { value: "ACM-ACME" } },
   },
   errors: [
@@ -2532,6 +2610,7 @@ export const revokeAcmeExternalAccountBinding: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AcmeExternalAccountBindingArn: 0 },
     staticContext: { ServiceType: { value: "ACM-ACME" } },
   },
   errors: [
@@ -2569,6 +2648,7 @@ export const revokeCertificate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CertificateArn: 0, RevocationReason: 0 },
     staticContext: { ServiceType: { value: "ACM" } },
   },
   errors: [
@@ -2602,6 +2682,13 @@ export const searchCertificates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      FilterStatement: i_CertificateFilterStatement,
+      MaxResults: 0,
+      NextToken: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: {
       Results: D.list({
         X509Attributes: { NotAfter: D.ts, NotBefore: D.ts },
@@ -2649,6 +2736,7 @@ export const tagResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResourceArn: 0, Tags: D.list(i_Tag) },
     staticContext: { ServiceType: { value: "ACM" } },
   },
   errors: [
@@ -2680,6 +2768,7 @@ export const untagResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResourceArn: 0, TagKeys: 0 },
     staticContext: { ServiceType: { value: "ACM" } },
   },
   errors: [ResourceNotFoundException, ValidationException],
@@ -2707,6 +2796,10 @@ export const updateAcmeDomainValidation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AcmeDomainValidationArn: 0,
+      PrevalidationOptions: i_PrevalidationOptions,
+    },
     staticContext: { ServiceType: { value: "ACM-ACME" } },
   },
   errors: [
@@ -2741,6 +2834,12 @@ export const updateAcmeEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AcmeEndpointArn: 0,
+      AuthorizationBehavior: 0,
+      Contact: 0,
+      CertificateAuthority: i_CertificateAuthority,
+    },
     staticContext: { ServiceType: { value: "ACM-ACME" } },
   },
   errors: [
@@ -2775,6 +2874,7 @@ export const updateCertificateOptions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CertificateArn: 0, Options: i_CertificateOptions },
     staticContext: { ServiceType: { value: "ACM" } },
   },
   errors: [
@@ -2790,6 +2890,52 @@ export const updateCertificateOptions: API.OperationMethod<
   operationName: "UpdateCertificateOptions",
 })) as any;
 
+const i_CertificateAuthority: D.LazyStruct = () => ({
+  PublicCertificateAuthority: { AllowedKeyAlgorithms: 0 },
+});
+const i_CertificateFilterStatement: D.LazyStruct = () => ({
+  And: D.list(i_CertificateFilterStatement),
+  Or: D.list(i_CertificateFilterStatement),
+  Not: i_CertificateFilterStatement,
+  Filter: {
+    CertificateArn: 0,
+    X509AttributeFilter: {
+      Subject: { CommonName: { Value: 0, ComparisonOperator: 0 } },
+      SubjectAlternativeName: { DnsName: { Value: 0, ComparisonOperator: 0 } },
+      ExtendedKeyUsage: 0,
+      KeyUsage: 0,
+      KeyAlgorithm: 0,
+      SerialNumber: 0,
+      NotAfter: i_TimestampRange,
+      NotBefore: i_TimestampRange,
+    },
+    AcmCertificateMetadataFilter: {
+      Status: 0,
+      RenewalStatus: 0,
+      Type: 0,
+      InUse: 0,
+      Exported: 0,
+      ExportOption: 0,
+      ManagedBy: 0,
+      ValidationMethod: 0,
+      CertificateKeyPairOrigin: 0,
+      AcmeEndpointArn: 0,
+      AcmeAccountId: 0,
+    },
+  },
+});
+const i_CertificateOptions: D.LazyStruct = () => ({
+  CertificateTransparencyLoggingPreference: 0,
+  Export: 0,
+  ValidationMethod: 0,
+});
+const i_PrevalidationOptions: D.LazyStruct = () => ({
+  DnsPrevalidation: {
+    DomainScope: { ExactDomain: 0, Subdomains: 0, Wildcards: 0 },
+    HostedZoneId: 0,
+  },
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_AcmeExternalAccountBinding: D.LazyStruct = () => ({
   ExpiresAt: D.ts,
   RevokedAt: D.ts,
@@ -2797,3 +2943,4 @@ const o_AcmeExternalAccountBinding: D.LazyStruct = () => ({
   CreatedAt: D.ts,
   UpdatedAt: D.ts,
 });
+const i_TimestampRange: D.LazyStruct = () => ({ Start: 0, End: 0 });

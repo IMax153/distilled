@@ -711,6 +711,24 @@ export const associateWhatsAppBusinessAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/whatsapp/signup",
+    input: {
+      signupCallback: { accessToken: 0, callbackUrl: 0 },
+      setupFinalization: {
+        associateInProgressToken: 0,
+        phoneNumbers: D.list({
+          id: 0,
+          twoFactorPin: 0,
+          dataLocalizationRegion: 0,
+          tags: D.list(i_Tag),
+        }),
+        phoneNumberParent: 0,
+        waba: {
+          id: 0,
+          eventDestinations: D.list(i_WhatsAppBusinessAccountEventDestination),
+          tags: D.list(i_Tag),
+        },
+      },
+    },
     output: { signupCallbackResult: { associateInProgressToken: D.secret } },
     body: true,
   },
@@ -745,6 +763,7 @@ export const createWhatsAppDataset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/whatsapp/waba/dataset",
+    input: { id: 0 },
     body: true,
   },
   errors: [
@@ -782,6 +801,14 @@ export const createWhatsAppFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/whatsapp/flow/create",
+    input: {
+      id: 0,
+      flowName: 0,
+      categories: 0,
+      flowJson: 0,
+      publish: 0,
+      cloneFlowId: 0,
+    },
     body: true,
   },
   errors: [
@@ -819,6 +846,7 @@ export const createWhatsAppMessageTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/whatsapp/template/put",
+    input: { templateDefinition: 0, id: 0 },
     body: true,
   },
   errors: [
@@ -854,6 +882,30 @@ export const createWhatsAppMessageTemplateFromLibrary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/whatsapp/template/create",
+    input: {
+      metaLibraryTemplate: {
+        templateName: 0,
+        libraryTemplateName: 0,
+        templateCategory: 0,
+        templateLanguage: 0,
+        libraryTemplateButtonInputs: D.list({
+          type: 0,
+          phoneNumber: 0,
+          url: 0,
+          otpType: 0,
+          zeroTapTermsAccepted: 0,
+          supportedApps: 0,
+        }),
+        libraryTemplateBodyInputs: {
+          addContactNumber: 0,
+          addLearnMoreLink: 0,
+          addSecurityRecommendation: 0,
+          addTrackPackageLink: 0,
+          codeExpirationMinutes: 0,
+        },
+      },
+      id: 0,
+    },
     body: true,
   },
   errors: [
@@ -889,6 +941,7 @@ export const createWhatsAppMessageTemplateMedia: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/whatsapp/template/media",
+    input: { id: 0, sourceS3File: i_S3File },
     body: true,
   },
   errors: [
@@ -1037,6 +1090,7 @@ export const deprecateWhatsAppFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/whatsapp/flow/deprecate",
+    input: { id: 0, flowId: 0 },
     body: true,
   },
   errors: [
@@ -1245,7 +1299,18 @@ export const getWhatsAppMessageMedia: API.OperationMethod<
   GetWhatsAppMessageMediaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/whatsapp/media/get", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/whatsapp/media/get",
+    input: {
+      mediaId: 0,
+      originationPhoneNumberId: 0,
+      metadataOnly: 0,
+      destinationS3PresignedUrl: i_S3PresignedUrl,
+      destinationS3File: i_S3File,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedByMetaException,
     DependencyException,
@@ -1530,7 +1595,12 @@ export const listWhatsAppTemplateLibrary: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/whatsapp/template/library",
-    input: { id: D.m({ query: "id" }) },
+    input: {
+      nextToken: 0,
+      maxResults: 0,
+      id: D.m({ query: "id" }),
+      filters: 0,
+    },
     body: true,
   },
   errors: [
@@ -1573,7 +1643,16 @@ export const postWhatsAppMessageMedia: API.OperationMethod<
   PostWhatsAppMessageMediaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/whatsapp/media", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/whatsapp/media",
+    input: {
+      originationPhoneNumberId: 0,
+      sourceS3PresignedUrl: i_S3PresignedUrl,
+      sourceS3File: i_S3File,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedByMetaException,
     DependencyException,
@@ -1607,6 +1686,7 @@ export const publishWhatsAppFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/whatsapp/flow/publish",
+    input: { id: 0, flowId: 0 },
     body: true,
   },
   errors: [
@@ -1639,6 +1719,10 @@ export const putWhatsAppBusinessAccountEventDestinations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/whatsapp/waba/eventdestinations",
+    input: {
+      id: 0,
+      eventDestinations: D.list(i_WhatsAppBusinessAccountEventDestination),
+    },
     body: true,
   },
   errors: [
@@ -1671,6 +1755,7 @@ export const sendWhatsAppConversionEvent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/whatsapp/waba/dataset/events",
+    input: { id: 0, datasetId: 0, eventData: 0 },
     body: true,
   },
   errors: [
@@ -1707,7 +1792,12 @@ export const sendWhatsAppMessage: API.OperationMethod<
   SendWhatsAppMessageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/whatsapp/send", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/whatsapp/send",
+    input: { originationPhoneNumberId: 0, message: 0, metaApiVersion: 0 },
+    body: true,
+  },
   errors: [
     DependencyException,
     InternalServiceException,
@@ -1736,7 +1826,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/tags/tag-resource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/tags/tag-resource",
+    input: { resourceArn: 0, tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     InternalServiceException,
     InvalidParametersException,
@@ -1764,6 +1859,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/tags/untag-resource",
+    input: { resourceArn: 0, tagKeys: 0 },
     body: true,
   },
   errors: [
@@ -1796,6 +1892,7 @@ export const updateWhatsAppFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/whatsapp/flow/update",
+    input: { id: 0, flowId: 0, flowName: 0, categories: 0 },
     body: true,
   },
   errors: [
@@ -1831,6 +1928,7 @@ export const updateWhatsAppFlowAssets: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/whatsapp/flow/assets/update",
+    input: { id: 0, flowId: 0, flowJson: 0 },
     body: true,
   },
   errors: [
@@ -1863,7 +1961,21 @@ export const updateWhatsAppMessageTemplate: API.OperationMethod<
   UpdateWhatsAppMessageTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/whatsapp/template", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/whatsapp/template",
+    input: {
+      id: 0,
+      metaTemplateId: 0,
+      templateName: 0,
+      templateLanguageCode: 0,
+      parameterFormat: 0,
+      templateCategory: 0,
+      templateComponents: 0,
+      ctaUrlLinkTrackingOptedOut: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedByMetaException,
     DependencyException,
@@ -1876,3 +1988,11 @@ export const updateWhatsAppMessageTemplate: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateWhatsAppMessageTemplate",
 })) as any;
+
+const i_S3File: D.LazyStruct = () => ({ bucketName: 0, key: 0 });
+const i_S3PresignedUrl: D.LazyStruct = () => ({ url: 0, headers: 0 });
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_WhatsAppBusinessAccountEventDestination: D.LazyStruct = () => ({
+  eventDestinationArn: 0,
+  roleArn: 0,
+});

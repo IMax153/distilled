@@ -801,7 +801,16 @@ export const createAccessPoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2015-02-01/access-points",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+      FileSystemId: 0,
+      PosixUser: { Uid: 0, Gid: 0, SecondaryGids: 0 },
+      RootDirectory: {
+        Path: 0,
+        CreationInfo: { OwnerUid: 0, OwnerGid: 0, Permissions: 0 },
+      },
+    },
     body: true,
   },
   errors: [
@@ -899,7 +908,17 @@ export const createFileSystem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2015-02-01/file-systems",
-    input: { CreationToken: D.m({ idempotency: true }) },
+    input: {
+      CreationToken: D.m({ idempotency: true }),
+      PerformanceMode: 0,
+      Encrypted: 0,
+      KmsKeyId: 0,
+      ThroughputMode: 0,
+      ProvisionedThroughputInMibps: 0,
+      AvailabilityZoneName: 0,
+      Backup: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { CreationTime: D.ts, SizeInBytes: o_FileSystemSize },
     body: true,
   },
@@ -1055,6 +1074,14 @@ export const createMountTarget: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2015-02-01/mount-targets",
+    input: {
+      FileSystemId: 0,
+      SubnetId: 0,
+      IpAddress: 0,
+      Ipv6Address: 0,
+      IpAddressType: 0,
+      SecurityGroups: 0,
+    },
     body: true,
   },
   errors: [
@@ -1123,6 +1150,16 @@ export const createReplicationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2015-02-01/file-systems/{SourceFileSystemId}/replication-configuration",
+    input: {
+      SourceFileSystemId: 0,
+      Destinations: D.list({
+        Region: 0,
+        AvailabilityZoneName: 0,
+        KmsKeyId: 0,
+        FileSystemId: 0,
+        RoleArn: 0,
+      }),
+    },
     output: { CreationTime: D.ts, Destinations: D.list(o_Destination) },
     body: true,
   },
@@ -1170,6 +1207,7 @@ export const createTags: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2015-02-01/create-tags/{FileSystemId}",
+    input: { FileSystemId: 0, Tags: D.list(i_Tag) },
     body: true,
   },
   errors: [BadRequest, FileSystemNotFound, InternalServerError],
@@ -1199,6 +1237,7 @@ export const deleteAccessPoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2015-02-01/access-points/{AccessPointId}",
+    input: { AccessPointId: 0 },
   },
   errors: [AccessPointNotFound, BadRequest, InternalServerError],
   protocol: AwsProtocol,
@@ -1244,6 +1283,7 @@ export const deleteFileSystem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2015-02-01/file-systems/{FileSystemId}",
+    input: { FileSystemId: 0 },
   },
   errors: [
     BadRequest,
@@ -1278,6 +1318,7 @@ export const deleteFileSystemPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2015-02-01/file-systems/{FileSystemId}/policy",
+    input: { FileSystemId: 0 },
   },
   errors: [
     BadRequest,
@@ -1330,6 +1371,7 @@ export const deleteMountTarget: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2015-02-01/mount-targets/{MountTargetId}",
+    input: { MountTargetId: 0 },
   },
   errors: [
     BadRequest,
@@ -1366,7 +1408,10 @@ export const deleteReplicationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2015-02-01/file-systems/{SourceFileSystemId}/replication-configuration",
-    input: { DeletionMode: D.m({ query: "deletionMode" }) },
+    input: {
+      SourceFileSystemId: 0,
+      DeletionMode: D.m({ query: "deletionMode" }),
+    },
   },
   errors: [
     BadRequest,
@@ -1405,6 +1450,7 @@ export const deleteTags: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2015-02-01/delete-tags/{FileSystemId}",
+    input: { FileSystemId: 0, TagKeys: 0 },
     body: true,
   },
   errors: [BadRequest, FileSystemNotFound, InternalServerError],
@@ -1477,6 +1523,7 @@ export const describeAccountPreferences: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2015-02-01/account-preferences",
+    input: { NextToken: 0, MaxResults: 0 },
     body: true,
   },
   errors: [InternalServerError],
@@ -1504,6 +1551,7 @@ export const describeBackupPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2015-02-01/file-systems/{FileSystemId}/backup-policy",
+    input: { FileSystemId: 0 },
   },
   errors: [
     BadRequest,
@@ -1538,6 +1586,7 @@ export const describeFileSystemPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2015-02-01/file-systems/{FileSystemId}/policy",
+    input: { FileSystemId: 0 },
   },
   errors: [BadRequest, FileSystemNotFound, InternalServerError, PolicyNotFound],
   protocol: AwsProtocol,
@@ -1635,6 +1684,7 @@ export const describeLifecycleConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2015-02-01/file-systems/{FileSystemId}/lifecycle-configuration",
+    input: { FileSystemId: 0 },
   },
   errors: [BadRequest, FileSystemNotFound, InternalServerError],
   protocol: AwsProtocol,
@@ -1723,6 +1773,7 @@ export const describeMountTargetSecurityGroups: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2015-02-01/mount-targets/{MountTargetId}/security-groups",
+    input: { MountTargetId: 0 },
   },
   errors: [
     BadRequest,
@@ -1817,6 +1868,7 @@ export const describeTags: API.PaginatedOperationMethod<
     input: {
       MaxItems: D.m({ query: "MaxItems" }),
       Marker: D.m({ query: "Marker" }),
+      FileSystemId: 0,
     },
   },
   errors: [BadRequest, FileSystemNotFound, InternalServerError],
@@ -1854,6 +1906,7 @@ export const listTagsForResource: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /2015-02-01/resource-tags/{ResourceId}",
     input: {
+      ResourceId: 0,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
     },
@@ -1909,6 +1962,7 @@ export const modifyMountTargetSecurityGroups: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2015-02-01/mount-targets/{MountTargetId}/security-groups",
+    input: { MountTargetId: 0, SecurityGroups: 0 },
     body: true,
   },
   errors: [
@@ -1948,6 +2002,7 @@ export const putAccountPreferences: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2015-02-01/account-preferences",
+    input: { ResourceIdType: 0 },
     body: true,
   },
   errors: [BadRequest, InternalServerError],
@@ -1975,6 +2030,7 @@ export const putBackupPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2015-02-01/file-systems/{FileSystemId}/backup-policy",
+    input: { FileSystemId: 0, BackupPolicy: { Status: 0 } },
     body: true,
   },
   errors: [
@@ -2019,6 +2075,7 @@ export const putFileSystemPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2015-02-01/file-systems/{FileSystemId}/policy",
+    input: { FileSystemId: 0, Policy: 0, BypassPolicyLockoutSafetyCheck: 0 },
     body: true,
   },
   errors: [
@@ -2103,6 +2160,14 @@ export const putLifecycleConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2015-02-01/file-systems/{FileSystemId}/lifecycle-configuration",
+    input: {
+      FileSystemId: 0,
+      LifecyclePolicies: D.list({
+        TransitionToIA: 0,
+        TransitionToPrimaryStorageClass: 0,
+        TransitionToArchive: 0,
+      }),
+    },
     body: true,
   },
   errors: [
@@ -2137,6 +2202,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2015-02-01/resource-tags/{ResourceId}",
+    input: { ResourceId: 0, Tags: D.list(i_Tag) },
     body: true,
   },
   errors: [
@@ -2171,7 +2237,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2015-02-01/resource-tags/{ResourceId}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceId: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessPointNotFound,
@@ -2206,6 +2272,11 @@ export const updateFileSystem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2015-02-01/file-systems/{FileSystemId}",
+    input: {
+      FileSystemId: 0,
+      ThroughputMode: 0,
+      ProvisionedThroughputInMibps: 0,
+    },
     output: { CreationTime: D.ts, SizeInBytes: o_FileSystemSize },
     body: true,
   },
@@ -2248,6 +2319,7 @@ export const updateFileSystemProtection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2015-02-01/file-systems/{FileSystemId}/protection",
+    input: { FileSystemId: 0, ReplicationOverwriteProtection: 0 },
     body: true,
   },
   errors: [
@@ -2265,5 +2337,6 @@ export const updateFileSystemProtection: API.OperationMethod<
   operationName: "UpdateFileSystemProtection",
 })) as any;
 
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Destination: D.LazyStruct = () => ({ LastReplicatedTimestamp: D.ts });
 const o_FileSystemSize: D.LazyStruct = () => ({ Timestamp: D.ts });

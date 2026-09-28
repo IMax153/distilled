@@ -265,6 +265,7 @@ export const batchGetDiscoverableRegistryRecord: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /discoverable-records-batch",
+    input: { entries: D.list({ registryId: 0, recordIds: 0 }) },
     output: { registryRecords: D.list(o_RegistryRecordSummary) },
     body: true,
   },
@@ -302,6 +303,12 @@ export const listDiscoverableRegistryRecords: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /registries/{registryId}/discoverable-records-list",
+    input: {
+      registryId: 0,
+      maxResults: 0,
+      nextToken: 0,
+      filters: D.list({ name: 0, values: 0 }),
+    },
     output: {
       registryRecords: D.list({
         description: D.secret,
@@ -350,6 +357,7 @@ export const searchDiscoverableRegistryRecords: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /discoverable-records-search",
+    input: { searchQuery: 0, registryIds: 0, maxResults: 0, filters: 0 },
     output: { registryRecords: D.list(o_RegistryRecordSummary) },
     body: true,
   },

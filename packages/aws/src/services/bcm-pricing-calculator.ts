@@ -1054,7 +1054,24 @@ export const batchCreateBillScenarioCommitmentModification: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      billScenarioId: 0,
+      commitmentModifications: D.list({
+        key: 0,
+        group: 0,
+        usageAccountId: 0,
+        commitmentAction: {
+          addReservedInstanceAction: {
+            reservedInstancesOfferingId: 0,
+            instanceCount: 0,
+          },
+          addSavingsPlanAction: { savingsPlanOfferingId: 0, commitment: 0 },
+          negateReservedInstanceAction: { reservedInstancesId: 0 },
+          negateSavingsPlanAction: { savingsPlanId: 0 },
+        },
+      }),
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     ConflictException,
@@ -1085,7 +1102,21 @@ export const batchCreateBillScenarioUsageModification: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      billScenarioId: 0,
+      usageModifications: D.list({
+        serviceCode: 0,
+        usageType: 0,
+        operation: 0,
+        availabilityZone: 0,
+        key: 0,
+        group: 0,
+        usageAccountId: 0,
+        amounts: D.list(i_UsageAmount),
+        historicalUsage: i_HistoricalUsageEntity,
+      }),
+      clientToken: D.m({ idempotency: true }),
+    },
     output: {
       items: D.list({
         quantities: D.list(o_UsageQuantity),
@@ -1123,7 +1154,20 @@ export const batchCreateWorkloadEstimateUsage: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      workloadEstimateId: 0,
+      usage: D.list({
+        serviceCode: 0,
+        usageType: 0,
+        operation: 0,
+        key: 0,
+        group: 0,
+        usageAccountId: 0,
+        amount: 0,
+        historicalUsage: i_HistoricalUsageEntity,
+      }),
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { items: D.list({ historicalUsage: o_HistoricalUsageEntity }) },
   },
   errors: [
@@ -1153,7 +1197,7 @@ export const batchDeleteBillScenarioCommitmentModification: API.OperationMethod<
   BatchDeleteBillScenarioCommitmentModificationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { billScenarioId: 0, ids: 0 } },
   errors: [
     ConflictException,
     DataUnavailableException,
@@ -1181,7 +1225,7 @@ export const batchDeleteBillScenarioUsageModification: API.OperationMethod<
   BatchDeleteBillScenarioUsageModificationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { billScenarioId: 0, ids: 0 } },
   errors: [
     ConflictException,
     DataUnavailableException,
@@ -1209,7 +1253,7 @@ export const batchDeleteWorkloadEstimateUsage: API.OperationMethod<
   BatchDeleteWorkloadEstimateUsageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { workloadEstimateId: 0, ids: 0 } },
   errors: [
     DataUnavailableException,
     ResourceNotFoundException,
@@ -1236,7 +1280,13 @@ export const batchUpdateBillScenarioCommitmentModification: API.OperationMethod<
   BatchUpdateBillScenarioCommitmentModificationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      billScenarioId: 0,
+      commitmentModifications: D.list({ id: 0, group: 0 }),
+    },
+  },
   errors: [
     ConflictException,
     DataUnavailableException,
@@ -1266,6 +1316,14 @@ export const batchUpdateBillScenarioUsageModification: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      billScenarioId: 0,
+      usageModifications: D.list({
+        id: 0,
+        group: 0,
+        amounts: D.list(i_UsageAmount),
+      }),
+    },
     output: { items: D.list(o_BillScenarioUsageModificationItem) },
   },
   errors: [
@@ -1297,6 +1355,10 @@ export const batchUpdateWorkloadEstimateUsage: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      workloadEstimateId: 0,
+      usage: D.list({ id: 0, group: 0, amount: 0 }),
+    },
     output: { items: D.list(o_WorkloadEstimateUsageItem) },
   },
   errors: [
@@ -1325,7 +1387,12 @@ export const createBillEstimate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      billScenarioId: 0,
+      name: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: {
       billInterval: o_BillInterval,
       createdAt: D.ts,
@@ -1359,7 +1426,13 @@ export const createBillScenario: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+      groupSharingPreference: 0,
+      costCategoryGroupSharingPreferenceArn: 0,
+    },
     output: { billInterval: o_BillInterval, createdAt: D.ts, expiresAt: D.ts },
   },
   errors: [
@@ -1388,7 +1461,12 @@ export const createWorkloadEstimate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      clientToken: D.m({ idempotency: true }),
+      rateType: 0,
+      tags: 0,
+    },
     output: { createdAt: D.ts, expiresAt: D.ts, rateTimestamp: D.ts },
   },
   errors: [
@@ -1414,7 +1492,7 @@ export const deleteBillEstimate: API.OperationMethod<
   DeleteBillEstimateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { identifier: 0 } },
   errors: [ConflictException, DataUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1434,7 +1512,7 @@ export const deleteBillScenario: API.OperationMethod<
   DeleteBillScenarioError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { identifier: 0 } },
   errors: [ConflictException, DataUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1453,7 +1531,7 @@ export const deleteWorkloadEstimate: API.OperationMethod<
   DeleteWorkloadEstimateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { identifier: 0 } },
   errors: [DataUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1475,6 +1553,7 @@ export const getBillEstimate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { identifier: 0 },
     output: {
       billInterval: o_BillInterval,
       createdAt: D.ts,
@@ -1503,6 +1582,7 @@ export const getBillScenario: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { identifier: 0 },
     output: { billInterval: o_BillInterval, createdAt: D.ts, expiresAt: D.ts },
   },
   errors: [DataUnavailableException, ResourceNotFoundException],
@@ -1521,7 +1601,7 @@ export const getPreferences: API.OperationMethod<
   GetPreferencesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [DataUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1543,6 +1623,7 @@ export const getWorkloadEstimate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { identifier: 0 },
     output: { createdAt: D.ts, expiresAt: D.ts, rateTimestamp: D.ts },
   },
   errors: [DataUnavailableException, ResourceNotFoundException],
@@ -1565,7 +1646,10 @@ export const listBillEstimateCommitments: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   BillEstimateCommitmentSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { billEstimateId: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [DataUnavailableException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1592,7 +1676,10 @@ export const listBillEstimateInputCommitmentModifications: API.PaginatedOperatio
   Credentials | HttpClient.HttpClient,
   BillEstimateInputCommitmentModificationSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { billEstimateId: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [DataUnavailableException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1621,6 +1708,12 @@ export const listBillEstimateInputUsageModifications: API.PaginatedOperationMeth
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      billEstimateId: 0,
+      filters: D.list(i_ListUsageFilter),
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       items: D.list({
         quantities: D.list(o_UsageQuantity),
@@ -1654,7 +1747,15 @@ export const listBillEstimateLineItems: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   BillEstimateLineItemSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      billEstimateId: 0,
+      filters: D.list({ name: 0, values: 0, matchOption: 0 }),
+      nextToken: 0,
+      maxResults: 0,
+    },
+  },
   errors: [DataUnavailableException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1680,6 +1781,13 @@ export const listBillEstimates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      filters: D.list({ name: 0, values: 0, matchOption: 0 }),
+      createdAtFilter: i_FilterTimestamp,
+      expiresAtFilter: i_FilterTimestamp,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       items: D.list({
         billInterval: o_BillInterval,
@@ -1714,7 +1822,10 @@ export const listBillScenarioCommitmentModifications: API.PaginatedOperationMeth
   Credentials | HttpClient.HttpClient,
   BillScenarioCommitmentModificationItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { billScenarioId: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [DataUnavailableException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1740,6 +1851,13 @@ export const listBillScenarios: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      filters: D.list({ name: 0, values: 0, matchOption: 0 }),
+      createdAtFilter: i_FilterTimestamp,
+      expiresAtFilter: i_FilterTimestamp,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       items: D.list({
         billInterval: o_BillInterval,
@@ -1776,6 +1894,12 @@ export const listBillScenarioUsageModifications: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      billScenarioId: 0,
+      filters: D.list(i_ListUsageFilter),
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { items: D.list(o_BillScenarioUsageModificationItem) },
   },
   errors: [DataUnavailableException, ResourceNotFoundException],
@@ -1800,7 +1924,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1822,6 +1946,13 @@ export const listWorkloadEstimates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      createdAtFilter: i_FilterTimestamp,
+      expiresAtFilter: i_FilterTimestamp,
+      filters: D.list({ name: 0, values: 0, matchOption: 0 }),
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       items: D.list({ createdAt: D.ts, expiresAt: D.ts, rateTimestamp: D.ts }),
     },
@@ -1854,6 +1985,12 @@ export const listWorkloadEstimateUsage: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      workloadEstimateId: 0,
+      filters: D.list(i_ListUsageFilter),
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { items: D.list(o_WorkloadEstimateUsageItem) },
   },
   errors: [DataUnavailableException, ResourceNotFoundException],
@@ -1881,7 +2018,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0, tags: 0 } },
   errors: [ResourceNotFoundException, ServiceQuotaExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1898,7 +2035,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0, tagKeys: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1921,6 +2058,7 @@ export const updateBillEstimate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { identifier: 0, name: 0, expiresAt: 0 },
     output: {
       billInterval: o_BillInterval,
       createdAt: D.ts,
@@ -1954,6 +2092,13 @@ export const updateBillScenario: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      identifier: 0,
+      name: 0,
+      expiresAt: 0,
+      groupSharingPreference: 0,
+      costCategoryGroupSharingPreferenceArn: 0,
+    },
     output: { billInterval: o_BillInterval, createdAt: D.ts, expiresAt: D.ts },
   },
   errors: [
@@ -1979,7 +2124,14 @@ export const updatePreferences: API.OperationMethod<
   UpdatePreferencesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      managementAccountRateTypeSelections: 0,
+      memberAccountRateTypeSelections: 0,
+      standaloneAccountRateTypeSelections: 0,
+    },
+  },
   errors: [DataUnavailableException, ServiceQuotaExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2002,6 +2154,7 @@ export const updateWorkloadEstimate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { identifier: 0, name: 0, expiresAt: 0 },
     output: { createdAt: D.ts, expiresAt: D.ts, rateTimestamp: D.ts },
   },
   errors: [
@@ -2014,6 +2167,25 @@ export const updateWorkloadEstimate: API.OperationMethod<
   operationName: "UpdateWorkloadEstimate",
 })) as any;
 
+const i_FilterTimestamp: D.LazyStruct = () => ({
+  afterTimestamp: 0,
+  beforeTimestamp: 0,
+});
+const i_HistoricalUsageEntity: D.LazyStruct = () => ({
+  serviceCode: 0,
+  usageType: 0,
+  operation: 0,
+  location: 0,
+  usageAccountId: 0,
+  billInterval: { start: 0, end: 0 },
+  filterExpression: i_Expression,
+});
+const i_ListUsageFilter: D.LazyStruct = () => ({
+  name: 0,
+  values: 0,
+  matchOption: 0,
+});
+const i_UsageAmount: D.LazyStruct = () => ({ startHour: 0, amount: 0 });
 const o_BillInterval: D.LazyStruct = () => ({ start: D.ts, end: D.ts });
 const o_BillScenarioUsageModificationItem: D.LazyStruct = () => ({
   quantities: D.list(o_UsageQuantity),
@@ -2025,4 +2197,17 @@ const o_HistoricalUsageEntity: D.LazyStruct = () => ({
 const o_UsageQuantity: D.LazyStruct = () => ({ startHour: D.ts });
 const o_WorkloadEstimateUsageItem: D.LazyStruct = () => ({
   historicalUsage: o_HistoricalUsageEntity,
+});
+const i_Expression: D.LazyStruct = () => ({
+  and: D.list(i_Expression),
+  or: D.list(i_Expression),
+  not: i_Expression,
+  costCategories: i_ExpressionFilter,
+  dimensions: i_ExpressionFilter,
+  tags: i_ExpressionFilter,
+});
+const i_ExpressionFilter: D.LazyStruct = () => ({
+  key: 0,
+  matchOptions: 0,
+  values: 0,
 });

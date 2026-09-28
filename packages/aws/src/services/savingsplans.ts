@@ -528,7 +528,14 @@ export const createSavingsPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateSavingsPlan",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      savingsPlanOfferingId: 0,
+      commitment: 0,
+      upfrontPaymentAmount: 0,
+      purchaseTime: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -560,6 +567,7 @@ export const deleteQueuedSavingsPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteQueuedSavingsPlan",
+    input: { savingsPlanId: 0 },
     body: true,
   },
   errors: [
@@ -590,6 +598,12 @@ export const describeSavingsPlanRates: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DescribeSavingsPlanRates",
+    input: {
+      savingsPlanId: 0,
+      filters: D.list({ name: 0, values: 0 }),
+      nextToken: 0,
+      maxResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -615,7 +629,19 @@ export const describeSavingsPlans: API.OperationMethod<
   DescribeSavingsPlansError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DescribeSavingsPlans", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DescribeSavingsPlans",
+    input: {
+      savingsPlanArns: 0,
+      savingsPlanIds: 0,
+      nextToken: 0,
+      maxResults: 0,
+      states: 0,
+      filters: D.list({ name: 0, values: 0 }),
+    },
+    body: true,
+  },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -638,6 +664,18 @@ export const describeSavingsPlansOfferingRates: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DescribeSavingsPlansOfferingRates",
+    input: {
+      savingsPlanOfferingIds: 0,
+      savingsPlanPaymentOptions: 0,
+      savingsPlanTypes: 0,
+      products: 0,
+      serviceCodes: 0,
+      usageTypes: 0,
+      operations: 0,
+      filters: D.list({ name: 0, values: 0 }),
+      nextToken: 0,
+      maxResults: 0,
+    },
     body: true,
   },
   errors: [InternalServerException, ValidationException],
@@ -662,6 +700,21 @@ export const describeSavingsPlansOfferings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DescribeSavingsPlansOfferings",
+    input: {
+      offeringIds: 0,
+      paymentOptions: 0,
+      productType: 0,
+      planTypes: 0,
+      durations: 0,
+      currencies: 0,
+      descriptions: 0,
+      serviceCodes: 0,
+      usageTypes: 0,
+      operations: 0,
+      filters: D.list({ name: 0, values: 0 }),
+      nextToken: 0,
+      maxResults: 0,
+    },
     body: true,
   },
   errors: [InternalServerException, ValidationException],
@@ -684,7 +737,12 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /ListTagsForResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListTagsForResource",
+    input: { resourceArn: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -713,7 +771,7 @@ export const returnSavingsPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ReturnSavingsPlan",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { savingsPlanId: 0, clientToken: D.m({ idempotency: true }) },
     body: true,
   },
   errors: [
@@ -742,7 +800,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /TagResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /TagResource",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -768,7 +831,12 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UntagResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UntagResource",
+    input: { resourceArn: 0, tagKeys: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,

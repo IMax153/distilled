@@ -175,6 +175,8 @@ export const completeRollout: API.OperationMethod<
     http: "POST /complete-rollout",
     input: {
       JobArn: D.m({ header: "X-Amzn-SageMaker-Job-Arn" }),
+      TrajectoryId: 0,
+      Status: 0,
       ClientToken: D.m({ idempotency: true }),
     },
     body: true,
@@ -218,11 +220,11 @@ export const sample: API.OperationMethod<
     input: {
       JobArn: D.m({ header: "X-Amzn-SageMaker-Job-Arn" }),
       TrajectoryId: D.m({ header: "X-Amzn-SageMaker-Trajectory-Id" }),
-      Body: D.m({ payload: true, shape: D.stream }),
+      Body: D.m({ payload: true, shape: D.blob }),
     },
     output: {
       ContentType: D.m({ header: "Content-Type" }),
-      Body: D.m({ payload: true, shape: D.stream }),
+      Body: D.m({ payload: true, shape: D.secretBlob }),
     },
   },
   errors: [
@@ -263,7 +265,7 @@ export const sampleWithResponseStream: API.OperationMethod<
     input: {
       JobArn: D.m({ header: "X-Amzn-SageMaker-Job-Arn" }),
       TrajectoryId: D.m({ header: "X-Amzn-SageMaker-Trajectory-Id" }),
-      Body: D.m({ payload: true, shape: D.stream }),
+      Body: D.m({ payload: true, shape: D.blob }),
     },
     output: {
       ContentType: D.m({ header: "Content-Type" }),
@@ -308,6 +310,8 @@ export const updateReward: API.OperationMethod<
     http: "POST /update-reward",
     input: {
       JobArn: D.m({ header: "X-Amzn-SageMaker-Job-Arn" }),
+      TrajectoryId: 0,
+      Rewards: 0,
       ClientToken: D.m({ idempotency: true }),
     },
     body: true,

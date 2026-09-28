@@ -4715,7 +4715,10 @@ export const addRoleToDBCluster: API.OperationMethod<
   AddRoleToDBClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DBClusterIdentifier: 0, RoleArn: 0, FeatureName: 0 },
+  },
   errors: [
     DBClusterNotFoundFault,
     DBClusterRoleAlreadyExistsFault,
@@ -4746,7 +4749,10 @@ export const addRoleToDBInstance: API.OperationMethod<
   AddRoleToDBInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DBInstanceIdentifier: 0, RoleArn: 0, FeatureName: 0 },
+  },
   errors: [
     DBInstanceNotFoundFault,
     DBInstanceRoleAlreadyExistsFault,
@@ -4773,6 +4779,7 @@ export const addSourceIdentifierToSubscription: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SubscriptionName: 0, SourceIdentifier: 0 },
     output: { EventSubscription: o_EventSubscription },
   },
   errors: [SourceNotFoundFault, SubscriptionNotFoundFault],
@@ -4808,7 +4815,10 @@ export const addTagsToResource: API.OperationMethod<
   AddTagsToResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, input: { Tags: D.list(0, { item: "Tag" }) } },
+  descriptor: {
+    service: svc,
+    input: { ResourceName: 0, Tags: D.list(i_Tag, { item: "Tag" }) },
+  },
   errors: [
     BlueGreenDeploymentNotFoundFault,
     DBClusterNotFoundFault,
@@ -4846,6 +4856,7 @@ export const applyPendingMaintenanceAction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResourceIdentifier: 0, ApplyAction: 0, OptInType: 0 },
     output: {
       ResourcePendingMaintenanceActions: o_ResourcePendingMaintenanceActions,
     },
@@ -4881,7 +4892,17 @@ export const authorizeDBSecurityGroupIngress: API.OperationMethod<
   AuthorizeDBSecurityGroupIngressError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBSecurityGroup: o_DBSecurityGroup } },
+  descriptor: {
+    service: svc,
+    input: {
+      DBSecurityGroupName: 0,
+      CIDRIP: 0,
+      EC2SecurityGroupName: 0,
+      EC2SecurityGroupId: 0,
+      EC2SecurityGroupOwnerId: 0,
+    },
+    output: { DBSecurityGroup: o_DBSecurityGroup },
+  },
   errors: [
     AuthorizationAlreadyExistsFault,
     AuthorizationQuotaExceededFault,
@@ -4912,6 +4933,12 @@ export const backtrackDBCluster: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DBClusterIdentifier: 0,
+      BacktrackTo: 0,
+      Force: 0,
+      UseEarliestTimeOnPointInTimeUnavailable: 0,
+    },
     output: {
       BacktrackTo: D.ts,
       BacktrackedFrom: D.ts,
@@ -4939,6 +4966,7 @@ export const cancelExportTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ExportTaskIdentifier: 0 },
     output: {
       ExportOnly: D.list(),
       SnapshotTime: D.ts,
@@ -4972,7 +5000,12 @@ export const copyDBClusterParameterGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      SourceDBClusterParameterGroupIdentifier: 0,
+      TargetDBClusterParameterGroupIdentifier: 0,
+      TargetDBClusterParameterGroupDescription: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { DBClusterParameterGroup: {} },
   },
   errors: [
@@ -5022,7 +5055,14 @@ export const copyDBClusterSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      SourceDBClusterSnapshotIdentifier: 0,
+      TargetDBClusterSnapshotIdentifier: 0,
+      KmsKeyId: 0,
+      PreSignedUrl: 0,
+      CopyTags: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { DBClusterSnapshot: o_DBClusterSnapshot },
   },
   errors: [
@@ -5056,7 +5096,12 @@ export const copyDBParameterGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      SourceDBParameterGroupIdentifier: 0,
+      TargetDBParameterGroupIdentifier: 0,
+      TargetDBParameterGroupDescription: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { DBParameterGroup: {} },
   },
   errors: [
@@ -5094,7 +5139,19 @@ export const copyDBSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      SourceDBSnapshotIdentifier: 0,
+      TargetDBSnapshotIdentifier: 0,
+      KmsKeyId: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      CopyTags: 0,
+      PreSignedUrl: 0,
+      OptionGroupName: 0,
+      TargetCustomAvailabilityZone: 0,
+      SnapshotTarget: 0,
+      CopyOptionGroup: 0,
+      SnapshotAvailabilityZone: 0,
+    },
     output: { DBSnapshot: o_DBSnapshot },
   },
   errors: [
@@ -5126,7 +5183,12 @@ export const copyOptionGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      SourceOptionGroupIdentifier: 0,
+      TargetOptionGroupIdentifier: 0,
+      TargetOptionGroupDescription: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { OptionGroup: o_OptionGroup },
   },
   errors: [
@@ -5170,7 +5232,20 @@ export const createBlueGreenDeployment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      BlueGreenDeploymentName: 0,
+      Source: 0,
+      TargetEngineVersion: 0,
+      TargetDBParameterGroupName: 0,
+      TargetDBClusterParameterGroupName: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      TargetDBInstanceClass: 0,
+      UpgradeTargetStorageConfig: 0,
+      TargetIops: 0,
+      TargetStorageType: 0,
+      TargetAllocatedStorage: 0,
+      TargetStorageThroughput: 0,
+    },
     output: { BlueGreenDeployment: o_BlueGreenDeployment },
   },
   errors: [
@@ -5212,7 +5287,20 @@ export const createCustomDBEngineVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      Engine: 0,
+      EngineVersion: 0,
+      DatabaseInstallationFilesS3BucketName: 0,
+      DatabaseInstallationFilesS3Prefix: 0,
+      DatabaseInstallationFiles: 0,
+      ImageId: 0,
+      KMSKeyId: 0,
+      SourceCustomDbEngineVersionIdentifier: 0,
+      UseAwsProvidedLatestImage: 0,
+      Description: 0,
+      Manifest: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: {
       DatabaseInstallationFiles: D.list(),
       DefaultCharacterSet: {},
@@ -5305,10 +5393,67 @@ export const createDBCluster: API.OperationMethod<
     service: svc,
     input: {
       AvailabilityZones: D.list(0, { item: "AvailabilityZone" }),
+      BackupRetentionPeriod: 0,
+      CharacterSetName: 0,
+      DatabaseName: 0,
+      DBClusterIdentifier: 0,
+      DBClusterParameterGroupName: 0,
       VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
-      Tags: D.list(0, { item: "Tag" }),
+      DBSubnetGroupName: 0,
+      Engine: 0,
+      EngineVersion: 0,
+      Port: 0,
+      MasterUsername: 0,
+      MasterUserPassword: 0,
+      OptionGroupName: 0,
+      PreferredBackupWindow: 0,
+      PreferredMaintenanceWindow: 0,
+      ReplicationSourceIdentifier: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      StorageEncrypted: 0,
+      KmsKeyId: 0,
+      PreSignedUrl: 0,
+      EnableIAMDatabaseAuthentication: 0,
+      BacktrackWindow: 0,
+      EnableCloudwatchLogsExports: 0,
+      EngineMode: 0,
+      ScalingConfiguration: i_ScalingConfiguration,
+      RdsCustomClusterConfiguration: i_RdsCustomClusterConfiguration,
+      DBClusterInstanceClass: 0,
+      AllocatedStorage: 0,
+      StorageType: 0,
+      Iops: 0,
+      PubliclyAccessible: 0,
+      AutoMinorVersionUpgrade: 0,
+      DeletionProtection: 0,
+      GlobalClusterIdentifier: 0,
+      EnableHttpEndpoint: 0,
+      CopyTagsToSnapshot: 0,
+      Domain: 0,
+      DomainIAMRoleName: 0,
+      EnableGlobalWriteForwarding: 0,
+      NetworkType: 0,
+      ServerlessV2ScalingConfiguration: i_ServerlessV2ScalingConfiguration,
+      MonitoringInterval: 0,
+      MonitoringRoleArn: 0,
+      DatabaseInsightsMode: 0,
+      EnablePerformanceInsights: 0,
+      PerformanceInsightsKMSKeyId: 0,
+      PerformanceInsightsRetentionPeriod: 0,
+      EnableLimitlessDatabase: 0,
+      ClusterScalabilityType: 0,
+      DBSystemId: 0,
+      ManageMasterUserPassword: 0,
+      EnableLocalWriteForwarding: 0,
+      MasterUserSecretKmsKeyId: 0,
+      CACertificateIdentifier: 0,
+      EngineLifecycleSupport: 0,
       TagSpecifications: D.list(i_TagSpecification, { item: "item" }),
-      AssociatedRoles: D.list(0, { item: "DBClusterAssociatedRole" }),
+      MasterUserAuthenticationType: 0,
+      WithExpressConfiguration: 0,
+      AssociatedRoles: D.list(i_DBClusterAssociatedRole, {
+        item: "DBClusterAssociatedRole",
+      }),
     },
     output: { DBCluster: o_DBCluster },
   },
@@ -5367,7 +5512,14 @@ export const createDBClusterEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      DBClusterIdentifier: 0,
+      DBClusterEndpointIdentifier: 0,
+      EndpointType: 0,
+      StaticMembers: 0,
+      ExcludedMembers: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { StaticMembers: D.list(), ExcludedMembers: D.list() },
   },
   errors: [
@@ -5412,7 +5564,12 @@ export const createDBClusterParameterGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      DBClusterParameterGroupName: 0,
+      DBParameterGroupFamily: 0,
+      Description: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { DBClusterParameterGroup: {} },
   },
   errors: [
@@ -5446,7 +5603,11 @@ export const createDBClusterSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      DBClusterSnapshotIdentifier: 0,
+      DBClusterIdentifier: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { DBClusterSnapshot: o_DBClusterSnapshot },
   },
   errors: [
@@ -5506,11 +5667,75 @@ export const createDBInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DBName: 0,
+      DBInstanceIdentifier: 0,
+      AllocatedStorage: 0,
+      DBInstanceClass: 0,
+      Engine: 0,
+      MasterUsername: 0,
+      MasterUserPassword: 0,
       DBSecurityGroups: D.list(0, { item: "DBSecurityGroupName" }),
       VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
-      Tags: D.list(0, { item: "Tag" }),
-      ProcessorFeatures: D.list(0, { item: "ProcessorFeature" }),
+      AvailabilityZone: 0,
+      DBSubnetGroupName: 0,
+      PreferredMaintenanceWindow: 0,
+      DBParameterGroupName: 0,
+      BackupRetentionPeriod: 0,
+      PreferredBackupWindow: 0,
+      Port: 0,
+      MultiAZ: 0,
+      EngineVersion: 0,
+      AutoMinorVersionUpgrade: 0,
+      LicenseModel: 0,
+      Iops: 0,
+      StorageThroughput: 0,
+      OptionGroupName: 0,
+      CharacterSetName: 0,
+      NcharCharacterSetName: 0,
+      PubliclyAccessible: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      DBClusterIdentifier: 0,
+      StorageType: 0,
+      TdeCredentialArn: 0,
+      TdeCredentialPassword: 0,
+      StorageEncrypted: 0,
+      KmsKeyId: 0,
+      Domain: 0,
+      DomainFqdn: 0,
+      DomainOu: 0,
+      DomainAuthSecretArn: 0,
+      DomainDnsIps: 0,
+      CopyTagsToSnapshot: 0,
+      MonitoringInterval: 0,
+      MonitoringRoleArn: 0,
+      DomainIAMRoleName: 0,
+      PromotionTier: 0,
+      Timezone: 0,
+      EnableIAMDatabaseAuthentication: 0,
+      DatabaseInsightsMode: 0,
+      EnablePerformanceInsights: 0,
+      PerformanceInsightsKMSKeyId: 0,
+      PerformanceInsightsRetentionPeriod: 0,
+      EnableCloudwatchLogsExports: 0,
+      ProcessorFeatures: D.list(i_ProcessorFeature, {
+        item: "ProcessorFeature",
+      }),
+      DeletionProtection: 0,
+      MaxAllocatedStorage: 0,
+      EnableCustomerOwnedIp: 0,
+      NetworkType: 0,
+      BackupTarget: 0,
+      CustomIamInstanceProfile: 0,
+      DBSystemId: 0,
+      CACertificateIdentifier: 0,
+      ManageMasterUserPassword: 0,
+      MasterUserSecretKmsKeyId: 0,
+      MultiTenant: 0,
+      DedicatedLogVolume: 0,
+      EngineLifecycleSupport: 0,
+      AdditionalStorageVolumes: D.list(i_AdditionalStorageVolume),
       TagSpecifications: D.list(i_TagSpecification, { item: "item" }),
+      MasterUserAuthenticationType: 0,
     },
     output: { DBInstance: o_DBInstance },
   },
@@ -5591,9 +5816,56 @@ export const createDBInstanceReadReplica: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      Tags: D.list(0, { item: "Tag" }),
+      DBInstanceIdentifier: 0,
+      SourceDBInstanceIdentifier: 0,
+      DBInstanceClass: 0,
+      AvailabilityZone: 0,
+      Port: 0,
+      MultiAZ: 0,
+      AutoMinorVersionUpgrade: 0,
+      Iops: 0,
+      StorageThroughput: 0,
+      OptionGroupName: 0,
+      DBParameterGroupName: 0,
+      PubliclyAccessible: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      DBSubnetGroupName: 0,
       VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
-      ProcessorFeatures: D.list(0, { item: "ProcessorFeature" }),
+      StorageType: 0,
+      CopyTagsToSnapshot: 0,
+      MonitoringInterval: 0,
+      MonitoringRoleArn: 0,
+      KmsKeyId: 0,
+      PreSignedUrl: 0,
+      EnableIAMDatabaseAuthentication: 0,
+      DatabaseInsightsMode: 0,
+      EnablePerformanceInsights: 0,
+      PerformanceInsightsKMSKeyId: 0,
+      PerformanceInsightsRetentionPeriod: 0,
+      EnableCloudwatchLogsExports: 0,
+      ProcessorFeatures: D.list(i_ProcessorFeature, {
+        item: "ProcessorFeature",
+      }),
+      UseDefaultProcessorFeatures: 0,
+      DeletionProtection: 0,
+      Domain: 0,
+      DomainIAMRoleName: 0,
+      DomainFqdn: 0,
+      DomainOu: 0,
+      DomainAuthSecretArn: 0,
+      DomainDnsIps: 0,
+      ReplicaMode: 0,
+      EnableCustomerOwnedIp: 0,
+      NetworkType: 0,
+      MaxAllocatedStorage: 0,
+      BackupTarget: 0,
+      CustomIamInstanceProfile: 0,
+      AllocatedStorage: 0,
+      SourceDBClusterIdentifier: 0,
+      DedicatedLogVolume: 0,
+      UpgradeStorageConfig: 0,
+      CACertificateIdentifier: 0,
+      AdditionalStorageVolumes: D.list(i_AdditionalStorageVolume),
       TagSpecifications: D.list(i_TagSpecification, { item: "item" }),
     },
     output: { DBInstance: o_DBInstance },
@@ -5649,7 +5921,12 @@ export const createDBParameterGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      DBParameterGroupName: 0,
+      DBParameterGroupFamily: 0,
+      Description: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { DBParameterGroup: {} },
   },
   errors: [
@@ -5677,7 +5954,21 @@ export const createDBProxy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      DBProxyName: 0,
+      EngineFamily: 0,
+      DefaultAuthScheme: 0,
+      Auth: D.list(i_UserAuthConfig),
+      RoleArn: 0,
+      VpcSubnetIds: 0,
+      VpcSecurityGroupIds: 0,
+      RequireTLS: 0,
+      IdleClientTimeout: 0,
+      DebugLogging: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      EndpointNetworkType: 0,
+      TargetConnectionNetworkType: 0,
+    },
     output: { DBProxy: o_DBProxy },
   },
   errors: [DBProxyAlreadyExistsFault, DBProxyQuotaExceededFault, InvalidSubnet],
@@ -5704,7 +5995,15 @@ export const createDBProxyEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      DBProxyName: 0,
+      DBProxyEndpointName: 0,
+      VpcSubnetIds: 0,
+      VpcSecurityGroupIds: 0,
+      TargetRole: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      EndpointNetworkType: 0,
+    },
     output: { DBProxyEndpoint: o_DBProxyEndpoint },
   },
   errors: [
@@ -5739,7 +6038,11 @@ export const createDBSecurityGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      DBSecurityGroupName: 0,
+      DBSecurityGroupDescription: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { DBSecurityGroup: o_DBSecurityGroup },
   },
   errors: [
@@ -5774,7 +6077,15 @@ export const createDBShardGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      DBShardGroupIdentifier: 0,
+      DBClusterIdentifier: 0,
+      ComputeRedundancy: 0,
+      MaxACU: 0,
+      MinACU: 0,
+      PubliclyAccessible: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: {
       MaxACU: D.num,
       MinACU: D.num,
@@ -5814,7 +6125,11 @@ export const createDBSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      DBSnapshotIdentifier: 0,
+      DBInstanceIdentifier: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { DBSnapshot: o_DBSnapshot },
   },
   errors: [
@@ -5847,8 +6162,10 @@ export const createDBSubnetGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DBSubnetGroupName: 0,
+      DBSubnetGroupDescription: 0,
       SubnetIds: D.list(0, { item: "SubnetIdentifier" }),
-      Tags: D.list(0, { item: "Tag" }),
+      Tags: D.list(i_Tag, { item: "Tag" }),
     },
     output: { DBSubnetGroup: o_DBSubnetGroup },
   },
@@ -5893,9 +6210,13 @@ export const createEventSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      SubscriptionName: 0,
+      SnsTopicArn: 0,
+      SourceType: 0,
       EventCategories: D.list(0, { item: "EventCategory" }),
       SourceIds: D.list(0, { item: "SourceId" }),
-      Tags: D.list(0, { item: "Tag" }),
+      Enabled: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
     },
     output: { EventSubscription: o_EventSubscription },
   },
@@ -5936,7 +6257,17 @@ export const createGlobalCluster: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      GlobalClusterIdentifier: 0,
+      SourceDBClusterIdentifier: 0,
+      Engine: 0,
+      EngineVersion: 0,
+      EngineLifecycleSupport: 0,
+      DeletionProtection: 0,
+      DatabaseName: 0,
+      StorageEncrypted: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { GlobalCluster: o_GlobalCluster },
   },
   errors: [
@@ -5972,8 +6303,14 @@ export const createIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      SourceArn: 0,
+      TargetArn: 0,
+      IntegrationName: 0,
+      KMSKeyId: 0,
       AdditionalEncryptionContext: D.map(),
-      Tags: D.list(0, { item: "Tag" }),
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      DataFilter: 0,
+      Description: 0,
     },
     output: {
       AdditionalEncryptionContext: D.map(),
@@ -6012,7 +6349,13 @@ export const createOptionGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      OptionGroupName: 0,
+      EngineName: 0,
+      MajorEngineVersion: 0,
+      OptionGroupDescription: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { OptionGroup: o_OptionGroup },
   },
   errors: [OptionGroupAlreadyExistsFault, OptionGroupQuotaExceededFault],
@@ -6039,7 +6382,17 @@ export const createTenantDatabase: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      DBInstanceIdentifier: 0,
+      TenantDBName: 0,
+      MasterUsername: 0,
+      MasterUserPassword: 0,
+      CharacterSetName: 0,
+      NcharCharacterSetName: 0,
+      ManageMasterUserPassword: 0,
+      MasterUserSecretKmsKeyId: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { TenantDatabase: o_TenantDatabase },
   },
   errors: [
@@ -6071,6 +6424,7 @@ export const deleteBlueGreenDeployment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { BlueGreenDeploymentIdentifier: 0, DeleteTarget: 0 },
     output: { BlueGreenDeployment: o_BlueGreenDeployment },
   },
   errors: [
@@ -6107,6 +6461,7 @@ export const deleteCustomDBEngineVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Engine: 0, EngineVersion: 0 },
     output: {
       DatabaseInstallationFiles: D.list(),
       DefaultCharacterSet: {},
@@ -6167,7 +6522,16 @@ export const deleteDBCluster: API.OperationMethod<
   DeleteDBClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBCluster: o_DBCluster } },
+  descriptor: {
+    service: svc,
+    input: {
+      DBClusterIdentifier: 0,
+      SkipFinalSnapshot: 0,
+      FinalDBSnapshotIdentifier: 0,
+      DeleteAutomatedBackups: 0,
+    },
+    output: { DBCluster: o_DBCluster },
+  },
   errors: [
     DBClusterAutomatedBackupQuotaExceededFault,
     DBClusterNotFoundFault,
@@ -6198,6 +6562,7 @@ export const deleteDBClusterAutomatedBackup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DbClusterResourceId: 0 },
     output: { DBClusterAutomatedBackup: o_DBClusterAutomatedBackup },
   },
   errors: [
@@ -6227,6 +6592,7 @@ export const deleteDBClusterEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DBClusterEndpointIdentifier: 0 },
     output: { StaticMembers: D.list(), ExcludedMembers: D.list() },
   },
   errors: [
@@ -6256,7 +6622,7 @@ export const deleteDBClusterParameterGroup: API.OperationMethod<
   DeleteDBClusterParameterGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DBClusterParameterGroupName: 0 } },
   errors: [DBParameterGroupNotFoundFault, InvalidDBParameterGroupStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6284,6 +6650,7 @@ export const deleteDBClusterSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DBClusterSnapshotIdentifier: 0 },
     output: { DBClusterSnapshot: o_DBClusterSnapshot },
   },
   errors: [DBClusterSnapshotNotFoundFault, InvalidDBClusterSnapshotStateFault],
@@ -6324,7 +6691,16 @@ export const deleteDBInstance: API.OperationMethod<
   DeleteDBInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBInstance: o_DBInstance } },
+  descriptor: {
+    service: svc,
+    input: {
+      DBInstanceIdentifier: 0,
+      SkipFinalSnapshot: 0,
+      FinalDBSnapshotIdentifier: 0,
+      DeleteAutomatedBackups: 0,
+    },
+    output: { DBInstance: o_DBInstance },
+  },
   errors: [
     DBInstanceAutomatedBackupQuotaExceededFault,
     DBInstanceNotFoundFault,
@@ -6354,6 +6730,7 @@ export const deleteDBInstanceAutomatedBackup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DbiResourceId: 0, DBInstanceAutomatedBackupsArn: 0 },
     output: { DBInstanceAutomatedBackup: o_DBInstanceAutomatedBackup },
   },
   errors: [
@@ -6378,7 +6755,7 @@ export const deleteDBParameterGroup: API.OperationMethod<
   DeleteDBParameterGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DBParameterGroupName: 0 } },
   errors: [DBParameterGroupNotFoundFault, InvalidDBParameterGroupStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6398,7 +6775,11 @@ export const deleteDBProxy: API.OperationMethod<
   DeleteDBProxyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBProxy: o_DBProxy } },
+  descriptor: {
+    service: svc,
+    input: { DBProxyName: 0 },
+    output: { DBProxy: o_DBProxy },
+  },
   errors: [DBProxyNotFoundFault, InvalidDBProxyStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6418,7 +6799,11 @@ export const deleteDBProxyEndpoint: API.OperationMethod<
   DeleteDBProxyEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBProxyEndpoint: o_DBProxyEndpoint } },
+  descriptor: {
+    service: svc,
+    input: { DBProxyEndpointName: 0 },
+    output: { DBProxyEndpoint: o_DBProxyEndpoint },
+  },
   errors: [DBProxyEndpointNotFoundFault, InvalidDBProxyEndpointStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6442,7 +6827,7 @@ export const deleteDBSecurityGroup: API.OperationMethod<
   DeleteDBSecurityGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DBSecurityGroupName: 0 } },
   errors: [DBSecurityGroupNotFoundFault, InvalidDBSecurityGroupStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6465,6 +6850,7 @@ export const deleteDBShardGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DBShardGroupIdentifier: 0 },
     output: {
       MaxACU: D.num,
       MinACU: D.num,
@@ -6498,7 +6884,11 @@ export const deleteDBSnapshot: API.OperationMethod<
   DeleteDBSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBSnapshot: o_DBSnapshot } },
+  descriptor: {
+    service: svc,
+    input: { DBSnapshotIdentifier: 0 },
+    output: { DBSnapshot: o_DBSnapshot },
+  },
   errors: [DBSnapshotNotFoundFault, InvalidDBSnapshotStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6521,7 +6911,7 @@ export const deleteDBSubnetGroup: API.OperationMethod<
   DeleteDBSubnetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DBSubnetGroupName: 0 } },
   errors: [
     DBSubnetGroupNotFoundFault,
     InvalidDBSubnetGroupStateFault,
@@ -6547,6 +6937,7 @@ export const deleteEventSubscription: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SubscriptionName: 0 },
     output: { EventSubscription: o_EventSubscription },
   },
   errors: [InvalidEventSubscriptionStateFault, SubscriptionNotFoundFault],
@@ -6570,7 +6961,11 @@ export const deleteGlobalCluster: API.OperationMethod<
   DeleteGlobalClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GlobalCluster: o_GlobalCluster } },
+  descriptor: {
+    service: svc,
+    input: { GlobalClusterIdentifier: 0 },
+    output: { GlobalCluster: o_GlobalCluster },
+  },
   errors: [GlobalClusterNotFoundFault, InvalidGlobalClusterStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6593,6 +6988,7 @@ export const deleteIntegration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { IntegrationIdentifier: 0 },
     output: {
       AdditionalEncryptionContext: D.map(),
       Tags: D.list({}, { item: "Tag" }),
@@ -6623,7 +7019,7 @@ export const deleteOptionGroup: API.OperationMethod<
   DeleteOptionGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OptionGroupName: 0 } },
   errors: [InvalidOptionGroupStateFault, OptionGroupNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6647,7 +7043,16 @@ export const deleteTenantDatabase: API.OperationMethod<
   DeleteTenantDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { TenantDatabase: o_TenantDatabase } },
+  descriptor: {
+    service: svc,
+    input: {
+      DBInstanceIdentifier: 0,
+      TenantDBName: 0,
+      SkipFinalSnapshot: 0,
+      FinalDBSnapshotIdentifier: 0,
+    },
+    output: { TenantDatabase: o_TenantDatabase },
+  },
   errors: [
     DBInstanceNotFoundFault,
     DBSnapshotAlreadyExistsFault,
@@ -6674,7 +7079,15 @@ export const deregisterDBProxyTargets: API.OperationMethod<
   DeregisterDBProxyTargetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DBProxyName: 0,
+      TargetGroupName: 0,
+      DBInstanceIdentifiers: 0,
+      DBClusterIdentifiers: 0,
+    },
+  },
   errors: [
     DBProxyNotFoundFault,
     DBProxyTargetGroupNotFoundFault,
@@ -6700,6 +7113,7 @@ export const describeAccountAttributes: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {},
     output: {
       AccountQuotas: D.list(
         { Used: D.num, Max: D.num },
@@ -6730,7 +7144,12 @@ export const describeBlueGreenDeployments: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      BlueGreenDeploymentIdentifier: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      Marker: 0,
+      MaxRecords: 0,
+    },
     output: { BlueGreenDeployments: D.list(o_BlueGreenDeployment) },
   },
   errors: [BlueGreenDeploymentNotFoundFault],
@@ -6760,7 +7179,12 @@ export const describeCertificates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      CertificateIdentifier: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: { Certificates: D.list(o_Certificate, { item: "Certificate" }) },
   },
   errors: [CertificateNotFoundFault],
@@ -6792,7 +7216,13 @@ export const describeDBClusterAutomatedBackups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DbClusterResourceId: 0,
+      DBClusterIdentifier: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       DBClusterAutomatedBackups: D.list(o_DBClusterAutomatedBackup, {
         item: "DBClusterAutomatedBackup",
@@ -6831,7 +7261,13 @@ export const describeDBClusterBacktracks: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBClusterIdentifier: 0,
+      BacktrackIdentifier: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       DBClusterBacktracks: D.list(
         {
@@ -6872,7 +7308,13 @@ export const describeDBClusterEndpoints: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBClusterIdentifier: 0,
+      DBClusterEndpointIdentifier: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       DBClusterEndpoints: D.list(
         { StaticMembers: D.list(), ExcludedMembers: D.list() },
@@ -6911,7 +7353,12 @@ export const describeDBClusterParameterGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBClusterParameterGroupName: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       DBClusterParameterGroups: D.list({}, { item: "DBClusterParameterGroup" }),
     },
@@ -6947,7 +7394,13 @@ export const describeDBClusterParameters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBClusterParameterGroupName: 0,
+      Source: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: { Parameters: D.list(o_Parameter, { item: "Parameter" }) },
   },
   errors: [DBParameterGroupNotFoundFault],
@@ -6981,7 +7434,13 @@ export const describeDBClusters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBClusterIdentifier: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+      IncludeShared: 0,
+    },
     output: { DBClusters: D.list(o_DBCluster, { item: "DBCluster" }) },
   },
   errors: [DBClusterNotFoundFault],
@@ -7014,6 +7473,7 @@ export const describeDBClusterSnapshotAttributes: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DBClusterSnapshotIdentifier: 0 },
     output: {
       DBClusterSnapshotAttributesResult: o_DBClusterSnapshotAttributesResult,
     },
@@ -7043,7 +7503,17 @@ export const describeDBClusterSnapshots: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBClusterIdentifier: 0,
+      DBClusterSnapshotIdentifier: 0,
+      SnapshotType: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+      IncludeShared: 0,
+      IncludePublic: 0,
+      DbClusterResourceId: 0,
+    },
     output: {
       DBClusterSnapshots: D.list(o_DBClusterSnapshot, {
         item: "DBClusterSnapshot",
@@ -7077,7 +7547,18 @@ export const describeDBEngineVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      Engine: 0,
+      EngineVersion: 0,
+      DBParameterGroupFamily: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+      DefaultOnly: 0,
+      ListSupportedCharacterSets: 0,
+      ListSupportedTimezones: 0,
+      IncludeAll: 0,
+    },
     output: {
       DBEngineVersions: D.list(
         {
@@ -7140,7 +7621,14 @@ export const describeDBInstanceAutomatedBackups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DbiResourceId: 0,
+      DBInstanceIdentifier: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+      DBInstanceAutomatedBackupsArn: 0,
+    },
     output: {
       DBInstanceAutomatedBackups: D.list(o_DBInstanceAutomatedBackup, {
         item: "DBInstanceAutomatedBackup",
@@ -7174,7 +7662,12 @@ export const describeDBInstances: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBInstanceIdentifier: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: { DBInstances: D.list(o_DBInstance, { item: "DBInstance" }) },
   },
   errors: [DBInstanceNotFoundFault],
@@ -7207,7 +7700,15 @@ export const describeDBLogFiles: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBInstanceIdentifier: 0,
+      FilenameContains: 0,
+      FileLastWritten: 0,
+      FileSize: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       DescribeDBLogFiles: D.list(
         { LastWritten: D.num, Size: D.num },
@@ -7240,6 +7741,7 @@ export const describeDBMajorEngineVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Engine: 0, MajorEngineVersion: 0, Marker: 0, MaxRecords: 0 },
     output: {
       DBMajorEngineVersions: D.list(
         {
@@ -7279,7 +7781,12 @@ export const describeDBParameterGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBParameterGroupName: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: { DBParameterGroups: D.list({}, { item: "DBParameterGroup" }) },
   },
   errors: [DBParameterGroupNotFoundFault],
@@ -7309,7 +7816,13 @@ export const describeDBParameters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBParameterGroupName: 0,
+      Source: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: { Parameters: D.list(o_Parameter, { item: "Parameter" }) },
   },
   errors: [DBParameterGroupNotFoundFault],
@@ -7337,7 +7850,12 @@ export const describeDBProxies: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBProxyName: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      Marker: 0,
+      MaxRecords: 0,
+    },
     output: { DBProxies: D.list(o_DBProxy) },
   },
   errors: [DBProxyNotFoundFault],
@@ -7368,7 +7886,13 @@ export const describeDBProxyEndpoints: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBProxyName: 0,
+      DBProxyEndpointName: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      Marker: 0,
+      MaxRecords: 0,
+    },
     output: { DBProxyEndpoints: D.list(o_DBProxyEndpoint) },
   },
   errors: [DBProxyEndpointNotFoundFault, DBProxyNotFoundFault],
@@ -7400,7 +7924,13 @@ export const describeDBProxyTargetGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBProxyName: 0,
+      TargetGroupName: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      Marker: 0,
+      MaxRecords: 0,
+    },
     output: { TargetGroups: D.list(o_DBProxyTargetGroup) },
   },
   errors: [
@@ -7437,7 +7967,13 @@ export const describeDBProxyTargets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBProxyName: 0,
+      TargetGroupName: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      Marker: 0,
+      MaxRecords: 0,
+    },
     output: { Targets: D.list(o_DBProxyTarget) },
   },
   errors: [
@@ -7470,7 +8006,14 @@ export const describeDBRecommendations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      LastUpdatedAfter: 0,
+      LastUpdatedBefore: 0,
+      Locale: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: { DBRecommendations: D.list(o_DBRecommendation) },
   },
   errors: [],
@@ -7502,7 +8045,12 @@ export const describeDBSecurityGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBSecurityGroupName: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       DBSecurityGroups: D.list(o_DBSecurityGroup, { item: "DBSecurityGroup" }),
     },
@@ -7534,7 +8082,12 @@ export const describeDBShardGroups: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBShardGroupIdentifier: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      Marker: 0,
+      MaxRecords: 0,
+    },
     output: {
       DBShardGroups: D.list(
         {
@@ -7572,6 +8125,7 @@ export const describeDBSnapshotAttributes: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DBSnapshotIdentifier: 0 },
     output: { DBSnapshotAttributesResult: o_DBSnapshotAttributesResult },
   },
   errors: [DBSnapshotNotFoundFault],
@@ -7593,7 +8147,17 @@ export const describeDBSnapshots: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBInstanceIdentifier: 0,
+      DBSnapshotIdentifier: 0,
+      SnapshotType: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+      IncludeShared: 0,
+      IncludePublic: 0,
+      DbiResourceId: 0,
+    },
     output: { DBSnapshots: D.list(o_DBSnapshot, { item: "DBSnapshot" }) },
   },
   errors: [DBSnapshotNotFoundFault],
@@ -7625,7 +8189,15 @@ export const describeDBSnapshotTenantDatabases: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBInstanceIdentifier: 0,
+      DBSnapshotIdentifier: 0,
+      SnapshotType: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+      DbiResourceId: 0,
+    },
     output: {
       DBSnapshotTenantDatabases: D.list(
         {
@@ -7665,7 +8237,12 @@ export const describeDBSubnetGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBSubnetGroupName: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       DBSubnetGroups: D.list(o_DBSubnetGroup, { item: "DBSubnetGroup" }),
     },
@@ -7697,7 +8274,12 @@ export const describeEngineDefaultClusterParameters: API.PaginatedOperationMetho
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBParameterGroupFamily: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: { EngineDefaults: o_EngineDefaults },
   },
   errors: [],
@@ -7725,7 +8307,12 @@ export const describeEngineDefaultParameters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBParameterGroupFamily: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: { EngineDefaults: o_EngineDefaults },
   },
   errors: [],
@@ -7752,7 +8339,7 @@ export const describeEventCategories: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: { SourceType: 0, Filters: D.list(i_Filter, { item: "Filter" }) },
     output: {
       EventCategoriesMapList: D.list(
         { EventCategories: D.list(0, { item: "EventCategory" }) },
@@ -7784,8 +8371,15 @@ export const describeEvents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      SourceIdentifier: 0,
+      SourceType: 0,
+      StartTime: 0,
+      EndTime: 0,
+      Duration: 0,
       EventCategories: D.list(0, { item: "EventCategory" }),
       Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
     },
     output: {
       Events: D.list(
@@ -7823,7 +8417,12 @@ export const describeEventSubscriptions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      SubscriptionName: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       EventSubscriptionsList: D.list(o_EventSubscription, {
         item: "EventSubscription",
@@ -7855,7 +8454,14 @@ export const describeExportTasks: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      ExportTaskIdentifier: 0,
+      SourceArn: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      Marker: 0,
+      MaxRecords: 0,
+      SourceType: 0,
+    },
     output: {
       ExportTasks: D.list(
         {
@@ -7901,7 +8507,12 @@ export const describeGlobalClusters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      GlobalClusterIdentifier: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       GlobalClusters: D.list(o_GlobalCluster, { item: "GlobalClusterMember" }),
     },
@@ -7931,7 +8542,12 @@ export const describeIntegrations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      IntegrationIdentifier: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       Integrations: D.list(
         {
@@ -7969,7 +8585,13 @@ export const describeOptionGroupOptions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      EngineName: 0,
+      MajorEngineVersion: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       OptionGroupOptions: D.list(
         {
@@ -8028,7 +8650,14 @@ export const describeOptionGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      OptionGroupName: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      Marker: 0,
+      MaxRecords: 0,
+      EngineName: 0,
+      MajorEngineVersion: 0,
+    },
     output: {
       OptionGroupsList: D.list(o_OptionGroup, { item: "OptionGroup" }),
     },
@@ -8058,7 +8687,17 @@ export const describeOrderableDBInstanceOptions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      Engine: 0,
+      EngineVersion: 0,
+      DBInstanceClass: 0,
+      LicenseModel: 0,
+      AvailabilityZoneGroup: 0,
+      Vpc: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       OrderableDBInstanceOptions: D.list(
         {
@@ -8147,7 +8786,12 @@ export const describePendingMaintenanceActions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      ResourceIdentifier: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      Marker: 0,
+      MaxRecords: 0,
+    },
     output: {
       PendingMaintenanceActions: D.list(o_ResourcePendingMaintenanceActions, {
         item: "ResourcePendingMaintenanceActions",
@@ -8181,7 +8825,19 @@ export const describeReservedDBInstances: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      ReservedDBInstanceId: 0,
+      ReservedDBInstancesOfferingId: 0,
+      DBInstanceClass: 0,
+      Duration: 0,
+      ProductDescription: 0,
+      OfferingType: 0,
+      MultiAZ: 0,
+      LeaseId: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       ReservedDBInstances: D.list(o_ReservedDBInstance, {
         item: "ReservedDBInstance",
@@ -8215,7 +8871,17 @@ export const describeReservedDBInstancesOfferings: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      ReservedDBInstancesOfferingId: 0,
+      DBInstanceClass: 0,
+      Duration: 0,
+      ProductDescription: 0,
+      OfferingType: 0,
+      MultiAZ: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       ReservedDBInstancesOfferings: D.list(
         {
@@ -8256,7 +8922,15 @@ export const describeServerlessV2PlatformVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      ServerlessV2PlatformVersion: 0,
+      Engine: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      DefaultOnly: 0,
+      IncludeAll: 0,
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       ServerlessV2PlatformVersions: D.list({
         ServerlessV2FeaturesSupport: o_ServerlessV2FeaturesSupport,
@@ -8293,7 +8967,12 @@ export const describeSourceRegions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      RegionName: 0,
+      MaxRecords: 0,
+      Marker: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+    },
     output: {
       SourceRegions: D.list(
         { SupportsDBInstanceAutomatedBackupsReplication: D.bool },
@@ -8328,7 +9007,13 @@ export const describeTenantDatabases: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: {
+      DBInstanceIdentifier: 0,
+      TenantDBName: 0,
+      Filters: D.list(i_Filter, { item: "Filter" }),
+      Marker: 0,
+      MaxRecords: 0,
+    },
     output: {
       TenantDatabases: D.list(o_TenantDatabase, { item: "TenantDatabase" }),
     },
@@ -8362,6 +9047,7 @@ export const describeValidDBInstanceModifications: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DBInstanceIdentifier: 0 },
     output: {
       ValidDBInstanceModificationsMessage: {
         Storage: D.list(o_ValidStorageOptions, { item: "ValidStorageOptions" }),
@@ -8404,7 +9090,11 @@ export const disableHttpEndpoint: API.OperationMethod<
   DisableHttpEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { HttpEndpointEnabled: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0 },
+    output: { HttpEndpointEnabled: D.bool },
+  },
   errors: [InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -8432,6 +9122,12 @@ export const downloadDBLogFilePortion: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DBInstanceIdentifier: 0,
+      LogFileName: 0,
+      Marker: 0,
+      NumberOfLines: 0,
+    },
     output: { LogFileData: D.secret, AdditionalDataPending: D.bool },
   },
   errors: [
@@ -8468,7 +9164,11 @@ export const enableHttpEndpoint: API.OperationMethod<
   EnableHttpEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { HttpEndpointEnabled: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0 },
+    output: { HttpEndpointEnabled: D.bool },
+  },
   errors: [InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -8501,7 +9201,11 @@ export const failoverDBCluster: API.OperationMethod<
   FailoverDBClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBCluster: o_DBCluster } },
+  descriptor: {
+    service: svc,
+    input: { DBClusterIdentifier: 0, TargetDBInstanceIdentifier: 0 },
+    output: { DBCluster: o_DBCluster },
+  },
   errors: [
     DBClusterNotFoundFault,
     InvalidDBClusterStateFault,
@@ -8547,7 +9251,16 @@ export const failoverGlobalCluster: API.OperationMethod<
   FailoverGlobalClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GlobalCluster: o_GlobalCluster } },
+  descriptor: {
+    service: svc,
+    input: {
+      GlobalClusterIdentifier: 0,
+      TargetDbClusterIdentifier: 0,
+      AllowDataLoss: 0,
+      Switchover: 0,
+    },
+    output: { GlobalCluster: o_GlobalCluster },
+  },
   errors: [
     DBClusterNotFoundFault,
     GlobalClusterNotFoundFault,
@@ -8585,7 +9298,7 @@ export const listTagsForResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.list(i_Filter, { item: "Filter" }) },
+    input: { ResourceName: 0, Filters: D.list(i_Filter, { item: "Filter" }) },
     output: { TagList: D.list({}, { item: "Tag" }) },
   },
   errors: [
@@ -8624,6 +9337,7 @@ export const modifyActivityStream: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResourceArn: 0, AuditPolicyState: 0 },
     output: { EngineNativeAuditFieldsIncluded: D.bool },
   },
   errors: [
@@ -8658,7 +9372,11 @@ export const modifyCertificates: API.OperationMethod<
   ModifyCertificatesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Certificate: o_Certificate } },
+  descriptor: {
+    service: svc,
+    input: { CertificateIdentifier: 0, RemoveCustomerOverride: 0 },
+    output: { Certificate: o_Certificate },
+  },
   errors: [CertificateNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -8691,6 +9409,12 @@ export const modifyCurrentDBClusterCapacity: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DBClusterIdentifier: 0,
+      Capacity: 0,
+      SecondsBeforeTimeout: 0,
+      TimeoutAction: 0,
+    },
     output: {
       PendingCapacity: D.num,
       CurrentCapacity: D.num,
@@ -8726,6 +9450,7 @@ export const modifyCustomDBEngineVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Engine: 0, EngineVersion: 0, Description: 0, Status: 0 },
     output: {
       DatabaseInstallationFiles: D.list(),
       DefaultCharacterSet: {},
@@ -8801,7 +9526,56 @@ export const modifyDBCluster: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }) },
+    input: {
+      DBClusterIdentifier: 0,
+      NewDBClusterIdentifier: 0,
+      ApplyImmediately: 0,
+      BackupRetentionPeriod: 0,
+      DBClusterParameterGroupName: 0,
+      VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
+      Port: 0,
+      MasterUserPassword: 0,
+      OptionGroupName: 0,
+      PreferredBackupWindow: 0,
+      PreferredMaintenanceWindow: 0,
+      EnableIAMDatabaseAuthentication: 0,
+      BacktrackWindow: 0,
+      CloudwatchLogsExportConfiguration: i_CloudwatchLogsExportConfiguration,
+      EngineVersion: 0,
+      AllowMajorVersionUpgrade: 0,
+      DBInstanceParameterGroupName: 0,
+      Domain: 0,
+      DomainIAMRoleName: 0,
+      ScalingConfiguration: i_ScalingConfiguration,
+      DeletionProtection: 0,
+      EnableHttpEndpoint: 0,
+      CopyTagsToSnapshot: 0,
+      EnableGlobalWriteForwarding: 0,
+      DBClusterInstanceClass: 0,
+      AllocatedStorage: 0,
+      StorageType: 0,
+      Iops: 0,
+      AutoMinorVersionUpgrade: 0,
+      NetworkType: 0,
+      ServerlessV2ScalingConfiguration: i_ServerlessV2ScalingConfiguration,
+      MonitoringInterval: 0,
+      MonitoringRoleArn: 0,
+      DatabaseInsightsMode: 0,
+      EnablePerformanceInsights: 0,
+      PerformanceInsightsKMSKeyId: 0,
+      PerformanceInsightsRetentionPeriod: 0,
+      ManageMasterUserPassword: 0,
+      RotateMasterUserPassword: 0,
+      EnableLocalWriteForwarding: 0,
+      MasterUserSecretKmsKeyId: 0,
+      EngineMode: 0,
+      AllowEngineModeChange: 0,
+      AwsBackupRecoveryPointArn: 0,
+      EnableLimitlessDatabase: 0,
+      CACertificateIdentifier: 0,
+      MasterUserAuthenticationType: 0,
+      EngineLifecycleSupport: 0,
+    },
     output: { DBCluster: o_DBCluster },
   },
   errors: [
@@ -8854,6 +9628,12 @@ export const modifyDBClusterEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DBClusterEndpointIdentifier: 0,
+      EndpointType: 0,
+      StaticMembers: 0,
+      ExcludedMembers: 0,
+    },
     output: { StaticMembers: D.list(), ExcludedMembers: D.list() },
   },
   errors: [
@@ -8889,7 +9669,10 @@ export const modifyDBClusterParameterGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Parameters: D.list(0, { item: "Parameter" }) },
+    input: {
+      DBClusterParameterGroupName: 0,
+      Parameters: D.list(i_Parameter, { item: "Parameter" }),
+    },
   },
   errors: [DBParameterGroupNotFoundFault, InvalidDBParameterGroupStateFault],
   protocol: AwsProtocol,
@@ -8922,6 +9705,8 @@ export const modifyDBClusterSnapshotAttribute: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DBClusterSnapshotIdentifier: 0,
+      AttributeName: 0,
       ValuesToAdd: D.list(0, { item: "AttributeValue" }),
       ValuesToRemove: D.list(0, { item: "AttributeValue" }),
     },
@@ -8977,10 +9762,81 @@ export const modifyDBInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DBInstanceIdentifier: 0,
+      AllocatedStorage: 0,
+      DBInstanceClass: 0,
+      DBSubnetGroupName: 0,
       DBSecurityGroups: D.list(0, { item: "DBSecurityGroupName" }),
       VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
-      ProcessorFeatures: D.list(0, { item: "ProcessorFeature" }),
+      ApplyImmediately: 0,
+      MasterUserPassword: 0,
+      DBParameterGroupName: 0,
+      BackupRetentionPeriod: 0,
+      PreferredBackupWindow: 0,
+      PreferredMaintenanceWindow: 0,
+      MultiAZ: 0,
+      EngineVersion: 0,
+      AllowMajorVersionUpgrade: 0,
+      AutoMinorVersionUpgrade: 0,
+      LicenseModel: 0,
+      Iops: 0,
+      StorageThroughput: 0,
+      OptionGroupName: 0,
+      NewDBInstanceIdentifier: 0,
+      StorageType: 0,
+      TdeCredentialArn: 0,
+      TdeCredentialPassword: 0,
+      CACertificateIdentifier: 0,
+      Domain: 0,
+      DomainFqdn: 0,
+      DomainOu: 0,
+      DomainAuthSecretArn: 0,
+      DomainDnsIps: 0,
+      DisableDomain: 0,
+      CopyTagsToSnapshot: 0,
+      MonitoringInterval: 0,
+      DBPortNumber: 0,
+      PubliclyAccessible: 0,
+      MonitoringRoleArn: 0,
+      DomainIAMRoleName: 0,
+      PromotionTier: 0,
+      EnableIAMDatabaseAuthentication: 0,
+      DatabaseInsightsMode: 0,
+      EnablePerformanceInsights: 0,
+      PerformanceInsightsKMSKeyId: 0,
+      PerformanceInsightsRetentionPeriod: 0,
+      CloudwatchLogsExportConfiguration: i_CloudwatchLogsExportConfiguration,
+      ProcessorFeatures: D.list(i_ProcessorFeature, {
+        item: "ProcessorFeature",
+      }),
+      UseDefaultProcessorFeatures: 0,
+      DeletionProtection: 0,
+      MaxAllocatedStorage: 0,
+      CertificateRotationRestart: 0,
+      ReplicaMode: 0,
+      AutomationMode: 0,
+      ResumeFullAutomationModeMinutes: 0,
+      EnableCustomerOwnedIp: 0,
+      NetworkType: 0,
+      AwsBackupRecoveryPointArn: 0,
+      ManageMasterUserPassword: 0,
+      RotateMasterUserPassword: 0,
+      MasterUserSecretKmsKeyId: 0,
+      MultiTenant: 0,
+      DedicatedLogVolume: 0,
+      Engine: 0,
+      AdditionalStorageVolumes: D.list({
+        VolumeName: 0,
+        AllocatedStorage: 0,
+        IOPS: 0,
+        MaxAllocatedStorage: 0,
+        StorageThroughput: 0,
+        StorageType: 0,
+        SetForDelete: 0,
+      }),
       TagSpecifications: D.list(i_TagSpecification, { item: "item" }),
+      MasterUserAuthenticationType: 0,
+      EngineLifecycleSupport: 0,
     },
     output: { DBInstance: o_DBInstance },
   },
@@ -9032,7 +9888,10 @@ export const modifyDBParameterGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Parameters: D.list(0, { item: "Parameter" }) },
+    input: {
+      DBParameterGroupName: 0,
+      Parameters: D.list(i_Parameter, { item: "Parameter" }),
+    },
   },
   errors: [DBParameterGroupNotFoundFault, InvalidDBParameterGroupStateFault],
   protocol: AwsProtocol,
@@ -9054,7 +9913,21 @@ export const modifyDBProxy: API.OperationMethod<
   ModifyDBProxyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBProxy: o_DBProxy } },
+  descriptor: {
+    service: svc,
+    input: {
+      DBProxyName: 0,
+      NewDBProxyName: 0,
+      DefaultAuthScheme: 0,
+      Auth: D.list(i_UserAuthConfig),
+      RequireTLS: 0,
+      IdleClientTimeout: 0,
+      DebugLogging: 0,
+      RoleArn: 0,
+      SecurityGroups: 0,
+    },
+    output: { DBProxy: o_DBProxy },
+  },
   errors: [
     DBProxyAlreadyExistsFault,
     DBProxyNotFoundFault,
@@ -9080,7 +9953,15 @@ export const modifyDBProxyEndpoint: API.OperationMethod<
   ModifyDBProxyEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBProxyEndpoint: o_DBProxyEndpoint } },
+  descriptor: {
+    service: svc,
+    input: {
+      DBProxyEndpointName: 0,
+      NewDBProxyEndpointName: 0,
+      VpcSecurityGroupIds: 0,
+    },
+    output: { DBProxyEndpoint: o_DBProxyEndpoint },
+  },
   errors: [
     DBProxyEndpointAlreadyExistsFault,
     DBProxyEndpointNotFoundFault,
@@ -9108,6 +9989,18 @@ export const modifyDBProxyTargetGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TargetGroupName: 0,
+      DBProxyName: 0,
+      ConnectionPoolConfig: {
+        MaxConnectionsPercent: 0,
+        MaxIdleConnectionsPercent: 0,
+        ConnectionBorrowTimeout: 0,
+        SessionPinningFilters: 0,
+        InitQuery: 0,
+      },
+      NewName: 0,
+    },
     output: { DBProxyTargetGroup: o_DBProxyTargetGroup },
   },
   errors: [
@@ -9132,6 +10025,12 @@ export const modifyDBRecommendation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      RecommendationId: 0,
+      Locale: 0,
+      Status: 0,
+      RecommendedActionUpdates: D.list({ ActionId: 0, Status: 0 }),
+    },
     output: { DBRecommendation: o_DBRecommendation },
   },
   errors: [],
@@ -9156,6 +10055,12 @@ export const modifyDBShardGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DBShardGroupIdentifier: 0,
+      MaxACU: 0,
+      MinACU: 0,
+      ComputeRedundancy: 0,
+    },
     output: {
       MaxACU: D.num,
       MinACU: D.num,
@@ -9190,7 +10095,11 @@ export const modifyDBSnapshot: API.OperationMethod<
   ModifyDBSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBSnapshot: o_DBSnapshot } },
+  descriptor: {
+    service: svc,
+    input: { DBSnapshotIdentifier: 0, EngineVersion: 0, OptionGroupName: 0 },
+    output: { DBSnapshot: o_DBSnapshot },
+  },
   errors: [
     DBSnapshotNotFoundFault,
     InvalidDBSnapshotStateFault,
@@ -9226,6 +10135,8 @@ export const modifyDBSnapshotAttribute: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DBSnapshotIdentifier: 0,
+      AttributeName: 0,
       ValuesToAdd: D.list(0, { item: "AttributeValue" }),
       ValuesToRemove: D.list(0, { item: "AttributeValue" }),
     },
@@ -9260,7 +10171,11 @@ export const modifyDBSubnetGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { SubnetIds: D.list(0, { item: "SubnetIdentifier" }) },
+    input: {
+      DBSubnetGroupName: 0,
+      DBSubnetGroupDescription: 0,
+      SubnetIds: D.list(0, { item: "SubnetIdentifier" }),
+    },
     output: { DBSubnetGroup: o_DBSubnetGroup },
   },
   errors: [
@@ -9297,7 +10212,13 @@ export const modifyEventSubscription: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { EventCategories: D.list(0, { item: "EventCategory" }) },
+    input: {
+      SubscriptionName: 0,
+      SnsTopicArn: 0,
+      SourceType: 0,
+      EventCategories: D.list(0, { item: "EventCategory" }),
+      Enabled: 0,
+    },
     output: { EventSubscription: o_EventSubscription },
   },
   errors: [
@@ -9331,7 +10252,17 @@ export const modifyGlobalCluster: API.OperationMethod<
   ModifyGlobalClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GlobalCluster: o_GlobalCluster } },
+  descriptor: {
+    service: svc,
+    input: {
+      GlobalClusterIdentifier: 0,
+      NewGlobalClusterIdentifier: 0,
+      DeletionProtection: 0,
+      EngineVersion: 0,
+      AllowMajorVersionUpgrade: 0,
+    },
+    output: { GlobalCluster: o_GlobalCluster },
+  },
   errors: [
     GlobalClusterAlreadyExistsFault,
     GlobalClusterNotFoundFault,
@@ -9360,6 +10291,12 @@ export const modifyIntegration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      IntegrationIdentifier: 0,
+      IntegrationName: 0,
+      DataFilter: 0,
+      Description: 0,
+    },
     output: {
       AdditionalEncryptionContext: D.map(),
       Tags: D.list({}, { item: "Tag" }),
@@ -9393,18 +10330,37 @@ export const modifyOptionGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      OptionGroupName: 0,
       OptionsToInclude: D.list(
         {
+          OptionName: 0,
+          Port: 0,
+          OptionVersion: 0,
           DBSecurityGroupMemberships: D.list(0, {
             item: "DBSecurityGroupName",
           }),
           VpcSecurityGroupMemberships: D.list(0, {
             item: "VpcSecurityGroupId",
           }),
-          OptionSettings: D.list(0, { item: "OptionSetting" }),
+          OptionSettings: D.list(
+            {
+              Name: 0,
+              Value: 0,
+              DefaultValue: 0,
+              Description: 0,
+              ApplyType: 0,
+              DataType: 0,
+              AllowedValues: 0,
+              IsModifiable: 0,
+              IsCollection: 0,
+            },
+            { item: "OptionSetting" },
+          ),
         },
         { item: "OptionConfiguration" },
       ),
+      OptionsToRemove: 0,
+      ApplyImmediately: 0,
     },
     output: { OptionGroup: o_OptionGroup },
   },
@@ -9430,7 +10386,19 @@ export const modifyTenantDatabase: API.OperationMethod<
   ModifyTenantDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { TenantDatabase: o_TenantDatabase } },
+  descriptor: {
+    service: svc,
+    input: {
+      DBInstanceIdentifier: 0,
+      TenantDBName: 0,
+      MasterUserPassword: 0,
+      NewTenantDBName: 0,
+      ManageMasterUserPassword: 0,
+      RotateMasterUserPassword: 0,
+      MasterUserSecretKmsKeyId: 0,
+    },
+    output: { TenantDatabase: o_TenantDatabase },
+  },
   errors: [
     DBInstanceNotFoundFault,
     InvalidDBInstanceStateFault,
@@ -9462,7 +10430,12 @@ export const promoteReadReplica: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TagSpecifications: D.list(i_TagSpecification, { item: "item" }) },
+    input: {
+      DBInstanceIdentifier: 0,
+      BackupRetentionPeriod: 0,
+      PreferredBackupWindow: 0,
+      TagSpecifications: D.list(i_TagSpecification, { item: "item" }),
+    },
     output: { DBInstance: o_DBInstance },
   },
   errors: [DBInstanceNotFoundFault, InvalidDBInstanceStateFault],
@@ -9484,7 +10457,11 @@ export const promoteReadReplicaDBCluster: API.OperationMethod<
   PromoteReadReplicaDBClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBCluster: o_DBCluster } },
+  descriptor: {
+    service: svc,
+    input: { DBClusterIdentifier: 0 },
+    output: { DBCluster: o_DBCluster },
+  },
   errors: [DBClusterNotFoundFault, InvalidDBClusterStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -9507,7 +10484,12 @@ export const purchaseReservedDBInstancesOffering: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      ReservedDBInstancesOfferingId: 0,
+      ReservedDBInstanceId: 0,
+      DBInstanceCount: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { ReservedDBInstance: o_ReservedDBInstance },
   },
   errors: [
@@ -9540,7 +10522,11 @@ export const rebootDBCluster: API.OperationMethod<
   RebootDBClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBCluster: o_DBCluster } },
+  descriptor: {
+    service: svc,
+    input: { DBClusterIdentifier: 0 },
+    output: { DBCluster: o_DBCluster },
+  },
   errors: [
     DBClusterNotFoundFault,
     InvalidDBClusterStateFault,
@@ -9573,7 +10559,11 @@ export const rebootDBInstance: API.OperationMethod<
   RebootDBInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBInstance: o_DBInstance } },
+  descriptor: {
+    service: svc,
+    input: { DBInstanceIdentifier: 0, ForceFailover: 0 },
+    output: { DBInstance: o_DBInstance },
+  },
   errors: [
     DBInstanceNotFoundFault,
     InvalidDBInstanceStateFault,
@@ -9601,6 +10591,7 @@ export const rebootDBShardGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DBShardGroupIdentifier: 0 },
     output: {
       MaxACU: D.num,
       MinACU: D.num,
@@ -9637,6 +10628,12 @@ export const registerDBProxyTargets: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DBProxyName: 0,
+      TargetGroupName: 0,
+      DBInstanceIdentifiers: 0,
+      DBClusterIdentifiers: 0,
+    },
     output: { DBProxyTargets: D.list(o_DBProxyTarget) },
   },
   errors: [
@@ -9672,7 +10669,11 @@ export const removeFromGlobalCluster: API.OperationMethod<
   RemoveFromGlobalClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GlobalCluster: o_GlobalCluster } },
+  descriptor: {
+    service: svc,
+    input: { GlobalClusterIdentifier: 0, DbClusterIdentifier: 0 },
+    output: { GlobalCluster: o_GlobalCluster },
+  },
   errors: [
     DBClusterNotFoundFault,
     GlobalClusterNotFoundFault,
@@ -9702,7 +10703,10 @@ export const removeRoleFromDBCluster: API.OperationMethod<
   RemoveRoleFromDBClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DBClusterIdentifier: 0, RoleArn: 0, FeatureName: 0 },
+  },
   errors: [
     DBClusterNotFoundFault,
     DBClusterRoleNotFoundFault,
@@ -9727,7 +10731,10 @@ export const removeRoleFromDBInstance: API.OperationMethod<
   RemoveRoleFromDBInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DBInstanceIdentifier: 0, RoleArn: 0, FeatureName: 0 },
+  },
   errors: [
     DBInstanceNotFoundFault,
     DBInstanceRoleNotFoundFault,
@@ -9753,6 +10760,7 @@ export const removeSourceIdentifierFromSubscription: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SubscriptionName: 0, SourceIdentifier: 0 },
     output: { EventSubscription: o_EventSubscription },
   },
   errors: [SourceNotFoundFault, SubscriptionNotFoundFault],
@@ -9788,7 +10796,7 @@ export const removeTagsFromResource: API.OperationMethod<
   RemoveTagsFromResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceName: 0, TagKeys: 0 } },
   errors: [
     BlueGreenDeploymentNotFoundFault,
     DBClusterNotFoundFault,
@@ -9831,7 +10839,11 @@ export const resetDBClusterParameterGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Parameters: D.list(0, { item: "Parameter" }) },
+    input: {
+      DBClusterParameterGroupName: 0,
+      ResetAllParameters: 0,
+      Parameters: D.list(i_Parameter, { item: "Parameter" }),
+    },
   },
   errors: [DBParameterGroupNotFoundFault, InvalidDBParameterGroupStateFault],
   protocol: AwsProtocol,
@@ -9854,7 +10866,11 @@ export const resetDBParameterGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Parameters: D.list(0, { item: "Parameter" }) },
+    input: {
+      DBParameterGroupName: 0,
+      ResetAllParameters: 0,
+      Parameters: D.list(i_Parameter, { item: "Parameter" }),
+    },
   },
   errors: [DBParameterGroupNotFoundFault, InvalidDBParameterGroupStateFault],
   protocol: AwsProtocol,
@@ -9902,10 +10918,46 @@ export const restoreDBClusterFromS3: API.OperationMethod<
     service: svc,
     input: {
       AvailabilityZones: D.list(0, { item: "AvailabilityZone" }),
+      BackupRetentionPeriod: 0,
+      CharacterSetName: 0,
+      DatabaseName: 0,
+      DBClusterIdentifier: 0,
+      DBClusterParameterGroupName: 0,
       VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
-      Tags: D.list(0, { item: "Tag" }),
+      DBSubnetGroupName: 0,
+      Engine: 0,
+      EngineVersion: 0,
+      Port: 0,
+      MasterUsername: 0,
+      MasterUserPassword: 0,
+      OptionGroupName: 0,
+      PreferredBackupWindow: 0,
+      PreferredMaintenanceWindow: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      StorageEncrypted: 0,
+      KmsKeyId: 0,
+      EnableIAMDatabaseAuthentication: 0,
+      SourceEngine: 0,
+      SourceEngineVersion: 0,
+      S3BucketName: 0,
+      S3Prefix: 0,
+      S3IngestionRoleArn: 0,
+      BacktrackWindow: 0,
+      EnableCloudwatchLogsExports: 0,
+      DeletionProtection: 0,
+      CopyTagsToSnapshot: 0,
+      Domain: 0,
+      DomainIAMRoleName: 0,
+      StorageType: 0,
+      NetworkType: 0,
+      ServerlessV2ScalingConfiguration: i_ServerlessV2ScalingConfiguration,
+      ManageMasterUserPassword: 0,
+      MasterUserSecretKmsKeyId: 0,
+      EngineLifecycleSupport: 0,
       TagSpecifications: D.list(i_TagSpecification, { item: "item" }),
-      AssociatedRoles: D.list(0, { item: "DBClusterAssociatedRole" }),
+      AssociatedRoles: D.list(i_DBClusterAssociatedRole, {
+        item: "DBClusterAssociatedRole",
+      }),
     },
     output: { DBCluster: o_DBCluster },
   },
@@ -9984,10 +11036,48 @@ export const restoreDBClusterFromSnapshot: API.OperationMethod<
     service: svc,
     input: {
       AvailabilityZones: D.list(0, { item: "AvailabilityZone" }),
+      DBClusterIdentifier: 0,
+      SnapshotIdentifier: 0,
+      Engine: 0,
+      EngineVersion: 0,
+      Port: 0,
+      DBSubnetGroupName: 0,
+      DatabaseName: 0,
+      OptionGroupName: 0,
       VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
-      Tags: D.list(0, { item: "Tag" }),
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      KmsKeyId: 0,
+      EnableIAMDatabaseAuthentication: 0,
+      BacktrackWindow: 0,
+      EnableCloudwatchLogsExports: 0,
+      EngineMode: 0,
+      ScalingConfiguration: i_ScalingConfiguration,
+      DBClusterParameterGroupName: 0,
+      DeletionProtection: 0,
+      CopyTagsToSnapshot: 0,
+      Domain: 0,
+      DomainIAMRoleName: 0,
+      DBClusterInstanceClass: 0,
+      StorageType: 0,
+      Iops: 0,
+      PubliclyAccessible: 0,
+      NetworkType: 0,
+      ServerlessV2ScalingConfiguration: i_ServerlessV2ScalingConfiguration,
+      RdsCustomClusterConfiguration: i_RdsCustomClusterConfiguration,
+      MonitoringInterval: 0,
+      MonitoringRoleArn: 0,
+      EnablePerformanceInsights: 0,
+      PerformanceInsightsKMSKeyId: 0,
+      PerformanceInsightsRetentionPeriod: 0,
+      BackupRetentionPeriod: 0,
+      PreferredBackupWindow: 0,
+      EngineLifecycleSupport: 0,
       TagSpecifications: D.list(i_TagSpecification, { item: "item" }),
-      AssociatedRoles: D.list(0, { item: "DBClusterAssociatedRole" }),
+      EnableVPCNetworking: 0,
+      EnableInternetAccessGateway: 0,
+      AssociatedRoles: D.list(i_DBClusterAssociatedRole, {
+        item: "DBClusterAssociatedRole",
+      }),
     },
     output: { DBCluster: o_DBCluster },
   },
@@ -10070,10 +11160,49 @@ export const restoreDBClusterToPointInTime: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DBClusterIdentifier: 0,
+      RestoreType: 0,
+      SourceDBClusterIdentifier: 0,
+      RestoreToTime: 0,
+      UseLatestRestorableTime: 0,
+      Port: 0,
+      DBSubnetGroupName: 0,
+      OptionGroupName: 0,
       VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
-      Tags: D.list(0, { item: "Tag" }),
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      KmsKeyId: 0,
+      EnableIAMDatabaseAuthentication: 0,
+      BacktrackWindow: 0,
+      EnableCloudwatchLogsExports: 0,
+      DBClusterParameterGroupName: 0,
+      DeletionProtection: 0,
+      CopyTagsToSnapshot: 0,
+      Domain: 0,
+      DomainIAMRoleName: 0,
+      DBClusterInstanceClass: 0,
+      StorageType: 0,
+      PubliclyAccessible: 0,
+      Iops: 0,
+      NetworkType: 0,
+      SourceDbClusterResourceId: 0,
+      ServerlessV2ScalingConfiguration: i_ServerlessV2ScalingConfiguration,
+      ScalingConfiguration: i_ScalingConfiguration,
+      EngineMode: 0,
+      RdsCustomClusterConfiguration: i_RdsCustomClusterConfiguration,
+      MonitoringInterval: 0,
+      MonitoringRoleArn: 0,
+      EnablePerformanceInsights: 0,
+      PerformanceInsightsKMSKeyId: 0,
+      PerformanceInsightsRetentionPeriod: 0,
+      BackupRetentionPeriod: 0,
+      PreferredBackupWindow: 0,
+      EngineLifecycleSupport: 0,
       TagSpecifications: D.list(i_TagSpecification, { item: "item" }),
-      AssociatedRoles: D.list(0, { item: "DBClusterAssociatedRole" }),
+      EnableVPCNetworking: 0,
+      EnableInternetAccessGateway: 0,
+      AssociatedRoles: D.list(i_DBClusterAssociatedRole, {
+        item: "DBClusterAssociatedRole",
+      }),
     },
     output: { DBCluster: o_DBCluster },
   },
@@ -10155,10 +11284,56 @@ export const restoreDBInstanceFromDBSnapshot: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      Tags: D.list(0, { item: "Tag" }),
+      DBInstanceIdentifier: 0,
+      DBSnapshotIdentifier: 0,
+      DBInstanceClass: 0,
+      Port: 0,
+      AvailabilityZone: 0,
+      DBSubnetGroupName: 0,
+      MultiAZ: 0,
+      PubliclyAccessible: 0,
+      AutoMinorVersionUpgrade: 0,
+      LicenseModel: 0,
+      DBName: 0,
+      Engine: 0,
+      Iops: 0,
+      StorageThroughput: 0,
+      OptionGroupName: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      StorageType: 0,
+      TdeCredentialArn: 0,
+      TdeCredentialPassword: 0,
       VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
-      ProcessorFeatures: D.list(0, { item: "ProcessorFeature" }),
+      Domain: 0,
+      DomainFqdn: 0,
+      DomainOu: 0,
+      DomainAuthSecretArn: 0,
+      DomainDnsIps: 0,
+      CopyTagsToSnapshot: 0,
+      DomainIAMRoleName: 0,
+      EnableIAMDatabaseAuthentication: 0,
+      EnableCloudwatchLogsExports: 0,
+      ProcessorFeatures: D.list(i_ProcessorFeature, {
+        item: "ProcessorFeature",
+      }),
+      UseDefaultProcessorFeatures: 0,
+      DBParameterGroupName: 0,
+      DeletionProtection: 0,
+      EnableCustomerOwnedIp: 0,
+      NetworkType: 0,
+      BackupTarget: 0,
+      CustomIamInstanceProfile: 0,
+      AllocatedStorage: 0,
+      DBClusterSnapshotIdentifier: 0,
+      BackupRetentionPeriod: 0,
+      PreferredBackupWindow: 0,
+      DedicatedLogVolume: 0,
+      CACertificateIdentifier: 0,
+      EngineLifecycleSupport: 0,
+      AdditionalStorageVolumes: D.list(i_AdditionalStorageVolume),
       TagSpecifications: D.list(i_TagSpecification, { item: "item" }),
+      ManageMasterUserPassword: 0,
+      MasterUserSecretKmsKeyId: 0,
     },
     output: { DBInstance: o_DBInstance },
   },
@@ -10230,10 +11405,61 @@ export const restoreDBInstanceFromS3: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DBName: 0,
+      DBInstanceIdentifier: 0,
+      AllocatedStorage: 0,
+      DBInstanceClass: 0,
+      Engine: 0,
+      MasterUsername: 0,
+      MasterUserPassword: 0,
       DBSecurityGroups: D.list(0, { item: "DBSecurityGroupName" }),
       VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
-      Tags: D.list(0, { item: "Tag" }),
-      ProcessorFeatures: D.list(0, { item: "ProcessorFeature" }),
+      AvailabilityZone: 0,
+      DBSubnetGroupName: 0,
+      PreferredMaintenanceWindow: 0,
+      DBParameterGroupName: 0,
+      BackupRetentionPeriod: 0,
+      PreferredBackupWindow: 0,
+      Port: 0,
+      MultiAZ: 0,
+      EngineVersion: 0,
+      AutoMinorVersionUpgrade: 0,
+      LicenseModel: 0,
+      Iops: 0,
+      StorageThroughput: 0,
+      OptionGroupName: 0,
+      PubliclyAccessible: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      StorageType: 0,
+      StorageEncrypted: 0,
+      KmsKeyId: 0,
+      CopyTagsToSnapshot: 0,
+      MonitoringInterval: 0,
+      MonitoringRoleArn: 0,
+      EnableIAMDatabaseAuthentication: 0,
+      SourceEngine: 0,
+      SourceEngineVersion: 0,
+      S3BucketName: 0,
+      S3Prefix: 0,
+      S3IngestionRoleArn: 0,
+      DatabaseInsightsMode: 0,
+      EnablePerformanceInsights: 0,
+      PerformanceInsightsKMSKeyId: 0,
+      PerformanceInsightsRetentionPeriod: 0,
+      EnableCloudwatchLogsExports: 0,
+      ProcessorFeatures: D.list(i_ProcessorFeature, {
+        item: "ProcessorFeature",
+      }),
+      UseDefaultProcessorFeatures: 0,
+      DeletionProtection: 0,
+      MaxAllocatedStorage: 0,
+      NetworkType: 0,
+      ManageMasterUserPassword: 0,
+      MasterUserSecretKmsKeyId: 0,
+      DedicatedLogVolume: 0,
+      CACertificateIdentifier: 0,
+      EngineLifecycleSupport: 0,
+      AdditionalStorageVolumes: D.list(i_AdditionalStorageVolume),
       TagSpecifications: D.list(i_TagSpecification, { item: "item" }),
     },
     output: { DBInstance: o_DBInstance },
@@ -10309,10 +11535,60 @@ export const restoreDBInstanceToPointInTime: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      Tags: D.list(0, { item: "Tag" }),
+      SourceDBInstanceIdentifier: 0,
+      TargetDBInstanceIdentifier: 0,
+      RestoreTime: 0,
+      UseLatestRestorableTime: 0,
+      DBInstanceClass: 0,
+      Port: 0,
+      AvailabilityZone: 0,
+      DBSubnetGroupName: 0,
+      MultiAZ: 0,
+      PubliclyAccessible: 0,
+      AutoMinorVersionUpgrade: 0,
+      LicenseModel: 0,
+      DBName: 0,
+      Engine: 0,
+      Iops: 0,
+      StorageThroughput: 0,
+      OptionGroupName: 0,
+      CopyTagsToSnapshot: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      StorageType: 0,
+      TdeCredentialArn: 0,
+      TdeCredentialPassword: 0,
       VpcSecurityGroupIds: D.list(0, { item: "VpcSecurityGroupId" }),
-      ProcessorFeatures: D.list(0, { item: "ProcessorFeature" }),
+      Domain: 0,
+      DomainIAMRoleName: 0,
+      DomainFqdn: 0,
+      DomainOu: 0,
+      DomainAuthSecretArn: 0,
+      DomainDnsIps: 0,
+      EnableIAMDatabaseAuthentication: 0,
+      EnableCloudwatchLogsExports: 0,
+      ProcessorFeatures: D.list(i_ProcessorFeature, {
+        item: "ProcessorFeature",
+      }),
+      UseDefaultProcessorFeatures: 0,
+      DBParameterGroupName: 0,
+      DeletionProtection: 0,
+      SourceDbiResourceId: 0,
+      MaxAllocatedStorage: 0,
+      EnableCustomerOwnedIp: 0,
+      NetworkType: 0,
+      SourceDBInstanceAutomatedBackupsArn: 0,
+      BackupTarget: 0,
+      CustomIamInstanceProfile: 0,
+      AllocatedStorage: 0,
+      BackupRetentionPeriod: 0,
+      PreferredBackupWindow: 0,
+      DedicatedLogVolume: 0,
+      CACertificateIdentifier: 0,
+      EngineLifecycleSupport: 0,
+      AdditionalStorageVolumes: D.list(i_AdditionalStorageVolume),
       TagSpecifications: D.list(i_TagSpecification, { item: "item" }),
+      ManageMasterUserPassword: 0,
+      MasterUserSecretKmsKeyId: 0,
     },
     output: { DBInstance: o_DBInstance },
   },
@@ -10365,7 +11641,17 @@ export const revokeDBSecurityGroupIngress: API.OperationMethod<
   RevokeDBSecurityGroupIngressError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBSecurityGroup: o_DBSecurityGroup } },
+  descriptor: {
+    service: svc,
+    input: {
+      DBSecurityGroupName: 0,
+      CIDRIP: 0,
+      EC2SecurityGroupName: 0,
+      EC2SecurityGroupId: 0,
+      EC2SecurityGroupOwnerId: 0,
+    },
+    output: { DBSecurityGroup: o_DBSecurityGroup },
+  },
   errors: [
     AuthorizationNotFoundFault,
     DBSecurityGroupNotFoundFault,
@@ -10395,6 +11681,13 @@ export const startActivityStream: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ResourceArn: 0,
+      Mode: 0,
+      KmsKeyId: 0,
+      ApplyImmediately: 0,
+      EngineNativeAuditFieldsIncluded: 0,
+    },
     output: {
       EngineNativeAuditFieldsIncluded: D.bool,
       ApplyImmediately: D.bool,
@@ -10434,7 +11727,11 @@ export const startDBCluster: API.OperationMethod<
   StartDBClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBCluster: o_DBCluster } },
+  descriptor: {
+    service: svc,
+    input: { DBClusterIdentifier: 0 },
+    output: { DBCluster: o_DBCluster },
+  },
   errors: [
     DBClusterNotFoundFault,
     InvalidDBClusterStateFault,
@@ -10475,7 +11772,11 @@ export const startDBInstance: API.OperationMethod<
   StartDBInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBInstance: o_DBInstance } },
+  descriptor: {
+    service: svc,
+    input: { DBInstanceIdentifier: 0 },
+    output: { DBInstance: o_DBInstance },
+  },
   errors: [
     AuthorizationNotFoundFault,
     DBClusterNotFoundFault,
@@ -10518,7 +11819,13 @@ export const startDBInstanceAutomatedBackupsReplication: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      SourceDBInstanceArn: 0,
+      BackupRetentionPeriod: 0,
+      KmsKeyId: 0,
+      PreSignedUrl: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { DBInstanceAutomatedBackup: o_DBInstanceAutomatedBackup },
   },
   errors: [
@@ -10563,6 +11870,15 @@ export const startExportTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ExportTaskIdentifier: 0,
+      SourceArn: 0,
+      S3BucketName: 0,
+      IamRoleArn: 0,
+      KmsKeyId: 0,
+      S3Prefix: 0,
+      ExportOnly: 0,
+    },
     output: {
       ExportOnly: D.list(),
       SnapshotTime: D.ts,
@@ -10607,7 +11923,7 @@ export const stopActivityStream: API.OperationMethod<
   StopActivityStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, ApplyImmediately: 0 } },
   errors: [
     DBClusterNotFoundFault,
     DBInstanceNotFoundFault,
@@ -10639,7 +11955,11 @@ export const stopDBCluster: API.OperationMethod<
   StopDBClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBCluster: o_DBCluster } },
+  descriptor: {
+    service: svc,
+    input: { DBClusterIdentifier: 0 },
+    output: { DBCluster: o_DBCluster },
+  },
   errors: [
     DBClusterNotFoundFault,
     InvalidDBClusterStateFault,
@@ -10671,7 +11991,11 @@ export const stopDBInstance: API.OperationMethod<
   StopDBInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBInstance: o_DBInstance } },
+  descriptor: {
+    service: svc,
+    input: { DBInstanceIdentifier: 0, DBSnapshotIdentifier: 0 },
+    output: { DBInstance: o_DBInstance },
+  },
   errors: [
     DBInstanceNotFoundFault,
     DBSnapshotAlreadyExistsFault,
@@ -10703,6 +12027,7 @@ export const stopDBInstanceAutomatedBackupsReplication: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SourceDBInstanceArn: 0 },
     output: { DBInstanceAutomatedBackup: o_DBInstanceAutomatedBackup },
   },
   errors: [DBInstanceNotFoundFault, InvalidDBInstanceStateFault],
@@ -10730,6 +12055,7 @@ export const switchoverBlueGreenDeployment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { BlueGreenDeploymentIdentifier: 0, SwitchoverTimeout: 0 },
     output: { BlueGreenDeployment: o_BlueGreenDeployment },
   },
   errors: [
@@ -10760,7 +12086,11 @@ export const switchoverGlobalCluster: API.OperationMethod<
   SwitchoverGlobalClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { GlobalCluster: o_GlobalCluster } },
+  descriptor: {
+    service: svc,
+    input: { GlobalClusterIdentifier: 0, TargetDbClusterIdentifier: 0 },
+    output: { GlobalCluster: o_GlobalCluster },
+  },
   errors: [
     DBClusterNotFoundFault,
     GlobalClusterNotFoundFault,
@@ -10785,16 +12115,81 @@ export const switchoverReadReplica: API.OperationMethod<
   SwitchoverReadReplicaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DBInstance: o_DBInstance } },
+  descriptor: {
+    service: svc,
+    input: { DBInstanceIdentifier: 0 },
+    output: { DBInstance: o_DBInstance },
+  },
   errors: [DBInstanceNotFoundFault, InvalidDBInstanceStateFault],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "SwitchoverReadReplica",
 })) as any;
 
-const i_Filter: D.LazyStruct = () => ({ Values: D.list(0, { item: "Value" }) });
+const i_AdditionalStorageVolume: D.LazyStruct = () => ({
+  VolumeName: 0,
+  AllocatedStorage: 0,
+  IOPS: 0,
+  MaxAllocatedStorage: 0,
+  StorageThroughput: 0,
+  StorageType: 0,
+});
+const i_CloudwatchLogsExportConfiguration: D.LazyStruct = () => ({
+  EnableLogTypes: 0,
+  DisableLogTypes: 0,
+});
+const i_DBClusterAssociatedRole: D.LazyStruct = () => ({
+  RoleArn: 0,
+  FeatureName: 0,
+});
+const i_Filter: D.LazyStruct = () => ({
+  Name: 0,
+  Values: D.list(0, { item: "Value" }),
+});
+const i_Parameter: D.LazyStruct = () => ({
+  ParameterName: 0,
+  ParameterValue: 0,
+  Description: 0,
+  Source: 0,
+  ApplyType: 0,
+  DataType: 0,
+  AllowedValues: 0,
+  IsModifiable: 0,
+  MinimumEngineVersion: 0,
+  ApplyMethod: 0,
+  SupportedEngineModes: 0,
+});
+const i_ProcessorFeature: D.LazyStruct = () => ({ Name: 0, Value: 0 });
+const i_RdsCustomClusterConfiguration: D.LazyStruct = () => ({
+  InterconnectSubnetId: 0,
+  TransitGatewayMulticastDomainId: 0,
+  ReplicaMode: 0,
+});
+const i_ScalingConfiguration: D.LazyStruct = () => ({
+  MinCapacity: 0,
+  MaxCapacity: 0,
+  AutoPause: 0,
+  SecondsUntilAutoPause: 0,
+  TimeoutAction: 0,
+  SecondsBeforeTimeout: 0,
+});
+const i_ServerlessV2ScalingConfiguration: D.LazyStruct = () => ({
+  MinCapacity: 0,
+  MaxCapacity: 0,
+  SecondsUntilAutoPause: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const i_TagSpecification: D.LazyStruct = () => ({
-  Tags: D.list(0, { item: "Tag" }),
+  ResourceType: 0,
+  Tags: D.list(i_Tag, { item: "Tag" }),
+});
+const i_UserAuthConfig: D.LazyStruct = () => ({
+  Description: 0,
+  UserName: 0,
+  AuthScheme: 0,
+  SecretArn: 0,
+  IAMAuth: 0,
+  ClientPasswordAuthType: 0,
 });
 const o_BlueGreenDeployment: D.LazyStruct = () => ({
   SwitchoverDetails: D.list({}),

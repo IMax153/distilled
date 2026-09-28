@@ -140,7 +140,12 @@ export const getBuyerDashboard: API.OperationMethod<
   GetBuyerDashboardError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /getBuyerDashboard", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /getBuyerDashboard",
+    input: { dashboardIdentifier: 0, embeddingDomains: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,

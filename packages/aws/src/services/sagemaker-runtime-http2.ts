@@ -445,9 +445,13 @@ export const invokeEndpointWithBidirectionalStream: API.OperationMethod<
     service: svc,
     http: "POST /endpoints/{EndpointName}/invocations-bidirectional-stream",
     input: {
+      EndpointName: 0,
       Body: D.m({
         payload: true,
-        shape: D.events({ PayloadPart: 0 }, { PayloadPart: "Bytes" }),
+        shape: D.events(
+          { PayloadPart: { Bytes: 0, DataType: 0, CompletionState: 0, P: 0 } },
+          { PayloadPart: "Bytes" },
+        ),
       }),
       TargetVariant: D.m({ header: "X-Amzn-SageMaker-Target-Variant" }),
       ModelInvocationPath: D.m({

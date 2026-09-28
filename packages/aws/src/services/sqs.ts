@@ -623,7 +623,10 @@ export const addPermission: API.OperationMethod<
   AddPermissionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { QueueUrl: 0, Label: 0, AWSAccountIds: 0, Actions: 0 },
+  },
   errors: [
     InvalidAddress,
     InvalidSecurity,
@@ -666,7 +669,7 @@ export const cancelMessageMoveTask: API.OperationMethod<
   CancelMessageMoveTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TaskHandle: 0 } },
   errors: [
     InvalidAddress,
     InvalidSecurity,
@@ -741,7 +744,10 @@ export const changeMessageVisibility: API.OperationMethod<
   ChangeMessageVisibilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { QueueUrl: 0, ReceiptHandle: 0, VisibilityTimeout: 0 },
+  },
   errors: [
     InvalidAddress,
     InvalidSecurity,
@@ -785,7 +791,13 @@ export const changeMessageVisibilityBatch: API.OperationMethod<
   ChangeMessageVisibilityBatchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      QueueUrl: 0,
+      Entries: D.list({ Id: 0, ReceiptHandle: 0, VisibilityTimeout: 0 }),
+    },
+  },
   errors: [
     BatchEntryIdsNotDistinct,
     EmptyBatchRequest,
@@ -868,7 +880,7 @@ export const createQueue: API.OperationMethod<
   CreateQueueError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { QueueName: 0, Attributes: 0, tags: 0 } },
   errors: [
     InvalidAddress,
     InvalidAttributeName,
@@ -924,7 +936,7 @@ export const deleteMessage: API.OperationMethod<
   DeleteMessageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { QueueUrl: 0, ReceiptHandle: 0 } },
   errors: [
     InvalidAddress,
     InvalidIdFormat,
@@ -964,7 +976,10 @@ export const deleteMessageBatch: API.OperationMethod<
   DeleteMessageBatchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { QueueUrl: 0, Entries: D.list({ Id: 0, ReceiptHandle: 0 }) },
+  },
   errors: [
     BatchEntryIdsNotDistinct,
     EmptyBatchRequest,
@@ -1017,7 +1032,7 @@ export const deleteQueue: API.OperationMethod<
   DeleteQueueError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { QueueUrl: 0 } },
   errors: [
     InvalidAddress,
     InvalidSecurity,
@@ -1049,7 +1064,7 @@ export const getQueueAttributes: API.OperationMethod<
   GetQueueAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { QueueUrl: 0, AttributeNames: 0 } },
   errors: [
     InvalidAddress,
     InvalidAttributeName,
@@ -1090,7 +1105,10 @@ export const getQueueUrl: API.OperationMethod<
   GetQueueUrlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { QueueName: 0, QueueOwnerAWSAccountId: 0 },
+  },
   errors: [
     InvalidAddress,
     InvalidSecurity,
@@ -1132,7 +1150,10 @@ export const listDeadLetterSourceQueues: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   string
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { QueueUrl: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     InvalidAddress,
     InvalidSecurity,
@@ -1178,7 +1199,7 @@ export const listMessageMoveTasks: API.OperationMethod<
   ListMessageMoveTasksError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SourceArn: 0, MaxResults: 0 } },
   errors: [
     InvalidAddress,
     InvalidSecurity,
@@ -1224,7 +1245,10 @@ export const listQueues: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   string
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { QueueNamePrefix: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     InvalidAddress,
     InvalidSecurity,
@@ -1264,7 +1288,7 @@ export const listQueueTags: API.OperationMethod<
   ListQueueTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { QueueUrl: 0 } },
   errors: [
     InvalidAddress,
     InvalidSecurity,
@@ -1308,7 +1332,7 @@ export const purgeQueue: API.OperationMethod<
   PurgeQueueError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { QueueUrl: 0 } },
   errors: [
     InvalidAddress,
     InvalidSecurity,
@@ -1387,6 +1411,16 @@ export const receiveMessage: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      QueueUrl: 0,
+      AttributeNames: 0,
+      MessageSystemAttributeNames: 0,
+      MessageAttributeNames: 0,
+      MaxNumberOfMessages: 0,
+      VisibilityTimeout: 0,
+      WaitTimeSeconds: 0,
+      ReceiveRequestAttemptId: 0,
+    },
     output: {
       Messages: D.list({
         MessageAttributes: D.map({
@@ -1443,7 +1477,7 @@ export const removePermission: API.OperationMethod<
   RemovePermissionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { QueueUrl: 0, Label: 0 } },
   errors: [
     InvalidAddress,
     InvalidSecurity,
@@ -1489,7 +1523,18 @@ export const sendMessage: API.OperationMethod<
   SendMessageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      QueueUrl: 0,
+      MessageBody: 0,
+      DelaySeconds: 0,
+      MessageAttributes: D.map(i_MessageAttributeValue),
+      MessageSystemAttributes: D.map(i_MessageSystemAttributeValue),
+      MessageDeduplicationId: 0,
+      MessageGroupId: 0,
+    },
+  },
   errors: [
     InvalidAddress,
     InvalidMessageContents,
@@ -1564,7 +1609,21 @@ export const sendMessageBatch: API.OperationMethod<
   SendMessageBatchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      QueueUrl: 0,
+      Entries: D.list({
+        Id: 0,
+        MessageBody: 0,
+        DelaySeconds: 0,
+        MessageAttributes: D.map(i_MessageAttributeValue),
+        MessageSystemAttributes: D.map(i_MessageSystemAttributeValue),
+        MessageDeduplicationId: 0,
+        MessageGroupId: 0,
+      }),
+    },
+  },
   errors: [
     BatchEntryIdsNotDistinct,
     BatchRequestTooLong,
@@ -1629,7 +1688,7 @@ export const setQueueAttributes: API.OperationMethod<
   SetQueueAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { QueueUrl: 0, Attributes: 0 } },
   errors: [
     InvalidAddress,
     InvalidAttributeName,
@@ -1682,7 +1741,10 @@ export const startMessageMoveTask: API.OperationMethod<
   StartMessageMoveTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SourceArn: 0, DestinationArn: 0, MaxNumberOfMessagesPerSecond: 0 },
+  },
   errors: [
     InvalidAddress,
     InvalidSecurity,
@@ -1733,7 +1795,7 @@ export const tagQueue: API.OperationMethod<
   TagQueueError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { QueueUrl: 0, Tags: 0 } },
   errors: [
     InvalidAddress,
     InvalidSecurity,
@@ -1767,7 +1829,7 @@ export const untagQueue: API.OperationMethod<
   UntagQueueError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { QueueUrl: 0, TagKeys: 0 } },
   errors: [
     InvalidAddress,
     InvalidSecurity,
@@ -1779,3 +1841,18 @@ export const untagQueue: API.OperationMethod<
   retry: Retry,
   operationName: "UntagQueue",
 })) as any;
+
+const i_MessageAttributeValue: D.LazyStruct = () => ({
+  StringValue: 0,
+  BinaryValue: 0,
+  StringListValues: 0,
+  BinaryListValues: 0,
+  DataType: 0,
+});
+const i_MessageSystemAttributeValue: D.LazyStruct = () => ({
+  StringValue: 0,
+  BinaryValue: 0,
+  StringListValues: 0,
+  BinaryListValues: 0,
+  DataType: 0,
+});

@@ -1207,7 +1207,7 @@ export const cancelTaskExecution: API.OperationMethod<
   CancelTaskExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TaskExecutionArn: 0 } },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1231,7 +1231,17 @@ export const createAgent: API.OperationMethod<
   CreateAgentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ActivationKey: 0,
+      AgentName: 0,
+      Tags: D.list(i_TagListEntry),
+      VpcEndpointId: 0,
+      SubnetArns: 0,
+      SecurityGroupArns: 0,
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1256,7 +1266,21 @@ export const createLocationAzureBlob: API.OperationMethod<
   CreateLocationAzureBlobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ContainerUrl: 0,
+      AuthenticationType: 0,
+      SasConfiguration: i_AzureBlobSasConfiguration,
+      BlobType: 0,
+      AccessTier: 0,
+      Subdirectory: 0,
+      AgentArns: 0,
+      Tags: D.list(i_TagListEntry),
+      CmkSecretConfig: i_CmkSecretConfig,
+      CustomSecretConfig: i_CustomSecretConfig,
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1284,7 +1308,18 @@ export const createLocationEfs: API.OperationMethod<
   CreateLocationEfsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Subdirectory: 0,
+      EfsFilesystemArn: 0,
+      Ec2Config: { SubnetArn: 0, SecurityGroupArns: 0 },
+      Tags: D.list(i_TagListEntry),
+      AccessPointArn: 0,
+      FileSystemAccessRoleArn: 0,
+      InTransitEncryption: 0,
+    },
+  },
   errors: [
     InternalException,
     InvalidRequestException,
@@ -1314,7 +1349,15 @@ export const createLocationFsxLustre: API.OperationMethod<
   CreateLocationFsxLustreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FsxFilesystemArn: 0,
+      SecurityGroupArns: 0,
+      Subdirectory: 0,
+      Tags: D.list(i_TagListEntry),
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1339,7 +1382,16 @@ export const createLocationFsxOntap: API.OperationMethod<
   CreateLocationFsxOntapError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Protocol: i_FsxProtocol,
+      SecurityGroupArns: 0,
+      StorageVirtualMachineArn: 0,
+      Subdirectory: 0,
+      Tags: D.list(i_TagListEntry),
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1368,7 +1420,16 @@ export const createLocationFsxOpenZfs: API.OperationMethod<
   CreateLocationFsxOpenZfsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FsxFilesystemArn: 0,
+      Protocol: i_FsxProtocol,
+      SecurityGroupArns: 0,
+      Subdirectory: 0,
+      Tags: D.list(i_TagListEntry),
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1394,7 +1455,20 @@ export const createLocationFsxWindows: API.OperationMethod<
   CreateLocationFsxWindowsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Subdirectory: 0,
+      FsxFilesystemArn: 0,
+      SecurityGroupArns: 0,
+      Tags: D.list(i_TagListEntry),
+      User: 0,
+      Domain: 0,
+      Password: 0,
+      CmkSecretConfig: i_CmkSecretConfig,
+      CustomSecretConfig: i_CustomSecretConfig,
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1420,7 +1494,26 @@ export const createLocationHdfs: API.OperationMethod<
   CreateLocationHdfsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Subdirectory: 0,
+      NameNodes: D.list(i_HdfsNameNode),
+      BlockSize: 0,
+      ReplicationFactor: 0,
+      KmsKeyProviderUri: 0,
+      QopConfiguration: i_QopConfiguration,
+      AuthenticationType: 0,
+      SimpleUser: 0,
+      KerberosPrincipal: 0,
+      KerberosKeytab: 0,
+      KerberosKrb5Conf: 0,
+      AgentArns: 0,
+      Tags: D.list(i_TagListEntry),
+      CmkSecretConfig: i_CmkSecretConfig,
+      CustomSecretConfig: i_CustomSecretConfig,
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1446,7 +1539,16 @@ export const createLocationNfs: API.OperationMethod<
   CreateLocationNfsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Subdirectory: 0,
+      ServerHostname: 0,
+      OnPremConfig: i_OnPremConfig,
+      MountOptions: i_NfsMountOptions,
+      Tags: D.list(i_TagListEntry),
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1470,7 +1572,23 @@ export const createLocationObjectStorage: API.OperationMethod<
   CreateLocationObjectStorageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ServerHostname: 0,
+      ServerPort: 0,
+      ServerProtocol: 0,
+      Subdirectory: 0,
+      BucketName: 0,
+      AccessKey: 0,
+      SecretKey: 0,
+      AgentArns: 0,
+      Tags: D.list(i_TagListEntry),
+      ServerCertificate: 0,
+      CmkSecretConfig: i_CmkSecretConfig,
+      CustomSecretConfig: i_CustomSecretConfig,
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1504,7 +1622,17 @@ export const createLocationS3: API.OperationMethod<
   CreateLocationS3Error,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Subdirectory: 0,
+      S3BucketArn: 0,
+      S3StorageClass: 0,
+      S3Config: i_S3Config,
+      AgentArns: 0,
+      Tags: D.list(i_TagListEntry),
+    },
+  },
   errors: [
     InternalException,
     InvalidRequestException,
@@ -1534,7 +1662,26 @@ export const createLocationSmb: API.OperationMethod<
   CreateLocationSmbError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Subdirectory: 0,
+      ServerHostname: 0,
+      User: 0,
+      Domain: 0,
+      Password: 0,
+      CmkSecretConfig: i_CmkSecretConfig,
+      CustomSecretConfig: i_CustomSecretConfig,
+      AgentArns: 0,
+      MountOptions: i_SmbMountOptions,
+      Tags: D.list(i_TagListEntry),
+      AuthenticationType: 0,
+      DnsIpAddresses: 0,
+      KerberosPrincipal: 0,
+      KerberosKeytab: 0,
+      KerberosKrb5Conf: 0,
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1564,7 +1711,23 @@ export const createTask: API.OperationMethod<
   CreateTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SourceLocationArn: 0,
+      DestinationLocationArn: 0,
+      CloudWatchLogGroupArn: 0,
+      Name: 0,
+      Options: i_Options,
+      Excludes: D.list(i_FilterRule),
+      Schedule: i_TaskSchedule,
+      Tags: D.list(i_TagListEntry),
+      Includes: D.list(i_FilterRule),
+      ManifestConfig: i_ManifestConfig,
+      TaskReportConfig: i_TaskReportConfig,
+      TaskMode: 0,
+    },
+  },
   errors: [
     InternalException,
     InvalidRequestException,
@@ -1593,7 +1756,7 @@ export const deleteAgent: API.OperationMethod<
   DeleteAgentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AgentArn: 0 } },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1614,7 +1777,7 @@ export const deleteLocation: API.OperationMethod<
   DeleteLocationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LocationArn: 0 } },
   errors: [InternalException, InvalidRequestException, LocationNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1635,7 +1798,7 @@ export const deleteTask: API.OperationMethod<
   DeleteTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TaskArn: 0 } },
   errors: [InternalException, InvalidRequestException, TaskNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1658,6 +1821,7 @@ export const describeAgent: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AgentArn: 0 },
     output: { LastConnectionTime: D.ts, CreationTime: D.ts },
   },
   errors: [InternalException, InvalidRequestException],
@@ -1680,7 +1844,11 @@ export const describeLocationAzureBlob: API.OperationMethod<
   DescribeLocationAzureBlobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { LocationArn: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1701,7 +1869,11 @@ export const describeLocationEfs: API.OperationMethod<
   DescribeLocationEfsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { LocationArn: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [InternalException, InvalidRequestException, LocationNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1721,7 +1893,11 @@ export const describeLocationFsxLustre: API.OperationMethod<
   DescribeLocationFsxLustreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { LocationArn: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1746,6 +1922,7 @@ export const describeLocationFsxOntap: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { LocationArn: 0 },
     output: { CreationTime: D.ts, Protocol: o_FsxProtocol },
   },
   errors: [InternalException, InvalidRequestException],
@@ -1772,6 +1949,7 @@ export const describeLocationFsxOpenZfs: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { LocationArn: 0 },
     output: { Protocol: o_FsxProtocol, CreationTime: D.ts },
   },
   errors: [InternalException, InvalidRequestException],
@@ -1793,7 +1971,11 @@ export const describeLocationFsxWindows: API.OperationMethod<
   DescribeLocationFsxWindowsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { LocationArn: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1814,7 +1996,11 @@ export const describeLocationHdfs: API.OperationMethod<
   DescribeLocationHdfsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { LocationArn: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1835,7 +2021,11 @@ export const describeLocationNfs: API.OperationMethod<
   DescribeLocationNfsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { LocationArn: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1858,6 +2048,7 @@ export const describeLocationObjectStorage: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { LocationArn: 0 },
     output: { CreationTime: D.ts, ServerCertificate: D.blob },
   },
   errors: [InternalException, InvalidRequestException],
@@ -1881,7 +2072,11 @@ export const describeLocationS3: API.OperationMethod<
   DescribeLocationS3Error,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { LocationArn: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [InternalException, InvalidRequestException, LocationNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1902,7 +2097,11 @@ export const describeLocationSmb: API.OperationMethod<
   DescribeLocationSmbError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { LocationArn: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1926,6 +2125,7 @@ export const describeTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TaskArn: 0 },
     output: { CreationTime: D.ts, ScheduleDetails: { StatusUpdateTime: D.ts } },
   },
   errors: [InternalException, InvalidRequestException, TaskNotFound],
@@ -1955,6 +2155,7 @@ export const describeTaskExecution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TaskExecutionArn: 0 },
     output: { StartTime: D.ts, LaunchTime: D.ts, EndTime: D.ts },
   },
   errors: [InternalException, InvalidRequestException],
@@ -1988,7 +2189,7 @@ export const listAgents: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AgentListEntry
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2019,7 +2220,14 @@ export const listLocations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   LocationListEntry
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list({ Name: 0, Values: 0, Operator: 0 }),
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2046,7 +2254,10 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TagListEntry
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2073,7 +2284,10 @@ export const listTaskExecutions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TaskExecutionListEntry
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TaskArn: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2100,7 +2314,14 @@ export const listTasks: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TaskListEntry
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list({ Name: 0, Values: 0, Operator: 0 }),
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2135,7 +2356,18 @@ export const startTaskExecution: API.OperationMethod<
   StartTaskExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TaskArn: 0,
+      OverrideOptions: i_Options,
+      Includes: D.list(i_FilterRule),
+      Excludes: D.list(i_FilterRule),
+      ManifestConfig: i_ManifestConfig,
+      TaskReportConfig: i_TaskReportConfig,
+      Tags: D.list(i_TagListEntry),
+    },
+  },
   errors: [
     InternalException,
     InvalidRequestException,
@@ -2163,7 +2395,10 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, Tags: D.list(i_TagListEntry) },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2183,7 +2418,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Keys: 0 } },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2203,7 +2438,7 @@ export const updateAgent: API.OperationMethod<
   UpdateAgentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AgentArn: 0, Name: 0 } },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2226,7 +2461,20 @@ export const updateLocationAzureBlob: API.OperationMethod<
   UpdateLocationAzureBlobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LocationArn: 0,
+      Subdirectory: 0,
+      AuthenticationType: 0,
+      SasConfiguration: i_AzureBlobSasConfiguration,
+      BlobType: 0,
+      AccessTier: 0,
+      AgentArns: 0,
+      CmkSecretConfig: i_CmkSecretConfig,
+      CustomSecretConfig: i_CustomSecretConfig,
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2250,7 +2498,16 @@ export const updateLocationEfs: API.OperationMethod<
   UpdateLocationEfsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LocationArn: 0,
+      Subdirectory: 0,
+      AccessPointArn: 0,
+      FileSystemAccessRoleArn: 0,
+      InTransitEncryption: 0,
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2274,7 +2531,7 @@ export const updateLocationFsxLustre: API.OperationMethod<
   UpdateLocationFsxLustreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LocationArn: 0, Subdirectory: 0 } },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2298,7 +2555,24 @@ export const updateLocationFsxOntap: API.OperationMethod<
   UpdateLocationFsxOntapError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LocationArn: 0,
+      Protocol: {
+        NFS: i_FsxProtocolNfs,
+        SMB: {
+          Domain: 0,
+          MountOptions: i_SmbMountOptions,
+          Password: 0,
+          User: 0,
+          CmkSecretConfig: i_CmkSecretConfig,
+          CustomSecretConfig: i_CustomSecretConfig,
+        },
+      },
+      Subdirectory: 0,
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2325,7 +2599,10 @@ export const updateLocationFsxOpenZfs: API.OperationMethod<
   UpdateLocationFsxOpenZfsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { LocationArn: 0, Protocol: i_FsxProtocol, Subdirectory: 0 },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2349,7 +2626,18 @@ export const updateLocationFsxWindows: API.OperationMethod<
   UpdateLocationFsxWindowsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LocationArn: 0,
+      Subdirectory: 0,
+      Domain: 0,
+      User: 0,
+      Password: 0,
+      CmkSecretConfig: i_CmkSecretConfig,
+      CustomSecretConfig: i_CustomSecretConfig,
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2373,7 +2661,26 @@ export const updateLocationHdfs: API.OperationMethod<
   UpdateLocationHdfsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LocationArn: 0,
+      Subdirectory: 0,
+      NameNodes: D.list(i_HdfsNameNode),
+      BlockSize: 0,
+      ReplicationFactor: 0,
+      KmsKeyProviderUri: 0,
+      QopConfiguration: i_QopConfiguration,
+      AuthenticationType: 0,
+      SimpleUser: 0,
+      KerberosPrincipal: 0,
+      KerberosKeytab: 0,
+      KerberosKrb5Conf: 0,
+      AgentArns: 0,
+      CmkSecretConfig: i_CmkSecretConfig,
+      CustomSecretConfig: i_CustomSecretConfig,
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2397,7 +2704,16 @@ export const updateLocationNfs: API.OperationMethod<
   UpdateLocationNfsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LocationArn: 0,
+      Subdirectory: 0,
+      ServerHostname: 0,
+      OnPremConfig: i_OnPremConfig,
+      MountOptions: i_NfsMountOptions,
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2421,7 +2737,22 @@ export const updateLocationObjectStorage: API.OperationMethod<
   UpdateLocationObjectStorageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LocationArn: 0,
+      ServerPort: 0,
+      ServerProtocol: 0,
+      Subdirectory: 0,
+      ServerHostname: 0,
+      AccessKey: 0,
+      SecretKey: 0,
+      AgentArns: 0,
+      ServerCertificate: 0,
+      CmkSecretConfig: i_CmkSecretConfig,
+      CustomSecretConfig: i_CustomSecretConfig,
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2449,7 +2780,15 @@ export const updateLocationS3: API.OperationMethod<
   UpdateLocationS3Error,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LocationArn: 0,
+      Subdirectory: 0,
+      S3StorageClass: 0,
+      S3Config: i_S3Config,
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2473,7 +2812,26 @@ export const updateLocationSmb: API.OperationMethod<
   UpdateLocationSmbError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LocationArn: 0,
+      Subdirectory: 0,
+      ServerHostname: 0,
+      User: 0,
+      Domain: 0,
+      Password: 0,
+      CmkSecretConfig: i_CmkSecretConfig,
+      CustomSecretConfig: i_CustomSecretConfig,
+      AgentArns: 0,
+      MountOptions: i_SmbMountOptions,
+      AuthenticationType: 0,
+      DnsIpAddresses: 0,
+      KerberosPrincipal: 0,
+      KerberosKeytab: 0,
+      KerberosKrb5Conf: 0,
+    },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2495,7 +2853,20 @@ export const updateTask: API.OperationMethod<
   UpdateTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TaskArn: 0,
+      Options: i_Options,
+      Excludes: D.list(i_FilterRule),
+      Schedule: i_TaskSchedule,
+      Name: 0,
+      CloudWatchLogGroupArn: 0,
+      Includes: D.list(i_FilterRule),
+      ManifestConfig: i_ManifestConfig,
+      TaskReportConfig: i_TaskReportConfig,
+    },
+  },
   errors: [InternalException, InvalidRequestException, TaskNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2521,11 +2892,94 @@ export const updateTaskExecution: API.OperationMethod<
   UpdateTaskExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TaskExecutionArn: 0, Options: i_Options },
+  },
   errors: [InternalException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "UpdateTaskExecution",
 })) as any;
 
+const i_AzureBlobSasConfiguration: D.LazyStruct = () => ({ Token: 0 });
+const i_CmkSecretConfig: D.LazyStruct = () => ({ SecretArn: 0, KmsKeyArn: 0 });
+const i_CustomSecretConfig: D.LazyStruct = () => ({
+  SecretArn: 0,
+  SecretAccessRoleArn: 0,
+});
+const i_FilterRule: D.LazyStruct = () => ({ FilterType: 0, Value: 0 });
+const i_FsxProtocol: D.LazyStruct = () => ({
+  NFS: i_FsxProtocolNfs,
+  SMB: {
+    Domain: 0,
+    MountOptions: i_SmbMountOptions,
+    Password: 0,
+    User: 0,
+    ManagedSecretConfig: { SecretArn: 0 },
+    CmkSecretConfig: i_CmkSecretConfig,
+    CustomSecretConfig: i_CustomSecretConfig,
+  },
+});
+const i_FsxProtocolNfs: D.LazyStruct = () => ({
+  MountOptions: i_NfsMountOptions,
+});
+const i_HdfsNameNode: D.LazyStruct = () => ({ Hostname: 0, Port: 0 });
+const i_ManifestConfig: D.LazyStruct = () => ({
+  Action: 0,
+  Format: 0,
+  Source: {
+    S3: {
+      ManifestObjectPath: 0,
+      BucketAccessRoleArn: 0,
+      S3BucketArn: 0,
+      ManifestObjectVersionId: 0,
+    },
+  },
+});
+const i_NfsMountOptions: D.LazyStruct = () => ({ Version: 0 });
+const i_OnPremConfig: D.LazyStruct = () => ({ AgentArns: 0 });
+const i_Options: D.LazyStruct = () => ({
+  VerifyMode: 0,
+  OverwriteMode: 0,
+  Atime: 0,
+  Mtime: 0,
+  Uid: 0,
+  Gid: 0,
+  PreserveDeletedFiles: 0,
+  PreserveDevices: 0,
+  PosixPermissions: 0,
+  BytesPerSecond: 0,
+  TaskQueueing: 0,
+  LogLevel: 0,
+  TransferMode: 0,
+  SecurityDescriptorCopyFlags: 0,
+  ObjectTags: 0,
+});
+const i_QopConfiguration: D.LazyStruct = () => ({
+  RpcProtection: 0,
+  DataTransferProtection: 0,
+});
+const i_S3Config: D.LazyStruct = () => ({ BucketAccessRoleArn: 0 });
+const i_SmbMountOptions: D.LazyStruct = () => ({ Version: 0 });
+const i_TagListEntry: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_TaskReportConfig: D.LazyStruct = () => ({
+  Destination: {
+    S3: { Subdirectory: 0, S3BucketArn: 0, BucketAccessRoleArn: 0 },
+  },
+  OutputType: 0,
+  ReportLevel: 0,
+  ObjectVersionIds: 0,
+  Overrides: {
+    Transferred: i_ReportOverride,
+    Verified: i_ReportOverride,
+    Deleted: i_ReportOverride,
+    Skipped: i_ReportOverride,
+  },
+});
+const i_TaskSchedule: D.LazyStruct = () => ({
+  ScheduleExpression: 0,
+  Status: 0,
+});
 const o_FsxProtocol: D.LazyStruct = () => ({ SMB: { Password: D.secret } });
+const i_ReportOverride: D.LazyStruct = () => ({ ReportLevel: 0 });

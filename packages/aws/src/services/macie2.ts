@@ -1932,7 +1932,12 @@ export const acceptInvitation: API.OperationMethod<
   AcceptInvitationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /invitations/accept", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /invitations/accept",
+    input: { administratorAccountId: 0, invitationId: 0, masterAccount: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1968,6 +1973,7 @@ export const batchGetCustomDataIdentifiers: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /custom-data-identifiers/get",
+    input: { ids: 0 },
     output: { customDataIdentifiers: D.list({ createdAt: D.ts }) },
     body: true,
   },
@@ -2004,6 +2010,7 @@ export const batchUpdateAutomatedDiscoveryAccounts: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /automated-discovery/accounts",
+    input: { accounts: D.list({ accountId: 0, status: 0 }) },
     body: true,
   },
   errors: [
@@ -2040,7 +2047,13 @@ export const createAllowList: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /allow-lists",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      criteria: i_AllowListCriteria,
+      description: 0,
+      name: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -2080,7 +2093,32 @@ export const createClassificationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /jobs",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      allowListIds: 0,
+      clientToken: D.m({ idempotency: true }),
+      customDataIdentifierIds: 0,
+      description: 0,
+      initialRun: 0,
+      jobType: 0,
+      managedDataIdentifierIds: 0,
+      managedDataIdentifierSelector: 0,
+      name: 0,
+      s3JobDefinition: {
+        bucketCriteria: {
+          excludes: i_CriteriaBlockForJob,
+          includes: i_CriteriaBlockForJob,
+        },
+        bucketDefinitions: D.list({ accountId: 0, buckets: 0 }),
+        scoping: { excludes: i_JobScopingBlock, includes: i_JobScopingBlock },
+      },
+      samplingPercentage: 0,
+      scheduleFrequency: {
+        dailySchedule: {},
+        monthlySchedule: { dayOfMonth: 0 },
+        weeklySchedule: { dayOfWeek: 0 },
+      },
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -2120,7 +2158,17 @@ export const createCustomDataIdentifier: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /custom-data-identifiers",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      description: 0,
+      ignoreWords: 0,
+      keywords: 0,
+      maximumMatchDistance: 0,
+      name: 0,
+      regex: 0,
+      severityLevels: D.list({ occurrencesThreshold: 0, severity: 0 }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -2160,7 +2208,15 @@ export const createFindingsFilter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /findingsfilters",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      action: 0,
+      clientToken: D.m({ idempotency: true }),
+      description: 0,
+      findingCriteria: i_FindingCriteria,
+      name: 0,
+      position: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -2196,7 +2252,12 @@ export const createInvitations: API.OperationMethod<
   CreateInvitationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /invitations", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /invitations",
+    input: { accountIds: 0, disableEmailNotification: 0, message: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2229,7 +2290,12 @@ export const createMember: API.OperationMethod<
   CreateMemberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /members", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /members",
+    input: { account: { accountId: 0, email: 0 }, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2262,7 +2328,12 @@ export const createSampleFindings: API.OperationMethod<
   CreateSampleFindingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /findings/sample", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /findings/sample",
+    input: { findingTypes: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2295,7 +2366,12 @@ export const declineInvitations: API.OperationMethod<
   DeclineInvitationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /invitations/decline", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /invitations/decline",
+    input: { accountIds: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2329,7 +2405,7 @@ export const deleteAllowList: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /allow-lists/{id}",
-    input: { ignoreJobChecks: D.m({ query: "ignoreJobChecks" }) },
+    input: { id: 0, ignoreJobChecks: D.m({ query: "ignoreJobChecks" }) },
   },
   errors: [
     AccessDeniedException,
@@ -2361,7 +2437,11 @@ export const deleteCustomDataIdentifier: API.OperationMethod<
   DeleteCustomDataIdentifierError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /custom-data-identifiers/{id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /custom-data-identifiers/{id}",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2394,7 +2474,11 @@ export const deleteFindingsFilter: API.OperationMethod<
   DeleteFindingsFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /findingsfilters/{id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /findingsfilters/{id}",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2427,7 +2511,12 @@ export const deleteInvitations: API.OperationMethod<
   DeleteInvitationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /invitations/delete", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /invitations/delete",
+    input: { accountIds: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2460,7 +2549,7 @@ export const deleteMember: API.OperationMethod<
   DeleteMemberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /members/{id}" },
+  descriptor: { service: svc, http: "DELETE /members/{id}", input: { id: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2497,6 +2586,20 @@ export const describeBuckets: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datasources/s3",
+    input: {
+      criteria: D.map({
+        eq: 0,
+        gt: 0,
+        gte: 0,
+        lt: 0,
+        lte: 0,
+        neq: 0,
+        prefix: 0,
+      }),
+      maxResults: 0,
+      nextToken: 0,
+      sortCriteria: { attributeName: 0, orderBy: 0 },
+    },
     output: {
       buckets: D.list({
         bucketCreatedAt: D.ts,
@@ -2548,6 +2651,7 @@ export const describeClassificationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /jobs/{jobId}",
+    input: { jobId: 0 },
     output: {
       createdAt: D.ts,
       lastRunTime: D.ts,
@@ -2586,7 +2690,7 @@ export const describeOrganizationConfiguration: API.OperationMethod<
   DescribeOrganizationConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /admin/configuration" },
+  descriptor: { service: svc, http: "GET /admin/configuration", input: {} },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2619,7 +2723,7 @@ export const disableMacie: API.OperationMethod<
   DisableMacieError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /macie" },
+  descriptor: { service: svc, http: "DELETE /macie", input: {} },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2689,7 +2793,11 @@ export const disassociateFromAdministratorAccount: API.OperationMethod<
   DisassociateFromAdministratorAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /administrator/disassociate" },
+  descriptor: {
+    service: svc,
+    http: "POST /administrator/disassociate",
+    input: {},
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2722,7 +2830,7 @@ export const disassociateFromMasterAccount: API.OperationMethod<
   DisassociateFromMasterAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /master/disassociate" },
+  descriptor: { service: svc, http: "POST /master/disassociate", input: {} },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2755,7 +2863,11 @@ export const disassociateMember: API.OperationMethod<
   DisassociateMemberError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /members/disassociate/{id}" },
+  descriptor: {
+    service: svc,
+    http: "POST /members/disassociate/{id}",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2791,7 +2903,11 @@ export const enableMacie: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /macie",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      findingPublishingFrequency: 0,
+      status: 0,
+    },
     body: true,
   },
   errors: [
@@ -2829,7 +2945,7 @@ export const enableOrganizationAdminAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /admin",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { adminAccountId: 0, clientToken: D.m({ idempotency: true }) },
     body: true,
   },
   errors: [
@@ -2867,6 +2983,7 @@ export const getAdministratorAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /administrator",
+    input: {},
     output: { administrator: o_Invitation },
   },
   errors: [
@@ -2902,6 +3019,7 @@ export const getAllowList: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /allow-lists/{id}",
+    input: { id: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -2934,6 +3052,7 @@ export const getAutomatedDiscoveryConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /automated-discovery/configuration",
+    input: {},
     output: { disabledAt: D.ts, firstEnabledAt: D.ts, lastUpdatedAt: D.ts },
   },
   errors: [
@@ -2968,6 +3087,7 @@ export const getBucketStatistics: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datasources/s3/statistics",
+    input: { accountId: 0 },
     output: { lastUpdated: D.ts },
     body: true,
   },
@@ -3006,6 +3126,7 @@ export const getClassificationExportConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /classification-export-configuration",
+    input: {},
   },
   errors: [
     AccessDeniedException,
@@ -3037,7 +3158,11 @@ export const getClassificationScope: API.OperationMethod<
   GetClassificationScopeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /classification-scopes/{id}" },
+  descriptor: {
+    service: svc,
+    http: "GET /classification-scopes/{id}",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3071,6 +3196,7 @@ export const getCustomDataIdentifier: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /custom-data-identifiers/{id}",
+    input: { id: 0 },
     output: { createdAt: D.ts },
   },
   errors: [
@@ -3108,6 +3234,7 @@ export const getFindings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /findings/describe",
+    input: { findingIds: 0, sortCriteria: i_SortCriteria },
     output: {
       findings: D.list({
         createdAt: D.ts,
@@ -3161,7 +3288,11 @@ export const getFindingsFilter: API.OperationMethod<
   GetFindingsFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /findingsfilters/{id}" },
+  descriptor: {
+    service: svc,
+    http: "GET /findingsfilters/{id}",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3194,7 +3325,11 @@ export const getFindingsPublicationConfiguration: API.OperationMethod<
   GetFindingsPublicationConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /findings-publication-configuration" },
+  descriptor: {
+    service: svc,
+    http: "GET /findings-publication-configuration",
+    input: {},
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3227,7 +3362,17 @@ export const getFindingStatistics: API.OperationMethod<
   GetFindingStatisticsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /findings/statistics", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /findings/statistics",
+    input: {
+      findingCriteria: i_FindingCriteria,
+      groupBy: 0,
+      size: 0,
+      sortCriteria: { attributeName: 0, orderBy: 0 },
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3260,7 +3405,7 @@ export const getInvitationsCount: API.OperationMethod<
   GetInvitationsCountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /invitations/count" },
+  descriptor: { service: svc, http: "GET /invitations/count", input: {} },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3296,6 +3441,7 @@ export const getMacieSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /macie",
+    input: {},
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -3333,6 +3479,7 @@ export const getMasterAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /master",
+    input: {},
     output: { master: o_Invitation },
   },
   errors: [
@@ -3370,6 +3517,7 @@ export const getMember: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /members/{id}",
+    input: { id: 0 },
     output: { invitedAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -3437,7 +3585,7 @@ export const getRevealConfiguration: API.OperationMethod<
   GetRevealConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /reveal-configuration" },
+  descriptor: { service: svc, http: "GET /reveal-configuration", input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3469,6 +3617,7 @@ export const getSensitiveDataOccurrences: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /findings/{findingId}/reveal",
+    input: { findingId: 0 },
     output: { sensitiveDataOccurrences: D.map(D.list({ value: D.secret })) },
   },
   errors: [
@@ -3502,6 +3651,7 @@ export const getSensitiveDataOccurrencesAvailability: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /findings/{findingId}/reveal/availability",
+    input: { findingId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3533,6 +3683,7 @@ export const getSensitivityInspectionTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /templates/sensitivity-inspections/{id}",
+    input: { id: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3568,6 +3719,13 @@ export const getUsageStatistics: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /usage/statistics",
+    input: {
+      filterBy: D.list({ comparator: 0, key: 0, values: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+      sortBy: { key: 0, orderBy: 0 },
+      timeRange: 0,
+    },
     output: {
       records: D.list({
         automatedDiscoveryFreeTrialStartDate: D.ts,
@@ -3741,6 +3899,15 @@ export const listClassificationJobs: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /jobs/list",
+    input: {
+      filterCriteria: {
+        excludes: D.list(i_ListJobsFilterTerm),
+        includes: D.list(i_ListJobsFilterTerm),
+      },
+      maxResults: 0,
+      nextToken: 0,
+      sortCriteria: { attributeName: 0, orderBy: 0 },
+    },
     output: {
       items: D.list({
         createdAt: D.ts,
@@ -3831,6 +3998,7 @@ export const listCustomDataIdentifiers: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /custom-data-identifiers/list",
+    input: { maxResults: 0, nextToken: 0 },
     output: { items: D.list({ createdAt: D.ts }) },
     body: true,
   },
@@ -3873,7 +4041,17 @@ export const listFindings: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   string
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /findings", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /findings",
+    input: {
+      findingCriteria: i_FindingCriteria,
+      maxResults: 0,
+      nextToken: 0,
+      sortCriteria: i_SortCriteria,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4003,6 +4181,7 @@ export const listManagedDataIdentifiers: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /managed-data-identifiers/list",
+    input: { nextToken: 0 },
     body: true,
   },
   errors: [],
@@ -4253,7 +4432,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4281,6 +4464,16 @@ export const putClassificationExportConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /classification-export-configuration",
+    input: {
+      configuration: {
+        s3Destination: {
+          bucketName: 0,
+          expectedBucketOwner: 0,
+          keyPrefix: 0,
+          kmsKeyArn: 0,
+        },
+      },
+    },
     body: true,
   },
   errors: [
@@ -4318,7 +4511,13 @@ export const putFindingsPublicationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /findings-publication-configuration",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      securityHubConfiguration: {
+        publishClassificationFindings: 0,
+        publishPolicyFindings: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -4357,6 +4556,15 @@ export const searchResources: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datasources/search-resources",
+    input: {
+      bucketCriteria: {
+        excludes: i_SearchResourcesCriteriaBlock,
+        includes: i_SearchResourcesCriteriaBlock,
+      },
+      maxResults: 0,
+      nextToken: 0,
+      sortCriteria: { attributeName: 0, orderBy: 0 },
+    },
     output: {
       matchingResources: D.list({
         matchingBucket: {
@@ -4397,7 +4605,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4425,6 +4638,13 @@ export const testCustomDataIdentifier: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /custom-data-identifiers/test",
+    input: {
+      ignoreWords: 0,
+      keywords: 0,
+      maximumMatchDistance: 0,
+      regex: 0,
+      sampleText: 0,
+    },
     body: true,
   },
   errors: [
@@ -4454,7 +4674,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [],
   protocol: AwsProtocol,
@@ -4478,7 +4698,12 @@ export const updateAllowList: API.OperationMethod<
   UpdateAllowListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /allow-lists/{id}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /allow-lists/{id}",
+    input: { criteria: i_AllowListCriteria, description: 0, id: 0, name: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4509,6 +4734,7 @@ export const updateAutomatedDiscoveryConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /automated-discovery/configuration",
+    input: { autoEnableOrganizationMembers: 0, status: 0 },
     body: true,
   },
   errors: [
@@ -4540,7 +4766,12 @@ export const updateClassificationJob: API.OperationMethod<
   UpdateClassificationJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /jobs/{jobId}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /jobs/{jobId}",
+    input: { jobId: 0, jobStatus: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4574,6 +4805,7 @@ export const updateClassificationScope: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /classification-scopes/{id}",
+    input: { id: 0, s3: { excludes: { bucketNames: 0, operation: 0 } } },
     body: true,
   },
   errors: [
@@ -4609,7 +4841,15 @@ export const updateFindingsFilter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /findingsfilters/{id}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      action: 0,
+      clientToken: D.m({ idempotency: true }),
+      description: 0,
+      findingCriteria: i_FindingCriteria,
+      id: 0,
+      name: 0,
+      position: 0,
+    },
     body: true,
   },
   errors: [
@@ -4644,7 +4884,12 @@ export const updateMacieSession: API.OperationMethod<
   UpdateMacieSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /macie", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /macie",
+    input: { findingPublishingFrequency: 0, status: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4677,7 +4922,12 @@ export const updateMemberSession: API.OperationMethod<
   UpdateMemberSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /macie/members/{id}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /macie/members/{id}",
+    input: { id: 0, status: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4710,7 +4960,12 @@ export const updateOrganizationConfiguration: API.OperationMethod<
   UpdateOrganizationConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /admin/configuration", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /admin/configuration",
+    input: { autoEnable: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4745,7 +5000,10 @@ export const updateResourceProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /resource-profiles",
-    input: { resourceArn: D.m({ query: "resourceArn" }) },
+    input: {
+      resourceArn: D.m({ query: "resourceArn" }),
+      sensitivityScoreOverride: 0,
+    },
     body: true,
   },
   errors: [
@@ -4781,7 +5039,10 @@ export const updateResourceProfileDetections: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /resource-profiles/detections",
-    input: { resourceArn: D.m({ query: "resourceArn" }) },
+    input: {
+      resourceArn: D.m({ query: "resourceArn" }),
+      suppressDataIdentifiers: D.list({ id: 0, type: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -4812,7 +5073,15 @@ export const updateRevealConfiguration: API.OperationMethod<
   UpdateRevealConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /reveal-configuration", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /reveal-configuration",
+    input: {
+      configuration: { kmsKeyId: 0, status: 0 },
+      retrievalConfiguration: { retrievalMode: 0, roleName: 0 },
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4843,6 +5112,16 @@ export const updateSensitivityInspectionTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /templates/sensitivity-inspections/{id}",
+    input: {
+      description: 0,
+      excludes: { managedDataIdentifierIds: 0 },
+      id: 0,
+      includes: {
+        allowListIds: 0,
+        customDataIdentifierIds: 0,
+        managedDataIdentifierIds: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -4857,6 +5136,50 @@ export const updateSensitivityInspectionTemplate: API.OperationMethod<
   operationName: "UpdateSensitivityInspectionTemplate",
 })) as any;
 
+const i_AllowListCriteria: D.LazyStruct = () => ({
+  regex: 0,
+  s3WordsList: { bucketName: 0, objectKey: 0 },
+});
+const i_CriteriaBlockForJob: D.LazyStruct = () => ({
+  and: D.list({
+    simpleCriterion: { comparator: 0, key: 0, values: 0 },
+    tagCriterion: { comparator: 0, tagValues: D.list({ key: 0, value: 0 }) },
+  }),
+});
+const i_FindingCriteria: D.LazyStruct = () => ({
+  criterion: D.map({
+    eq: 0,
+    eqExactMatch: 0,
+    gt: 0,
+    gte: 0,
+    lt: 0,
+    lte: 0,
+    neq: 0,
+  }),
+});
+const i_JobScopingBlock: D.LazyStruct = () => ({
+  and: D.list({
+    simpleScopeTerm: { comparator: 0, key: 0, values: 0 },
+    tagScopeTerm: {
+      comparator: 0,
+      key: 0,
+      tagValues: D.list({ key: 0, value: 0 }),
+      target: 0,
+    },
+  }),
+});
+const i_ListJobsFilterTerm: D.LazyStruct = () => ({
+  comparator: 0,
+  key: 0,
+  values: 0,
+});
+const i_SearchResourcesCriteriaBlock: D.LazyStruct = () => ({
+  and: D.list({
+    simpleCriterion: { comparator: 0, key: 0, values: 0 },
+    tagCriterion: { comparator: 0, tagValues: D.list({ key: 0, value: 0 }) },
+  }),
+});
+const i_SortCriteria: D.LazyStruct = () => ({ attributeName: 0, orderBy: 0 });
 const o_Invitation: D.LazyStruct = () => ({ invitedAt: D.ts });
 const o_JobDetails: D.LazyStruct = () => ({ lastJobRunTime: D.ts });
 const o_SessionContext: D.LazyStruct = () => ({

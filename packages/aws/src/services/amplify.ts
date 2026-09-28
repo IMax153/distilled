@@ -888,6 +888,30 @@ export const createApp: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps",
+    input: {
+      name: 0,
+      description: 0,
+      repository: 0,
+      platform: 0,
+      computeRoleArn: 0,
+      iamServiceRoleArn: 0,
+      oauthToken: 0,
+      accessToken: 0,
+      environmentVariables: 0,
+      enableBranchAutoBuild: 0,
+      enableBranchAutoDeletion: 0,
+      enableBasicAuth: 0,
+      basicAuthCredentials: 0,
+      customRules: D.list(i_CustomRule),
+      tags: 0,
+      buildSpec: 0,
+      customHeaders: 0,
+      enableAutoBranchCreation: 0,
+      autoBranchCreationPatterns: 0,
+      autoBranchCreationConfig: i_AutoBranchCreationConfig,
+      jobConfig: i_JobConfig,
+      cacheConfig: i_CacheConfig,
+    },
     output: { app: o_App },
     body: true,
   },
@@ -930,6 +954,12 @@ export const createBackendEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps/{appId}/backendenvironments",
+    input: {
+      appId: 0,
+      environmentName: 0,
+      stackName: 0,
+      deploymentArtifacts: 0,
+    },
     output: { backendEnvironment: o_BackendEnvironment },
     body: true,
   },
@@ -967,6 +997,29 @@ export const createBranch: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps/{appId}/branches",
+    input: {
+      appId: 0,
+      branchName: 0,
+      description: 0,
+      stage: 0,
+      framework: 0,
+      enableNotification: 0,
+      enableAutoBuild: 0,
+      enableSkewProtection: 0,
+      environmentVariables: 0,
+      basicAuthCredentials: 0,
+      enableBasicAuth: 0,
+      enablePerformanceMode: 0,
+      tags: 0,
+      buildSpec: 0,
+      ttl: 0,
+      displayName: 0,
+      enablePullRequestPreview: 0,
+      pullRequestEnvironmentName: 0,
+      backendEnvironmentArn: 0,
+      backend: i_Backend,
+      computeRoleArn: 0,
+    },
     output: { branch: o_Branch },
     body: true,
   },
@@ -1009,6 +1062,7 @@ export const createDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps/{appId}/branches/{branchName}/deployments",
+    input: { appId: 0, branchName: 0, fileMap: 0 },
     body: true,
   },
   errors: [
@@ -1042,7 +1096,20 @@ export const createDomainAssociation: API.OperationMethod<
   CreateDomainAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /apps/{appId}/domains", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /apps/{appId}/domains",
+    input: {
+      appId: 0,
+      domainName: 0,
+      enableAutoSubDomain: 0,
+      subDomainSettings: D.list(i_SubDomainSetting),
+      autoSubDomainCreationPatterns: 0,
+      autoSubDomainIAMRole: 0,
+      certificateSettings: i_CertificateSettings,
+    },
+    body: true,
+  },
   errors: [
     BadRequestException,
     DependentServiceFailureException,
@@ -1078,6 +1145,7 @@ export const createWebhook: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps/{appId}/webhooks",
+    input: { appId: 0, branchName: 0, description: 0 },
     output: { webhook: o_Webhook },
     body: true,
   },
@@ -1115,6 +1183,7 @@ export const deleteApp: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /apps/{appId}",
+    input: { appId: 0 },
     output: { app: o_App },
   },
   errors: [
@@ -1156,6 +1225,7 @@ export const deleteBackendEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /apps/{appId}/backendenvironments/{environmentName}",
+    input: { appId: 0, environmentName: 0 },
     output: { backendEnvironment: o_BackendEnvironment },
   },
   errors: [
@@ -1191,6 +1261,7 @@ export const deleteBranch: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /apps/{appId}/branches/{branchName}",
+    input: { appId: 0, branchName: 0 },
     output: { branch: o_Branch },
   },
   errors: [
@@ -1226,6 +1297,7 @@ export const deleteDomainAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /apps/{appId}/domains/{domainName}",
+    input: { appId: 0, domainName: 0 },
   },
   errors: [
     BadRequestException,
@@ -1260,6 +1332,7 @@ export const deleteJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /apps/{appId}/branches/{branchName}/jobs/{jobId}",
+    input: { appId: 0, branchName: 0, jobId: 0 },
     output: { jobSummary: o_JobSummary },
   },
   errors: [
@@ -1295,6 +1368,7 @@ export const deleteWebhook: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /webhooks/{webhookId}",
+    input: { webhookId: 0 },
     output: { webhook: o_Webhook },
   },
   errors: [
@@ -1329,6 +1403,7 @@ export const generateAccessLogs: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps/{appId}/accesslogs",
+    input: { startTime: 0, endTime: 0, domainName: 0, appId: 0 },
     body: true,
   },
   errors: [
@@ -1362,6 +1437,7 @@ export const getApp: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /apps/{appId}",
+    input: { appId: 0 },
     output: { app: o_App },
   },
   errors: [
@@ -1393,7 +1469,11 @@ export const getArtifactUrl: API.OperationMethod<
   GetArtifactUrlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /artifacts/{artifactId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /artifacts/{artifactId}",
+    input: { artifactId: 0 },
+  },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -1432,6 +1512,7 @@ export const getBackendEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /apps/{appId}/backendenvironments/{environmentName}",
+    input: { appId: 0, environmentName: 0 },
     output: { backendEnvironment: o_BackendEnvironment },
   },
   errors: [
@@ -1465,6 +1546,7 @@ export const getBranch: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /apps/{appId}/branches/{branchName}",
+    input: { appId: 0, branchName: 0 },
     output: { branch: o_Branch },
   },
   errors: [
@@ -1495,7 +1577,11 @@ export const getDomainAssociation: API.OperationMethod<
   GetDomainAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /apps/{appId}/domains/{domainName}" },
+  descriptor: {
+    service: svc,
+    http: "GET /apps/{appId}/domains/{domainName}",
+    input: { appId: 0, domainName: 0 },
+  },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -1528,6 +1614,7 @@ export const getJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /apps/{appId}/branches/{branchName}/jobs/{jobId}",
+    input: { appId: 0, branchName: 0, jobId: 0 },
     output: {
       job: {
         summary: o_JobSummary,
@@ -1568,6 +1655,7 @@ export const getWebhook: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /webhooks/{webhookId}",
+    input: { webhookId: 0 },
     output: { webhook: o_Webhook },
   },
   errors: [
@@ -1652,6 +1740,9 @@ export const listArtifacts: API.OperationMethod<
     service: svc,
     http: "GET /apps/{appId}/branches/{branchName}/jobs/{jobId}/artifacts",
     input: {
+      appId: 0,
+      branchName: 0,
+      jobId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1693,6 +1784,7 @@ export const listBackendEnvironments: API.OperationMethod<
     service: svc,
     http: "GET /apps/{appId}/backendenvironments",
     input: {
+      appId: 0,
       environmentName: D.m({ query: "environmentName" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -1730,6 +1822,7 @@ export const listBranches: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /apps/{appId}/branches",
     input: {
+      appId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1772,6 +1865,7 @@ export const listDomainAssociations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /apps/{appId}/domains",
     input: {
+      appId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1814,6 +1908,8 @@ export const listJobs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /apps/{appId}/branches/{branchName}/jobs",
     input: {
+      appId: 0,
+      branchName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1852,7 +1948,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -1884,6 +1984,7 @@ export const listWebhooks: API.OperationMethod<
     service: svc,
     http: "GET /apps/{appId}/webhooks",
     input: {
+      appId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1927,6 +2028,13 @@ export const startDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps/{appId}/branches/{branchName}/deployments/start",
+    input: {
+      appId: 0,
+      branchName: 0,
+      jobId: 0,
+      sourceUrl: 0,
+      sourceUrlType: 0,
+    },
     output: { jobSummary: o_JobSummary },
     body: true,
   },
@@ -1963,6 +2071,16 @@ export const startJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps/{appId}/branches/{branchName}/jobs",
+    input: {
+      appId: 0,
+      branchName: 0,
+      jobId: 0,
+      jobType: 0,
+      jobReason: 0,
+      commitId: 0,
+      commitMessage: 0,
+      commitTime: 0,
+    },
     output: { jobSummary: o_JobSummary },
     body: true,
   },
@@ -1999,6 +2117,7 @@ export const stopJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /apps/{appId}/branches/{branchName}/jobs/{jobId}/stop",
+    input: { appId: 0, branchName: 0, jobId: 0 },
     output: { jobSummary: o_JobSummary },
   },
   errors: [
@@ -2029,7 +2148,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -2059,7 +2183,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     BadRequestException,
@@ -2091,6 +2215,30 @@ export const updateApp: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps/{appId}",
+    input: {
+      appId: 0,
+      name: 0,
+      description: 0,
+      platform: 0,
+      computeRoleArn: 0,
+      iamServiceRoleArn: 0,
+      environmentVariables: 0,
+      enableBranchAutoBuild: 0,
+      enableBranchAutoDeletion: 0,
+      enableBasicAuth: 0,
+      basicAuthCredentials: 0,
+      customRules: D.list(i_CustomRule),
+      buildSpec: 0,
+      customHeaders: 0,
+      enableAutoBranchCreation: 0,
+      autoBranchCreationPatterns: 0,
+      autoBranchCreationConfig: i_AutoBranchCreationConfig,
+      repository: 0,
+      oauthToken: 0,
+      accessToken: 0,
+      jobConfig: i_JobConfig,
+      cacheConfig: i_CacheConfig,
+    },
     output: { app: o_App },
     body: true,
   },
@@ -2126,6 +2274,28 @@ export const updateBranch: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps/{appId}/branches/{branchName}",
+    input: {
+      appId: 0,
+      branchName: 0,
+      description: 0,
+      framework: 0,
+      stage: 0,
+      enableNotification: 0,
+      enableAutoBuild: 0,
+      enableSkewProtection: 0,
+      environmentVariables: 0,
+      basicAuthCredentials: 0,
+      enableBasicAuth: 0,
+      enablePerformanceMode: 0,
+      buildSpec: 0,
+      ttl: 0,
+      displayName: 0,
+      enablePullRequestPreview: 0,
+      pullRequestEnvironmentName: 0,
+      backendEnvironmentArn: 0,
+      backend: i_Backend,
+      computeRoleArn: 0,
+    },
     output: { branch: o_Branch },
     body: true,
   },
@@ -2162,6 +2332,15 @@ export const updateDomainAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps/{appId}/domains/{domainName}",
+    input: {
+      appId: 0,
+      domainName: 0,
+      enableAutoSubDomain: 0,
+      subDomainSettings: D.list(i_SubDomainSetting),
+      autoSubDomainCreationPatterns: 0,
+      autoSubDomainIAMRole: 0,
+      certificateSettings: i_CertificateSettings,
+    },
     body: true,
   },
   errors: [
@@ -2197,6 +2376,7 @@ export const updateWebhook: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /webhooks/{webhookId}",
+    input: { webhookId: 0, branchName: 0, description: 0 },
     output: { webhook: o_Webhook },
     body: true,
   },
@@ -2213,6 +2393,32 @@ export const updateWebhook: API.OperationMethod<
   operationName: "UpdateWebhook",
 })) as any;
 
+const i_AutoBranchCreationConfig: D.LazyStruct = () => ({
+  stage: 0,
+  framework: 0,
+  enableAutoBuild: 0,
+  environmentVariables: 0,
+  basicAuthCredentials: 0,
+  enableBasicAuth: 0,
+  enablePerformanceMode: 0,
+  buildSpec: 0,
+  enablePullRequestPreview: 0,
+  pullRequestEnvironmentName: 0,
+});
+const i_Backend: D.LazyStruct = () => ({ stackArn: 0 });
+const i_CacheConfig: D.LazyStruct = () => ({ type: 0 });
+const i_CertificateSettings: D.LazyStruct = () => ({
+  type: 0,
+  customCertificateArn: 0,
+});
+const i_CustomRule: D.LazyStruct = () => ({
+  source: 0,
+  target: 0,
+  status: 0,
+  condition: 0,
+});
+const i_JobConfig: D.LazyStruct = () => ({ buildComputeType: 0 });
+const i_SubDomainSetting: D.LazyStruct = () => ({ prefix: 0, branchName: 0 });
 const o_App: D.LazyStruct = () => ({
   createTime: D.ts,
   updateTime: D.ts,

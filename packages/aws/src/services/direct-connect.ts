@@ -1134,7 +1134,16 @@ export const acceptDirectConnectGatewayAssociationProposal: API.OperationMethod<
   AcceptDirectConnectGatewayAssociationProposalError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      directConnectGatewayId: 0,
+      proposalId: 0,
+      associatedGatewayOwnerAccount: 0,
+      overrideAllowedPrefixesToDirectConnectGateway:
+        D.list(i_RouteFilterPrefix),
+    },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1160,7 +1169,17 @@ export const allocateConnectionOnInterconnect: API.OperationMethod<
   AllocateConnectionOnInterconnectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { loaIssueTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      bandwidth: 0,
+      connectionName: 0,
+      ownerAccount: 0,
+      interconnectId: 0,
+      vlan: 0,
+    },
+    output: { loaIssueTime: D.ts },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1187,7 +1206,18 @@ export const allocateHostedConnection: API.OperationMethod<
   AllocateHostedConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { loaIssueTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      connectionId: 0,
+      ownerAccount: 0,
+      bandwidth: 0,
+      connectionName: 0,
+      vlan: 0,
+      tags: D.list(i_Tag),
+    },
+    output: { loaIssueTime: D.ts },
+  },
   errors: [
     DirectConnectClientException,
     DirectConnectServerException,
@@ -1218,7 +1248,26 @@ export const allocatePrivateVirtualInterface: API.OperationMethod<
   AllocatePrivateVirtualInterfaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      connectionId: 0,
+      ownerAccount: 0,
+      newPrivateVirtualInterfaceAllocation: {
+        virtualInterfaceName: 0,
+        vlan: 0,
+        asn: 0,
+        asnLong: 0,
+        mtu: 0,
+        authKey: 0,
+        amazonAddress: 0,
+        addressFamily: 0,
+        customerAddress: 0,
+        tags: D.list(i_Tag),
+        rateLimit: 0,
+      },
+    },
+  },
   errors: [
     DirectConnectClientException,
     DirectConnectServerException,
@@ -1255,7 +1304,26 @@ export const allocatePublicVirtualInterface: API.OperationMethod<
   AllocatePublicVirtualInterfaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      connectionId: 0,
+      ownerAccount: 0,
+      newPublicVirtualInterfaceAllocation: {
+        virtualInterfaceName: 0,
+        vlan: 0,
+        asn: 0,
+        asnLong: 0,
+        authKey: 0,
+        amazonAddress: 0,
+        customerAddress: 0,
+        addressFamily: 0,
+        routeFilterPrefixes: D.list(i_RouteFilterPrefix),
+        tags: D.list(i_Tag),
+        rateLimit: 0,
+      },
+    },
+  },
   errors: [
     DirectConnectClientException,
     DirectConnectServerException,
@@ -1288,7 +1356,26 @@ export const allocateTransitVirtualInterface: API.OperationMethod<
   AllocateTransitVirtualInterfaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      connectionId: 0,
+      ownerAccount: 0,
+      newTransitVirtualInterfaceAllocation: {
+        virtualInterfaceName: 0,
+        vlan: 0,
+        asn: 0,
+        asnLong: 0,
+        mtu: 0,
+        authKey: 0,
+        amazonAddress: 0,
+        customerAddress: 0,
+        addressFamily: 0,
+        tags: D.list(i_Tag),
+        rateLimit: 0,
+      },
+    },
+  },
   errors: [
     DirectConnectClientException,
     DirectConnectServerException,
@@ -1330,7 +1417,11 @@ export const associateConnectionWithLag: API.OperationMethod<
   AssociateConnectionWithLagError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { loaIssueTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { connectionId: 0, lagId: 0 },
+    output: { loaIssueTime: D.ts },
+  },
   errors: [
     DirectConnectClientException,
     DirectConnectServerException,
@@ -1360,7 +1451,11 @@ export const associateHostedConnection: API.OperationMethod<
   AssociateHostedConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { loaIssueTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { connectionId: 0, parentConnectionId: 0 },
+    output: { loaIssueTime: D.ts },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1384,7 +1479,10 @@ export const associateMacSecKey: API.OperationMethod<
   AssociateMacSecKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { connectionId: 0, secretARN: 0, ckn: 0, cak: 0 },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1415,7 +1513,10 @@ export const associateVirtualInterface: API.OperationMethod<
   AssociateVirtualInterfaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { virtualInterfaceId: 0, connectionId: 0 },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1438,7 +1539,7 @@ export const confirmConnection: API.OperationMethod<
   ConfirmConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { connectionId: 0 } },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1458,7 +1559,7 @@ export const confirmCustomerAgreement: API.OperationMethod<
   ConfirmCustomerAgreementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { agreementName: 0 } },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1482,7 +1583,14 @@ export const confirmPrivateVirtualInterface: API.OperationMethod<
   ConfirmPrivateVirtualInterfaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      virtualInterfaceId: 0,
+      virtualGatewayId: 0,
+      directConnectGatewayId: 0,
+    },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1505,7 +1613,7 @@ export const confirmPublicVirtualInterface: API.OperationMethod<
   ConfirmPublicVirtualInterfaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { virtualInterfaceId: 0 } },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1527,7 +1635,10 @@ export const confirmTransitVirtualInterface: API.OperationMethod<
   ConfirmTransitVirtualInterfaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { virtualInterfaceId: 0, directConnectGatewayId: 0 },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1565,7 +1676,20 @@ export const createBGPPeer: API.OperationMethod<
   CreateBGPPeerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      virtualInterfaceId: 0,
+      newBGPPeer: {
+        asn: 0,
+        asnLong: 0,
+        authKey: 0,
+        addressFamily: 0,
+        amazonAddress: 0,
+        customerAddress: 0,
+      },
+    },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1597,7 +1721,19 @@ export const createConnection: API.OperationMethod<
   CreateConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { loaIssueTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      location: 0,
+      bandwidth: 0,
+      connectionName: 0,
+      lagId: 0,
+      tags: D.list(i_Tag),
+      providerName: 0,
+      requestMACSec: 0,
+    },
+    output: { loaIssueTime: D.ts },
+  },
   errors: [
     DirectConnectClientException,
     DirectConnectServerException,
@@ -1627,7 +1763,14 @@ export const createDirectConnectGateway: API.OperationMethod<
   CreateDirectConnectGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      directConnectGatewayName: 0,
+      tags: D.list(i_Tag),
+      amazonSideAsn: 0,
+    },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1648,7 +1791,15 @@ export const createDirectConnectGatewayAssociation: API.OperationMethod<
   CreateDirectConnectGatewayAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      directConnectGatewayId: 0,
+      gatewayId: 0,
+      addAllowedPrefixesToDirectConnectGateway: D.list(i_RouteFilterPrefix),
+      virtualGatewayId: 0,
+    },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1670,7 +1821,16 @@ export const createDirectConnectGatewayAssociationProposal: API.OperationMethod<
   CreateDirectConnectGatewayAssociationProposalError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      directConnectGatewayId: 0,
+      directConnectGatewayOwnerAccount: 0,
+      gatewayId: 0,
+      addAllowedPrefixesToDirectConnectGateway: D.list(i_RouteFilterPrefix),
+      removeAllowedPrefixesToDirectConnectGateway: D.list(i_RouteFilterPrefix),
+    },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1709,7 +1869,19 @@ export const createInterconnect: API.OperationMethod<
   CreateInterconnectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { loaIssueTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      interconnectName: 0,
+      bandwidth: 0,
+      location: 0,
+      lagId: 0,
+      tags: D.list(i_Tag),
+      providerName: 0,
+      requestMACSec: 0,
+    },
+    output: { loaIssueTime: D.ts },
+  },
   errors: [
     DirectConnectClientException,
     DirectConnectServerException,
@@ -1758,7 +1930,21 @@ export const createLag: API.OperationMethod<
   CreateLagError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { connections: D.list(o_Connection) } },
+  descriptor: {
+    service: svc,
+    input: {
+      numberOfConnections: 0,
+      location: 0,
+      connectionsBandwidth: 0,
+      lagName: 0,
+      connectionId: 0,
+      tags: D.list(i_Tag),
+      childConnectionTags: D.list(i_Tag),
+      providerName: 0,
+      requestMACSec: 0,
+    },
+    output: { connections: D.list(o_Connection) },
+  },
   errors: [
     DirectConnectClientException,
     DirectConnectServerException,
@@ -1797,7 +1983,30 @@ export const createPrivateVirtualInterface: API.OperationMethod<
   CreatePrivateVirtualInterfaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      connectionId: 0,
+      newPrivateVirtualInterface: {
+        virtualInterfaceName: 0,
+        vlan: 0,
+        asn: 0,
+        asnLong: 0,
+        mtu: 0,
+        authKey: 0,
+        amazonAddress: 0,
+        customerAddress: 0,
+        addressFamily: 0,
+        virtualGatewayId: 0,
+        directConnectGatewayId: 0,
+        tags: D.list(i_Tag),
+        enableSiteLink: 0,
+        prefixPoolAllocatedCountIpv4: 0,
+        prefixPoolAllocatedCountIpv6: 0,
+        rateLimit: 0,
+      },
+    },
+  },
   errors: [
     DirectConnectClientException,
     DirectConnectServerException,
@@ -1830,7 +2039,25 @@ export const createPublicVirtualInterface: API.OperationMethod<
   CreatePublicVirtualInterfaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      connectionId: 0,
+      newPublicVirtualInterface: {
+        virtualInterfaceName: 0,
+        vlan: 0,
+        asn: 0,
+        asnLong: 0,
+        authKey: 0,
+        amazonAddress: 0,
+        customerAddress: 0,
+        addressFamily: 0,
+        routeFilterPrefixes: D.list(i_RouteFilterPrefix),
+        tags: D.list(i_Tag),
+        rateLimit: 0,
+      },
+    },
+  },
   errors: [
     DirectConnectClientException,
     DirectConnectServerException,
@@ -1868,7 +2095,29 @@ export const createTransitVirtualInterface: API.OperationMethod<
   CreateTransitVirtualInterfaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      connectionId: 0,
+      newTransitVirtualInterface: {
+        virtualInterfaceName: 0,
+        vlan: 0,
+        asn: 0,
+        asnLong: 0,
+        mtu: 0,
+        authKey: 0,
+        amazonAddress: 0,
+        customerAddress: 0,
+        addressFamily: 0,
+        directConnectGatewayId: 0,
+        tags: D.list(i_Tag),
+        enableSiteLink: 0,
+        prefixPoolAllocatedCountIpv4: 0,
+        prefixPoolAllocatedCountIpv6: 0,
+        rateLimit: 0,
+      },
+    },
+  },
   errors: [
     DirectConnectClientException,
     DirectConnectServerException,
@@ -1896,7 +2145,16 @@ export const deleteBGPPeer: API.OperationMethod<
   DeleteBGPPeerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      virtualInterfaceId: 0,
+      asn: 0,
+      asnLong: 0,
+      customerAddress: 0,
+      bgpPeerId: 0,
+    },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1920,7 +2178,11 @@ export const deleteConnection: API.OperationMethod<
   DeleteConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { loaIssueTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { connectionId: 0 },
+    output: { loaIssueTime: D.ts },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1942,7 +2204,7 @@ export const deleteDirectConnectGateway: API.OperationMethod<
   DeleteDirectConnectGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { directConnectGatewayId: 0 } },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1964,7 +2226,10 @@ export const deleteDirectConnectGatewayAssociation: API.OperationMethod<
   DeleteDirectConnectGatewayAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { associationId: 0, directConnectGatewayId: 0, virtualGatewayId: 0 },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1984,7 +2249,7 @@ export const deleteDirectConnectGatewayAssociationProposal: API.OperationMethod<
   DeleteDirectConnectGatewayAssociationProposalError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { proposalId: 0 } },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2007,7 +2272,7 @@ export const deleteInterconnect: API.OperationMethod<
   DeleteInterconnectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { interconnectId: 0 } },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2028,7 +2293,11 @@ export const deleteLag: API.OperationMethod<
   DeleteLagError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { connections: D.list(o_Connection) } },
+  descriptor: {
+    service: svc,
+    input: { lagId: 0 },
+    output: { connections: D.list(o_Connection) },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2048,7 +2317,7 @@ export const deleteVirtualInterface: API.OperationMethod<
   DeleteVirtualInterfaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { virtualInterfaceId: 0 } },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2075,7 +2344,11 @@ export const describeConnectionLoa: API.OperationMethod<
   DescribeConnectionLoaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { loa: o_Loa } },
+  descriptor: {
+    service: svc,
+    input: { connectionId: 0, providerName: 0, loaContentType: 0 },
+    output: { loa: o_Loa },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2095,7 +2368,11 @@ export const describeConnections: API.OperationMethod<
   DescribeConnectionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { connections: D.list(o_Connection) } },
+  descriptor: {
+    service: svc,
+    input: { connectionId: 0, maxResults: 0, nextToken: 0 },
+    output: { connections: D.list(o_Connection) },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2119,7 +2396,11 @@ export const describeConnectionsOnInterconnect: API.OperationMethod<
   DescribeConnectionsOnInterconnectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { connections: D.list(o_Connection) } },
+  descriptor: {
+    service: svc,
+    input: { interconnectId: 0 },
+    output: { connections: D.list(o_Connection) },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2159,7 +2440,16 @@ export const describeDirectConnectGatewayAssociationProposals: API.OperationMeth
   DescribeDirectConnectGatewayAssociationProposalsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      directConnectGatewayId: 0,
+      proposalId: 0,
+      associatedGatewayId: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2207,7 +2497,17 @@ export const describeDirectConnectGatewayAssociations: API.OperationMethod<
   DescribeDirectConnectGatewayAssociationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      associationId: 0,
+      associatedGatewayId: 0,
+      directConnectGatewayId: 0,
+      maxResults: 0,
+      nextToken: 0,
+      virtualGatewayId: 0,
+    },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2231,7 +2531,15 @@ export const describeDirectConnectGatewayAttachments: API.OperationMethod<
   DescribeDirectConnectGatewayAttachmentsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      directConnectGatewayId: 0,
+      virtualInterfaceId: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2251,7 +2559,10 @@ export const describeDirectConnectGateways: API.OperationMethod<
   DescribeDirectConnectGatewaysError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { directConnectGatewayId: 0, maxResults: 0, nextToken: 0 },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2274,7 +2585,11 @@ export const describeHostedConnections: API.OperationMethod<
   DescribeHostedConnectionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { connections: D.list(o_Connection) } },
+  descriptor: {
+    service: svc,
+    input: { connectionId: 0, maxResults: 0, nextToken: 0 },
+    output: { connections: D.list(o_Connection) },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2300,7 +2615,11 @@ export const describeInterconnectLoa: API.OperationMethod<
   DescribeInterconnectLoaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { loa: o_Loa } },
+  descriptor: {
+    service: svc,
+    input: { interconnectId: 0, providerName: 0, loaContentType: 0 },
+    output: { loa: o_Loa },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2322,6 +2641,7 @@ export const describeInterconnects: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { interconnectId: 0, maxResults: 0, nextToken: 0 },
     output: { interconnects: D.list({ loaIssueTime: D.ts }) },
   },
   errors: [DirectConnectClientException, DirectConnectServerException],
@@ -2345,6 +2665,7 @@ export const describeLags: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { lagId: 0, maxResults: 0, nextToken: 0 },
     output: { lags: D.list({ connections: D.list(o_Connection) }) },
   },
   errors: [DirectConnectClientException, DirectConnectServerException],
@@ -2370,7 +2691,11 @@ export const describeLoa: API.OperationMethod<
   DescribeLoaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { loaContent: D.blob } },
+  descriptor: {
+    service: svc,
+    input: { connectionId: 0, providerName: 0, loaContentType: 0 },
+    output: { loaContent: D.blob },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2411,7 +2736,10 @@ export const describeRouterConfiguration: API.OperationMethod<
   DescribeRouterConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { virtualInterfaceId: 0, routerTypeIdentifier: 0 },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2431,7 +2759,7 @@ export const describeTags: API.OperationMethod<
   DescribeTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArns: 0 } },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2484,7 +2812,15 @@ export const describeVirtualInterfaces: API.OperationMethod<
   DescribeVirtualInterfacesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      connectionId: 0,
+      virtualInterfaceId: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2514,7 +2850,11 @@ export const disassociateConnectionFromLag: API.OperationMethod<
   DisassociateConnectionFromLagError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { loaIssueTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { connectionId: 0, lagId: 0 },
+    output: { loaIssueTime: D.ts },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2534,7 +2874,7 @@ export const disassociateMacSecKey: API.OperationMethod<
   DisassociateMacSecKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { connectionId: 0, secretARN: 0 } },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2562,6 +2902,18 @@ export const listVirtualInterfaceRoutes: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      virtualInterfaceId: 0,
+      filters: {
+        routeDirection: 0,
+        addressFamily: 0,
+        cidrs: 0,
+        asPath: 0,
+        communities: 0,
+      },
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { routes: D.list({ routeInstalledAt: D.ts }) },
   },
   errors: [DirectConnectClientException, DirectConnectServerException],
@@ -2585,6 +2937,14 @@ export const listVirtualInterfaceTestHistory: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      testId: 0,
+      virtualInterfaceId: 0,
+      bgpPeers: 0,
+      status: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       virtualInterfaceTestHistory: D.list(o_VirtualInterfaceTestHistory),
     },
@@ -2616,6 +2976,7 @@ export const startBgpFailoverTest: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { virtualInterfaceId: 0, bgpPeers: 0, testDurationInMinutes: 0 },
     output: { virtualInterfaceTest: o_VirtualInterfaceTestHistory },
   },
   errors: [DirectConnectClientException, DirectConnectServerException],
@@ -2639,6 +3000,7 @@ export const stopBgpFailoverTest: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { virtualInterfaceId: 0 },
     output: { virtualInterfaceTest: o_VirtualInterfaceTestHistory },
   },
   errors: [DirectConnectClientException, DirectConnectServerException],
@@ -2664,7 +3026,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: D.list(i_Tag) } },
   errors: [
     DirectConnectClientException,
     DirectConnectServerException,
@@ -2689,7 +3051,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2715,7 +3077,11 @@ export const updateConnection: API.OperationMethod<
   UpdateConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { loaIssueTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { connectionId: 0, connectionName: 0, encryptionMode: 0 },
+    output: { loaIssueTime: D.ts },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2735,7 +3101,10 @@ export const updateDirectConnectGateway: API.OperationMethod<
   UpdateDirectConnectGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { directConnectGatewayId: 0, newDirectConnectGatewayName: 0 },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2757,7 +3126,14 @@ export const updateDirectConnectGatewayAssociation: API.OperationMethod<
   UpdateDirectConnectGatewayAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      associationId: 0,
+      addAllowedPrefixesToDirectConnectGateway: D.list(i_RouteFilterPrefix),
+      removeAllowedPrefixesToDirectConnectGateway: D.list(i_RouteFilterPrefix),
+    },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2794,7 +3170,11 @@ export const updateLag: API.OperationMethod<
   UpdateLagError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { connections: D.list(o_Connection) } },
+  descriptor: {
+    service: svc,
+    input: { lagId: 0, lagName: 0, minimumLinks: 0, encryptionMode: 0 },
+    output: { connections: D.list(o_Connection) },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2821,13 +3201,26 @@ export const updateVirtualInterfaceAttributes: API.OperationMethod<
   UpdateVirtualInterfaceAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      virtualInterfaceId: 0,
+      mtu: 0,
+      enableSiteLink: 0,
+      virtualInterfaceName: 0,
+      prefixPoolAllocatedCountIpv4: 0,
+      prefixPoolAllocatedCountIpv6: 0,
+      rateLimit: 0,
+    },
+  },
   errors: [DirectConnectClientException, DirectConnectServerException],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "UpdateVirtualInterfaceAttributes",
 })) as any;
 
+const i_RouteFilterPrefix: D.LazyStruct = () => ({ cidr: 0 });
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
 const o_Connection: D.LazyStruct = () => ({ loaIssueTime: D.ts });
 const o_Loa: D.LazyStruct = () => ({ loaContent: D.blob });
 const o_VirtualInterfaceTestHistory: D.LazyStruct = () => ({

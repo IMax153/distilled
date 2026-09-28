@@ -407,6 +407,7 @@ export const deleteSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /bot/{botName}/alias/{botAlias}/user/{userId}/session",
+    input: { botName: 0, botAlias: 0, userId: 0 },
   },
   errors: [
     BadRequestException,
@@ -439,7 +440,12 @@ export const getSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /bot/{botName}/alias/{botAlias}/user/{userId}/session",
-    input: { checkpointLabelFilter: D.m({ query: "checkpointLabelFilter" }) },
+    input: {
+      botName: 0,
+      botAlias: 0,
+      userId: 0,
+      checkpointLabelFilter: D.m({ query: "checkpointLabelFilter" }),
+    },
     output: {
       dialogAction: { message: D.secret },
       activeContexts: D.list(o_ActiveContext),
@@ -540,6 +546,9 @@ export const postContent: API.OperationMethod<
     service: svc,
     http: "POST /bot/{botName}/alias/{botAlias}/user/{userId}/content",
     input: {
+      botName: 0,
+      botAlias: 0,
+      userId: 0,
       sessionAttributes: D.m({ header: "x-amz-lex-session-attributes" }),
       requestAttributes: D.m({ header: "x-amz-lex-request-attributes" }),
       contentType: D.m({ header: "Content-Type" }),
@@ -672,6 +681,15 @@ export const postText: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bot/{botName}/alias/{botAlias}/user/{userId}/text",
+    input: {
+      botName: 0,
+      botAlias: 0,
+      userId: 0,
+      sessionAttributes: 0,
+      requestAttributes: 0,
+      inputText: 0,
+      activeContexts: D.list(i_ActiveContext),
+    },
     output: { message: D.secret, activeContexts: D.list(o_ActiveContext) },
     body: true,
   },
@@ -717,7 +735,32 @@ export const putSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /bot/{botName}/alias/{botAlias}/user/{userId}/session",
-    input: { accept: D.m({ header: "Accept" }) },
+    input: {
+      botName: 0,
+      botAlias: 0,
+      userId: 0,
+      sessionAttributes: 0,
+      dialogAction: {
+        type: 0,
+        intentName: 0,
+        slots: 0,
+        slotToElicit: 0,
+        fulfillmentState: 0,
+        message: 0,
+        messageFormat: 0,
+      },
+      recentIntentSummaryView: D.list({
+        intentName: 0,
+        checkpointLabel: 0,
+        slots: 0,
+        confirmationStatus: 0,
+        dialogActionType: 0,
+        fulfillmentState: 0,
+        slotToElicit: 0,
+      }),
+      accept: D.m({ header: "Accept" }),
+      activeContexts: D.list(i_ActiveContext),
+    },
     output: {
       contentType: D.m({ header: "Content-Type" }),
       intentName: D.m({ header: "x-amz-lex-intent-name" }),
@@ -755,4 +798,9 @@ export const putSession: API.OperationMethod<
   operationName: "PutSession",
 })) as any;
 
+const i_ActiveContext: D.LazyStruct = () => ({
+  name: 0,
+  timeToLive: { timeToLiveInSeconds: 0, turnsToLive: 0 },
+  parameters: 0,
+});
 const o_ActiveContext: D.LazyStruct = () => ({ parameters: D.map(D.secret) });

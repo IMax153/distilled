@@ -278,7 +278,8 @@ export const invokeEndpoint: API.OperationMethod<
     service: svc,
     http: "POST /endpoints/{EndpointName}/invocations",
     input: {
-      Body: D.m({ payload: true, shape: D.stream }),
+      EndpointName: 0,
+      Body: D.m({ payload: true, shape: D.blob }),
       ContentType: D.m({ header: "Content-Type" }),
       Accept: D.m({ header: "Accept" }),
       CustomAttributes: D.m({ header: "X-Amzn-SageMaker-Custom-Attributes" }),
@@ -298,7 +299,7 @@ export const invokeEndpoint: API.OperationMethod<
       PrefixAwareId: D.m({ header: "X-Amzn-SageMaker-Prefix-Aware-Id" }),
     },
     output: {
-      Body: D.m({ payload: true, shape: D.stream }),
+      Body: D.m({ payload: true, shape: D.secretBlob }),
       ContentType: D.m({ header: "Content-Type" }),
       InvokedProductionVariant: D.m({
         header: "x-Amzn-Invoked-Production-Variant",
@@ -356,6 +357,7 @@ export const invokeEndpointAsync: API.OperationMethod<
     service: svc,
     http: "POST /endpoints/{EndpointName}/async-invocations",
     input: {
+      EndpointName: 0,
       ContentType: D.m({ header: "X-Amzn-SageMaker-Content-Type" }),
       Accept: D.m({ header: "X-Amzn-SageMaker-Accept" }),
       CustomAttributes: D.m({ header: "X-Amzn-SageMaker-Custom-Attributes" }),
@@ -369,7 +371,7 @@ export const invokeEndpointAsync: API.OperationMethod<
       InvocationTimeoutSeconds: D.m({
         header: "X-Amzn-SageMaker-InvocationTimeoutSeconds",
       }),
-      Body: D.m({ payload: true, shape: D.stream }),
+      Body: D.m({ payload: true, shape: D.blob }),
     },
     output: {
       OutputLocation: D.m({ header: "X-Amzn-SageMaker-OutputLocation" }),
@@ -426,7 +428,8 @@ export const invokeEndpointWithResponseStream: API.OperationMethod<
     service: svc,
     http: "POST /endpoints/{EndpointName}/invocations-response-stream",
     input: {
-      Body: D.m({ payload: true, shape: D.stream }),
+      EndpointName: 0,
+      Body: D.m({ payload: true, shape: D.blob }),
       ContentType: D.m({ header: "Content-Type" }),
       Accept: D.m({ header: "X-Amzn-SageMaker-Accept" }),
       CustomAttributes: D.m({ header: "X-Amzn-SageMaker-Custom-Attributes" }),

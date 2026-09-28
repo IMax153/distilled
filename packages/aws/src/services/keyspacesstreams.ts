@@ -970,6 +970,7 @@ export const getRecords: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { shardIterator: 0, maxResults: 0 },
     output: {
       changeRecords: D.list({
         createdAt: D.ts,
@@ -1008,7 +1009,15 @@ export const getShardIterator: API.OperationMethod<
   GetShardIteratorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      streamArn: 0,
+      shardId: 0,
+      shardIteratorType: 0,
+      sequenceNumber: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1038,7 +1047,16 @@ export const getStream: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Shard
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { creationRequestDateTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      streamArn: 0,
+      maxResults: 0,
+      shardFilter: { type: 0, shardId: 0 },
+      nextToken: 0,
+    },
+    output: { creationRequestDateTime: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1074,7 +1092,10 @@ export const listStreams: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Stream
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { keyspaceName: 0, tableName: 0, maxResults: 0, nextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,

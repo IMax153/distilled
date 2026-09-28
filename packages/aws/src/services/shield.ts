@@ -618,7 +618,7 @@ export const associateDRTLogBucket: API.OperationMethod<
   AssociateDRTLogBucketError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LogBucket: 0 } },
   errors: [
     AccessDeniedForDependencyException,
     InternalErrorException,
@@ -662,7 +662,7 @@ export const associateDRTRole: API.OperationMethod<
   AssociateDRTRoleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RoleArn: 0 } },
   errors: [
     AccessDeniedForDependencyException,
     InternalErrorException,
@@ -695,7 +695,7 @@ export const associateHealthCheck: API.OperationMethod<
   AssociateHealthCheckError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ProtectionId: 0, HealthCheckArn: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -731,7 +731,10 @@ export const associateProactiveEngagementDetails: API.OperationMethod<
   AssociateProactiveEngagementDetailsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { EmergencyContactList: D.list(i_EmergencyContact) },
+  },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -770,7 +773,10 @@ export const createProtection: API.OperationMethod<
   CreateProtectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, ResourceArn: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -805,7 +811,17 @@ export const createProtectionGroup: API.OperationMethod<
   CreateProtectionGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProtectionGroupId: 0,
+      Aggregation: 0,
+      Pattern: 0,
+      ResourceType: 0,
+      Members: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -838,7 +854,7 @@ export const createSubscription: API.OperationMethod<
   CreateSubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [InternalErrorException, ResourceAlreadyExistsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -860,7 +876,7 @@ export const deleteProtection: API.OperationMethod<
   DeleteProtectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ProtectionId: 0 } },
   errors: [
     InternalErrorException,
     OptimisticLockException,
@@ -887,7 +903,7 @@ export const deleteProtectionGroup: API.OperationMethod<
   DeleteProtectionGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ProtectionGroupId: 0 } },
   errors: [
     InternalErrorException,
     OptimisticLockException,
@@ -914,7 +930,7 @@ export const deleteSubscription: API.OperationMethod<
   DeleteSubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     InternalErrorException,
     LockedSubscriptionException,
@@ -941,6 +957,7 @@ export const describeAttack: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AttackId: 0 },
     output: { Attack: { StartTime: D.ts, EndTime: D.ts } },
   },
   errors: [AccessDeniedException, InternalErrorException],
@@ -967,6 +984,7 @@ export const describeAttackStatistics: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {},
     output: { TimeRange: { FromInclusive: D.ts, ToExclusive: D.ts } },
   },
   errors: [InternalErrorException],
@@ -988,7 +1006,7 @@ export const describeDRTAccess: API.OperationMethod<
   DescribeDRTAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [InternalErrorException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1008,7 +1026,7 @@ export const describeEmergencyContactSettings: API.OperationMethod<
   DescribeEmergencyContactSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [InternalErrorException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1030,7 +1048,7 @@ export const describeProtection: API.OperationMethod<
   DescribeProtectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ProtectionId: 0, ResourceArn: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -1056,7 +1074,7 @@ export const describeProtectionGroup: API.OperationMethod<
   DescribeProtectionGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ProtectionGroupId: 0 } },
   errors: [
     InternalErrorException,
     ResourceNotFoundException,
@@ -1083,6 +1101,7 @@ export const describeSubscription: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {},
     output: { Subscription: { StartTime: D.ts, EndTime: D.ts } },
   },
   errors: [
@@ -1112,7 +1131,7 @@ export const disableApplicationLayerAutomaticResponse: API.OperationMethod<
   DisableApplicationLayerAutomaticResponseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -1141,7 +1160,7 @@ export const disableProactiveEngagement: API.OperationMethod<
   DisableProactiveEngagementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -1171,7 +1190,7 @@ export const disassociateDRTLogBucket: API.OperationMethod<
   DisassociateDRTLogBucketError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LogBucket: 0 } },
   errors: [
     AccessDeniedForDependencyException,
     InternalErrorException,
@@ -1200,7 +1219,7 @@ export const disassociateDRTRole: API.OperationMethod<
   DisassociateDRTRoleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -1230,7 +1249,7 @@ export const disassociateHealthCheck: API.OperationMethod<
   DisassociateHealthCheckError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ProtectionId: 0, HealthCheckArn: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -1274,7 +1293,10 @@ export const enableApplicationLayerAutomaticResponse: API.OperationMethod<
   EnableApplicationLayerAutomaticResponseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, Action: i_ResponseAction },
+  },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -1304,7 +1326,7 @@ export const enableProactiveEngagement: API.OperationMethod<
   EnableProactiveEngagementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -1327,7 +1349,7 @@ export const getSubscriptionState: API.OperationMethod<
   GetSubscriptionStateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [InternalErrorException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1352,6 +1374,13 @@ export const listAttacks: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ResourceArns: 0,
+      StartTime: i_TimeRange,
+      EndTime: i_TimeRange,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { AttackSummaries: D.list({ StartTime: D.ts, EndTime: D.ts }) },
   },
   errors: [
@@ -1387,7 +1416,19 @@ export const listProtectionGroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      InclusionFilters: {
+        ProtectionGroupIds: 0,
+        Patterns: 0,
+        ResourceTypes: 0,
+        Aggregations: 0,
+      },
+    },
+  },
   errors: [
     InternalErrorException,
     InvalidPaginationTokenException,
@@ -1421,7 +1462,18 @@ export const listProtections: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Protection
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      InclusionFilters: {
+        ResourceArns: 0,
+        ProtectionNames: 0,
+        ResourceTypes: 0,
+      },
+    },
+  },
   errors: [
     InternalErrorException,
     InvalidPaginationTokenException,
@@ -1454,7 +1506,10 @@ export const listResourcesInProtectionGroup: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ProtectionGroupId: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     InternalErrorException,
     InvalidPaginationTokenException,
@@ -1485,7 +1540,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [
     InternalErrorException,
     InvalidResourceException,
@@ -1513,7 +1568,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -1542,7 +1597,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -1571,7 +1626,10 @@ export const updateApplicationLayerAutomaticResponse: API.OperationMethod<
   UpdateApplicationLayerAutomaticResponseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, Action: i_ResponseAction },
+  },
   errors: [
     InternalErrorException,
     InvalidOperationException,
@@ -1599,7 +1657,10 @@ export const updateEmergencyContactSettings: API.OperationMethod<
   UpdateEmergencyContactSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { EmergencyContactList: D.list(i_EmergencyContact) },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -1627,7 +1688,16 @@ export const updateProtectionGroup: API.OperationMethod<
   UpdateProtectionGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProtectionGroupId: 0,
+      Aggregation: 0,
+      Pattern: 0,
+      ResourceType: 0,
+      Members: 0,
+    },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -1660,7 +1730,7 @@ export const updateSubscription: API.OperationMethod<
   UpdateSubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AutoRenew: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -1673,3 +1743,12 @@ export const updateSubscription: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateSubscription",
 })) as any;
+
+const i_EmergencyContact: D.LazyStruct = () => ({
+  EmailAddress: 0,
+  PhoneNumber: 0,
+  ContactNotes: 0,
+});
+const i_ResponseAction: D.LazyStruct = () => ({ Block: {}, Count: {} });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_TimeRange: D.LazyStruct = () => ({ FromInclusive: 0, ToExclusive: 0 });

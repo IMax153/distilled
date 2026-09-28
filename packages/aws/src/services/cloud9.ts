@@ -333,7 +333,22 @@ export const createEnvironmentEC2: API.OperationMethod<
   CreateEnvironmentEC2Error,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      clientRequestToken: 0,
+      instanceType: 0,
+      subnetId: 0,
+      imageId: 0,
+      automaticStopTimeMinutes: 0,
+      ownerArn: 0,
+      tags: D.list(i_Tag),
+      connectionType: 0,
+      dryRun: 0,
+    },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -370,7 +385,11 @@ export const createEnvironmentMembership: API.OperationMethod<
   CreateEnvironmentMembershipError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { membership: o_EnvironmentMember } },
+  descriptor: {
+    service: svc,
+    input: { environmentId: 0, userArn: 0, permissions: 0 },
+    output: { membership: o_EnvironmentMember },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -408,7 +427,7 @@ export const deleteEnvironment: API.OperationMethod<
   DeleteEnvironmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { environmentId: 0 } },
   errors: [
     BadRequestException,
     ConflictException,
@@ -445,7 +464,7 @@ export const deleteEnvironmentMembership: API.OperationMethod<
   DeleteEnvironmentMembershipError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { environmentId: 0, userArn: 0 } },
   errors: [
     BadRequestException,
     ConflictException,
@@ -485,6 +504,13 @@ export const describeEnvironmentMemberships: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      userArn: 0,
+      environmentId: 0,
+      permissions: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { memberships: D.list(o_EnvironmentMember) },
   },
   errors: [
@@ -530,6 +556,7 @@ export const describeEnvironments: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { environmentIds: 0 },
     output: { environments: D.list({ description: D.secret }) },
   },
   errors: [
@@ -568,7 +595,7 @@ export const describeEnvironmentStatus: API.OperationMethod<
   DescribeEnvironmentStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { environmentId: 0 } },
   errors: [
     BadRequestException,
     ConflictException,
@@ -610,7 +637,7 @@ export const listEnvironments: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0, maxResults: 0 } },
   errors: [
     BadRequestException,
     ConflictException,
@@ -650,6 +677,7 @@ export const listTagsForResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResourceARN: 0 },
     output: { Tags: D.list({ Key: D.secret, Value: D.secret }) },
   },
   errors: [
@@ -684,7 +712,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [
     BadRequestException,
     ConcurrentAccessException,
@@ -715,7 +743,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [
     BadRequestException,
     ConcurrentAccessException,
@@ -749,7 +777,15 @@ export const updateEnvironment: API.OperationMethod<
   UpdateEnvironmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      environmentId: 0,
+      name: 0,
+      description: 0,
+      managedCredentialsAction: 0,
+    },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -787,7 +823,11 @@ export const updateEnvironmentMembership: API.OperationMethod<
   UpdateEnvironmentMembershipError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { membership: o_EnvironmentMember } },
+  descriptor: {
+    service: svc,
+    input: { environmentId: 0, userArn: 0, permissions: 0 },
+    output: { membership: o_EnvironmentMember },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -802,4 +842,5 @@ export const updateEnvironmentMembership: API.OperationMethod<
   operationName: "UpdateEnvironmentMembership",
 })) as any;
 
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_EnvironmentMember: D.LazyStruct = () => ({ lastAccess: D.ts });

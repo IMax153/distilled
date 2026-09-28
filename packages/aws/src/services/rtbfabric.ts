@@ -854,6 +854,13 @@ export const acceptLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /gateway/{gatewayId}/link/{linkId}/accept",
+    input: {
+      gatewayId: 0,
+      linkId: 0,
+      attributes: i_LinkAttributes,
+      logSettings: i_LinkLogSettings,
+      timeoutInMillis: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -891,7 +898,11 @@ export const associateCertificate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /responder-gateway/{gatewayId}/certificate",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      gatewayId: 0,
+      acmCertificateArn: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -929,7 +940,13 @@ export const createInboundExternalLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /responder-gateway/{gatewayId}/inbound-external-link",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      gatewayId: 0,
+      attributes: i_LinkAttributes,
+      logSettings: i_LinkLogSettings,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -969,6 +986,15 @@ export const createLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /gateway/{gatewayId}/create-link",
+    input: {
+      gatewayId: 0,
+      peerGatewayId: 0,
+      attributes: i_LinkAttributes,
+      httpResponderAllowed: 0,
+      tags: 0,
+      logSettings: i_LinkLogSettings,
+      timeoutInMillis: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -1009,7 +1035,14 @@ export const createLinkRoutingRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /responder-gateway/{gatewayId}/link/{linkId}/routing-rule",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      gatewayId: 0,
+      linkId: 0,
+      priority: 0,
+      conditions: i_RuleCondition,
+      tags: 0,
+    },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -1048,7 +1081,14 @@ export const createOutboundExternalLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /requester-gateway/{gatewayId}/outbound-external-link",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      gatewayId: 0,
+      attributes: i_LinkAttributes,
+      publicEndpoint: 0,
+      logSettings: i_LinkLogSettings,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1085,7 +1125,14 @@ export const createRequesterGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /requester-gateway",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      vpcId: 0,
+      subnetIds: 0,
+      securityGroupIds: 0,
+      clientToken: D.m({ idempotency: true }),
+      description: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1123,7 +1170,21 @@ export const createResponderGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /responder-gateway",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      vpcId: 0,
+      subnetIds: 0,
+      securityGroupIds: 0,
+      domainName: 0,
+      port: 0,
+      protocol: 0,
+      listenerConfig: i_ListenerConfig,
+      trustStoreConfiguration: i_TrustStoreConfiguration,
+      managedEndpointConfiguration: i_ManagedEndpointConfiguration,
+      clientToken: D.m({ idempotency: true }),
+      description: 0,
+      tags: 0,
+      gatewayType: 0,
+    },
     body: true,
   },
   errors: [
@@ -1159,6 +1220,7 @@ export const deleteInboundExternalLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /responder-gateway/{gatewayId}/inbound-external-link/{linkId}",
+    input: { gatewayId: 0, linkId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1195,6 +1257,7 @@ export const deleteLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /gateway/{gatewayId}/link/{linkId}",
+    input: { gatewayId: 0, linkId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1229,6 +1292,7 @@ export const deleteLinkRoutingRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /responder-gateway/{gatewayId}/link/{linkId}/routing-rule/{ruleId}",
+    input: { gatewayId: 0, linkId: 0, ruleId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1263,6 +1327,7 @@ export const deleteOutboundExternalLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /requester-gateway/{gatewayId}/outbound-external-link/{linkId}",
+    input: { gatewayId: 0, linkId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1294,7 +1359,11 @@ export const deleteRequesterGateway: API.OperationMethod<
   DeleteRequesterGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /requester-gateway/{gatewayId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /requester-gateway/{gatewayId}",
+    input: { gatewayId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1325,7 +1394,11 @@ export const deleteResponderGateway: API.OperationMethod<
   DeleteResponderGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /responder-gateway/{gatewayId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /responder-gateway/{gatewayId}",
+    input: { gatewayId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1360,7 +1433,10 @@ export const disassociateCertificate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /responder-gateway/{gatewayId}/certificate",
-    input: { acmCertificateArn: D.m({ query: "acmCertificateArn" }) },
+    input: {
+      gatewayId: 0,
+      acmCertificateArn: D.m({ query: "acmCertificateArn" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1395,7 +1471,10 @@ export const getCertificateAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /responder-gateway/{gatewayId}/certificate",
-    input: { acmCertificateArn: D.m({ query: "acmCertificateArn" }) },
+    input: {
+      gatewayId: 0,
+      acmCertificateArn: D.m({ query: "acmCertificateArn" }),
+    },
     output: { associatedAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1429,6 +1508,7 @@ export const getInboundExternalLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /responder-gateway/{gatewayId}/inbound-external-link/{linkId}",
+    input: { gatewayId: 0, linkId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1465,6 +1545,7 @@ export const getLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /gateway/{gatewayId}/link/{linkId}",
+    input: { gatewayId: 0, linkId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1499,6 +1580,7 @@ export const getLinkRoutingRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /responder-gateway/{gatewayId}/link/{linkId}/routing-rule/{ruleId}",
+    input: { gatewayId: 0, linkId: 0, ruleId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1532,6 +1614,7 @@ export const getOutboundExternalLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /requester-gateway/{gatewayId}/outbound-external-link/{linkId}",
+    input: { gatewayId: 0, linkId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1565,6 +1648,7 @@ export const getRequesterGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /requester-gateway/{gatewayId}",
+    input: { gatewayId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1598,6 +1682,7 @@ export const getResponderGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /responder-gateway/{gatewayId}",
+    input: { gatewayId: 0 },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -1642,6 +1727,7 @@ export const listCertificateAssociations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /responder-gateway/{gatewayId}/certificates",
     input: {
+      gatewayId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1688,6 +1774,8 @@ export const listLinkRoutingRules: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /responder-gateway/{gatewayId}/link/{linkId}/routing-rules",
     input: {
+      gatewayId: 0,
+      linkId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1734,6 +1822,7 @@ export const listLinks: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /gateway/{gatewayId}/links/",
     input: {
+      gatewayId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1841,7 +1930,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1876,6 +1969,7 @@ export const rejectLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /gateway/{gatewayId}/link/{linkId}/reject",
+    input: { gatewayId: 0, linkId: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1907,7 +2001,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1939,7 +2038,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1975,6 +2074,12 @@ export const updateLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /gateway/{gatewayId}/link/{linkId}",
+    input: {
+      gatewayId: 0,
+      linkId: 0,
+      logSettings: i_LinkLogSettings,
+      timeoutInMillis: 0,
+    },
     body: true,
   },
   errors: [
@@ -2011,7 +2116,31 @@ export const updateLinkModuleFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /gateway/{gatewayId}/link/{linkId}/module-flow",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      gatewayId: 0,
+      linkId: 0,
+      modules: D.list({
+        version: 0,
+        name: 0,
+        dependsOn: 0,
+        moduleParameters: {
+          noBid: { reason: 0, reasonCode: 0, passThroughPercentage: 0 },
+          openRtbAttribute: {
+            filterType: 0,
+            filterConfiguration: D.list({
+              criteria: D.list({ path: 0, values: 0 }),
+            }),
+            action: {
+              noBid: { noBidReasonCode: 0 },
+              headerTag: { name: 0, value: 0 },
+            },
+            holdbackPercentage: 0,
+          },
+          rateLimiter: { tps: 0 },
+        },
+      }),
+    },
     body: true,
   },
   errors: [
@@ -2048,6 +2177,13 @@ export const updateLinkRoutingRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /responder-gateway/{gatewayId}/link/{linkId}/routing-rule/{ruleId}",
+    input: {
+      gatewayId: 0,
+      linkId: 0,
+      ruleId: 0,
+      priority: 0,
+      conditions: i_RuleCondition,
+    },
     output: { updatedAt: D.ts },
     body: true,
   },
@@ -2084,7 +2220,11 @@ export const updateRequesterGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /requester-gateway/{gatewayId}/update",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      gatewayId: 0,
+      description: 0,
+    },
     body: true,
   },
   errors: [
@@ -2120,7 +2260,17 @@ export const updateResponderGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /responder-gateway/{gatewayId}/update",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      domainName: 0,
+      port: 0,
+      protocol: 0,
+      listenerConfig: i_ListenerConfig,
+      trustStoreConfiguration: i_TrustStoreConfiguration,
+      managedEndpointConfiguration: i_ManagedEndpointConfiguration,
+      clientToken: D.m({ idempotency: true }),
+      gatewayId: 0,
+      description: 0,
+    },
     body: true,
   },
   errors: [
@@ -2135,3 +2285,52 @@ export const updateResponderGateway: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateResponderGateway",
 })) as any;
+
+const i_LinkAttributes: D.LazyStruct = () => ({
+  responderErrorMasking: D.list({
+    httpCode: 0,
+    action: 0,
+    loggingTypes: 0,
+    responseLoggingPercentage: 0,
+  }),
+  customerProvidedId: 0,
+});
+const i_LinkLogSettings: D.LazyStruct = () => ({
+  applicationLogs: { sampling: { errorLog: 0, filterLog: 0 } },
+});
+const i_ListenerConfig: D.LazyStruct = () => ({ protocols: 0 });
+const i_ManagedEndpointConfiguration: D.LazyStruct = () => ({
+  autoScalingGroups: {
+    autoScalingGroupNames: 0,
+    roleArn: 0,
+    healthCheckConfig: {
+      port: 0,
+      path: 0,
+      protocol: 0,
+      timeoutMs: 0,
+      intervalSeconds: 0,
+      statusCodeMatcher: 0,
+      healthyThresholdCount: 0,
+      unhealthyThresholdCount: 0,
+    },
+  },
+  eksEndpoints: {
+    endpointsResourceName: 0,
+    endpointsResourceNamespace: 0,
+    clusterApiServerEndpointUri: 0,
+    clusterApiServerCaCertificateChain: 0,
+    clusterName: 0,
+    roleArn: 0,
+  },
+});
+const i_RuleCondition: D.LazyStruct = () => ({
+  hostHeader: 0,
+  hostHeaderWildcard: 0,
+  pathPrefix: 0,
+  pathExact: 0,
+  queryStringEquals: { key: 0, value: 0 },
+  queryStringExists: 0,
+});
+const i_TrustStoreConfiguration: D.LazyStruct = () => ({
+  certificateAuthorityCertificates: 0,
+});

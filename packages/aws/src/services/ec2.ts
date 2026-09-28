@@ -21274,10 +21274,12 @@ export const acceptAddressTransfer: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Address: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: { AddressTransfer: o_AddressTransfer },
   },
@@ -21308,7 +21310,11 @@ export const acceptCapacityReservationBillingOwnership: API.OperationMethod<
   AcceptCapacityReservationBillingOwnershipError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, CapacityReservationId: 0 },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidCapacityReservationIdMalformed,
@@ -21336,8 +21342,12 @@ export const acceptReservedInstancesExchangeQuote: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       ReservedInstanceIds: D.m({ wire: "ReservedInstanceId" }),
-      TargetConfigurations: D.m({ wire: "TargetConfiguration" }),
+      TargetConfigurations: D.m({
+        wire: "TargetConfiguration",
+        shape: D.list(i_TargetConfigurationRequest),
+      }),
     },
   },
   errors: [
@@ -21362,6 +21372,7 @@ export const acceptTransitGatewayClientVpnAttachment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransitGatewayAttachmentId: 0, DryRun: 0 },
     output: { TransitGatewayClientVpnAttachment: {} },
   },
   errors: [],
@@ -21386,6 +21397,12 @@ export const acceptTransitGatewayMulticastDomainAssociations: API.OperationMetho
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TransitGatewayMulticastDomainId: 0,
+      TransitGatewayAttachmentId: 0,
+      SubnetIds: 0,
+      DryRun: 0,
+    },
     output: { Associations: o_TransitGatewayMulticastDomainAssociations },
   },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
@@ -21411,6 +21428,7 @@ export const acceptTransitGatewayPeeringAttachment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransitGatewayAttachmentId: 0, DryRun: 0 },
     output: {
       TransitGatewayPeeringAttachment: o_TransitGatewayPeeringAttachment,
     },
@@ -21445,6 +21463,7 @@ export const acceptTransitGatewayVpcAttachment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransitGatewayAttachmentId: 0, DryRun: 0 },
     output: { TransitGatewayVpcAttachment: o_TransitGatewayVpcAttachment },
   },
   errors: [
@@ -21474,7 +21493,11 @@ export const acceptVpcEndpointConnections: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { VpcEndpointIds: D.m({ wire: "VpcEndpointId" }) },
+    input: {
+      DryRun: 0,
+      ServiceId: 0,
+      VpcEndpointIds: D.m({ wire: "VpcEndpointId" }),
+    },
     output: { Unsuccessful: D.list(o_UnsuccessfulItem) },
   },
   errors: [
@@ -21511,6 +21534,7 @@ export const acceptVpcPeeringConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, VpcPeeringConnectionId: 0 },
     output: { VpcPeeringConnection: o_VpcPeeringConnection },
   },
   errors: [
@@ -21549,7 +21573,11 @@ export const advertiseByoipCidr: API.OperationMethod<
   AdvertiseByoipCidrError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ByoipCidr: o_ByoipCidr } },
+  descriptor: {
+    service: svc,
+    input: { Cidr: 0, Asn: 0, DryRun: 0, NetworkBorderGroup: 0 },
+    output: { ByoipCidr: o_ByoipCidr },
+  },
   errors: [RequestLimitExceeded, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -21597,10 +21625,17 @@ export const allocateAddress: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Domain: 0,
+      Address: 0,
+      PublicIpv4Pool: 0,
+      NetworkBorderGroup: 0,
+      CustomerOwnedIpv4Pool: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      IpamPoolId: 0,
+      DryRun: 0,
     },
   },
   errors: [RequestLimitExceeded, AddressLimitExceeded, UnauthorizedOperation],
@@ -21629,11 +21664,22 @@ export const allocateHosts: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      InstanceFamily: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      HostRecovery: 0,
+      OutpostArn: 0,
+      HostMaintenance: 0,
       AssetIds: D.m({ wire: "AssetId" }),
+      AvailabilityZoneId: 0,
+      CpuOptions: { AmdSevSnp: 0 },
+      AutoPlacement: 0,
+      ClientToken: 0,
+      InstanceType: 0,
+      Quantity: 0,
+      AvailabilityZone: 0,
     },
     output: { HostIds: D.m({ wire: "hostIdSet", shape: D.list() }) },
   },
@@ -21669,7 +21715,13 @@ export const allocateIpamPoolCidr: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      IpamPoolId: 0,
+      Cidr: 0,
+      NetmaskLength: 0,
       ClientToken: D.m({ idempotency: true }),
+      Description: 0,
+      PreviewNextCidr: 0,
       AllowedCidrs: D.m({ wire: "AllowedCidr" }),
       DisallowedCidrs: D.m({ wire: "DisallowedCidr" }),
       TagSpecifications: D.m({
@@ -21706,7 +21758,12 @@ export const applySecurityGroupsToClientVpnTargetNetwork: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { SecurityGroupIds: D.m({ wire: "SecurityGroupId" }) },
+    input: {
+      ClientVpnEndpointId: 0,
+      VpcId: 0,
+      SecurityGroupIds: D.m({ wire: "SecurityGroupId" }),
+      DryRun: 0,
+    },
     output: { SecurityGroupIds: D.list() },
   },
   errors: [RequestLimitExceeded, InvalidVpcIdMalformed, UnauthorizedOperation],
@@ -21743,7 +21800,13 @@ export const assignIpv6Addresses: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Ipv6Prefixes: D.m({ wire: "Ipv6Prefix" }) },
+    input: {
+      Ipv6PrefixCount: 0,
+      Ipv6Prefixes: D.m({ wire: "Ipv6Prefix" }),
+      NetworkInterfaceId: 0,
+      Ipv6Addresses: 0,
+      Ipv6AddressCount: 0,
+    },
     output: {
       AssignedIpv6Addresses: D.list(),
       AssignedIpv6Prefixes: D.m({
@@ -21806,7 +21869,11 @@ export const assignPrivateIpAddresses: API.OperationMethod<
     service: svc,
     input: {
       Ipv4Prefixes: D.m({ wire: "Ipv4Prefix" }),
+      Ipv4PrefixCount: 0,
+      NetworkInterfaceId: 0,
       PrivateIpAddresses: D.m({ wire: "PrivateIpAddress" }),
+      SecondaryPrivateIpAddressCount: 0,
+      AllowReassignment: 0,
     },
     output: {
       AssignedPrivateIpAddresses: D.m({
@@ -21848,7 +21915,12 @@ export const assignPrivateNatGatewayAddress: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { PrivateIpAddresses: D.m({ wire: "PrivateIpAddress" }) },
+    input: {
+      NatGatewayId: 0,
+      PrivateIpAddresses: D.m({ wire: "PrivateIpAddress" }),
+      PrivateIpAddressCount: 0,
+      DryRun: 0,
+    },
     output: {
       NatGatewayAddresses: D.m({
         wire: "natGatewayAddressSet",
@@ -21898,7 +21970,18 @@ export const associateAddress: API.OperationMethod<
   AssociateAddressError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AllocationId: 0,
+      InstanceId: 0,
+      PublicIp: 0,
+      DryRun: 0,
+      NetworkInterfaceId: 0,
+      PrivateIpAddress: 0,
+      AllowReassociation: 0,
+    },
+  },
   errors: [
     RequestLimitExceeded,
     AuthFailure,
@@ -21937,9 +22020,14 @@ export const associateApplicationStatusCheck: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      TargetTagAssociations: D.m({ wire: "TargetTagAssociation" }),
+      ApplicationStatusCheckId: 0,
+      TargetTagAssociations: D.m({
+        wire: "TargetTagAssociation",
+        shape: D.list(i_CustomTagKeyValueRequestPair),
+      }),
       InstanceIds: D.m({ wire: "InstanceId" }),
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
     },
     output: {
       SuccessfulResults: D.m({
@@ -21976,7 +22064,15 @@ export const associateCapacityReservationBillingOwner: API.OperationMethod<
   AssociateCapacityReservationBillingOwnerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: {
+      DryRun: 0,
+      CapacityReservationId: 0,
+      UnusedReservationBillingOwnerId: 0,
+    },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidCapacityReservationIdMalformed,
@@ -22014,7 +22110,14 @@ export const associateClientVpnTargetNetwork: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientVpnEndpointId: 0,
+      SubnetId: 0,
+      ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+      AvailabilityZone: 0,
+      AvailabilityZoneId: 0,
+    },
     output: { Status: {} },
   },
   errors: [
@@ -22056,7 +22159,10 @@ export const associateDhcpOptions: API.OperationMethod<
   AssociateDhcpOptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DhcpOptionsId: 0, VpcId: 0, DryRun: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidDhcpOptionsIdMalformed,
@@ -22098,7 +22204,10 @@ export const associateEnclaveCertificateIamRole: API.OperationMethod<
   AssociateEnclaveCertificateIamRoleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CertificateArn: 0, RoleArn: 0, DryRun: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidCertificateArnMalformed,
@@ -22127,6 +22236,10 @@ export const associateIamInstanceProfile: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      IamInstanceProfile: i_IamInstanceProfileSpecification,
+      InstanceId: 0,
+    },
     output: { IamInstanceProfileAssociation: o_IamInstanceProfileAssociation },
   },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
@@ -22156,9 +22269,11 @@ export const associateInstanceEventWindow: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      InstanceEventWindowId: 0,
       AssociationTarget: {
         InstanceIds: D.m({ wire: "InstanceId" }),
-        InstanceTags: D.m({ wire: "InstanceTag" }),
+        InstanceTags: D.m({ wire: "InstanceTag", shape: D.list(i_Tag) }),
         DedicatedHostIds: D.m({ wire: "DedicatedHostId" }),
       },
     },
@@ -22188,7 +22303,11 @@ export const associateIpamByoasn: API.OperationMethod<
   AssociateIpamByoasnError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AsnAssociation: {} } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, Asn: 0, Cidr: 0 },
+    output: { AsnAssociation: {} },
+  },
   errors: [RequestLimitExceeded, InvalidCidrNotFound, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -22213,6 +22332,9 @@ export const associateIpamResourceDiscovery: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      IpamId: 0,
+      IpamResourceDiscoveryId: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -22263,8 +22385,12 @@ export const associateNatGatewayAddress: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      NatGatewayId: 0,
       AllocationIds: D.m({ wire: "AllocationId" }),
       PrivateIpAddresses: D.m({ wire: "PrivateIpAddress" }),
+      DryRun: 0,
+      AvailabilityZone: 0,
+      AvailabilityZoneId: 0,
     },
     output: {
       NatGatewayAddresses: D.m({
@@ -22303,7 +22429,11 @@ export const associateRouteServer: API.OperationMethod<
   AssociateRouteServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { RouteServerAssociation: {} } },
+  descriptor: {
+    service: svc,
+    input: { RouteServerId: 0, VpcId: 0, DryRun: 0 },
+    output: { RouteServerAssociation: {} },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidRouteServerIdNotFound,
@@ -22342,7 +22472,17 @@ export const associateRouteTable: API.OperationMethod<
   AssociateRouteTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AssociationState: {} } },
+  descriptor: {
+    service: svc,
+    input: {
+      GatewayId: 0,
+      PublicIpv4Pool: 0,
+      DryRun: 0,
+      SubnetId: 0,
+      RouteTableId: 0,
+    },
+    output: { AssociationState: {} },
+  },
   errors: [
     RequestLimitExceeded,
     DryRunOperation,
@@ -22385,7 +22525,7 @@ export const associateSecurityGroupVpc: API.OperationMethod<
   AssociateSecurityGroupVpcError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GroupId: 0, VpcId: 0, DryRun: 0 } },
   errors: [
     RequestLimitExceeded,
     InvalidGroupIdMalformed,
@@ -22415,6 +22555,12 @@ export const associateSubnetCidrBlock: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Ipv6IpamPoolId: 0,
+      Ipv6NetmaskLength: 0,
+      SubnetId: 0,
+      Ipv6CidrBlock: 0,
+    },
     output: { Ipv6CidrBlockAssociation: o_SubnetIpv6CidrBlockAssociation },
   },
   errors: [
@@ -22447,6 +22593,12 @@ export const associateTransitGatewayMulticastDomain: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TransitGatewayMulticastDomainId: 0,
+      TransitGatewayAttachmentId: 0,
+      SubnetIds: 0,
+      DryRun: 0,
+    },
     output: { Associations: o_TransitGatewayMulticastDomainAssociations },
   },
   errors: [
@@ -22474,7 +22626,15 @@ export const associateTransitGatewayPolicyTable: API.OperationMethod<
   AssociateTransitGatewayPolicyTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Association: {} } },
+  descriptor: {
+    service: svc,
+    input: {
+      TransitGatewayPolicyTableId: 0,
+      TransitGatewayAttachmentId: 0,
+      DryRun: 0,
+    },
+    output: { Association: {} },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidTransitGatewayPolicyTableIdMalformed,
@@ -22501,7 +22661,15 @@ export const associateTransitGatewayRouteTable: API.OperationMethod<
   AssociateTransitGatewayRouteTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Association: {} } },
+  descriptor: {
+    service: svc,
+    input: {
+      TransitGatewayRouteTableId: 0,
+      TransitGatewayAttachmentId: 0,
+      DryRun: 0,
+    },
+    output: { Association: {} },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidRouteTableIDNotFound,
@@ -22533,7 +22701,14 @@ export const associateTrunkInterface: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      BranchInterfaceId: 0,
+      TrunkInterfaceId: 0,
+      VlanId: 0,
+      GreKey: 0,
+      ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+    },
     output: { InterfaceAssociation: o_TrunkInterfaceAssociation },
   },
   errors: [RequestLimitExceeded, OperationNotPermitted, UnauthorizedOperation],
@@ -22571,6 +22746,18 @@ export const associateVpcCidrBlock: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CidrBlock: 0,
+      Ipv6CidrBlockNetworkBorderGroup: 0,
+      Ipv6Pool: 0,
+      Ipv6CidrBlock: 0,
+      Ipv4IpamPoolId: 0,
+      Ipv4NetmaskLength: 0,
+      Ipv6IpamPoolId: 0,
+      Ipv6NetmaskLength: 0,
+      VpcId: 0,
+      AmazonProvidedIpv6CidrBlock: 0,
+    },
     output: {
       Ipv6CidrBlockAssociation: o_VpcIpv6CidrBlockAssociation,
       CidrBlockAssociation: o_VpcCidrBlockAssociation,
@@ -22617,7 +22804,12 @@ export const attachClassicLinkVpc: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Groups: D.m({ wire: "SecurityGroupId" }) },
+    input: {
+      DryRun: 0,
+      InstanceId: 0,
+      VpcId: 0,
+      Groups: D.m({ wire: "SecurityGroupId" }),
+    },
     output: { Return: D.bool },
   },
   errors: [
@@ -22647,7 +22839,10 @@ export const attachImageWatermark: API.OperationMethod<
   AttachImageWatermarkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ImageId: 0, WatermarkName: 0, DryRun: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -22673,7 +22868,10 @@ export const attachInternetGateway: API.OperationMethod<
   AttachInternetGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, InternetGatewayId: 0, VpcId: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidVpcIDNotFound,
@@ -22703,7 +22901,19 @@ export const attachNetworkInterface: API.OperationMethod<
   AttachNetworkInterfaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { NetworkCardIndex: D.num } },
+  descriptor: {
+    service: svc,
+    input: {
+      NetworkCardIndex: 0,
+      EnaSrdSpecification: i_EnaSrdSpecification,
+      EnaQueueCount: 0,
+      DryRun: 0,
+      NetworkInterfaceId: 0,
+      InstanceId: 0,
+      DeviceIndex: 0,
+    },
+    output: { NetworkCardIndex: D.num },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidInstanceIDMalformed,
@@ -22732,7 +22942,12 @@ export const attachVerifiedAccessTrustProvider: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      VerifiedAccessInstanceId: 0,
+      VerifiedAccessTrustProviderId: 0,
+      ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+    },
     output: {
       VerifiedAccessTrustProvider: o_VerifiedAccessTrustProvider,
       VerifiedAccessInstance: o_VerifiedAccessInstance,
@@ -22793,6 +23008,13 @@ export const attachVolume: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Device: 0,
+      InstanceId: 0,
+      VolumeId: 0,
+      EbsCardIndex: 0,
+      DryRun: 0,
+    },
     output: {
       DeleteOnTermination: D.bool,
       EbsCardIndex: D.num,
@@ -22834,6 +23056,7 @@ export const attachVpnGateway: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { VpcId: 0, VpnGatewayId: 0, DryRun: 0 },
     output: { VpcAttachment: D.m({ wire: "attachment", shape: {} }) },
   },
   errors: [
@@ -22870,7 +23093,15 @@ export const authorizeClientVpnIngress: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientVpnEndpointId: 0,
+      TargetNetworkCidr: 0,
+      AccessGroupId: 0,
+      AuthorizeAllGroups: 0,
+      Description: 0,
+      ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+    },
     output: { Status: {} },
   },
   errors: [
@@ -22929,6 +23160,14 @@ export const authorizeSecurityGroupEgress: API.OperationMethod<
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
+      GroupId: 0,
+      SourceSecurityGroupName: 0,
+      SourceSecurityGroupOwnerId: 0,
+      IpProtocol: 0,
+      FromPort: 0,
+      ToPort: 0,
+      CidrIp: 0,
       IpPermissions: D.list(i_IpPermission),
     },
     output: {
@@ -22989,11 +23228,20 @@ export const authorizeSecurityGroupIngress: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      CidrIp: 0,
+      FromPort: 0,
+      GroupId: 0,
+      GroupName: 0,
       IpPermissions: D.list(i_IpPermission),
+      IpProtocol: 0,
+      SourceSecurityGroupName: 0,
+      SourceSecurityGroupOwnerId: 0,
+      ToPort: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: {
       Return: D.bool,
@@ -23028,7 +23276,13 @@ export const batchModifyIpamRoutingPolicyRegistrations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      DryRun: 0,
+      IpamInternetRegistryAssociationId: 0,
+      DeltaJson: 0,
+      Force: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { IpamRoutingPolicyRegistrationDelta: {} },
   },
   errors: [],
@@ -23061,6 +23315,19 @@ export const bundleInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      InstanceId: 0,
+      Storage: {
+        S3: {
+          AWSAccessKeyId: 0,
+          Bucket: 0,
+          Prefix: 0,
+          UploadPolicy: 0,
+          UploadPolicySignature: 0,
+        },
+      },
+      DryRun: 0,
+    },
     output: {
       BundleTask: D.m({ wire: "bundleInstanceTask", shape: o_BundleTask }),
     },
@@ -23091,6 +23358,7 @@ export const cancelBundleTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { BundleId: 0, DryRun: 0 },
     output: {
       BundleTask: D.m({ wire: "bundleInstanceTask", shape: o_BundleTask }),
     },
@@ -23153,7 +23421,16 @@ export const cancelCapacityReservation: API.OperationMethod<
   CancelCapacityReservationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: {
+      CapacityReservationId: 0,
+      DryRun: 0,
+      ApplyCancellationCharges: 0,
+      QuoteId: 0,
+    },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidCapacityReservationIdMalformed,
@@ -23192,6 +23469,7 @@ export const cancelCapacityReservationFleets: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       CapacityReservationFleetIds: D.m({ wire: "CapacityReservationFleetId" }),
     },
     output: {
@@ -23231,7 +23509,10 @@ export const cancelConversionTask: API.OperationMethod<
   CancelConversionTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, ConversionTaskId: 0, ReasonMessage: 0 },
+  },
   errors: [RequestLimitExceeded, InvalidAction, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -23259,7 +23540,11 @@ export const cancelDeclarativePoliciesReport: API.OperationMethod<
   CancelDeclarativePoliciesReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, ReportId: 0 },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidDeclarativePoliciesReportIdMalformed,
@@ -23286,7 +23571,7 @@ export const cancelExportTask: API.OperationMethod<
   CancelExportTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ExportTaskId: 0 } },
   errors: [RequestLimitExceeded, InvalidID, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -23309,7 +23594,11 @@ export const cancelImageLaunchPermission: API.OperationMethod<
   CancelImageLaunchPermissionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { ImageId: 0, DryRun: 0 },
+    output: { Return: D.bool },
+  },
   errors: [RequestLimitExceeded, InvalidAMIIDMalformed, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -23330,7 +23619,10 @@ export const cancelImportTask: API.OperationMethod<
   CancelImportTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CancelReason: 0, DryRun: 0, ImportTaskId: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidConversionTaskIdMalformed,
@@ -23361,6 +23653,7 @@ export const cancelReservedInstancesListing: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ReservedInstancesListingId: 0 },
     output: {
       ReservedInstancesListings: D.m({
         wire: "reservedInstancesListingsSet",
@@ -23415,7 +23708,11 @@ export const cancelSpotFleetRequests: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { SpotFleetRequestIds: D.m({ wire: "SpotFleetRequestId" }) },
+    input: {
+      DryRun: 0,
+      SpotFleetRequestIds: D.m({ wire: "SpotFleetRequestId" }),
+      TerminateInstances: 0,
+    },
     output: {
       SuccessfulFleetRequests: D.m({
         wire: "successfulFleetRequestSet",
@@ -23458,7 +23755,10 @@ export const cancelSpotInstanceRequests: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { SpotInstanceRequestIds: D.m({ wire: "SpotInstanceRequestId" }) },
+    input: {
+      DryRun: 0,
+      SpotInstanceRequestIds: D.m({ wire: "SpotInstanceRequestId" }),
+    },
     output: {
       CancelledSpotInstanceRequests: D.m({
         wire: "spotInstanceRequestSet",
@@ -23493,7 +23793,11 @@ export const confirmProductInstance: API.OperationMethod<
   ConfirmProductInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { InstanceId: 0, ProductCode: 0, DryRun: 0 },
+    output: { Return: D.bool },
+  },
   errors: [RequestLimitExceeded, AuthFailure, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -23514,7 +23818,17 @@ export const copyFpgaImage: API.OperationMethod<
   CopyFpgaImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DryRun: 0,
+      SourceFpgaImageId: 0,
+      Description: 0,
+      Name: 0,
+      SourceRegion: 0,
+      ClientToken: 0,
+    },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidFpgaImageIDMalformed,
@@ -23607,10 +23921,22 @@ export const copyImage: API.OperationMethod<
     service: svc,
     input: {
       ClientToken: D.m({ idempotency: true }),
+      Description: 0,
+      Encrypted: 0,
+      KmsKeyId: 0,
+      Name: 0,
+      SourceImageId: 0,
+      SourceRegion: 0,
+      DestinationOutpostArn: 0,
+      CopyImageTags: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      SnapshotCopyCompletionDurationMinutes: 0,
+      DestinationAvailabilityZone: 0,
+      DestinationAvailabilityZoneId: 0,
+      DryRun: 0,
     },
   },
   errors: [
@@ -23673,10 +23999,21 @@ export const copySnapshot: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Description: 0,
+      DestinationOutpostArn: 0,
+      DestinationRegion: 0,
+      Encrypted: 0,
+      KmsKeyId: 0,
+      PresignedUrl: 0,
+      SourceRegion: 0,
+      SourceSnapshotId: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      CompletionDurationMinutes: 0,
+      DestinationAvailabilityZone: 0,
+      DryRun: 0,
     },
     output: { Tags: D.m({ wire: "tagSet", shape: D.list({}) }) },
   },
@@ -23711,10 +24048,17 @@ export const copyVolumes: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      SourceVolumeId: 0,
+      Iops: 0,
+      Size: 0,
+      VolumeType: 0,
+      DryRun: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      MultiAttachEnabled: 0,
+      Throughput: 0,
       ClientToken: D.m({ idempotency: true }),
     },
     output: { Volumes: D.m({ wire: "volumeSet", shape: D.list(o_Volume) }) },
@@ -23760,11 +24104,25 @@ export const createApplicationStatusCheck: API.OperationMethod<
         wire: "HealthCheckPath",
         shape: D.list(i_HealthCheckPathRequestObject),
       }),
+      Aggregation: 0,
+      Protocol: 0,
+      Port: 0,
+      Path: 0,
+      DeviceIndex: 0,
+      IpVersion: 0,
+      IpScope: 0,
+      Interval: 0,
+      Timeout: 0,
+      FailureThreshold: 0,
+      SuccessThreshold: 0,
+      StatusCodeMatcher: 0,
+      InitializationGracePeriodSeconds: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
     },
     output: { ApplicationStatusCheck: o_ApplicationStatusCheckResponseObject },
   },
@@ -23792,7 +24150,12 @@ export const createCapacityManagerDataExport: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      S3BucketName: 0,
+      S3BucketPrefix: 0,
+      Schedule: 0,
+      OutputFormat: 0,
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -23844,7 +24207,27 @@ export const createCapacityReservation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TagSpecifications: D.list(i_TagSpecification) },
+    input: {
+      ClientToken: 0,
+      InstanceType: 0,
+      InstancePlatform: 0,
+      AvailabilityZone: 0,
+      AvailabilityZoneId: 0,
+      Tenancy: 0,
+      InstanceCount: 0,
+      EbsOptimized: 0,
+      EphemeralStorage: 0,
+      EndDate: 0,
+      EndDateType: 0,
+      InstanceMatchCriteria: 0,
+      TagSpecifications: D.list(i_TagSpecification),
+      DryRun: 0,
+      OutpostArn: 0,
+      PlacementGroupArn: 0,
+      StartDate: 0,
+      CommitmentDuration: 0,
+      DeliveryPreference: 0,
+    },
     output: { CapacityReservation: o_CapacityReservation },
   },
   errors: [RequestLimitExceeded, Unsupported, UnauthorizedOperation],
@@ -23874,7 +24257,10 @@ export const createCapacityReservationBySplitting: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       ClientToken: D.m({ idempotency: true }),
+      SourceCapacityReservationId: 0,
+      InstanceCount: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -23913,11 +24299,13 @@ export const createCapacityReservationCancellationQuote: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      CapacityReservationId: 0,
       ClientToken: D.m({ idempotency: true }),
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: {
       CapacityReservationCancellationQuote:
@@ -23949,12 +24337,29 @@ export const createCapacityReservationFleet: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      AllocationStrategy: 0,
       ClientToken: D.m({ idempotency: true }),
-      InstanceTypeSpecifications: D.m({ wire: "InstanceTypeSpecification" }),
+      InstanceTypeSpecifications: D.m({
+        wire: "InstanceTypeSpecification",
+        shape: D.list({
+          InstanceType: 0,
+          InstancePlatform: 0,
+          Weight: 0,
+          AvailabilityZone: 0,
+          AvailabilityZoneId: 0,
+          EbsOptimized: 0,
+          Priority: 0,
+        }),
+      }),
+      Tenancy: 0,
+      TotalTargetCapacity: 0,
+      EndDate: 0,
+      InstanceMatchCriteria: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: {
       TotalTargetCapacity: D.num,
@@ -23994,10 +24399,12 @@ export const createCarrierGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      VpcId: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
       ClientToken: D.m({ idempotency: true }),
     },
     output: { CarrierGateway: o_CarrierGateway },
@@ -24037,13 +24444,42 @@ export const createClientVpnEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      AuthenticationOptions: D.m({ wire: "Authentication" }),
+      ClientCidrBlock: 0,
+      ServerCertificateArn: 0,
+      AuthenticationOptions: D.m({
+        wire: "Authentication",
+        shape: D.list({
+          Type: 0,
+          ActiveDirectory: { DirectoryId: 0 },
+          MutualAuthentication: { ClientRootCertificateChainArn: 0 },
+          FederatedAuthentication: {
+            SAMLProviderArn: 0,
+            SelfServiceSAMLProviderArn: 0,
+          },
+        }),
+      }),
+      ConnectionLogOptions: i_ConnectionLogOptions,
+      DnsServers: 0,
+      TransportProtocol: 0,
+      VpnPort: 0,
+      Description: 0,
+      SplitTunnel: 0,
+      DryRun: 0,
       ClientToken: D.m({ idempotency: true }),
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
       SecurityGroupIds: D.m({ wire: "SecurityGroupId" }),
+      VpcId: 0,
+      SelfServicePortal: 0,
+      ClientConnectOptions: i_ClientConnectOptions,
+      SessionTimeoutHours: 0,
+      ClientLoginBannerOptions: i_ClientLoginBannerOptions,
+      ClientRouteEnforcementOptions: i_ClientRouteEnforcementOptions,
+      DisconnectOnSessionTimeout: 0,
+      EndpointIpAddressType: 0,
+      TrafficIpAddressType: 0,
       TransitGatewayConfiguration: i_TransitGatewayConfigurationInputStructure,
     },
     output: { Status: {} },
@@ -24083,7 +24519,14 @@ export const createClientVpnRoute: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientVpnEndpointId: 0,
+      DestinationCidrBlock: 0,
+      TargetVpcSubnetId: 0,
+      Description: 0,
+      ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+    },
     output: { Status: {} },
   },
   errors: [
@@ -24117,7 +24560,11 @@ export const createCoipCidr: API.OperationMethod<
   CreateCoipCidrError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CoipCidr: {} } },
+  descriptor: {
+    service: svc,
+    input: { Cidr: 0, CoipPoolId: 0, DryRun: 0 },
+    output: { CoipCidr: {} },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidPoolIDMalformed,
@@ -24149,10 +24596,12 @@ export const createCoipPool: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      LocalGatewayRouteTableId: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: { CoipPool: o_CoipPool },
   },
@@ -24201,10 +24650,18 @@ export const createCustomerGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      BgpAsn: 0,
+      PublicIp: 0,
+      CertificateArn: 0,
+      Type: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DeviceName: 0,
+      IpAddress: 0,
+      BgpAsnExtended: 0,
+      DryRun: 0,
     },
     output: { CustomerGateway: o_CustomerGateway },
   },
@@ -24237,7 +24694,16 @@ export const createDefaultSubnet: API.OperationMethod<
   CreateDefaultSubnetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Subnet: o_Subnet } },
+  descriptor: {
+    service: svc,
+    input: {
+      AvailabilityZone: 0,
+      DryRun: 0,
+      Ipv6Native: 0,
+      AvailabilityZoneId: 0,
+    },
+    output: { Subnet: o_Subnet },
+  },
   errors: [
     RequestLimitExceeded,
     DefaultSubnetAlreadyExistsInAvailabilityZone,
@@ -24270,7 +24736,7 @@ export const createDefaultVpc: API.OperationMethod<
   CreateDefaultVpcError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Vpc: o_Vpc } },
+  descriptor: { service: svc, input: { DryRun: 0 }, output: { Vpc: o_Vpc } },
   errors: [
     RequestLimitExceeded,
     DefaultVpcAlreadyExists,
@@ -24300,6 +24766,9 @@ export const createDelegateMacVolumeOwnershipTask: API.OperationMethod<
     service: svc,
     input: {
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+      InstanceId: 0,
+      MacCredentials: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -24370,12 +24839,13 @@ export const createDhcpOptions: API.OperationMethod<
     input: {
       DhcpConfigurations: D.m({
         wire: "DhcpConfiguration",
-        shape: D.list({ Values: D.m({ wire: "Value" }) }),
+        shape: D.list({ Key: 0, Values: D.m({ wire: "Value" }) }),
       }),
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: { DhcpOptions: o_DhcpOptions },
   },
@@ -24413,6 +24883,9 @@ export const createEgressOnlyInternetGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ClientToken: 0,
+      DryRun: 0,
+      VpcId: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -24456,8 +24929,30 @@ export const createFleet: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       ClientToken: D.m({ idempotency: true }),
+      SpotOptions: {
+        AllocationStrategy: 0,
+        MaintenanceStrategies: {
+          CapacityRebalance: { ReplacementStrategy: 0, TerminationDelay: 0 },
+        },
+        InstanceInterruptionBehavior: 0,
+        InstancePoolsToUseCount: 0,
+        SingleInstanceType: 0,
+        SingleAvailabilityZone: 0,
+        MinTargetCapacity: 0,
+        MaxTotalPrice: 0,
+      },
+      OnDemandOptions: {
+        AllocationStrategy: 0,
+        CapacityReservationOptions: { UsageStrategy: 0 },
+        SingleInstanceType: 0,
+        SingleAvailabilityZone: 0,
+        MinTargetCapacity: 0,
+        MaxTotalPrice: 0,
+      },
       ReservedCapacityOptions: {
+        AllocationStrategy: 0,
         ReservationTypes: D.m({ wire: "ReservationType" }),
         CapacityReservationTarget: {
           CapacityReservationIds: D.m({ wire: "CapacityReservationId" }),
@@ -24469,11 +24964,19 @@ export const createFleet: API.OperationMethod<
           MarketTypes: D.m({ wire: "MarketType" }),
         },
       },
+      ExcessCapacityTerminationPolicy: 0,
       LaunchTemplateConfigs: D.list(i_FleetLaunchTemplateConfigRequest),
+      TargetCapacitySpecification: i_TargetCapacitySpecificationRequest,
+      TerminateInstancesWithExpiration: 0,
+      Type: 0,
+      ValidFrom: 0,
+      ValidUntil: 0,
+      ReplaceUnhealthyInstances: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      Context: 0,
     },
     output: {
       Errors: D.m({
@@ -24530,14 +25033,30 @@ export const createFlowLogs: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      ClientToken: 0,
+      DeliverLogsPermissionArn: 0,
+      DeliverCrossAccountRole: 0,
+      LogGroupName: 0,
       ResourceIds: D.m({ wire: "ResourceId" }),
+      ResourceType: 0,
+      TrafficType: 0,
+      LogDestinationType: 0,
+      LogDestination: 0,
+      LogFormat: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      MaxAggregationInterval: 0,
+      DestinationOptions: {
+        FileFormat: 0,
+        HiveCompatiblePartitions: 0,
+        PerHourPartition: 0,
+      },
       TagFieldSpecifications: D.m({
         wire: "TagFieldSpecification",
-        shape: D.list({ TagKeys: D.m({ wire: "TagKey" }) }),
+        shape: D.list({ ResourceType: 0, TagKeys: D.m({ wire: "TagKey" }) }),
       }),
     },
     output: {
@@ -24581,6 +25100,12 @@ export const createFpgaImage: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      InputStorageLocation: i_StorageLocation,
+      LogsStorageLocation: i_StorageLocation,
+      Description: 0,
+      Name: 0,
+      ClientToken: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -24638,7 +25163,16 @@ export const createImage: API.OperationMethod<
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
-      BlockDeviceMappings: D.m({ wire: "BlockDeviceMapping" }),
+      SnapshotLocation: 0,
+      DryRun: 0,
+      InstanceId: 0,
+      Name: 0,
+      Description: 0,
+      NoReboot: 0,
+      BlockDeviceMappings: D.m({
+        wire: "BlockDeviceMapping",
+        shape: D.list(i_BlockDeviceMapping),
+      }),
     },
   },
   errors: [
@@ -24674,12 +25208,18 @@ export const createImageUsageReport: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ImageId: 0,
+      DryRun: 0,
       ResourceTypes: D.m({
         wire: "ResourceType",
         shape: D.list({
+          ResourceType: 0,
           ResourceTypeOptions: D.m({
             wire: "ResourceTypeOption",
-            shape: D.list({ OptionValues: D.m({ wire: "OptionValue" }) }),
+            shape: D.list({
+              OptionName: 0,
+              OptionValues: D.m({ wire: "OptionValue" }),
+            }),
           }),
         }),
       }),
@@ -24721,12 +25261,16 @@ export const createInstanceConnectEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      SubnetId: 0,
       SecurityGroupIds: D.m({ wire: "SecurityGroupId" }),
+      PreserveClientIp: 0,
       ClientToken: D.m({ idempotency: true }),
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      IpAddressType: 0,
     },
     output: { InstanceConnectEndpoint: o_Ec2InstanceConnectEndpoint },
   },
@@ -24781,7 +25325,13 @@ export const createInstanceEventWindow: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      TimeRanges: D.m({ wire: "TimeRange" }),
+      DryRun: 0,
+      Name: 0,
+      TimeRanges: D.m({
+        wire: "TimeRange",
+        shape: D.list(i_InstanceEventWindowTimeRangeRequest),
+      }),
+      CronExpression: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -24820,7 +25370,18 @@ export const createInstanceExportTask: API.OperationMethod<
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
-      ExportToS3Task: D.m({ wire: "ExportToS3" }),
+      Description: 0,
+      InstanceId: 0,
+      TargetEnvironment: 0,
+      ExportToS3Task: D.m({
+        wire: "ExportToS3",
+        shape: {
+          DiskImageFormat: 0,
+          ContainerFormat: 0,
+          S3Bucket: 0,
+          S3Prefix: 0,
+        },
+      }),
     },
     output: { ExportTask: o_ExportTask },
   },
@@ -24856,6 +25417,7 @@ export const createInternetGateway: API.OperationMethod<
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: { InternetGateway: o_InternetGateway },
   },
@@ -24887,7 +25449,10 @@ export const createInterruptibleCapacityReservationAllocation: API.OperationMeth
   descriptor: {
     service: svc,
     input: {
+      CapacityReservationId: 0,
+      InstanceCount: 0,
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -24929,12 +25494,20 @@ export const createIpam: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      OperatingRegions: D.m({ wire: "OperatingRegion" }),
+      DryRun: 0,
+      Description: 0,
+      OperatingRegions: D.m({
+        wire: "OperatingRegion",
+        shape: D.list(i_AddIpamOperatingRegion),
+      }),
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
       ClientToken: D.m({ idempotency: true }),
+      Tier: 0,
+      EnablePrivateGua: 0,
+      MeteredAccount: 0,
     },
     output: { Ipam: o_Ipam },
   },
@@ -24970,6 +25543,8 @@ export const createIpamExternalResourceVerificationToken: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      IpamId: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -25005,6 +25580,11 @@ export const createIpamInternetRegistryAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      IpamId: 0,
+      Rir: 0,
+      OrganizationHandle: 0,
+      Description: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -25043,11 +25623,13 @@ export const createIpamPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
       ClientToken: D.m({ idempotency: true }),
+      IpamId: 0,
     },
     output: { IpamPolicy: o_IpamPolicy },
   },
@@ -25082,12 +25664,34 @@ export const createIpamPool: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      AllocationResourceTags: D.m({ wire: "AllocationResourceTag" }),
+      DryRun: 0,
+      IpamScopeId: 0,
+      Locale: 0,
+      SourceIpamPoolId: 0,
+      Description: 0,
+      AddressFamily: 0,
+      AutoImport: 0,
+      PubliclyAdvertisable: 0,
+      AllocationMinNetmaskLength: 0,
+      AllocationMaxNetmaskLength: 0,
+      AllocationDefaultNetmaskLength: 0,
+      AllocationResourceTags: D.m({
+        wire: "AllocationResourceTag",
+        shape: D.list(i_RequestIpamResourceTag),
+      }),
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
       ClientToken: D.m({ idempotency: true }),
+      AwsService: 0,
+      PublicIpSource: 0,
+      SourceResource: {
+        ResourceId: 0,
+        ResourceType: 0,
+        ResourceRegion: 0,
+        ResourceOwner: 0,
+      },
     },
     output: { IpamPool: o_IpamPool },
   },
@@ -25123,6 +25727,10 @@ export const createIpamPrefixListResolver: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      IpamId: 0,
+      Description: 0,
+      AddressFamily: 0,
       Rules: D.m({
         wire: "Rule",
         shape: D.list(i_IpamPrefixListResolverRuleRequest),
@@ -25164,6 +25772,12 @@ export const createIpamPrefixListResolverTarget: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      IpamPrefixListResolverId: 0,
+      PrefixListId: 0,
+      PrefixListRegion: 0,
+      DesiredVersion: 0,
+      TrackLatestVersion: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -25201,7 +25815,12 @@ export const createIpamResourceDiscovery: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      OperatingRegions: D.m({ wire: "OperatingRegion" }),
+      DryRun: 0,
+      Description: 0,
+      OperatingRegions: D.m({
+        wire: "OperatingRegion",
+        shape: D.list(i_AddIpamOperatingRegion),
+      }),
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -25229,7 +25848,14 @@ export const createIpamRoutingPolicyRegistration: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      IpamInternetRegistryAssociationId: 0,
+      Cidr: 0,
       Asns: D.m({ wire: "Asn" }),
+      PermitMoreSpecificAnnouncements: 0,
+      MaxLength: 0,
+      Description: 0,
+      Force: 0,
       ClientToken: D.m({ idempotency: true }),
     },
     output: { IpamRoutingPolicyRegistrationDelta: {} },
@@ -25260,11 +25886,15 @@ export const createIpamScope: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      IpamId: 0,
+      Description: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
       ClientToken: D.m({ idempotency: true }),
+      ExternalAuthorityConfiguration: i_ExternalAuthorityConfiguration,
     },
     output: { IpamScope: o_IpamScope },
   },
@@ -25309,10 +25939,14 @@ export const createKeyPair: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      KeyName: 0,
+      KeyType: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      KeyFormat: 0,
+      DryRun: 0,
     },
     output: {
       Tags: D.m({ wire: "tagSet", shape: D.list({}) }),
@@ -25357,8 +25991,12 @@ export const createLaunchTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       ClientToken: D.m({ idempotency: true }),
+      LaunchTemplateName: 0,
+      VersionDescription: 0,
       LaunchTemplateData: i_RequestLaunchTemplateData,
+      Operator: i_OperatorRequest,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -25398,8 +26036,14 @@ export const createLaunchTemplateVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       ClientToken: D.m({ idempotency: true }),
+      LaunchTemplateId: 0,
+      LaunchTemplateName: 0,
+      SourceVersion: 0,
+      VersionDescription: 0,
       LaunchTemplateData: i_RequestLaunchTemplateData,
+      ResolveAlias: 0,
     },
     output: {
       LaunchTemplateVersion: o_LaunchTemplateVersion,
@@ -25432,7 +26076,18 @@ export const createLocalGatewayRoute: API.OperationMethod<
   CreateLocalGatewayRouteError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Route: {} } },
+  descriptor: {
+    service: svc,
+    input: {
+      DestinationCidrBlock: 0,
+      LocalGatewayRouteTableId: 0,
+      LocalGatewayVirtualInterfaceGroupId: 0,
+      DryRun: 0,
+      NetworkInterfaceId: 0,
+      DestinationPrefixListId: 0,
+    },
+    output: { Route: {} },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidParameterValue,
@@ -25463,10 +26118,13 @@ export const createLocalGatewayRouteTable: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      LocalGatewayId: 0,
+      Mode: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: { LocalGatewayRouteTable: o_LocalGatewayRouteTable },
   },
@@ -25501,10 +26159,13 @@ export const createLocalGatewayRouteTableVirtualInterfaceGroupAssociation: API.O
   descriptor: {
     service: svc,
     input: {
+      LocalGatewayRouteTableId: 0,
+      LocalGatewayVirtualInterfaceGroupId: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: {
       LocalGatewayRouteTableVirtualInterfaceGroupAssociation:
@@ -25543,10 +26204,13 @@ export const createLocalGatewayRouteTableVpcAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      LocalGatewayRouteTableId: 0,
+      VpcId: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: {
       LocalGatewayRouteTableVpcAssociation:
@@ -25585,10 +26249,18 @@ export const createLocalGatewayVirtualInterface: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      LocalGatewayVirtualInterfaceGroupId: 0,
+      OutpostLagId: 0,
+      Vlan: 0,
+      LocalAddress: 0,
+      PeerAddress: 0,
+      PeerBgpAsn: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
+      PeerBgpAsnExtended: 0,
     },
     output: { LocalGatewayVirtualInterface: o_LocalGatewayVirtualInterface },
   },
@@ -25622,10 +26294,14 @@ export const createLocalGatewayVirtualInterfaceGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      LocalGatewayId: 0,
+      LocalBgpAsn: 0,
+      LocalBgpAsnExtended: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: {
       LocalGatewayVirtualInterfaceGroup: o_LocalGatewayVirtualInterfaceGroup,
@@ -25690,6 +26366,19 @@ export const createMacSystemIntegrityProtectionModificationTask: API.OperationMe
     service: svc,
     input: {
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+      InstanceId: 0,
+      MacCredentials: 0,
+      MacSystemIntegrityProtectionConfiguration: {
+        AppleInternal: 0,
+        BaseSystem: 0,
+        DebuggingRestrictions: 0,
+        DTraceRestrictions: 0,
+        FilesystemProtections: 0,
+        KextSigning: 0,
+        NvramProtections: 0,
+      },
+      MacSystemIntegrityProtectionStatus: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -25722,11 +26411,15 @@ export const createManagedPrefixList: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      Entries: D.m({ wire: "Entry" }),
+      DryRun: 0,
+      PrefixListName: 0,
+      Entries: D.m({ wire: "Entry", shape: D.list(i_AddPrefixListEntry) }),
+      MaxEntries: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      AddressFamily: 0,
       ClientToken: D.m({ idempotency: true }),
     },
     output: { PrefixList: o_ManagedPrefixList },
@@ -25783,17 +26476,29 @@ export const createNatGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      AvailabilityMode: 0,
+      AllocationId: 0,
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+      SubnetId: 0,
+      VpcId: 0,
       AvailabilityZoneAddresses: D.m({
         wire: "AvailabilityZoneAddress",
-        shape: D.list({ AllocationIds: D.m({ wire: "AllocationId" }) }),
+        shape: D.list({
+          AvailabilityZone: 0,
+          AvailabilityZoneId: 0,
+          AllocationIds: D.m({ wire: "AllocationId" }),
+        }),
       }),
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      ConnectivityType: 0,
+      PrivateIpAddress: 0,
       SecondaryAllocationIds: D.m({ wire: "SecondaryAllocationId" }),
       SecondaryPrivateIpAddresses: D.m({ wire: "SecondaryPrivateIpAddress" }),
+      SecondaryPrivateIpAddressCount: 0,
     },
     output: { NatGateway: o_NatGateway },
   },
@@ -25838,6 +26543,8 @@ export const createNetworkAcl: API.OperationMethod<
         shape: D.list(i_TagSpecification),
       }),
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+      VpcId: 0,
     },
     output: { NetworkAcl: o_NetworkAcl },
   },
@@ -25879,7 +26586,21 @@ export const createNetworkAclEntry: API.OperationMethod<
   CreateNetworkAclEntryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, input: { IcmpTypeCode: D.m({ wire: "Icmp" }) } },
+  descriptor: {
+    service: svc,
+    input: {
+      DryRun: 0,
+      NetworkAclId: 0,
+      RuleNumber: 0,
+      Protocol: 0,
+      RuleAction: 0,
+      Egress: 0,
+      CidrBlock: 0,
+      Ipv6CidrBlock: 0,
+      IcmpTypeCode: D.m({ wire: "Icmp", shape: i_IcmpTypeCode }),
+      PortRange: i_PortRange,
+    },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidNetworkAclIDNotFound,
@@ -25921,6 +26642,7 @@ export const createNetworkInsightsAccessScope: API.OperationMethod<
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: {
       NetworkInsightsAccessScope: o_NetworkInsightsAccessScope,
@@ -25955,11 +26677,20 @@ export const createNetworkInsightsPath: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      SourceIp: 0,
+      DestinationIp: 0,
+      Source: 0,
+      Destination: 0,
+      Protocol: 0,
+      DestinationPort: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
       ClientToken: D.m({ idempotency: true }),
+      FilterAtSource: i_PathRequestFilter,
+      FilterAtDestination: i_PathRequestFilter,
     },
     output: { NetworkInsightsPath: o_NetworkInsightsPath },
   },
@@ -25999,14 +26730,34 @@ export const createNetworkInterface: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      Ipv4Prefixes: D.m({ wire: "Ipv4Prefix" }),
-      Ipv6Prefixes: D.m({ wire: "Ipv6Prefix" }),
+      Ipv4Prefixes: D.m({
+        wire: "Ipv4Prefix",
+        shape: D.list(i_Ipv4PrefixSpecificationRequest),
+      }),
+      Ipv4PrefixCount: 0,
+      Ipv6Prefixes: D.m({
+        wire: "Ipv6Prefix",
+        shape: D.list(i_Ipv6PrefixSpecificationRequest),
+      }),
+      Ipv6PrefixCount: 0,
+      InterfaceType: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
       ClientToken: D.m({ idempotency: true }),
+      EnablePrimaryIpv6: 0,
+      ConnectionTrackingSpecification: i_ConnectionTrackingSpecificationRequest,
+      Operator: i_OperatorRequest,
+      SubnetId: 0,
+      Description: 0,
+      PrivateIpAddress: 0,
       Groups: D.m({ wire: "SecurityGroupId" }),
+      PrivateIpAddresses: D.list(i_PrivateIpAddressSpecification),
+      SecondaryPrivateIpAddressCount: 0,
+      Ipv6Addresses: D.list(i_InstanceIpv6Address),
+      Ipv6AddressCount: 0,
+      DryRun: 0,
     },
     output: { NetworkInterface: o_NetworkInterface },
   },
@@ -26042,6 +26793,13 @@ export const createNetworkInterfacePermission: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NetworkInterfaceId: 0,
+      AwsAccountId: 0,
+      AwsService: 0,
+      Permission: 0,
+      DryRun: 0,
+    },
     output: { InterfacePermission: o_NetworkInterfacePermission },
   },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
@@ -26081,10 +26839,18 @@ export const createPlacementGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      PartitionCount: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      SpreadLevel: 0,
+      LinkedGroupId: 0,
+      Operator: i_OperatorRequest,
+      ParentGroupId: 0,
+      DryRun: 0,
+      GroupName: 0,
+      Strategy: 0,
     },
     output: { PlacementGroup: o_PlacementGroup },
   },
@@ -26112,10 +26878,12 @@ export const createPublicIpv4Pool: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      NetworkBorderGroup: 0,
     },
   },
   errors: [],
@@ -26147,11 +26915,18 @@ export const createReplaceRootVolumeTask: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      InstanceId: 0,
+      SnapshotId: 0,
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      ImageId: 0,
+      DeleteReplacedRootVolume: 0,
+      VolumeInitializationRate: 0,
+      VolumeId: 0,
     },
     output: { ReplaceRootVolumeTask: o_ReplaceRootVolumeTask },
   },
@@ -26201,6 +26976,12 @@ export const createReservedInstancesListing: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ReservedInstancesId: 0,
+      InstanceCount: 0,
+      PriceSchedules: D.list({ Term: 0, Price: 0, CurrencyCode: 0 }),
+      ClientToken: 0,
+    },
     output: {
       ReservedInstancesListings: D.m({
         wire: "reservedInstancesListingsSet",
@@ -26238,10 +27019,14 @@ export const createRestoreImageTask: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Bucket: 0,
+      ObjectKey: 0,
+      Name: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
   },
   errors: [RequestLimitExceeded, InvalidRequest, UnauthorizedOperation],
@@ -26290,7 +27075,29 @@ export const createRoute: API.OperationMethod<
   CreateRouteError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: {
+      DestinationPrefixListId: 0,
+      VpcEndpointId: 0,
+      TransitGatewayId: 0,
+      LocalGatewayId: 0,
+      CarrierGatewayId: 0,
+      CoreNetworkArn: 0,
+      OdbNetworkArn: 0,
+      DryRun: 0,
+      RouteTableId: 0,
+      DestinationCidrBlock: 0,
+      GatewayId: 0,
+      DestinationIpv6CidrBlock: 0,
+      EgressOnlyInternetGatewayId: 0,
+      InstanceId: 0,
+      NetworkInterfaceId: 0,
+      VpcPeeringConnectionId: 0,
+      NatGatewayId: 0,
+    },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidGatewayIDNotFound,
@@ -26341,7 +27148,12 @@ export const createRouteServer: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      AmazonSideAsn: 0,
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+      PersistRoutes: 0,
+      PersistRoutesDuration: 0,
+      SnsNotificationsEnabled: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -26379,7 +27191,10 @@ export const createRouteServerEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      RouteServerId: 0,
+      SubnetId: 0,
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -26427,6 +27242,10 @@ export const createRouteServerPeer: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      RouteServerEndpointId: 0,
+      PeerAddress: 0,
+      BgpOptions: { PeerAsn: 0, PeerLivenessDetection: 0 },
+      DryRun: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -26467,6 +27286,8 @@ export const createRouteTable: API.OperationMethod<
         shape: D.list(i_TagSpecification),
       }),
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+      VpcId: 0,
     },
     output: { RouteTable: o_RouteTable },
   },
@@ -26498,6 +27319,9 @@ export const createSecondaryNetwork: API.OperationMethod<
     service: svc,
     input: {
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+      Ipv4CidrBlock: 0,
+      NetworkType: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -26529,6 +27353,11 @@ export const createSecondarySubnet: API.OperationMethod<
     service: svc,
     input: {
       ClientToken: D.m({ idempotency: true }),
+      AvailabilityZone: 0,
+      AvailabilityZoneId: 0,
+      DryRun: 0,
+      Ipv4CidrBlock: 0,
+      SecondaryNetworkId: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -26588,10 +27417,13 @@ export const createSecurityGroup: API.OperationMethod<
     service: svc,
     input: {
       Description: D.m({ wire: "GroupDescription" }),
+      GroupName: 0,
+      VpcId: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: { Tags: D.m({ wire: "tagSet", shape: D.list({}) }) },
   },
@@ -26662,10 +27494,15 @@ export const createSnapshot: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Description: 0,
+      OutpostArn: 0,
+      VolumeId: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      Location: 0,
+      DryRun: 0,
     },
     output: {
       Tags: D.m({ wire: "tagSet", shape: D.list({}) }),
@@ -26724,13 +27561,20 @@ export const createSnapshots: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Description: 0,
       InstanceSpecification: {
+        InstanceId: 0,
+        ExcludeBootVolume: 0,
         ExcludeDataVolumeIds: D.m({ wire: "ExcludeDataVolumeId" }),
       },
+      OutpostArn: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
+      CopyTagsFromSource: 0,
+      Location: 0,
     },
     output: {
       Snapshots: D.m({
@@ -26769,6 +27613,7 @@ export const createSpotDatafeedSubscription: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, Bucket: 0, Prefix: 0 },
     output: { SpotDatafeedSubscription: o_SpotDatafeedSubscription },
   },
   errors: [
@@ -26803,7 +27648,15 @@ export const createStoreImageTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { S3ObjectTags: D.m({ wire: "S3ObjectTag" }) },
+    input: {
+      ImageId: 0,
+      Bucket: 0,
+      S3ObjectTags: D.m({
+        wire: "S3ObjectTag",
+        shape: D.list({ Key: 0, Value: 0 }),
+      }),
+      DryRun: 0,
+    },
   },
   errors: [RequestLimitExceeded, InvalidAMIIDMalformed, UnauthorizedOperation],
   protocol: AwsProtocol,
@@ -26858,6 +27711,18 @@ export const createSubnet: API.OperationMethod<
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      AvailabilityZone: 0,
+      AvailabilityZoneId: 0,
+      CidrBlock: 0,
+      Ipv6CidrBlock: 0,
+      OutpostArn: 0,
+      VpcId: 0,
+      Ipv6Native: 0,
+      Ipv4IpamPoolId: 0,
+      Ipv4NetmaskLength: 0,
+      Ipv6IpamPoolId: 0,
+      Ipv6NetmaskLength: 0,
+      DryRun: 0,
     },
     output: { Subnet: o_Subnet },
   },
@@ -26896,6 +27761,11 @@ export const createSubnetCidrReservation: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      SubnetId: 0,
+      Cidr: 0,
+      ReservationType: 0,
+      Description: 0,
+      DryRun: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -26942,8 +27812,9 @@ export const createTags: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Resources: D.m({ wire: "ResourceId" }),
-      Tags: D.m({ wire: "Tag" }),
+      Tags: D.m({ wire: "Tag", shape: D.list(i_Tag) }),
     },
   },
   errors: [
@@ -26980,10 +27851,12 @@ export const createTrafficMirrorFilter: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Description: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
       ClientToken: D.m({ idempotency: true }),
     },
     output: { TrafficMirrorFilter: o_TrafficMirrorFilter },
@@ -27015,6 +27888,17 @@ export const createTrafficMirrorFilterRule: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      TrafficMirrorFilterId: 0,
+      TrafficDirection: 0,
+      RuleNumber: 0,
+      RuleAction: 0,
+      DestinationPortRange: i_TrafficMirrorPortRangeRequest,
+      SourcePortRange: i_TrafficMirrorPortRangeRequest,
+      Protocol: 0,
+      DestinationCidrBlock: 0,
+      SourceCidrBlock: 0,
+      Description: 0,
+      DryRun: 0,
       ClientToken: D.m({ idempotency: true }),
       TagSpecifications: D.m({
         wire: "TagSpecification",
@@ -27057,10 +27941,18 @@ export const createTrafficMirrorSession: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      NetworkInterfaceId: 0,
+      TrafficMirrorTargetId: 0,
+      TrafficMirrorFilterId: 0,
+      PacketLength: 0,
+      SessionNumber: 0,
+      VirtualNetworkId: 0,
+      Description: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
       ClientToken: D.m({ idempotency: true }),
     },
     output: { TrafficMirrorSession: o_TrafficMirrorSession },
@@ -27102,11 +27994,16 @@ export const createTrafficMirrorTarget: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      NetworkInterfaceId: 0,
+      NetworkLoadBalancerArn: 0,
+      Description: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
       ClientToken: D.m({ idempotency: true }),
+      GatewayLoadBalancerEndpointId: 0,
     },
     output: { TrafficMirrorTarget: o_TrafficMirrorTarget },
   },
@@ -27154,10 +28051,23 @@ export const createTransitGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Description: 0,
+      Options: {
+        AmazonSideAsn: 0,
+        AutoAcceptSharedAttachments: 0,
+        DefaultRouteTableAssociation: 0,
+        DefaultRouteTablePropagation: 0,
+        VpnEcmpSupport: 0,
+        DnsSupport: 0,
+        SecurityGroupReferencingSupport: 0,
+        MulticastSupport: 0,
+        TransitGatewayCidrBlocks: 0,
+      },
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: { TransitGateway: o_TransitGateway },
   },
@@ -27191,10 +28101,13 @@ export const createTransitGatewayConnect: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      TransportTransitGatewayAttachmentId: 0,
+      Options: { Protocol: 0 },
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: { TransitGatewayConnect: o_TransitGatewayConnect },
   },
@@ -27227,10 +28140,16 @@ export const createTransitGatewayConnectPeer: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      TransitGatewayAttachmentId: 0,
+      TransitGatewayAddress: 0,
+      PeerAddress: 0,
+      BgpOptions: { PeerAsn: 0 },
+      InsideCidrBlocks: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: { TransitGatewayConnectPeer: o_TransitGatewayConnectPeer },
   },
@@ -27259,8 +28178,10 @@ export const createTransitGatewayMeteringPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      TransitGatewayId: 0,
       MiddleboxAttachmentIds: D.m({ wire: "MiddleboxAttachmentId" }),
       TagSpecifications: D.list(i_TagSpecification),
+      DryRun: 0,
     },
     output: { TransitGatewayMeteringPolicy: o_TransitGatewayMeteringPolicy },
   },
@@ -27292,6 +28213,21 @@ export const createTransitGatewayMeteringPolicyEntry: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TransitGatewayMeteringPolicyId: 0,
+      PolicyRuleNumber: 0,
+      SourceTransitGatewayAttachmentId: 0,
+      SourceTransitGatewayAttachmentType: 0,
+      SourceCidrBlock: 0,
+      SourcePortRange: 0,
+      DestinationTransitGatewayAttachmentId: 0,
+      DestinationTransitGatewayAttachmentType: 0,
+      DestinationCidrBlock: 0,
+      DestinationPortRange: 0,
+      Protocol: 0,
+      MeteredAccount: 0,
+      DryRun: 0,
+    },
     output: {
       TransitGatewayMeteringPolicyEntry: o_TransitGatewayMeteringPolicyEntry,
     },
@@ -27324,10 +28260,17 @@ export const createTransitGatewayMulticastDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      TransitGatewayId: 0,
+      Options: {
+        Igmpv2Support: 0,
+        StaticSourcesSupport: 0,
+        AutoAcceptSharedAssociations: 0,
+      },
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: { TransitGatewayMulticastDomain: o_TransitGatewayMulticastDomain },
   },
@@ -27368,10 +28311,16 @@ export const createTransitGatewayPeeringAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      TransitGatewayId: 0,
+      PeerTransitGatewayId: 0,
+      PeerAccountId: 0,
+      PeerRegion: 0,
+      Options: { DynamicRouting: 0 },
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: {
       TransitGatewayPeeringAttachment: o_TransitGatewayPeeringAttachment,
@@ -27407,7 +28356,11 @@ export const createTransitGatewayPolicyTable: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TagSpecifications: D.list(i_TagSpecification) },
+    input: {
+      TransitGatewayId: 0,
+      TagSpecifications: D.list(i_TagSpecification),
+      DryRun: 0,
+    },
     output: { TransitGatewayPolicyTable: o_TransitGatewayPolicyTable },
   },
   errors: [
@@ -27434,6 +28387,13 @@ export const createTransitGatewayPolicyTableEntry: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TransitGatewayPolicyTableId: 0,
+      PolicyRuleNumber: 0,
+      PolicyRule: i_TransitGatewayRequestPolicyRule,
+      TargetRouteTableId: 0,
+      DryRun: 0,
+    },
     output: {
       TransitGatewayPolicyTableEntry: o_TransitGatewayPolicyTableEntry,
     },
@@ -27460,6 +28420,13 @@ export const createTransitGatewayPrefixListReference: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TransitGatewayRouteTableId: 0,
+      PrefixListId: 0,
+      TransitGatewayAttachmentId: 0,
+      Blackhole: 0,
+      DryRun: 0,
+    },
     output: {
       TransitGatewayPrefixListReference: o_TransitGatewayPrefixListReference,
     },
@@ -27485,7 +28452,17 @@ export const createTransitGatewayRoute: API.OperationMethod<
   CreateTransitGatewayRouteError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Route: o_TransitGatewayRoute } },
+  descriptor: {
+    service: svc,
+    input: {
+      DestinationCidrBlock: 0,
+      TransitGatewayRouteTableId: 0,
+      TransitGatewayAttachmentId: 0,
+      Blackhole: 0,
+      DryRun: 0,
+    },
+    output: { Route: o_TransitGatewayRoute },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidRouteTableIDNotFound,
@@ -27516,7 +28493,11 @@ export const createTransitGatewayRouteTable: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TagSpecifications: D.list(i_TagSpecification) },
+    input: {
+      TransitGatewayId: 0,
+      TagSpecifications: D.list(i_TagSpecification),
+      DryRun: 0,
+    },
     output: { TransitGatewayRouteTable: o_TransitGatewayRouteTable },
   },
   errors: [
@@ -27551,10 +28532,13 @@ export const createTransitGatewayRouteTableAnnouncement: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      TransitGatewayRouteTableId: 0,
+      PeeringAttachmentId: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: {
       TransitGatewayRouteTableAnnouncement:
@@ -27596,7 +28580,19 @@ export const createTransitGatewayVpcAttachment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TagSpecifications: D.list(i_TagSpecification) },
+    input: {
+      TransitGatewayId: 0,
+      VpcId: 0,
+      SubnetIds: 0,
+      Options: {
+        DnsSupport: 0,
+        SecurityGroupReferencingSupport: 0,
+        Ipv6Support: 0,
+        ApplianceModeSupport: 0,
+      },
+      TagSpecifications: D.list(i_TagSpecification),
+      DryRun: 0,
+    },
     output: { TransitGatewayVpcAttachment: o_TransitGatewayVpcAttachment },
   },
   errors: [
@@ -27628,21 +28624,58 @@ export const createVerifiedAccessEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      VerifiedAccessGroupId: 0,
+      EndpointType: 0,
+      AttachmentType: 0,
+      DomainCertificateArn: 0,
+      ApplicationDomain: 0,
+      EndpointDomainPrefix: 0,
       SecurityGroupIds: D.m({ wire: "SecurityGroupId" }),
       LoadBalancerOptions: {
+        Protocol: 0,
+        Port: 0,
+        LoadBalancerArn: 0,
         SubnetIds: D.m({ wire: "SubnetId" }),
-        PortRanges: D.m({ wire: "PortRange" }),
+        PortRanges: D.m({
+          wire: "PortRange",
+          shape: D.list(i_CreateVerifiedAccessEndpointPortRange),
+        }),
       },
-      NetworkInterfaceOptions: { PortRanges: D.m({ wire: "PortRange" }) },
+      NetworkInterfaceOptions: {
+        NetworkInterfaceId: 0,
+        Protocol: 0,
+        Port: 0,
+        PortRanges: D.m({
+          wire: "PortRange",
+          shape: D.list(i_CreateVerifiedAccessEndpointPortRange),
+        }),
+      },
+      Description: 0,
+      PolicyDocument: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
       ClientToken: D.m({ idempotency: true }),
-      RdsOptions: { SubnetIds: D.m({ wire: "SubnetId" }) },
-      CidrOptions: {
+      DryRun: 0,
+      SseSpecification: i_VerifiedAccessSseSpecificationRequest,
+      RdsOptions: {
+        Protocol: 0,
+        Port: 0,
+        RdsDbInstanceArn: 0,
+        RdsDbClusterArn: 0,
+        RdsDbProxyArn: 0,
+        RdsEndpoint: 0,
         SubnetIds: D.m({ wire: "SubnetId" }),
-        PortRanges: D.m({ wire: "PortRange" }),
+      },
+      CidrOptions: {
+        Protocol: 0,
+        SubnetIds: D.m({ wire: "SubnetId" }),
+        Cidr: 0,
+        PortRanges: D.m({
+          wire: "PortRange",
+          shape: D.list(i_CreateVerifiedAccessEndpointPortRange),
+        }),
       },
     },
     output: { VerifiedAccessEndpoint: o_VerifiedAccessEndpoint },
@@ -27675,11 +28708,16 @@ export const createVerifiedAccessGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      VerifiedAccessInstanceId: 0,
+      Description: 0,
+      PolicyDocument: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+      SseSpecification: i_VerifiedAccessSseSpecificationRequest,
     },
     output: { VerifiedAccessGroup: o_VerifiedAccessGroup },
   },
@@ -27714,11 +28752,15 @@ export const createVerifiedAccessInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Description: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+      FIPSEnabled: 0,
+      CidrEndpointsCustomSubDomain: 0,
     },
     output: { VerifiedAccessInstance: o_VerifiedAccessInstance },
   },
@@ -27753,11 +28795,38 @@ export const createVerifiedAccessTrustProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      TrustProviderType: 0,
+      UserTrustProviderType: 0,
+      DeviceTrustProviderType: 0,
+      OidcOptions: {
+        Issuer: 0,
+        AuthorizationEndpoint: 0,
+        TokenEndpoint: 0,
+        UserInfoEndpoint: 0,
+        ClientId: 0,
+        ClientSecret: 0,
+        Scope: 0,
+      },
+      DeviceOptions: { TenantId: 0, PublicSigningKeyUrl: 0 },
+      PolicyReferenceName: 0,
+      Description: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+      SseSpecification: i_VerifiedAccessSseSpecificationRequest,
+      NativeApplicationOidcOptions: {
+        PublicSigningKeyEndpoint: 0,
+        Issuer: 0,
+        AuthorizationEndpoint: 0,
+        TokenEndpoint: 0,
+        UserInfoEndpoint: 0,
+        ClientId: 0,
+        ClientSecret: 0,
+        Scope: 0,
+      },
     },
     output: { VerifiedAccessTrustProvider: o_VerifiedAccessTrustProvider },
   },
@@ -27799,11 +28868,25 @@ export const createVolume: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      AvailabilityZone: 0,
+      AvailabilityZoneId: 0,
+      Encrypted: 0,
+      Iops: 0,
+      KmsKeyId: 0,
+      OutpostArn: 0,
+      Size: 0,
+      SnapshotId: 0,
+      VolumeType: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      MultiAttachEnabled: 0,
+      Throughput: 0,
       ClientToken: D.m({ idempotency: true }),
+      VolumeInitializationRate: 0,
+      Operator: i_OperatorRequest,
+      DryRun: 0,
     },
     output: {
       Iops: D.num,
@@ -27869,10 +28952,32 @@ export const createVpc: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      CidrBlock: 0,
+      Ipv6Pool: 0,
+      Ipv6CidrBlock: 0,
+      Ipv4IpamPoolId: 0,
+      Ipv4NetmaskLength: 0,
+      Ipv6IpamPoolId: 0,
+      Ipv6NetmaskLength: 0,
+      Ipv6CidrBlockNetworkBorderGroup: 0,
+      VpcEncryptionControl: {
+        Mode: 0,
+        InternetGatewayExclusion: 0,
+        EgressOnlyInternetGatewayExclusion: 0,
+        NatGatewayExclusion: 0,
+        VirtualPrivateGatewayExclusion: 0,
+        VpcPeeringExclusion: 0,
+        LambdaExclusion: 0,
+        VpcLatticeExclusion: 0,
+        ElasticFileSystemExclusion: 0,
+      },
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
+      InstanceTenancy: 0,
+      AmazonProvidedIpv6CidrBlock: 0,
     },
     output: { Vpc: o_Vpc },
   },
@@ -27907,6 +29012,10 @@ export const createVpcBlockPublicAccessExclusion: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      SubnetId: 0,
+      VpcId: 0,
+      InternetGatewayExclusionMode: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -27945,6 +29054,8 @@ export const createVpcEncryptionControl: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      VpcId: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -27987,15 +29098,29 @@ export const createVpcEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      VpcEndpointType: 0,
+      VpcId: 0,
+      ServiceName: 0,
+      PolicyDocument: 0,
       RouteTableIds: D.m({ wire: "RouteTableId" }),
       SubnetIds: D.m({ wire: "SubnetId" }),
       SecurityGroupIds: D.m({ wire: "SecurityGroupId" }),
+      IpAddressType: 0,
       DnsOptions: i_DnsOptionsSpecification,
+      ClientToken: 0,
+      PrivateDnsEnabled: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
-      SubnetConfigurations: D.m({ wire: "SubnetConfiguration" }),
+      SubnetConfigurations: D.m({
+        wire: "SubnetConfiguration",
+        shape: D.list(i_SubnetConfiguration),
+      }),
+      ServiceNetworkArn: 0,
+      ResourceConfigurationArn: 0,
+      ServiceRegion: 0,
     },
     output: { VpcEndpoint: o_VpcEndpoint },
   },
@@ -28034,6 +29159,14 @@ export const createVpcEndpointConnectionNotification: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DryRun: 0,
+      ServiceId: 0,
+      VpcEndpointId: 0,
+      ConnectionNotificationArn: 0,
+      ConnectionEvents: 0,
+      ClientToken: 0,
+    },
     output: { ConnectionNotification: o_ConnectionNotification },
   },
   errors: [RequestLimitExceeded, InvalidParameter, UnauthorizedOperation],
@@ -28074,10 +29207,14 @@ export const createVpcEndpointServiceConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      AcceptanceRequired: 0,
+      PrivateDnsName: 0,
       NetworkLoadBalancerArns: D.m({ wire: "NetworkLoadBalancerArn" }),
       GatewayLoadBalancerArns: D.m({ wire: "GatewayLoadBalancerArn" }),
       SupportedIpAddressTypes: D.m({ wire: "SupportedIpAddressType" }),
       SupportedRegions: D.m({ wire: "SupportedRegion" }),
+      ClientToken: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -28124,10 +29261,15 @@ export const createVpcPeeringConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      PeerRegion: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
+      VpcId: 0,
+      PeerVpcId: 0,
+      PeerOwnerId: 0,
     },
     output: { VpcPeeringConnection: o_VpcPeeringConnection },
   },
@@ -28161,10 +29303,13 @@ export const createVpnConcentrator: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Type: 0,
+      TransitGatewayId: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
     },
     output: { VpnConcentrator: o_VpnConcentrator },
   },
@@ -28213,24 +29358,71 @@ export const createVpnConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      CustomerGatewayId: 0,
+      Type: 0,
+      VpnGatewayId: 0,
+      TransitGatewayId: 0,
+      VpnConcentratorId: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      PreSharedKeyStorage: 0,
+      DryRun: 0,
       Options: {
+        EnableAcceleration: 0,
+        TunnelInsideIpVersion: 0,
         TunnelOptions: D.list({
+          TunnelInsideCidr: 0,
+          TunnelInsideIpv6Cidr: 0,
+          PreSharedKey: 0,
+          Phase1LifetimeSeconds: 0,
+          Phase2LifetimeSeconds: 0,
+          RekeyMarginTimeSeconds: 0,
+          RekeyFuzzPercentage: 0,
+          ReplayWindowSize: 0,
+          DPDTimeoutSeconds: 0,
+          DPDTimeoutAction: 0,
           Phase1EncryptionAlgorithms: D.m({
             wire: "Phase1EncryptionAlgorithm",
+            shape: D.list(i_Phase1EncryptionAlgorithmsRequestListValue),
           }),
           Phase2EncryptionAlgorithms: D.m({
             wire: "Phase2EncryptionAlgorithm",
+            shape: D.list(i_Phase2EncryptionAlgorithmsRequestListValue),
           }),
-          Phase1IntegrityAlgorithms: D.m({ wire: "Phase1IntegrityAlgorithm" }),
-          Phase2IntegrityAlgorithms: D.m({ wire: "Phase2IntegrityAlgorithm" }),
-          Phase1DHGroupNumbers: D.m({ wire: "Phase1DHGroupNumber" }),
-          Phase2DHGroupNumbers: D.m({ wire: "Phase2DHGroupNumber" }),
-          IKEVersions: D.m({ wire: "IKEVersion" }),
+          Phase1IntegrityAlgorithms: D.m({
+            wire: "Phase1IntegrityAlgorithm",
+            shape: D.list(i_Phase1IntegrityAlgorithmsRequestListValue),
+          }),
+          Phase2IntegrityAlgorithms: D.m({
+            wire: "Phase2IntegrityAlgorithm",
+            shape: D.list(i_Phase2IntegrityAlgorithmsRequestListValue),
+          }),
+          Phase1DHGroupNumbers: D.m({
+            wire: "Phase1DHGroupNumber",
+            shape: D.list(i_Phase1DHGroupNumbersRequestListValue),
+          }),
+          Phase2DHGroupNumbers: D.m({
+            wire: "Phase2DHGroupNumber",
+            shape: D.list(i_Phase2DHGroupNumbersRequestListValue),
+          }),
+          IKEVersions: D.m({
+            wire: "IKEVersion",
+            shape: D.list(i_IKEVersionsRequestListValue),
+          }),
+          StartupAction: 0,
+          LogOptions: i_VpnTunnelLogOptionsSpecification,
+          EnableTunnelLifecycleControl: 0,
         }),
+        LocalIpv4NetworkCidr: 0,
+        RemoteIpv4NetworkCidr: 0,
+        LocalIpv6NetworkCidr: 0,
+        RemoteIpv6NetworkCidr: 0,
+        OutsideIpAddressType: 0,
+        TransportTransitGatewayAttachmentId: 0,
+        TunnelBandwidth: 0,
+        StaticRoutesOnly: 0,
       },
     },
     output: { VpnConnection: o_VpnConnection },
@@ -28268,7 +29460,10 @@ export const createVpnConnectionRoute: API.OperationMethod<
   CreateVpnConnectionRouteError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DestinationCidrBlock: 0, VpnConnectionId: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidParameter,
@@ -28303,10 +29498,14 @@ export const createVpnGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      AvailabilityZone: 0,
+      Type: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      AmazonSideAsn: 0,
+      DryRun: 0,
     },
     output: { VpnGateway: o_VpnGateway },
   },
@@ -28337,7 +29536,11 @@ export const deleteApplicationStatusCheck: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ApplicationStatusCheckId: 0,
+      ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+    },
     output: { ApplicationStatusCheck: o_ApplicationStatusCheckResponseObject },
   },
   errors: [],
@@ -28361,7 +29564,10 @@ export const deleteCapacityManagerDataExport: API.OperationMethod<
   DeleteCapacityManagerDataExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CapacityManagerDataExportId: 0, DryRun: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidCapacityManagerDataExportIdMalformed,
@@ -28393,7 +29599,11 @@ export const deleteCarrierGateway: API.OperationMethod<
   DeleteCarrierGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CarrierGateway: o_CarrierGateway } },
+  descriptor: {
+    service: svc,
+    input: { CarrierGatewayId: 0, DryRun: 0 },
+    output: { CarrierGateway: o_CarrierGateway },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidCarrierGatewayIDMalformed,
@@ -28423,7 +29633,11 @@ export const deleteClientVpnEndpoint: API.OperationMethod<
   DeleteClientVpnEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Status: {} } },
+  descriptor: {
+    service: svc,
+    input: { ClientVpnEndpointId: 0, DryRun: 0 },
+    output: { Status: {} },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidClientVpnEndpointIdNotFound,
@@ -28455,7 +29669,16 @@ export const deleteClientVpnRoute: API.OperationMethod<
   DeleteClientVpnRouteError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Status: {} } },
+  descriptor: {
+    service: svc,
+    input: {
+      ClientVpnEndpointId: 0,
+      TargetVpcSubnetId: 0,
+      DestinationCidrBlock: 0,
+      DryRun: 0,
+    },
+    output: { Status: {} },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidClientVpnEndpointIdNotFound,
@@ -28484,7 +29707,11 @@ export const deleteCoipCidr: API.OperationMethod<
   DeleteCoipCidrError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CoipCidr: {} } },
+  descriptor: {
+    service: svc,
+    input: { Cidr: 0, CoipPoolId: 0, DryRun: 0 },
+    output: { CoipCidr: {} },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidCidrBlockMalformed,
@@ -28513,7 +29740,11 @@ export const deleteCoipPool: API.OperationMethod<
   DeleteCoipPoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CoipPool: o_CoipPool } },
+  descriptor: {
+    service: svc,
+    input: { CoipPoolId: 0, DryRun: 0 },
+    output: { CoipPool: o_CoipPool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidIpv4PoolCoipIdMalformed,
@@ -28543,7 +29774,7 @@ export const deleteCustomerGateway: API.OperationMethod<
   DeleteCustomerGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CustomerGatewayId: 0, DryRun: 0 } },
   errors: [
     RequestLimitExceeded,
     InvalidCustomerGatewayIDNotFound,
@@ -28573,7 +29804,7 @@ export const deleteDhcpOptions: API.OperationMethod<
   DeleteDhcpOptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DhcpOptionsId: 0, DryRun: 0 } },
   errors: [
     RequestLimitExceeded,
     DependencyViolation,
@@ -28606,7 +29837,11 @@ export const deleteEgressOnlyInternetGateway: API.OperationMethod<
   DeleteEgressOnlyInternetGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ReturnCode: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, EgressOnlyInternetGatewayId: 0 },
+    output: { ReturnCode: D.bool },
+  },
   errors: [
     DependencyViolation,
     DryRunOperation,
@@ -28680,7 +29915,11 @@ export const deleteFleets: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { FleetIds: D.m({ wire: "FleetId" }) },
+    input: {
+      DryRun: 0,
+      FleetIds: D.m({ wire: "FleetId" }),
+      TerminateInstances: 0,
+    },
     output: {
       SuccessfulFleetDeletions: D.m({
         wire: "successfulFleetDeletionSet",
@@ -28718,7 +29957,7 @@ export const deleteFlowLogs: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { FlowLogIds: D.m({ wire: "FlowLogId" }) },
+    input: { DryRun: 0, FlowLogIds: D.m({ wire: "FlowLogId" }) },
     output: { Unsuccessful: D.list(o_UnsuccessfulItem) },
   },
   errors: [
@@ -28745,7 +29984,11 @@ export const deleteFpgaImage: API.OperationMethod<
   DeleteFpgaImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, FpgaImageId: 0 },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidFpgaImageIDMalformed,
@@ -28774,7 +30017,11 @@ export const deleteImageUsageReport: API.OperationMethod<
   DeleteImageUsageReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { ReportId: 0, DryRun: 0 },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidImageUsageReportIdMalformed,
@@ -28805,6 +30052,7 @@ export const deleteInstanceConnectEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, InstanceConnectEndpointId: 0 },
     output: { InstanceConnectEndpoint: o_Ec2InstanceConnectEndpoint },
   },
   errors: [
@@ -28838,7 +30086,11 @@ export const deleteInstanceEventWindow: API.OperationMethod<
   DeleteInstanceEventWindowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { InstanceEventWindowState: {} } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, ForceDelete: 0, InstanceEventWindowId: 0 },
+    output: { InstanceEventWindowState: {} },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidInstanceEventWindowIDNotFound,
@@ -28867,7 +30119,7 @@ export const deleteInternetGateway: API.OperationMethod<
   DeleteInternetGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0, InternetGatewayId: 0 } },
   errors: [
     RequestLimitExceeded,
     DependencyViolation,
@@ -28898,7 +30150,11 @@ export const deleteIpam: API.OperationMethod<
   DeleteIpamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Ipam: o_Ipam } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, IpamId: 0, Cascade: 0 },
+    output: { Ipam: o_Ipam },
+  },
   errors: [
     RequestLimitExceeded,
     DependencyViolation,
@@ -28931,6 +30187,7 @@ export const deleteIpamExternalResourceVerificationToken: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, IpamExternalResourceVerificationTokenId: 0 },
     output: {
       IpamExternalResourceVerificationToken:
         o_IpamExternalResourceVerificationToken,
@@ -28960,6 +30217,7 @@ export const deleteIpamInternetRegistryAssociation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, IpamInternetRegistryAssociationId: 0 },
     output: {
       IpamInternetRegistryAssociation: o_IpamInternetRegistryAssociation,
     },
@@ -28988,7 +30246,11 @@ export const deleteIpamPolicy: API.OperationMethod<
   DeleteIpamPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { IpamPolicy: o_IpamPolicy } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, IpamPolicyId: 0 },
+    output: { IpamPolicy: o_IpamPolicy },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidIpamPolicyIdMalformed,
@@ -29023,7 +30285,11 @@ export const deleteIpamPool: API.OperationMethod<
   DeleteIpamPoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { IpamPool: o_IpamPool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, IpamPoolId: 0, Cascade: 0 },
+    output: { IpamPool: o_IpamPool },
+  },
   errors: [
     RequestLimitExceeded,
     IncorrectState,
@@ -29054,6 +30320,7 @@ export const deleteIpamPrefixListResolver: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, IpamPrefixListResolverId: 0 },
     output: { IpamPrefixListResolver: o_IpamPrefixListResolver },
   },
   errors: [
@@ -29087,6 +30354,7 @@ export const deleteIpamPrefixListResolverTarget: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, IpamPrefixListResolverTargetId: 0 },
     output: { IpamPrefixListResolverTarget: o_IpamPrefixListResolverTarget },
   },
   errors: [
@@ -29117,6 +30385,7 @@ export const deleteIpamResourceDiscovery: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, IpamResourceDiscoveryId: 0 },
     output: { IpamResourceDiscovery: o_IpamResourceDiscovery },
   },
   errors: [
@@ -29142,7 +30411,13 @@ export const deleteIpamRoutingPolicyRegistration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      DryRun: 0,
+      IpamInternetRegistryAssociationId: 0,
+      Cidr: 0,
+      Force: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { IpamRoutingPolicyRegistrationDelta: {} },
   },
   errors: [],
@@ -29170,7 +30445,11 @@ export const deleteIpamScope: API.OperationMethod<
   DeleteIpamScopeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { IpamScope: o_IpamScope } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, IpamScopeId: 0 },
+    output: { IpamScope: o_IpamScope },
+  },
   errors: [
     RequestLimitExceeded,
     DependencyViolation,
@@ -29198,7 +30477,11 @@ export const deleteKeyPair: API.OperationMethod<
   DeleteKeyPairError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { KeyName: 0, KeyPairId: 0, DryRun: 0 },
+    output: { Return: D.bool },
+  },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -29222,7 +30505,11 @@ export const deleteLaunchTemplate: API.OperationMethod<
   DeleteLaunchTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LaunchTemplate: o_LaunchTemplate } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, LaunchTemplateId: 0, LaunchTemplateName: 0 },
+    output: { LaunchTemplate: o_LaunchTemplate },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidLaunchTemplateIdNotFound,
@@ -29262,7 +30549,12 @@ export const deleteLaunchTemplateVersions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Versions: D.m({ wire: "LaunchTemplateVersion" }) },
+    input: {
+      DryRun: 0,
+      LaunchTemplateId: 0,
+      LaunchTemplateName: 0,
+      Versions: D.m({ wire: "LaunchTemplateVersion" }),
+    },
     output: {
       SuccessfullyDeletedLaunchTemplateVersions: D.m({
         wire: "successfullyDeletedLaunchTemplateVersionSet",
@@ -29294,7 +30586,16 @@ export const deleteLocalGatewayRoute: API.OperationMethod<
   DeleteLocalGatewayRouteError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Route: {} } },
+  descriptor: {
+    service: svc,
+    input: {
+      DestinationCidrBlock: 0,
+      LocalGatewayRouteTableId: 0,
+      DryRun: 0,
+      DestinationPrefixListId: 0,
+    },
+    output: { Route: {} },
+  },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -29318,6 +30619,7 @@ export const deleteLocalGatewayRouteTable: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { LocalGatewayRouteTableId: 0, DryRun: 0 },
     output: { LocalGatewayRouteTable: o_LocalGatewayRouteTable },
   },
   errors: [
@@ -29349,6 +30651,10 @@ export const deleteLocalGatewayRouteTableVirtualInterfaceGroupAssociation: API.O
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      LocalGatewayRouteTableVirtualInterfaceGroupAssociationId: 0,
+      DryRun: 0,
+    },
     output: {
       LocalGatewayRouteTableVirtualInterfaceGroupAssociation:
         o_LocalGatewayRouteTableVirtualInterfaceGroupAssociation,
@@ -29384,6 +30690,7 @@ export const deleteLocalGatewayRouteTableVpcAssociation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { LocalGatewayRouteTableVpcAssociationId: 0, DryRun: 0 },
     output: {
       LocalGatewayRouteTableVpcAssociation:
         o_LocalGatewayRouteTableVpcAssociation,
@@ -29419,6 +30726,7 @@ export const deleteLocalGatewayVirtualInterface: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { LocalGatewayVirtualInterfaceId: 0, DryRun: 0 },
     output: { LocalGatewayVirtualInterface: o_LocalGatewayVirtualInterface },
   },
   errors: [
@@ -29451,6 +30759,7 @@ export const deleteLocalGatewayVirtualInterfaceGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { LocalGatewayVirtualInterfaceGroupId: 0, DryRun: 0 },
     output: {
       LocalGatewayVirtualInterfaceGroup: o_LocalGatewayVirtualInterfaceGroup,
     },
@@ -29483,7 +30792,11 @@ export const deleteManagedPrefixList: API.OperationMethod<
   DeleteManagedPrefixListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { PrefixList: o_ManagedPrefixList } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, PrefixListId: 0 },
+    output: { PrefixList: o_ManagedPrefixList },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidPrefixListIDNotFound,
@@ -29517,7 +30830,7 @@ export const deleteNatGateway: API.OperationMethod<
   DeleteNatGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0, NatGatewayId: 0 } },
   errors: [
     RequestLimitExceeded,
     DependencyViolation,
@@ -29552,7 +30865,7 @@ export const deleteNetworkAcl: API.OperationMethod<
   DeleteNetworkAclError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0, NetworkAclId: 0 } },
   errors: [
     RequestLimitExceeded,
     DependencyViolation,
@@ -29585,7 +30898,10 @@ export const deleteNetworkAclEntry: API.OperationMethod<
   DeleteNetworkAclEntryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, NetworkAclId: 0, RuleNumber: 0, Egress: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidNetworkAclEntryNotFound,
@@ -29614,7 +30930,10 @@ export const deleteNetworkInsightsAccessScope: API.OperationMethod<
   DeleteNetworkInsightsAccessScopeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, NetworkInsightsAccessScopeId: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidNetworkInsightsAccessScopeIdNotFound,
@@ -29641,7 +30960,10 @@ export const deleteNetworkInsightsAccessScopeAnalysis: API.OperationMethod<
   DeleteNetworkInsightsAccessScopeAnalysisError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NetworkInsightsAccessScopeAnalysisId: 0, DryRun: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidParameterValue,
@@ -29668,7 +30990,10 @@ export const deleteNetworkInsightsAnalysis: API.OperationMethod<
   DeleteNetworkInsightsAnalysisError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, NetworkInsightsAnalysisId: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidParameterValue,
@@ -29695,7 +31020,7 @@ export const deleteNetworkInsightsPath: API.OperationMethod<
   DeleteNetworkInsightsPathError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0, NetworkInsightsPathId: 0 } },
   errors: [
     RequestLimitExceeded,
     InvalidParameterValue,
@@ -29726,7 +31051,7 @@ export const deleteNetworkInterface: API.OperationMethod<
   DeleteNetworkInterfaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0, NetworkInterfaceId: 0 } },
   errors: [
     RequestLimitExceeded,
     InvalidNetworkInterfaceInUse,
@@ -29760,7 +31085,11 @@ export const deleteNetworkInterfacePermission: API.OperationMethod<
   DeleteNetworkInterfacePermissionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { NetworkInterfacePermissionId: 0, Force: 0, DryRun: 0 },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidPermissionIDMalformed,
@@ -29791,7 +31120,7 @@ export const deletePlacementGroup: API.OperationMethod<
   DeletePlacementGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0, GroupName: 0 } },
   errors: [
     RequestLimitExceeded,
     InvalidPlacementGroupUnknown,
@@ -29817,7 +31146,11 @@ export const deletePublicIpv4Pool: API.OperationMethod<
   DeletePublicIpv4PoolError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ReturnValue: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, PoolId: 0, NetworkBorderGroup: 0 },
+    output: { ReturnValue: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidPublicIpv4PoolNotFound,
@@ -29845,7 +31178,10 @@ export const deleteQueuedReservedInstances: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ReservedInstancesIds: D.m({ wire: "ReservedInstancesId" }) },
+    input: {
+      DryRun: 0,
+      ReservedInstancesIds: D.m({ wire: "ReservedInstancesId" }),
+    },
     output: {
       SuccessfulQueuedPurchaseDeletions: D.m({
         wire: "successfulQueuedPurchaseDeletionSet",
@@ -29886,7 +31222,16 @@ export const deleteRoute: API.OperationMethod<
   DeleteRouteError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DestinationPrefixListId: 0,
+      DryRun: 0,
+      RouteTableId: 0,
+      DestinationCidrBlock: 0,
+      DestinationIpv6CidrBlock: 0,
+    },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidParameterCombination,
@@ -29932,7 +31277,11 @@ export const deleteRouteServer: API.OperationMethod<
   DeleteRouteServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { RouteServer: o_RouteServer } },
+  descriptor: {
+    service: svc,
+    input: { RouteServerId: 0, DryRun: 0 },
+    output: { RouteServer: o_RouteServer },
+  },
   errors: [
     RequestLimitExceeded,
     IncorrectState,
@@ -29963,6 +31312,7 @@ export const deleteRouteServerEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { RouteServerEndpointId: 0, DryRun: 0 },
     output: { RouteServerEndpoint: o_RouteServerEndpoint },
   },
   errors: [
@@ -30000,7 +31350,11 @@ export const deleteRouteServerPeer: API.OperationMethod<
   DeleteRouteServerPeerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { RouteServerPeer: o_RouteServerPeer } },
+  descriptor: {
+    service: svc,
+    input: { RouteServerPeerId: 0, DryRun: 0 },
+    output: { RouteServerPeer: o_RouteServerPeer },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidRouteServerPeerIdMalformed,
@@ -30029,7 +31383,7 @@ export const deleteRouteTable: API.OperationMethod<
   DeleteRouteTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0, RouteTableId: 0 } },
   errors: [
     RequestLimitExceeded,
     DependencyViolation,
@@ -30054,7 +31408,11 @@ export const deleteSecondaryNetwork: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+      SecondaryNetworkId: 0,
+    },
     output: { SecondaryNetwork: o_SecondaryNetwork },
   },
   errors: [],
@@ -30075,7 +31433,11 @@ export const deleteSecondarySubnet: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+      SecondarySubnetId: 0,
+    },
     output: { SecondarySubnet: o_SecondarySubnet },
   },
   errors: [],
@@ -30107,7 +31469,11 @@ export const deleteSecurityGroup: API.OperationMethod<
   DeleteSecurityGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { GroupId: 0, GroupName: 0, DryRun: 0 },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     CannotDelete,
@@ -30151,7 +31517,7 @@ export const deleteSnapshot: API.OperationMethod<
   DeleteSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SnapshotId: 0, DryRun: 0 } },
   errors: [
     RequestLimitExceeded,
     InvalidParameterValue,
@@ -30174,7 +31540,7 @@ export const deleteSpotDatafeedSubscription: API.OperationMethod<
   DeleteSpotDatafeedSubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -30198,7 +31564,7 @@ export const deleteSubnet: API.OperationMethod<
   DeleteSubnetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SubnetId: 0, DryRun: 0 } },
   errors: [
     RequestLimitExceeded,
     DependencyViolation,
@@ -30230,6 +31596,7 @@ export const deleteSubnetCidrReservation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SubnetCidrReservationId: 0, DryRun: 0 },
     output: { DeletedSubnetCidrReservation: o_SubnetCidrReservation },
   },
   errors: [
@@ -30267,8 +31634,9 @@ export const deleteTags: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Resources: D.m({ wire: "ResourceId" }),
-      Tags: D.m({ wire: "Tag" }),
+      Tags: D.m({ wire: "Tag", shape: D.list(i_Tag) }),
     },
   },
   errors: [
@@ -30299,7 +31667,7 @@ export const deleteTrafficMirrorFilter: API.OperationMethod<
   DeleteTrafficMirrorFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrafficMirrorFilterId: 0, DryRun: 0 } },
   errors: [
     RequestLimitExceeded,
     InvalidParameterValue,
@@ -30327,7 +31695,10 @@ export const deleteTrafficMirrorFilterRule: API.OperationMethod<
   DeleteTrafficMirrorFilterRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TrafficMirrorFilterRuleId: 0, DryRun: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidParameterValue,
@@ -30356,7 +31727,7 @@ export const deleteTrafficMirrorSession: API.OperationMethod<
   DeleteTrafficMirrorSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrafficMirrorSessionId: 0, DryRun: 0 } },
   errors: [
     RequestLimitExceeded,
     InvalidParameterValue,
@@ -30387,7 +31758,7 @@ export const deleteTrafficMirrorTarget: API.OperationMethod<
   DeleteTrafficMirrorTargetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrafficMirrorTargetId: 0, DryRun: 0 } },
   errors: [
     RequestLimitExceeded,
     InvalidParameterValue,
@@ -30418,7 +31789,11 @@ export const deleteTransitGateway: API.OperationMethod<
   DeleteTransitGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { TransitGateway: o_TransitGateway } },
+  descriptor: {
+    service: svc,
+    input: { TransitGatewayId: 0, DryRun: 0 },
+    output: { TransitGateway: o_TransitGateway },
+  },
   errors: [
     RequestLimitExceeded,
     IncorrectState,
@@ -30445,6 +31820,7 @@ export const deleteTransitGatewayClientVpnAttachment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransitGatewayAttachmentId: 0, DryRun: 0 },
     output: { TransitGatewayClientVpnAttachment: {} },
   },
   errors: [],
@@ -30470,6 +31846,7 @@ export const deleteTransitGatewayConnect: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransitGatewayAttachmentId: 0, DryRun: 0 },
     output: { TransitGatewayConnect: o_TransitGatewayConnect },
   },
   errors: [
@@ -30499,6 +31876,7 @@ export const deleteTransitGatewayConnectPeer: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransitGatewayConnectPeerId: 0, DryRun: 0 },
     output: { TransitGatewayConnectPeer: o_TransitGatewayConnectPeer },
   },
   errors: [
@@ -30530,6 +31908,7 @@ export const deleteTransitGatewayMeteringPolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransitGatewayMeteringPolicyId: 0, DryRun: 0 },
     output: { TransitGatewayMeteringPolicy: o_TransitGatewayMeteringPolicy },
   },
   errors: [
@@ -30562,6 +31941,11 @@ export const deleteTransitGatewayMeteringPolicyEntry: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TransitGatewayMeteringPolicyId: 0,
+      PolicyRuleNumber: 0,
+      DryRun: 0,
+    },
     output: {
       TransitGatewayMeteringPolicyEntry: o_TransitGatewayMeteringPolicyEntry,
     },
@@ -30595,6 +31979,7 @@ export const deleteTransitGatewayMulticastDomain: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransitGatewayMulticastDomainId: 0, DryRun: 0 },
     output: { TransitGatewayMulticastDomain: o_TransitGatewayMulticastDomain },
   },
   errors: [
@@ -30624,6 +32009,7 @@ export const deleteTransitGatewayPeeringAttachment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransitGatewayAttachmentId: 0, DryRun: 0 },
     output: {
       TransitGatewayPeeringAttachment: o_TransitGatewayPeeringAttachment,
     },
@@ -30656,6 +32042,7 @@ export const deleteTransitGatewayPolicyTable: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransitGatewayPolicyTableId: 0, DryRun: 0 },
     output: { TransitGatewayPolicyTable: o_TransitGatewayPolicyTable },
   },
   errors: [
@@ -30682,6 +32069,7 @@ export const deleteTransitGatewayPolicyTableEntry: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransitGatewayPolicyTableId: 0, PolicyRuleNumber: 0, DryRun: 0 },
     output: {
       TransitGatewayPolicyTableEntry: o_TransitGatewayPolicyTableEntry,
     },
@@ -30709,6 +32097,7 @@ export const deleteTransitGatewayPrefixListReference: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransitGatewayRouteTableId: 0, PrefixListId: 0, DryRun: 0 },
     output: {
       TransitGatewayPrefixListReference: o_TransitGatewayPrefixListReference,
     },
@@ -30739,7 +32128,15 @@ export const deleteTransitGatewayRoute: API.OperationMethod<
   DeleteTransitGatewayRouteError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Route: o_TransitGatewayRoute } },
+  descriptor: {
+    service: svc,
+    input: {
+      TransitGatewayRouteTableId: 0,
+      DestinationCidrBlock: 0,
+      DryRun: 0,
+    },
+    output: { Route: o_TransitGatewayRoute },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidParameterValue,
@@ -30772,6 +32169,7 @@ export const deleteTransitGatewayRouteTable: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransitGatewayRouteTableId: 0, DryRun: 0 },
     output: { TransitGatewayRouteTable: o_TransitGatewayRouteTable },
   },
   errors: [
@@ -30805,6 +32203,7 @@ export const deleteTransitGatewayRouteTableAnnouncement: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransitGatewayRouteTableAnnouncementId: 0, DryRun: 0 },
     output: {
       TransitGatewayRouteTableAnnouncement:
         o_TransitGatewayRouteTableAnnouncement,
@@ -30838,6 +32237,7 @@ export const deleteTransitGatewayVpcAttachment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransitGatewayAttachmentId: 0, DryRun: 0 },
     output: { TransitGatewayVpcAttachment: o_TransitGatewayVpcAttachment },
   },
   errors: [
@@ -30869,7 +32269,11 @@ export const deleteVerifiedAccessEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      VerifiedAccessEndpointId: 0,
+      ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+    },
     output: { VerifiedAccessEndpoint: o_VerifiedAccessEndpoint },
   },
   errors: [
@@ -30901,7 +32305,11 @@ export const deleteVerifiedAccessGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      VerifiedAccessGroupId: 0,
+      ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+    },
     output: { VerifiedAccessGroup: o_VerifiedAccessGroup },
   },
   errors: [
@@ -30931,7 +32339,11 @@ export const deleteVerifiedAccessInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      VerifiedAccessInstanceId: 0,
+      DryRun: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { VerifiedAccessInstance: o_VerifiedAccessInstance },
   },
   errors: [
@@ -30960,7 +32372,11 @@ export const deleteVerifiedAccessTrustProvider: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      VerifiedAccessTrustProviderId: 0,
+      DryRun: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { VerifiedAccessTrustProvider: o_VerifiedAccessTrustProvider },
   },
   errors: [
@@ -30995,7 +32411,7 @@ export const deleteVolume: API.OperationMethod<
   DeleteVolumeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { VolumeId: 0, DryRun: 0 } },
   errors: [
     RequestLimitExceeded,
     InvalidParameterValue,
@@ -31033,7 +32449,7 @@ export const deleteVpc: API.OperationMethod<
   DeleteVpcError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { VpcId: 0, DryRun: 0 } },
   errors: [
     RequestLimitExceeded,
     DependencyViolation,
@@ -31065,6 +32481,7 @@ export const deleteVpcBlockPublicAccessExclusion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, ExclusionId: 0 },
     output: { VpcBlockPublicAccessExclusion: o_VpcBlockPublicAccessExclusion },
   },
   errors: [
@@ -31098,6 +32515,7 @@ export const deleteVpcEncryptionControl: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, VpcEncryptionControlId: 0 },
     output: { VpcEncryptionControl: o_VpcEncryptionControl },
   },
   errors: [
@@ -31125,6 +32543,7 @@ export const deleteVpcEndpointConnectionNotifications: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       ConnectionNotificationIds: D.m({ wire: "ConnectionNotificationId" }),
     },
     output: { Unsuccessful: D.list(o_UnsuccessfulItem) },
@@ -31159,7 +32578,7 @@ export const deleteVpcEndpoints: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { VpcEndpointIds: D.m({ wire: "VpcEndpointId" }) },
+    input: { DryRun: 0, VpcEndpointIds: D.m({ wire: "VpcEndpointId" }) },
     output: { Unsuccessful: D.list(o_UnsuccessfulItem) },
   },
   errors: [
@@ -31188,7 +32607,7 @@ export const deleteVpcEndpointServiceConfigurations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ServiceIds: D.m({ wire: "ServiceId" }) },
+    input: { DryRun: 0, ServiceIds: D.m({ wire: "ServiceId" }) },
     output: { Unsuccessful: D.list(o_UnsuccessfulItem) },
   },
   errors: [],
@@ -31217,7 +32636,11 @@ export const deleteVpcPeeringConnection: API.OperationMethod<
   DeleteVpcPeeringConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, VpcPeeringConnectionId: 0 },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidVpcPeeringConnectionIDNotFound,
@@ -31244,7 +32667,11 @@ export const deleteVpnConcentrator: API.OperationMethod<
   DeleteVpnConcentratorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { VpnConcentratorId: 0, DryRun: 0 },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidVpnConcentratorIDMalformed,
@@ -31282,7 +32709,7 @@ export const deleteVpnConnection: API.OperationMethod<
   DeleteVpnConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { VpnConnectionId: 0, DryRun: 0 } },
   errors: [
     RequestLimitExceeded,
     InvalidVpnConnectionIDNotFound,
@@ -31312,7 +32739,10 @@ export const deleteVpnConnectionRoute: API.OperationMethod<
   DeleteVpnConnectionRouteError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DestinationCidrBlock: 0, VpnConnectionId: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidRouteMalformed,
@@ -31342,7 +32772,7 @@ export const deleteVpnGateway: API.OperationMethod<
   DeleteVpnGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { VpnGatewayId: 0, DryRun: 0 } },
   errors: [
     RequestLimitExceeded,
     IncorrectState,
@@ -31371,7 +32801,11 @@ export const deprovisionByoipCidr: API.OperationMethod<
   DeprovisionByoipCidrError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ByoipCidr: o_ByoipCidr } },
+  descriptor: {
+    service: svc,
+    input: { Cidr: 0, DryRun: 0 },
+    output: { ByoipCidr: o_ByoipCidr },
+  },
   errors: [RequestLimitExceeded, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -31394,7 +32828,11 @@ export const deprovisionIpamByoasn: API.OperationMethod<
   DeprovisionIpamByoasnError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Byoasn: {} } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, IpamId: 0, Asn: 0 },
+    output: { Byoasn: {} },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidIpamIdNotFound,
@@ -31421,7 +32859,11 @@ export const deprovisionIpamPoolCidr: API.OperationMethod<
   DeprovisionIpamPoolCidrError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { IpamPoolCidr: o_IpamPoolCidr } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, IpamPoolId: 0, Cidr: 0 },
+    output: { IpamPoolCidr: o_IpamPoolCidr },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidIpamPoolIdNotFound,
@@ -31451,6 +32893,7 @@ export const deprovisionPublicIpv4PoolCidr: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, PoolId: 0, Cidr: 0 },
     output: {
       DeprovisionedAddresses: D.m({
         wire: "deprovisionedAddressSet",
@@ -31514,6 +32957,7 @@ export const deregisterImage: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ImageId: 0, DeleteAssociatedSnapshots: 0, DryRun: 0 },
     output: {
       Return: D.bool,
       DeleteSnapshotResults: D.m({
@@ -31552,7 +32996,9 @@ export const deregisterInstanceEventNotificationAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       InstanceTagAttribute: {
+        IncludeAllTagsOfInstance: 0,
         InstanceTagKeys: D.m({ wire: "InstanceTagKey" }),
       },
     },
@@ -31580,6 +33026,12 @@ export const deregisterTransitGatewayMulticastGroupMembers: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TransitGatewayMulticastDomainId: 0,
+      GroupIpAddress: 0,
+      NetworkInterfaceIds: 0,
+      DryRun: 0,
+    },
     output: {
       DeregisteredMulticastGroupMembers: {
         DeregisteredNetworkInterfaceIds: D.list(),
@@ -31608,6 +33060,12 @@ export const deregisterTransitGatewayMulticastGroupSources: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TransitGatewayMulticastDomainId: 0,
+      GroupIpAddress: 0,
+      NetworkInterfaceIds: 0,
+      DryRun: 0,
+    },
     output: {
       DeregisteredMulticastGroupSources: {
         DeregisteredNetworkInterfaceIds: D.list(),
@@ -31652,7 +33110,7 @@ export const describeAccountAttributes: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { AttributeNames: D.m({ wire: "AttributeName" }) },
+    input: { DryRun: 0, AttributeNames: D.m({ wire: "AttributeName" }) },
     output: {
       AccountAttributes: D.m({
         wire: "accountAttributeSet",
@@ -31685,6 +33143,7 @@ export const describeAccountVpcEncryptionControl: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0 },
     output: { AccountVpcEncryptionControl: o_AccountVpcEncryptionControl },
   },
   errors: [],
@@ -31711,6 +33170,7 @@ export const describeAddresses: API.OperationMethod<
     service: svc,
     input: {
       PublicIps: D.m({ wire: "PublicIp" }),
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
       AllocationIds: D.m({ wire: "AllocationId" }),
     },
@@ -31748,7 +33208,13 @@ export const describeAddressesAttribute: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { AllocationIds: D.m({ wire: "AllocationId" }) },
+    input: {
+      AllocationIds: D.m({ wire: "AllocationId" }),
+      Attribute: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      DryRun: 0,
+    },
     output: {
       Addresses: D.m({ wire: "addressSet", shape: D.list(o_AddressAttribute) }),
     },
@@ -31792,7 +33258,12 @@ export const describeAddressTransfers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { AllocationIds: D.m({ wire: "AllocationId" }) },
+    input: {
+      AllocationIds: D.m({ wire: "AllocationId" }),
+      NextToken: 0,
+      MaxResults: 0,
+      DryRun: 0,
+    },
     output: {
       AddressTransfers: D.m({
         wire: "addressTransferSet",
@@ -31842,6 +33313,7 @@ export const describeAggregateIdFormat: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0 },
     output: {
       UseLongIdsAggregated: D.bool,
       Statuses: D.m({ wire: "statusSet", shape: D.list(o_IdFormat) }),
@@ -31874,6 +33346,9 @@ export const describeApplicationStatus: API.OperationMethod<
     input: {
       InstanceIds: D.m({ wire: "InstanceId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
     },
     output: {
       ApplicationStatuses: D.m({
@@ -31930,6 +33405,9 @@ export const describeApplicationStatusCheckAssociations: API.OperationMethod<
     input: {
       ApplicationStatusCheckIds: D.m({ wire: "ApplicationStatusCheckId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
     },
     output: {
       Associations: D.m({ wire: "associationSet", shape: D.list({}) }),
@@ -31961,6 +33439,10 @@ export const describeApplicationStatusChecks: API.OperationMethod<
     input: {
       ApplicationStatusCheckIds: D.m({ wire: "ApplicationStatusCheckId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      IncludeAll: 0,
+      DryRun: 0,
     },
     output: {
       ApplicationStatusChecks: D.m({
@@ -32004,6 +33486,8 @@ export const describeAvailabilityZones: API.OperationMethod<
     input: {
       ZoneNames: D.m({ wire: "ZoneName" }),
       ZoneIds: D.m({ wire: "ZoneId" }),
+      AllAvailabilityZones: 0,
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
     output: {
@@ -32043,7 +33527,12 @@ export const describeAwsNetworkPerformanceMetricSubscriptions: API.PaginatedOper
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
+    },
     output: {
       Subscriptions: D.m({ wire: "subscriptionSet", shape: D.list({}) }),
     },
@@ -32087,6 +33576,7 @@ export const describeBundleTasks: API.OperationMethod<
     service: svc,
     input: {
       BundleIds: D.m({ wire: "BundleId" }),
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
     output: {
@@ -32125,6 +33615,7 @@ export const describeByoipCidrs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, MaxResults: 0, NextToken: 0 },
     output: {
       ByoipCidrs: D.m({ wire: "byoipCidrSet", shape: D.list(o_ByoipCidr) }),
     },
@@ -32161,7 +33652,10 @@ export const describeCapacityBlockExtensionHistory: API.PaginatedOperationMethod
     service: svc,
     input: {
       CapacityReservationIds: D.m({ wire: "CapacityReservationId" }),
+      NextToken: 0,
+      MaxResults: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
     },
     output: {
       CapacityBlockExtensions: D.m({
@@ -32204,6 +33698,13 @@ export const describeCapacityBlockExtensionOfferings: API.PaginatedOperationMeth
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DryRun: 0,
+      CapacityBlockExtensionDurationHours: 0,
+      CapacityReservationId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       CapacityBlockExtensionOfferings: D.m({
         wire: "capacityBlockExtensionOfferingSet",
@@ -32254,6 +33755,19 @@ export const describeCapacityBlockOfferings: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DryRun: 0,
+      InstanceType: 0,
+      InstanceCount: 0,
+      StartDateRange: 0,
+      EndDateRange: 0,
+      CapacityDurationHours: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      UltraserverType: 0,
+      UltraserverCount: 0,
+      AllAvailabilityZones: 0,
+    },
     output: {
       CapacityBlockOfferings: D.m({
         wire: "capacityBlockOfferingSet",
@@ -32299,7 +33813,10 @@ export const describeCapacityBlocks: API.PaginatedOperationMethod<
     service: svc,
     input: {
       CapacityBlockIds: D.m({ wire: "CapacityBlockId" }),
+      NextToken: 0,
+      MaxResults: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
     },
     output: {
       CapacityBlocks: D.m({
@@ -32343,7 +33860,10 @@ export const describeCapacityBlockStatus: API.PaginatedOperationMethod<
     service: svc,
     input: {
       CapacityBlockIds: D.m({ wire: "CapacityBlockId" }),
+      NextToken: 0,
+      MaxResults: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
     },
     output: {
       CapacityBlockStatuses: D.m({
@@ -32401,6 +33921,9 @@ export const describeCapacityManagerDataExports: API.PaginatedOperationMethod<
       CapacityManagerDataExportIds: D.m({
         wire: "CapacityManagerDataExportId",
       }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
     output: {
@@ -32451,7 +33974,11 @@ export const describeCapacityReservationBillingRequests: API.PaginatedOperationM
     service: svc,
     input: {
       CapacityReservationIds: D.m({ wire: "CapacityReservationId" }),
+      Role: 0,
+      NextToken: 0,
+      MaxResults: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
     },
     output: {
       CapacityReservationBillingRequests: D.m({
@@ -32490,6 +34017,9 @@ export const describeCapacityReservationCancellationQuotes: API.OperationMethod<
       CapacityReservationCancellationQuoteIds: D.m({
         wire: "CapacityReservationCancellationQuoteId",
       }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
     output: {
@@ -32524,7 +34054,10 @@ export const describeCapacityReservationFleets: API.PaginatedOperationMethod<
     service: svc,
     input: {
       CapacityReservationFleetIds: D.m({ wire: "CapacityReservationFleetId" }),
+      NextToken: 0,
+      MaxResults: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
     },
     output: {
       CapacityReservationFleets: D.m({
@@ -32580,7 +34113,10 @@ export const describeCapacityReservations: API.PaginatedOperationMethod<
     service: svc,
     input: {
       CapacityReservationIds: D.m({ wire: "CapacityReservationId" }),
+      NextToken: 0,
+      MaxResults: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
     },
     output: {
       CapacityReservations: D.m({
@@ -32639,6 +34175,9 @@ export const describeCapacityReservationTopology: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      NextToken: 0,
+      MaxResults: 0,
       CapacityReservationIds: D.m({ wire: "CapacityReservationId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
@@ -32679,6 +34218,9 @@ export const describeCarrierGateways: API.PaginatedOperationMethod<
     input: {
       CarrierGatewayIds: D.m({ wire: "CarrierGatewayId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
     },
     output: {
       CarrierGateways: D.m({
@@ -32727,8 +34269,11 @@ export const describeClassicLinkInstances: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       InstanceIds: D.m({ wire: "InstanceId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      NextToken: 0,
+      MaxResults: 0,
     },
     output: {
       Instances: D.m({
@@ -32773,7 +34318,13 @@ export const describeClientVpnAuthorizationRules: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      ClientVpnEndpointId: 0,
+      DryRun: 0,
+      NextToken: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+    },
     output: {
       AuthorizationRules: D.m({
         wire: "authorizationRule",
@@ -32816,7 +34367,13 @@ export const describeClientVpnConnections: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      ClientVpnEndpointId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      NextToken: 0,
+      MaxResults: 0,
+      DryRun: 0,
+    },
     output: {
       Connections: D.list({
         Status: {},
@@ -32863,7 +34420,10 @@ export const describeClientVpnEndpoints: API.PaginatedOperationMethod<
     service: svc,
     input: {
       ClientVpnEndpointIds: D.m({ wire: "ClientVpnEndpointId" }),
+      MaxResults: 0,
+      NextToken: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
     },
     output: {
       ClientVpnEndpoints: D.m({
@@ -32941,7 +34501,13 @@ export const describeClientVpnRoutes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      ClientVpnEndpointId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: { Routes: D.list({ Status: {} }) },
   },
   errors: [
@@ -32979,7 +34545,14 @@ export const describeClientVpnTargetNetworks: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      ClientVpnEndpointId: 0,
+      AssociationIds: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
+    },
     output: {
       ClientVpnTargetNetworks: D.list({
         Status: {},
@@ -33032,6 +34605,9 @@ export const describeCoipPools: API.PaginatedOperationMethod<
     input: {
       PoolIds: D.m({ wire: "PoolId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
     },
     output: {
       CoipPools: D.m({ wire: "coipPoolSet", shape: D.list(o_CoipPool) }),
@@ -33064,7 +34640,7 @@ export const describeConversionTasks: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ConversionTaskIds: D.m({ wire: "ConversionTaskId" }) },
+    input: { DryRun: 0, ConversionTaskIds: D.m({ wire: "ConversionTaskId" }) },
     output: { ConversionTasks: D.list(o_ConversionTask) },
   },
   errors: [],
@@ -33096,6 +34672,7 @@ export const describeCustomerGateways: API.OperationMethod<
     input: {
       CustomerGatewayIds: D.m({ wire: "CustomerGatewayId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
     },
     output: {
       CustomerGateways: D.m({
@@ -33142,7 +34719,12 @@ export const describeDeclarativePoliciesReports: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ReportIds: D.m({ wire: "ReportId" }) },
+    input: {
+      DryRun: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      ReportIds: D.m({ wire: "ReportId" }),
+    },
     output: {
       Reports: D.m({
         wire: "reportSet",
@@ -33187,6 +34769,9 @@ export const describeDhcpOptions: API.PaginatedOperationMethod<
     service: svc,
     input: {
       DhcpOptionsIds: D.m({ wire: "DhcpOptionsId" }),
+      NextToken: 0,
+      MaxResults: 0,
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
     output: {
@@ -33237,9 +34822,12 @@ export const describeEgressOnlyInternetGateways: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       EgressOnlyInternetGatewayIds: D.m({
         wire: "EgressOnlyInternetGatewayId",
       }),
+      MaxResults: 0,
+      NextToken: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
     output: {
@@ -33287,7 +34875,10 @@ export const describeElasticGpus: API.OperationMethod<
     service: svc,
     input: {
       ElasticGpuIds: D.m({ wire: "ElasticGpuId" }),
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
     },
     output: {
       ElasticGpuSet: D.list({
@@ -33321,8 +34912,11 @@ export const describeExportImageTasks: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
       ExportImageTaskIds: D.m({ wire: "ExportImageTaskId" }),
+      MaxResults: 0,
+      NextToken: 0,
     },
     output: {
       ExportImageTasks: D.m({
@@ -33404,6 +34998,9 @@ export const describeFastLaunchImages: API.PaginatedOperationMethod<
     input: {
       ImageIds: D.m({ wire: "ImageId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
     },
     output: {
       FastLaunchImages: D.m({
@@ -33442,7 +35039,12 @@ export const describeFastSnapshotRestores: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: {
       FastSnapshotRestores: D.m({
         wire: "fastSnapshotRestoreSet",
@@ -33491,6 +35093,14 @@ export const describeFleetHistory: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DryRun: 0,
+      EventType: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      FleetId: 0,
+      StartTime: 0,
+    },
     output: {
       HistoryRecords: D.m({
         wire: "historyRecordSet",
@@ -33533,7 +35143,13 @@ export const describeFleetInstances: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      DryRun: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      FleetId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+    },
     output: {
       ActiveInstances: D.m({ wire: "activeInstanceSet", shape: D.list({}) }),
     },
@@ -33572,6 +35188,9 @@ export const describeFleets: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      MaxResults: 0,
+      NextToken: 0,
       FleetIds: D.m({ wire: "FleetId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
@@ -33674,7 +35293,13 @@ export const describeFlowLogs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filter: D.list(i_Filter), FlowLogIds: D.m({ wire: "FlowLogId" }) },
+    input: {
+      DryRun: 0,
+      Filter: D.list(i_Filter),
+      FlowLogIds: D.m({ wire: "FlowLogId" }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       FlowLogs: D.m({
         wire: "flowLogSet",
@@ -33730,6 +35355,7 @@ export const describeFpgaImageAttribute: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, FpgaImageId: 0, Attribute: 0 },
     output: { FpgaImageAttribute: o_FpgaImageAttribute },
   },
   errors: [
@@ -33763,9 +35389,12 @@ export const describeFpgaImages: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       FpgaImageIds: D.m({ wire: "FpgaImageId" }),
       Owners: D.m({ wire: "Owner" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      NextToken: 0,
+      MaxResults: 0,
     },
     output: {
       FpgaImages: D.m({
@@ -33824,7 +35453,14 @@ export const describeHostReservationOfferings: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filter: D.list(i_Filter) },
+    input: {
+      Filter: D.list(i_Filter),
+      MaxDuration: 0,
+      MaxResults: 0,
+      MinDuration: 0,
+      NextToken: 0,
+      OfferingId: 0,
+    },
     output: { OfferingSet: D.list({ Duration: D.num }) },
   },
   errors: [
@@ -33857,7 +35493,12 @@ export const describeHostReservations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filter: D.list(i_Filter) },
+    input: {
+      Filter: D.list(i_Filter),
+      HostReservationIdSet: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       HostReservationSet: D.list({
         Count: D.num,
@@ -33902,7 +35543,12 @@ export const describeHosts: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { HostIds: D.m({ wire: "HostId" }), Filter: D.list(i_Filter) },
+    input: {
+      HostIds: D.m({ wire: "HostId" }),
+      NextToken: 0,
+      MaxResults: 0,
+      Filter: D.list(i_Filter),
+    },
     output: {
       Hosts: D.m({
         wire: "hostSet",
@@ -33957,6 +35603,8 @@ export const describeIamInstanceProfileAssociations: API.PaginatedOperationMetho
     input: {
       AssociationIds: D.m({ wire: "AssociationId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
     },
     output: {
       IamInstanceProfileAssociations: D.m({
@@ -34013,6 +35661,7 @@ export const describeIdentityIdFormat: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Resource: 0, PrincipalArn: 0 },
     output: { Statuses: D.m({ wire: "statusSet", shape: D.list(o_IdFormat) }) },
   },
   errors: [
@@ -34058,6 +35707,7 @@ export const describeIdFormat: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Resource: 0 },
     output: { Statuses: D.m({ wire: "statusSet", shape: D.list(o_IdFormat) }) },
   },
   errors: [],
@@ -34087,6 +35737,7 @@ export const describeImageAttribute: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Attribute: 0, ImageId: 0, DryRun: 0 },
     output: {
       Description: {},
       KernelId: D.m({ wire: "kernel", shape: {} }),
@@ -34139,15 +35790,23 @@ export const describeImageReferences: API.PaginatedOperationMethod<
     service: svc,
     input: {
       ImageIds: D.m({ wire: "ImageId" }),
+      IncludeAllResourceTypes: 0,
       ResourceTypes: D.m({
         wire: "ResourceType",
         shape: D.list({
+          ResourceType: 0,
           ResourceTypeOptions: D.m({
             wire: "ResourceTypeOption",
-            shape: D.list({ OptionValues: D.m({ wire: "OptionValue" }) }),
+            shape: D.list({
+              OptionName: 0,
+              OptionValues: D.m({ wire: "OptionValue" }),
+            }),
           }),
         }),
       }),
+      NextToken: 0,
+      DryRun: 0,
+      MaxResults: 0,
     },
     output: {
       ImageReferences: D.m({ wire: "imageReferenceSet", shape: D.list({}) }),
@@ -34215,6 +35874,11 @@ export const describeImages: API.PaginatedOperationMethod<
       ExecutableUsers: D.m({ wire: "ExecutableBy" }),
       ImageIds: D.m({ wire: "ImageId" }),
       Owners: D.m({ wire: "Owner" }),
+      IncludeDeprecated: 0,
+      IncludeDisabled: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
     output: {
@@ -34293,7 +35957,10 @@ export const describeImageUsageReportEntries: API.PaginatedOperationMethod<
     input: {
       ImageIds: D.m({ wire: "ImageId" }),
       ReportIds: D.m({ wire: "ReportId" }),
+      NextToken: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
+      MaxResults: 0,
     },
     output: {
       ImageUsageReportEntries: D.m({
@@ -34338,7 +36005,10 @@ export const describeImageUsageReports: API.PaginatedOperationMethod<
     input: {
       ImageIds: D.m({ wire: "ImageId" }),
       ReportIds: D.m({ wire: "ReportId" }),
+      NextToken: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
+      MaxResults: 0,
     },
     output: {
       ImageUsageReports: D.m({
@@ -34396,8 +36066,11 @@ export const describeImportImageTasks: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.list(i_Filter),
       ImportTaskIds: D.m({ wire: "ImportTaskId" }),
+      MaxResults: 0,
+      NextToken: 0,
     },
     output: {
       ImportImageTasks: D.m({
@@ -34444,8 +36117,11 @@ export const describeImportSnapshotTasks: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.list(i_Filter),
       ImportTaskIds: D.m({ wire: "ImportTaskId" }),
+      MaxResults: 0,
+      NextToken: 0,
     },
     output: {
       ImportSnapshotTasks: D.m({
@@ -34488,6 +36164,7 @@ export const describeInstanceAttribute: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, InstanceId: 0, Attribute: 0 },
     output: {
       BlockDeviceMappings: D.m({
         wire: "blockDeviceMapping",
@@ -34539,6 +36216,9 @@ export const describeInstanceConnectEndpoints: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      MaxResults: 0,
+      NextToken: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
       InstanceConnectEndpointIds: D.m({ wire: "InstanceConnectEndpointId" }),
     },
@@ -34607,8 +36287,11 @@ export const describeInstanceCreditSpecifications: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
       InstanceIds: D.m({ wire: "InstanceId" }),
+      MaxResults: 0,
+      NextToken: 0,
     },
     output: {
       InstanceCreditSpecifications: D.m({
@@ -34646,6 +36329,7 @@ export const describeInstanceEventNotificationAttributes: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0 },
     output: { InstanceTagAttribute: o_InstanceTagNotificationAttribute },
   },
   errors: [],
@@ -34682,8 +36366,11 @@ export const describeInstanceEventWindows: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       InstanceEventWindowIds: D.m({ wire: "InstanceEventWindowId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
     },
     output: {
       InstanceEventWindows: D.m({
@@ -34750,6 +36437,9 @@ export const describeInstanceImageMetadata: API.PaginatedOperationMethod<
     input: {
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
       InstanceIds: D.m({ wire: "InstanceId" }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
     },
     output: {
       InstanceImageMetadata: D.m({
@@ -34847,7 +36537,11 @@ export const describeInstances: API.PaginatedOperationMethod<
     service: svc,
     input: {
       InstanceIds: D.m({ wire: "InstanceId" }),
+      IncludeManagedResources: 0,
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      NextToken: 0,
+      MaxResults: 0,
     },
     output: {
       Reservations: D.m({
@@ -34896,7 +36590,12 @@ export const describeInstanceSqlHaHistoryStates: API.OperationMethod<
     service: svc,
     input: {
       InstanceIds: D.m({ wire: "InstanceId" }),
+      StartTime: 0,
+      EndTime: 0,
+      NextToken: 0,
+      MaxResults: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
     },
     output: {
       Instances: D.m({
@@ -34934,7 +36633,10 @@ export const describeInstanceSqlHaStates: API.OperationMethod<
     service: svc,
     input: {
       InstanceIds: D.m({ wire: "InstanceId" }),
+      NextToken: 0,
+      MaxResults: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
     },
     output: {
       Instances: D.m({
@@ -35009,7 +36711,12 @@ export const describeInstanceStatus: API.PaginatedOperationMethod<
     service: svc,
     input: {
       InstanceIds: D.m({ wire: "InstanceId" }),
+      MaxResults: 0,
+      NextToken: 0,
+      IncludeManagedResources: 0,
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      IncludeAllInstances: 0,
     },
     output: {
       InstanceStatuses: D.m({
@@ -35080,6 +36787,9 @@ export const describeInstanceTopology: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      NextToken: 0,
+      MaxResults: 0,
       InstanceIds: D.m({ wire: "InstanceId" }),
       GroupNames: D.m({ wire: "GroupName" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
@@ -35120,7 +36830,13 @@ export const describeInstanceTypeOfferings: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      DryRun: 0,
+      LocationType: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       InstanceTypeOfferings: D.m({
         wire: "instanceTypeOfferingSet",
@@ -35157,8 +36873,12 @@ export const describeInstanceTypes: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       InstanceTypes: D.m({ wire: "InstanceType" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      IncludeUnsupportedInRegion: 0,
     },
     output: {
       InstanceTypes: D.m({
@@ -35324,6 +37044,9 @@ export const describeInternetGateways: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      NextToken: 0,
+      MaxResults: 0,
+      DryRun: 0,
       InternetGatewayIds: D.m({ wire: "InternetGatewayId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
@@ -35363,6 +37086,7 @@ export const describeIpamByoasn: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, MaxResults: 0, NextToken: 0 },
     output: { Byoasns: D.m({ wire: "byoasnSet", shape: D.list({}) }) },
   },
   errors: [],
@@ -35390,7 +37114,10 @@ export const describeIpamExternalResourceVerificationTokens: API.OperationMethod
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      NextToken: 0,
+      MaxResults: 0,
       IpamExternalResourceVerificationTokenIds: D.m({
         wire: "IpamExternalResourceVerificationTokenId",
       }),
@@ -35425,9 +37152,12 @@ export const describeIpamInternetRegistryAssociations: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       IpamInternetRegistryAssociationIds: D.m({
         wire: "IpamInternetRegistryAssociationId",
       }),
+      MaxResults: 0,
+      NextToken: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
     output: {
@@ -35462,7 +37192,10 @@ export const describeIpamPolicies: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
       IpamPolicyIds: D.m({ wire: "IpamPolicyId" }),
     },
     output: {
@@ -35497,8 +37230,11 @@ export const describeIpamPoolAllocations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       IpamPoolAllocationIds: D.m({ wire: "IpamPoolAllocationId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
     },
     output: {
       IpamPoolAllocations: D.m({
@@ -35537,7 +37273,10 @@ export const describeIpamPools: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
       IpamPoolIds: D.m({ wire: "IpamPoolId" }),
     },
     output: {
@@ -35578,7 +37317,10 @@ export const describeIpamPrefixListResolvers: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
       IpamPrefixListResolverIds: D.m({ wire: "IpamPrefixListResolverId" }),
     },
     output: {
@@ -35622,10 +37364,14 @@ export const describeIpamPrefixListResolverTargets: API.PaginatedOperationMethod
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
       IpamPrefixListResolverTargetIds: D.m({
         wire: "IpamPrefixListResolverTargetId",
       }),
+      IpamPrefixListResolverId: 0,
     },
     output: {
       IpamPrefixListResolverTargets: D.m({
@@ -35668,7 +37414,10 @@ export const describeIpamResourceDiscoveries: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       IpamResourceDiscoveryIds: D.m({ wire: "IpamResourceDiscoveryId" }),
+      NextToken: 0,
+      MaxResults: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
     output: {
@@ -35712,9 +37461,12 @@ export const describeIpamResourceDiscoveryAssociations: API.PaginatedOperationMe
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       IpamResourceDiscoveryAssociationIds: D.m({
         wire: "IpamResourceDiscoveryAssociationId",
       }),
+      NextToken: 0,
+      MaxResults: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
     output: {
@@ -35760,7 +37512,10 @@ export const describeIpams: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
       IpamIds: D.m({ wire: "IpamId" }),
     },
     output: { Ipams: D.m({ wire: "ipamSet", shape: D.list(o_Ipam) }) },
@@ -35795,7 +37550,10 @@ export const describeIpamScopes: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
       IpamScopeIds: D.m({ wire: "IpamScopeId" }),
     },
     output: {
@@ -35837,6 +37595,9 @@ export const describeIpv6Pools: API.PaginatedOperationMethod<
     service: svc,
     input: {
       PoolIds: D.m({ wire: "PoolId" }),
+      NextToken: 0,
+      MaxResults: 0,
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
     output: {
@@ -35891,6 +37652,8 @@ export const describeKeyPairs: API.OperationMethod<
     input: {
       KeyNames: D.m({ wire: "KeyName" }),
       KeyPairIds: D.m({ wire: "KeyPairId" }),
+      IncludePublicKey: 0,
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
     output: {
@@ -35935,9 +37698,13 @@ export const describeLaunchTemplates: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       LaunchTemplateIds: D.m({ wire: "LaunchTemplateId" }),
       LaunchTemplateNames: D.m({ wire: "LaunchTemplateName" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      NextToken: 0,
+      MaxResults: 0,
+      IncludeManagedResources: 0,
     },
     output: { LaunchTemplates: D.list(o_LaunchTemplate) },
   },
@@ -35982,8 +37749,17 @@ export const describeLaunchTemplateVersions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      LaunchTemplateId: 0,
+      LaunchTemplateName: 0,
       Versions: D.m({ wire: "LaunchTemplateVersion" }),
+      MinVersion: 0,
+      MaxVersion: 0,
+      NextToken: 0,
+      MaxResults: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      ResolveAlias: 0,
+      IncludeManagedResources: 0,
     },
     output: {
       LaunchTemplateVersions: D.m({
@@ -36026,6 +37802,9 @@ export const describeLocalGatewayRouteTables: API.PaginatedOperationMethod<
     input: {
       LocalGatewayRouteTableIds: D.m({ wire: "LocalGatewayRouteTableId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
     },
     output: {
       LocalGatewayRouteTables: D.m({
@@ -36065,6 +37844,9 @@ export const describeLocalGatewayRouteTableVirtualInterfaceGroupAssociations: AP
         wire: "LocalGatewayRouteTableVirtualInterfaceGroupAssociationId",
       }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
     },
     output: {
       LocalGatewayRouteTableVirtualInterfaceGroupAssociations: D.m({
@@ -36104,6 +37886,9 @@ export const describeLocalGatewayRouteTableVpcAssociations: API.PaginatedOperati
         wire: "LocalGatewayRouteTableVpcAssociationId",
       }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
     },
     output: {
       LocalGatewayRouteTableVpcAssociations: D.m({
@@ -36141,6 +37926,9 @@ export const describeLocalGateways: API.PaginatedOperationMethod<
     input: {
       LocalGatewayIds: D.m({ wire: "LocalGatewayId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
     },
     output: {
       LocalGateways: D.m({
@@ -36179,6 +37967,9 @@ export const describeLocalGatewayVirtualInterfaceGroups: API.PaginatedOperationM
         wire: "LocalGatewayVirtualInterfaceGroupId",
       }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
     },
     output: {
       LocalGatewayVirtualInterfaceGroups: D.m({
@@ -36217,6 +38008,9 @@ export const describeLocalGatewayVirtualInterfaces: API.PaginatedOperationMethod
         wire: "LocalGatewayVirtualInterfaceId",
       }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
     },
     output: {
       LocalGatewayVirtualInterfaces: D.m({
@@ -36255,7 +38049,10 @@ export const describeLockedSnapshots: API.OperationMethod<
     service: svc,
     input: {
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
       SnapshotIds: D.m({ wire: "SnapshotId" }),
+      DryRun: 0,
     },
     output: {
       Snapshots: D.m({
@@ -36297,6 +38094,8 @@ export const describeMacHosts: API.PaginatedOperationMethod<
     input: {
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
       HostIds: D.m({ wire: "HostId" }),
+      MaxResults: 0,
+      NextToken: 0,
     },
     output: {
       MacHosts: D.m({
@@ -36342,8 +38141,11 @@ export const describeMacModificationTasks: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
       MacModificationTaskIds: D.m({ wire: "MacModificationTaskId" }),
+      MaxResults: 0,
+      NextToken: 0,
     },
     output: {
       MacModificationTasks: D.m({
@@ -36383,7 +38185,10 @@ export const describeManagedPrefixLists: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
       PrefixListIds: D.m({ wire: "PrefixListId" }),
     },
     output: {
@@ -36431,8 +38236,11 @@ export const describeMovingAddresses: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       PublicIps: D.m({ wire: "PublicIp" }),
+      NextToken: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
     },
     output: {
       MovingAddressStatuses: D.m({
@@ -36478,8 +38286,11 @@ export const describeNatGateways: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filter: D.list(i_Filter),
+      MaxResults: 0,
       NatGatewayIds: D.m({ wire: "NatGatewayId" }),
+      NextToken: 0,
     },
     output: {
       NatGateways: D.m({ wire: "natGatewaySet", shape: D.list(o_NatGateway) }),
@@ -36531,6 +38342,9 @@ export const describeNetworkAcls: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      NextToken: 0,
+      MaxResults: 0,
+      DryRun: 0,
       NetworkAclIds: D.m({ wire: "NetworkAclId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
@@ -36577,7 +38391,13 @@ export const describeNetworkInsightsAccessScopeAnalyses: API.PaginatedOperationM
       NetworkInsightsAccessScopeAnalysisIds: D.m({
         wire: "NetworkInsightsAccessScopeAnalysisId",
       }),
+      NetworkInsightsAccessScopeId: 0,
+      AnalysisStartTimeBegin: 0,
+      AnalysisStartTimeEnd: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      DryRun: 0,
+      NextToken: 0,
     },
     output: {
       NetworkInsightsAccessScopeAnalyses: D.m({
@@ -36620,6 +38440,9 @@ export const describeNetworkInsightsAccessScopes: API.PaginatedOperationMethod<
         wire: "NetworkInsightsAccessScopeId",
       }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      DryRun: 0,
+      NextToken: 0,
     },
     output: {
       NetworkInsightsAccessScopes: D.m({
@@ -36659,7 +38482,13 @@ export const describeNetworkInsightsAnalyses: API.PaginatedOperationMethod<
     service: svc,
     input: {
       NetworkInsightsAnalysisIds: D.m({ wire: "NetworkInsightsAnalysisId" }),
+      NetworkInsightsPathId: 0,
+      AnalysisStartTime: 0,
+      AnalysisEndTime: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      DryRun: 0,
+      NextToken: 0,
     },
     output: {
       NetworkInsightsAnalyses: D.m({
@@ -36700,6 +38529,9 @@ export const describeNetworkInsightsPaths: API.PaginatedOperationMethod<
     input: {
       NetworkInsightsPathIds: D.m({ wire: "NetworkInsightsPathId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      DryRun: 0,
+      NextToken: 0,
     },
     output: {
       NetworkInsightsPaths: D.m({
@@ -36739,6 +38571,7 @@ export const describeNetworkInterfaceAttribute: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, NetworkInterfaceId: 0, Attribute: 0 },
     output: {
       Attachment: o_NetworkInterfaceAttachment,
       Description: {},
@@ -36781,6 +38614,8 @@ export const describeNetworkInterfacePermissions: API.PaginatedOperationMethod<
         wire: "NetworkInterfacePermissionId",
       }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      NextToken: 0,
+      MaxResults: 0,
     },
     output: {
       NetworkInterfacePermissions: D.list(o_NetworkInterfacePermission),
@@ -36831,6 +38666,10 @@ export const describeNetworkInterfaces: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      NextToken: 0,
+      MaxResults: 0,
+      IncludeManagedResources: 0,
+      DryRun: 0,
       NetworkInterfaceIds: D.m({ wire: "NetworkInterfaceId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
@@ -36880,6 +38719,9 @@ export const describeOutpostLags: API.OperationMethod<
     input: {
       OutpostLagIds: D.m({ wire: "OutpostLagId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
     },
     output: {
       OutpostLags: D.m({
@@ -36936,6 +38778,7 @@ export const describePlacementGroups: API.OperationMethod<
     service: svc,
     input: {
       GroupIds: D.m({ wire: "GroupId" }),
+      DryRun: 0,
       GroupNames: D.m({ wire: "GroupName" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
@@ -36976,7 +38819,10 @@ export const describePrefixLists: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
       PrefixListIds: D.m({ wire: "PrefixListId" }),
     },
     output: {
@@ -37034,7 +38880,12 @@ export const describePrincipalIdFormat: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Resources: D.m({ wire: "Resource" }) },
+    input: {
+      DryRun: 0,
+      Resources: D.m({ wire: "Resource" }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       Principals: D.m({
         wire: "principalSet",
@@ -37075,6 +38926,8 @@ export const describePublicIpv4Pools: API.PaginatedOperationMethod<
     service: svc,
     input: {
       PoolIds: D.m({ wire: "PoolId" }),
+      NextToken: 0,
+      MaxResults: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
     output: {
@@ -37134,6 +38987,8 @@ export const describeRegions: API.OperationMethod<
     service: svc,
     input: {
       RegionNames: D.m({ wire: "RegionName" }),
+      AllRegions: 0,
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
     output: {
@@ -37173,6 +39028,9 @@ export const describeReplaceRootVolumeTasks: API.PaginatedOperationMethod<
     input: {
       ReplaceRootVolumeTaskIds: D.m({ wire: "ReplaceRootVolumeTaskId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
     },
     output: {
       ReplaceRootVolumeTasks: D.m({
@@ -37216,8 +39074,11 @@ export const describeReservedInstances: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      OfferingClass: 0,
       ReservedInstancesIds: D.m({ wire: "ReservedInstancesId" }),
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      OfferingType: 0,
     },
     output: {
       ReservedInstances: D.m({
@@ -37275,7 +39136,11 @@ export const describeReservedInstancesListings: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      ReservedInstancesId: 0,
+      ReservedInstancesListingId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+    },
     output: {
       ReservedInstancesListings: D.m({
         wire: "reservedInstancesListingsSet",
@@ -37319,6 +39184,7 @@ export const describeReservedInstancesModifications: API.PaginatedOperationMetho
       ReservedInstancesModificationIds: D.m({
         wire: "ReservedInstancesModificationId",
       }),
+      NextToken: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
     output: {
@@ -37382,10 +39248,24 @@ export const describeReservedInstancesOfferings: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      AvailabilityZone: 0,
+      IncludeMarketplace: 0,
+      InstanceType: 0,
+      MaxDuration: 0,
+      MaxInstanceCount: 0,
+      MinDuration: 0,
+      OfferingClass: 0,
+      ProductDescription: 0,
       ReservedInstancesOfferingIds: D.m({
         wire: "ReservedInstancesOfferingId",
       }),
+      AvailabilityZoneId: 0,
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      InstanceTenancy: 0,
+      OfferingType: 0,
+      NextToken: 0,
+      MaxResults: 0,
     },
     output: {
       ReservedInstancesOfferings: D.m({
@@ -37439,7 +39319,10 @@ export const describeRouteServerEndpoints: API.PaginatedOperationMethod<
     service: svc,
     input: {
       RouteServerEndpointIds: D.m({ wire: "RouteServerEndpointId" }),
+      NextToken: 0,
+      MaxResults: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
     },
     output: {
       RouteServerEndpoints: D.m({
@@ -37493,7 +39376,10 @@ export const describeRouteServerPeers: API.PaginatedOperationMethod<
     service: svc,
     input: {
       RouteServerPeerIds: D.m({ wire: "RouteServerPeerId" }),
+      NextToken: 0,
+      MaxResults: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
     },
     output: {
       RouteServerPeers: D.m({
@@ -37552,7 +39438,10 @@ export const describeRouteServers: API.PaginatedOperationMethod<
     service: svc,
     input: {
       RouteServerIds: D.m({ wire: "RouteServerId" }),
+      NextToken: 0,
+      MaxResults: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
     },
     output: {
       RouteServers: D.m({
@@ -37603,6 +39492,9 @@ export const describeRouteTables: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      NextToken: 0,
+      MaxResults: 0,
+      DryRun: 0,
       RouteTableIds: D.m({ wire: "RouteTableId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
@@ -37646,8 +39538,20 @@ export const describeScheduledInstanceAvailability: API.PaginatedOperationMethod
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
-      Recurrence: { OccurrenceDays: D.m({ wire: "OccurrenceDay" }) },
+      FirstSlotStartTimeRange: { EarliestTime: 0, LatestTime: 0 },
+      MaxResults: 0,
+      MaxSlotDurationInHours: 0,
+      MinSlotDurationInHours: 0,
+      NextToken: 0,
+      Recurrence: {
+        Frequency: 0,
+        Interval: 0,
+        OccurrenceDays: D.m({ wire: "OccurrenceDay" }),
+        OccurrenceRelativeToEnd: 0,
+        OccurrenceUnit: 0,
+      },
     },
     output: {
       ScheduledInstanceAvailabilitySet: D.list({
@@ -37687,8 +39591,12 @@ export const describeScheduledInstances: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
       ScheduledInstanceIds: D.m({ wire: "ScheduledInstanceId" }),
+      SlotStartTimeRange: { EarliestTime: 0, LatestTime: 0 },
     },
     output: { ScheduledInstanceSet: D.list(o_ScheduledInstance) },
   },
@@ -37718,7 +39626,10 @@ export const describeSecondaryInterfaces: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
       SecondaryInterfaceIds: D.m({ wire: "SecondaryInterfaceId" }),
     },
     output: {
@@ -37767,7 +39678,10 @@ export const describeSecondaryNetworks: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
       SecondaryNetworkIds: D.m({ wire: "SecondaryNetworkId" }),
     },
     output: {
@@ -37803,7 +39717,10 @@ export const describeSecondarySubnets: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
       SecondarySubnetIds: D.m({ wire: "SecondarySubnetId" }),
     },
     output: {
@@ -37837,6 +39754,7 @@ export const describeSecurityGroupReferences: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, GroupId: 0 },
     output: { SecurityGroupReferenceSet: D.list({}) },
   },
   errors: [],
@@ -37865,6 +39783,9 @@ export const describeSecurityGroupRules: API.PaginatedOperationMethod<
     input: {
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
       SecurityGroupRuleIds: D.m({ wire: "SecurityGroupRuleId" }),
+      DryRun: 0,
+      NextToken: 0,
+      MaxResults: 0,
     },
     output: {
       SecurityGroupRules: D.m({
@@ -37912,6 +39833,9 @@ export const describeSecurityGroups: API.PaginatedOperationMethod<
     input: {
       GroupIds: D.m({ wire: "GroupId" }),
       GroupNames: D.m({ wire: "GroupName" }),
+      NextToken: 0,
+      MaxResults: 0,
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
     output: {
@@ -37958,7 +39882,12 @@ export const describeSecurityGroupVpcAssociations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      NextToken: 0,
+      MaxResults: 0,
+      DryRun: 0,
+    },
     output: {
       SecurityGroupVpcAssociations: D.m({
         wire: "securityGroupVpcAssociationSet",
@@ -37999,6 +39928,9 @@ export const describeServiceLinkVirtualInterfaces: API.OperationMethod<
         wire: "ServiceLinkVirtualInterfaceId",
       }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
     },
     output: {
       ServiceLinkVirtualInterfaces: D.m({
@@ -38042,6 +39974,7 @@ export const describeSnapshotAttribute: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Attribute: 0, SnapshotId: 0, DryRun: 0 },
     output: {
       ProductCodes: D.list(o_ProductCode),
       CreateVolumePermissions: D.m({
@@ -38125,9 +40058,12 @@ export const describeSnapshots: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      MaxResults: 0,
+      NextToken: 0,
       OwnerIds: D.m({ wire: "Owner" }),
       RestorableByUserIds: D.m({ wire: "RestorableBy" }),
       SnapshotIds: D.m({ wire: "SnapshotId" }),
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
     output: {
@@ -38178,7 +40114,12 @@ export const describeSnapshotTierStatus: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       SnapshotTierStatuses: D.m({
         wire: "snapshotTierStatusSet",
@@ -38221,6 +40162,7 @@ export const describeSpotDatafeedSubscription: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0 },
     output: { SpotDatafeedSubscription: o_SpotDatafeedSubscription },
   },
   errors: [
@@ -38249,6 +40191,7 @@ export const describeSpotFleetInstances: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, SpotFleetRequestId: 0, NextToken: 0, MaxResults: 0 },
     output: {
       ActiveInstances: D.m({ wire: "activeInstanceSet", shape: D.list({}) }),
     },
@@ -38283,6 +40226,14 @@ export const describeSpotFleetRequestHistory: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DryRun: 0,
+      SpotFleetRequestId: 0,
+      EventType: 0,
+      StartTime: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       HistoryRecords: D.m({
         wire: "historyRecordSet",
@@ -38319,7 +40270,12 @@ export const describeSpotFleetRequests: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { SpotFleetRequestIds: D.m({ wire: "SpotFleetRequestId" }) },
+    input: {
+      DryRun: 0,
+      SpotFleetRequestIds: D.m({ wire: "SpotFleetRequestId" }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       SpotFleetRequestConfigs: D.m({
         wire: "spotFleetRequestConfigSet",
@@ -38438,6 +40394,9 @@ export const describeSpotInstanceRequests: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      NextToken: 0,
+      MaxResults: 0,
+      DryRun: 0,
       SpotInstanceRequestIds: D.m({ wire: "SpotInstanceRequestId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
@@ -38484,9 +40443,16 @@ export const describeSpotPriceHistory: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      AvailabilityZoneId: 0,
+      DryRun: 0,
+      StartTime: 0,
+      EndTime: 0,
       InstanceTypes: D.m({ wire: "InstanceType" }),
       ProductDescriptions: D.m({ wire: "ProductDescription" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      AvailabilityZone: 0,
+      MaxResults: 0,
+      NextToken: 0,
     },
     output: {
       SpotPriceHistory: D.m({
@@ -38531,6 +40497,7 @@ export const describeStaleSecurityGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, MaxResults: 0, NextToken: 0, VpcId: 0 },
     output: {
       StaleSecurityGroupSet: D.list({
         StaleIpPermissions: D.list(o_StaleIpPermission),
@@ -38580,7 +40547,10 @@ export const describeStoreImageTasks: API.PaginatedOperationMethod<
     service: svc,
     input: {
       ImageIds: D.m({ wire: "ImageId" }),
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      NextToken: 0,
+      MaxResults: 0,
     },
     output: {
       StoreImageTaskResults: D.m({
@@ -38627,6 +40597,9 @@ export const describeSubnets: API.PaginatedOperationMethod<
     input: {
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
       SubnetIds: D.m({ wire: "SubnetId" }),
+      NextToken: 0,
+      MaxResults: 0,
+      DryRun: 0,
     },
     output: { Subnets: D.m({ wire: "subnetSet", shape: D.list(o_Subnet) }) },
   },
@@ -38674,7 +40647,12 @@ export const describeTags: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      DryRun: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { Tags: D.m({ wire: "tagSet", shape: D.list({}) }) },
   },
   errors: [RequestLimitExceeded, ParseError, UnauthorizedOperation],
@@ -38703,7 +40681,11 @@ export const describeTrafficMirrorFilterRules: API.OperationMethod<
     service: svc,
     input: {
       TrafficMirrorFilterRuleIds: D.m({ wire: "TrafficMirrorFilterRuleId" }),
+      TrafficMirrorFilterId: 0,
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
     },
     output: {
       TrafficMirrorFilterRules: D.m({
@@ -38737,7 +40719,10 @@ export const describeTrafficMirrorFilters: API.PaginatedOperationMethod<
     service: svc,
     input: {
       TrafficMirrorFilterIds: D.m({ wire: "TrafficMirrorFilterId" }),
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
     },
     output: {
       TrafficMirrorFilters: D.m({
@@ -38781,7 +40766,10 @@ export const describeTrafficMirrorSessions: API.PaginatedOperationMethod<
     service: svc,
     input: {
       TrafficMirrorSessionIds: D.m({ wire: "TrafficMirrorSessionId" }),
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
     },
     output: {
       TrafficMirrorSessions: D.m({
@@ -38825,7 +40813,10 @@ export const describeTrafficMirrorTargets: API.PaginatedOperationMethod<
     service: svc,
     input: {
       TrafficMirrorTargetIds: D.m({ wire: "TrafficMirrorTargetId" }),
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
     },
     output: {
       TrafficMirrorTargets: D.m({
@@ -38869,7 +40860,13 @@ export const describeTransitGatewayAttachments: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayAttachmentIds: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: {
       TransitGatewayAttachments: D.list({
         Association: {},
@@ -38912,7 +40909,13 @@ export const describeTransitGatewayConnectPeers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayConnectPeerIds: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: {
       TransitGatewayConnectPeers: D.m({
         wire: "transitGatewayConnectPeerSet",
@@ -38953,7 +40956,13 @@ export const describeTransitGatewayConnects: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayAttachmentIds: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: {
       TransitGatewayConnects: D.m({
         wire: "transitGatewayConnectSet",
@@ -38993,7 +41002,13 @@ export const describeTransitGatewayMeteringPolicies: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayMeteringPolicyIds: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: {
       TransitGatewayMeteringPolicies: D.list(o_TransitGatewayMeteringPolicy),
     },
@@ -39025,7 +41040,13 @@ export const describeTransitGatewayMulticastDomains: API.PaginatedOperationMetho
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayMulticastDomainIds: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: {
       TransitGatewayMulticastDomains: D.list(o_TransitGatewayMulticastDomain),
     },
@@ -39063,7 +41084,13 @@ export const describeTransitGatewayPeeringAttachments: API.PaginatedOperationMet
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayAttachmentIds: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: {
       TransitGatewayPeeringAttachments: D.list(
         o_TransitGatewayPeeringAttachment,
@@ -39103,7 +41130,13 @@ export const describeTransitGatewayPolicyTables: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayPolicyTableIds: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: { TransitGatewayPolicyTables: D.list(o_TransitGatewayPolicyTable) },
   },
   errors: [
@@ -39139,7 +41172,13 @@ export const describeTransitGatewayRouteTableAnnouncements: API.PaginatedOperati
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayRouteTableAnnouncementIds: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: {
       TransitGatewayRouteTableAnnouncements: D.list(
         o_TransitGatewayRouteTableAnnouncement,
@@ -39181,7 +41220,13 @@ export const describeTransitGatewayRouteTables: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayRouteTableIds: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: { TransitGatewayRouteTables: D.list(o_TransitGatewayRouteTable) },
   },
   errors: [
@@ -39220,7 +41265,13 @@ export const describeTransitGateways: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayIds: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: {
       TransitGateways: D.m({
         wire: "transitGatewaySet",
@@ -39263,7 +41314,13 @@ export const describeTransitGatewayVpcAttachments: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayAttachmentIds: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: {
       TransitGatewayVpcAttachments: D.list(o_TransitGatewayVpcAttachment),
     },
@@ -39303,7 +41360,10 @@ export const describeTrunkInterfaceAssociations: API.PaginatedOperationMethod<
     service: svc,
     input: {
       AssociationIds: D.m({ wire: "AssociationId" }),
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      NextToken: 0,
+      MaxResults: 0,
     },
     output: {
       InterfaceAssociations: D.m({
@@ -39343,7 +41403,12 @@ export const describeVerifiedAccessEndpoints: API.PaginatedOperationMethod<
     service: svc,
     input: {
       VerifiedAccessEndpointIds: D.m({ wire: "VerifiedAccessEndpointId" }),
+      VerifiedAccessInstanceId: 0,
+      VerifiedAccessGroupId: 0,
+      MaxResults: 0,
+      NextToken: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
     },
     output: {
       VerifiedAccessEndpoints: D.m({
@@ -39387,7 +41452,11 @@ export const describeVerifiedAccessGroups: API.PaginatedOperationMethod<
     service: svc,
     input: {
       VerifiedAccessGroupIds: D.m({ wire: "VerifiedAccessGroupId" }),
+      VerifiedAccessInstanceId: 0,
+      MaxResults: 0,
+      NextToken: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
     },
     output: {
       VerifiedAccessGroups: D.m({
@@ -39431,7 +41500,10 @@ export const describeVerifiedAccessInstanceLoggingConfigurations: API.PaginatedO
     service: svc,
     input: {
       VerifiedAccessInstanceIds: D.m({ wire: "VerifiedAccessInstanceId" }),
+      MaxResults: 0,
+      NextToken: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
     },
     output: {
       LoggingConfigurations: D.m({
@@ -39475,7 +41547,10 @@ export const describeVerifiedAccessInstances: API.PaginatedOperationMethod<
     service: svc,
     input: {
       VerifiedAccessInstanceIds: D.m({ wire: "VerifiedAccessInstanceId" }),
+      MaxResults: 0,
+      NextToken: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
     },
     output: {
       VerifiedAccessInstances: D.m({
@@ -39521,7 +41596,10 @@ export const describeVerifiedAccessTrustProviders: API.PaginatedOperationMethod<
       VerifiedAccessTrustProviderIds: D.m({
         wire: "VerifiedAccessTrustProviderId",
       }),
+      MaxResults: 0,
+      NextToken: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
     },
     output: {
       VerifiedAccessTrustProviders: D.m({
@@ -39567,6 +41645,7 @@ export const describeVolumeAttribute: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Attribute: 0, VolumeId: 0, DryRun: 0 },
     output: {
       AutoEnableIO: o_AttributeBooleanValue,
       ProductCodes: D.list(o_ProductCode),
@@ -39617,7 +41696,11 @@ export const describeVolumes: API.PaginatedOperationMethod<
     service: svc,
     input: {
       VolumeIds: D.m({ wire: "VolumeId" }),
+      IncludeManagedResources: 0,
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      NextToken: 0,
+      MaxResults: 0,
     },
     output: { Volumes: D.m({ wire: "volumeSet", shape: D.list(o_Volume) }) },
   },
@@ -39660,8 +41743,12 @@ export const describeVolumesModifications: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       VolumeIds: D.m({ wire: "VolumeId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      NextToken: 0,
+      MaxResults: 0,
+      IncludeManagedResources: 0,
     },
     output: {
       VolumesModifications: D.m({
@@ -39743,7 +41830,11 @@ export const describeVolumeStatus: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      MaxResults: 0,
+      NextToken: 0,
       VolumeIds: D.m({ wire: "VolumeId" }),
+      IncludeManagedResources: 0,
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
     output: {
@@ -39799,6 +41890,7 @@ export const describeVpcAttribute: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Attribute: 0, VpcId: 0, DryRun: 0 },
     output: {
       EnableDnsHostnames: o_AttributeBooleanValue,
       EnableDnsSupport: o_AttributeBooleanValue,
@@ -39834,8 +41926,11 @@ export const describeVpcBlockPublicAccessExclusions: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
       ExclusionIds: D.m({ wire: "ExclusionId" }),
+      NextToken: 0,
+      MaxResults: 0,
     },
     output: {
       VpcBlockPublicAccessExclusions: D.m({
@@ -39867,6 +41962,7 @@ export const describeVpcBlockPublicAccessOptions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0 },
     output: { VpcBlockPublicAccessOptions: o_VpcBlockPublicAccessOptions },
   },
   errors: [],
@@ -39895,6 +41991,7 @@ export const describeVpcClassicLink: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       VpcIds: D.m({ wire: "VpcId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
@@ -39942,6 +42039,7 @@ export const describeVpcClassicLinkDnsSupport: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { VpcIds: 0, MaxResults: 0, NextToken: 0 },
     output: { Vpcs: D.list({ ClassicLinkDnsSupported: D.bool }) },
   },
   errors: [RequestLimitExceeded, InvalidVpcIDNotFound, UnauthorizedOperation],
@@ -39975,9 +42073,12 @@ export const describeVpcEncryptionControls: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
       VpcEncryptionControlIds: D.m({ wire: "VpcEncryptionControlId" }),
       VpcIds: D.m({ wire: "VpcId" }),
+      NextToken: 0,
+      MaxResults: 0,
     },
     output: {
       VpcEncryptionControls: D.m({
@@ -40010,8 +42111,11 @@ export const describeVpcEndpointAssociations: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       VpcEndpointIds: D.m({ wire: "VpcEndpointId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
     },
     output: {
       VpcEndpointAssociations: D.m({
@@ -40048,7 +42152,13 @@ export const describeVpcEndpointConnectionNotifications: API.PaginatedOperationM
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      DryRun: 0,
+      ConnectionNotificationId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { ConnectionNotificationSet: D.list(o_ConnectionNotification) },
   },
   errors: [
@@ -40081,7 +42191,12 @@ export const describeVpcEndpointConnections: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      DryRun: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       VpcEndpointConnections: D.m({
         wire: "vpcEndpointConnectionSet",
@@ -40138,8 +42253,11 @@ export const describeVpcEndpoints: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       VpcEndpointIds: D.m({ wire: "VpcEndpointId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
     },
     output: {
       VpcEndpoints: D.m({
@@ -40183,8 +42301,11 @@ export const describeVpcEndpointServiceConfigurations: API.PaginatedOperationMet
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       ServiceIds: D.m({ wire: "ServiceId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
     },
     output: {
       ServiceConfigurations: D.m({
@@ -40228,7 +42349,13 @@ export const describeVpcEndpointServicePermissions: API.PaginatedOperationMethod
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      DryRun: 0,
+      ServiceId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       AllowedPrincipals: D.list({
         Tags: D.m({ wire: "tagSet", shape: D.list({}) }),
@@ -40277,8 +42404,11 @@ export const describeVpcEndpointServices: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       ServiceNames: D.m({ wire: "ServiceName" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
       ServiceRegions: D.m({ wire: "ServiceRegion" }),
     },
     output: {
@@ -40343,6 +42473,9 @@ export const describeVpcPeeringConnections: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      NextToken: 0,
+      MaxResults: 0,
+      DryRun: 0,
       VpcPeeringConnectionIds: D.m({ wire: "VpcPeeringConnectionId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
     },
@@ -40395,6 +42528,9 @@ export const describeVpcs: API.PaginatedOperationMethod<
     input: {
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
       VpcIds: D.m({ wire: "VpcId" }),
+      NextToken: 0,
+      MaxResults: 0,
+      DryRun: 0,
     },
     output: { Vpcs: D.m({ wire: "vpcSet", shape: D.list(o_Vpc) }) },
   },
@@ -40436,6 +42572,9 @@ export const describeVpnConcentrators: API.PaginatedOperationMethod<
     input: {
       VpnConcentratorIds: D.m({ wire: "VpnConcentratorId" }),
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
     },
     output: {
       VpnConcentrators: D.m({
@@ -40482,6 +42621,7 @@ export const describeVpnConnections: API.OperationMethod<
     input: {
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
       VpnConnectionIds: D.m({ wire: "VpnConnectionId" }),
+      DryRun: 0,
     },
     output: {
       VpnConnections: D.m({
@@ -40523,6 +42663,7 @@ export const describeVpnGateways: API.OperationMethod<
     input: {
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
       VpnGatewayIds: D.m({ wire: "VpnGatewayId" }),
+      DryRun: 0,
     },
     output: {
       VpnGateways: D.m({ wire: "vpnGatewaySet", shape: D.list(o_VpnGateway) }),
@@ -40560,7 +42701,11 @@ export const detachClassicLinkVpc: API.OperationMethod<
   DetachClassicLinkVpcError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, InstanceId: 0, VpcId: 0 },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     DependencyViolation,
@@ -40590,7 +42735,11 @@ export const detachImageWatermark: API.OperationMethod<
   DetachImageWatermarkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { ImageId: 0, WatermarkKey: 0, DryRun: 0 },
+    output: { Return: D.bool },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -40617,7 +42766,10 @@ export const detachInternetGateway: API.OperationMethod<
   DetachInternetGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, InternetGatewayId: 0, VpcId: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     DependencyViolation,
@@ -40648,7 +42800,7 @@ export const detachNetworkInterface: API.OperationMethod<
   DetachNetworkInterfaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0, AttachmentId: 0, Force: 0 } },
   errors: [
     RequestLimitExceeded,
     DependencyViolation,
@@ -40678,7 +42830,12 @@ export const detachVerifiedAccessTrustProvider: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      VerifiedAccessInstanceId: 0,
+      VerifiedAccessTrustProviderId: 0,
+      ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+    },
     output: {
       VerifiedAccessTrustProvider: o_VerifiedAccessTrustProvider,
       VerifiedAccessInstance: o_VerifiedAccessInstance,
@@ -40730,6 +42887,7 @@ export const detachVolume: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Device: 0, Force: 0, InstanceId: 0, VolumeId: 0, DryRun: 0 },
     output: {
       DeleteOnTermination: D.bool,
       EbsCardIndex: D.num,
@@ -40773,7 +42931,7 @@ export const detachVpnGateway: API.OperationMethod<
   DetachVpnGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { VpcId: 0, VpnGatewayId: 0, DryRun: 0 } },
   errors: [
     RequestLimitExceeded,
     DependencyViolation,
@@ -40801,7 +42959,11 @@ export const disableAddressTransfer: API.OperationMethod<
   DisableAddressTransferError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AddressTransfer: o_AddressTransfer } },
+  descriptor: {
+    service: svc,
+    input: { AllocationId: 0, DryRun: 0 },
+    output: { AddressTransfer: o_AddressTransfer },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidElasticIpIDNotFound,
@@ -40833,7 +42995,7 @@ export const disableAllowedImagesSettings: API.OperationMethod<
   DisableAllowedImagesSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -40855,6 +43017,7 @@ export const disableApplicationStatusCheckSuppression: API.OperationMethod<
     input: {
       InstanceIds: D.m({ wire: "InstanceId" }),
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
     },
     output: {
       SuccessfulResults: D.m({
@@ -40887,7 +43050,11 @@ export const disableAwsNetworkPerformanceMetricSubscription: API.OperationMethod
   DisableAwsNetworkPerformanceMetricSubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Output: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { Source: 0, Destination: 0, Metric: 0, Statistic: 0, DryRun: 0 },
+    output: { Output: D.bool },
+  },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -40911,7 +43078,7 @@ export const disableCapacityManager: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: { DryRun: 0, ClientToken: D.m({ idempotency: true }) },
     output: { OrganizationsAccess: D.bool },
   },
   errors: [
@@ -40943,7 +43110,11 @@ export const disableEbsEncryptionByDefault: API.OperationMethod<
   DisableEbsEncryptionByDefaultError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { EbsEncryptionByDefault: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0 },
+    output: { EbsEncryptionByDefault: D.bool },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -40972,6 +43143,7 @@ export const disableFastLaunch: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ImageId: 0, Force: 0, DryRun: 0 },
     output: {
       SnapshotConfiguration: o_FastLaunchSnapshotConfigurationResponse,
       LaunchTemplate: {},
@@ -41005,6 +43177,7 @@ export const disableFastSnapshotRestores: API.OperationMethod<
       AvailabilityZones: D.m({ wire: "AvailabilityZone" }),
       AvailabilityZoneIds: D.m({ wire: "AvailabilityZoneId" }),
       SourceSnapshotIds: D.m({ wire: "SourceSnapshotId" }),
+      DryRun: 0,
     },
     output: {
       Successful: D.list({
@@ -41057,7 +43230,11 @@ export const disableImage: API.OperationMethod<
   DisableImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { ImageId: 0, DryRun: 0 },
+    output: { Return: D.bool },
+  },
   errors: [RequestLimitExceeded, InvalidAMIIDMalformed, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -41080,7 +43257,7 @@ export const disableImageBlockPublicAccess: API.OperationMethod<
   DisableImageBlockPublicAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -41104,7 +43281,11 @@ export const disableImageDeprecation: API.OperationMethod<
   DisableImageDeprecationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { ImageId: 0, DryRun: 0 },
+    output: { Return: D.bool },
+  },
   errors: [RequestLimitExceeded, InvalidAMIIDMalformed, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -41133,7 +43314,7 @@ export const disableImageDeregistrationProtection: API.OperationMethod<
   DisableImageDeregistrationProtectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ImageId: 0, DryRun: 0 } },
   errors: [RequestLimitExceeded, InvalidAMIIDMalformed, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -41159,7 +43340,7 @@ export const disableInstanceSqlHaStandbyDetections: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { InstanceIds: D.m({ wire: "InstanceId" }) },
+    input: { InstanceIds: D.m({ wire: "InstanceId" }), DryRun: 0 },
     output: {
       Instances: D.m({
         wire: "instanceSet",
@@ -41191,7 +43372,11 @@ export const disableIpamOrganizationAdminAccount: API.OperationMethod<
   DisableIpamOrganizationAdminAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Success: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, DelegatedAdminAccountId: 0 },
+    output: { Success: D.bool },
+  },
   errors: [RequestLimitExceeded, InvalidParameterValue, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -41215,7 +43400,11 @@ export const disableIpamPolicy: API.OperationMethod<
   DisableIpamPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, IpamPolicyId: 0, OrganizationTargetId: 0 },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidIpamPolicyIdMalformed,
@@ -41258,7 +43447,11 @@ export const disableRouteServerPropagation: API.OperationMethod<
   DisableRouteServerPropagationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { RouteServerPropagation: {} } },
+  descriptor: {
+    service: svc,
+    input: { RouteServerId: 0, RouteTableId: 0, DryRun: 0 },
+    output: { RouteServerPropagation: {} },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidRouteServerIdNotFound,
@@ -41282,7 +43475,11 @@ export const disableSerialConsoleAccess: API.OperationMethod<
   DisableSerialConsoleAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { SerialConsoleAccessEnabled: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0 },
+    output: { SerialConsoleAccessEnabled: D.bool },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -41313,7 +43510,7 @@ export const disableSnapshotBlockPublicAccess: API.OperationMethod<
   DisableSnapshotBlockPublicAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -41335,7 +43532,16 @@ export const disableTransitGatewayRouteTablePropagation: API.OperationMethod<
   DisableTransitGatewayRouteTablePropagationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Propagation: {} } },
+  descriptor: {
+    service: svc,
+    input: {
+      TransitGatewayRouteTableId: 0,
+      TransitGatewayAttachmentId: 0,
+      DryRun: 0,
+      TransitGatewayRouteTableAnnouncementId: 0,
+    },
+    output: { Propagation: {} },
+  },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -41357,7 +43563,10 @@ export const disableVgwRoutePropagation: API.OperationMethod<
   DisableVgwRoutePropagationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { GatewayId: 0, RouteTableId: 0, DryRun: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidRouteTableIDNotFound,
@@ -41386,7 +43595,11 @@ export const disableVpcClassicLink: API.OperationMethod<
   DisableVpcClassicLinkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, VpcId: 0 },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidVpcIDNotFound,
@@ -41419,7 +43632,7 @@ export const disableVpcClassicLinkDnsSupport: API.OperationMethod<
   DisableVpcClassicLinkDnsSupportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: { service: svc, input: { VpcId: 0 }, output: { Return: D.bool } },
   errors: [
     RequestLimitExceeded,
     InvalidVpcIDNotFound,
@@ -41456,7 +43669,10 @@ export const disassociateAddress: API.OperationMethod<
   DisassociateAddressError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AssociationId: 0, PublicIp: 0, DryRun: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidAssociationIDNotFound,
@@ -41487,9 +43703,14 @@ export const disassociateApplicationStatusCheck: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      TargetTagAssociations: D.m({ wire: "TargetTagAssociation" }),
+      ApplicationStatusCheckId: 0,
+      TargetTagAssociations: D.m({
+        wire: "TargetTagAssociation",
+        shape: D.list(i_CustomTagKeyValueRequestPair),
+      }),
       InstanceIds: D.m({ wire: "InstanceId" }),
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
     },
     output: {
       SuccessfulResults: D.m({
@@ -41526,7 +43747,15 @@ export const disassociateCapacityReservationBillingOwner: API.OperationMethod<
   DisassociateCapacityReservationBillingOwnerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: {
+      DryRun: 0,
+      CapacityReservationId: 0,
+      UnusedReservationBillingOwnerId: 0,
+    },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidCapacityReservationIdMalformed,
@@ -41564,7 +43793,11 @@ export const disassociateClientVpnTargetNetwork: API.OperationMethod<
   DisassociateClientVpnTargetNetworkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Status: {} } },
+  descriptor: {
+    service: svc,
+    input: { ClientVpnEndpointId: 0, AssociationId: 0, DryRun: 0 },
+    output: { Status: {} },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidClientVpnEndpointIdNotFound,
@@ -41597,7 +43830,11 @@ export const disassociateEnclaveCertificateIamRole: API.OperationMethod<
   DisassociateEnclaveCertificateIamRoleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { CertificateArn: 0, RoleArn: 0, DryRun: 0 },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidCertificateArnMalformed,
@@ -41628,6 +43865,7 @@ export const disassociateIamInstanceProfile: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AssociationId: 0 },
     output: { IamInstanceProfileAssociation: o_IamInstanceProfileAssociation },
   },
   errors: [RequestLimitExceeded, InvalidParameterValue, UnauthorizedOperation],
@@ -41657,9 +43895,11 @@ export const disassociateInstanceEventWindow: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      InstanceEventWindowId: 0,
       AssociationTarget: {
         InstanceIds: D.m({ wire: "InstanceId" }),
-        InstanceTags: D.m({ wire: "InstanceTag" }),
+        InstanceTags: D.m({ wire: "InstanceTag", shape: D.list(i_Tag) }),
         DedicatedHostIds: D.m({ wire: "DedicatedHostId" }),
       },
     },
@@ -41691,7 +43931,11 @@ export const disassociateIpamByoasn: API.OperationMethod<
   DisassociateIpamByoasnError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AsnAssociation: {} } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, Asn: 0, Cidr: 0 },
+    output: { AsnAssociation: {} },
+  },
   errors: [RequestLimitExceeded, InvalidCidrNotFound, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -41715,6 +43959,7 @@ export const disassociateIpamResourceDiscovery: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, IpamResourceDiscoveryAssociationId: 0 },
     output: {
       IpamResourceDiscoveryAssociation: o_IpamResourceDiscoveryAssociation,
     },
@@ -41757,7 +44002,12 @@ export const disassociateNatGatewayAddress: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { AssociationIds: D.m({ wire: "AssociationId" }) },
+    input: {
+      NatGatewayId: 0,
+      AssociationIds: D.m({ wire: "AssociationId" }),
+      MaxDrainDurationSeconds: 0,
+      DryRun: 0,
+    },
     output: {
       NatGatewayAddresses: D.m({
         wire: "natGatewayAddressSet",
@@ -41797,7 +44047,11 @@ export const disassociateRouteServer: API.OperationMethod<
   DisassociateRouteServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { RouteServerAssociation: {} } },
+  descriptor: {
+    service: svc,
+    input: { RouteServerId: 0, VpcId: 0, DryRun: 0 },
+    output: { RouteServerAssociation: {} },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidRouteServerIdNotFound,
@@ -41831,7 +44085,7 @@ export const disassociateRouteTable: API.OperationMethod<
   DisassociateRouteTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0, AssociationId: 0 } },
   errors: [
     RequestLimitExceeded,
     InvalidAssociationIDNotFound,
@@ -41861,7 +44115,7 @@ export const disassociateSecurityGroupVpc: API.OperationMethod<
   DisassociateSecurityGroupVpcError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GroupId: 0, VpcId: 0, DryRun: 0 } },
   errors: [
     RequestLimitExceeded,
     InvalidGroupIdMalformed,
@@ -41890,6 +44144,7 @@ export const disassociateSubnetCidrBlock: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AssociationId: 0 },
     output: { Ipv6CidrBlockAssociation: o_SubnetIpv6CidrBlockAssociation },
   },
   errors: [
@@ -41920,6 +44175,12 @@ export const disassociateTransitGatewayMulticastDomain: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TransitGatewayMulticastDomainId: 0,
+      TransitGatewayAttachmentId: 0,
+      SubnetIds: 0,
+      DryRun: 0,
+    },
     output: { Associations: o_TransitGatewayMulticastDomainAssociations },
   },
   errors: [
@@ -41949,7 +44210,15 @@ export const disassociateTransitGatewayPolicyTable: API.OperationMethod<
   DisassociateTransitGatewayPolicyTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Association: {} } },
+  descriptor: {
+    service: svc,
+    input: {
+      TransitGatewayPolicyTableId: 0,
+      TransitGatewayAttachmentId: 0,
+      DryRun: 0,
+    },
+    output: { Association: {} },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidTransitGatewayPolicyTableIdMalformed,
@@ -41977,7 +44246,15 @@ export const disassociateTransitGatewayRouteTable: API.OperationMethod<
   DisassociateTransitGatewayRouteTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Association: {} } },
+  descriptor: {
+    service: svc,
+    input: {
+      TransitGatewayRouteTableId: 0,
+      TransitGatewayAttachmentId: 0,
+      DryRun: 0,
+    },
+    output: { Association: {} },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidRouteTableIDNotFound,
@@ -42005,7 +44282,11 @@ export const disassociateTrunkInterface: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      AssociationId: 0,
+      ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+    },
     output: { Return: D.bool },
   },
   errors: [RequestLimitExceeded, OperationNotPermitted, UnauthorizedOperation],
@@ -42039,6 +44320,7 @@ export const disassociateVpcCidrBlock: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AssociationId: 0 },
     output: {
       Ipv6CidrBlockAssociation: o_VpcIpv6CidrBlockAssociation,
       CidrBlockAssociation: o_VpcCidrBlockAssociation,
@@ -42071,7 +44353,11 @@ export const enableAddressTransfer: API.OperationMethod<
   EnableAddressTransferError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AddressTransfer: o_AddressTransfer } },
+  descriptor: {
+    service: svc,
+    input: { AllocationId: 0, TransferAccountId: 0, DryRun: 0 },
+    output: { AddressTransfer: o_AddressTransfer },
+  },
   errors: [RequestLimitExceeded, InvalidParameterValue, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -42111,7 +44397,10 @@ export const enableAllowedImagesSettings: API.OperationMethod<
   EnableAllowedImagesSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AllowedImagesSettingsState: 0, DryRun: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -42138,7 +44427,9 @@ export const enableApplicationStatusCheckSuppression: API.OperationMethod<
     service: svc,
     input: {
       InstanceIds: D.m({ wire: "InstanceId" }),
+      DurationSeconds: 0,
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
     },
     output: {
       SuccessfulResults: D.m({
@@ -42171,7 +44462,11 @@ export const enableAwsNetworkPerformanceMetricSubscription: API.OperationMethod<
   EnableAwsNetworkPerformanceMetricSubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Output: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { Source: 0, Destination: 0, Metric: 0, Statistic: 0, DryRun: 0 },
+    output: { Output: D.bool },
+  },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -42191,7 +44486,11 @@ export const enableCapacityManager: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      OrganizationsAccess: 0,
+      DryRun: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { OrganizationsAccess: D.bool },
   },
   errors: [],
@@ -42222,7 +44521,11 @@ export const enableEbsEncryptionByDefault: API.OperationMethod<
   EnableEbsEncryptionByDefaultError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { EbsEncryptionByDefault: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0 },
+    output: { EbsEncryptionByDefault: D.bool },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -42253,6 +44556,18 @@ export const enableFastLaunch: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ImageId: 0,
+      ResourceType: 0,
+      SnapshotConfiguration: { TargetResourceCount: 0 },
+      LaunchTemplate: {
+        LaunchTemplateId: 0,
+        LaunchTemplateName: 0,
+        Version: 0,
+      },
+      MaxParallelLaunches: 0,
+      DryRun: 0,
+    },
     output: {
       SnapshotConfiguration: o_FastLaunchSnapshotConfigurationResponse,
       LaunchTemplate: {},
@@ -42291,6 +44606,7 @@ export const enableFastSnapshotRestores: API.OperationMethod<
       AvailabilityZones: D.m({ wire: "AvailabilityZone" }),
       AvailabilityZoneIds: D.m({ wire: "AvailabilityZoneId" }),
       SourceSnapshotIds: D.m({ wire: "SourceSnapshotId" }),
+      DryRun: 0,
     },
     output: {
       Successful: D.list({
@@ -42337,7 +44653,11 @@ export const enableImage: API.OperationMethod<
   EnableImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { ImageId: 0, DryRun: 0 },
+    output: { Return: D.bool },
+  },
   errors: [RequestLimitExceeded, InvalidAMIIDMalformed, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -42368,7 +44688,10 @@ export const enableImageBlockPublicAccess: API.OperationMethod<
   EnableImageBlockPublicAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ImageBlockPublicAccessState: 0, DryRun: 0 },
+  },
   errors: [RequestLimitExceeded, InvalidParameterValue, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -42392,7 +44715,11 @@ export const enableImageDeprecation: API.OperationMethod<
   EnableImageDeprecationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { ImageId: 0, DeprecateAt: 0, DryRun: 0 },
+    output: { Return: D.bool },
+  },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -42419,7 +44746,10 @@ export const enableImageDeregistrationProtection: API.OperationMethod<
   EnableImageDeregistrationProtectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ImageId: 0, WithCooldown: 0, DryRun: 0 },
+  },
   errors: [RequestLimitExceeded, InvalidAMIIDMalformed, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -42452,7 +44782,11 @@ export const enableInstanceSqlHaStandbyDetections: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { InstanceIds: D.m({ wire: "InstanceId" }) },
+    input: {
+      InstanceIds: D.m({ wire: "InstanceId" }),
+      SqlServerCredentials: 0,
+      DryRun: 0,
+    },
     output: {
       Instances: D.m({
         wire: "instanceSet",
@@ -42482,7 +44816,16 @@ export const enableIpamInternetRegistryAssociation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      DryRun: 0,
+      IpamInternetRegistryAssociationId: 0,
+      RpkiVersion: 0,
+      ServiceUri: 0,
+      ChildHandle: 0,
+      ParentHandle: 0,
+      ParentBpkiTa: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: {
       IpamInternetRegistryAssociation: o_IpamInternetRegistryAssociation,
     },
@@ -42507,7 +44850,11 @@ export const enableIpamOrganizationAdminAccount: API.OperationMethod<
   EnableIpamOrganizationAdminAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Success: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, DelegatedAdminAccountId: 0 },
+    output: { Success: D.bool },
+  },
   errors: [RequestLimitExceeded, InvalidParameterValue, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -42533,7 +44880,10 @@ export const enableIpamPolicy: API.OperationMethod<
   EnableIpamPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, IpamPolicyId: 0, OrganizationTargetId: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidIpamPolicyIdMalformed,
@@ -42560,7 +44910,11 @@ export const enableReachabilityAnalyzerOrganizationSharing: API.OperationMethod<
   EnableReachabilityAnalyzerOrganizationSharingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ReturnValue: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0 },
+    output: { ReturnValue: D.bool },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -42585,7 +44939,11 @@ export const enableRouteServerPropagation: API.OperationMethod<
   EnableRouteServerPropagationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { RouteServerPropagation: {} } },
+  descriptor: {
+    service: svc,
+    input: { RouteServerId: 0, RouteTableId: 0, DryRun: 0 },
+    output: { RouteServerPropagation: {} },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidRouteServerIdNotFound,
@@ -42608,7 +44966,11 @@ export const enableSerialConsoleAccess: API.OperationMethod<
   EnableSerialConsoleAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { SerialConsoleAccessEnabled: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0 },
+    output: { SerialConsoleAccessEnabled: D.bool },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -42646,7 +45008,7 @@ export const enableSnapshotBlockPublicAccess: API.OperationMethod<
   EnableSnapshotBlockPublicAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { State: 0, DryRun: 0 } },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -42668,7 +45030,16 @@ export const enableTransitGatewayRouteTablePropagation: API.OperationMethod<
   EnableTransitGatewayRouteTablePropagationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Propagation: {} } },
+  descriptor: {
+    service: svc,
+    input: {
+      TransitGatewayRouteTableId: 0,
+      TransitGatewayAttachmentId: 0,
+      DryRun: 0,
+      TransitGatewayRouteTableAnnouncementId: 0,
+    },
+    output: { Propagation: {} },
+  },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -42690,7 +45061,10 @@ export const enableVgwRoutePropagation: API.OperationMethod<
   EnableVgwRoutePropagationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { GatewayId: 0, RouteTableId: 0, DryRun: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidRouteTableIDNotFound,
@@ -42712,7 +45086,7 @@ export const enableVolumeIO: API.OperationMethod<
   EnableVolumeIOError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0, VolumeId: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -42741,7 +45115,11 @@ export const enableVpcClassicLink: API.OperationMethod<
   EnableVpcClassicLinkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, VpcId: 0 },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidVpcIDNotFound,
@@ -42776,7 +45154,7 @@ export const enableVpcClassicLinkDnsSupport: API.OperationMethod<
   EnableVpcClassicLinkDnsSupportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: { service: svc, input: { VpcId: 0 }, output: { Return: D.bool } },
   errors: [
     RequestLimitExceeded,
     InvalidVpcIDNotFound,
@@ -42802,7 +45180,11 @@ export const exportClientVpnClientCertificateRevocationList: API.OperationMethod
   ExportClientVpnClientCertificateRevocationListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Status: {} } },
+  descriptor: {
+    service: svc,
+    input: { ClientVpnEndpointId: 0, DryRun: 0 },
+    output: { Status: {} },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidClientVpnEndpointIdNotFound,
@@ -42829,7 +45211,7 @@ export const exportClientVpnClientConfiguration: API.OperationMethod<
   ExportClientVpnClientConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ClientVpnEndpointId: 0, DryRun: 0 } },
   errors: [
     RequestLimitExceeded,
     InvalidClientVpnEndpointIdNotFound,
@@ -42860,6 +45242,12 @@ export const exportImage: API.OperationMethod<
     service: svc,
     input: {
       ClientToken: D.m({ idempotency: true }),
+      Description: 0,
+      DiskImageFormat: 0,
+      DryRun: 0,
+      ImageId: 0,
+      S3ExportLocation: { S3Bucket: 0, S3Prefix: 0 },
+      RoleName: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -42897,7 +45285,12 @@ export const exportTransitGatewayRoutes: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayRouteTableId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      S3Bucket: 0,
+      DryRun: 0,
+    },
   },
   errors: [
     RequestLimitExceeded,
@@ -42925,6 +45318,7 @@ export const exportVerifiedAccessInstanceClientConfiguration: API.OperationMetho
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { VerifiedAccessInstanceId: 0, DryRun: 0 },
     output: {
       DeviceTrustProviders: D.m({
         wire: "deviceTrustProviderSet",
@@ -42963,6 +45357,7 @@ export const getActiveVpnTunnelStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { VpnConnectionId: 0, VpnTunnelOutsideIpAddress: 0, DryRun: 0 },
     output: {
       ActiveVpnTunnelStatus: { Phase1DHGroup: D.num, Phase2DHGroup: D.num },
     },
@@ -42998,6 +45393,7 @@ export const getAllowedImagesSettings: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0 },
     output: {
       ImageCriteria: D.m({
         wire: "imageCriterionSet",
@@ -43046,6 +45442,7 @@ export const getAssociatedEnclaveCertificateIamRoles: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CertificateArn: 0, DryRun: 0 },
     output: {
       AssociatedRoles: D.m({ wire: "associatedRoleSet", shape: D.list({}) }),
     },
@@ -43077,6 +45474,7 @@ export const getAssociatedIpv6PoolCidrs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { PoolId: 0, NextToken: 0, MaxResults: 0, DryRun: 0 },
     output: {
       Ipv6CidrAssociations: D.m({
         wire: "ipv6CidrAssociationSet",
@@ -43117,7 +45515,24 @@ export const getAwsNetworkPerformanceData: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { DataQueries: D.m({ wire: "DataQuery" }) },
+    input: {
+      DataQueries: D.m({
+        wire: "DataQuery",
+        shape: D.list({
+          Id: 0,
+          Source: 0,
+          Destination: 0,
+          Metric: 0,
+          Statistic: 0,
+          Period: 0,
+        }),
+      }),
+      StartTime: 0,
+      EndTime: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: {
       DataResponses: D.m({
         wire: "dataResponseSet",
@@ -43154,6 +45569,7 @@ export const getCapacityManagerAttributes: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0 },
     output: {
       OrganizationsAccess: D.bool,
       DataExportCount: D.num,
@@ -43187,7 +45603,14 @@ export const getCapacityManagerMetricData: API.PaginatedOperationMethod<
     service: svc,
     input: {
       MetricNames: D.m({ wire: "MetricName" }),
+      StartTime: 0,
+      EndTime: 0,
+      Period: 0,
+      GroupBy: 0,
       FilterBy: D.list(i_CapacityManagerCondition),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
     },
     output: {
       MetricDataResults: D.m({
@@ -43234,8 +45657,14 @@ export const getCapacityManagerMetricDimensions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      GroupBy: 0,
       FilterBy: D.list(i_CapacityManagerCondition),
+      StartTime: 0,
+      EndTime: 0,
       MetricNames: D.m({ wire: "MetricName" }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
     },
     output: {
       MetricDimensionResults: D.m({
@@ -43269,6 +45698,7 @@ export const getCapacityManagerMonitoredTagKeys: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0, DryRun: 0 },
     output: {
       CapacityManagerTagKeys: D.m({
         wire: "capacityManagerTagKeySet",
@@ -43306,6 +45736,7 @@ export const getCapacityReservationUsage: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CapacityReservationId: 0, NextToken: 0, MaxResults: 0, DryRun: 0 },
     output: {
       TotalInstanceCount: D.num,
       AvailableInstanceCount: D.num,
@@ -43344,7 +45775,13 @@ export const getCoipPoolUsage: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      PoolId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: {
       CoipAddressUsages: D.m({
         wire: "coipAddressUsageSet",
@@ -43379,7 +45816,11 @@ export const getConsoleOutput: API.OperationMethod<
   GetConsoleOutputError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Timestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { InstanceId: 0, Latest: 0, DryRun: 0 },
+    output: { Timestamp: D.ts },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidInstanceIDMalformed,
@@ -43411,7 +45852,7 @@ export const getConsoleScreenshot: API.OperationMethod<
   GetConsoleScreenshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0, InstanceId: 0, WakeUp: 0 } },
   errors: [
     RequestLimitExceeded,
     InvalidInstanceIDMalformed,
@@ -43449,6 +45890,7 @@ export const getDeclarativePoliciesReportSummary: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, ReportId: 0 },
     output: {
       StartTime: D.ts,
       EndTime: D.ts,
@@ -43500,6 +45942,7 @@ export const getDefaultCreditSpecification: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, InstanceFamily: 0 },
     output: { InstanceFamilyCreditSpecification: {} },
   },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
@@ -43521,7 +45964,7 @@ export const getEbsDefaultKmsKeyId: API.OperationMethod<
   GetEbsDefaultKmsKeyIdError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -43542,7 +45985,11 @@ export const getEbsEncryptionByDefault: API.OperationMethod<
   GetEbsEncryptionByDefaultError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { EbsEncryptionByDefault: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0 },
+    output: { EbsEncryptionByDefault: D.bool },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -43561,7 +46008,11 @@ export const getEnabledIpamPolicy: API.OperationMethod<
   GetEnabledIpamPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { IpamPolicyEnabled: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0 },
+    output: { IpamPolicyEnabled: D.bool },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -43595,9 +46046,22 @@ export const getFlowLogsIntegrationTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      FlowLogId: 0,
+      ConfigDeliveryS3DestinationArn: 0,
       IntegrateServices: D.m({
         wire: "IntegrateService",
-        shape: { AthenaIntegrations: D.m({ wire: "AthenaIntegration" }) },
+        shape: {
+          AthenaIntegrations: D.m({
+            wire: "AthenaIntegration",
+            shape: D.list({
+              IntegrationResultS3DestinationArn: 0,
+              PartitionLoadFrequency: 0,
+              PartitionStartDate: 0,
+              PartitionEndDate: 0,
+            }),
+          }),
+        },
       }),
     },
   },
@@ -43624,6 +46088,7 @@ export const getGroupsForCapacityReservation: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { CapacityReservationId: 0, NextToken: 0, MaxResults: 0, DryRun: 0 },
     output: {
       CapacityReservationGroups: D.m({
         wire: "capacityReservationGroupSet",
@@ -43662,7 +46127,11 @@ export const getHostReservationPurchasePreview: API.OperationMethod<
   GetHostReservationPurchasePreviewError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Purchase: D.list(o_Purchase) } },
+  descriptor: {
+    service: svc,
+    input: { HostIdSet: 0, OfferingId: 0 },
+    output: { Purchase: D.list(o_Purchase) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -43687,6 +46156,7 @@ export const getImageAncestry: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ImageId: 0, DryRun: 0 },
     output: {
       ImageAncestryEntries: D.m({
         wire: "imageAncestryEntrySet",
@@ -43714,7 +46184,7 @@ export const getImageBlockPublicAccessState: API.OperationMethod<
   GetImageBlockPublicAccessStateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -43738,6 +46208,7 @@ export const getInstanceMetadataDefaults: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0 },
     output: { AccountLevel: { HttpPutResponseHopLimit: D.num } },
   },
   errors: [],
@@ -43761,7 +46232,11 @@ export const getInstanceTpmEkPub: API.OperationMethod<
   GetInstanceTpmEkPubError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { KeyValue: D.secret } },
+  descriptor: {
+    service: svc,
+    input: { InstanceId: 0, KeyType: 0, KeyFormat: 0, DryRun: 0 },
+    output: { KeyValue: D.secret },
+  },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -43797,9 +46272,13 @@ export const getInstanceTypesFromInstanceRequirements: API.PaginatedOperationMet
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       ArchitectureTypes: D.m({ wire: "ArchitectureType" }),
       VirtualizationTypes: D.m({ wire: "VirtualizationType" }),
       InstanceRequirements: i_InstanceRequirementsRequest,
+      MaxResults: 0,
+      NextToken: 0,
+      Context: 0,
     },
     output: {
       InstanceTypes: D.m({ wire: "instanceTypeSet", shape: D.list({}) }),
@@ -43843,7 +46322,11 @@ export const getInstanceUefiData: API.OperationMethod<
   GetInstanceUefiDataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { UefiData: D.secret } },
+  descriptor: {
+    service: svc,
+    input: { InstanceId: 0, DryRun: 0 },
+    output: { UefiData: D.secret },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidInstanceIDMalformed,
@@ -43871,6 +46354,16 @@ export const getIpamAddressHistory: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DryRun: 0,
+      Cidr: 0,
+      IpamScopeId: 0,
+      VpcId: 0,
+      StartTime: 0,
+      EndTime: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       HistoryRecords: D.m({
         wire: "historyRecordSet",
@@ -43912,7 +46405,14 @@ export const getIpamDiscoveredAccounts: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      DryRun: 0,
+      IpamResourceDiscoveryId: 0,
+      DiscoveryRegion: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       IpamDiscoveredAccounts: D.m({
         wire: "ipamDiscoveredAccountSet",
@@ -43958,7 +46458,14 @@ export const getIpamDiscoveredPublicAddresses: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      DryRun: 0,
+      IpamResourceDiscoveryId: 0,
+      AddressRegion: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       IpamDiscoveredPublicAddresses: D.m({
         wire: "ipamDiscoveredPublicAddressSet",
@@ -44000,7 +46507,14 @@ export const getIpamDiscoveredResourceCidrs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      DryRun: 0,
+      IpamResourceDiscoveryId: 0,
+      ResourceRegion: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       IpamDiscoveredResourceCidrs: D.m({
         wire: "ipamDiscoveredResourceCidrSet",
@@ -44041,7 +46555,14 @@ export const getIpamDiscoveredRoutes: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      DryRun: 0,
+      IpamResourceDiscoveryId: 0,
+      ResourceRegion: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       IpamDiscoveredRoutes: D.m({
         wire: "ipamDiscoveredRouteSet",
@@ -44067,7 +46588,13 @@ export const getIpamInternetRegistryAssociationAsns: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      DryRun: 0,
+      IpamInternetRegistryAssociationId: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+    },
     output: {
       IpamInternetRegistryAssociationAsns: D.m({
         wire: "ipamInternetRegistryAssociationAsnSet",
@@ -44093,7 +46620,13 @@ export const getIpamInternetRegistryAssociationCidrs: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      DryRun: 0,
+      IpamInternetRegistryAssociationId: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+    },
     output: {
       IpamInternetRegistryAssociationCidrs: D.m({
         wire: "ipamInternetRegistryAssociationCidrSet",
@@ -44128,7 +46661,15 @@ export const getIpamPolicyAllocationRules: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      DryRun: 0,
+      IpamPolicyId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      Locale: 0,
+      ResourceType: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       IpamPolicyDocuments: D.m({
         wire: "ipamPolicyDocumentSet",
@@ -44168,7 +46709,13 @@ export const getIpamPolicyOrganizationTargets: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      DryRun: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      IpamPolicyId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+    },
     output: {
       OrganizationTargets: D.m({
         wire: "organizationTargetSet",
@@ -44207,7 +46754,14 @@ export const getIpamPoolAllocations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      DryRun: 0,
+      IpamPoolId: 0,
+      IpamPoolAllocationId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       IpamPoolAllocations: D.m({
         wire: "ipamPoolAllocationSet",
@@ -44250,7 +46804,13 @@ export const getIpamPoolCidrs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      DryRun: 0,
+      IpamPoolId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       IpamPoolCidrs: D.m({
         wire: "ipamPoolCidrSet",
@@ -44293,7 +46853,13 @@ export const getIpamPrefixListResolverRules: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      DryRun: 0,
+      IpamPrefixListResolverId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       Rules: D.m({
         wire: "ruleSet",
@@ -44340,6 +46906,13 @@ export const getIpamPrefixListResolverVersionEntries: API.PaginatedOperationMeth
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DryRun: 0,
+      IpamPrefixListResolverId: 0,
+      IpamPrefixListResolverVersion: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { Entries: D.m({ wire: "entrySet", shape: D.list({}) }) },
   },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
@@ -44400,10 +46973,14 @@ export const getIpamPrefixListResolverVersions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      IpamPrefixListResolverId: 0,
       IpamPrefixListResolverVersions: D.m({
         wire: "IpamPrefixListResolverVersion",
       }),
+      MaxResults: 0,
       Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      NextToken: 0,
     },
     output: {
       IpamPrefixListResolverVersions: D.m({
@@ -44447,7 +47024,18 @@ export const getIpamResourceCidrs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      DryRun: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      IpamScopeId: 0,
+      IpamPoolId: 0,
+      ResourceId: 0,
+      ResourceType: 0,
+      ResourceTag: i_RequestIpamResourceTag,
+      ResourceOwner: 0,
+    },
     output: {
       IpamResourceCidrs: D.m({
         wire: "ipamResourceCidrSet",
@@ -44484,6 +47072,13 @@ export const getIpamRouteOriginAuthorizations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DryRun: 0,
+      IpamInternetRegistryAssociationId: 0,
+      Cidr: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       IpamRouteOriginAuthorizations: D.m({
         wire: "ipamRouteOriginAuthorizationSet",
@@ -44509,7 +47104,13 @@ export const getIpamRouteProtectionFindings: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      DryRun: 0,
+      IpamId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       RouteProtectionFindings: D.m({
         wire: "routeProtectionFindingSet",
@@ -44550,6 +47151,16 @@ export const getIpamRoutingPolicyRegistrationDeltas: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DryRun: 0,
+      IpamInternetRegistryAssociationId: 0,
+      DeltaId: 0,
+      StartTime: 0,
+      EndTime: 0,
+      ChronologicalOrder: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       IpamRoutingPolicyRegistrationDeltas: D.m({
         wire: "ipamRoutingPolicyRegistrationDeltaSet",
@@ -44575,6 +47186,13 @@ export const getIpamRoutingPolicyRegistrations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DryRun: 0,
+      IpamInternetRegistryAssociationId: 0,
+      Cidr: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       IpamRoutingPolicyRegistrations: D.m({
         wire: "ipamRoutingPolicyRegistrationSet",
@@ -44616,6 +47234,7 @@ export const getLaunchTemplateData: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, InstanceId: 0 },
     output: { LaunchTemplateData: o_ResponseLaunchTemplateData },
   },
   errors: [
@@ -44646,6 +47265,7 @@ export const getManagedPrefixListAssociations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, PrefixListId: 0, MaxResults: 0, NextToken: 0 },
     output: {
       PrefixListAssociations: D.m({
         wire: "prefixListAssociationSet",
@@ -44689,6 +47309,13 @@ export const getManagedPrefixListEntries: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DryRun: 0,
+      PrefixListId: 0,
+      TargetVersion: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { Entries: D.m({ wire: "entrySet", shape: D.list({}) }) },
   },
   errors: [
@@ -44720,7 +47347,11 @@ export const getManagedResourceVisibility: API.OperationMethod<
   GetManagedResourceVisibilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Visibility: {} } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0 },
+    output: { Visibility: {} },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -44744,6 +47375,12 @@ export const getNetworkInsightsAccessScopeAnalysisFindings: API.PaginatedOperati
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NetworkInsightsAccessScopeAnalysisId: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: {
       AnalysisFindings: D.m({
         wire: "analysisFindingSet",
@@ -44784,6 +47421,7 @@ export const getNetworkInsightsAccessScopeContent: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { NetworkInsightsAccessScopeId: 0, DryRun: 0 },
     output: {
       NetworkInsightsAccessScopeContent: o_NetworkInsightsAccessScopeContent,
     },
@@ -44827,6 +47465,7 @@ export const getPasswordData: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { InstanceId: 0, DryRun: 0 },
     output: { Timestamp: D.ts, PasswordData: D.secret },
   },
   errors: [
@@ -44859,8 +47498,12 @@ export const getReservedInstancesExchangeQuote: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       ReservedInstanceIds: D.m({ wire: "ReservedInstanceId" }),
-      TargetConfigurations: D.m({ wire: "TargetConfiguration" }),
+      TargetConfigurations: D.m({
+        wire: "TargetConfiguration",
+        shape: D.list(i_TargetConfigurationRequest),
+      }),
     },
     output: {
       IsValidExchange: D.bool,
@@ -44904,6 +47547,7 @@ export const getRouteServerAssociations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { RouteServerId: 0, DryRun: 0 },
     output: {
       RouteServerAssociations: D.m({
         wire: "routeServerAssociationSet",
@@ -44952,6 +47596,7 @@ export const getRouteServerPropagations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { RouteServerId: 0, RouteTableId: 0, DryRun: 0 },
     output: {
       RouteServerPropagations: D.m({
         wire: "routeServerPropagationSet",
@@ -44998,7 +47643,13 @@ export const getRouteServerRoutingDatabase: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      RouteServerId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      DryRun: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+    },
     output: {
       AreRoutesPersisted: D.bool,
       Routes: D.m({
@@ -45042,7 +47693,13 @@ export const getSecurityGroupsForVpc: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      VpcId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      DryRun: 0,
+    },
     output: {
       SecurityGroupForVpcs: D.m({
         wire: "securityGroupForVpcSet",
@@ -45080,7 +47737,11 @@ export const getSerialConsoleAccessStatus: API.OperationMethod<
   GetSerialConsoleAccessStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { SerialConsoleAccessEnabled: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0 },
+    output: { SerialConsoleAccessEnabled: D.bool },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -45101,7 +47762,7 @@ export const getSnapshotBlockPublicAccessState: API.OperationMethod<
   GetSnapshotBlockPublicAccessStateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -45132,12 +47793,19 @@ export const getSpotPlacementScores: API.PaginatedOperationMethod<
     service: svc,
     input: {
       InstanceTypes: D.m({ wire: "InstanceType" }),
+      TargetCapacity: 0,
+      TargetCapacityUnitType: 0,
+      SingleAvailabilityZone: 0,
       RegionNames: D.m({ wire: "RegionName" }),
       InstanceRequirementsWithMetadata: {
         ArchitectureTypes: D.m({ wire: "ArchitectureType" }),
         VirtualizationTypes: D.m({ wire: "VirtualizationType" }),
         InstanceRequirements: i_InstanceRequirementsRequest,
       },
+      DryRun: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      IncludeLocalZones: 0,
     },
     output: {
       SpotPlacementScores: D.m({
@@ -45175,7 +47843,13 @@ export const getSubnetCidrReservations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      SubnetId: 0,
+      DryRun: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       SubnetIpv4CidrReservations: D.m({
         wire: "subnetIpv4CidrReservationSet",
@@ -45215,7 +47889,13 @@ export const getTransitGatewayAttachmentPropagations: API.PaginatedOperationMeth
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayAttachmentId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: { TransitGatewayAttachmentPropagations: D.list({}) },
   },
   errors: [
@@ -45251,7 +47931,13 @@ export const getTransitGatewayMeteringPolicyEntries: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayMeteringPolicyId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: {
       TransitGatewayMeteringPolicyEntries: D.list(
         o_TransitGatewayMeteringPolicyEntry,
@@ -45288,7 +47974,13 @@ export const getTransitGatewayMulticastDomainAssociations: API.PaginatedOperatio
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayMulticastDomainId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: { MulticastDomainAssociations: D.list({ Subnet: {} }) },
   },
   errors: [
@@ -45327,7 +48019,13 @@ export const getTransitGatewayPolicyTableAssociations: API.PaginatedOperationMet
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayPolicyTableId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: { Associations: D.list({}) },
   },
   errors: [
@@ -45365,7 +48063,13 @@ export const getTransitGatewayPolicyTableEntries: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayPolicyTableId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: {
       TransitGatewayPolicyTableEntries: D.list(
         o_TransitGatewayPolicyTableEntry,
@@ -45407,7 +48111,13 @@ export const getTransitGatewayPrefixListReferences: API.PaginatedOperationMethod
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayRouteTableId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: {
       TransitGatewayPrefixListReferences: D.m({
         wire: "transitGatewayPrefixListReferenceSet",
@@ -45449,7 +48159,13 @@ export const getTransitGatewayRouteTableAssociations: API.PaginatedOperationMeth
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayRouteTableId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: { Associations: D.list({}) },
   },
   errors: [
@@ -45485,7 +48201,13 @@ export const getTransitGatewayRouteTablePropagations: API.PaginatedOperationMeth
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayRouteTableId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: { TransitGatewayRouteTablePropagations: D.list({}) },
   },
   errors: [
@@ -45519,7 +48241,11 @@ export const getVerifiedAccessEndpointPolicy: API.OperationMethod<
   GetVerifiedAccessEndpointPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { PolicyEnabled: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { VerifiedAccessEndpointId: 0, DryRun: 0 },
+    output: { PolicyEnabled: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidParameterValue,
@@ -45547,6 +48273,12 @@ export const getVerifiedAccessEndpointTargets: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      VerifiedAccessEndpointId: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: {
       VerifiedAccessEndpointTargets: D.m({
         wire: "verifiedAccessEndpointTargetSet",
@@ -45578,7 +48310,11 @@ export const getVerifiedAccessGroupPolicy: API.OperationMethod<
   GetVerifiedAccessGroupPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { PolicyEnabled: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { VerifiedAccessGroupId: 0, DryRun: 0 },
+    output: { PolicyEnabled: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidVerifiedAccessGroupIdNotFound,
@@ -45607,6 +48343,7 @@ export const getVpcResourcesBlockingEncryptionEnforcement: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { VpcId: 0, MaxResults: 0, NextToken: 0, DryRun: 0 },
     output: {
       NonCompliantResources: D.m({
         wire: "nonCompliantResourceSet",
@@ -45637,6 +48374,13 @@ export const getVpnConnectionDeviceSampleConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      VpnConnectionId: 0,
+      VpnConnectionDeviceTypeId: 0,
+      InternetKeyExchangeVersion: 0,
+      SampleType: 0,
+      DryRun: 0,
+    },
     output: { VpnConnectionDeviceSampleConfiguration: D.secret },
   },
   errors: [
@@ -45665,6 +48409,7 @@ export const getVpnConnectionDeviceTypes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0, DryRun: 0 },
     output: {
       VpnConnectionDeviceTypes: D.m({
         wire: "vpnConnectionDeviceTypeSet",
@@ -45700,6 +48445,7 @@ export const getVpnTunnelReplacementStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { VpnConnectionId: 0, VpnTunnelOutsideIpAddress: 0, DryRun: 0 },
     output: {
       MaintenanceDetails: {
         MaintenanceAutoAppliedAfter: D.ts,
@@ -45729,7 +48475,11 @@ export const importClientVpnClientCertificateRevocationList: API.OperationMethod
   ImportClientVpnClientCertificateRevocationListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { ClientVpnEndpointId: 0, CertificateRevocationList: 0, DryRun: 0 },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidClientVpnEndpointIdNotFound,
@@ -45771,11 +48521,35 @@ export const importImage: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      DiskContainers: D.m({ wire: "DiskContainer" }),
+      Architecture: 0,
+      ClientData: i_ClientData,
+      ClientToken: 0,
+      Description: 0,
+      DiskContainers: D.m({
+        wire: "DiskContainer",
+        shape: D.list({
+          Description: 0,
+          DeviceName: 0,
+          Format: 0,
+          SnapshotId: 0,
+          Url: 0,
+          UserBucket: i_UserBucket,
+        }),
+      }),
+      DryRun: 0,
+      Encrypted: 0,
+      Hypervisor: 0,
+      KmsKeyId: 0,
+      LicenseType: 0,
+      Platform: 0,
+      RoleName: 0,
+      LicenseSpecifications: D.list({ LicenseConfigurationArn: 0 }),
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      UsageOperation: 0,
+      BootMode: 0,
     },
     output: {
       Encrypted: D.bool,
@@ -45827,11 +48601,30 @@ export const importInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      Description: 0,
       LaunchSpecification: {
+        Architecture: 0,
         GroupNames: D.m({ wire: "GroupName" }),
         GroupIds: D.m({ wire: "GroupId" }),
+        AdditionalInfo: 0,
+        UserData: { Data: 0 },
+        InstanceType: 0,
+        Placement: i_Placement,
+        Monitoring: 0,
+        SubnetId: 0,
+        InstanceInitiatedShutdownBehavior: 0,
+        PrivateIpAddress: 0,
       },
-      DiskImages: D.m({ wire: "DiskImage" }),
+      DiskImages: D.m({
+        wire: "DiskImage",
+        shape: D.list({
+          Description: 0,
+          Image: i_DiskImageDetail,
+          Volume: i_VolumeDetail,
+        }),
+      }),
+      Platform: 0,
     },
     output: { ConversionTask: o_ConversionTask },
   },
@@ -45865,6 +48658,9 @@ export const importKeyPair: API.OperationMethod<
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      DryRun: 0,
+      KeyName: 0,
+      PublicKeyMaterial: 0,
     },
     output: { Tags: D.m({ wire: "tagSet", shape: D.list({}) }) },
   },
@@ -45898,6 +48694,19 @@ export const importSnapshot: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ClientData: i_ClientData,
+      ClientToken: 0,
+      Description: 0,
+      DiskContainer: {
+        Description: 0,
+        Format: 0,
+        Url: 0,
+        UserBucket: i_UserBucket,
+      },
+      DryRun: 0,
+      Encrypted: 0,
+      KmsKeyId: 0,
+      RoleName: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -45932,7 +48741,18 @@ export const importVolume: API.OperationMethod<
   ImportVolumeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ConversionTask: o_ConversionTask } },
+  descriptor: {
+    service: svc,
+    input: {
+      AvailabilityZoneId: 0,
+      DryRun: 0,
+      AvailabilityZone: 0,
+      Image: i_DiskImageDetail,
+      Description: 0,
+      Volume: i_VolumeDetail,
+    },
+    output: { ConversionTask: o_ConversionTask },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -45958,7 +48778,12 @@ export const listImagesInRecycleBin: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { ImageIds: D.m({ wire: "ImageId" }) },
+    input: {
+      ImageIds: D.m({ wire: "ImageId" }),
+      NextToken: 0,
+      MaxResults: 0,
+      DryRun: 0,
+    },
     output: {
       Images: D.m({
         wire: "imageSet",
@@ -45995,7 +48820,12 @@ export const listSnapshotsInRecycleBin: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { SnapshotIds: D.m({ wire: "SnapshotId" }) },
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      SnapshotIds: D.m({ wire: "SnapshotId" }),
+      DryRun: 0,
+    },
     output: {
       Snapshots: D.m({
         wire: "snapshotSet",
@@ -46035,7 +48865,12 @@ export const listVolumesInRecycleBin: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { VolumeIds: D.m({ wire: "VolumeId" }) },
+    input: {
+      VolumeIds: D.m({ wire: "VolumeId" }),
+      DryRun: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       Volumes: D.m({
         wire: "volumeSet",
@@ -46091,6 +48926,14 @@ export const lockSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      SnapshotId: 0,
+      DryRun: 0,
+      LockMode: 0,
+      CoolOffPeriod: 0,
+      LockDuration: 0,
+      ExpirationDate: 0,
+    },
     output: {
       LockDuration: D.num,
       CoolOffPeriod: D.num,
@@ -46120,6 +48963,18 @@ export const modifyAccountVpcEncryptionControl: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DryRun: 0,
+      Mode: 0,
+      InternetGateway: 0,
+      EgressOnlyInternetGateway: 0,
+      NatGateway: 0,
+      VirtualPrivateGateway: 0,
+      VpcPeering: 0,
+      Lambda: 0,
+      VpcLattice: 0,
+      ElasticFileSystem: 0,
+    },
     output: { AccountVpcEncryptionControl: o_AccountVpcEncryptionControl },
   },
   errors: [],
@@ -46143,7 +48998,11 @@ export const modifyAddressAttribute: API.OperationMethod<
   ModifyAddressAttributeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Address: o_AddressAttribute } },
+  descriptor: {
+    service: svc,
+    input: { AllocationId: 0, DomainName: 0, DryRun: 0 },
+    output: { Address: o_AddressAttribute },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidAllocationIDNotFound,
@@ -46172,11 +49031,26 @@ export const modifyApplicationStatusCheck: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ApplicationStatusCheckId: 0,
+      Aggregation: 0,
       HealthCheckPaths: D.m({
         wire: "HealthCheckPath",
         shape: D.list(i_HealthCheckPathRequestObject),
       }),
+      Protocol: 0,
+      Port: 0,
+      Path: 0,
+      DeviceIndex: 0,
+      IpVersion: 0,
+      IpScope: 0,
+      Interval: 0,
+      Timeout: 0,
+      FailureThreshold: 0,
+      SuccessThreshold: 0,
+      StatusCodeMatcher: 0,
+      InitializationGracePeriodSeconds: 0,
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
     },
     output: { ApplicationStatusCheck: o_ApplicationStatusCheckResponseObject },
   },
@@ -46200,7 +49074,11 @@ export const modifyAvailabilityZoneGroup: API.OperationMethod<
   ModifyAvailabilityZoneGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { GroupName: 0, OptInStatus: 0, DryRun: 0 },
+    output: { Return: D.bool },
+  },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -46246,7 +49124,20 @@ export const modifyCapacityReservation: API.OperationMethod<
   ModifyCapacityReservationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: {
+      CapacityReservationId: 0,
+      InstanceCount: 0,
+      EndDate: 0,
+      EndDateType: 0,
+      Accept: 0,
+      DryRun: 0,
+      AdditionalInfo: 0,
+      InstanceMatchCriteria: 0,
+    },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidCapacityReservationIdMalformed,
@@ -46277,7 +49168,17 @@ export const modifyCapacityReservationFleet: API.OperationMethod<
   ModifyCapacityReservationFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: {
+      CapacityReservationFleetId: 0,
+      TotalTargetCapacity: 0,
+      EndDate: 0,
+      DryRun: 0,
+      RemoveEndDate: 0,
+    },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidCapacityReservationFleetIdMalformed,
@@ -46307,7 +49208,22 @@ export const modifyClientVpnEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ClientVpnEndpointId: 0,
+      ServerCertificateArn: 0,
+      ConnectionLogOptions: i_ConnectionLogOptions,
+      DnsServers: { CustomDnsServers: 0, Enabled: 0 },
+      VpnPort: 0,
+      Description: 0,
+      SplitTunnel: 0,
+      DryRun: 0,
       SecurityGroupIds: D.m({ wire: "SecurityGroupId" }),
+      VpcId: 0,
+      SelfServicePortal: 0,
+      ClientConnectOptions: i_ClientConnectOptions,
+      SessionTimeoutHours: 0,
+      ClientLoginBannerOptions: i_ClientLoginBannerOptions,
+      ClientRouteEnforcementOptions: i_ClientRouteEnforcementOptions,
+      DisconnectOnSessionTimeout: 0,
       TransitGatewayConfiguration: i_TransitGatewayConfigurationInputStructure,
     },
     output: { Return: D.bool },
@@ -46354,6 +49270,7 @@ export const modifyDefaultCreditSpecification: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, InstanceFamily: 0, CpuCredits: 0 },
     output: { InstanceFamilyCreditSpecification: {} },
   },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
@@ -46386,7 +49303,7 @@ export const modifyEbsDefaultKmsKeyId: API.OperationMethod<
   ModifyEbsDefaultKmsKeyIdError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { KmsKeyId: 0, DryRun: 0 } },
   errors: [RequestLimitExceeded, InvalidParameterValue, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -46436,10 +49353,15 @@ export const modifyFleet: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      ExcessCapacityTerminationPolicy: 0,
       LaunchTemplateConfigs: D.m({
         wire: "LaunchTemplateConfig",
         shape: D.list(i_FleetLaunchTemplateConfigRequest),
       }),
+      FleetId: 0,
+      TargetCapacitySpecification: i_TargetCapacitySpecificationRequest,
+      Context: 0,
     },
     output: { Return: D.bool },
   },
@@ -46471,9 +49393,19 @@ export const modifyFpgaImageAttribute: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      FpgaImageId: 0,
+      Attribute: 0,
+      OperationType: 0,
       UserIds: D.m({ wire: "UserId" }),
       UserGroups: D.m({ wire: "UserGroup" }),
       ProductCodes: D.m({ wire: "ProductCode" }),
+      LoadPermission: {
+        Add: D.list(i_LoadPermissionRequest),
+        Remove: D.list(i_LoadPermissionRequest),
+      },
+      Description: 0,
+      Name: 0,
     },
     output: { FpgaImageAttribute: o_FpgaImageAttribute },
   },
@@ -46509,7 +49441,14 @@ export const modifyHosts: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { HostIds: D.m({ wire: "HostId" }) },
+    input: {
+      HostRecovery: 0,
+      InstanceType: 0,
+      InstanceFamily: 0,
+      HostMaintenance: 0,
+      HostIds: D.m({ wire: "HostId" }),
+      AutoPlacement: 0,
+    },
     output: { Successful: D.list(), Unsuccessful: D.list(o_UnsuccessfulItem) },
   },
   errors: [],
@@ -46553,7 +49492,10 @@ export const modifyIdentityIdFormat: API.OperationMethod<
   ModifyIdentityIdFormatError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Resource: 0, UseLongIds: 0, PrincipalArn: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -46596,7 +49538,7 @@ export const modifyIdFormat: API.OperationMethod<
   ModifyIdFormatError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Resource: 0, UseLongIds: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -46632,11 +49574,22 @@ export const modifyImageAttribute: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Attribute: 0,
+      Description: i_AttributeValue,
+      ImageId: 0,
+      LaunchPermission: {
+        Add: D.list(i_LaunchPermission),
+        Remove: D.list(i_LaunchPermission),
+      },
+      OperationType: 0,
       ProductCodes: D.m({ wire: "ProductCode" }),
       UserGroups: D.m({ wire: "UserGroup" }),
       UserIds: D.m({ wire: "UserId" }),
+      Value: 0,
       OrganizationArns: D.m({ wire: "OrganizationArn" }),
       OrganizationalUnitArns: D.m({ wire: "OrganizationalUnitArn" }),
+      ImdsSupport: i_AttributeValue,
+      DryRun: 0,
     },
   },
   errors: [
@@ -46680,8 +49633,32 @@ export const modifyInstanceAttribute: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      BlockDeviceMappings: D.m({ wire: "BlockDeviceMapping" }),
+      SourceDestCheck: i_AttributeBooleanValue,
+      EnclaveOptions: i_EnclaveOptionsRequest,
+      DisableApiStop: i_AttributeBooleanValue,
+      DryRun: 0,
+      InstanceId: 0,
+      Attribute: 0,
+      Value: 0,
+      BlockDeviceMappings: D.m({
+        wire: "BlockDeviceMapping",
+        shape: D.list({
+          DeviceName: 0,
+          Ebs: { VolumeId: 0, DeleteOnTermination: 0 },
+          VirtualName: 0,
+          NoDevice: 0,
+        }),
+      }),
+      DisableApiTermination: i_AttributeBooleanValue,
+      InstanceType: i_AttributeValue,
+      Kernel: i_AttributeValue,
+      Ramdisk: i_AttributeValue,
+      UserData: { Value: 0 },
+      InstanceInitiatedShutdownBehavior: i_AttributeValue,
       Groups: D.m({ wire: "GroupId" }),
+      EbsOptimized: i_AttributeBooleanValue,
+      SriovNetSupport: i_AttributeValue,
+      EnaSupport: i_AttributeBooleanValue,
     },
   },
   errors: [
@@ -46712,7 +49689,15 @@ export const modifyInstanceCapacityReservationAttributes: API.OperationMethod<
   ModifyInstanceCapacityReservationAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceId: 0,
+      CapacityReservationSpecification: i_CapacityReservationSpecification,
+      DryRun: 0,
+    },
+    output: { Return: D.bool },
+  },
   errors: [RequestLimitExceeded, InvalidParameterValue, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -46740,7 +49725,13 @@ export const modifyInstanceConnectEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { SecurityGroupIds: D.m({ wire: "SecurityGroupId" }) },
+    input: {
+      DryRun: 0,
+      InstanceConnectEndpointId: 0,
+      IpAddressType: 0,
+      SecurityGroupIds: D.m({ wire: "SecurityGroupId" }),
+      PreserveClientIp: 0,
+    },
     output: { Return: D.bool },
   },
   errors: [
@@ -46779,6 +49770,13 @@ export const modifyInstanceCpuOptions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      InstanceId: 0,
+      CoreCount: 0,
+      ThreadsPerCore: 0,
+      NestedVirtualization: 0,
+      DryRun: 0,
+    },
     output: { CoreCount: D.num, ThreadsPerCore: D.num },
   },
   errors: [
@@ -46809,8 +49807,11 @@ export const modifyInstanceCreditSpecification: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      ClientToken: 0,
       InstanceCreditSpecifications: D.m({
         wire: "InstanceCreditSpecification",
+        shape: D.list({ InstanceId: 0, CpuCredits: 0 }),
       }),
     },
     output: {
@@ -46844,7 +49845,11 @@ export const modifyInstanceEventStartTime: API.OperationMethod<
   ModifyInstanceEventStartTimeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Event: o_InstanceStatusEvent } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, InstanceId: 0, InstanceEventId: 0, NotBefore: 0 },
+    output: { Event: o_InstanceStatusEvent },
+  },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -46879,7 +49884,16 @@ export const modifyInstanceEventWindow: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TimeRanges: D.m({ wire: "TimeRange" }) },
+    input: {
+      DryRun: 0,
+      Name: 0,
+      InstanceEventWindowId: 0,
+      TimeRanges: D.m({
+        wire: "TimeRange",
+        shape: D.list(i_InstanceEventWindowTimeRangeRequest),
+      }),
+      CronExpression: 0,
+    },
     output: { InstanceEventWindow: o_InstanceEventWindow },
   },
   errors: [
@@ -46913,7 +49927,10 @@ export const modifyInstanceMaintenanceOptions: API.OperationMethod<
   ModifyInstanceMaintenanceOptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceId: 0, AutoRecovery: 0, RebootMigration: 0, DryRun: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidInstanceIDMalformed,
@@ -46946,7 +49963,18 @@ export const modifyInstanceMetadataDefaults: API.OperationMethod<
   ModifyInstanceMetadataDefaultsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: {
+      HttpTokens: 0,
+      HttpPutResponseHopLimit: 0,
+      HttpEndpoint: 0,
+      InstanceMetadataTags: 0,
+      DryRun: 0,
+      HttpTokensEnforced: 0,
+    },
+    output: { Return: D.bool },
+  },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -46975,6 +50003,15 @@ export const modifyInstanceMetadataOptions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      InstanceId: 0,
+      HttpTokens: 0,
+      HttpPutResponseHopLimit: 0,
+      HttpEndpoint: 0,
+      DryRun: 0,
+      HttpProtocolIpv6: 0,
+      InstanceMetadataTags: 0,
+    },
     output: { InstanceMetadataOptions: o_InstanceMetadataOptionsResponse },
   },
   errors: [
@@ -47002,7 +50039,10 @@ export const modifyInstanceNetworkPerformanceOptions: API.OperationMethod<
   ModifyInstanceNetworkPerformanceOptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceId: 0, BandwidthWeighting: 0, DryRun: 0 },
+  },
   errors: [RequestLimitExceeded, InvalidAction, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -47044,7 +50084,20 @@ export const modifyInstancePlacement: API.OperationMethod<
   ModifyInstancePlacementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: {
+      GroupName: 0,
+      PartitionNumber: 0,
+      HostResourceGroupArn: 0,
+      GroupId: 0,
+      InstanceId: 0,
+      Tenancy: 0,
+      Affinity: 0,
+      HostId: 0,
+    },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidInstanceIDMalformed,
@@ -47072,8 +50125,20 @@ export const modifyIpam: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      AddOperatingRegions: D.m({ wire: "AddOperatingRegion" }),
-      RemoveOperatingRegions: D.m({ wire: "RemoveOperatingRegion" }),
+      DryRun: 0,
+      IpamId: 0,
+      Description: 0,
+      AddOperatingRegions: D.m({
+        wire: "AddOperatingRegion",
+        shape: D.list(i_AddIpamOperatingRegion),
+      }),
+      RemoveOperatingRegions: D.m({
+        wire: "RemoveOperatingRegion",
+        shape: D.list(i_RemoveIpamOperatingRegion),
+      }),
+      Tier: 0,
+      EnablePrivateGua: 0,
+      MeteredAccount: 0,
     },
     output: { Ipam: o_Ipam },
   },
@@ -47107,7 +50172,16 @@ export const modifyIpamPolicyAllocationRules: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { AllocationRules: D.m({ wire: "AllocationRule" }) },
+    input: {
+      DryRun: 0,
+      IpamPolicyId: 0,
+      Locale: 0,
+      ResourceType: 0,
+      AllocationRules: D.m({
+        wire: "AllocationRule",
+        shape: D.list({ SourceIpamPoolId: 0 }),
+      }),
+    },
     output: { IpamPolicyDocument: o_IpamPolicyDocument },
   },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
@@ -47135,9 +50209,21 @@ export const modifyIpamPool: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      AddAllocationResourceTags: D.m({ wire: "AddAllocationResourceTag" }),
+      DryRun: 0,
+      IpamPoolId: 0,
+      Description: 0,
+      AutoImport: 0,
+      AllocationMinNetmaskLength: 0,
+      AllocationMaxNetmaskLength: 0,
+      AllocationDefaultNetmaskLength: 0,
+      ClearAllocationDefaultNetmaskLength: 0,
+      AddAllocationResourceTags: D.m({
+        wire: "AddAllocationResourceTag",
+        shape: D.list(i_RequestIpamResourceTag),
+      }),
       RemoveAllocationResourceTags: D.m({
         wire: "RemoveAllocationResourceTag",
+        shape: D.list(i_RequestIpamResourceTag),
       }),
     },
     output: { IpamPool: o_IpamPool },
@@ -47164,6 +50250,7 @@ export const modifyIpamPoolAllocation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, IpamPoolAllocationId: 0, Description: 0 },
     output: { IpamPoolAllocation: o_IpamPoolAllocation },
   },
   errors: [],
@@ -47190,6 +50277,9 @@ export const modifyIpamPrefixListResolver: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      IpamPrefixListResolverId: 0,
+      Description: 0,
       Rules: D.m({
         wire: "Rule",
         shape: D.list(i_IpamPrefixListResolverRuleRequest),
@@ -47224,7 +50314,13 @@ export const modifyIpamPrefixListResolverTarget: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      DryRun: 0,
+      IpamPrefixListResolverTargetId: 0,
+      DesiredVersion: 0,
+      TrackLatestVersion: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { IpamPrefixListResolverTarget: o_IpamPrefixListResolverTarget },
   },
   errors: [
@@ -47256,6 +50352,15 @@ export const modifyIpamResourceCidr: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DryRun: 0,
+      ResourceId: 0,
+      ResourceCidr: 0,
+      ResourceRegion: 0,
+      CurrentIpamScopeId: 0,
+      DestinationIpamScopeId: 0,
+      Monitored: 0,
+    },
     output: { IpamResourceCidr: o_IpamResourceCidr },
   },
   errors: [
@@ -47287,13 +50392,24 @@ export const modifyIpamResourceDiscovery: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      AddOperatingRegions: D.m({ wire: "AddOperatingRegion" }),
-      RemoveOperatingRegions: D.m({ wire: "RemoveOperatingRegion" }),
+      DryRun: 0,
+      IpamResourceDiscoveryId: 0,
+      Description: 0,
+      AddOperatingRegions: D.m({
+        wire: "AddOperatingRegion",
+        shape: D.list(i_AddIpamOperatingRegion),
+      }),
+      RemoveOperatingRegions: D.m({
+        wire: "RemoveOperatingRegion",
+        shape: D.list(i_RemoveIpamOperatingRegion),
+      }),
       AddOrganizationalUnitExclusions: D.m({
         wire: "AddOrganizationalUnitExclusion",
+        shape: D.list({ OrganizationsEntityPath: 0 }),
       }),
       RemoveOrganizationalUnitExclusions: D.m({
         wire: "RemoveOrganizationalUnitExclusion",
+        shape: D.list({ OrganizationsEntityPath: 0 }),
       }),
     },
     output: { IpamResourceDiscovery: o_IpamResourceDiscovery },
@@ -47322,7 +50438,14 @@ export const modifyIpamRoutingPolicyRegistration: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      IpamInternetRegistryAssociationId: 0,
+      Cidr: 0,
       Asns: D.m({ wire: "Asn" }),
+      PermitMoreSpecificAnnouncements: 0,
+      MaxLength: 0,
+      Description: 0,
+      Force: 0,
       ClientToken: D.m({ idempotency: true }),
     },
     output: { IpamRoutingPolicyRegistrationDelta: {} },
@@ -47347,7 +50470,17 @@ export const modifyIpamScope: API.OperationMethod<
   ModifyIpamScopeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { IpamScope: o_IpamScope } },
+  descriptor: {
+    service: svc,
+    input: {
+      DryRun: 0,
+      IpamScopeId: 0,
+      Description: 0,
+      ExternalAuthorityConfiguration: i_ExternalAuthorityConfiguration,
+      RemoveExternalAuthorityConfiguration: 0,
+    },
+    output: { IpamScope: o_IpamScope },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidParameterCombination,
@@ -47377,7 +50510,10 @@ export const modifyLaunchTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       ClientToken: D.m({ idempotency: true }),
+      LaunchTemplateId: 0,
+      LaunchTemplateName: 0,
       DefaultVersion: D.m({ wire: "SetDefaultVersion" }),
     },
     output: { LaunchTemplate: o_LaunchTemplate },
@@ -47402,7 +50538,18 @@ export const modifyLocalGatewayRoute: API.OperationMethod<
   ModifyLocalGatewayRouteError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Route: {} } },
+  descriptor: {
+    service: svc,
+    input: {
+      DestinationCidrBlock: 0,
+      LocalGatewayRouteTableId: 0,
+      LocalGatewayVirtualInterfaceGroupId: 0,
+      NetworkInterfaceId: 0,
+      DryRun: 0,
+      DestinationPrefixListId: 0,
+    },
+    output: { Route: {} },
+  },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -47434,8 +50581,17 @@ export const modifyManagedPrefixList: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      AddEntries: D.m({ wire: "AddEntry" }),
-      RemoveEntries: D.m({ wire: "RemoveEntry" }),
+      DryRun: 0,
+      PrefixListId: 0,
+      CurrentVersion: 0,
+      PrefixListName: 0,
+      AddEntries: D.m({
+        wire: "AddEntry",
+        shape: D.list(i_AddPrefixListEntry),
+      }),
+      RemoveEntries: D.m({ wire: "RemoveEntry", shape: D.list({ Cidr: 0 }) }),
+      MaxEntries: 0,
+      IpamPrefixListResolverSyncEnabled: 0,
     },
     output: { PrefixList: o_ManagedPrefixList },
   },
@@ -47464,7 +50620,11 @@ export const modifyManagedResourceVisibility: API.OperationMethod<
   ModifyManagedResourceVisibilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Visibility: {} } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, DefaultVisibility: 0 },
+    output: { Visibility: {} },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -47492,8 +50652,22 @@ export const modifyNetworkInterfaceAttribute: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      EnaSrdSpecification: i_EnaSrdSpecification,
+      EnablePrimaryIpv6: 0,
+      ConnectionTrackingSpecification: i_ConnectionTrackingSpecificationRequest,
+      AssociatePublicIpAddress: 0,
       AssociatedSubnetIds: D.m({ wire: "AssociatedSubnetId" }),
+      DryRun: 0,
+      NetworkInterfaceId: 0,
+      Description: i_AttributeValue,
+      SourceDestCheck: i_AttributeBooleanValue,
       Groups: D.m({ wire: "SecurityGroupId" }),
+      Attachment: {
+        DefaultEnaQueueCount: 0,
+        EnaQueueCount: 0,
+        AttachmentId: 0,
+        DeleteOnTermination: 0,
+      },
     },
   },
   errors: [
@@ -47522,7 +50696,17 @@ export const modifyPrivateDnsNameOptions: API.OperationMethod<
   ModifyPrivateDnsNameOptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: {
+      DryRun: 0,
+      InstanceId: 0,
+      PrivateDnsHostnameType: 0,
+      EnableResourceNameDnsARecord: 0,
+      EnableResourceNameDnsAAAARecord: 0,
+    },
+    output: { Return: D.bool },
+  },
   errors: [RequestLimitExceeded, UnknownResource, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -47543,7 +50727,11 @@ export const modifyPublicIpDnsNameOptions: API.OperationMethod<
   ModifyPublicIpDnsNameOptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Successful: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { NetworkInterfaceId: 0, HostnameType: 0, DryRun: 0 },
+    output: { Successful: D.bool },
+  },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -47573,8 +50761,17 @@ export const modifyReservedInstances: API.OperationMethod<
     service: svc,
     input: {
       ReservedInstancesIds: D.m({ wire: "ReservedInstancesId" }),
+      ClientToken: 0,
       TargetConfigurations: D.m({
         wire: "ReservedInstancesConfigurationSetItemType",
+        shape: D.list({
+          AvailabilityZone: 0,
+          InstanceCount: 0,
+          InstanceType: 0,
+          Platform: 0,
+          Scope: 0,
+          AvailabilityZoneId: 0,
+        }),
       }),
     },
   },
@@ -47613,7 +50810,17 @@ export const modifyRouteServer: API.OperationMethod<
   ModifyRouteServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { RouteServer: o_RouteServer } },
+  descriptor: {
+    service: svc,
+    input: {
+      RouteServerId: 0,
+      PersistRoutes: 0,
+      PersistRoutesDuration: 0,
+      SnsNotificationsEnabled: 0,
+      DryRun: 0,
+    },
+    output: { RouteServer: o_RouteServer },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidRouteServerIdNotFound,
@@ -47642,7 +50849,26 @@ export const modifySecurityGroupRules: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { SecurityGroupRules: D.m({ wire: "SecurityGroupRule" }) },
+    input: {
+      GroupId: 0,
+      SecurityGroupRules: D.m({
+        wire: "SecurityGroupRule",
+        shape: D.list({
+          SecurityGroupRuleId: 0,
+          SecurityGroupRule: {
+            IpProtocol: 0,
+            FromPort: 0,
+            ToPort: 0,
+            CidrIpv4: 0,
+            CidrIpv6: 0,
+            PrefixListId: 0,
+            ReferencedGroupId: 0,
+            Description: 0,
+          },
+        }),
+      }),
+      DryRun: 0,
+    },
     output: { Return: D.bool },
   },
   errors: [
@@ -47684,8 +50910,16 @@ export const modifySnapshotAttribute: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Attribute: 0,
+      CreateVolumePermission: {
+        Add: D.list(i_CreateVolumePermission),
+        Remove: D.list(i_CreateVolumePermission),
+      },
       GroupNames: D.m({ wire: "UserGroup" }),
+      OperationType: 0,
+      SnapshotId: 0,
       UserIds: D.m({ wire: "UserId" }),
+      DryRun: 0,
     },
   },
   errors: [
@@ -47717,7 +50951,11 @@ export const modifySnapshotTier: API.OperationMethod<
   ModifySnapshotTierError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { TieringStartTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { SnapshotId: 0, StorageTier: 0, DryRun: 0 },
+    output: { TieringStartTime: D.ts },
+  },
   errors: [RequestLimitExceeded, InvalidParameterValue, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -47774,6 +51012,11 @@ export const modifySpotFleetRequest: API.OperationMethod<
         wire: "LaunchTemplateConfig",
         shape: D.list(i_LaunchTemplateConfig),
       }),
+      OnDemandTargetCapacity: 0,
+      Context: 0,
+      SpotFleetRequestId: 0,
+      TargetCapacity: 0,
+      ExcessCapacityTerminationPolicy: 0,
     },
     output: { Return: D.bool },
   },
@@ -47815,7 +51058,22 @@ export const modifySubnetAttribute: API.OperationMethod<
   ModifySubnetAttributeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AssignIpv6AddressOnCreation: i_AttributeBooleanValue,
+      MapPublicIpOnLaunch: i_AttributeBooleanValue,
+      SubnetId: 0,
+      MapCustomerOwnedIpOnLaunch: i_AttributeBooleanValue,
+      CustomerOwnedIpv4Pool: 0,
+      EnableDns64: i_AttributeBooleanValue,
+      PrivateDnsHostnameTypeOnLaunch: 0,
+      EnableResourceNameDnsARecordOnLaunch: i_AttributeBooleanValue,
+      EnableResourceNameDnsAAAARecordOnLaunch: i_AttributeBooleanValue,
+      EnableLniAtDeviceIndex: 0,
+      DisableLniAtDeviceIndex: i_AttributeBooleanValue,
+    },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidSubnetIDNotFound,
@@ -47847,8 +51105,10 @@ export const modifyTrafficMirrorFilterNetworkServices: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      TrafficMirrorFilterId: 0,
       AddNetworkServices: D.m({ wire: "AddNetworkService" }),
       RemoveNetworkServices: D.m({ wire: "RemoveNetworkService" }),
+      DryRun: 0,
     },
     output: { TrafficMirrorFilter: o_TrafficMirrorFilter },
   },
@@ -47878,7 +51138,20 @@ export const modifyTrafficMirrorFilterRule: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { RemoveFields: D.m({ wire: "RemoveField" }) },
+    input: {
+      TrafficMirrorFilterRuleId: 0,
+      TrafficDirection: 0,
+      RuleNumber: 0,
+      RuleAction: 0,
+      DestinationPortRange: i_TrafficMirrorPortRangeRequest,
+      SourcePortRange: i_TrafficMirrorPortRangeRequest,
+      Protocol: 0,
+      DestinationCidrBlock: 0,
+      SourceCidrBlock: 0,
+      Description: 0,
+      RemoveFields: D.m({ wire: "RemoveField" }),
+      DryRun: 0,
+    },
     output: { TrafficMirrorFilterRule: o_TrafficMirrorFilterRule },
   },
   errors: [
@@ -47908,7 +51181,17 @@ export const modifyTrafficMirrorSession: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { RemoveFields: D.m({ wire: "RemoveField" }) },
+    input: {
+      TrafficMirrorSessionId: 0,
+      TrafficMirrorTargetId: 0,
+      TrafficMirrorFilterId: 0,
+      PacketLength: 0,
+      SessionNumber: 0,
+      VirtualNetworkId: 0,
+      Description: 0,
+      RemoveFields: D.m({ wire: "RemoveField" }),
+      DryRun: 0,
+    },
     output: { TrafficMirrorSession: o_TrafficMirrorSession },
   },
   errors: [RequestLimitExceeded, InvalidParameterValue, UnauthorizedOperation],
@@ -47931,7 +51214,29 @@ export const modifyTransitGateway: API.OperationMethod<
   ModifyTransitGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { TransitGateway: o_TransitGateway } },
+  descriptor: {
+    service: svc,
+    input: {
+      TransitGatewayId: 0,
+      Description: 0,
+      Options: {
+        AddTransitGatewayCidrBlocks: 0,
+        RemoveTransitGatewayCidrBlocks: 0,
+        VpnEcmpSupport: 0,
+        DnsSupport: 0,
+        SecurityGroupReferencingSupport: 0,
+        AutoAcceptSharedAttachments: 0,
+        DefaultRouteTableAssociation: 0,
+        AssociationDefaultRouteTableId: 0,
+        DefaultRouteTablePropagation: 0,
+        PropagationDefaultRouteTableId: 0,
+        AmazonSideAsn: 0,
+        EncryptionSupport: 0,
+      },
+      DryRun: 0,
+    },
+    output: { TransitGateway: o_TransitGateway },
+  },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -47956,10 +51261,12 @@ export const modifyTransitGatewayMeteringPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      TransitGatewayMeteringPolicyId: 0,
       AddMiddleboxAttachmentIds: D.m({ wire: "AddMiddleboxAttachmentId" }),
       RemoveMiddleboxAttachmentIds: D.m({
         wire: "RemoveMiddleboxAttachmentId",
       }),
+      DryRun: 0,
     },
     output: { TransitGatewayMeteringPolicy: o_TransitGatewayMeteringPolicy },
   },
@@ -47986,6 +51293,13 @@ export const modifyTransitGatewayPolicyTableEntry: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TransitGatewayPolicyTableId: 0,
+      PolicyRuleNumber: 0,
+      PolicyRule: i_TransitGatewayRequestPolicyRule,
+      TargetRouteTableId: 0,
+      DryRun: 0,
+    },
     output: {
       TransitGatewayPolicyTableEntry: o_TransitGatewayPolicyTableEntry,
     },
@@ -48012,6 +51326,13 @@ export const modifyTransitGatewayPrefixListReference: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TransitGatewayRouteTableId: 0,
+      PrefixListId: 0,
+      TransitGatewayAttachmentId: 0,
+      Blackhole: 0,
+      DryRun: 0,
+    },
     output: {
       TransitGatewayPrefixListReference: o_TransitGatewayPrefixListReference,
     },
@@ -48038,6 +51359,18 @@ export const modifyTransitGatewayVpcAttachment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TransitGatewayAttachmentId: 0,
+      AddSubnetIds: 0,
+      RemoveSubnetIds: 0,
+      Options: {
+        DnsSupport: 0,
+        SecurityGroupReferencingSupport: 0,
+        Ipv6Support: 0,
+        ApplianceModeSupport: 0,
+      },
+      DryRun: 0,
+    },
     output: { TransitGatewayVpcAttachment: o_TransitGatewayVpcAttachment },
   },
   errors: [
@@ -48068,14 +51401,39 @@ export const modifyVerifiedAccessEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      VerifiedAccessEndpointId: 0,
+      VerifiedAccessGroupId: 0,
       LoadBalancerOptions: {
         SubnetIds: D.m({ wire: "SubnetId" }),
-        PortRanges: D.m({ wire: "PortRange" }),
+        Protocol: 0,
+        Port: 0,
+        PortRanges: D.m({
+          wire: "PortRange",
+          shape: D.list(i_ModifyVerifiedAccessEndpointPortRange),
+        }),
       },
-      NetworkInterfaceOptions: { PortRanges: D.m({ wire: "PortRange" }) },
+      NetworkInterfaceOptions: {
+        Protocol: 0,
+        Port: 0,
+        PortRanges: D.m({
+          wire: "PortRange",
+          shape: D.list(i_ModifyVerifiedAccessEndpointPortRange),
+        }),
+      },
+      Description: 0,
       ClientToken: D.m({ idempotency: true }),
-      RdsOptions: { SubnetIds: D.m({ wire: "SubnetId" }) },
-      CidrOptions: { PortRanges: D.m({ wire: "PortRange" }) },
+      DryRun: 0,
+      RdsOptions: {
+        SubnetIds: D.m({ wire: "SubnetId" }),
+        Port: 0,
+        RdsEndpoint: 0,
+      },
+      CidrOptions: {
+        PortRanges: D.m({
+          wire: "PortRange",
+          shape: D.list(i_ModifyVerifiedAccessEndpointPortRange),
+        }),
+      },
     },
     output: { VerifiedAccessEndpoint: o_VerifiedAccessEndpoint },
   },
@@ -48107,7 +51465,14 @@ export const modifyVerifiedAccessEndpointPolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      VerifiedAccessEndpointId: 0,
+      PolicyEnabled: 0,
+      PolicyDocument: 0,
+      ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+      SseSpecification: i_VerifiedAccessSseSpecificationRequest,
+    },
     output: {
       PolicyEnabled: D.bool,
       SseSpecification: o_VerifiedAccessSseSpecificationResponse,
@@ -48140,7 +51505,13 @@ export const modifyVerifiedAccessGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      VerifiedAccessGroupId: 0,
+      VerifiedAccessInstanceId: 0,
+      Description: 0,
+      ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+    },
     output: { VerifiedAccessGroup: o_VerifiedAccessGroup },
   },
   errors: [
@@ -48169,7 +51540,14 @@ export const modifyVerifiedAccessGroupPolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      VerifiedAccessGroupId: 0,
+      PolicyEnabled: 0,
+      PolicyDocument: 0,
+      ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+      SseSpecification: i_VerifiedAccessSseSpecificationRequest,
+    },
     output: {
       PolicyEnabled: D.bool,
       SseSpecification: o_VerifiedAccessSseSpecificationResponse,
@@ -48201,7 +51579,13 @@ export const modifyVerifiedAccessInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      VerifiedAccessInstanceId: 0,
+      Description: 0,
+      DryRun: 0,
+      ClientToken: D.m({ idempotency: true }),
+      CidrEndpointsCustomSubDomain: 0,
+    },
     output: { VerifiedAccessInstance: o_VerifiedAccessInstance },
   },
   errors: [
@@ -48230,7 +51614,18 @@ export const modifyVerifiedAccessInstanceLoggingConfiguration: API.OperationMeth
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      VerifiedAccessInstanceId: 0,
+      AccessLogs: {
+        S3: { Enabled: 0, BucketName: 0, Prefix: 0, BucketOwner: 0 },
+        CloudWatchLogs: { Enabled: 0, LogGroup: 0 },
+        KinesisDataFirehose: { Enabled: 0, DeliveryStream: 0 },
+        LogVersion: 0,
+        IncludeTrustContext: 0,
+      },
+      DryRun: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: {
       LoggingConfiguration: o_VerifiedAccessInstanceLoggingConfiguration,
     },
@@ -48257,7 +51652,33 @@ export const modifyVerifiedAccessTrustProvider: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      VerifiedAccessTrustProviderId: 0,
+      OidcOptions: {
+        Issuer: 0,
+        AuthorizationEndpoint: 0,
+        TokenEndpoint: 0,
+        UserInfoEndpoint: 0,
+        ClientId: 0,
+        ClientSecret: 0,
+        Scope: 0,
+      },
+      DeviceOptions: { PublicSigningKeyUrl: 0 },
+      Description: 0,
+      DryRun: 0,
+      ClientToken: D.m({ idempotency: true }),
+      SseSpecification: i_VerifiedAccessSseSpecificationRequest,
+      NativeApplicationOidcOptions: {
+        PublicSigningKeyEndpoint: 0,
+        Issuer: 0,
+        AuthorizationEndpoint: 0,
+        TokenEndpoint: 0,
+        UserInfoEndpoint: 0,
+        ClientId: 0,
+        ClientSecret: 0,
+        Scope: 0,
+      },
+    },
     output: { VerifiedAccessTrustProvider: o_VerifiedAccessTrustProvider },
   },
   errors: [
@@ -48307,6 +51728,15 @@ export const modifyVolume: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DryRun: 0,
+      VolumeId: 0,
+      Size: 0,
+      VolumeType: 0,
+      Iops: 0,
+      Throughput: 0,
+      MultiAttachEnabled: 0,
+    },
     output: { VolumeModification: o_VolumeModification },
   },
   errors: [
@@ -48344,7 +51774,10 @@ export const modifyVolumeAttribute: API.OperationMethod<
   ModifyVolumeAttributeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AutoEnableIO: i_AttributeBooleanValue, VolumeId: 0, DryRun: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidVolumeNotFound,
@@ -48371,7 +51804,15 @@ export const modifyVpcAttribute: API.OperationMethod<
   ModifyVpcAttributeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EnableDnsHostnames: i_AttributeBooleanValue,
+      EnableDnsSupport: i_AttributeBooleanValue,
+      VpcId: 0,
+      EnableNetworkAddressUsageMetrics: i_AttributeBooleanValue,
+    },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidParameterCombination,
@@ -48395,6 +51836,7 @@ export const modifyVpcBlockPublicAccessExclusion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, ExclusionId: 0, InternetGatewayExclusionMode: 0 },
     output: { VpcBlockPublicAccessExclusion: o_VpcBlockPublicAccessExclusion },
   },
   errors: [],
@@ -48415,6 +51857,7 @@ export const modifyVpcBlockPublicAccessOptions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, InternetGatewayBlockMode: 0 },
     output: { VpcBlockPublicAccessOptions: o_VpcBlockPublicAccessOptions },
   },
   errors: [],
@@ -48442,6 +51885,19 @@ export const modifyVpcEncryptionControl: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DryRun: 0,
+      VpcEncryptionControlId: 0,
+      Mode: 0,
+      InternetGatewayExclusion: 0,
+      EgressOnlyInternetGatewayExclusion: 0,
+      NatGatewayExclusion: 0,
+      VirtualPrivateGatewayExclusion: 0,
+      VpcPeeringExclusion: 0,
+      LambdaExclusion: 0,
+      VpcLatticeExclusion: 0,
+      ElasticFileSystemExclusion: 0,
+    },
     output: { VpcEncryptionControl: o_VpcEncryptionControl },
   },
   errors: [
@@ -48475,14 +51931,23 @@ export const modifyVpcEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      VpcEndpointId: 0,
+      ResetPolicy: 0,
+      PolicyDocument: 0,
       AddRouteTableIds: D.m({ wire: "AddRouteTableId" }),
       RemoveRouteTableIds: D.m({ wire: "RemoveRouteTableId" }),
       AddSubnetIds: D.m({ wire: "AddSubnetId" }),
       RemoveSubnetIds: D.m({ wire: "RemoveSubnetId" }),
       AddSecurityGroupIds: D.m({ wire: "AddSecurityGroupId" }),
       RemoveSecurityGroupIds: D.m({ wire: "RemoveSecurityGroupId" }),
+      IpAddressType: 0,
       DnsOptions: i_DnsOptionsSpecification,
-      SubnetConfigurations: D.m({ wire: "SubnetConfiguration" }),
+      PrivateDnsEnabled: 0,
+      SubnetConfigurations: D.m({
+        wire: "SubnetConfiguration",
+        shape: D.list(i_SubnetConfiguration),
+      }),
     },
     output: { Return: D.bool },
   },
@@ -48514,6 +51979,12 @@ export const modifyVpcEndpointConnectionNotification: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DryRun: 0,
+      ConnectionNotificationId: 0,
+      ConnectionNotificationArn: 0,
+      ConnectionEvents: 0,
+    },
     output: { ReturnValue: D.m({ wire: "return", shape: D.bool }) },
   },
   errors: [
@@ -48539,6 +52010,13 @@ export const modifyVpcEndpointPayerResponsibility: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DryRun: 0,
+      ServiceId: 0,
+      VpcEndpointId: 0,
+      PayerResponsibility: 0,
+      Scope: 0,
+    },
     output: {
       PayerResponsibilities: D.m({
         wire: "payerResponsibilitySet",
@@ -48573,6 +52051,11 @@ export const modifyVpcEndpointServiceConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      ServiceId: 0,
+      PrivateDnsName: 0,
+      RemovePrivateDnsName: 0,
+      AcceptanceRequired: 0,
       AddNetworkLoadBalancerArns: D.m({ wire: "AddNetworkLoadBalancerArn" }),
       RemoveNetworkLoadBalancerArns: D.m({
         wire: "RemoveNetworkLoadBalancerArn",
@@ -48617,6 +52100,7 @@ export const modifyVpcEndpointServicePayerResponsibility: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, ServiceId: 0, PayerResponsibility: 0 },
     output: { ReturnValue: D.m({ wire: "return", shape: D.bool }) },
   },
   errors: [RequestLimitExceeded, UnsupportedOperation, UnauthorizedOperation],
@@ -48648,6 +52132,12 @@ export const modifyVpcEndpointServicePermissions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DryRun: 0,
+      ServiceId: 0,
+      AddAllowedPrincipals: 0,
+      RemoveAllowedPrincipals: 0,
+    },
     output: {
       AddedPrincipals: D.m({ wire: "addedPrincipalSet", shape: D.list({}) }),
       ReturnValue: D.m({ wire: "return", shape: D.bool }),
@@ -48692,6 +52182,12 @@ export const modifyVpcPeeringConnectionOptions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AccepterPeeringConnectionOptions: i_PeeringConnectionOptionsRequest,
+      DryRun: 0,
+      RequesterPeeringConnectionOptions: i_PeeringConnectionOptionsRequest,
+      VpcPeeringConnectionId: 0,
+    },
     output: {
       AccepterPeeringConnectionOptions: o_PeeringConnectionOptions,
       RequesterPeeringConnectionOptions: o_PeeringConnectionOptions,
@@ -48734,6 +52230,7 @@ export const modifyVpcTenancy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { VpcId: 0, InstanceTenancy: 0, DryRun: 0 },
     output: { ReturnValue: D.m({ wire: "return", shape: D.bool }) },
   },
   errors: [
@@ -48798,7 +52295,17 @@ export const modifyVpnConnection: API.OperationMethod<
   ModifyVpnConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { VpnConnection: o_VpnConnection } },
+  descriptor: {
+    service: svc,
+    input: {
+      VpnConnectionId: 0,
+      TransitGatewayId: 0,
+      CustomerGatewayId: 0,
+      VpnGatewayId: 0,
+      DryRun: 0,
+    },
+    output: { VpnConnection: o_VpnConnection },
+  },
   errors: [RequestLimitExceeded, InvalidVpnConnectionId, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -48824,7 +52331,19 @@ export const modifyVpnConnectionOptions: API.OperationMethod<
   ModifyVpnConnectionOptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { VpnConnection: o_VpnConnection } },
+  descriptor: {
+    service: svc,
+    input: {
+      VpnConnectionId: 0,
+      LocalIpv4NetworkCidr: 0,
+      RemoteIpv4NetworkCidr: 0,
+      LocalIpv6NetworkCidr: 0,
+      RemoteIpv6NetworkCidr: 0,
+      TunnelBandwidth: 0,
+      DryRun: 0,
+    },
+    output: { VpnConnection: o_VpnConnection },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidVpnConnectionIDNotFound,
@@ -48849,7 +52368,11 @@ export const modifyVpnTunnelCertificate: API.OperationMethod<
   ModifyVpnTunnelCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { VpnConnection: o_VpnConnection } },
+  descriptor: {
+    service: svc,
+    input: { VpnConnectionId: 0, VpnTunnelOutsideIpAddress: 0, DryRun: 0 },
+    output: { VpnConnection: o_VpnConnection },
+  },
   errors: [RequestLimitExceeded, InvalidParameterValue, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -48876,15 +52399,54 @@ export const modifyVpnTunnelOptions: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      VpnConnectionId: 0,
+      VpnTunnelOutsideIpAddress: 0,
       TunnelOptions: {
-        Phase1EncryptionAlgorithms: D.m({ wire: "Phase1EncryptionAlgorithm" }),
-        Phase2EncryptionAlgorithms: D.m({ wire: "Phase2EncryptionAlgorithm" }),
-        Phase1IntegrityAlgorithms: D.m({ wire: "Phase1IntegrityAlgorithm" }),
-        Phase2IntegrityAlgorithms: D.m({ wire: "Phase2IntegrityAlgorithm" }),
-        Phase1DHGroupNumbers: D.m({ wire: "Phase1DHGroupNumber" }),
-        Phase2DHGroupNumbers: D.m({ wire: "Phase2DHGroupNumber" }),
-        IKEVersions: D.m({ wire: "IKEVersion" }),
+        TunnelInsideCidr: 0,
+        TunnelInsideIpv6Cidr: 0,
+        PreSharedKey: 0,
+        Phase1LifetimeSeconds: 0,
+        Phase2LifetimeSeconds: 0,
+        RekeyMarginTimeSeconds: 0,
+        RekeyFuzzPercentage: 0,
+        ReplayWindowSize: 0,
+        DPDTimeoutSeconds: 0,
+        DPDTimeoutAction: 0,
+        Phase1EncryptionAlgorithms: D.m({
+          wire: "Phase1EncryptionAlgorithm",
+          shape: D.list(i_Phase1EncryptionAlgorithmsRequestListValue),
+        }),
+        Phase2EncryptionAlgorithms: D.m({
+          wire: "Phase2EncryptionAlgorithm",
+          shape: D.list(i_Phase2EncryptionAlgorithmsRequestListValue),
+        }),
+        Phase1IntegrityAlgorithms: D.m({
+          wire: "Phase1IntegrityAlgorithm",
+          shape: D.list(i_Phase1IntegrityAlgorithmsRequestListValue),
+        }),
+        Phase2IntegrityAlgorithms: D.m({
+          wire: "Phase2IntegrityAlgorithm",
+          shape: D.list(i_Phase2IntegrityAlgorithmsRequestListValue),
+        }),
+        Phase1DHGroupNumbers: D.m({
+          wire: "Phase1DHGroupNumber",
+          shape: D.list(i_Phase1DHGroupNumbersRequestListValue),
+        }),
+        Phase2DHGroupNumbers: D.m({
+          wire: "Phase2DHGroupNumber",
+          shape: D.list(i_Phase2DHGroupNumbersRequestListValue),
+        }),
+        IKEVersions: D.m({
+          wire: "IKEVersion",
+          shape: D.list(i_IKEVersionsRequestListValue),
+        }),
+        StartupAction: 0,
+        LogOptions: i_VpnTunnelLogOptionsSpecification,
+        EnableTunnelLifecycleControl: 0,
       },
+      DryRun: 0,
+      SkipTunnelReplacement: 0,
+      PreSharedKeyStorage: 0,
     },
     output: { VpnConnection: o_VpnConnection },
   },
@@ -48915,7 +52477,7 @@ export const monitorInstances: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { InstanceIds: D.m({ wire: "InstanceId" }) },
+    input: { InstanceIds: D.m({ wire: "InstanceId" }), DryRun: 0 },
     output: {
       InstanceMonitorings: D.m({
         wire: "instancesSet",
@@ -48954,7 +52516,7 @@ export const moveAddressToVpc: API.OperationMethod<
   MoveAddressToVpcError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0, PublicIp: 0 } },
   errors: [RequestLimitExceeded, UnsupportedOperation, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -48977,7 +52539,11 @@ export const moveByoipCidrToIpam: API.OperationMethod<
   MoveByoipCidrToIpamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ByoipCidr: o_ByoipCidr } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, Cidr: 0, IpamPoolId: 0, IpamPoolOwner: 0 },
+    output: { ByoipCidr: o_ByoipCidr },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidIpamPoolIdNotFound,
@@ -49019,7 +52585,13 @@ export const moveCapacityReservationInstances: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      DryRun: 0,
+      ClientToken: D.m({ idempotency: true }),
+      SourceCapacityReservationId: 0,
+      DestinationCapacityReservationId: 0,
+      InstanceCount: 0,
+    },
     output: {
       SourceCapacityReservation: o_CapacityReservation,
       DestinationCapacityReservation: o_CapacityReservation,
@@ -49066,10 +52638,17 @@ export const provisionByoipCidr: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      Cidr: 0,
+      CidrAuthorizationContext: { Message: 0, Signature: 0 },
+      PubliclyAdvertisable: 0,
+      Description: 0,
+      DryRun: 0,
       PoolTagSpecifications: D.m({
         wire: "PoolTagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      MultiRegion: 0,
+      NetworkBorderGroup: 0,
     },
     output: { ByoipCidr: o_ByoipCidr },
   },
@@ -49093,7 +52672,16 @@ export const provisionIpamByoasn: API.OperationMethod<
   ProvisionIpamByoasnError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Byoasn: {} } },
+  descriptor: {
+    service: svc,
+    input: {
+      DryRun: 0,
+      IpamId: 0,
+      Asn: 0,
+      AsnAuthorizationContext: { Message: 0, Signature: 0 },
+    },
+    output: { Byoasn: {} },
+  },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -49119,7 +52707,16 @@ export const provisionIpamPoolCidr: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      DryRun: 0,
+      IpamPoolId: 0,
+      Cidr: 0,
+      CidrAuthorizationContext: { Message: 0, Signature: 0 },
+      NetmaskLength: 0,
+      ClientToken: D.m({ idempotency: true }),
+      VerificationMethod: 0,
+      IpamExternalResourceVerificationTokenId: 0,
+    },
     output: { IpamPoolCidr: o_IpamPoolCidr },
   },
   errors: [
@@ -49152,6 +52749,13 @@ export const provisionPublicIpv4PoolCidr: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DryRun: 0,
+      IpamPoolId: 0,
+      PoolId: 0,
+      NetmaskLength: 0,
+      NetworkBorderGroup: 0,
+    },
     output: { PoolAddressRange: o_PublicIpv4PoolRange },
   },
   errors: [
@@ -49184,10 +52788,13 @@ export const purchaseCapacityBlock: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      CapacityBlockOfferingId: 0,
+      InstancePlatform: 0,
     },
     output: {
       CapacityReservation: o_CapacityReservation,
@@ -49220,6 +52827,11 @@ export const purchaseCapacityBlockExtension: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CapacityBlockExtensionOfferingId: 0,
+      CapacityReservationId: 0,
+      DryRun: 0,
+    },
     output: {
       CapacityBlockExtensions: D.m({
         wire: "capacityBlockExtensionSet",
@@ -49253,6 +52865,11 @@ export const purchaseHostReservation: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ClientToken: 0,
+      CurrencyCode: 0,
+      HostIdSet: 0,
+      LimitPrice: 0,
+      OfferingId: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -49292,7 +52909,16 @@ export const purchaseReservedInstancesOffering: API.OperationMethod<
   PurchaseReservedInstancesOfferingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceCount: 0,
+      ReservedInstancesOfferingId: 0,
+      PurchaseTime: 0,
+      DryRun: 0,
+      LimitPrice: { Amount: 0, CurrencyCode: 0 },
+    },
+  },
   errors: [RequestLimitExceeded, InvalidParameterValue, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -49326,7 +52952,11 @@ export const purchaseScheduledInstances: API.OperationMethod<
     service: svc,
     input: {
       ClientToken: D.m({ idempotency: true }),
-      PurchaseRequests: D.m({ wire: "PurchaseRequest" }),
+      DryRun: 0,
+      PurchaseRequests: D.m({
+        wire: "PurchaseRequest",
+        shape: D.list({ InstanceCount: 0, PurchaseToken: 0 }),
+      }),
     },
     output: { ScheduledInstanceSet: D.list(o_ScheduledInstance) },
   },
@@ -49367,7 +52997,7 @@ export const rebootInstances: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { InstanceIds: D.m({ wire: "InstanceId" }) },
+    input: { InstanceIds: D.m({ wire: "InstanceId" }), DryRun: 0 },
   },
   errors: [
     RequestLimitExceeded,
@@ -49439,12 +53069,30 @@ export const registerImage: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ImageLocation: 0,
       BillingProducts: D.m({ wire: "BillingProduct" }),
+      BootMode: 0,
+      TpmSupport: 0,
+      UefiData: 0,
+      ImdsSupport: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
-      BlockDeviceMappings: D.m({ wire: "BlockDeviceMapping" }),
+      DryRun: 0,
+      Name: 0,
+      Description: 0,
+      Architecture: 0,
+      KernelId: 0,
+      RamdiskId: 0,
+      RootDeviceName: 0,
+      BlockDeviceMappings: D.m({
+        wire: "BlockDeviceMapping",
+        shape: D.list(i_BlockDeviceMapping),
+      }),
+      VirtualizationType: 0,
+      SriovNetSupport: 0,
+      EnaSupport: 0,
     },
   },
   errors: [
@@ -49477,7 +53125,9 @@ export const registerInstanceEventNotificationAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       InstanceTagAttribute: {
+        IncludeAllTagsOfInstance: 0,
         InstanceTagKeys: D.m({ wire: "InstanceTagKey" }),
       },
     },
@@ -49512,6 +53162,12 @@ export const registerTransitGatewayMulticastGroupMembers: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TransitGatewayMulticastDomainId: 0,
+      GroupIpAddress: 0,
+      NetworkInterfaceIds: 0,
+      DryRun: 0,
+    },
     output: {
       RegisteredMulticastGroupMembers: {
         RegisteredNetworkInterfaceIds: D.list(),
@@ -49553,6 +53209,12 @@ export const registerTransitGatewayMulticastGroupSources: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TransitGatewayMulticastDomainId: 0,
+      GroupIpAddress: 0,
+      NetworkInterfaceIds: 0,
+      DryRun: 0,
+    },
     output: {
       RegisteredMulticastGroupSources: {
         RegisteredNetworkInterfaceIds: D.list(),
@@ -49586,7 +53248,11 @@ export const rejectCapacityReservationBillingOwnership: API.OperationMethod<
   RejectCapacityReservationBillingOwnershipError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, CapacityReservationId: 0 },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidCapacityReservationIdMalformed,
@@ -49609,6 +53275,7 @@ export const rejectTransitGatewayClientVpnAttachment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransitGatewayAttachmentId: 0, DryRun: 0 },
     output: { TransitGatewayClientVpnAttachment: {} },
   },
   errors: [],
@@ -49633,6 +53300,12 @@ export const rejectTransitGatewayMulticastDomainAssociations: API.OperationMetho
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TransitGatewayMulticastDomainId: 0,
+      TransitGatewayAttachmentId: 0,
+      SubnetIds: 0,
+      DryRun: 0,
+    },
     output: { Associations: o_TransitGatewayMulticastDomainAssociations },
   },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
@@ -49658,6 +53331,7 @@ export const rejectTransitGatewayPeeringAttachment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransitGatewayAttachmentId: 0, DryRun: 0 },
     output: {
       TransitGatewayPeeringAttachment: o_TransitGatewayPeeringAttachment,
     },
@@ -49694,6 +53368,7 @@ export const rejectTransitGatewayVpcAttachment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransitGatewayAttachmentId: 0, DryRun: 0 },
     output: { TransitGatewayVpcAttachment: o_TransitGatewayVpcAttachment },
   },
   errors: [
@@ -49724,7 +53399,11 @@ export const rejectVpcEndpointConnections: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { VpcEndpointIds: D.m({ wire: "VpcEndpointId" }) },
+    input: {
+      DryRun: 0,
+      ServiceId: 0,
+      VpcEndpointIds: D.m({ wire: "VpcEndpointId" }),
+    },
     output: { Unsuccessful: D.list(o_UnsuccessfulItem) },
   },
   errors: [
@@ -49757,7 +53436,11 @@ export const rejectVpcPeeringConnection: API.OperationMethod<
   RejectVpcPeeringConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, VpcPeeringConnectionId: 0 },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidVpcPeeringConnectionIDNotFound,
@@ -49807,7 +53490,10 @@ export const releaseAddress: API.OperationMethod<
   ReleaseAddressError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AllocationId: 0, PublicIp: 0, NetworkBorderGroup: 0, DryRun: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     AuthFailure,
@@ -49877,7 +53563,11 @@ export const releaseIpamPoolAllocation: API.OperationMethod<
   ReleaseIpamPoolAllocationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Success: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, IpamPoolId: 0, Cidr: 0, IpamPoolAllocationId: 0 },
+    output: { Success: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidIpamPoolIdNotFound,
@@ -49905,6 +53595,10 @@ export const replaceIamInstanceProfileAssociation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      IamInstanceProfile: i_IamInstanceProfileSpecification,
+      AssociationId: 0,
+    },
     output: { IamInstanceProfileAssociation: o_IamInstanceProfileAssociation },
   },
   errors: [],
@@ -49944,9 +53638,20 @@ export const replaceImageCriteriaInAllowedImagesSettings: API.OperationMethod<
           ImageProviders: D.m({ wire: "ImageProvider" }),
           MarketplaceProductCodes: D.m({ wire: "MarketplaceProductCode" }),
           ImageNames: D.m({ wire: "ImageName" }),
-          ImageWatermarks: D.m({ wire: "ImageWatermark" }),
+          DeprecationTimeCondition: { MaximumDaysSinceDeprecated: 0 },
+          CreationDateCondition: { MaximumDaysSinceCreated: 0 },
+          ImageWatermarks: D.m({
+            wire: "ImageWatermark",
+            shape: D.list({
+              WatermarkKey: 0,
+              SourceImageRegion: 0,
+              MaximumDaysSinceSourceImageCreated: 0,
+              MaximumDaysSinceWatermarkCreated: 0,
+            }),
+          }),
         }),
       }),
+      DryRun: 0,
     },
     output: { ReturnValue: D.m({ wire: "return", shape: D.bool }) },
   },
@@ -49996,10 +53701,12 @@ export const replaceImageInstanceTypeSpecification: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ImageId: 0,
       InstanceTypeSpecification: {
         SupportedInstanceTypes: D.m({ wire: "SupportedInstanceType" }),
         UnsupportedInstanceTypes: D.m({ wire: "UnsupportedInstanceType" }),
       },
+      DryRun: 0,
     },
     output: { ReturnValue: D.bool },
   },
@@ -50029,7 +53736,10 @@ export const replaceNetworkAclAssociation: API.OperationMethod<
   ReplaceNetworkAclAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, AssociationId: 0, NetworkAclId: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     DryRunOperation,
@@ -50058,7 +53768,21 @@ export const replaceNetworkAclEntry: API.OperationMethod<
   ReplaceNetworkAclEntryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, input: { IcmpTypeCode: D.m({ wire: "Icmp" }) } },
+  descriptor: {
+    service: svc,
+    input: {
+      DryRun: 0,
+      NetworkAclId: 0,
+      RuleNumber: 0,
+      Protocol: 0,
+      RuleAction: 0,
+      Egress: 0,
+      CidrBlock: 0,
+      Ipv6CidrBlock: 0,
+      IcmpTypeCode: D.m({ wire: "Icmp", shape: i_IcmpTypeCode }),
+      PortRange: i_PortRange,
+    },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidNetworkAclIDNotFound,
@@ -50092,7 +53816,29 @@ export const replaceRoute: API.OperationMethod<
   ReplaceRouteError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DestinationPrefixListId: 0,
+      VpcEndpointId: 0,
+      LocalTarget: 0,
+      TransitGatewayId: 0,
+      LocalGatewayId: 0,
+      CarrierGatewayId: 0,
+      CoreNetworkArn: 0,
+      OdbNetworkArn: 0,
+      DryRun: 0,
+      RouteTableId: 0,
+      DestinationCidrBlock: 0,
+      GatewayId: 0,
+      DestinationIpv6CidrBlock: 0,
+      EgressOnlyInternetGatewayId: 0,
+      InstanceId: 0,
+      NetworkInterfaceId: 0,
+      VpcPeeringConnectionId: 0,
+      NatGatewayId: 0,
+    },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidRouteTableIDNotFound,
@@ -50124,7 +53870,11 @@ export const replaceRouteTableAssociation: API.OperationMethod<
   ReplaceRouteTableAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AssociationState: {} } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, AssociationId: 0, RouteTableId: 0 },
+    output: { AssociationState: {} },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidRouteTableAssociationIdMalformed,
@@ -50150,7 +53900,17 @@ export const replaceTransitGatewayRoute: API.OperationMethod<
   ReplaceTransitGatewayRouteError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Route: o_TransitGatewayRoute } },
+  descriptor: {
+    service: svc,
+    input: {
+      DestinationCidrBlock: 0,
+      TransitGatewayRouteTableId: 0,
+      TransitGatewayAttachmentId: 0,
+      Blackhole: 0,
+      DryRun: 0,
+    },
+    output: { Route: o_TransitGatewayRoute },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidRouteTableIDNotFound,
@@ -50175,7 +53935,16 @@ export const replaceVpnTunnel: API.OperationMethod<
   ReplaceVpnTunnelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: {
+      VpnConnectionId: 0,
+      VpnTunnelOutsideIpAddress: 0,
+      ApplyPendingMaintenance: 0,
+      DryRun: 0,
+    },
+    output: { Return: D.bool },
+  },
   errors: [RequestLimitExceeded, InvalidVpnConnectionId, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -50204,8 +53973,13 @@ export const reportInstanceStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       Instances: D.m({ wire: "InstanceId" }),
+      Status: 0,
+      StartTime: 0,
+      EndTime: 0,
       ReasonCodes: D.m({ wire: "ReasonCode" }),
+      Description: 0,
     },
   },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
@@ -50262,21 +54036,75 @@ export const requestSpotFleet: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
       SpotFleetRequestConfig: {
+        AllocationStrategy: 0,
+        OnDemandAllocationStrategy: 0,
+        SpotMaintenanceStrategies: {
+          CapacityRebalance: { ReplacementStrategy: 0, TerminationDelay: 0 },
+        },
+        ClientToken: 0,
+        ExcessCapacityTerminationPolicy: 0,
+        FulfilledCapacity: 0,
+        OnDemandFulfilledCapacity: 0,
+        IamFleetRole: 0,
         LaunchSpecifications: D.list({
-          BlockDeviceMappings: D.m({ wire: "BlockDeviceMapping" }),
+          AddressingType: 0,
+          BlockDeviceMappings: D.m({
+            wire: "BlockDeviceMapping",
+            shape: D.list(i_BlockDeviceMapping),
+          }),
+          EbsOptimized: 0,
+          IamInstanceProfile: i_IamInstanceProfileSpecification,
+          ImageId: 0,
+          InstanceType: 0,
+          KernelId: 0,
+          KeyName: 0,
+          Monitoring: { Enabled: 0 },
           NetworkInterfaces: D.m({
             wire: "NetworkInterfaceSet",
             shape: D.list(i_InstanceNetworkInterfaceSpecification),
           }),
+          Placement: i_SpotPlacement,
+          RamdiskId: 0,
+          SpotPrice: 0,
+          SubnetId: 0,
+          UserData: 0,
+          WeightedCapacity: 0,
           TagSpecifications: D.m({
             wire: "TagSpecificationSet",
-            shape: D.list({ Tags: D.m({ wire: "Tag" }) }),
+            shape: D.list({
+              ResourceType: 0,
+              Tags: D.m({ wire: "Tag", shape: D.list(i_Tag) }),
+            }),
           }),
           InstanceRequirements: i_InstanceRequirements,
-          SecurityGroups: D.m({ wire: "GroupSet" }),
+          SecurityGroups: D.m({
+            wire: "GroupSet",
+            shape: D.list({ GroupId: 0, GroupName: 0 }),
+          }),
         }),
         LaunchTemplateConfigs: D.list(i_LaunchTemplateConfig),
+        SpotPrice: 0,
+        TargetCapacity: 0,
+        OnDemandTargetCapacity: 0,
+        OnDemandMaxTotalPrice: 0,
+        SpotMaxTotalPrice: 0,
+        TerminateInstancesWithExpiration: 0,
+        Type: 0,
+        ValidFrom: 0,
+        ValidUntil: 0,
+        ReplaceUnhealthyInstances: 0,
+        InstanceInterruptionBehavior: 0,
+        LoadBalancersConfig: {
+          ClassicLoadBalancersConfig: {
+            ClassicLoadBalancers: D.list({ Name: 0 }),
+          },
+          TargetGroupsConfig: { TargetGroups: D.list({ Arn: 0 }) },
+        },
+        InstancePoolsToUseCount: 0,
+        Context: 0,
+        TargetCapacityUnitType: 0,
         TagSpecifications: D.m({
           wire: "TagSpecification",
           shape: D.list(i_TagSpecification),
@@ -50319,16 +54147,42 @@ export const requestSpotInstances: API.OperationMethod<
       LaunchSpecification: {
         SecurityGroupIds: D.m({ wire: "SecurityGroupId" }),
         SecurityGroups: D.m({ wire: "SecurityGroup" }),
-        BlockDeviceMappings: D.m({ wire: "BlockDeviceMapping" }),
+        AddressingType: 0,
+        BlockDeviceMappings: D.m({
+          wire: "BlockDeviceMapping",
+          shape: D.list(i_BlockDeviceMapping),
+        }),
+        EbsOptimized: 0,
+        IamInstanceProfile: i_IamInstanceProfileSpecification,
+        ImageId: 0,
+        InstanceType: 0,
+        KernelId: 0,
+        KeyName: 0,
+        Monitoring: i_RunInstancesMonitoringEnabled,
         NetworkInterfaces: D.m({
           wire: "NetworkInterface",
           shape: D.list(i_InstanceNetworkInterfaceSpecification),
         }),
+        Placement: i_SpotPlacement,
+        RamdiskId: 0,
+        SubnetId: 0,
+        UserData: 0,
       },
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
+      InstanceInterruptionBehavior: 0,
+      DryRun: 0,
+      SpotPrice: 0,
+      ClientToken: 0,
+      InstanceCount: 0,
+      Type: 0,
+      ValidFrom: 0,
+      ValidUntil: 0,
+      LaunchGroup: 0,
+      AvailabilityZoneGroup: 0,
+      BlockDurationMinutes: 0,
     },
     output: {
       SpotInstanceRequests: D.m({
@@ -50357,7 +54211,11 @@ export const resetAddressAttribute: API.OperationMethod<
   ResetAddressAttributeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Address: o_AddressAttribute } },
+  descriptor: {
+    service: svc,
+    input: { AllocationId: 0, Attribute: 0, DryRun: 0 },
+    output: { Address: o_AddressAttribute },
+  },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -50380,7 +54238,7 @@ export const resetEbsDefaultKmsKeyId: API.OperationMethod<
   ResetEbsDefaultKmsKeyIdError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -50402,7 +54260,11 @@ export const resetFpgaImageAttribute: API.OperationMethod<
   ResetFpgaImageAttributeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, FpgaImageId: 0, Attribute: 0 },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidFpgaImageIDMalformed,
@@ -50429,7 +54291,7 @@ export const resetImageAttribute: API.OperationMethod<
   ResetImageAttributeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Attribute: 0, ImageId: 0, DryRun: 0 } },
   errors: [
     RequestLimitExceeded,
     InvalidAMIIDMalformed,
@@ -50465,7 +54327,10 @@ export const resetInstanceAttribute: API.OperationMethod<
   ResetInstanceAttributeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, InstanceId: 0, Attribute: 0 },
+  },
   errors: [RequestLimitExceeded, InvalidParameterValue, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -50487,7 +54352,10 @@ export const resetNetworkInterfaceAttribute: API.OperationMethod<
   ResetNetworkInterfaceAttributeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DryRun: 0, NetworkInterfaceId: 0, SourceDestCheck: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidParameterCombination,
@@ -50517,7 +54385,10 @@ export const resetSnapshotAttribute: API.OperationMethod<
   ResetSnapshotAttributeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Attribute: 0, SnapshotId: 0, DryRun: 0 },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidSnapshotNotFound,
@@ -50546,7 +54417,7 @@ export const restoreAddressToClassic: API.OperationMethod<
   RestoreAddressToClassicError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DryRun: 0, PublicIp: 0 } },
   errors: [RequestLimitExceeded, UnsupportedOperation, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -50569,7 +54440,11 @@ export const restoreImageFromRecycleBin: API.OperationMethod<
   RestoreImageFromRecycleBinError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { ImageId: 0, DryRun: 0 },
+    output: { Return: D.bool },
+  },
   errors: [RequestLimitExceeded, InvalidAMIIDMalformed, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -50590,7 +54465,16 @@ export const restoreManagedPrefixListVersion: API.OperationMethod<
   RestoreManagedPrefixListVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { PrefixList: o_ManagedPrefixList } },
+  descriptor: {
+    service: svc,
+    input: {
+      DryRun: 0,
+      PrefixListId: 0,
+      PreviousVersion: 0,
+      CurrentVersion: 0,
+    },
+    output: { PrefixList: o_ManagedPrefixList },
+  },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -50614,6 +54498,7 @@ export const restoreSnapshotFromRecycleBin: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SnapshotId: 0, DryRun: 0 },
     output: {
       Encrypted: D.bool,
       StartTime: D.ts,
@@ -50652,6 +54537,12 @@ export const restoreSnapshotTier: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      SnapshotId: 0,
+      TemporaryRestoreDays: 0,
+      PermanentRestore: 0,
+      DryRun: 0,
+    },
     output: {
       RestoreStartTime: D.ts,
       RestoreDuration: D.num,
@@ -50683,7 +54574,11 @@ export const restoreVolumeFromRecycleBin: API.OperationMethod<
   RestoreVolumeFromRecycleBinError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Return: D.bool } },
+  descriptor: {
+    service: svc,
+    input: { VolumeId: 0, DryRun: 0 },
+    output: { Return: D.bool },
+  },
   errors: [
     RequestLimitExceeded,
     InvalidVolumeIDMalformed,
@@ -50711,7 +54606,17 @@ export const revokeClientVpnIngress: API.OperationMethod<
   RevokeClientVpnIngressError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Status: {} } },
+  descriptor: {
+    service: svc,
+    input: {
+      ClientVpnEndpointId: 0,
+      TargetNetworkCidr: 0,
+      AccessGroupId: 0,
+      RevokeAllGroups: 0,
+      DryRun: 0,
+    },
+    output: { Status: {} },
+  },
   errors: [
     RequestLimitExceeded,
     MissingParameter,
@@ -50767,6 +54672,14 @@ export const revokeSecurityGroupEgress: API.OperationMethod<
     service: svc,
     input: {
       SecurityGroupRuleIds: D.m({ wire: "SecurityGroupRuleId" }),
+      DryRun: 0,
+      GroupId: 0,
+      SourceSecurityGroupName: 0,
+      SourceSecurityGroupOwnerId: 0,
+      IpProtocol: 0,
+      FromPort: 0,
+      ToPort: 0,
+      CidrIp: 0,
       IpPermissions: D.list(i_IpPermission),
     },
     output: {
@@ -50842,8 +54755,17 @@ export const revokeSecurityGroupIngress: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      CidrIp: 0,
+      FromPort: 0,
+      GroupId: 0,
+      GroupName: 0,
       IpPermissions: D.list(i_IpPermission),
+      IpProtocol: 0,
+      SourceSecurityGroupName: 0,
+      SourceSecurityGroupOwnerId: 0,
+      ToPort: 0,
       SecurityGroupRuleIds: D.m({ wire: "SecurityGroupRuleId" }),
+      DryRun: 0,
     },
     output: {
       Return: D.bool,
@@ -50942,29 +54864,110 @@ export const runInstances: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      BlockDeviceMappings: D.m({ wire: "BlockDeviceMapping" }),
-      Ipv6Addresses: D.m({ wire: "Ipv6Address" }),
+      BlockDeviceMappings: D.m({
+        wire: "BlockDeviceMapping",
+        shape: D.list(i_BlockDeviceMapping),
+      }),
+      ImageId: 0,
+      InstanceType: 0,
+      Ipv6AddressCount: 0,
+      Ipv6Addresses: D.m({
+        wire: "Ipv6Address",
+        shape: D.list(i_InstanceIpv6Address),
+      }),
+      KernelId: 0,
+      KeyName: 0,
+      MaxCount: 0,
+      MinCount: 0,
+      Monitoring: i_RunInstancesMonitoringEnabled,
+      Placement: i_Placement,
+      RamdiskId: 0,
       SecurityGroupIds: D.m({ wire: "SecurityGroupId" }),
       SecurityGroups: D.m({ wire: "SecurityGroup" }),
+      SubnetId: 0,
+      UserData: 0,
+      ElasticGpuSpecification: D.list(i_ElasticGpuSpecification),
       ElasticInferenceAccelerators: D.m({
         wire: "ElasticInferenceAccelerator",
+        shape: D.list({ Type: 0, Count: 0 }),
       }),
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
       }),
-      LicenseSpecifications: D.m({ wire: "LicenseSpecification" }),
+      LaunchTemplate: {
+        LaunchTemplateId: 0,
+        LaunchTemplateName: 0,
+        Version: 0,
+      },
+      InstanceMarketOptions: {
+        MarketType: 0,
+        SpotOptions: {
+          MaxPrice: 0,
+          SpotInstanceType: 0,
+          BlockDurationMinutes: 0,
+          ValidUntil: 0,
+          InstanceInterruptionBehavior: 0,
+        },
+      },
+      CreditSpecification: i_CreditSpecificationRequest,
+      CpuOptions: {
+        CoreCount: 0,
+        ThreadsPerCore: 0,
+        AmdSevSnp: 0,
+        NestedVirtualization: 0,
+      },
+      CapacityReservationSpecification: i_CapacityReservationSpecification,
+      HibernationOptions: { Configured: 0 },
+      LicenseSpecifications: D.m({
+        wire: "LicenseSpecification",
+        shape: D.list({ LicenseConfigurationArn: 0 }),
+      }),
+      MetadataOptions: {
+        HttpTokens: 0,
+        HttpPutResponseHopLimit: 0,
+        HttpEndpoint: 0,
+        HttpProtocolIpv6: 0,
+        InstanceMetadataTags: 0,
+      },
+      EnclaveOptions: i_EnclaveOptionsRequest,
+      PrivateDnsNameOptions: {
+        HostnameType: 0,
+        EnableResourceNameDnsARecord: 0,
+        EnableResourceNameDnsAAAARecord: 0,
+      },
+      MaintenanceOptions: { AutoRecovery: 0 },
+      DisableApiStop: 0,
+      EnablePrimaryIpv6: 0,
+      NetworkPerformanceOptions: { BandwidthWeighting: 0 },
+      Operator: i_OperatorRequest,
       SecondaryInterfaces: D.m({
         wire: "SecondaryInterface",
         shape: D.list({
-          PrivateIpAddresses: D.m({ wire: "PrivateIpAddress" }),
+          DeleteOnTermination: 0,
+          DeviceIndex: 0,
+          PrivateIpAddresses: D.m({
+            wire: "PrivateIpAddress",
+            shape: D.list({ PrivateIpAddress: 0 }),
+          }),
+          PrivateIpAddressCount: 0,
+          SecondarySubnetId: 0,
+          InterfaceType: 0,
+          NetworkCardIndex: 0,
         }),
       }),
+      DryRun: 0,
+      DisableApiTermination: 0,
+      InstanceInitiatedShutdownBehavior: 0,
+      PrivateIpAddress: 0,
       ClientToken: D.m({ idempotency: true }),
+      AdditionalInfo: 0,
       NetworkInterfaces: D.m({
         wire: "NetworkInterface",
         shape: D.list(i_InstanceNetworkInterfaceSpecification),
       }),
+      IamInstanceProfile: i_IamInstanceProfileSpecification,
+      EbsOptimized: 0,
     },
     output: {
       Groups: D.m({ wire: "groupSet", shape: D.list({}) }),
@@ -51010,18 +55013,62 @@ export const runScheduledInstances: API.OperationMethod<
     service: svc,
     input: {
       ClientToken: D.m({ idempotency: true }),
+      DryRun: 0,
+      InstanceCount: 0,
       LaunchSpecification: {
-        BlockDeviceMappings: D.m({ wire: "BlockDeviceMapping" }),
+        BlockDeviceMappings: D.m({
+          wire: "BlockDeviceMapping",
+          shape: D.list({
+            DeviceName: 0,
+            Ebs: {
+              DeleteOnTermination: 0,
+              Encrypted: 0,
+              Iops: 0,
+              SnapshotId: 0,
+              VolumeSize: 0,
+              VolumeType: 0,
+            },
+            NoDevice: 0,
+            VirtualName: 0,
+          }),
+        }),
+        EbsOptimized: 0,
+        IamInstanceProfile: { Arn: 0, Name: 0 },
+        ImageId: 0,
+        InstanceType: 0,
+        KernelId: 0,
+        KeyName: 0,
+        Monitoring: { Enabled: 0 },
         NetworkInterfaces: D.m({
           wire: "NetworkInterface",
           shape: D.list({
+            AssociatePublicIpAddress: 0,
+            DeleteOnTermination: 0,
+            Description: 0,
+            DeviceIndex: 0,
             Groups: D.m({ wire: "Group" }),
-            Ipv6Addresses: D.m({ wire: "Ipv6Address" }),
-            PrivateIpAddressConfigs: D.m({ wire: "PrivateIpAddressConfig" }),
+            Ipv6AddressCount: 0,
+            Ipv6Addresses: D.m({
+              wire: "Ipv6Address",
+              shape: D.list({ Ipv6Address: 0 }),
+            }),
+            NetworkInterfaceId: 0,
+            PrivateIpAddress: 0,
+            PrivateIpAddressConfigs: D.m({
+              wire: "PrivateIpAddressConfig",
+              shape: D.list({ Primary: 0, PrivateIpAddress: 0 }),
+            }),
+            SecondaryPrivateIpAddressCount: 0,
+            SubnetId: 0,
           }),
         }),
+        Placement: { AvailabilityZone: 0, GroupName: 0 },
+        RamdiskId: 0,
         SecurityGroupIds: D.m({ wire: "SecurityGroupId" }),
+        SubnetId: 0,
+        UserData: 0,
       },
+      ScheduledInstanceId: 0,
     },
     output: { InstanceIdSet: D.list() },
   },
@@ -51053,7 +55100,13 @@ export const searchLocalGatewayRoutes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      LocalGatewayRouteTableId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: { Routes: D.m({ wire: "routeSet", shape: D.list({}) }) },
   },
   errors: [
@@ -51091,7 +55144,13 @@ export const searchTransitGatewayMulticastGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayMulticastDomainId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      NextToken: 0,
+      DryRun: 0,
+    },
     output: {
       MulticastGroups: D.list({ GroupMember: D.bool, GroupSource: D.bool }),
     },
@@ -51131,7 +55190,13 @@ export const searchTransitGatewayRoutes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }) },
+    input: {
+      TransitGatewayRouteTableId: 0,
+      Filters: D.m({ wire: "Filter", shape: D.list(i_Filter) }),
+      MaxResults: 0,
+      DryRun: 0,
+      NextToken: 0,
+    },
     output: {
       Routes: D.m({ wire: "routeSet", shape: D.list(o_TransitGatewayRoute) }),
       AdditionalRoutesAvailable: D.bool,
@@ -51184,7 +55249,7 @@ export const sendDiagnosticInterrupt: API.OperationMethod<
   SendDiagnosticInterruptError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InstanceId: 0, DryRun: 0 } },
   errors: [
     RequestLimitExceeded,
     InvalidInstanceIDMalformed,
@@ -51250,6 +55315,10 @@ export const startDeclarativePoliciesReport: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      S3Bucket: 0,
+      S3Prefix: 0,
+      TargetId: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -51307,7 +55376,11 @@ export const startInstances: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { InstanceIds: D.m({ wire: "InstanceId" }) },
+    input: {
+      InstanceIds: D.m({ wire: "InstanceId" }),
+      AdditionalInfo: 0,
+      DryRun: 0,
+    },
     output: {
       StartingInstances: D.m({
         wire: "instancesSet",
@@ -51345,6 +55418,8 @@ export const startNetworkInsightsAccessScopeAnalysis: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      NetworkInsightsAccessScopeId: 0,
+      DryRun: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -51385,9 +55460,11 @@ export const startNetworkInsightsAnalysis: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      NetworkInsightsPathId: 0,
       AdditionalAccounts: D.m({ wire: "AdditionalAccount" }),
       FilterInArns: D.m({ wire: "FilterInArn" }),
       FilterOutArns: D.m({ wire: "FilterOutArn" }),
+      DryRun: 0,
       TagSpecifications: D.m({
         wire: "TagSpecification",
         shape: D.list(i_TagSpecification),
@@ -51429,6 +55506,7 @@ export const startVpcEndpointServicePrivateDnsVerification: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DryRun: 0, ServiceId: 0 },
     output: { ReturnValue: D.m({ wire: "return", shape: D.bool }) },
   },
   errors: [
@@ -51496,7 +55574,13 @@ export const stopInstances: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { InstanceIds: D.m({ wire: "InstanceId" }) },
+    input: {
+      InstanceIds: D.m({ wire: "InstanceId" }),
+      Hibernate: 0,
+      SkipOsShutdown: 0,
+      DryRun: 0,
+      Force: 0,
+    },
     output: {
       StoppingInstances: D.m({
         wire: "instancesSet",
@@ -51532,6 +55616,7 @@ export const terminateClientVpnConnections: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ClientVpnEndpointId: 0, ConnectionId: 0, Username: 0, DryRun: 0 },
     output: {
       ConnectionStatuses: D.list({ PreviousStatus: {}, CurrentStatus: {} }),
     },
@@ -51632,7 +55717,12 @@ export const terminateInstances: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { InstanceIds: D.m({ wire: "InstanceId" }) },
+    input: {
+      InstanceIds: D.m({ wire: "InstanceId" }),
+      Force: 0,
+      SkipOsShutdown: 0,
+      DryRun: 0,
+    },
     output: {
       TerminatingInstances: D.m({
         wire: "instancesSet",
@@ -51670,7 +55760,11 @@ export const unassignIpv6Addresses: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Ipv6Prefixes: D.m({ wire: "Ipv6Prefix" }) },
+    input: {
+      Ipv6Prefixes: D.m({ wire: "Ipv6Prefix" }),
+      NetworkInterfaceId: 0,
+      Ipv6Addresses: 0,
+    },
     output: {
       UnassignedIpv6Addresses: D.list(),
       UnassignedIpv6Prefixes: D.m({
@@ -51711,6 +55805,7 @@ export const unassignPrivateIpAddresses: API.OperationMethod<
     service: svc,
     input: {
       Ipv4Prefixes: D.m({ wire: "Ipv4Prefix" }),
+      NetworkInterfaceId: 0,
       PrivateIpAddresses: D.m({ wire: "PrivateIpAddress" }),
     },
   },
@@ -51748,7 +55843,12 @@ export const unassignPrivateNatGatewayAddress: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { PrivateIpAddresses: D.m({ wire: "PrivateIpAddress" }) },
+    input: {
+      NatGatewayId: 0,
+      PrivateIpAddresses: D.m({ wire: "PrivateIpAddress" }),
+      MaxDrainDurationSeconds: 0,
+      DryRun: 0,
+    },
     output: {
       NatGatewayAddresses: D.m({
         wire: "natGatewayAddressSet",
@@ -51778,7 +55878,7 @@ export const unlockSnapshot: API.OperationMethod<
   UnlockSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SnapshotId: 0, DryRun: 0 } },
   errors: [
     RequestLimitExceeded,
     InvalidSnapshotIDMalformed,
@@ -51808,7 +55908,7 @@ export const unmonitorInstances: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { InstanceIds: D.m({ wire: "InstanceId" }) },
+    input: { InstanceIds: D.m({ wire: "InstanceId" }), DryRun: 0 },
     output: {
       InstanceMonitorings: D.m({
         wire: "instancesSet",
@@ -51842,6 +55942,7 @@ export const updateCapacityManagerMonitoredTagKeys: API.OperationMethod<
     input: {
       ActivateTagKeys: D.m({ wire: "ActivateTagKey" }),
       DeactivateTagKeys: D.m({ wire: "DeactivateTagKey" }),
+      DryRun: 0,
       ClientToken: D.m({ idempotency: true }),
     },
     output: {
@@ -51874,7 +55975,11 @@ export const updateCapacityManagerOrganizationsAccess: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      OrganizationsAccess: 0,
+      DryRun: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { OrganizationsAccess: D.bool },
   },
   errors: [RequestLimitExceeded, MissingParameter, UnauthorizedOperation],
@@ -51899,6 +56004,7 @@ export const updateInterruptibleCapacityReservationAllocation: API.OperationMeth
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CapacityReservationId: 0, TargetInstanceCount: 0, DryRun: 0 },
     output: { InstanceCount: D.num, TargetInstanceCount: D.num },
   },
   errors: [
@@ -51931,9 +56037,13 @@ export const updateSecurityGroupRuleDescriptionsEgress: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      GroupId: 0,
+      GroupName: 0,
       IpPermissions: D.list(i_IpPermission),
       SecurityGroupRuleDescriptions: D.m({
         wire: "SecurityGroupRuleDescription",
+        shape: D.list(i_SecurityGroupRuleDescription),
       }),
     },
     output: { Return: D.bool },
@@ -51964,9 +56074,13 @@ export const updateSecurityGroupRuleDescriptionsIngress: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DryRun: 0,
+      GroupId: 0,
+      GroupName: 0,
       IpPermissions: D.list(i_IpPermission),
       SecurityGroupRuleDescriptions: D.m({
         wire: "SecurityGroupRuleDescription",
+        shape: D.list(i_SecurityGroupRuleDescription),
       }),
     },
     output: { Return: D.bool },
@@ -51996,7 +56110,11 @@ export const withdrawByoipCidr: API.OperationMethod<
   WithdrawByoipCidrError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ByoipCidr: o_ByoipCidr } },
+  descriptor: {
+    service: svc,
+    input: { Cidr: 0, DryRun: 0 },
+    output: { ByoipCidr: o_ByoipCidr },
+  },
   errors: [RequestLimitExceeded, UnauthorizedOperation],
   protocol: AwsProtocol,
   retry: Retry,
@@ -52011,91 +56129,611 @@ const i_AccessScopePathRequest: D.LazyStruct = () => ({
     shape: D.list({ ResourceStatement: i_ResourceStatementRequest }),
   }),
 });
+const i_AddIpamOperatingRegion: D.LazyStruct = () => ({ RegionName: 0 });
+const i_AddPrefixListEntry: D.LazyStruct = () => ({ Cidr: 0, Description: 0 });
+const i_AttributeBooleanValue: D.LazyStruct = () => ({ Value: 0 });
+const i_AttributeValue: D.LazyStruct = () => ({ Value: 0 });
+const i_BlockDeviceMapping: D.LazyStruct = () => ({
+  Ebs: {
+    DeleteOnTermination: 0,
+    Iops: 0,
+    SnapshotId: 0,
+    VolumeSize: 0,
+    VolumeType: 0,
+    KmsKeyId: 0,
+    Throughput: 0,
+    OutpostArn: 0,
+    AvailabilityZone: 0,
+    Encrypted: 0,
+    VolumeInitializationRate: 0,
+    AvailabilityZoneId: 0,
+    EbsCardIndex: 0,
+  },
+  NoDevice: 0,
+  DeviceName: 0,
+  VirtualName: 0,
+});
 const i_CapacityManagerCondition: D.LazyStruct = () => ({
-  DimensionCondition: { Values: D.m({ wire: "Value" }) },
+  DimensionCondition: {
+    Dimension: 0,
+    Comparison: 0,
+    Values: D.m({ wire: "Value" }),
+  },
+});
+const i_CapacityReservationSpecification: D.LazyStruct = () => ({
+  CapacityReservationPreference: 0,
+  CapacityReservationTarget: i_CapacityReservationTarget,
+});
+const i_ClientConnectOptions: D.LazyStruct = () => ({
+  Enabled: 0,
+  LambdaFunctionArn: 0,
+});
+const i_ClientData: D.LazyStruct = () => ({
+  Comment: 0,
+  UploadEnd: 0,
+  UploadSize: 0,
+  UploadStart: 0,
+});
+const i_ClientLoginBannerOptions: D.LazyStruct = () => ({
+  Enabled: 0,
+  BannerText: 0,
+});
+const i_ClientRouteEnforcementOptions: D.LazyStruct = () => ({ Enforced: 0 });
+const i_ConnectionLogOptions: D.LazyStruct = () => ({
+  Enabled: 0,
+  CloudwatchLogGroup: 0,
+  CloudwatchLogStream: 0,
+});
+const i_ConnectionTrackingSpecificationRequest: D.LazyStruct = () => ({
+  TcpEstablishedTimeout: 0,
+  UdpStreamTimeout: 0,
+  UdpTimeout: 0,
+});
+const i_CreateVerifiedAccessEndpointPortRange: D.LazyStruct = () => ({
+  FromPort: 0,
+  ToPort: 0,
+});
+const i_CreateVolumePermission: D.LazyStruct = () => ({ UserId: 0, Group: 0 });
+const i_CreditSpecificationRequest: D.LazyStruct = () => ({ CpuCredits: 0 });
+const i_CustomTagKeyValueRequestPair: D.LazyStruct = () => ({
+  Key: 0,
+  Value: 0,
+});
+const i_DiskImageDetail: D.LazyStruct = () => ({
+  Format: 0,
+  Bytes: 0,
+  ImportManifestUrl: 0,
 });
 const i_DnsOptionsSpecification: D.LazyStruct = () => ({
+  DnsRecordIpType: 0,
+  PrivateDnsOnlyForInboundResolverEndpoint: 0,
+  PrivateDnsPreference: 0,
   PrivateDnsSpecifiedDomains: D.m({ wire: "PrivateDnsSpecifiedDomain" }),
 });
-const i_Filter: D.LazyStruct = () => ({ Values: D.m({ wire: "Value" }) });
+const i_ElasticGpuSpecification: D.LazyStruct = () => ({ Type: 0 });
+const i_EnaSrdSpecification: D.LazyStruct = () => ({
+  EnaSrdEnabled: 0,
+  EnaSrdUdpSpecification: { EnaSrdUdpEnabled: 0 },
+});
+const i_EnclaveOptionsRequest: D.LazyStruct = () => ({ Enabled: 0 });
+const i_ExternalAuthorityConfiguration: D.LazyStruct = () => ({
+  Type: 0,
+  ExternalResourceIdentifier: 0,
+});
+const i_Filter: D.LazyStruct = () => ({
+  Name: 0,
+  Values: D.m({ wire: "Value" }),
+});
 const i_FleetLaunchTemplateConfigRequest: D.LazyStruct = () => ({
+  LaunchTemplateSpecification: {
+    LaunchTemplateId: 0,
+    LaunchTemplateName: 0,
+    Version: 0,
+    LaunchTemplateSpecificationUserData: 0,
+  },
   Overrides: D.list({
-    BlockDeviceMappings: D.m({ wire: "BlockDeviceMapping" }),
+    InstanceType: 0,
+    MaxPrice: 0,
+    SubnetId: 0,
+    AvailabilityZone: 0,
+    WeightedCapacity: 0,
+    Priority: 0,
+    Placement: i_Placement,
+    KeyName: 0,
+    BlockDeviceMappings: D.m({
+      wire: "BlockDeviceMapping",
+      shape: D.list({
+        DeviceName: 0,
+        VirtualName: 0,
+        Ebs: {
+          Encrypted: 0,
+          DeleteOnTermination: 0,
+          Iops: 0,
+          Throughput: 0,
+          KmsKeyId: 0,
+          SnapshotId: 0,
+          VolumeSize: 0,
+          VolumeType: 0,
+        },
+        NoDevice: 0,
+      }),
+    }),
+    IamInstanceProfile: { Arn: 0, Name: 0 },
+    MetadataOptions: {
+      HttpTokens: 0,
+      HttpPutResponseHopLimit: 0,
+      HttpEndpoint: 0,
+    },
     InstanceRequirements: i_InstanceRequirementsRequest,
+    ImageId: 0,
+    AvailabilityZoneId: 0,
   }),
 });
 const i_HealthCheckPathRequestObject: D.LazyStruct = () => ({
-  Destinations: D.m({ wire: "Destination" }),
+  Source: { SubnetId: 0, SecurityGroupId: 0 },
+  Destinations: D.m({
+    wire: "Destination",
+    shape: D.list({ SubnetId: 0, SecurityGroupId: 0 }),
+  }),
+});
+const i_IKEVersionsRequestListValue: D.LazyStruct = () => ({ Value: 0 });
+const i_IamInstanceProfileSpecification: D.LazyStruct = () => ({
+  Arn: 0,
+  Name: 0,
+});
+const i_IcmpTypeCode: D.LazyStruct = () => ({ Code: 0, Type: 0 });
+const i_InstanceEventWindowTimeRangeRequest: D.LazyStruct = () => ({
+  StartWeekDay: 0,
+  StartHour: 0,
+  EndWeekDay: 0,
+  EndHour: 0,
+});
+const i_InstanceIpv6Address: D.LazyStruct = () => ({
+  Ipv6Address: 0,
+  IsPrimaryIpv6: 0,
 });
 const i_InstanceNetworkInterfaceSpecification: D.LazyStruct = () => ({
+  AssociatePublicIpAddress: 0,
+  DeleteOnTermination: 0,
+  Description: 0,
+  DeviceIndex: 0,
   Groups: D.m({ wire: "SecurityGroupId" }),
-  Ipv4Prefixes: D.m({ wire: "Ipv4Prefix" }),
-  Ipv6Prefixes: D.m({ wire: "Ipv6Prefix" }),
+  Ipv6AddressCount: 0,
+  Ipv6Addresses: D.list(i_InstanceIpv6Address),
+  NetworkInterfaceId: 0,
+  PrivateIpAddress: 0,
+  PrivateIpAddresses: D.list(i_PrivateIpAddressSpecification),
+  SecondaryPrivateIpAddressCount: 0,
+  SubnetId: 0,
+  AssociateCarrierIpAddress: 0,
+  InterfaceType: 0,
+  NetworkCardIndex: 0,
+  Ipv4Prefixes: D.m({
+    wire: "Ipv4Prefix",
+    shape: D.list(i_Ipv4PrefixSpecificationRequest),
+  }),
+  Ipv4PrefixCount: 0,
+  Ipv6Prefixes: D.m({
+    wire: "Ipv6Prefix",
+    shape: D.list(i_Ipv6PrefixSpecificationRequest),
+  }),
+  Ipv6PrefixCount: 0,
+  PrimaryIpv6: 0,
+  EnaSrdSpecification: i_EnaSrdSpecificationRequest,
+  ConnectionTrackingSpecification: i_ConnectionTrackingSpecificationRequest,
+  EnaQueueCount: 0,
 });
 const i_InstanceRequirements: D.LazyStruct = () => ({
+  VCpuCount: { Min: 0, Max: 0 },
+  MemoryMiB: { Min: 0, Max: 0 },
   CpuManufacturers: D.m({ wire: "CpuManufacturerSet" }),
+  MemoryGiBPerVCpu: { Min: 0, Max: 0 },
   ExcludedInstanceTypes: D.m({ wire: "ExcludedInstanceTypeSet" }),
   InstanceGenerations: D.m({ wire: "InstanceGenerationSet" }),
+  SpotMaxPricePercentageOverLowestPrice: 0,
+  OnDemandMaxPricePercentageOverLowestPrice: 0,
+  BareMetal: 0,
+  BurstablePerformance: 0,
+  RequireHibernateSupport: 0,
+  NetworkInterfaceCount: { Min: 0, Max: 0 },
+  LocalStorage: 0,
   LocalStorageTypes: D.m({ wire: "LocalStorageTypeSet" }),
+  TotalLocalStorageGB: { Min: 0, Max: 0 },
+  BaselineEbsBandwidthMbps: { Min: 0, Max: 0 },
   AcceleratorTypes: D.m({ wire: "AcceleratorTypeSet" }),
+  AcceleratorCount: { Min: 0, Max: 0 },
   AcceleratorManufacturers: D.m({ wire: "AcceleratorManufacturerSet" }),
   AcceleratorNames: D.m({ wire: "AcceleratorNameSet" }),
+  AcceleratorTotalMemoryMiB: { Min: 0, Max: 0 },
+  NetworkBandwidthGbps: { Min: 0, Max: 0 },
   AllowedInstanceTypes: D.m({ wire: "AllowedInstanceTypeSet" }),
+  MaxSpotPriceAsPercentageOfOptimalOnDemandPrice: 0,
   BaselinePerformanceFactors: {
-    Cpu: { References: D.m({ wire: "ReferenceSet" }) },
+    Cpu: {
+      References: D.m({
+        wire: "ReferenceSet",
+        shape: D.list({ InstanceFamily: 0 }),
+      }),
+    },
   },
+  RequireEncryptionInTransit: 0,
 });
 const i_InstanceRequirementsRequest: D.LazyStruct = () => ({
+  VCpuCount: { Min: 0, Max: 0 },
+  MemoryMiB: { Min: 0, Max: 0 },
   CpuManufacturers: D.m({ wire: "CpuManufacturer" }),
+  MemoryGiBPerVCpu: { Min: 0, Max: 0 },
   ExcludedInstanceTypes: D.m({ wire: "ExcludedInstanceType" }),
   InstanceGenerations: D.m({ wire: "InstanceGeneration" }),
+  SpotMaxPricePercentageOverLowestPrice: 0,
+  OnDemandMaxPricePercentageOverLowestPrice: 0,
+  BareMetal: 0,
+  BurstablePerformance: 0,
+  RequireHibernateSupport: 0,
+  NetworkInterfaceCount: { Min: 0, Max: 0 },
+  LocalStorage: 0,
   LocalStorageTypes: D.m({ wire: "LocalStorageType" }),
+  TotalLocalStorageGB: { Min: 0, Max: 0 },
+  BaselineEbsBandwidthMbps: { Min: 0, Max: 0 },
   AcceleratorTypes: D.m({ wire: "AcceleratorType" }),
+  AcceleratorCount: { Min: 0, Max: 0 },
   AcceleratorManufacturers: D.m({ wire: "AcceleratorManufacturer" }),
   AcceleratorNames: D.m({ wire: "AcceleratorName" }),
+  AcceleratorTotalMemoryMiB: { Min: 0, Max: 0 },
+  NetworkBandwidthGbps: { Min: 0, Max: 0 },
   AllowedInstanceTypes: D.m({ wire: "AllowedInstanceType" }),
+  MaxSpotPriceAsPercentageOfOptimalOnDemandPrice: 0,
   BaselinePerformanceFactors: {
-    Cpu: { References: D.m({ wire: "Reference" }) },
+    Cpu: {
+      References: D.m({
+        wire: "Reference",
+        shape: D.list({ InstanceFamily: 0 }),
+      }),
+    },
   },
+  RequireEncryptionInTransit: 0,
 });
 const i_IpPermission: D.LazyStruct = () => ({
-  UserIdGroupPairs: D.m({ wire: "Groups" }),
+  IpProtocol: 0,
+  FromPort: 0,
+  ToPort: 0,
+  UserIdGroupPairs: D.m({
+    wire: "Groups",
+    shape: D.list({
+      Description: 0,
+      UserId: 0,
+      GroupName: 0,
+      GroupId: 0,
+      VpcId: 0,
+      VpcPeeringConnectionId: 0,
+      PeeringStatus: 0,
+    }),
+  }),
+  IpRanges: D.list({ Description: 0, CidrIp: 0 }),
+  Ipv6Ranges: D.list({ Description: 0, CidrIpv6: 0 }),
+  PrefixListIds: D.list({ Description: 0, PrefixListId: 0 }),
 });
 const i_IpamPrefixListResolverRuleRequest: D.LazyStruct = () => ({
-  Conditions: D.m({ wire: "Condition" }),
+  RuleType: 0,
+  StaticCidr: 0,
+  IpamScopeId: 0,
+  ResourceType: 0,
+  Conditions: D.m({
+    wire: "Condition",
+    shape: D.list({
+      Operation: 0,
+      IpamPoolId: 0,
+      ResourceId: 0,
+      ResourceOwner: 0,
+      ResourceRegion: 0,
+      ResourceTag: i_RequestIpamResourceTag,
+      Cidr: 0,
+    }),
+  }),
+});
+const i_Ipv4PrefixSpecificationRequest: D.LazyStruct = () => ({
+  Ipv4Prefix: 0,
+});
+const i_Ipv6PrefixSpecificationRequest: D.LazyStruct = () => ({
+  Ipv6Prefix: 0,
+});
+const i_LaunchPermission: D.LazyStruct = () => ({
+  OrganizationArn: 0,
+  OrganizationalUnitArn: 0,
+  UserId: 0,
+  Group: 0,
 });
 const i_LaunchTemplateConfig: D.LazyStruct = () => ({
-  Overrides: D.list({ InstanceRequirements: i_InstanceRequirements }),
+  LaunchTemplateSpecification: {
+    LaunchTemplateId: 0,
+    LaunchTemplateName: 0,
+    Version: 0,
+  },
+  Overrides: D.list({
+    InstanceType: 0,
+    SpotPrice: 0,
+    SubnetId: 0,
+    AvailabilityZone: 0,
+    WeightedCapacity: 0,
+    Priority: 0,
+    InstanceRequirements: i_InstanceRequirements,
+    AvailabilityZoneId: 0,
+  }),
 });
+const i_LoadPermissionRequest: D.LazyStruct = () => ({ Group: 0, UserId: 0 });
+const i_ModifyVerifiedAccessEndpointPortRange: D.LazyStruct = () => ({
+  FromPort: 0,
+  ToPort: 0,
+});
+const i_OperatorRequest: D.LazyStruct = () => ({ Principal: 0 });
+const i_PathRequestFilter: D.LazyStruct = () => ({
+  SourceAddress: 0,
+  SourcePortRange: i_RequestFilterPortRange,
+  DestinationAddress: 0,
+  DestinationPortRange: i_RequestFilterPortRange,
+});
+const i_PeeringConnectionOptionsRequest: D.LazyStruct = () => ({
+  AllowDnsResolutionFromRemoteVpc: 0,
+  AllowEgressFromLocalClassicLinkToRemoteVpc: 0,
+  AllowEgressFromLocalVpcToRemoteClassicLink: 0,
+});
+const i_Phase1DHGroupNumbersRequestListValue: D.LazyStruct = () => ({
+  Value: 0,
+});
+const i_Phase1EncryptionAlgorithmsRequestListValue: D.LazyStruct = () => ({
+  Value: 0,
+});
+const i_Phase1IntegrityAlgorithmsRequestListValue: D.LazyStruct = () => ({
+  Value: 0,
+});
+const i_Phase2DHGroupNumbersRequestListValue: D.LazyStruct = () => ({
+  Value: 0,
+});
+const i_Phase2EncryptionAlgorithmsRequestListValue: D.LazyStruct = () => ({
+  Value: 0,
+});
+const i_Phase2IntegrityAlgorithmsRequestListValue: D.LazyStruct = () => ({
+  Value: 0,
+});
+const i_Placement: D.LazyStruct = () => ({
+  AvailabilityZoneId: 0,
+  Affinity: 0,
+  GroupName: 0,
+  PartitionNumber: 0,
+  HostId: 0,
+  Tenancy: 0,
+  SpreadDomain: 0,
+  HostResourceGroupArn: 0,
+  GroupId: 0,
+  AvailabilityZone: 0,
+});
+const i_PortRange: D.LazyStruct = () => ({ From: 0, To: 0 });
+const i_PrivateIpAddressSpecification: D.LazyStruct = () => ({
+  Primary: 0,
+  PrivateIpAddress: 0,
+});
+const i_RemoveIpamOperatingRegion: D.LazyStruct = () => ({ RegionName: 0 });
+const i_RequestIpamResourceTag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const i_RequestLaunchTemplateData: D.LazyStruct = () => ({
-  BlockDeviceMappings: D.m({ wire: "BlockDeviceMapping" }),
+  KernelId: 0,
+  EbsOptimized: 0,
+  IamInstanceProfile: { Arn: 0, Name: 0 },
+  BlockDeviceMappings: D.m({
+    wire: "BlockDeviceMapping",
+    shape: D.list({
+      DeviceName: 0,
+      VirtualName: 0,
+      Ebs: {
+        Encrypted: 0,
+        DeleteOnTermination: 0,
+        Iops: 0,
+        KmsKeyId: 0,
+        SnapshotId: 0,
+        VolumeSize: 0,
+        VolumeType: 0,
+        Throughput: 0,
+        VolumeInitializationRate: 0,
+        EbsCardIndex: 0,
+      },
+      NoDevice: 0,
+    }),
+  }),
   NetworkInterfaces: D.m({
     wire: "NetworkInterface",
     shape: D.list({
+      AssociateCarrierIpAddress: 0,
+      AssociatePublicIpAddress: 0,
+      DeleteOnTermination: 0,
+      Description: 0,
+      DeviceIndex: 0,
       Groups: D.m({ wire: "SecurityGroupId" }),
-      Ipv4Prefixes: D.m({ wire: "Ipv4Prefix" }),
-      Ipv6Prefixes: D.m({ wire: "Ipv6Prefix" }),
+      InterfaceType: 0,
+      Ipv6AddressCount: 0,
+      Ipv6Addresses: D.list({ Ipv6Address: 0 }),
+      NetworkInterfaceId: 0,
+      PrivateIpAddress: 0,
+      PrivateIpAddresses: D.list(i_PrivateIpAddressSpecification),
+      SecondaryPrivateIpAddressCount: 0,
+      SubnetId: 0,
+      NetworkCardIndex: 0,
+      Ipv4Prefixes: D.m({
+        wire: "Ipv4Prefix",
+        shape: D.list(i_Ipv4PrefixSpecificationRequest),
+      }),
+      Ipv4PrefixCount: 0,
+      Ipv6Prefixes: D.m({
+        wire: "Ipv6Prefix",
+        shape: D.list(i_Ipv6PrefixSpecificationRequest),
+      }),
+      Ipv6PrefixCount: 0,
+      PrimaryIpv6: 0,
+      EnaSrdSpecification: i_EnaSrdSpecificationRequest,
+      ConnectionTrackingSpecification: i_ConnectionTrackingSpecificationRequest,
+      EnaQueueCount: 0,
     }),
   }),
+  ImageId: 0,
+  InstanceType: 0,
+  KeyName: 0,
+  Monitoring: { Enabled: 0 },
+  Placement: {
+    AvailabilityZone: 0,
+    AvailabilityZoneId: 0,
+    Affinity: 0,
+    GroupName: 0,
+    HostId: 0,
+    Tenancy: 0,
+    SpreadDomain: 0,
+    HostResourceGroupArn: 0,
+    PartitionNumber: 0,
+    GroupId: 0,
+  },
+  RamDiskId: 0,
+  DisableApiTermination: 0,
+  InstanceInitiatedShutdownBehavior: 0,
+  UserData: 0,
   TagSpecifications: D.m({
     wire: "TagSpecification",
-    shape: D.list({ Tags: D.m({ wire: "Tag" }) }),
+    shape: D.list({
+      ResourceType: 0,
+      Tags: D.m({ wire: "Tag", shape: D.list(i_Tag) }),
+    }),
   }),
-  ElasticGpuSpecifications: D.m({ wire: "ElasticGpuSpecification" }),
-  ElasticInferenceAccelerators: D.m({ wire: "ElasticInferenceAccelerator" }),
+  ElasticGpuSpecifications: D.m({
+    wire: "ElasticGpuSpecification",
+    shape: D.list(i_ElasticGpuSpecification),
+  }),
+  ElasticInferenceAccelerators: D.m({
+    wire: "ElasticInferenceAccelerator",
+    shape: D.list({ Type: 0, Count: 0 }),
+  }),
   SecurityGroupIds: D.m({ wire: "SecurityGroupId" }),
   SecurityGroups: D.m({ wire: "SecurityGroup" }),
-  LicenseSpecifications: D.m({ wire: "LicenseSpecification" }),
+  InstanceMarketOptions: {
+    MarketType: 0,
+    SpotOptions: {
+      MaxPrice: 0,
+      SpotInstanceType: 0,
+      BlockDurationMinutes: 0,
+      ValidUntil: 0,
+      InstanceInterruptionBehavior: 0,
+    },
+  },
+  CreditSpecification: i_CreditSpecificationRequest,
+  CpuOptions: {
+    CoreCount: 0,
+    ThreadsPerCore: 0,
+    AmdSevSnp: 0,
+    NestedVirtualization: 0,
+  },
+  CapacityReservationSpecification: {
+    CapacityReservationPreference: 0,
+    CapacityReservationTarget: i_CapacityReservationTarget,
+  },
+  LicenseSpecifications: D.m({
+    wire: "LicenseSpecification",
+    shape: D.list({ LicenseConfigurationArn: 0 }),
+  }),
+  HibernationOptions: { Configured: 0 },
+  MetadataOptions: {
+    HttpTokens: 0,
+    HttpPutResponseHopLimit: 0,
+    HttpEndpoint: 0,
+    HttpProtocolIpv6: 0,
+    InstanceMetadataTags: 0,
+  },
+  EnclaveOptions: { Enabled: 0 },
   InstanceRequirements: i_InstanceRequirementsRequest,
+  PrivateDnsNameOptions: {
+    HostnameType: 0,
+    EnableResourceNameDnsARecord: 0,
+    EnableResourceNameDnsAAAARecord: 0,
+  },
+  MaintenanceOptions: { AutoRecovery: 0 },
+  DisableApiStop: 0,
+  Operator: i_OperatorRequest,
+  NetworkPerformanceOptions: { BandwidthWeighting: 0 },
   SecondaryInterfaces: D.m({
     wire: "SecondaryInterface",
-    shape: D.list({ PrivateIpAddresses: D.m({ wire: "PrivateIpAddress" }) }),
+    shape: D.list({
+      DeleteOnTermination: 0,
+      DeviceIndex: 0,
+      PrivateIpAddresses: D.m({
+        wire: "PrivateIpAddress",
+        shape: D.list({ PrivateIpAddress: 0 }),
+      }),
+      PrivateIpAddressCount: 0,
+      SecondarySubnetId: 0,
+      InterfaceType: 0,
+      NetworkCardIndex: 0,
+    }),
   }),
 });
-const i_TagSpecification: D.LazyStruct = () => ({ Tags: D.m({ wire: "Tag" }) });
+const i_RunInstancesMonitoringEnabled: D.LazyStruct = () => ({ Enabled: 0 });
+const i_SecurityGroupRuleDescription: D.LazyStruct = () => ({
+  SecurityGroupRuleId: 0,
+  Description: 0,
+});
+const i_SpotPlacement: D.LazyStruct = () => ({
+  AvailabilityZone: 0,
+  GroupName: 0,
+  Tenancy: 0,
+  AvailabilityZoneId: 0,
+});
+const i_StorageLocation: D.LazyStruct = () => ({ Bucket: 0, Key: 0 });
+const i_SubnetConfiguration: D.LazyStruct = () => ({
+  SubnetId: 0,
+  Ipv4: 0,
+  Ipv6: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_TagSpecification: D.LazyStruct = () => ({
+  ResourceType: 0,
+  Tags: D.m({ wire: "Tag", shape: D.list(i_Tag) }),
+});
+const i_TargetCapacitySpecificationRequest: D.LazyStruct = () => ({
+  TotalTargetCapacity: 0,
+  OnDemandTargetCapacity: 0,
+  SpotTargetCapacity: 0,
+  DefaultTargetCapacityType: 0,
+  TargetCapacityUnitType: 0,
+});
+const i_TargetConfigurationRequest: D.LazyStruct = () => ({
+  InstanceCount: 0,
+  OfferingId: 0,
+});
+const i_TrafficMirrorPortRangeRequest: D.LazyStruct = () => ({
+  FromPort: 0,
+  ToPort: 0,
+});
 const i_TransitGatewayConfigurationInputStructure: D.LazyStruct = () => ({
+  TransitGatewayId: 0,
   AvailabilityZones: D.m({ wire: "AvailabilityZone" }),
   AvailabilityZoneIds: D.m({ wire: "AvailabilityZoneId" }),
+});
+const i_TransitGatewayRequestPolicyRule: D.LazyStruct = () => ({
+  SourceCidrBlock: 0,
+  SourcePortRange: 0,
+  DestinationCidrBlock: 0,
+  DestinationPortRange: 0,
+  Protocol: 0,
+  MetaData: { MetaDataKey: 0, MetaDataValue: 0 },
+});
+const i_UserBucket: D.LazyStruct = () => ({ S3Bucket: 0, S3Key: 0 });
+const i_VerifiedAccessSseSpecificationRequest: D.LazyStruct = () => ({
+  CustomerManagedKeyEnabled: 0,
+  KmsKeyArn: 0,
+});
+const i_VolumeDetail: D.LazyStruct = () => ({ Size: 0 });
+const i_VpnTunnelLogOptionsSpecification: D.LazyStruct = () => ({
+  CloudWatchLogOptions: {
+    LogEnabled: 0,
+    LogGroupArn: 0,
+    LogOutputFormat: 0,
+    BgpLogEnabled: 0,
+    BgpLogGroupArn: 0,
+    BgpLogOutputFormat: 0,
+  },
 });
 const o_AccountVpcEncryptionControl: D.LazyStruct = () => ({
   Exclusions: {},
@@ -53484,6 +58122,14 @@ const o_VpnGateway: D.LazyStruct = () => ({
   Tags: D.m({ wire: "tagSet", shape: D.list({}) }),
   VpcAttachments: D.m({ wire: "attachments", shape: D.list({}) }),
 });
+const i_CapacityReservationTarget: D.LazyStruct = () => ({
+  CapacityReservationId: 0,
+  CapacityReservationResourceGroupArn: 0,
+});
+const i_EnaSrdSpecificationRequest: D.LazyStruct = () => ({
+  EnaSrdEnabled: 0,
+  EnaSrdUdpSpecification: { EnaSrdUdpEnabled: 0 },
+});
 const i_PathStatementRequest: D.LazyStruct = () => ({
   PacketHeaderStatement: {
     SourceAddresses: D.m({ wire: "SourceAddress" }),
@@ -53495,6 +58141,10 @@ const i_PathStatementRequest: D.LazyStruct = () => ({
     Protocols: D.m({ wire: "Protocol" }),
   },
   ResourceStatement: i_ResourceStatementRequest,
+});
+const i_RequestFilterPortRange: D.LazyStruct = () => ({
+  FromPort: 0,
+  ToPort: 0,
 });
 const i_ResourceStatementRequest: D.LazyStruct = () => ({
   Resources: D.m({ wire: "Resource" }),

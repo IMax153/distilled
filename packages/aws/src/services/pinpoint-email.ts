@@ -755,6 +755,14 @@ export const createConfigurationSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/email/configuration-sets",
+    input: {
+      ConfigurationSetName: 0,
+      TrackingOptions: { CustomRedirectDomain: 0 },
+      DeliveryOptions: { TlsPolicy: 0, SendingPoolName: 0 },
+      ReputationOptions: { ReputationMetricsEnabled: 0, LastFreshStart: 0 },
+      SendingOptions: { SendingEnabled: 0 },
+      Tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -796,6 +804,11 @@ export const createConfigurationSetEventDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/email/configuration-sets/{ConfigurationSetName}/event-destinations",
+    input: {
+      ConfigurationSetName: 0,
+      EventDestinationName: 0,
+      EventDestination: i_EventDestinationDefinition,
+    },
     body: true,
   },
   errors: [
@@ -832,6 +845,7 @@ export const createDedicatedIpPool: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/email/dedicated-ip-pools",
+    input: { PoolName: 0, Tags: D.list(i_Tag) },
     body: true,
   },
   errors: [
@@ -875,6 +889,12 @@ export const createDeliverabilityTestReport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/email/deliverability-dashboard/test",
+    input: {
+      ReportName: 0,
+      FromEmailAddress: 0,
+      Content: i_EmailContent,
+      Tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -921,7 +941,12 @@ export const createEmailIdentity: API.OperationMethod<
   CreateEmailIdentityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/email/identities", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/email/identities",
+    input: { EmailIdentity: 0, Tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ConcurrentModificationException,
@@ -957,6 +982,7 @@ export const deleteConfigurationSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/email/configuration-sets/{ConfigurationSetName}",
+    input: { ConfigurationSetName: 0 },
   },
   errors: [
     BadRequestException,
@@ -992,6 +1018,7 @@ export const deleteConfigurationSetEventDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/email/configuration-sets/{ConfigurationSetName}/event-destinations/{EventDestinationName}",
+    input: { ConfigurationSetName: 0, EventDestinationName: 0 },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -1017,6 +1044,7 @@ export const deleteDedicatedIpPool: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/email/dedicated-ip-pools/{PoolName}",
+    input: { PoolName: 0 },
   },
   errors: [
     BadRequestException,
@@ -1048,6 +1076,7 @@ export const deleteEmailIdentity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/email/identities/{EmailIdentity}",
+    input: { EmailIdentity: 0 },
   },
   errors: [
     BadRequestException,
@@ -1074,7 +1103,7 @@ export const getAccount: API.OperationMethod<
   GetAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/email/account" },
+  descriptor: { service: svc, http: "GET /v1/email/account", input: {} },
   errors: [BadRequestException, TooManyRequestsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1132,6 +1161,7 @@ export const getConfigurationSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/email/configuration-sets/{ConfigurationSetName}",
+    input: { ConfigurationSetName: 0 },
     output: { ReputationOptions: { LastFreshStart: D.ts } },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -1164,6 +1194,7 @@ export const getConfigurationSetEventDestinations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/email/configuration-sets/{ConfigurationSetName}/event-destinations",
+    input: { ConfigurationSetName: 0 },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -1187,7 +1218,11 @@ export const getDedicatedIp: API.OperationMethod<
   GetDedicatedIpError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/email/dedicated-ips/{Ip}" },
+  descriptor: {
+    service: svc,
+    http: "GET /v1/email/dedicated-ips/{Ip}",
+    input: { Ip: 0 },
+  },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1254,6 +1289,7 @@ export const getDeliverabilityDashboardOptions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/email/deliverability-dashboard",
+    input: {},
     output: {
       SubscriptionExpiryDate: D.ts,
       ActiveSubscribedDomains: D.list(o_DomainDeliverabilityTrackingOption),
@@ -1289,6 +1325,7 @@ export const getDeliverabilityTestReport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/email/deliverability-dashboard/test-reports/{ReportId}",
+    input: { ReportId: 0 },
     output: { DeliverabilityTestReport: o_DeliverabilityTestReport },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -1317,6 +1354,7 @@ export const getDomainDeliverabilityCampaign: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/email/deliverability-dashboard/campaigns/{CampaignId}",
+    input: { CampaignId: 0 },
     output: { DomainDeliverabilityCampaign: o_DomainDeliverabilityCampaign },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -1344,8 +1382,9 @@ export const getDomainStatisticsReport: API.OperationMethod<
     service: svc,
     http: "GET /v1/email/deliverability-dashboard/statistics-report/{Domain}",
     input: {
-      StartDate: D.m({ query: "StartDate" }),
-      EndDate: D.m({ query: "EndDate" }),
+      Domain: 0,
+      StartDate: D.m({ query: "StartDate", shape: D.tsAs("epoch-seconds") }),
+      EndDate: D.m({ query: "EndDate", shape: D.tsAs("epoch-seconds") }),
     },
     output: { DailyVolumes: D.list({ StartDate: D.ts }) },
   },
@@ -1374,6 +1413,7 @@ export const getEmailIdentity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/email/identities/{EmailIdentity}",
+    input: { EmailIdentity: 0 },
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
   protocol: AwsProtocol,
@@ -1514,8 +1554,9 @@ export const listDomainDeliverabilityCampaigns: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/email/deliverability-dashboard/domains/{SubscribedDomain}/campaigns",
     input: {
-      StartDate: D.m({ query: "StartDate" }),
-      EndDate: D.m({ query: "EndDate" }),
+      StartDate: D.m({ query: "StartDate", shape: D.tsAs("epoch-seconds") }),
+      EndDate: D.m({ query: "EndDate", shape: D.tsAs("epoch-seconds") }),
+      SubscribedDomain: 0,
       NextToken: D.m({ query: "NextToken" }),
       PageSize: D.m({ query: "PageSize" }),
     },
@@ -1615,6 +1656,7 @@ export const putAccountDedicatedIpWarmupAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/email/account/dedicated-ips/warmup",
+    input: { AutoWarmupEnabled: 0 },
     body: true,
   },
   errors: [BadRequestException, TooManyRequestsException],
@@ -1639,6 +1681,7 @@ export const putAccountSendingAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/email/account/sending",
+    input: { SendingEnabled: 0 },
     body: true,
   },
   errors: [BadRequestException, TooManyRequestsException],
@@ -1665,6 +1708,7 @@ export const putConfigurationSetDeliveryOptions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/email/configuration-sets/{ConfigurationSetName}/delivery-options",
+    input: { ConfigurationSetName: 0, TlsPolicy: 0, SendingPoolName: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -1691,6 +1735,7 @@ export const putConfigurationSetReputationOptions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/email/configuration-sets/{ConfigurationSetName}/reputation-options",
+    input: { ConfigurationSetName: 0, ReputationMetricsEnabled: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -1717,6 +1762,7 @@ export const putConfigurationSetSendingOptions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/email/configuration-sets/{ConfigurationSetName}/sending",
+    input: { ConfigurationSetName: 0, SendingEnabled: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -1743,6 +1789,7 @@ export const putConfigurationSetTrackingOptions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/email/configuration-sets/{ConfigurationSetName}/tracking-options",
+    input: { ConfigurationSetName: 0, CustomRedirectDomain: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -1774,6 +1821,7 @@ export const putDedicatedIpInPool: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/email/dedicated-ips/{Ip}/pool",
+    input: { Ip: 0, DestinationPoolName: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -1799,6 +1847,7 @@ export const putDedicatedIpWarmupAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/email/dedicated-ips/{Ip}/warmup",
+    input: { Ip: 0, WarmupPercentage: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -1833,6 +1882,14 @@ export const putDeliverabilityDashboardOption: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/email/deliverability-dashboard",
+    input: {
+      DashboardEnabled: 0,
+      SubscribedDomains: D.list({
+        Domain: 0,
+        SubscriptionStartDate: 0,
+        InboxPlacementTrackingOption: { Global: 0, TrackedIsps: 0 },
+      }),
+    },
     body: true,
   },
   errors: [
@@ -1864,6 +1921,7 @@ export const putEmailIdentityDkimAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/email/identities/{EmailIdentity}/dkim",
+    input: { EmailIdentity: 0, SigningEnabled: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -1901,6 +1959,7 @@ export const putEmailIdentityFeedbackAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/email/identities/{EmailIdentity}/feedback",
+    input: { EmailIdentity: 0, EmailForwardingEnabled: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -1927,6 +1986,7 @@ export const putEmailIdentityMailFromAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/email/identities/{EmailIdentity}/mail-from",
+    input: { EmailIdentity: 0, MailFromDomain: 0, BehaviorOnMxFailure: 0 },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -1968,6 +2028,15 @@ export const sendEmail: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/email/outbound-emails",
+    input: {
+      FromEmailAddress: 0,
+      Destination: { ToAddresses: 0, CcAddresses: 0, BccAddresses: 0 },
+      ReplyToAddresses: 0,
+      FeedbackForwardingEmailAddress: 0,
+      Content: i_EmailContent,
+      EmailTags: D.list({ Name: 0, Value: 0 }),
+      ConfigurationSetName: 0,
+    },
     body: true,
   },
   errors: [
@@ -2009,7 +2078,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/email/tags", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/email/tags",
+    input: { ResourceArn: 0, Tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ConcurrentModificationException,
@@ -2078,6 +2152,11 @@ export const updateConfigurationSetEventDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/email/configuration-sets/{ConfigurationSetName}/event-destinations/{EventDestinationName}",
+    input: {
+      ConfigurationSetName: 0,
+      EventDestinationName: 0,
+      EventDestination: i_EventDestinationDefinition,
+    },
     body: true,
   },
   errors: [BadRequestException, NotFoundException, TooManyRequestsException],
@@ -2086,6 +2165,26 @@ export const updateConfigurationSetEventDestination: API.OperationMethod<
   operationName: "UpdateConfigurationSetEventDestination",
 })) as any;
 
+const i_EmailContent: D.LazyStruct = () => ({
+  Simple: { Subject: i_Content, Body: { Text: i_Content, Html: i_Content } },
+  Raw: { Data: 0 },
+  Template: { TemplateArn: 0, TemplateData: 0 },
+});
+const i_EventDestinationDefinition: D.LazyStruct = () => ({
+  Enabled: 0,
+  MatchingEventTypes: 0,
+  KinesisFirehoseDestination: { IamRoleArn: 0, DeliveryStreamArn: 0 },
+  CloudWatchDestination: {
+    DimensionConfigurations: D.list({
+      DimensionName: 0,
+      DimensionValueSource: 0,
+      DefaultDimensionValue: 0,
+    }),
+  },
+  SnsDestination: { TopicArn: 0 },
+  PinpointDestination: { ApplicationArn: 0 },
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_DeliverabilityTestReport: D.LazyStruct = () => ({ CreateDate: D.ts });
 const o_DomainDeliverabilityCampaign: D.LazyStruct = () => ({
   FirstSeenDateTime: D.ts,
@@ -2094,3 +2193,4 @@ const o_DomainDeliverabilityCampaign: D.LazyStruct = () => ({
 const o_DomainDeliverabilityTrackingOption: D.LazyStruct = () => ({
   SubscriptionStartDate: D.ts,
 });
+const i_Content: D.LazyStruct = () => ({ Data: 0, Charset: 0 });

@@ -1484,6 +1484,16 @@ export const createApiKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apikeys",
+    input: {
+      name: 0,
+      description: 0,
+      enabled: 0,
+      generateDistinctId: 0,
+      value: 0,
+      stageKeys: D.list({ restApiId: 0, stageName: 0 }),
+      customerId: 0,
+      tags: 0,
+    },
     output: { value: D.secret, createdDate: D.ts, lastUpdatedDate: D.ts },
     body: true,
   },
@@ -1520,6 +1530,18 @@ export const createAuthorizer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /restapis/{restApiId}/authorizers",
+    input: {
+      restApiId: 0,
+      name: 0,
+      type: 0,
+      providerARNs: 0,
+      authType: 0,
+      authorizerUri: 0,
+      authorizerCredentials: 0,
+      identitySource: 0,
+      identityValidationExpression: 0,
+      authorizerResultTtlInSeconds: 0,
+    },
     body: true,
   },
   errors: [
@@ -1555,7 +1577,13 @@ export const createBasePathMapping: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domainnames/{domainName}/basepathmappings",
-    input: { domainNameId: D.m({ query: "domainNameId" }) },
+    input: {
+      domainName: 0,
+      domainNameId: D.m({ query: "domainNameId" }),
+      basePath: 0,
+      restApiId: 0,
+      stage: 0,
+    },
     body: true,
   },
   errors: [
@@ -1592,6 +1620,21 @@ export const createDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /restapis/{restApiId}/deployments",
+    input: {
+      restApiId: 0,
+      stageName: 0,
+      stageDescription: 0,
+      description: 0,
+      cacheClusterEnabled: 0,
+      cacheClusterSize: 0,
+      variables: 0,
+      canarySettings: {
+        percentTraffic: 0,
+        stageVariableOverrides: 0,
+        useStageCache: 0,
+      },
+      tracingEnabled: 0,
+    },
     output: { createdDate: D.ts },
     body: true,
   },
@@ -1629,6 +1672,11 @@ export const createDocumentationPart: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /restapis/{restApiId}/documentation/parts",
+    input: {
+      restApiId: 0,
+      location: { type: 0, path: 0, method: 0, statusCode: 0, name: 0 },
+      properties: 0,
+    },
     body: true,
   },
   errors: [
@@ -1664,6 +1712,12 @@ export const createDocumentationVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /restapis/{restApiId}/documentation/versions",
+    input: {
+      restApiId: 0,
+      documentationVersion: 0,
+      stageName: 0,
+      description: 0,
+    },
     output: { createdDate: D.ts },
     body: true,
   },
@@ -1699,6 +1753,24 @@ export const createDomainName: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domainnames",
+    input: {
+      domainName: 0,
+      certificateName: 0,
+      certificateBody: 0,
+      certificatePrivateKey: 0,
+      certificateChain: 0,
+      certificateArn: 0,
+      regionalCertificateName: 0,
+      regionalCertificateArn: 0,
+      endpointConfiguration: i_EndpointConfiguration,
+      tags: 0,
+      securityPolicy: 0,
+      endpointAccessMode: 0,
+      mutualTlsAuthentication: { truststoreUri: 0, truststoreVersion: 0 },
+      ownershipVerificationCertificateArn: 0,
+      policy: 0,
+      routingMode: 0,
+    },
     output: { certificateUploadDate: D.ts },
     body: true,
   },
@@ -1734,6 +1806,12 @@ export const createDomainNameAccessAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domainnameaccessassociations",
+    input: {
+      domainNameArn: 0,
+      accessAssociationSourceType: 0,
+      accessAssociationSource: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1768,6 +1846,7 @@ export const createModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /restapis/{restApiId}/models",
+    input: { restApiId: 0, name: 0, description: 0, schema: 0, contentType: 0 },
     body: true,
   },
   errors: [
@@ -1803,6 +1882,12 @@ export const createRequestValidator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /restapis/{restApiId}/requestvalidators",
+    input: {
+      restApiId: 0,
+      name: 0,
+      validateRequestBody: 0,
+      validateRequestParameters: 0,
+    },
     body: true,
   },
   errors: [
@@ -1838,6 +1923,7 @@ export const createResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /restapis/{restApiId}/resources/{parentId}",
+    input: { restApiId: 0, parentId: 0, pathPart: 0 },
     body: true,
   },
   errors: [
@@ -1872,6 +1958,21 @@ export const createRestApi: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /restapis",
+    input: {
+      name: 0,
+      description: 0,
+      version: 0,
+      cloneFrom: 0,
+      binaryMediaTypes: 0,
+      minimumCompressionSize: 0,
+      apiKeySource: 0,
+      endpointConfiguration: i_EndpointConfiguration,
+      policy: 0,
+      tags: 0,
+      disableExecuteApiEndpoint: 0,
+      securityPolicy: 0,
+      endpointAccessMode: 0,
+    },
     output: { createdDate: D.ts },
     body: true,
   },
@@ -1907,6 +2008,24 @@ export const createStage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /restapis/{restApiId}/stages",
+    input: {
+      restApiId: 0,
+      stageName: 0,
+      deploymentId: 0,
+      description: 0,
+      cacheClusterEnabled: 0,
+      cacheClusterSize: 0,
+      variables: 0,
+      documentationVersion: 0,
+      canarySettings: {
+        percentTraffic: 0,
+        deploymentId: 0,
+        stageVariableOverrides: 0,
+        useStageCache: 0,
+      },
+      tracingEnabled: 0,
+      tags: 0,
+    },
     output: { createdDate: D.ts, lastUpdatedDate: D.ts },
     body: true,
   },
@@ -1940,7 +2059,23 @@ export const createUsagePlan: API.OperationMethod<
   CreateUsagePlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /usageplans", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /usageplans",
+    input: {
+      name: 0,
+      description: 0,
+      apiStages: D.list({
+        apiId: 0,
+        stage: 0,
+        throttle: D.map(i_ThrottleSettings),
+      }),
+      throttle: i_ThrottleSettings,
+      quota: { limit: 0, offset: 0, period: 0 },
+      tags: 0,
+    },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -1974,6 +2109,7 @@ export const createUsagePlanKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /usageplans/{usagePlanId}/keys",
+    input: { usagePlanId: 0, keyId: 0, keyType: 0 },
     body: true,
   },
   errors: [
@@ -2005,7 +2141,12 @@ export const createVpcLink: API.OperationMethod<
   CreateVpcLinkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /vpclinks", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /vpclinks",
+    input: { name: 0, description: 0, targetArns: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -2034,7 +2175,11 @@ export const deleteApiKey: API.OperationMethod<
   DeleteApiKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /apikeys/{apiKey}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /apikeys/{apiKey}",
+    input: { apiKey: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -2066,6 +2211,7 @@ export const deleteAuthorizer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /restapis/{restApiId}/authorizers/{authorizerId}",
+    input: { restApiId: 0, authorizerId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2098,7 +2244,11 @@ export const deleteBasePathMapping: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domainnames/{domainName}/basepathmappings/{basePath}",
-    input: { domainNameId: D.m({ query: "domainNameId" }) },
+    input: {
+      domainName: 0,
+      domainNameId: D.m({ query: "domainNameId" }),
+      basePath: 0,
+    },
   },
   errors: [
     BadRequestException,
@@ -2131,6 +2281,7 @@ export const deleteClientCertificate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /clientcertificates/{clientCertificateId}",
+    input: { clientCertificateId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2164,6 +2315,7 @@ export const deleteDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /restapis/{restApiId}/deployments/{deploymentId}",
+    input: { restApiId: 0, deploymentId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2197,6 +2349,7 @@ export const deleteDocumentationPart: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /restapis/{restApiId}/documentation/parts/{documentationPartId}",
+    input: { restApiId: 0, documentationPartId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2229,6 +2382,7 @@ export const deleteDocumentationVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /restapis/{restApiId}/documentation/versions/{documentationVersion}",
+    input: { restApiId: 0, documentationVersion: 0 },
   },
   errors: [
     BadRequestException,
@@ -2261,7 +2415,7 @@ export const deleteDomainName: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domainnames/{domainName}",
-    input: { domainNameId: D.m({ query: "domainNameId" }) },
+    input: { domainName: 0, domainNameId: D.m({ query: "domainNameId" }) },
   },
   errors: [
     BadRequestException,
@@ -2296,6 +2450,7 @@ export const deleteDomainNameAccessAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domainnameaccessassociations/{domainNameAccessAssociationArn}",
+    input: { domainNameAccessAssociationArn: 0 },
   },
   errors: [
     BadRequestException,
@@ -2328,6 +2483,7 @@ export const deleteGatewayResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /restapis/{restApiId}/gatewayresponses/{responseType}",
+    input: { restApiId: 0, responseType: 0 },
   },
   errors: [
     BadRequestException,
@@ -2360,6 +2516,7 @@ export const deleteIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /restapis/{restApiId}/resources/{resourceId}/methods/{httpMethod}/integration",
+    input: { restApiId: 0, resourceId: 0, httpMethod: 0 },
   },
   errors: [
     BadRequestException,
@@ -2392,6 +2549,7 @@ export const deleteIntegrationResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /restapis/{restApiId}/resources/{resourceId}/methods/{httpMethod}/integration/responses/{statusCode}",
+    input: { restApiId: 0, resourceId: 0, httpMethod: 0, statusCode: 0 },
   },
   errors: [
     BadRequestException,
@@ -2423,6 +2581,7 @@ export const deleteMethod: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /restapis/{restApiId}/resources/{resourceId}/methods/{httpMethod}",
+    input: { restApiId: 0, resourceId: 0, httpMethod: 0 },
   },
   errors: [
     ConflictException,
@@ -2454,6 +2613,7 @@ export const deleteMethodResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /restapis/{restApiId}/resources/{resourceId}/methods/{httpMethod}/responses/{statusCode}",
+    input: { restApiId: 0, resourceId: 0, httpMethod: 0, statusCode: 0 },
   },
   errors: [
     BadRequestException,
@@ -2486,6 +2646,7 @@ export const deleteModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /restapis/{restApiId}/models/{modelName}",
+    input: { restApiId: 0, modelName: 0 },
   },
   errors: [
     BadRequestException,
@@ -2518,6 +2679,7 @@ export const deleteRequestValidator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /restapis/{restApiId}/requestvalidators/{requestValidatorId}",
+    input: { restApiId: 0, requestValidatorId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2550,6 +2712,7 @@ export const deleteResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /restapis/{restApiId}/resources/{resourceId}",
+    input: { restApiId: 0, resourceId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2579,7 +2742,11 @@ export const deleteRestApi: API.OperationMethod<
   DeleteRestApiError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /restapis/{restApiId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /restapis/{restApiId}",
+    input: { restApiId: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -2612,6 +2779,7 @@ export const deleteStage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /restapis/{restApiId}/stages/{stageName}",
+    input: { restApiId: 0, stageName: 0 },
   },
   errors: [
     BadRequestException,
@@ -2642,7 +2810,11 @@ export const deleteUsagePlan: API.OperationMethod<
   DeleteUsagePlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /usageplans/{usagePlanId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /usageplans/{usagePlanId}",
+    input: { usagePlanId: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -2674,6 +2846,7 @@ export const deleteUsagePlanKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /usageplans/{usagePlanId}/keys/{keyId}",
+    input: { usagePlanId: 0, keyId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2703,7 +2876,11 @@ export const deleteVpcLink: API.OperationMethod<
   DeleteVpcLinkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /vpclinks/{vpcLinkId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /vpclinks/{vpcLinkId}",
+    input: { vpcLinkId: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -2736,6 +2913,7 @@ export const flushStageAuthorizersCache: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /restapis/{restApiId}/stages/{stageName}/cache/authorizers",
+    input: { restApiId: 0, stageName: 0 },
   },
   errors: [
     BadRequestException,
@@ -2770,6 +2948,7 @@ export const flushStageCache: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /restapis/{restApiId}/stages/{stageName}/cache/data",
+    input: { restApiId: 0, stageName: 0 },
   },
   errors: [
     BadRequestException,
@@ -2803,6 +2982,7 @@ export const generateClientCertificate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clientcertificates",
+    input: { description: 0, tags: 0 },
     output: { createdDate: D.ts, expirationDate: D.ts },
     body: true,
   },
@@ -2833,7 +3013,7 @@ export const getAccount: API.OperationMethod<
   GetAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /account" },
+  descriptor: { service: svc, http: "GET /account", input: {} },
   errors: [
     BadRequestException,
     NotFoundException,
@@ -2863,7 +3043,7 @@ export const getApiKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /apikeys/{apiKey}",
-    input: { includeValue: D.m({ query: "includeValue" }) },
+    input: { apiKey: 0, includeValue: D.m({ query: "includeValue" }) },
     output: { value: D.secret, createdDate: D.ts, lastUpdatedDate: D.ts },
   },
   errors: [
@@ -2950,6 +3130,7 @@ export const getAuthorizer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restapis/{restApiId}/authorizers/{authorizerId}",
+    input: { restApiId: 0, authorizerId: 0 },
   },
   errors: [
     BadRequestException,
@@ -2981,6 +3162,7 @@ export const getAuthorizers: API.OperationMethod<
     service: svc,
     http: "GET /restapis/{restApiId}/authorizers",
     input: {
+      restApiId: 0,
       position: D.m({ query: "position" }),
       limit: D.m({ query: "limit" }),
     },
@@ -3018,7 +3200,11 @@ export const getBasePathMapping: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domainnames/{domainName}/basepathmappings/{basePath}",
-    input: { domainNameId: D.m({ query: "domainNameId" }) },
+    input: {
+      domainName: 0,
+      domainNameId: D.m({ query: "domainNameId" }),
+      basePath: 0,
+    },
   },
   errors: [
     BadRequestException,
@@ -3051,6 +3237,7 @@ export const getBasePathMappings: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /domainnames/{domainName}/basepathmappings",
     input: {
+      domainName: 0,
       domainNameId: D.m({ query: "domainNameId" }),
       position: D.m({ query: "position" }),
       limit: D.m({ query: "limit" }),
@@ -3095,6 +3282,7 @@ export const getClientCertificate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /clientcertificates/{clientCertificateId}",
+    input: { clientCertificateId: 0 },
     output: { createdDate: D.ts, expirationDate: D.ts },
   },
   errors: [
@@ -3175,7 +3363,7 @@ export const getDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restapis/{restApiId}/deployments/{deploymentId}",
-    input: { embed: D.m({ query: "embed" }) },
+    input: { restApiId: 0, deploymentId: 0, embed: D.m({ query: "embed" }) },
     output: { createdDate: D.ts },
   },
   errors: [
@@ -3211,6 +3399,7 @@ export const getDeployments: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /restapis/{restApiId}/deployments",
     input: {
+      restApiId: 0,
       position: D.m({ query: "position" }),
       limit: D.m({ query: "limit" }),
     },
@@ -3255,6 +3444,7 @@ export const getDocumentationPart: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restapis/{restApiId}/documentation/parts/{documentationPartId}",
+    input: { restApiId: 0, documentationPartId: 0 },
   },
   errors: [
     BadRequestException,
@@ -3286,6 +3476,7 @@ export const getDocumentationParts: API.OperationMethod<
     service: svc,
     http: "GET /restapis/{restApiId}/documentation/parts",
     input: {
+      restApiId: 0,
       type: D.m({ query: "type" }),
       nameQuery: D.m({ query: "name" }),
       path: D.m({ query: "path" }),
@@ -3326,6 +3517,7 @@ export const getDocumentationVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restapis/{restApiId}/documentation/versions/{documentationVersion}",
+    input: { restApiId: 0, documentationVersion: 0 },
     output: { createdDate: D.ts },
   },
   errors: [NotFoundException, TooManyRequestsException, UnauthorizedException],
@@ -3353,6 +3545,7 @@ export const getDocumentationVersions: API.OperationMethod<
     service: svc,
     http: "GET /restapis/{restApiId}/documentation/versions",
     input: {
+      restApiId: 0,
       position: D.m({ query: "position" }),
       limit: D.m({ query: "limit" }),
     },
@@ -3390,7 +3583,7 @@ export const getDomainName: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domainnames/{domainName}",
-    input: { domainNameId: D.m({ query: "domainNameId" }) },
+    input: { domainName: 0, domainNameId: D.m({ query: "domainNameId" }) },
     output: { certificateUploadDate: D.ts },
   },
   errors: [
@@ -3513,13 +3706,16 @@ export const getExport: API.OperationMethod<
     service: svc,
     http: "GET /restapis/{restApiId}/stages/{stageName}/exports/{exportType}",
     input: {
+      restApiId: 0,
+      stageName: 0,
+      exportType: 0,
       parameters: D.m({ queryParams: true }),
       accepts: D.m({ header: "Accept" }),
     },
     output: {
       contentType: D.m({ header: "Content-Type" }),
       contentDisposition: D.m({ header: "Content-Disposition" }),
-      body: D.m({ payload: true, shape: D.stream }),
+      body: D.m({ payload: true, shape: D.blob }),
     },
   },
   errors: [
@@ -3553,6 +3749,7 @@ export const getGatewayResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restapis/{restApiId}/gatewayresponses/{responseType}",
+    input: { restApiId: 0, responseType: 0 },
   },
   errors: [
     BadRequestException,
@@ -3584,6 +3781,7 @@ export const getGatewayResponses: API.OperationMethod<
     service: svc,
     http: "GET /restapis/{restApiId}/gatewayresponses",
     input: {
+      restApiId: 0,
       position: D.m({ query: "position" }),
       limit: D.m({ query: "limit" }),
     },
@@ -3621,6 +3819,7 @@ export const getIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restapis/{restApiId}/resources/{resourceId}/methods/{httpMethod}/integration",
+    input: { restApiId: 0, resourceId: 0, httpMethod: 0 },
   },
   errors: [
     BadRequestException,
@@ -3651,6 +3850,7 @@ export const getIntegrationResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restapis/{restApiId}/resources/{resourceId}/methods/{httpMethod}/integration/responses/{statusCode}",
+    input: { restApiId: 0, resourceId: 0, httpMethod: 0, statusCode: 0 },
   },
   errors: [
     BadRequestException,
@@ -3680,6 +3880,7 @@ export const getMethod: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restapis/{restApiId}/resources/{resourceId}/methods/{httpMethod}",
+    input: { restApiId: 0, resourceId: 0, httpMethod: 0 },
   },
   errors: [NotFoundException, TooManyRequestsException, UnauthorizedException],
   protocol: AwsProtocol,
@@ -3704,6 +3905,7 @@ export const getMethodResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restapis/{restApiId}/resources/{resourceId}/methods/{httpMethod}/responses/{statusCode}",
+    input: { restApiId: 0, resourceId: 0, httpMethod: 0, statusCode: 0 },
   },
   errors: [NotFoundException, TooManyRequestsException, UnauthorizedException],
   protocol: AwsProtocol,
@@ -3729,7 +3931,7 @@ export const getModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restapis/{restApiId}/models/{modelName}",
-    input: { flatten: D.m({ query: "flatten" }) },
+    input: { restApiId: 0, modelName: 0, flatten: D.m({ query: "flatten" }) },
   },
   errors: [
     BadRequestException,
@@ -3762,6 +3964,7 @@ export const getModels: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /restapis/{restApiId}/models",
     input: {
+      restApiId: 0,
       position: D.m({ query: "position" }),
       limit: D.m({ query: "limit" }),
     },
@@ -3805,6 +4008,7 @@ export const getModelTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restapis/{restApiId}/models/{modelName}/default_template",
+    input: { restApiId: 0, modelName: 0 },
   },
   errors: [
     BadRequestException,
@@ -3835,6 +4039,7 @@ export const getRequestValidator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restapis/{restApiId}/requestvalidators/{requestValidatorId}",
+    input: { restApiId: 0, requestValidatorId: 0 },
   },
   errors: [
     BadRequestException,
@@ -3866,6 +4071,7 @@ export const getRequestValidators: API.OperationMethod<
     service: svc,
     http: "GET /restapis/{restApiId}/requestvalidators",
     input: {
+      restApiId: 0,
       position: D.m({ query: "position" }),
       limit: D.m({ query: "limit" }),
     },
@@ -3902,7 +4108,7 @@ export const getResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restapis/{restApiId}/resources/{resourceId}",
-    input: { embed: D.m({ query: "embed" }) },
+    input: { restApiId: 0, resourceId: 0, embed: D.m({ query: "embed" }) },
   },
   errors: [NotFoundException, TooManyRequestsException, UnauthorizedException],
   protocol: AwsProtocol,
@@ -3930,6 +4136,7 @@ export const getResources: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /restapis/{restApiId}/resources",
     input: {
+      restApiId: 0,
       position: D.m({ query: "position" }),
       limit: D.m({ query: "limit" }),
       embed: D.m({ query: "embed" }),
@@ -3974,6 +4181,7 @@ export const getRestApi: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restapis/{restApiId}",
+    input: { restApiId: 0 },
     output: { createdDate: D.ts },
   },
   errors: [
@@ -4052,11 +4260,16 @@ export const getSdk: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restapis/{restApiId}/stages/{stageName}/sdks/{sdkType}",
-    input: { parameters: D.m({ queryParams: true }) },
+    input: {
+      restApiId: 0,
+      stageName: 0,
+      sdkType: 0,
+      parameters: D.m({ queryParams: true }),
+    },
     output: {
       contentType: D.m({ header: "Content-Type" }),
       contentDisposition: D.m({ header: "Content-Disposition" }),
-      body: D.m({ payload: true, shape: D.stream }),
+      body: D.m({ payload: true, shape: D.blob }),
     },
   },
   errors: [
@@ -4087,7 +4300,7 @@ export const getSdkType: API.OperationMethod<
   GetSdkTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /sdktypes/{id}" },
+  descriptor: { service: svc, http: "GET /sdktypes/{id}", input: { id: 0 } },
   errors: [
     BadRequestException,
     NotFoundException,
@@ -4154,6 +4367,7 @@ export const getStage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restapis/{restApiId}/stages/{stageName}",
+    input: { restApiId: 0, stageName: 0 },
     output: { createdDate: D.ts, lastUpdatedDate: D.ts },
   },
   errors: [
@@ -4189,7 +4403,7 @@ export const getStages: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /restapis/{restApiId}/stages",
-    input: { deploymentId: D.m({ query: "deploymentId" }) },
+    input: { restApiId: 0, deploymentId: D.m({ query: "deploymentId" }) },
     output: { item: D.list({ createdDate: D.ts, lastUpdatedDate: D.ts }) },
   },
   errors: [
@@ -4224,6 +4438,7 @@ export const getTags: API.OperationMethod<
     service: svc,
     http: "GET /tags/{resourceArn}",
     input: {
+      resourceArn: 0,
       position: D.m({ query: "position" }),
       limit: D.m({ query: "limit" }),
     },
@@ -4259,6 +4474,7 @@ export const getUsage: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /usageplans/{usagePlanId}/usage",
     input: {
+      usagePlanId: 0,
       keyId: D.m({ query: "keyId" }),
       startDate: D.m({ query: "startDate" }),
       endDate: D.m({ query: "endDate" }),
@@ -4302,7 +4518,11 @@ export const getUsagePlan: API.OperationMethod<
   GetUsagePlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /usageplans/{usagePlanId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /usageplans/{usagePlanId}",
+    input: { usagePlanId: 0 },
+  },
   errors: [
     BadRequestException,
     NotFoundException,
@@ -4332,6 +4552,7 @@ export const getUsagePlanKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /usageplans/{usagePlanId}/keys/{keyId}",
+    input: { usagePlanId: 0, keyId: 0 },
   },
   errors: [
     BadRequestException,
@@ -4364,6 +4585,7 @@ export const getUsagePlanKeys: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /usageplans/{usagePlanId}/keys",
     input: {
+      usagePlanId: 0,
       position: D.m({ query: "position" }),
       limit: D.m({ query: "limit" }),
       nameQuery: D.m({ query: "name" }),
@@ -4451,7 +4673,11 @@ export const getVpcLink: API.OperationMethod<
   GetVpcLinkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /vpclinks/{vpcLinkId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /vpclinks/{vpcLinkId}",
+    input: { vpcLinkId: 0 },
+  },
   errors: [
     BadRequestException,
     NotFoundException,
@@ -4529,7 +4755,7 @@ export const importApiKeys: API.OperationMethod<
     service: svc,
     http: "POST /apikeys?mode=import",
     input: {
-      body: D.m({ payload: true, shape: D.stream }),
+      body: D.m({ payload: true, shape: D.blob }),
       format: D.m({ query: "format" }),
       failOnWarnings: D.m({ query: "failonwarnings" }),
     },
@@ -4568,9 +4794,10 @@ export const importDocumentationParts: API.OperationMethod<
     service: svc,
     http: "PUT /restapis/{restApiId}/documentation/parts",
     input: {
+      restApiId: 0,
       mode: D.m({ query: "mode" }),
       failOnWarnings: D.m({ query: "failonwarnings" }),
-      body: D.m({ payload: true, shape: D.stream }),
+      body: D.m({ payload: true, shape: D.blob }),
     },
   },
   errors: [
@@ -4609,7 +4836,7 @@ export const importRestApi: API.OperationMethod<
     input: {
       failOnWarnings: D.m({ query: "failonwarnings" }),
       parameters: D.m({ queryParams: true }),
-      body: D.m({ payload: true, shape: D.stream }),
+      body: D.m({ payload: true, shape: D.blob }),
     },
     output: { createdDate: D.ts },
   },
@@ -4646,6 +4873,13 @@ export const putGatewayResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /restapis/{restApiId}/gatewayresponses/{responseType}",
+    input: {
+      restApiId: 0,
+      responseType: 0,
+      statusCode: 0,
+      responseParameters: 0,
+      responseTemplates: 0,
+    },
     body: true,
   },
   errors: [
@@ -4681,7 +4915,27 @@ export const putIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /restapis/{restApiId}/resources/{resourceId}/methods/{httpMethod}/integration",
-    input: { integrationHttpMethod: D.m({ wire: "httpMethod" }) },
+    input: {
+      restApiId: 0,
+      resourceId: 0,
+      httpMethod: 0,
+      type: 0,
+      integrationHttpMethod: D.m({ wire: "httpMethod" }),
+      uri: 0,
+      connectionType: 0,
+      connectionId: 0,
+      credentials: 0,
+      requestParameters: 0,
+      requestTemplates: 0,
+      passthroughBehavior: 0,
+      cacheNamespace: 0,
+      cacheKeyParameters: 0,
+      contentHandling: 0,
+      timeoutInMillis: 0,
+      tlsConfig: { insecureSkipVerification: 0 },
+      responseTransferMode: 0,
+      integrationTarget: 0,
+    },
     body: true,
   },
   errors: [
@@ -4717,6 +4971,16 @@ export const putIntegrationResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /restapis/{restApiId}/resources/{resourceId}/methods/{httpMethod}/integration/responses/{statusCode}",
+    input: {
+      restApiId: 0,
+      resourceId: 0,
+      httpMethod: 0,
+      statusCode: 0,
+      selectionPattern: 0,
+      responseParameters: 0,
+      responseTemplates: 0,
+      contentHandling: 0,
+    },
     body: true,
   },
   errors: [
@@ -4752,6 +5016,19 @@ export const putMethod: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /restapis/{restApiId}/resources/{resourceId}/methods/{httpMethod}",
+    input: {
+      restApiId: 0,
+      resourceId: 0,
+      httpMethod: 0,
+      authorizationType: 0,
+      authorizerId: 0,
+      apiKeyRequired: 0,
+      operationName: 0,
+      requestParameters: 0,
+      requestModels: 0,
+      requestValidatorId: 0,
+      authorizationScopes: 0,
+    },
     body: true,
   },
   errors: [
@@ -4787,6 +5064,14 @@ export const putMethodResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /restapis/{restApiId}/resources/{resourceId}/methods/{httpMethod}/responses/{statusCode}",
+    input: {
+      restApiId: 0,
+      resourceId: 0,
+      httpMethod: 0,
+      statusCode: 0,
+      responseParameters: 0,
+      responseModels: 0,
+    },
     body: true,
   },
   errors: [
@@ -4824,10 +5109,11 @@ export const putRestApi: API.OperationMethod<
     service: svc,
     http: "PUT /restapis/{restApiId}",
     input: {
+      restApiId: 0,
       mode: D.m({ query: "mode" }),
       failOnWarnings: D.m({ query: "failonwarnings" }),
       parameters: D.m({ queryParams: true }),
-      body: D.m({ payload: true, shape: D.stream }),
+      body: D.m({ payload: true, shape: D.blob }),
     },
     output: { createdDate: D.ts },
   },
@@ -4901,7 +5187,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -4933,6 +5224,16 @@ export const testInvokeAuthorizer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /restapis/{restApiId}/authorizers/{authorizerId}",
+    input: {
+      restApiId: 0,
+      authorizerId: 0,
+      headers: 0,
+      multiValueHeaders: 0,
+      pathWithQueryString: 0,
+      body: 0,
+      stageVariables: 0,
+      additionalContext: 0,
+    },
     body: true,
   },
   errors: [
@@ -4964,6 +5265,17 @@ export const testInvokeMethod: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /restapis/{restApiId}/resources/{resourceId}/methods/{httpMethod}",
+    input: {
+      restApiId: 0,
+      resourceId: 0,
+      httpMethod: 0,
+      pathWithQueryString: 0,
+      body: 0,
+      headers: 0,
+      multiValueHeaders: 0,
+      clientCertificateId: 0,
+      stageVariables: 0,
+    },
     body: true,
   },
   errors: [
@@ -4997,7 +5309,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     BadRequestException,
@@ -5029,7 +5341,12 @@ export const updateAccount: API.OperationMethod<
   UpdateAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /account", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /account",
+    input: { patchOperations: D.list(i_PatchOperation) },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -5063,6 +5380,7 @@ export const updateApiKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /apikeys/{apiKey}",
+    input: { apiKey: 0, patchOperations: D.list(i_PatchOperation) },
     output: { value: D.secret, createdDate: D.ts, lastUpdatedDate: D.ts },
     body: true,
   },
@@ -5099,6 +5417,11 @@ export const updateAuthorizer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /restapis/{restApiId}/authorizers/{authorizerId}",
+    input: {
+      restApiId: 0,
+      authorizerId: 0,
+      patchOperations: D.list(i_PatchOperation),
+    },
     body: true,
   },
   errors: [
@@ -5134,7 +5457,12 @@ export const updateBasePathMapping: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /domainnames/{domainName}/basepathmappings/{basePath}",
-    input: { domainNameId: D.m({ query: "domainNameId" }) },
+    input: {
+      domainName: 0,
+      domainNameId: D.m({ query: "domainNameId" }),
+      basePath: 0,
+      patchOperations: D.list(i_PatchOperation),
+    },
     body: true,
   },
   errors: [
@@ -5170,6 +5498,10 @@ export const updateClientCertificate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /clientcertificates/{clientCertificateId}",
+    input: {
+      clientCertificateId: 0,
+      patchOperations: D.list(i_PatchOperation),
+    },
     output: { createdDate: D.ts, expirationDate: D.ts },
     body: true,
   },
@@ -5207,6 +5539,11 @@ export const updateDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /restapis/{restApiId}/deployments/{deploymentId}",
+    input: {
+      restApiId: 0,
+      deploymentId: 0,
+      patchOperations: D.list(i_PatchOperation),
+    },
     output: { createdDate: D.ts },
     body: true,
   },
@@ -5244,6 +5581,11 @@ export const updateDocumentationPart: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /restapis/{restApiId}/documentation/parts/{documentationPartId}",
+    input: {
+      restApiId: 0,
+      documentationPartId: 0,
+      patchOperations: D.list(i_PatchOperation),
+    },
     body: true,
   },
   errors: [
@@ -5279,6 +5621,11 @@ export const updateDocumentationVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /restapis/{restApiId}/documentation/versions/{documentationVersion}",
+    input: {
+      restApiId: 0,
+      documentationVersion: 0,
+      patchOperations: D.list(i_PatchOperation),
+    },
     output: { createdDate: D.ts },
     body: true,
   },
@@ -5315,7 +5662,11 @@ export const updateDomainName: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /domainnames/{domainName}",
-    input: { domainNameId: D.m({ query: "domainNameId" }) },
+    input: {
+      domainName: 0,
+      domainNameId: D.m({ query: "domainNameId" }),
+      patchOperations: D.list(i_PatchOperation),
+    },
     output: { certificateUploadDate: D.ts },
     body: true,
   },
@@ -5352,6 +5703,11 @@ export const updateGatewayResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /restapis/{restApiId}/gatewayresponses/{responseType}",
+    input: {
+      restApiId: 0,
+      responseType: 0,
+      patchOperations: D.list(i_PatchOperation),
+    },
     body: true,
   },
   errors: [
@@ -5387,6 +5743,12 @@ export const updateIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /restapis/{restApiId}/resources/{resourceId}/methods/{httpMethod}/integration",
+    input: {
+      restApiId: 0,
+      resourceId: 0,
+      httpMethod: 0,
+      patchOperations: D.list(i_PatchOperation),
+    },
     body: true,
   },
   errors: [
@@ -5422,6 +5784,13 @@ export const updateIntegrationResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /restapis/{restApiId}/resources/{resourceId}/methods/{httpMethod}/integration/responses/{statusCode}",
+    input: {
+      restApiId: 0,
+      resourceId: 0,
+      httpMethod: 0,
+      statusCode: 0,
+      patchOperations: D.list(i_PatchOperation),
+    },
     body: true,
   },
   errors: [
@@ -5456,6 +5825,12 @@ export const updateMethod: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /restapis/{restApiId}/resources/{resourceId}/methods/{httpMethod}",
+    input: {
+      restApiId: 0,
+      resourceId: 0,
+      httpMethod: 0,
+      patchOperations: D.list(i_PatchOperation),
+    },
     body: true,
   },
   errors: [
@@ -5490,6 +5865,13 @@ export const updateMethodResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /restapis/{restApiId}/resources/{resourceId}/methods/{httpMethod}/responses/{statusCode}",
+    input: {
+      restApiId: 0,
+      resourceId: 0,
+      httpMethod: 0,
+      statusCode: 0,
+      patchOperations: D.list(i_PatchOperation),
+    },
     body: true,
   },
   errors: [
@@ -5525,6 +5907,11 @@ export const updateModel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /restapis/{restApiId}/models/{modelName}",
+    input: {
+      restApiId: 0,
+      modelName: 0,
+      patchOperations: D.list(i_PatchOperation),
+    },
     body: true,
   },
   errors: [
@@ -5560,6 +5947,11 @@ export const updateRequestValidator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /restapis/{restApiId}/requestvalidators/{requestValidatorId}",
+    input: {
+      restApiId: 0,
+      requestValidatorId: 0,
+      patchOperations: D.list(i_PatchOperation),
+    },
     body: true,
   },
   errors: [
@@ -5594,6 +5986,11 @@ export const updateResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /restapis/{restApiId}/resources/{resourceId}",
+    input: {
+      restApiId: 0,
+      resourceId: 0,
+      patchOperations: D.list(i_PatchOperation),
+    },
     body: true,
   },
   errors: [
@@ -5628,6 +6025,7 @@ export const updateRestApi: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /restapis/{restApiId}",
+    input: { restApiId: 0, patchOperations: D.list(i_PatchOperation) },
     output: { createdDate: D.ts },
     body: true,
   },
@@ -5664,6 +6062,11 @@ export const updateStage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /restapis/{restApiId}/stages/{stageName}",
+    input: {
+      restApiId: 0,
+      stageName: 0,
+      patchOperations: D.list(i_PatchOperation),
+    },
     output: { createdDate: D.ts, lastUpdatedDate: D.ts },
     body: true,
   },
@@ -5700,6 +6103,11 @@ export const updateUsage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /usageplans/{usagePlanId}/keys/{keyId}/usage",
+    input: {
+      usagePlanId: 0,
+      keyId: 0,
+      patchOperations: D.list(i_PatchOperation),
+    },
     output: {
       items: D.m({ wire: "values" }),
       position: D.m({ query: "position" }),
@@ -5739,6 +6147,7 @@ export const updateUsagePlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /usageplans/{usagePlanId}",
+    input: { usagePlanId: 0, patchOperations: D.list(i_PatchOperation) },
     body: true,
   },
   errors: [
@@ -5771,7 +6180,12 @@ export const updateVpcLink: API.OperationMethod<
   UpdateVpcLinkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /vpclinks/{vpcLinkId}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /vpclinks/{vpcLinkId}",
+    input: { vpcLinkId: 0, patchOperations: D.list(i_PatchOperation) },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -5784,3 +6198,19 @@ export const updateVpcLink: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateVpcLink",
 })) as any;
+
+const i_EndpointConfiguration: D.LazyStruct = () => ({
+  types: 0,
+  ipAddressType: 0,
+  vpcEndpointIds: 0,
+});
+const i_PatchOperation: D.LazyStruct = () => ({
+  op: 0,
+  path: 0,
+  value: 0,
+  from: 0,
+});
+const i_ThrottleSettings: D.LazyStruct = () => ({
+  burstLimit: 0,
+  rateLimit: 0,
+});

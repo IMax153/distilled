@@ -1130,7 +1130,7 @@ export const activateEventSource: API.OperationMethod<
   ActivateEventSourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     ConcurrentModificationException,
     InternalException,
@@ -1158,7 +1158,7 @@ export const cancelReplay: API.OperationMethod<
   CancelReplayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ReplayName: 0 } },
   errors: [
     ConcurrentModificationException,
     IllegalStatusException,
@@ -1188,6 +1188,14 @@ export const createApiDestination: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      ConnectionArn: 0,
+      InvocationEndpoint: 0,
+      HttpMethod: 0,
+      InvocationRateLimitPerSecond: 0,
+    },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [
@@ -1222,7 +1230,17 @@ export const createArchive: API.OperationMethod<
   CreateArchiveError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      ArchiveName: 0,
+      EventSourceArn: 0,
+      Description: 0,
+      EventPattern: 0,
+      RetentionDays: 0,
+    },
+    output: { CreationTime: D.ts },
+  },
   errors: [
     ConcurrentModificationException,
     InternalException,
@@ -1253,6 +1271,22 @@ export const createConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      AuthorizationType: 0,
+      AuthParameters: {
+        BasicAuthParameters: { Username: 0, Password: 0 },
+        OAuthParameters: {
+          ClientParameters: { ClientID: 0, ClientSecret: 0 },
+          AuthorizationEndpoint: 0,
+          HttpMethod: 0,
+          OAuthHttpParameters: i_ConnectionHttpParameters,
+        },
+        ApiKeyAuthParameters: { ApiKeyName: 0, ApiKeyValue: 0 },
+        InvocationHttpParameters: i_ConnectionHttpParameters,
+      },
+    },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [
@@ -1285,7 +1319,10 @@ export const createEventBus: API.OperationMethod<
   CreateEventBusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, EventSourceName: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     ConcurrentModificationException,
     InternalException,
@@ -1340,7 +1377,7 @@ export const createPartnerEventSource: API.OperationMethod<
   CreatePartnerEventSourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, Account: 0 } },
   errors: [
     ConcurrentModificationException,
     InternalException,
@@ -1375,7 +1412,7 @@ export const deactivateEventSource: API.OperationMethod<
   DeactivateEventSourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     ConcurrentModificationException,
     InternalException,
@@ -1405,6 +1442,7 @@ export const deauthorizeConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0 },
     output: {
       CreationTime: D.ts,
       LastModifiedTime: D.ts,
@@ -1435,7 +1473,7 @@ export const deleteApiDestination: API.OperationMethod<
   DeleteApiDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     ConcurrentModificationException,
     InternalException,
@@ -1460,7 +1498,7 @@ export const deleteArchive: API.OperationMethod<
   DeleteArchiveError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ArchiveName: 0 } },
   errors: [
     ConcurrentModificationException,
     InternalException,
@@ -1487,6 +1525,7 @@ export const deleteConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0 },
     output: {
       CreationTime: D.ts,
       LastModifiedTime: D.ts,
@@ -1517,7 +1556,7 @@ export const deleteEventBus: API.OperationMethod<
   DeleteEventBusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [ConcurrentModificationException, InternalException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1542,7 +1581,7 @@ export const deletePartnerEventSource: API.OperationMethod<
   DeletePartnerEventSourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, Account: 0 } },
   errors: [
     ConcurrentModificationException,
     InternalException,
@@ -1582,7 +1621,7 @@ export const deleteRule: API.OperationMethod<
   DeleteRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, EventBusName: 0, Force: 0 } },
   errors: [
     ConcurrentModificationException,
     InternalException,
@@ -1609,6 +1648,7 @@ export const describeApiDestination: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [InternalException, ResourceNotFoundException],
@@ -1631,7 +1671,11 @@ export const describeArchive: API.OperationMethod<
   DescribeArchiveError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ArchiveName: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [
     InternalException,
     ResourceAlreadyExistsException,
@@ -1657,6 +1701,7 @@ export const describeConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0 },
     output: {
       AuthParameters: {
         OAuthParameters: { OAuthHttpParameters: o_ConnectionHttpParameters },
@@ -1694,7 +1739,7 @@ export const describeEventBus: API.OperationMethod<
   DescribeEventBusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [InternalException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1718,6 +1763,7 @@ export const describeEventSource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0 },
     output: { CreationTime: D.ts, ExpirationTime: D.ts },
   },
   errors: [
@@ -1747,7 +1793,7 @@ export const describePartnerEventSource: API.OperationMethod<
   DescribePartnerEventSourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     InternalException,
     OperationDisabledException,
@@ -1781,6 +1827,7 @@ export const describeReplay: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ReplayName: 0 },
     output: {
       EventStartTime: D.ts,
       EventEndTime: D.ts,
@@ -1811,7 +1858,7 @@ export const describeRule: API.OperationMethod<
   DescribeRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, EventBusName: 0 } },
   errors: [InternalException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1837,7 +1884,7 @@ export const disableRule: API.OperationMethod<
   DisableRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, EventBusName: 0 } },
   errors: [
     ConcurrentModificationException,
     InternalException,
@@ -1867,7 +1914,7 @@ export const enableRule: API.OperationMethod<
   EnableRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, EventBusName: 0 } },
   errors: [
     ConcurrentModificationException,
     InternalException,
@@ -1891,6 +1938,7 @@ export const listApiDestinations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { NamePrefix: 0, ConnectionArn: 0, NextToken: 0, Limit: 0 },
     output: {
       ApiDestinations: D.list({ CreationTime: D.ts, LastModifiedTime: D.ts }),
     },
@@ -1917,6 +1965,13 @@ export const listArchives: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NamePrefix: 0,
+      EventSourceArn: 0,
+      State: 0,
+      NextToken: 0,
+      Limit: 0,
+    },
     output: { Archives: D.list({ CreationTime: D.ts }) },
   },
   errors: [InternalException, ResourceNotFoundException],
@@ -1937,6 +1992,7 @@ export const listConnections: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { NamePrefix: 0, ConnectionState: 0, NextToken: 0, Limit: 0 },
     output: {
       Connections: D.list({
         CreationTime: D.ts,
@@ -1962,7 +2018,10 @@ export const listEventBuses: API.OperationMethod<
   ListEventBusesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NamePrefix: 0, NextToken: 0, Limit: 0 },
+  },
   errors: [InternalException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1985,6 +2044,7 @@ export const listEventSources: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { NamePrefix: 0, NextToken: 0, Limit: 0 },
     output: {
       EventSources: D.list({ CreationTime: D.ts, ExpirationTime: D.ts }),
     },
@@ -2013,6 +2073,7 @@ export const listPartnerEventSourceAccounts: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { EventSourceName: 0, NextToken: 0, Limit: 0 },
     output: {
       PartnerEventSourceAccounts: D.list({
         CreationTime: D.ts,
@@ -2044,7 +2105,10 @@ export const listPartnerEventSources: API.OperationMethod<
   ListPartnerEventSourcesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NamePrefix: 0, NextToken: 0, Limit: 0 },
+  },
   errors: [InternalException, OperationDisabledException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2064,6 +2128,13 @@ export const listReplays: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NamePrefix: 0,
+      State: 0,
+      EventSourceArn: 0,
+      NextToken: 0,
+      Limit: 0,
+    },
     output: {
       Replays: D.list({
         EventStartTime: D.ts,
@@ -2094,7 +2165,10 @@ export const listRuleNamesByTarget: API.OperationMethod<
   ListRuleNamesByTargetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TargetArn: 0, EventBusName: 0, NextToken: 0, Limit: 0 },
+  },
   errors: [InternalException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2118,7 +2192,10 @@ export const listRules: API.OperationMethod<
   ListRulesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NamePrefix: 0, EventBusName: 0, NextToken: 0, Limit: 0 },
+  },
   errors: [InternalException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2139,7 +2216,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [InternalException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2159,7 +2236,10 @@ export const listTargetsByRule: API.OperationMethod<
   ListTargetsByRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Rule: 0, EventBusName: 0, NextToken: 0, Limit: 0 },
+  },
   errors: [InternalException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2176,7 +2256,20 @@ export const putEvents: API.OperationMethod<
   PutEventsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Entries: D.list({
+        Time: 0,
+        Source: 0,
+        Resources: 0,
+        DetailType: 0,
+        Detail: 0,
+        EventBusName: 0,
+        TraceHeader: 0,
+      }),
+    },
+  },
   errors: [InternalException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2197,7 +2290,18 @@ export const putPartnerEvents: API.OperationMethod<
   PutPartnerEventsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Entries: D.list({
+        Time: 0,
+        Source: 0,
+        Resources: 0,
+        DetailType: 0,
+        Detail: 0,
+      }),
+    },
+  },
   errors: [InternalException, OperationDisabledException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2240,7 +2344,17 @@ export const putPermission: API.OperationMethod<
   PutPermissionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EventBusName: 0,
+      Action: 0,
+      Principal: 0,
+      StatementId: 0,
+      Condition: { Type: 0, Key: 0, Value: 0 },
+      Policy: 0,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InternalException,
@@ -2319,7 +2433,19 @@ export const putRule: API.OperationMethod<
   PutRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      ScheduleExpression: 0,
+      EventPattern: 0,
+      State: 0,
+      Description: 0,
+      RoleArn: 0,
+      Tags: D.list(i_Tag),
+      EventBusName: 0,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InternalException,
@@ -2477,7 +2603,76 @@ export const putTargets: API.OperationMethod<
   PutTargetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Rule: 0,
+      EventBusName: 0,
+      Targets: D.list({
+        Id: 0,
+        Arn: 0,
+        RoleArn: 0,
+        Input: 0,
+        InputPath: 0,
+        InputTransformer: { InputPathsMap: 0, InputTemplate: 0 },
+        KinesisParameters: { PartitionKeyPath: 0 },
+        RunCommandParameters: {
+          RunCommandTargets: D.list({ Key: 0, Values: 0 }),
+        },
+        EcsParameters: {
+          TaskDefinitionArn: 0,
+          TaskCount: 0,
+          LaunchType: 0,
+          NetworkConfiguration: {
+            awsvpcConfiguration: {
+              Subnets: 0,
+              SecurityGroups: 0,
+              AssignPublicIp: 0,
+            },
+          },
+          PlatformVersion: 0,
+          Group: 0,
+          CapacityProviderStrategy: D.list({
+            capacityProvider: 0,
+            weight: 0,
+            base: 0,
+          }),
+          EnableECSManagedTags: 0,
+          EnableExecuteCommand: 0,
+          PlacementConstraints: D.list({ type: 0, expression: 0 }),
+          PlacementStrategy: D.list({ type: 0, field: 0 }),
+          PropagateTags: 0,
+          ReferenceId: 0,
+          Tags: D.list(i_Tag),
+        },
+        BatchParameters: {
+          JobDefinition: 0,
+          JobName: 0,
+          ArrayProperties: { Size: 0 },
+          RetryStrategy: { Attempts: 0 },
+        },
+        SqsParameters: { MessageGroupId: 0 },
+        HttpParameters: {
+          PathParameterValues: 0,
+          HeaderParameters: 0,
+          QueryStringParameters: 0,
+        },
+        RedshiftDataParameters: {
+          SecretManagerArn: 0,
+          Database: 0,
+          DbUser: 0,
+          Sql: 0,
+          StatementName: 0,
+          WithEvent: 0,
+        },
+        SageMakerPipelineParameters: {
+          PipelineParameterList: D.list({ Name: 0, Value: 0 }),
+        },
+        DeadLetterConfig: { Arn: 0 },
+        RetryPolicy: { MaximumRetryAttempts: 0, MaximumEventAgeInSeconds: 0 },
+      }),
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InternalException,
@@ -2508,7 +2703,10 @@ export const removePermission: API.OperationMethod<
   RemovePermissionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { StatementId: 0, RemoveAllPermissions: 0, EventBusName: 0 },
+  },
   errors: [
     ConcurrentModificationException,
     InternalException,
@@ -2543,7 +2741,10 @@ export const removeTargets: API.OperationMethod<
   RemoveTargetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Rule: 0, EventBusName: 0, Ids: 0, Force: 0 },
+  },
   errors: [
     ConcurrentModificationException,
     InternalException,
@@ -2579,7 +2780,18 @@ export const startReplay: API.OperationMethod<
   StartReplayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ReplayStartTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      ReplayName: 0,
+      Description: 0,
+      EventSourceArn: 0,
+      EventStartTime: 0,
+      EventEndTime: 0,
+      Destination: { Arn: 0, FilterArns: 0 },
+    },
+    output: { ReplayStartTime: D.ts },
+  },
   errors: [
     InternalException,
     InvalidEventPatternException,
@@ -2620,7 +2832,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [
     ConcurrentModificationException,
     InternalException,
@@ -2650,7 +2862,7 @@ export const testEventPattern: API.OperationMethod<
   TestEventPatternError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EventPattern: 0, Event: 0 } },
   errors: [InternalException, InvalidEventPatternException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2673,7 +2885,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [
     ConcurrentModificationException,
     InternalException,
@@ -2702,6 +2914,14 @@ export const updateApiDestination: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      ConnectionArn: 0,
+      InvocationEndpoint: 0,
+      HttpMethod: 0,
+      InvocationRateLimitPerSecond: 0,
+    },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [
@@ -2731,7 +2951,16 @@ export const updateArchive: API.OperationMethod<
   UpdateArchiveError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      ArchiveName: 0,
+      Description: 0,
+      EventPattern: 0,
+      RetentionDays: 0,
+    },
+    output: { CreationTime: D.ts },
+  },
   errors: [
     ConcurrentModificationException,
     InternalException,
@@ -2761,6 +2990,22 @@ export const updateConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      AuthorizationType: 0,
+      AuthParameters: {
+        BasicAuthParameters: { Username: 0, Password: 0 },
+        OAuthParameters: {
+          ClientParameters: { ClientID: 0, ClientSecret: 0 },
+          AuthorizationEndpoint: 0,
+          HttpMethod: 0,
+          OAuthHttpParameters: i_ConnectionHttpParameters,
+        },
+        ApiKeyAuthParameters: { ApiKeyName: 0, ApiKeyValue: 0 },
+        InvocationHttpParameters: i_ConnectionHttpParameters,
+      },
+    },
     output: {
       CreationTime: D.ts,
       LastModifiedTime: D.ts,
@@ -2778,6 +3023,12 @@ export const updateConnection: API.OperationMethod<
   operationName: "UpdateConnection",
 })) as any;
 
+const i_ConnectionHttpParameters: D.LazyStruct = () => ({
+  HeaderParameters: D.list({ Key: 0, Value: 0, IsValueSecret: 0 }),
+  QueryStringParameters: D.list({ Key: 0, Value: 0, IsValueSecret: 0 }),
+  BodyParameters: D.list({ Key: 0, Value: 0, IsValueSecret: 0 }),
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_ConnectionHttpParameters: D.LazyStruct = () => ({
   HeaderParameters: D.list({ Value: D.secret }),
   QueryStringParameters: D.list({ Value: D.secret }),

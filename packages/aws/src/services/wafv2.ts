@@ -2254,7 +2254,7 @@ export const associateWebACL: API.OperationMethod<
   AssociateWebACLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WebACLArn: 0, ResourceArn: 0 } },
   errors: [
     WAFFeatureNotIncludedInPricingPlanException,
     WAFInternalErrorException,
@@ -2300,7 +2300,7 @@ export const checkCapacity: API.OperationMethod<
   CheckCapacityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Scope: 0, Rules: D.list(i_Rule) } },
   errors: [
     WAFExpiredManagedRuleGroupVersionException,
     WAFInternalErrorException,
@@ -2339,7 +2339,7 @@ export const createAPIKey: API.OperationMethod<
   CreateAPIKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Scope: 0, TokenDomains: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -2373,7 +2373,17 @@ export const createIPSet: API.OperationMethod<
   CreateIPSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Scope: 0,
+      Description: 0,
+      IPAddressVersion: 0,
+      Addresses: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     WAFDuplicateItemException,
     WAFInternalErrorException,
@@ -2409,7 +2419,16 @@ export const createRegexPatternSet: API.OperationMethod<
   CreateRegexPatternSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Scope: 0,
+      Description: 0,
+      RegularExpressionList: D.list(i_Regex),
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     WAFDuplicateItemException,
     WAFInternalErrorException,
@@ -2449,7 +2468,20 @@ export const createRuleGroup: API.OperationMethod<
   CreateRuleGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Scope: 0,
+      Capacity: 0,
+      Description: 0,
+      Rules: D.list(i_Rule),
+      VisibilityConfig: i_VisibilityConfig,
+      Tags: D.list(i_Tag),
+      CustomResponseBodies: D.map(i_CustomResponseBody),
+      MonetizationConfig: i_MonetizationConfig,
+    },
+  },
   errors: [
     WAFDuplicateItemException,
     WAFInternalErrorException,
@@ -2495,7 +2527,27 @@ export const createWebACL: API.OperationMethod<
   CreateWebACLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Scope: 0,
+      DefaultAction: i_DefaultAction,
+      Description: 0,
+      Rules: D.list(i_Rule),
+      VisibilityConfig: i_VisibilityConfig,
+      DataProtectionConfig: i_DataProtectionConfig,
+      Tags: D.list(i_Tag),
+      CustomResponseBodies: D.map(i_CustomResponseBody),
+      CaptchaConfig: i_CaptchaConfig,
+      ChallengeConfig: i_ChallengeConfig,
+      TokenDomains: 0,
+      AssociationConfig: i_AssociationConfig,
+      OnSourceDDoSProtectionConfig: i_OnSourceDDoSProtectionConfig,
+      ApplicationConfig: i_ApplicationConfig,
+      MonetizationConfig: i_MonetizationConfig,
+    },
+  },
   errors: [
     WAFConfigurationWarningException,
     WAFDuplicateItemException,
@@ -2535,7 +2587,7 @@ export const deleteAPIKey: API.OperationMethod<
   DeleteAPIKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Scope: 0, APIKey: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -2566,7 +2618,7 @@ export const deleteFirewallManagerRuleGroups: API.OperationMethod<
   DeleteFirewallManagerRuleGroupsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WebACLArn: 0, WebACLLockToken: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -2598,7 +2650,10 @@ export const deleteIPSet: API.OperationMethod<
   DeleteIPSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, Scope: 0, Id: 0, LockToken: 0 },
+  },
   errors: [
     WAFAssociatedItemException,
     WAFInternalErrorException,
@@ -2630,7 +2685,10 @@ export const deleteLoggingConfiguration: API.OperationMethod<
   DeleteLoggingConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, LogType: 0, LogScope: 0 },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -2659,7 +2717,7 @@ export const deletePermissionPolicy: API.OperationMethod<
   DeletePermissionPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidParameterException,
@@ -2689,7 +2747,10 @@ export const deleteRegexPatternSet: API.OperationMethod<
   DeleteRegexPatternSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, Scope: 0, Id: 0, LockToken: 0 },
+  },
   errors: [
     WAFAssociatedItemException,
     WAFInternalErrorException,
@@ -2724,7 +2785,10 @@ export const deleteRuleGroup: API.OperationMethod<
   DeleteRuleGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, Scope: 0, Id: 0, LockToken: 0 },
+  },
   errors: [
     WAFAssociatedItemException,
     WAFInternalErrorException,
@@ -2780,7 +2844,10 @@ export const deleteWebACL: API.OperationMethod<
   DeleteWebACLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, Scope: 0, Id: 0, LockToken: 0 },
+  },
   errors: [
     WAFAssociatedItemException,
     WAFInternalErrorException,
@@ -2810,7 +2877,7 @@ export const describeAllManagedProducts: API.OperationMethod<
   DescribeAllManagedProductsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Scope: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -2835,7 +2902,7 @@ export const describeManagedProductsByVendor: API.OperationMethod<
   DescribeManagedProductsByVendorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { VendorName: 0, Scope: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -2863,7 +2930,10 @@ export const describeManagedRuleGroup: API.OperationMethod<
   DescribeManagedRuleGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { VendorName: 0, Name: 0, Scope: 0, VersionName: 0 },
+  },
   errors: [
     WAFExpiredManagedRuleGroupVersionException,
     WAFInternalErrorException,
@@ -2901,7 +2971,7 @@ export const disassociateWebACL: API.OperationMethod<
   DisassociateWebACLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -2932,7 +3002,7 @@ export const generateMobileSdkReleaseUrl: API.OperationMethod<
   GenerateMobileSdkReleaseUrlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Platform: 0, ReleaseVersion: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -2964,7 +3034,11 @@ export const getDecryptedAPIKey: API.OperationMethod<
   GetDecryptedAPIKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { Scope: 0, APIKey: 0 },
+    output: { CreationTimestamp: D.ts },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -2992,7 +3066,7 @@ export const getIPSet: API.OperationMethod<
   GetIPSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, Scope: 0, Id: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -3019,7 +3093,10 @@ export const getLoggingConfiguration: API.OperationMethod<
   GetLoggingConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, LogType: 0, LogScope: 0 },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -3052,6 +3129,7 @@ export const getManagedRuleSet: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0, Scope: 0, Id: 0 },
     output: {
       ManagedRuleSet: {
         PublishedVersions: D.map({
@@ -3094,6 +3172,7 @@ export const getMobileSdkRelease: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Platform: 0, ReleaseVersion: 0 },
     output: { MobileSdkRelease: { Timestamp: D.ts } },
   },
   errors: [
@@ -3123,7 +3202,7 @@ export const getPermissionPolicy: API.OperationMethod<
   GetPermissionPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidParameterException,
@@ -3169,7 +3248,16 @@ export const getRateBasedStatementManagedKeys: API.OperationMethod<
   GetRateBasedStatementManagedKeysError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Scope: 0,
+      WebACLName: 0,
+      WebACLId: 0,
+      RuleGroupRuleName: 0,
+      RuleName: 0,
+    },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -3197,7 +3285,7 @@ export const getRegexPatternSet: API.OperationMethod<
   GetRegexPatternSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, Scope: 0, Id: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -3224,7 +3312,21 @@ export const getRevenueStatistics: API.OperationMethod<
   GetRevenueStatisticsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      StatisticType: 0,
+      TimeWindow: i_TimeWindow,
+      Scope: 0,
+      Currency: 0,
+      GroupBy: 0,
+      Filters: D.list(i_MonetizationFilter),
+      NextMarker: 0,
+      Limit: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -3251,7 +3353,15 @@ export const getRevenueStatisticsSummary: API.OperationMethod<
   GetRevenueStatisticsSummaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TimeWindow: i_TimeWindow,
+      Scope: 0,
+      Currency: 0,
+      Filters: D.list(i_MonetizationFilter),
+    },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -3278,7 +3388,21 @@ export const getRevenueStatisticsTimeSeries: API.OperationMethod<
   GetRevenueStatisticsTimeSeriesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DataPoints: D.list({ Date: D.ts }) } },
+  descriptor: {
+    service: svc,
+    input: {
+      StatisticType: 0,
+      TimeWindow: i_TimeWindow,
+      Scope: 0,
+      Interval: 0,
+      Currency: 0,
+      GroupBy: 0,
+      Filters: D.list(i_MonetizationFilter),
+      Limit: 0,
+      NextMarker: 0,
+    },
+    output: { DataPoints: D.list({ Date: D.ts }) },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -3307,6 +3431,7 @@ export const getRuleGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0, Scope: 0, Id: 0, ARN: 0 },
     output: { RuleGroup: { Rules: D.list(o_Rule) } },
   },
   errors: [
@@ -3345,6 +3470,13 @@ export const getSampledRequests: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      WebAclArn: 0,
+      RuleMetricName: 0,
+      Scope: 0,
+      TimeWindow: i_TimeWindow,
+      MaxItems: 0,
+    },
     output: {
       SampledRequests: D.list({ Timestamp: D.ts }),
       TimeWindow: { StartTime: D.ts, EndTime: D.ts },
@@ -3378,7 +3510,21 @@ export const getTopPathStatisticsByTraffic: API.OperationMethod<
   GetTopPathStatisticsByTrafficError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      WebAclArn: 0,
+      Scope: 0,
+      UriPathPrefix: 0,
+      TimeWindow: i_TimeWindow,
+      BotCategory: 0,
+      BotOrganization: 0,
+      BotName: 0,
+      Limit: 0,
+      NumberOfTopTrafficBotsPerPath: 0,
+      NextMarker: 0,
+    },
+  },
   errors: [
     WAFFeatureNotIncludedInPricingPlanException,
     WAFInternalErrorException,
@@ -3406,7 +3552,11 @@ export const getWebACL: API.OperationMethod<
   GetWebACLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { WebACL: o_WebACL } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, Scope: 0, Id: 0, ARN: 0 },
+    output: { WebACL: o_WebACL },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -3446,7 +3596,11 @@ export const getWebACLForResource: API.OperationMethod<
   GetWebACLForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { WebACL: o_WebACL } },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0 },
+    output: { WebACL: o_WebACL },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -3480,6 +3634,7 @@ export const listAPIKeys: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Scope: 0, NextMarker: 0, Limit: 0 },
     output: { APIKeySummaries: D.list({ CreationTimestamp: D.ts }) },
   },
   errors: [
@@ -3509,7 +3664,7 @@ export const listAvailableManagedRuleGroups: API.OperationMethod<
   ListAvailableManagedRuleGroupsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Scope: 0, NextMarker: 0, Limit: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -3537,6 +3692,7 @@ export const listAvailableManagedRuleGroupVersions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { VendorName: 0, Name: 0, Scope: 0, NextMarker: 0, Limit: 0 },
     output: { Versions: D.list({ LastUpdateTimestamp: D.ts }) },
   },
   errors: [
@@ -3565,7 +3721,7 @@ export const listIPSets: API.OperationMethod<
   ListIPSetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Scope: 0, NextMarker: 0, Limit: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -3590,7 +3746,10 @@ export const listLoggingConfigurations: API.OperationMethod<
   ListLoggingConfigurationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Scope: 0, NextMarker: 0, Limit: 0, LogScope: 0 },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -3619,7 +3778,7 @@ export const listManagedRuleSets: API.OperationMethod<
   ListManagedRuleSetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Scope: 0, NextMarker: 0, Limit: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -3650,6 +3809,7 @@ export const listMobileSdkReleases: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Platform: 0, NextMarker: 0, Limit: 0 },
     output: { ReleaseSummaries: D.list({ Timestamp: D.ts }) },
   },
   errors: [
@@ -3677,7 +3837,7 @@ export const listRegexPatternSets: API.OperationMethod<
   ListRegexPatternSetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Scope: 0, NextMarker: 0, Limit: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -3713,7 +3873,7 @@ export const listResourcesForWebACL: API.OperationMethod<
   ListResourcesForWebACLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WebACLArn: 0, ResourceType: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -3740,7 +3900,7 @@ export const listRuleGroups: API.OperationMethod<
   ListRuleGroupsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Scope: 0, NextMarker: 0, Limit: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -3768,6 +3928,16 @@ export const listSettlementRecords: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TimeWindow: i_TimeWindow,
+      Scope: 0,
+      Currency: 0,
+      Filters: D.list(i_MonetizationFilter),
+      SortBy: 0,
+      SortOrder: 0,
+      Limit: 0,
+      NextMarker: 0,
+    },
     output: {
       Settlements: D.list({ Timestamp: D.ts, RequestTimestamp: D.ts }),
     },
@@ -3808,7 +3978,10 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NextMarker: 0, Limit: 0, ResourceARN: 0 },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -3837,7 +4010,7 @@ export const listWebACLs: API.OperationMethod<
   ListWebACLsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Scope: 0, NextMarker: 0, Limit: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -3906,7 +4079,30 @@ export const putLoggingConfiguration: API.OperationMethod<
   PutLoggingConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LoggingConfiguration: {
+        ResourceArn: 0,
+        LogDestinationConfigs: 0,
+        RedactedFields: D.list(i_FieldToMatch),
+        ManagedByFirewallManager: 0,
+        LoggingFilter: {
+          Filters: D.list({
+            Behavior: 0,
+            Requirement: 0,
+            Conditions: D.list({
+              ActionCondition: { Action: 0 },
+              LabelNameCondition: { LabelName: 0 },
+            }),
+          }),
+          DefaultBehavior: 0,
+        },
+        LogType: 0,
+        LogScope: 0,
+      },
+    },
+  },
   errors: [
     WAFFeatureNotIncludedInPricingPlanException,
     WAFInternalErrorException,
@@ -3952,7 +4148,20 @@ export const putManagedRuleSetVersions: API.OperationMethod<
   PutManagedRuleSetVersionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Scope: 0,
+      Id: 0,
+      LockToken: 0,
+      RecommendedVersion: 0,
+      VersionsToPublish: D.map({
+        AssociatedRuleGroupArn: 0,
+        ForecastedLifetime: 0,
+      }),
+    },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -3996,7 +4205,7 @@ export const putPermissionPolicy: API.OperationMethod<
   PutPermissionPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Policy: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidParameterException,
@@ -4034,7 +4243,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -4069,7 +4278,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -4125,7 +4334,17 @@ export const updateIPSet: API.OperationMethod<
   UpdateIPSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Scope: 0,
+      Id: 0,
+      Description: 0,
+      Addresses: 0,
+      LockToken: 0,
+    },
+  },
   errors: [
     WAFDuplicateItemException,
     WAFInternalErrorException,
@@ -4162,7 +4381,18 @@ export const updateManagedRuleSetVersionExpiryDate: API.OperationMethod<
   UpdateManagedRuleSetVersionExpiryDateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ExpiryTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Scope: 0,
+      Id: 0,
+      LockToken: 0,
+      VersionToExpire: 0,
+      ExpiryTimestamp: 0,
+    },
+    output: { ExpiryTimestamp: D.ts },
+  },
   errors: [
     WAFInternalErrorException,
     WAFInvalidOperationException,
@@ -4217,7 +4447,17 @@ export const updateRegexPatternSet: API.OperationMethod<
   UpdateRegexPatternSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Scope: 0,
+      Id: 0,
+      Description: 0,
+      RegularExpressionList: D.list(i_Regex),
+      LockToken: 0,
+    },
+  },
   errors: [
     WAFDuplicateItemException,
     WAFInternalErrorException,
@@ -4279,7 +4519,20 @@ export const updateRuleGroup: API.OperationMethod<
   UpdateRuleGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Scope: 0,
+      Id: 0,
+      Description: 0,
+      Rules: D.list(i_Rule),
+      VisibilityConfig: i_VisibilityConfig,
+      LockToken: 0,
+      CustomResponseBodies: D.map(i_CustomResponseBody),
+      MonetizationConfig: i_MonetizationConfig,
+    },
+  },
   errors: [
     WAFConfigurationWarningException,
     WAFDuplicateItemException,
@@ -4348,7 +4601,28 @@ export const updateWebACL: API.OperationMethod<
   UpdateWebACLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Scope: 0,
+      Id: 0,
+      DefaultAction: i_DefaultAction,
+      Description: 0,
+      Rules: D.list(i_Rule),
+      VisibilityConfig: i_VisibilityConfig,
+      DataProtectionConfig: i_DataProtectionConfig,
+      LockToken: 0,
+      CustomResponseBodies: D.map(i_CustomResponseBody),
+      CaptchaConfig: i_CaptchaConfig,
+      ChallengeConfig: i_ChallengeConfig,
+      TokenDomains: 0,
+      AssociationConfig: i_AssociationConfig,
+      OnSourceDDoSProtectionConfig: i_OnSourceDDoSProtectionConfig,
+      ApplicationConfig: i_ApplicationConfig,
+      MonetizationConfig: i_MonetizationConfig,
+    },
+  },
   errors: [
     WAFConfigurationWarningException,
     WAFDuplicateItemException,
@@ -4369,11 +4643,257 @@ export const updateWebACL: API.OperationMethod<
   operationName: "UpdateWebACL",
 })) as any;
 
+const i_ApplicationConfig: D.LazyStruct = () => ({
+  Attributes: D.list({ Name: 0, Values: 0 }),
+});
+const i_AssociationConfig: D.LazyStruct = () => ({
+  RequestBody: D.map({ DefaultSizeInspectionLimit: 0 }),
+});
+const i_CaptchaConfig: D.LazyStruct = () => ({
+  ImmunityTimeProperty: i_ImmunityTimeProperty,
+});
+const i_ChallengeConfig: D.LazyStruct = () => ({
+  ImmunityTimeProperty: i_ImmunityTimeProperty,
+});
+const i_CustomResponseBody: D.LazyStruct = () => ({
+  ContentType: 0,
+  Content: 0,
+});
+const i_DataProtectionConfig: D.LazyStruct = () => ({
+  DataProtections: D.list({
+    Field: { FieldType: 0, FieldKeys: 0 },
+    Action: 0,
+    ExcludeRuleMatchDetails: 0,
+    ExcludeRateBasedDetails: 0,
+  }),
+});
+const i_DefaultAction: D.LazyStruct = () => ({
+  Block: i_BlockAction,
+  Allow: i_AllowAction,
+});
+const i_FieldToMatch: D.LazyStruct = () => ({
+  SingleHeader: { Name: 0 },
+  SingleQueryArgument: { Name: 0 },
+  AllQueryArguments: {},
+  UriPath: {},
+  QueryString: {},
+  Body: { OversizeHandling: 0 },
+  Method: {},
+  JsonBody: {
+    MatchPattern: { All: i_All, IncludedPaths: 0 },
+    MatchScope: 0,
+    InvalidFallbackBehavior: 0,
+    OversizeHandling: 0,
+  },
+  Headers: {
+    MatchPattern: { All: i_All, IncludedHeaders: 0, ExcludedHeaders: 0 },
+    MatchScope: 0,
+    OversizeHandling: 0,
+  },
+  Cookies: {
+    MatchPattern: { All: i_All, IncludedCookies: 0, ExcludedCookies: 0 },
+    MatchScope: 0,
+    OversizeHandling: 0,
+  },
+  HeaderOrder: { OversizeHandling: 0 },
+  JA3Fingerprint: { FallbackBehavior: 0 },
+  JA4Fingerprint: { FallbackBehavior: 0 },
+  UriFragment: { FallbackBehavior: 0 },
+});
+const i_MonetizationConfig: D.LazyStruct = () => ({
+  CryptoConfig: {
+    PaymentNetworks: D.list({
+      Chain: 0,
+      WalletAddress: 0,
+      Prices: D.list({ Amount: 0, Currency: 0 }),
+    }),
+  },
+  CurrencyMode: 0,
+});
+const i_MonetizationFilter: D.LazyStruct = () => ({ Name: 0, Values: 0 });
+const i_OnSourceDDoSProtectionConfig: D.LazyStruct = () => ({
+  ALBLowReputationMode: 0,
+});
+const i_Regex: D.LazyStruct = () => ({ RegexString: 0 });
+const i_Rule: D.LazyStruct = () => ({
+  Name: 0,
+  Priority: 0,
+  Statement: i_Statement,
+  Action: i_RuleAction,
+  OverrideAction: { Count: i_CountAction, None: {} },
+  RuleLabels: D.list({ Name: 0 }),
+  VisibilityConfig: i_VisibilityConfig,
+  CaptchaConfig: i_CaptchaConfig,
+  ChallengeConfig: i_ChallengeConfig,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_TimeWindow: D.LazyStruct = () => ({ StartTime: 0, EndTime: 0 });
+const i_VisibilityConfig: D.LazyStruct = () => ({
+  SampledRequestsEnabled: 0,
+  CloudWatchMetricsEnabled: 0,
+  MetricName: 0,
+});
 const o_Rule: D.LazyStruct = () => ({ Statement: o_Statement });
 const o_WebACL: D.LazyStruct = () => ({
   Rules: D.list(o_Rule),
   PreProcessFirewallManagerRuleGroups: D.list(o_FirewallManagerRuleGroup),
   PostProcessFirewallManagerRuleGroups: D.list(o_FirewallManagerRuleGroup),
+});
+const i_All: D.LazyStruct = () => ({});
+const i_AllowAction: D.LazyStruct = () => ({
+  CustomRequestHandling: i_CustomRequestHandling,
+});
+const i_BlockAction: D.LazyStruct = () => ({
+  CustomResponse: {
+    ResponseCode: 0,
+    CustomResponseBodyKey: 0,
+    ResponseHeaders: D.list(i_CustomHTTPHeader),
+  },
+});
+const i_CountAction: D.LazyStruct = () => ({
+  CustomRequestHandling: i_CustomRequestHandling,
+});
+const i_ImmunityTimeProperty: D.LazyStruct = () => ({ ImmunityTime: 0 });
+const i_RuleAction: D.LazyStruct = () => ({
+  Block: i_BlockAction,
+  Allow: i_AllowAction,
+  Count: i_CountAction,
+  Captcha: { CustomRequestHandling: i_CustomRequestHandling },
+  Challenge: { CustomRequestHandling: i_CustomRequestHandling },
+  Monetize: { PriceMultiplier: 0 },
+});
+const i_Statement: D.LazyStruct = () => ({
+  ByteMatchStatement: {
+    SearchString: 0,
+    FieldToMatch: i_FieldToMatch,
+    TextTransformations: D.list(i_TextTransformation),
+    PreParseTextTransformations: D.list(i_PreParseTextTransformation),
+    PositionalConstraint: 0,
+  },
+  SqliMatchStatement: {
+    FieldToMatch: i_FieldToMatch,
+    TextTransformations: D.list(i_TextTransformation),
+    PreParseTextTransformations: D.list(i_PreParseTextTransformation),
+    SensitivityLevel: 0,
+  },
+  XssMatchStatement: {
+    FieldToMatch: i_FieldToMatch,
+    TextTransformations: D.list(i_TextTransformation),
+    PreParseTextTransformations: D.list(i_PreParseTextTransformation),
+  },
+  SizeConstraintStatement: {
+    FieldToMatch: i_FieldToMatch,
+    ComparisonOperator: 0,
+    Size: 0,
+    TextTransformations: D.list(i_TextTransformation),
+    PreParseTextTransformations: D.list(i_PreParseTextTransformation),
+  },
+  GeoMatchStatement: {
+    CountryCodes: 0,
+    ForwardedIPConfig: i_ForwardedIPConfig,
+  },
+  RuleGroupReferenceStatement: {
+    ARN: 0,
+    ExcludedRules: D.list(i_ExcludedRule),
+    RuleActionOverrides: D.list(i_RuleActionOverride),
+  },
+  IPSetReferenceStatement: {
+    ARN: 0,
+    IPSetForwardedIPConfig: { HeaderName: 0, FallbackBehavior: 0, Position: 0 },
+  },
+  RegexPatternSetReferenceStatement: {
+    ARN: 0,
+    FieldToMatch: i_FieldToMatch,
+    TextTransformations: D.list(i_TextTransformation),
+    PreParseTextTransformations: D.list(i_PreParseTextTransformation),
+  },
+  RateBasedStatement: {
+    Limit: 0,
+    EvaluationWindowSec: 0,
+    AggregateKeyType: 0,
+    ScopeDownStatement: i_Statement,
+    ForwardedIPConfig: i_ForwardedIPConfig,
+    CustomKeys: D.list({
+      Header: { Name: 0, TextTransformations: D.list(i_TextTransformation) },
+      Cookie: { Name: 0, TextTransformations: D.list(i_TextTransformation) },
+      QueryArgument: {
+        Name: 0,
+        TextTransformations: D.list(i_TextTransformation),
+      },
+      QueryString: { TextTransformations: D.list(i_TextTransformation) },
+      HTTPMethod: {},
+      ForwardedIP: {},
+      IP: {},
+      LabelNamespace: { Namespace: 0 },
+      UriPath: { TextTransformations: D.list(i_TextTransformation) },
+      JA3Fingerprint: { FallbackBehavior: 0 },
+      JA4Fingerprint: { FallbackBehavior: 0 },
+      ASN: {},
+    }),
+  },
+  AndStatement: { Statements: D.list(i_Statement) },
+  OrStatement: { Statements: D.list(i_Statement) },
+  NotStatement: { Statement: i_Statement },
+  ManagedRuleGroupStatement: {
+    VendorName: 0,
+    Name: 0,
+    Version: 0,
+    ExcludedRules: D.list(i_ExcludedRule),
+    ScopeDownStatement: i_Statement,
+    ManagedRuleGroupConfigs: D.list({
+      LoginPath: 0,
+      PayloadType: 0,
+      UsernameField: i_UsernameField,
+      PasswordField: i_PasswordField,
+      AWSManagedRulesBotControlRuleSet: {
+        InspectionLevel: 0,
+        EnableMachineLearning: 0,
+      },
+      AWSManagedRulesATPRuleSet: {
+        LoginPath: 0,
+        RequestInspection: {
+          PayloadType: 0,
+          UsernameField: i_UsernameField,
+          PasswordField: i_PasswordField,
+        },
+        ResponseInspection: i_ResponseInspection,
+        EnableRegexInPath: 0,
+      },
+      AWSManagedRulesACFPRuleSet: {
+        CreationPath: 0,
+        RegistrationPagePath: 0,
+        RequestInspection: {
+          PayloadType: 0,
+          UsernameField: i_UsernameField,
+          PasswordField: i_PasswordField,
+          EmailField: { Identifier: 0 },
+          PhoneNumberFields: D.list({ Identifier: 0 }),
+          AddressFields: D.list({ Identifier: 0 }),
+        },
+        ResponseInspection: i_ResponseInspection,
+        EnableRegexInPath: 0,
+      },
+      AWSManagedRulesAntiDDoSRuleSet: {
+        ClientSideActionConfig: {
+          Challenge: {
+            UsageOfAction: 0,
+            Sensitivity: 0,
+            ExemptUriRegularExpressions: D.list(i_Regex),
+          },
+        },
+        SensitivityToBlock: 0,
+      },
+    }),
+    RuleActionOverrides: D.list(i_RuleActionOverride),
+  },
+  LabelMatchStatement: { Scope: 0, Key: 0 },
+  RegexMatchStatement: {
+    RegexString: 0,
+    FieldToMatch: i_FieldToMatch,
+    TextTransformations: D.list(i_TextTransformation),
+    PreParseTextTransformations: D.list(i_PreParseTextTransformation),
+  },
+  AsnMatchStatement: { AsnList: 0, ForwardedIPConfig: i_ForwardedIPConfig },
 });
 const o_FirewallManagerRuleGroup: D.LazyStruct = () => ({
   FirewallManagerStatement: {
@@ -4388,6 +4908,32 @@ const o_Statement: D.LazyStruct = () => ({
   NotStatement: { Statement: o_Statement },
   ManagedRuleGroupStatement: o_ManagedRuleGroupStatement,
 });
+const i_CustomHTTPHeader: D.LazyStruct = () => ({ Name: 0, Value: 0 });
+const i_CustomRequestHandling: D.LazyStruct = () => ({
+  InsertHeaders: D.list(i_CustomHTTPHeader),
+});
+const i_ExcludedRule: D.LazyStruct = () => ({ Name: 0 });
+const i_ForwardedIPConfig: D.LazyStruct = () => ({
+  HeaderName: 0,
+  FallbackBehavior: 0,
+});
+const i_PasswordField: D.LazyStruct = () => ({ Identifier: 0 });
+const i_PreParseTextTransformation: D.LazyStruct = () => ({
+  Priority: 0,
+  Type: 0,
+});
+const i_ResponseInspection: D.LazyStruct = () => ({
+  StatusCode: { SuccessCodes: 0, FailureCodes: 0 },
+  Header: { Name: 0, SuccessValues: 0, FailureValues: 0 },
+  BodyContains: { SuccessStrings: 0, FailureStrings: 0 },
+  Json: { Identifier: 0, SuccessValues: 0, FailureValues: 0 },
+});
+const i_RuleActionOverride: D.LazyStruct = () => ({
+  Name: 0,
+  ActionToUse: i_RuleAction,
+});
+const i_TextTransformation: D.LazyStruct = () => ({ Priority: 0, Type: 0 });
+const i_UsernameField: D.LazyStruct = () => ({ Identifier: 0 });
 const o_ManagedRuleGroupStatement: D.LazyStruct = () => ({
   ScopeDownStatement: o_Statement,
 });

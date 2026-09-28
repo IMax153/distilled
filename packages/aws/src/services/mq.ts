@@ -982,7 +982,7 @@ export const createTags: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/tags/{ResourceArn}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: { ResourceArn: 0, Tags: D.m({ wire: "tags" }) },
     body: true,
   },
   errors: [
@@ -1018,9 +1018,11 @@ export const createUser: API.OperationMethod<
     service: svc,
     http: "POST /v1/brokers/{BrokerId}/users/{Username}",
     input: {
+      BrokerId: 0,
       ConsoleAccess: D.m({ wire: "consoleAccess" }),
       Groups: D.m({ wire: "groups" }),
       Password: D.m({ wire: "password" }),
+      Username: 0,
       ReplicationUser: D.m({ wire: "replicationUser" }),
     },
     body: true,
@@ -1055,6 +1057,7 @@ export const deleteBroker: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/brokers/{BrokerId}",
+    input: { BrokerId: 0 },
     output: { BrokerId: D.m({ wire: "brokerId" }) },
   },
   errors: [
@@ -1087,6 +1090,7 @@ export const deleteConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/configurations/{ConfigurationId}",
+    input: { ConfigurationId: 0 },
     output: { ConfigurationId: D.m({ wire: "configurationId" }) },
   },
   errors: [
@@ -1119,7 +1123,7 @@ export const deleteTags: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     BadRequestException,
@@ -1150,6 +1154,7 @@ export const deleteUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/brokers/{BrokerId}/users/{Username}",
+    input: { BrokerId: 0, Username: 0 },
   },
   errors: [
     BadRequestException,
@@ -1180,6 +1185,7 @@ export const describeBroker: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/brokers/{BrokerId}",
+    input: { BrokerId: 0 },
     output: {
       ActionsRequired: D.m({
         wire: "actionsRequired",
@@ -1405,6 +1411,7 @@ export const describeConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/configurations/{ConfigurationId}",
+    input: { ConfigurationId: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       AuthenticationStrategy: D.m({ wire: "authenticationStrategy" }),
@@ -1450,6 +1457,7 @@ export const describeConfigurationRevision: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/configurations/{ConfigurationId}/revisions/{ConfigurationRevision}",
+    input: { ConfigurationId: 0, ConfigurationRevision: 0 },
     output: {
       ConfigurationId: D.m({ wire: "configurationId" }),
       Created: D.m({ wire: "created", shape: D.ts }),
@@ -1488,6 +1496,7 @@ export const describeSharedResources: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/brokers/{BrokerId}/shared-resources",
     input: {
+      BrokerId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -1547,6 +1556,7 @@ export const describeUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/brokers/{BrokerId}/users/{Username}",
+    input: { BrokerId: 0, Username: 0 },
     output: {
       BrokerId: D.m({ wire: "brokerId" }),
       ConsoleAccess: D.m({ wire: "consoleAccess" }),
@@ -1648,6 +1658,7 @@ export const listConfigurationRevisions: API.OperationMethod<
     service: svc,
     http: "GET /v1/configurations/{ConfigurationId}/revisions",
     input: {
+      ConfigurationId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -1744,6 +1755,7 @@ export const listTags: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
   },
   errors: [
@@ -1776,6 +1788,7 @@ export const listUsers: API.OperationMethod<
     service: svc,
     http: "GET /v1/brokers/{BrokerId}/users",
     input: {
+      BrokerId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -1815,7 +1828,7 @@ export const promote: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/brokers/{BrokerId}/promote",
-    input: { Mode: D.m({ wire: "mode" }) },
+    input: { BrokerId: 0, Mode: D.m({ wire: "mode" }) },
     output: { BrokerId: D.m({ wire: "brokerId" }) },
     body: true,
   },
@@ -1845,7 +1858,11 @@ export const rebootBroker: API.OperationMethod<
   RebootBrokerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/brokers/{BrokerId}/reboot" },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/brokers/{BrokerId}/reboot",
+    input: { BrokerId: 0 },
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -1879,6 +1896,7 @@ export const updateBroker: API.OperationMethod<
     input: {
       AuthenticationStrategy: D.m({ wire: "authenticationStrategy" }),
       AutoMinorVersionUpgrade: D.m({ wire: "autoMinorVersionUpgrade" }),
+      BrokerId: 0,
       Configuration: D.m({ wire: "configuration", shape: i_ConfigurationId }),
       EngineVersion: D.m({ wire: "engineVersion" }),
       HostInstanceType: D.m({ wire: "hostInstanceType" }),
@@ -1966,6 +1984,7 @@ export const updateConfiguration: API.OperationMethod<
     service: svc,
     http: "PUT /v1/configurations/{ConfigurationId}",
     input: {
+      ConfigurationId: 0,
       Data: D.m({ wire: "data" }),
       Description: D.m({ wire: "description" }),
     },
@@ -2021,9 +2040,11 @@ export const updateUser: API.OperationMethod<
     service: svc,
     http: "PUT /v1/brokers/{BrokerId}/users/{Username}",
     input: {
+      BrokerId: 0,
       ConsoleAccess: D.m({ wire: "consoleAccess" }),
       Groups: D.m({ wire: "groups" }),
       Password: D.m({ wire: "password" }),
+      Username: 0,
       ReplicationUser: D.m({ wire: "replicationUser" }),
     },
     body: true,

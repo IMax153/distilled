@@ -609,6 +609,7 @@ export const batchGetMemberAccountDetails: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/membership/{membershipId}/batch-member-details",
+    input: { membershipId: 0, accountIds: 0 },
     body: true,
   },
   errors: [],
@@ -627,7 +628,11 @@ export const cancelMembership: API.OperationMethod<
   CancelMembershipError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /v1/membership/{membershipId}" },
+  descriptor: {
+    service: svc,
+    http: "PUT /v1/membership/{membershipId}",
+    input: { membershipId: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -647,6 +652,7 @@ export const closeCase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/cases/{caseId}/close-case",
+    input: { caseId: 0 },
     output: { closedDate: D.ts },
   },
   errors: [],
@@ -668,7 +674,20 @@ export const createCase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/create-case",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      resolverType: 0,
+      title: 0,
+      description: 0,
+      engagementType: 0,
+      reportedIncidentStartDate: 0,
+      impactedAccounts: 0,
+      watchers: D.list(i_Watcher),
+      threatActorIpAddresses: D.list(i_ThreatActorIp),
+      impactedServices: 0,
+      impactedAwsRegions: D.list(i_ImpactedAwsRegion),
+      tags: 0,
+    },
     body: true,
   },
   errors: [],
@@ -690,7 +709,7 @@ export const createCaseComment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/cases/{caseId}/create-comment",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { caseId: 0, clientToken: D.m({ idempotency: true }), body: 0 },
     body: true,
   },
   errors: [],
@@ -712,7 +731,14 @@ export const createMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/membership",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      membershipName: 0,
+      incidentResponseTeam: D.list(i_IncidentResponder),
+      optInFeatures: D.list(i_OptInFeature),
+      tags: 0,
+      coverEntireOrganization: 0,
+    },
     body: true,
   },
   errors: [],
@@ -734,6 +760,7 @@ export const getCase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/cases/{caseId}/get-case",
+    input: { caseId: 0 },
     output: {
       title: D.secret,
       description: D.secret,
@@ -766,6 +793,7 @@ export const getCaseAttachmentDownloadUrl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/cases/{caseId}/get-presigned-url/{attachmentId}",
+    input: { caseId: 0, attachmentId: 0 },
     output: { attachmentPresignedUrl: D.secret },
   },
   errors: [],
@@ -787,7 +815,12 @@ export const getCaseAttachmentUploadUrl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/cases/{caseId}/get-presigned-url",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      caseId: 0,
+      fileName: 0,
+      contentLength: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { attachmentPresignedUrl: D.secret },
     body: true,
   },
@@ -810,6 +843,7 @@ export const getMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/membership/{membershipId}",
+    input: { membershipId: 0 },
     output: {
       membershipName: D.secret,
       membershipActivationTimestamp: D.ts,
@@ -841,6 +875,7 @@ export const listCaseEdits: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/cases/{caseId}/list-case-edits",
+    input: { nextToken: 0, maxResults: 0, caseId: 0 },
     output: { items: D.list({ eventTimestamp: D.ts }) },
     body: true,
   },
@@ -870,6 +905,7 @@ export const listCases: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/list-cases",
+    input: { nextToken: 0, maxResults: 0 },
     output: {
       items: D.list({
         lastUpdatedDate: D.ts,
@@ -906,6 +942,7 @@ export const listComments: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/cases/{caseId}/list-comments",
+    input: { nextToken: 0, maxResults: 0, caseId: 0 },
     output: {
       items: D.list({
         createdDate: D.ts,
@@ -944,6 +981,7 @@ export const listInvestigations: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      caseId: 0,
     },
     output: {
       investigationActions: D.list({
@@ -975,7 +1013,12 @@ export const listMemberships: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ListMembershipItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /v1/memberships", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/memberships",
+    input: { nextToken: 0, maxResults: 0 },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1002,7 +1045,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /v1/tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -1026,6 +1073,7 @@ export const sendFeedback: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/cases/{caseId}/feedback/{resultId}/send-feedback",
+    input: { caseId: 0, resultId: 0, usefulness: 0, comment: 0 },
     body: true,
   },
   errors: [],
@@ -1048,7 +1096,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -1076,7 +1129,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1101,6 +1154,25 @@ export const updateCase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/cases/{caseId}/update-case",
+    input: {
+      caseId: 0,
+      title: 0,
+      description: 0,
+      reportedIncidentStartDate: 0,
+      actualIncidentStartDate: 0,
+      engagementType: 0,
+      watchersToAdd: D.list(i_Watcher),
+      watchersToDelete: D.list(i_Watcher),
+      threatActorIpAddressesToAdd: D.list(i_ThreatActorIp),
+      threatActorIpAddressesToDelete: D.list(i_ThreatActorIp),
+      impactedServicesToAdd: 0,
+      impactedServicesToDelete: 0,
+      impactedAwsRegionsToAdd: D.list(i_ImpactedAwsRegion),
+      impactedAwsRegionsToDelete: D.list(i_ImpactedAwsRegion),
+      impactedAccountsToAdd: 0,
+      impactedAccountsToDelete: 0,
+      caseMetadata: D.list({ key: 0, value: 0 }),
+    },
     body: true,
   },
   errors: [],
@@ -1122,6 +1194,7 @@ export const updateCaseComment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/cases/{caseId}/update-case-comment/{commentId}",
+    input: { caseId: 0, commentId: 0, body: 0 },
     output: { body: D.secret },
     body: true,
   },
@@ -1164,6 +1237,7 @@ export const updateCaseStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/cases/{caseId}/update-case-status",
+    input: { caseId: 0, caseStatus: 0 },
     body: true,
   },
   errors: [],
@@ -1185,6 +1259,18 @@ export const updateMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/membership/{membershipId}/update-membership",
+    input: {
+      membershipId: 0,
+      membershipName: 0,
+      incidentResponseTeam: D.list(i_IncidentResponder),
+      optInFeatures: D.list(i_OptInFeature),
+      membershipAccountsConfigurationsUpdate: {
+        coverEntireOrganization: 0,
+        organizationalUnitsToAdd: 0,
+        organizationalUnitsToRemove: 0,
+      },
+      undoMembershipCancellation: 0,
+    },
     body: true,
   },
   errors: [],
@@ -1208,6 +1294,7 @@ export const updateResolverType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/cases/{caseId}/update-resolver-type",
+    input: { caseId: 0, resolverType: 0 },
     body: true,
   },
   errors: [],
@@ -1215,3 +1302,14 @@ export const updateResolverType: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateResolverType",
 })) as any;
+
+const i_ImpactedAwsRegion: D.LazyStruct = () => ({ region: 0 });
+const i_IncidentResponder: D.LazyStruct = () => ({
+  name: 0,
+  jobTitle: 0,
+  email: 0,
+  communicationPreferences: 0,
+});
+const i_OptInFeature: D.LazyStruct = () => ({ featureName: 0, isEnabled: 0 });
+const i_ThreatActorIp: D.LazyStruct = () => ({ ipAddress: 0, userAgent: 0 });
+const i_Watcher: D.LazyStruct = () => ({ email: 0, name: 0, jobTitle: 0 });

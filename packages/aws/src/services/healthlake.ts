@@ -836,7 +836,20 @@ export const createDataTransformationProfile: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      SourceFormat: 0,
+      Source: {
+        StarterProfile: { StarterProfileName: 0 },
+        ExistingVersionedProfileId: { ProfileId: 0, Version: 0 },
+        ProfileMapping: { ProfileMapping: 0 },
+        SampleData: { S3Uri: 0 },
+      },
+      KmsKeyId: 0,
+      ProfileDescription: 0,
+      ProfileName: 0,
+      Tags: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { LastUpdatedAt: D.ts },
   },
   errors: [
@@ -871,7 +884,19 @@ export const createFHIRDatastore: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      DatastoreName: 0,
+      DatastoreTypeVersion: 0,
+      SseConfiguration: i_SseConfiguration,
+      PreloadDataConfig: { PreloadDataType: 0 },
+      ClientToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+      IdentityProviderConfiguration: i_IdentityProviderConfiguration,
+      AnalyticsConfiguration: i_AnalyticsConfiguration,
+      NlpConfiguration: i_NlpConfiguration,
+      ProfileConfiguration: i_ProfileConfiguration,
+      BackupConfiguration: i_BackupConfiguration,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -900,7 +925,11 @@ export const deleteDataTransformationProfile: API.OperationMethod<
   DeleteDataTransformationProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DeletionTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ProfileId: 0 },
+    output: { DeletionTime: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -931,7 +960,7 @@ export const deleteFHIRDatastore: API.OperationMethod<
   DeleteFHIRDatastoreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DatastoreId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -963,6 +992,7 @@ export const describeDataTransformationJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: {
       TransformationJobProperties: { SubmitTime: D.ts, EndTime: D.ts },
     },
@@ -997,6 +1027,7 @@ export const describeFHIRDatastore: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DatastoreId: 0 },
     output: { DatastoreProperties: o_DatastoreProperties },
   },
   errors: [
@@ -1027,6 +1058,7 @@ export const describeFHIRExportJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DatastoreId: 0, JobId: 0 },
     output: { ExportJobProperties: o_ExportJobProperties },
   },
   errors: [
@@ -1057,6 +1089,7 @@ export const describeFHIRImportJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DatastoreId: 0, JobId: 0 },
     output: { ImportJobProperties: o_ImportJobProperties },
   },
   errors: [
@@ -1086,7 +1119,11 @@ export const getDataTransformationProfile: API.OperationMethod<
   GetDataTransformationProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LastUpdatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ProfileId: 0, ProfileVersion: 0 },
+    output: { LastUpdatedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1118,6 +1155,14 @@ export const listDataTransformationJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      JobStatus: 0,
+      JobName: 0,
+      SubmittedAfter: 0,
+      SubmittedBefore: 0,
+    },
     output: { Items: D.list({ SubmitTime: D.ts, EndTime: D.ts }) },
   },
   errors: [
@@ -1156,6 +1201,7 @@ export const listDataTransformationProfiles: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { SourceFormat: 0, MaxResults: 0, NextToken: 0 },
     output: { Items: D.list({ LastUpdatedAt: D.ts }) },
   },
   errors: [
@@ -1195,6 +1241,7 @@ export const listDataTransformationProfileVersions: API.PaginatedOperationMethod
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ProfileId: 0, MaxResults: 0, NextToken: 0 },
     output: { Items: D.list({ LastUpdatedAt: D.ts }) },
   },
   errors: [
@@ -1233,6 +1280,16 @@ export const listFHIRDatastores: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: {
+        DatastoreName: 0,
+        DatastoreStatus: 0,
+        CreatedBefore: 0,
+        CreatedAfter: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { DatastorePropertiesList: D.list(o_DatastoreProperties) },
   },
   errors: [InternalServerException, ThrottlingException, ValidationException],
@@ -1265,6 +1322,15 @@ export const listFHIRExportJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DatastoreId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      JobName: 0,
+      JobStatus: 0,
+      SubmittedBefore: 0,
+      SubmittedAfter: 0,
+    },
     output: { ExportJobPropertiesList: D.list(o_ExportJobProperties) },
   },
   errors: [
@@ -1303,6 +1369,15 @@ export const listFHIRImportJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DatastoreId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      JobName: 0,
+      JobStatus: 0,
+      SubmittedBefore: 0,
+      SubmittedAfter: 0,
+    },
     output: { ImportJobPropertiesList: D.list(o_ImportJobProperties) },
   },
   errors: [
@@ -1335,7 +1410,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1359,7 +1434,16 @@ export const publishDataTransformationProfile: API.OperationMethod<
   PublishDataTransformationProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LastUpdatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      ProfileId: 0,
+      SourceFormat: 0,
+      FromExistingVersion: 0,
+      ChangeDescription: 0,
+    },
+    output: { LastUpdatedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1393,7 +1477,20 @@ export const restoreFHIRDatastore: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      SourceDatastoreId: 0,
+      RestoreConfiguration: {
+        ContinuousBackupRestoreConfiguration: { RestorePointTime: 0 },
+      },
+      DatastoreName: 0,
+      SseConfiguration: i_SseConfiguration,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+      IdentityProviderConfiguration: i_IdentityProviderConfiguration,
+      AnalyticsConfiguration: i_AnalyticsConfiguration,
+      NlpConfiguration: i_NlpConfiguration,
+      ProfileConfiguration: i_ProfileConfiguration,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1424,7 +1521,19 @@ export const startDataTransformationJob: API.OperationMethod<
   StartDataTransformationJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InputDataConfig: { S3Uri: 0, SourceFormat: 0 },
+      OutputDataConfig: { S3Configuration: { S3Uri: 0, KmsKeyId: 0 } },
+      DataAccessRoleArn: 0,
+      ClientToken: 0,
+      JobName: 0,
+      ProfileId: 0,
+      DriftDetectionEnabled: 0,
+      ProvenanceEnabled: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1457,7 +1566,13 @@ export const startFHIRExportJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      JobName: 0,
+      OutputDataConfig: i_OutputDataConfig,
+      DatastoreId: 0,
+      DataAccessRoleArn: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1491,7 +1606,19 @@ export const startFHIRImportJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      JobName: 0,
+      InputDataConfig: { S3Uri: 0 },
+      JobOutputDataConfig: i_OutputDataConfig,
+      DatastoreId: 0,
+      DataAccessRoleArn: 0,
+      ClientToken: D.m({ idempotency: true }),
+      ValidationLevel: 0,
+      ProfileId: 0,
+      InputFormat: 0,
+      DriftDetectionEnabled: 0,
+      ProvenanceEnabled: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1519,7 +1646,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1539,7 +1666,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1562,7 +1689,11 @@ export const updateDataTransformationProfile: API.OperationMethod<
   UpdateDataTransformationProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LastUpdatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ProfileId: 0, ProfileMapping: 0, ChangeDescription: 0 },
+    output: { LastUpdatedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1595,6 +1726,15 @@ export const updateFHIRDatastore: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DatastoreId: 0,
+      DatastoreName: 0,
+      AnalyticsConfiguration: i_AnalyticsConfiguration,
+      NlpConfiguration: i_NlpConfiguration,
+      ProfileConfiguration: i_ProfileConfiguration,
+      IdentityProviderConfiguration: i_IdentityProviderConfiguration,
+      BackupConfiguration: i_BackupConfiguration,
+    },
     output: { DatastoreProperties: o_DatastoreProperties },
   },
   errors: [
@@ -1633,6 +1773,12 @@ export const updateProfileWithAgent: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ProfileId: 0,
+      SourceFormat: 0,
+      InputMessage: { Body: 0, Type: 0 },
+      ConversationId: 0,
+    },
     output: {
       AgentResponse: { Body: D.secret, OptionsList: D.list(D.secret) },
     },
@@ -1655,6 +1801,28 @@ export const updateProfileWithAgent: API.OperationMethod<
   endpointHostPrefix: "datatransformation.",
 })) as any;
 
+const i_AnalyticsConfiguration: D.LazyStruct = () => ({ Status: 0 });
+const i_BackupConfiguration: D.LazyStruct = () => ({
+  Status: 0,
+  BackupType: 0,
+  RetentionPeriodInDays: 0,
+  BackupTagsEnabled: 0,
+});
+const i_IdentityProviderConfiguration: D.LazyStruct = () => ({
+  AuthorizationStrategy: 0,
+  FineGrainedAuthorizationEnabled: 0,
+  Metadata: 0,
+  IdpLambdaArn: 0,
+});
+const i_NlpConfiguration: D.LazyStruct = () => ({ Status: 0 });
+const i_OutputDataConfig: D.LazyStruct = () => ({
+  S3Configuration: { S3Uri: 0, KmsKeyId: 0 },
+});
+const i_ProfileConfiguration: D.LazyStruct = () => ({ DefaultProfiles: 0 });
+const i_SseConfiguration: D.LazyStruct = () => ({
+  KmsEncryptionConfig: { CmkType: 0, KmsKeyId: 0 },
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_DatastoreProperties: D.LazyStruct = () => ({
   CreatedAt: D.ts,
   BackupStatusInfo: {

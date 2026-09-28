@@ -1179,6 +1179,12 @@ export const createCallAnalyticsCategory: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CategoryName: 0,
+      Rules: D.list(i_Rule),
+      Tags: D.list(i_Tag),
+      InputType: 0,
+    },
     output: { CategoryProperties: o_CategoryProperties },
   },
   errors: [
@@ -1218,7 +1224,16 @@ export const createLanguageModel: API.OperationMethod<
   CreateLanguageModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LanguageCode: 0,
+      BaseModelName: 0,
+      ModelName: 0,
+      InputDataConfig: { S3Uri: 0, TuningDataS3Uri: 0, DataAccessRoleArn: 0 },
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -1260,7 +1275,16 @@ export const createMedicalVocabulary: API.OperationMethod<
   CreateMedicalVocabularyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LastModifiedTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      VocabularyName: 0,
+      LanguageCode: 0,
+      VocabularyFileUri: 0,
+      Tags: D.list(i_Tag),
+    },
+    output: { LastModifiedTime: D.ts },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -1300,7 +1324,18 @@ export const createVocabulary: API.OperationMethod<
   CreateVocabularyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LastModifiedTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      VocabularyName: 0,
+      LanguageCode: 0,
+      Phrases: 0,
+      VocabularyFileUri: 0,
+      Tags: D.list(i_Tag),
+      DataAccessRoleArn: 0,
+    },
+    output: { LastModifiedTime: D.ts },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -1339,7 +1374,18 @@ export const createVocabularyFilter: API.OperationMethod<
   CreateVocabularyFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LastModifiedTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      VocabularyFilterName: 0,
+      LanguageCode: 0,
+      Words: 0,
+      VocabularyFilterFileUri: 0,
+      Tags: D.list(i_Tag),
+      DataAccessRoleArn: 0,
+    },
+    output: { LastModifiedTime: D.ts },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -1368,7 +1414,7 @@ export const deleteCallAnalyticsCategory: API.OperationMethod<
   DeleteCallAnalyticsCategoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CategoryName: 0 } },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -1396,7 +1442,7 @@ export const deleteCallAnalyticsJob: API.OperationMethod<
   DeleteCallAnalyticsJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CallAnalyticsJobName: 0 } },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -1423,7 +1469,7 @@ export const deleteLanguageModel: API.OperationMethod<
   DeleteLanguageModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ModelName: 0 } },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -1450,7 +1496,7 @@ export const deleteMedicalScribeJob: API.OperationMethod<
   DeleteMedicalScribeJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MedicalScribeJobName: 0 } },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -1477,7 +1523,7 @@ export const deleteMedicalTranscriptionJob: API.OperationMethod<
   DeleteMedicalTranscriptionJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MedicalTranscriptionJobName: 0 } },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -1505,7 +1551,7 @@ export const deleteMedicalVocabulary: API.OperationMethod<
   DeleteMedicalVocabularyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { VocabularyName: 0 } },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -1533,7 +1579,7 @@ export const deleteTranscriptionJob: API.OperationMethod<
   DeleteTranscriptionJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TranscriptionJobName: 0 } },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -1561,7 +1607,7 @@ export const deleteVocabulary: API.OperationMethod<
   DeleteVocabularyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { VocabularyName: 0 } },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -1590,7 +1636,7 @@ export const deleteVocabularyFilter: API.OperationMethod<
   DeleteVocabularyFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { VocabularyFilterName: 0 } },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -1625,7 +1671,11 @@ export const describeLanguageModel: API.OperationMethod<
   DescribeLanguageModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LanguageModel: o_LanguageModel } },
+  descriptor: {
+    service: svc,
+    input: { ModelName: 0 },
+    output: { LanguageModel: o_LanguageModel },
+  },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -1656,6 +1706,7 @@ export const getCallAnalyticsCategory: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CategoryName: 0 },
     output: { CategoryProperties: o_CategoryProperties },
   },
   errors: [
@@ -1701,6 +1752,7 @@ export const getCallAnalyticsJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CallAnalyticsJobName: 0 },
     output: { CallAnalyticsJob: o_CallAnalyticsJob },
   },
   errors: [
@@ -1740,6 +1792,7 @@ export const getMedicalScribeJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { MedicalScribeJobName: 0 },
     output: { MedicalScribeJob: o_MedicalScribeJob },
   },
   errors: [
@@ -1779,6 +1832,7 @@ export const getMedicalTranscriptionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { MedicalTranscriptionJobName: 0 },
     output: { MedicalTranscriptionJob: o_MedicalTranscriptionJob },
   },
   errors: [
@@ -1814,7 +1868,11 @@ export const getMedicalVocabulary: API.OperationMethod<
   GetMedicalVocabularyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LastModifiedTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { VocabularyName: 0 },
+    output: { LastModifiedTime: D.ts },
+  },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -1855,6 +1913,7 @@ export const getTranscriptionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TranscriptionJobName: 0 },
     output: { TranscriptionJob: o_TranscriptionJob },
   },
   errors: [
@@ -1891,7 +1950,11 @@ export const getVocabulary: API.OperationMethod<
   GetVocabularyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LastModifiedTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { VocabularyName: 0 },
+    output: { LastModifiedTime: D.ts },
+  },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -1920,7 +1983,11 @@ export const getVocabularyFilter: API.OperationMethod<
   GetVocabularyFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LastModifiedTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { VocabularyFilterName: 0 },
+    output: { LastModifiedTime: D.ts },
+  },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -1952,6 +2019,7 @@ export const listCallAnalyticsCategories: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: { Categories: D.list(o_CategoryProperties) },
   },
   errors: [
@@ -1989,6 +2057,7 @@ export const listCallAnalyticsJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Status: 0, JobNameContains: 0, NextToken: 0, MaxResults: 0 },
     output: {
       CallAnalyticsJobSummaries: D.list({
         CreationTime: D.ts,
@@ -2030,7 +2099,11 @@ export const listLanguageModels: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Models: D.list(o_LanguageModel) } },
+  descriptor: {
+    service: svc,
+    input: { StatusEquals: 0, NameContains: 0, NextToken: 0, MaxResults: 0 },
+    output: { Models: D.list(o_LanguageModel) },
+  },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -2066,6 +2139,7 @@ export const listMedicalScribeJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Status: 0, JobNameContains: 0, NextToken: 0, MaxResults: 0 },
     output: {
       MedicalScribeJobSummaries: D.list({
         CreationTime: D.ts,
@@ -2109,6 +2183,7 @@ export const listMedicalTranscriptionJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Status: 0, JobNameContains: 0, NextToken: 0, MaxResults: 0 },
     output: {
       MedicalTranscriptionJobSummaries: D.list({
         CreationTime: D.ts,
@@ -2152,6 +2227,7 @@ export const listMedicalVocabularies: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, StateEquals: 0, NameContains: 0 },
     output: { Vocabularies: D.list(o_VocabularyInfo) },
   },
   errors: [
@@ -2188,7 +2264,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -2220,6 +2296,7 @@ export const listTranscriptionJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Status: 0, JobNameContains: 0, NextToken: 0, MaxResults: 0 },
     output: {
       TranscriptionJobSummaries: D.list({
         CreationTime: D.ts,
@@ -2263,6 +2340,7 @@ export const listVocabularies: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, StateEquals: 0, NameContains: 0 },
     output: { Vocabularies: D.list(o_VocabularyInfo) },
   },
   errors: [
@@ -2300,6 +2378,7 @@ export const listVocabularyFilters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, NameContains: 0 },
     output: { VocabularyFilters: D.list({ LastModifiedTime: D.ts }) },
   },
   errors: [
@@ -2376,6 +2455,25 @@ export const startCallAnalyticsJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CallAnalyticsJobName: 0,
+      Media: i_Media,
+      OutputLocation: 0,
+      OutputEncryptionKMSKeyId: 0,
+      DataAccessRoleArn: 0,
+      Settings: {
+        VocabularyName: 0,
+        VocabularyFilterName: 0,
+        VocabularyFilterMethod: 0,
+        LanguageModelName: 0,
+        ContentRedaction: i_ContentRedaction,
+        LanguageOptions: 0,
+        LanguageIdSettings: D.map(i_LanguageIdSettings),
+        Summarization: { GenerateAbstractiveSummary: 0 },
+      },
+      Tags: D.list(i_Tag),
+      ChannelDefinitions: D.list({ ChannelId: 0, ParticipantRole: 0 }),
+    },
     output: { CallAnalyticsJob: o_CallAnalyticsJob },
   },
   errors: [
@@ -2437,6 +2535,26 @@ export const startMedicalScribeJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MedicalScribeJobName: 0,
+      Media: i_Media,
+      OutputBucketName: 0,
+      OutputEncryptionKMSKeyId: 0,
+      KMSEncryptionContext: 0,
+      DataAccessRoleArn: 0,
+      Settings: {
+        ShowSpeakerLabels: 0,
+        MaxSpeakerLabels: 0,
+        ChannelIdentification: 0,
+        VocabularyName: 0,
+        VocabularyFilterName: 0,
+        VocabularyFilterMethod: 0,
+        ClinicalNoteGenerationSettings: { NoteTemplate: 0 },
+      },
+      ChannelDefinitions: D.list({ ChannelId: 0, ParticipantRole: 0 }),
+      Tags: D.list(i_Tag),
+      MedicalScribeContext: { PatientContext: { Pronouns: 0 } },
+    },
     output: { MedicalScribeJob: o_MedicalScribeJob },
   },
   errors: [
@@ -2502,6 +2620,29 @@ export const startMedicalTranscriptionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MedicalTranscriptionJobName: 0,
+      LanguageCode: 0,
+      MediaSampleRateHertz: 0,
+      MediaFormat: 0,
+      Media: i_Media,
+      OutputBucketName: 0,
+      OutputKey: 0,
+      OutputEncryptionKMSKeyId: 0,
+      KMSEncryptionContext: 0,
+      Settings: {
+        ShowSpeakerLabels: 0,
+        MaxSpeakerLabels: 0,
+        ChannelIdentification: 0,
+        ShowAlternatives: 0,
+        MaxAlternatives: 0,
+        VocabularyName: 0,
+      },
+      ContentIdentificationType: 0,
+      Specialty: 0,
+      Type: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { MedicalTranscriptionJob: o_MedicalTranscriptionJob },
   },
   errors: [
@@ -2559,6 +2700,37 @@ export const startTranscriptionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TranscriptionJobName: 0,
+      LanguageCode: 0,
+      MediaSampleRateHertz: 0,
+      MediaFormat: 0,
+      Media: i_Media,
+      OutputBucketName: 0,
+      OutputKey: 0,
+      OutputEncryptionKMSKeyId: 0,
+      KMSEncryptionContext: 0,
+      Settings: {
+        VocabularyName: 0,
+        ShowSpeakerLabels: 0,
+        MaxSpeakerLabels: 0,
+        ChannelIdentification: 0,
+        ShowAlternatives: 0,
+        MaxAlternatives: 0,
+        VocabularyFilterName: 0,
+        VocabularyFilterMethod: 0,
+      },
+      ModelSettings: { LanguageModelName: 0 },
+      JobExecutionSettings: { AllowDeferredExecution: 0, DataAccessRoleArn: 0 },
+      ContentRedaction: i_ContentRedaction,
+      IdentifyLanguage: 0,
+      IdentifyMultipleLanguages: 0,
+      LanguageOptions: 0,
+      Subtitles: { Formats: 0, OutputStartIndex: 0 },
+      Tags: D.list(i_Tag),
+      LanguageIdSettings: D.map(i_LanguageIdSettings),
+      ToxicityDetection: D.list({ ToxicityCategories: 0 }),
+    },
     output: { TranscriptionJob: o_TranscriptionJob },
   },
   errors: [
@@ -2592,7 +2764,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     BadRequestException,
     ConflictException,
@@ -2624,7 +2796,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     BadRequestException,
     ConflictException,
@@ -2660,6 +2832,7 @@ export const updateCallAnalyticsCategory: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CategoryName: 0, Rules: D.list(i_Rule), InputType: 0 },
     output: { CategoryProperties: o_CategoryProperties },
   },
   errors: [
@@ -2692,7 +2865,11 @@ export const updateMedicalVocabulary: API.OperationMethod<
   UpdateMedicalVocabularyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LastModifiedTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { VocabularyName: 0, LanguageCode: 0, VocabularyFileUri: 0 },
+    output: { LastModifiedTime: D.ts },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -2723,7 +2900,17 @@ export const updateVocabulary: API.OperationMethod<
   UpdateVocabularyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LastModifiedTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      VocabularyName: 0,
+      LanguageCode: 0,
+      Phrases: 0,
+      VocabularyFileUri: 0,
+      DataAccessRoleArn: 0,
+    },
+    output: { LastModifiedTime: D.ts },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -2753,7 +2940,16 @@ export const updateVocabularyFilter: API.OperationMethod<
   UpdateVocabularyFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LastModifiedTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      VocabularyFilterName: 0,
+      Words: 0,
+      VocabularyFilterFileUri: 0,
+      DataAccessRoleArn: 0,
+    },
+    output: { LastModifiedTime: D.ts },
+  },
   errors: [
     BadRequestException,
     InternalFailureException,
@@ -2765,6 +2961,51 @@ export const updateVocabularyFilter: API.OperationMethod<
   operationName: "UpdateVocabularyFilter",
 })) as any;
 
+const i_ContentRedaction: D.LazyStruct = () => ({
+  RedactionType: 0,
+  RedactionOutput: 0,
+  PiiEntityTypes: 0,
+});
+const i_LanguageIdSettings: D.LazyStruct = () => ({
+  VocabularyName: 0,
+  VocabularyFilterName: 0,
+  LanguageModelName: 0,
+});
+const i_Media: D.LazyStruct = () => ({
+  MediaFileUri: 0,
+  RedactedMediaFileUri: 0,
+});
+const i_Rule: D.LazyStruct = () => ({
+  NonTalkTimeFilter: {
+    Threshold: 0,
+    AbsoluteTimeRange: i_AbsoluteTimeRange,
+    RelativeTimeRange: i_RelativeTimeRange,
+    Negate: 0,
+  },
+  InterruptionFilter: {
+    Threshold: 0,
+    ParticipantRole: 0,
+    AbsoluteTimeRange: i_AbsoluteTimeRange,
+    RelativeTimeRange: i_RelativeTimeRange,
+    Negate: 0,
+  },
+  TranscriptFilter: {
+    TranscriptFilterType: 0,
+    AbsoluteTimeRange: i_AbsoluteTimeRange,
+    RelativeTimeRange: i_RelativeTimeRange,
+    ParticipantRole: 0,
+    Negate: 0,
+    Targets: 0,
+  },
+  SentimentFilter: {
+    Sentiments: 0,
+    AbsoluteTimeRange: i_AbsoluteTimeRange,
+    RelativeTimeRange: i_RelativeTimeRange,
+    ParticipantRole: 0,
+    Negate: 0,
+  },
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_CallAnalyticsJob: D.LazyStruct = () => ({
   StartTime: D.ts,
   CreationTime: D.ts,
@@ -2794,3 +3035,15 @@ const o_TranscriptionJob: D.LazyStruct = () => ({
   CompletionTime: D.ts,
 });
 const o_VocabularyInfo: D.LazyStruct = () => ({ LastModifiedTime: D.ts });
+const i_AbsoluteTimeRange: D.LazyStruct = () => ({
+  StartTime: 0,
+  EndTime: 0,
+  First: 0,
+  Last: 0,
+});
+const i_RelativeTimeRange: D.LazyStruct = () => ({
+  StartPercentage: 0,
+  EndPercentage: 0,
+  First: 0,
+  Last: 0,
+});

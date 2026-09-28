@@ -7885,7 +7885,13 @@ export const associateGlossaryTerms: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      AssetIdentifier: 0,
+      IterableFormName: 0,
+      ItemIdentifier: 0,
+      GlossaryTermIdentifiers: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -7918,7 +7924,15 @@ export const batchCreatePartition: API.OperationMethod<
   BatchCreatePartitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      PartitionInputList: D.list(i_PartitionInput),
+    },
+  },
   errors: [
     AlreadyExistsException,
     EntityNotFoundException,
@@ -7946,7 +7960,7 @@ export const batchDeleteConnection: API.OperationMethod<
   BatchDeleteConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CatalogId: 0, ConnectionNameList: 0 } },
   errors: [InternalServiceException, OperationTimeoutException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -7968,7 +7982,15 @@ export const batchDeletePartition: API.OperationMethod<
   BatchDeletePartitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      PartitionsToDelete: D.list(i_PartitionValueList),
+    },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -8007,7 +8029,15 @@ export const batchDeleteTable: API.OperationMethod<
   BatchDeleteTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TablesToDelete: 0,
+      TransactionId: 0,
+    },
+  },
   errors: [
     EntityNotFoundException,
     GlueEncryptionException,
@@ -8036,7 +8066,10 @@ export const batchDeleteTableVersion: API.OperationMethod<
   BatchDeleteTableVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0, DatabaseName: 0, TableName: 0, VersionIds: 0 },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -8062,7 +8095,11 @@ export const batchGetBlueprints: API.OperationMethod<
   BatchGetBlueprintsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Blueprints: D.list(o_Blueprint) } },
+  descriptor: {
+    service: svc,
+    input: { Names: 0, IncludeBlueprint: 0, IncludeParameterSpec: 0 },
+    output: { Blueprints: D.list(o_Blueprint) },
+  },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -8086,7 +8123,11 @@ export const batchGetCrawlers: API.OperationMethod<
   BatchGetCrawlersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Crawlers: D.list(o_Crawler) } },
+  descriptor: {
+    service: svc,
+    input: { CrawlerNames: 0 },
+    output: { Crawlers: D.list(o_Crawler) },
+  },
   errors: [InvalidInputException, OperationTimeoutException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -8107,7 +8148,7 @@ export const batchGetCustomEntityTypes: API.OperationMethod<
   BatchGetCustomEntityTypesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Names: 0 } },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -8134,6 +8175,7 @@ export const batchGetDataQualityResult: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResultIds: 0 },
     output: {
       Results: D.list({
         StartedOn: D.ts,
@@ -8170,6 +8212,7 @@ export const batchGetDataQualityRulesetEvaluationRun: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { RunIds: 0 },
     output: {
       Runs: D.list({
         StartedOn: D.ts,
@@ -8206,7 +8249,11 @@ export const batchGetDevEndpoints: API.OperationMethod<
   BatchGetDevEndpointsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DevEndpoints: D.list(o_DevEndpoint) } },
+  descriptor: {
+    service: svc,
+    input: { DevEndpointNames: 0 },
+    output: { DevEndpoints: D.list(o_DevEndpoint) },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -8234,7 +8281,10 @@ export const batchGetIterableForms: API.OperationMethod<
   BatchGetIterableFormsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AssetIdentifier: 0, IterableFormName: 0, ItemIdentifiers: 0 },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -8261,7 +8311,11 @@ export const batchGetJobs: API.OperationMethod<
   BatchGetJobsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Jobs: D.list(o_Job) } },
+  descriptor: {
+    service: svc,
+    input: { JobNames: 0 },
+    output: { Jobs: D.list(o_Job) },
+  },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -8291,7 +8345,18 @@ export const batchGetPartition: API.OperationMethod<
   BatchGetPartitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Partitions: D.list(o_Partition) } },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      PartitionsToGet: D.list(i_PartitionValueList),
+      AuditContext: i_AuditContext,
+      QuerySessionContext: i_QuerySessionContext,
+    },
+    output: { Partitions: D.list(o_Partition) },
+  },
   errors: [
     EntityNotFoundException,
     FederationSourceException,
@@ -8325,6 +8390,9 @@ export const batchGetTableOptimizer: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Entries: D.list({ catalogId: 0, databaseName: 0, tableName: 0, type: 0 }),
+    },
     output: { TableOptimizers: D.list({ tableOptimizer: o_TableOptimizer }) },
   },
   errors: [
@@ -8353,7 +8421,7 @@ export const batchGetTriggers: API.OperationMethod<
   BatchGetTriggersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TriggerNames: 0 } },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -8378,7 +8446,11 @@ export const batchGetWorkflows: API.OperationMethod<
   BatchGetWorkflowsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Workflows: D.list(o_Workflow) } },
+  descriptor: {
+    service: svc,
+    input: { Names: 0, IncludeGraph: 0 },
+    output: { Workflows: D.list(o_Workflow) },
+  },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -8406,7 +8478,17 @@ export const batchPutDataQualityStatisticAnnotation: API.OperationMethod<
   BatchPutDataQualityStatisticAnnotationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InclusionAnnotations: D.list({
+        ProfileId: 0,
+        StatisticId: 0,
+        InclusionAnnotation: 0,
+      }),
+      ClientToken: 0,
+    },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -8432,7 +8514,7 @@ export const batchStopJobRun: API.OperationMethod<
   BatchStopJobRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobName: 0, JobRunIds: 0 } },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -8459,7 +8541,18 @@ export const batchUpdatePartition: API.OperationMethod<
   BatchUpdatePartitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      Entries: D.list({
+        PartitionValueList: 0,
+        PartitionInput: i_PartitionInput,
+      }),
+    },
+  },
   errors: [
     EntityNotFoundException,
     GlueEncryptionException,
@@ -8487,7 +8580,7 @@ export const cancelDataQualityRuleRecommendationRun: API.OperationMethod<
   CancelDataQualityRuleRecommendationRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RunId: 0 } },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -8514,7 +8607,7 @@ export const cancelDataQualityRulesetEvaluationRun: API.OperationMethod<
   CancelDataQualityRulesetEvaluationRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RunId: 0 } },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -8543,7 +8636,7 @@ export const cancelMLTaskRun: API.OperationMethod<
   CancelMLTaskRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TransformId: 0, TaskRunId: 0 } },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -8572,7 +8665,10 @@ export const cancelStatement: API.OperationMethod<
   CancelStatementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SessionId: 0, Id: 0, RequestOrigin: 0 },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -8600,7 +8696,7 @@ export const checkSchemaVersionValidity: API.OperationMethod<
   CheckSchemaVersionValidityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DataFormat: 0, SchemaDefinition: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -8627,7 +8723,10 @@ export const createBlueprint: API.OperationMethod<
   CreateBlueprintError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, Description: 0, BlueprintLocation: 0, Tags: 0 },
+  },
   errors: [
     AlreadyExistsException,
     InternalServiceException,
@@ -8662,7 +8761,10 @@ export const createCatalog: API.OperationMethod<
   CreateCatalogError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, CatalogInput: i_CatalogInput, Tags: 0 },
+  },
   errors: [
     AccessDeniedException,
     AlreadyExistsException,
@@ -8697,7 +8799,31 @@ export const createClassifier: API.OperationMethod<
   CreateClassifierError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      GrokClassifier: {
+        Classification: 0,
+        Name: 0,
+        GrokPattern: 0,
+        CustomPatterns: 0,
+      },
+      XMLClassifier: { Classification: 0, Name: 0, RowTag: 0 },
+      JsonClassifier: { Name: 0, JsonPath: 0 },
+      CsvClassifier: {
+        Name: 0,
+        Delimiter: 0,
+        QuoteSymbol: 0,
+        ContainsHeader: 0,
+        Header: 0,
+        DisableValueTrimming: 0,
+        AllowSingleColumn: 0,
+        CustomDatatypeConfigured: 0,
+        CustomDatatypes: 0,
+        Serde: 0,
+      },
+    },
+  },
   errors: [
     AlreadyExistsException,
     InvalidInputException,
@@ -8726,7 +8852,20 @@ export const createColumnStatisticsTaskSettings: API.OperationMethod<
   CreateColumnStatisticsTaskSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DatabaseName: 0,
+      TableName: 0,
+      Role: 0,
+      Schedule: 0,
+      ColumnNameList: 0,
+      SampleSize: 0,
+      CatalogID: 0,
+      SecurityConfiguration: 0,
+      Tags: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AlreadyExistsException,
@@ -8759,7 +8898,10 @@ export const createConnection: API.OperationMethod<
   CreateConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0, ConnectionInput: i_ConnectionInput, Tags: 0 },
+  },
   errors: [
     AlreadyExistsException,
     GlueEncryptionException,
@@ -8791,7 +8933,26 @@ export const createCrawler: API.OperationMethod<
   CreateCrawlerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Role: 0,
+      DatabaseName: 0,
+      Description: 0,
+      Targets: i_CrawlerTargets,
+      Schedule: 0,
+      Classifiers: 0,
+      TablePrefix: 0,
+      SchemaChangePolicy: i_SchemaChangePolicy,
+      RecrawlPolicy: i_RecrawlPolicy,
+      LineageConfiguration: i_LineageConfiguration,
+      LakeFormationConfiguration: i_LakeFormationConfiguration,
+      Configuration: 0,
+      CrawlerSecurityConfiguration: 0,
+      Tags: 0,
+    },
+  },
   errors: [
     AlreadyExistsException,
     InvalidInputException,
@@ -8825,7 +8986,10 @@ export const createCustomEntityType: API.OperationMethod<
   CreateCustomEntityTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, RegexString: 0, ContextWords: 0, Tags: 0 },
+  },
   errors: [
     AccessDeniedException,
     AlreadyExistsException,
@@ -8861,7 +9025,10 @@ export const createDatabase: API.OperationMethod<
   CreateDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0, DatabaseInput: i_DatabaseInput, Tags: 0 },
+  },
   errors: [
     AlreadyExistsException,
     ConcurrentModificationException,
@@ -8897,7 +9064,18 @@ export const createDataQualityRuleset: API.OperationMethod<
   CreateDataQualityRulesetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      Ruleset: 0,
+      Tags: 0,
+      TargetTable: i_DataQualityTargetTable,
+      DataQualitySecurityConfiguration: 0,
+      ClientToken: 0,
+    },
+  },
   errors: [
     AlreadyExistsException,
     InternalServiceException,
@@ -8929,7 +9107,27 @@ export const createDevEndpoint: API.OperationMethod<
   CreateDevEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      EndpointName: 0,
+      RoleArn: 0,
+      SecurityGroupIds: 0,
+      SubnetId: 0,
+      PublicKey: 0,
+      PublicKeys: 0,
+      NumberOfNodes: 0,
+      WorkerType: 0,
+      GlueVersion: 0,
+      NumberOfWorkers: 0,
+      ExtraPythonLibsS3Path: 0,
+      ExtraJarsS3Path: 0,
+      SecurityConfiguration: 0,
+      Tags: 0,
+      Arguments: 0,
+    },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     AlreadyExistsException,
@@ -8964,7 +9162,7 @@ export const createGlossary: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: { Name: 0, Description: 0, ClientToken: D.m({ idempotency: true }) },
   },
   errors: [
     AccessDeniedException,
@@ -8999,7 +9197,13 @@ export const createGlossaryTerm: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      GlossaryIdentifier: 0,
+      Name: 0,
+      ShortDescription: 0,
+      LongDescription: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -9033,7 +9237,10 @@ export const createGlueIdentityCenterConfiguration: API.OperationMethod<
   CreateGlueIdentityCenterConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceArn: 0, Scopes: 0, UserBackgroundSessionsEnabled: 0 },
+  },
   errors: [
     AccessDeniedException,
     AlreadyExistsException,
@@ -9070,7 +9277,21 @@ export const createIntegration: API.OperationMethod<
   CreateIntegrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreateTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      IntegrationName: 0,
+      SourceArn: 0,
+      TargetArn: 0,
+      Description: 0,
+      DataFilter: 0,
+      KmsKeyId: 0,
+      AdditionalEncryptionContext: 0,
+      Tags: D.list(i_Tag),
+      IntegrationConfig: i_IntegrationConfig,
+    },
+    output: { CreateTime: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -9109,7 +9330,15 @@ export const createIntegrationResourceProperty: API.OperationMethod<
   CreateIntegrationResourcePropertyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceArn: 0,
+      SourceProcessingProperties: i_SourceProcessingProperties,
+      TargetProcessingProperties: i_TargetProcessingProperties,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -9143,7 +9372,15 @@ export const createIntegrationTableProperties: API.OperationMethod<
   CreateIntegrationTablePropertiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceArn: 0,
+      TableName: 0,
+      SourceTableConfig: i_SourceTableConfig,
+      TargetTableConfig: i_TargetTableConfig,
+    },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -9179,7 +9416,33 @@ export const createJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { CodeGenConfigurationNodes: D.map(i_CodeGenConfigurationNode) },
+    input: {
+      Name: 0,
+      JobMode: 0,
+      JobRunQueuingEnabled: 0,
+      Description: 0,
+      LogUri: 0,
+      Role: 0,
+      ExecutionProperty: i_ExecutionProperty,
+      Command: i_JobCommand,
+      DefaultArguments: 0,
+      NonOverridableArguments: 0,
+      Connections: i_ConnectionsList,
+      MaxRetries: 0,
+      AllocatedCapacity: 0,
+      Timeout: 0,
+      MaxCapacity: 0,
+      SecurityConfiguration: 0,
+      Tags: 0,
+      NotificationProperty: i_NotificationProperty,
+      GlueVersion: 0,
+      NumberOfWorkers: 0,
+      WorkerType: 0,
+      CodeGenConfigurationNodes: D.map(i_CodeGenConfigurationNode),
+      ExecutionClass: 0,
+      SourceControlDetails: i_SourceControlDetails,
+      MaintenanceWindow: 0,
+    },
   },
   errors: [
     AlreadyExistsException,
@@ -9226,7 +9489,27 @@ export const createMLTransform: API.OperationMethod<
   CreateMLTransformError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      InputRecordTables: D.list(i_GlueTable),
+      Parameters: i_TransformParameters,
+      Role: 0,
+      GlueVersion: 0,
+      MaxCapacity: 0,
+      WorkerType: 0,
+      NumberOfWorkers: 0,
+      Timeout: 0,
+      MaxRetries: 0,
+      Tags: 0,
+      TransformEncryption: {
+        MlUserDataEncryption: { MlUserDataEncryptionMode: 0, KmsKeyId: 0 },
+        TaskRunSecurityConfigurationName: 0,
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     AlreadyExistsException,
@@ -9259,7 +9542,15 @@ export const createPartition: API.OperationMethod<
   CreatePartitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      PartitionInput: i_PartitionInput,
+    },
+  },
   errors: [
     AlreadyExistsException,
     EntityNotFoundException,
@@ -9292,7 +9583,15 @@ export const createPartitionIndex: API.OperationMethod<
   CreatePartitionIndexError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      PartitionIndex: i_PartitionIndex,
+    },
+  },
   errors: [
     AlreadyExistsException,
     EntityNotFoundException,
@@ -9324,7 +9623,10 @@ export const createRegistry: API.OperationMethod<
   CreateRegistryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { RegistryName: 0, Description: 0, Tags: 0 },
+  },
   errors: [
     AccessDeniedException,
     AlreadyExistsException,
@@ -9360,7 +9662,18 @@ export const createSchema: API.OperationMethod<
   CreateSchemaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      RegistryId: i_RegistryId,
+      SchemaName: 0,
+      DataFormat: 0,
+      Compatibility: 0,
+      Description: 0,
+      Tags: 0,
+      SchemaDefinition: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AlreadyExistsException,
@@ -9389,7 +9702,19 @@ export const createScript: API.OperationMethod<
   CreateScriptError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DagNodes: D.list({
+        Id: 0,
+        NodeType: 0,
+        Args: D.list(i_CodeGenNodeArg),
+        LineNumber: 0,
+      }),
+      DagEdges: D.list({ Source: 0, Target: 0, TargetParameter: 0 }),
+      Language: 0,
+    },
+  },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -9416,7 +9741,19 @@ export const createSecurityConfiguration: API.OperationMethod<
   CreateSecurityConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      EncryptionConfiguration: {
+        S3Encryption: D.list({ S3EncryptionMode: 0, KmsKeyArn: 0 }),
+        CloudWatchEncryption: { CloudWatchEncryptionMode: 0, KmsKeyArn: 0 },
+        JobBookmarksEncryption: { JobBookmarksEncryptionMode: 0, KmsKeyArn: 0 },
+        DataQualityEncryption: { DataQualityEncryptionMode: 0, KmsKeyArn: 0 },
+      },
+    },
+    output: { CreatedTimestamp: D.ts },
+  },
   errors: [
     AlreadyExistsException,
     InternalServiceException,
@@ -9449,7 +9786,28 @@ export const createSession: API.OperationMethod<
   CreateSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Session: o_Session } },
+  descriptor: {
+    service: svc,
+    input: {
+      Id: 0,
+      Description: 0,
+      Role: 0,
+      Command: { Name: 0, PythonVersion: 0 },
+      Timeout: 0,
+      IdleTimeout: 0,
+      DefaultArguments: 0,
+      Connections: i_ConnectionsList,
+      MaxCapacity: 0,
+      NumberOfWorkers: 0,
+      WorkerType: 0,
+      SecurityConfiguration: 0,
+      GlueVersion: 0,
+      Tags: 0,
+      RequestOrigin: 0,
+      SessionType: 0,
+    },
+    output: { Session: o_Session },
+  },
   errors: [
     AccessDeniedException,
     AlreadyExistsException,
@@ -9488,7 +9846,30 @@ export const createTable: API.OperationMethod<
   CreateTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      Name: 0,
+      TableInput: i_TableInput,
+      PartitionIndexes: D.list(i_PartitionIndex),
+      TransactionId: 0,
+      OpenTableFormatInput: {
+        IcebergInput: {
+          MetadataOperation: 0,
+          Version: 0,
+          CreateIcebergTableInput: {
+            Location: 0,
+            Schema: i_IcebergSchema,
+            PartitionSpec: i_IcebergPartitionSpec,
+            WriteOrder: i_IcebergSortOrder,
+            Properties: 0,
+          },
+        },
+      },
+    },
+  },
   errors: [
     AlreadyExistsException,
     ConcurrentModificationException,
@@ -9525,7 +9906,16 @@ export const createTableOptimizer: API.OperationMethod<
   CreateTableOptimizerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      Type: 0,
+      TableOptimizerConfiguration: i_TableOptimizerConfiguration,
+    },
+  },
   errors: [
     AccessDeniedException,
     AlreadyExistsException,
@@ -9561,7 +9951,21 @@ export const createTrigger: API.OperationMethod<
   CreateTriggerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      WorkflowName: 0,
+      Type: 0,
+      Schedule: 0,
+      Predicate: i_Predicate,
+      Actions: D.list(i_Action),
+      Description: 0,
+      StartOnCreation: 0,
+      Tags: 0,
+      EventBatchingCondition: i_EventBatchingCondition,
+    },
+  },
   errors: [
     AlreadyExistsException,
     ConcurrentModificationException,
@@ -9594,7 +9998,15 @@ export const createUsageProfile: API.OperationMethod<
   CreateUsageProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      Configuration: i_ProfileConfiguration,
+      Tags: 0,
+    },
+  },
   errors: [
     AlreadyExistsException,
     InternalServiceException,
@@ -9626,7 +10038,14 @@ export const createUserDefinedFunction: API.OperationMethod<
   CreateUserDefinedFunctionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      FunctionInput: i_UserDefinedFunctionInput,
+    },
+  },
   errors: [
     AlreadyExistsException,
     EntityNotFoundException,
@@ -9658,7 +10077,16 @@ export const createWorkflow: API.OperationMethod<
   CreateWorkflowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      DefaultRunProperties: 0,
+      Tags: 0,
+      MaxConcurrentRuns: 0,
+    },
+  },
   errors: [
     AlreadyExistsException,
     ConcurrentModificationException,
@@ -9688,7 +10116,7 @@ export const deleteAsset: API.OperationMethod<
   DeleteAssetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Identifier: 0 } },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -9717,7 +10145,7 @@ export const deleteAssetType: API.OperationMethod<
   DeleteAssetTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Identifier: 0 } },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -9747,7 +10175,15 @@ export const deleteAttachment: API.OperationMethod<
   DeleteAttachmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AssetIdentifier: 0,
+      IterableFormName: 0,
+      ItemIdentifier: 0,
+      AttachmentName: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -9775,7 +10211,7 @@ export const deleteBlueprint: API.OperationMethod<
   DeleteBlueprintError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -9809,7 +10245,7 @@ export const deleteCatalog: API.OperationMethod<
   DeleteCatalogError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CatalogId: 0 } },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -9838,7 +10274,7 @@ export const deleteClassifier: API.OperationMethod<
   DeleteClassifierError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [EntityNotFoundException, OperationTimeoutException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -9863,7 +10299,16 @@ export const deleteColumnStatisticsForPartition: API.OperationMethod<
   DeleteColumnStatisticsForPartitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      PartitionValues: 0,
+      ColumnName: 0,
+    },
+  },
   errors: [
     EntityNotFoundException,
     GlueEncryptionException,
@@ -9894,7 +10339,10 @@ export const deleteColumnStatisticsForTable: API.OperationMethod<
   DeleteColumnStatisticsForTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0, DatabaseName: 0, TableName: 0, ColumnName: 0 },
+  },
   errors: [
     EntityNotFoundException,
     GlueEncryptionException,
@@ -9921,7 +10369,7 @@ export const deleteColumnStatisticsTaskSettings: API.OperationMethod<
   DeleteColumnStatisticsTaskSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DatabaseName: 0, TableName: 0 } },
   errors: [
     EntityNotFoundException,
     InvalidInputException,
@@ -9945,7 +10393,7 @@ export const deleteConnection: API.OperationMethod<
   DeleteConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CatalogId: 0, ConnectionName: 0 } },
   errors: [EntityNotFoundException, OperationTimeoutException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -9971,7 +10419,7 @@ export const deleteConnectionType: API.OperationMethod<
   DeleteConnectionTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConnectionType: 0 } },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -10001,7 +10449,7 @@ export const deleteCrawler: API.OperationMethod<
   DeleteCrawlerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     CrawlerRunningException,
     EntityNotFoundException,
@@ -10029,7 +10477,7 @@ export const deleteCustomEntityType: API.OperationMethod<
   DeleteCustomEntityTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -10072,7 +10520,7 @@ export const deleteDatabase: API.OperationMethod<
   DeleteDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CatalogId: 0, Name: 0 } },
   errors: [
     ConcurrentModificationException,
     EntityNotFoundException,
@@ -10102,7 +10550,7 @@ export const deleteDataQualityRuleset: API.OperationMethod<
   DeleteDataQualityRulesetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -10129,7 +10577,7 @@ export const deleteDevEndpoint: API.OperationMethod<
   DeleteDevEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EndpointName: 0 } },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -10158,7 +10606,7 @@ export const deleteFormType: API.OperationMethod<
   DeleteFormTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Identifier: 0 } },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -10189,7 +10637,7 @@ export const deleteGlossary: API.OperationMethod<
   DeleteGlossaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Identifier: 0 } },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -10219,7 +10667,7 @@ export const deleteGlossaryTerm: API.OperationMethod<
   DeleteGlossaryTermError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Identifier: 0 } },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -10250,7 +10698,7 @@ export const deleteGlueIdentityCenterConfiguration: API.OperationMethod<
   DeleteGlueIdentityCenterConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -10286,7 +10734,11 @@ export const deleteIntegration: API.OperationMethod<
   DeleteIntegrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreateTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { IntegrationIdentifier: 0 },
+    output: { CreateTime: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -10323,7 +10775,7 @@ export const deleteIntegrationResourceProperty: API.OperationMethod<
   DeleteIntegrationResourcePropertyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -10356,7 +10808,7 @@ export const deleteIntegrationTableProperties: API.OperationMethod<
   DeleteIntegrationTablePropertiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TableName: 0 } },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -10386,7 +10838,7 @@ export const deleteJob: API.OperationMethod<
   DeleteJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobName: 0 } },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -10417,7 +10869,7 @@ export const deleteMLTransform: API.OperationMethod<
   DeleteMLTransformError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TransformId: 0 } },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -10444,7 +10896,10 @@ export const deletePartition: API.OperationMethod<
   DeletePartitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0, DatabaseName: 0, TableName: 0, PartitionValues: 0 },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -10473,7 +10928,10 @@ export const deletePartitionIndex: API.OperationMethod<
   DeletePartitionIndexError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0, DatabaseName: 0, TableName: 0, IndexName: 0 },
+  },
   errors: [
     ConflictException,
     EntityNotFoundException,
@@ -10502,7 +10960,7 @@ export const deleteRegistry: API.OperationMethod<
   DeleteRegistryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RegistryId: i_RegistryId } },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -10530,7 +10988,10 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { PolicyHashCondition: 0, ResourceArn: 0 },
+  },
   errors: [
     ConditionCheckFailureException,
     EntityNotFoundException,
@@ -10558,7 +11019,7 @@ export const deleteSchema: API.OperationMethod<
   DeleteSchemaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SchemaId: i_SchemaId } },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -10591,7 +11052,7 @@ export const deleteSchemaVersions: API.OperationMethod<
   DeleteSchemaVersionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SchemaId: i_SchemaId, Versions: 0 } },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -10618,7 +11079,7 @@ export const deleteSecurityConfiguration: API.OperationMethod<
   DeleteSecurityConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -10647,7 +11108,7 @@ export const deleteSession: API.OperationMethod<
   DeleteSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0, RequestOrigin: 0 } },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -10690,7 +11151,10 @@ export const deleteTable: API.OperationMethod<
   DeleteTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0, DatabaseName: 0, Name: 0, TransactionId: 0 },
+  },
   errors: [
     ConcurrentModificationException,
     EntityNotFoundException,
@@ -10722,7 +11186,10 @@ export const deleteTableOptimizer: API.OperationMethod<
   DeleteTableOptimizerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0, DatabaseName: 0, TableName: 0, Type: 0 },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -10750,7 +11217,10 @@ export const deleteTableVersion: API.OperationMethod<
   DeleteTableVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0, DatabaseName: 0, TableName: 0, VersionId: 0 },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -10778,7 +11248,7 @@ export const deleteTrigger: API.OperationMethod<
   DeleteTriggerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     ConcurrentModificationException,
     InternalServiceException,
@@ -10805,7 +11275,7 @@ export const deleteUsageProfile: API.OperationMethod<
   DeleteUsageProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -10832,7 +11302,10 @@ export const deleteUserDefinedFunction: API.OperationMethod<
   DeleteUserDefinedFunctionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0, DatabaseName: 0, FunctionName: 0 },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -10859,7 +11332,7 @@ export const deleteWorkflow: API.OperationMethod<
   DeleteWorkflowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     ConcurrentModificationException,
     InternalServiceException,
@@ -10888,7 +11361,7 @@ export const describeConnectionType: API.OperationMethod<
   DescribeConnectionTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConnectionType: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -10921,7 +11394,16 @@ export const describeEntity: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Field
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConnectionName: 0,
+      CatalogId: 0,
+      EntityName: 0,
+      NextToken: 0,
+      DataStoreApiVersion: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -10963,6 +11445,7 @@ export const describeInboundIntegrations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { IntegrationArn: 0, Marker: 0, MaxRecords: 0, TargetArn: 0 },
     output: { InboundIntegrations: D.list({ CreateTime: D.ts }) },
   },
   errors: [
@@ -11001,6 +11484,12 @@ export const describeIntegrations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      IntegrationIdentifier: 0,
+      Marker: 0,
+      MaxRecords: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+    },
     output: { Integrations: D.list({ CreateTime: D.ts }) },
   },
   errors: [
@@ -11036,7 +11525,13 @@ export const disassociateGlossaryTerms: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      AssetIdentifier: 0,
+      IterableFormName: 0,
+      ItemIdentifier: 0,
+      GlossaryTermIdentifiers: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -11067,7 +11562,11 @@ export const getAsset: API.OperationMethod<
   GetAssetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedAt: D.ts, UpdatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { Identifier: 0 },
+    output: { CreatedAt: D.ts, UpdatedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -11096,7 +11595,7 @@ export const getAssetType: API.OperationMethod<
   GetAssetTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Identifier: 0 } },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -11124,7 +11623,11 @@ export const getBlueprint: API.OperationMethod<
   GetBlueprintError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Blueprint: o_Blueprint } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, IncludeBlueprint: 0, IncludeParameterSpec: 0 },
+    output: { Blueprint: o_Blueprint },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -11150,7 +11653,11 @@ export const getBlueprintRun: API.OperationMethod<
   GetBlueprintRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { BlueprintRun: o_BlueprintRun } },
+  descriptor: {
+    service: svc,
+    input: { BlueprintName: 0, RunId: 0 },
+    output: { BlueprintRun: o_BlueprintRun },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -11179,6 +11686,7 @@ export const getBlueprintRuns: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { BlueprintName: 0, NextToken: 0, MaxResults: 0 },
     output: { BlueprintRuns: D.list(o_BlueprintRun) },
   },
   errors: [
@@ -11216,7 +11724,11 @@ export const getCatalog: API.OperationMethod<
   GetCatalogError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Catalog: o_Catalog } },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0 },
+    output: { Catalog: o_Catalog },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -11245,7 +11757,11 @@ export const getCatalogImportStatus: API.OperationMethod<
   GetCatalogImportStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ImportStatus: { ImportTime: D.ts } } },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0 },
+    output: { ImportStatus: { ImportTime: D.ts } },
+  },
   errors: [InternalServiceException, OperationTimeoutException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -11271,7 +11787,18 @@ export const getCatalogs: API.OperationMethod<
   GetCatalogsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CatalogList: D.list(o_Catalog) } },
+  descriptor: {
+    service: svc,
+    input: {
+      ParentCatalogId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      Recursive: 0,
+      IncludeRoot: 0,
+      HasDatabases: 0,
+    },
+    output: { CatalogList: D.list(o_Catalog) },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -11300,7 +11827,11 @@ export const getClassifier: API.OperationMethod<
   GetClassifierError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Classifier: o_Classifier } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0 },
+    output: { Classifier: o_Classifier },
+  },
   errors: [EntityNotFoundException, OperationTimeoutException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -11318,7 +11849,11 @@ export const getClassifiers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Classifiers: D.list(o_Classifier) } },
+  descriptor: {
+    service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
+    output: { Classifiers: D.list(o_Classifier) },
+  },
   errors: [OperationTimeoutException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -11350,6 +11885,13 @@ export const getColumnStatisticsForPartition: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      PartitionValues: 0,
+      ColumnNames: 0,
+    },
     output: { ColumnStatisticsList: D.list(o_ColumnStatistics) },
   },
   errors: [
@@ -11384,6 +11926,7 @@ export const getColumnStatisticsForTable: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CatalogId: 0, DatabaseName: 0, TableName: 0, ColumnNames: 0 },
     output: { ColumnStatisticsList: D.list(o_ColumnStatistics) },
   },
   errors: [
@@ -11414,6 +11957,7 @@ export const getColumnStatisticsTaskRun: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ColumnStatisticsTaskRunId: 0 },
     output: { ColumnStatisticsTaskRun: o_ColumnStatisticsTaskRun },
   },
   errors: [
@@ -11441,6 +11985,7 @@ export const getColumnStatisticsTaskRuns: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DatabaseName: 0, TableName: 0, MaxResults: 0, NextToken: 0 },
     output: { ColumnStatisticsTaskRuns: D.list(o_ColumnStatisticsTaskRun) },
   },
   errors: [OperationTimeoutException],
@@ -11470,6 +12015,7 @@ export const getColumnStatisticsTaskSettings: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DatabaseName: 0, TableName: 0 },
     output: {
       ColumnStatisticsTaskSettings: {
         LastExecutionAttempt: { ExecutionTimestamp: D.ts },
@@ -11501,7 +12047,16 @@ export const getConnection: API.OperationMethod<
   GetConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Connection: o_Connection } },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      Name: 0,
+      HidePassword: 0,
+      ApplyOverrideForComputeEnvironment: 0,
+    },
+    output: { Connection: o_Connection },
+  },
   errors: [
     EntityNotFoundException,
     GlueEncryptionException,
@@ -11531,6 +12086,17 @@ export const getConnections: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CatalogId: 0,
+      Filter: {
+        MatchCriteria: 0,
+        ConnectionType: 0,
+        ConnectionSchemaVersion: 0,
+      },
+      HidePassword: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { ConnectionList: D.list(o_Connection) },
   },
   errors: [
@@ -11562,7 +12128,11 @@ export const getCrawler: API.OperationMethod<
   GetCrawlerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Crawler: o_Crawler } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0 },
+    output: { Crawler: o_Crawler },
+  },
   errors: [EntityNotFoundException, OperationTimeoutException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -11580,7 +12150,10 @@ export const getCrawlerMetrics: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CrawlerNameList: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [OperationTimeoutException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -11604,7 +12177,11 @@ export const getCrawlers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Crawlers: D.list(o_Crawler) } },
+  descriptor: {
+    service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
+    output: { Crawlers: D.list(o_Crawler) },
+  },
   errors: [OperationTimeoutException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -11632,7 +12209,7 @@ export const getCustomEntityType: API.OperationMethod<
   GetCustomEntityTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -11661,7 +12238,11 @@ export const getDashboardUrl: API.OperationMethod<
   GetDashboardUrlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Url: D.secret } },
+  descriptor: {
+    service: svc,
+    input: { ResourceId: 0, ResourceType: 0, RequestOrigin: 0 },
+    output: { Url: D.secret },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -11692,7 +12273,11 @@ export const getDatabase: API.OperationMethod<
   GetDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Database: o_Database } },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0, Name: 0 },
+    output: { Database: o_Database },
+  },
   errors: [
     EntityNotFoundException,
     FederationSourceException,
@@ -11726,7 +12311,17 @@ export const getDatabases: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { DatabaseList: D.list(o_Database) } },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      ResourceShareType: 0,
+      AttributesToGet: 0,
+    },
+    output: { DatabaseList: D.list(o_Database) },
+  },
   errors: [
     EntityNotFoundException,
     FederationSourceException,
@@ -11760,7 +12355,7 @@ export const getDataCatalogEncryptionSettings: API.OperationMethod<
   GetDataCatalogEncryptionSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CatalogId: 0 } },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -11786,7 +12381,11 @@ export const getDataCatalogExportConfiguration: API.OperationMethod<
   GetDataCatalogExportConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedAt: D.ts, UpdatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {},
+    output: { CreatedAt: D.ts, UpdatedAt: D.ts },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -11812,7 +12411,7 @@ export const getDataflowGraph: API.OperationMethod<
   GetDataflowGraphError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PythonScript: 0 } },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -11838,7 +12437,11 @@ export const getDataQualityModel: API.OperationMethod<
   GetDataQualityModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { StartedOn: D.ts, CompletedOn: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { StatisticId: 0, ProfileId: 0 },
+    output: { StartedOn: D.ts, CompletedOn: D.ts },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -11867,6 +12470,7 @@ export const getDataQualityModelResult: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { StatisticId: 0, ProfileId: 0 },
     output: { CompletedOn: D.ts, Model: D.list({ Date: D.ts }) },
   },
   errors: [
@@ -11897,6 +12501,7 @@ export const getDataQualityResult: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResultId: 0 },
     output: {
       StartedOn: D.ts,
       CompletedOn: D.ts,
@@ -11933,6 +12538,7 @@ export const getDataQualityRuleRecommendationRun: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { RunId: 0 },
     output: { StartedOn: D.ts, LastModifiedOn: D.ts, CompletedOn: D.ts },
   },
   errors: [
@@ -11963,6 +12569,7 @@ export const getDataQualityRuleset: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0 },
     output: { CreatedOn: D.ts, LastModifiedOn: D.ts },
   },
   errors: [
@@ -11993,6 +12600,7 @@ export const getDataQualityRulesetEvaluationRun: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { RunId: 0 },
     output: { StartedOn: D.ts, LastModifiedOn: D.ts, CompletedOn: D.ts },
   },
   errors: [
@@ -12025,7 +12633,11 @@ export const getDevEndpoint: API.OperationMethod<
   GetDevEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DevEndpoint: o_DevEndpoint } },
+  descriptor: {
+    service: svc,
+    input: { EndpointName: 0 },
+    output: { DevEndpoint: o_DevEndpoint },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -12057,7 +12669,11 @@ export const getDevEndpoints: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { DevEndpoints: D.list(o_DevEndpoint) } },
+  descriptor: {
+    service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
+    output: { DevEndpoints: D.list(o_DevEndpoint) },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -12096,7 +12712,21 @@ export const getEntityRecords: API.OperationMethod<
   GetEntityRecordsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConnectionName: 0,
+      CatalogId: 0,
+      EntityName: 0,
+      NextToken: 0,
+      DataStoreApiVersion: 0,
+      ConnectionOptions: 0,
+      FilterPredicate: 0,
+      Limit: 0,
+      OrderBy: 0,
+      SelectedFields: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -12127,7 +12757,7 @@ export const getFormType: API.OperationMethod<
   GetFormTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Identifier: 0 } },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -12155,7 +12785,7 @@ export const getGlossary: API.OperationMethod<
   GetGlossaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Identifier: 0 } },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -12182,7 +12812,7 @@ export const getGlossaryTerm: API.OperationMethod<
   GetGlossaryTermError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Identifier: 0 } },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -12212,7 +12842,7 @@ export const getGlueIdentityCenterConfiguration: API.OperationMethod<
   GetGlueIdentityCenterConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -12244,7 +12874,7 @@ export const getIntegrationResourceProperty: API.OperationMethod<
   GetIntegrationResourcePropertyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -12277,7 +12907,7 @@ export const getIntegrationTableProperties: API.OperationMethod<
   GetIntegrationTablePropertiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TableName: 0 } },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -12307,7 +12937,7 @@ export const getJob: API.OperationMethod<
   GetJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Job: o_Job } },
+  descriptor: { service: svc, input: { JobName: 0 }, output: { Job: o_Job } },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -12343,7 +12973,7 @@ export const getJobBookmark: API.OperationMethod<
   GetJobBookmarkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobName: 0, RunId: 0 } },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -12371,7 +13001,11 @@ export const getJobRun: API.OperationMethod<
   GetJobRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { JobRun: o_JobRun } },
+  descriptor: {
+    service: svc,
+    input: { JobName: 0, RunId: 0, PredecessorsIncluded: 0 },
+    output: { JobRun: o_JobRun },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -12401,7 +13035,11 @@ export const getJobRuns: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   JobRun
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { JobRuns: D.list(o_JobRun) } },
+  descriptor: {
+    service: svc,
+    input: { JobName: 0, NextToken: 0, MaxResults: 0 },
+    output: { JobRuns: D.list(o_JobRun) },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -12435,7 +13073,11 @@ export const getJobs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Job
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Jobs: D.list(o_Job) } },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
+    output: { Jobs: D.list(o_Job) },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -12468,7 +13110,14 @@ export const getMapping: API.OperationMethod<
   GetMappingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Source: i_CatalogEntry,
+      Sinks: D.list(i_CatalogEntry),
+      Location: i_Location,
+    },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -12497,6 +13146,7 @@ export const getMaterializedViewRefreshTaskRun: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CatalogId: 0, MaterializedViewRefreshTaskRunId: 0 },
     output: {
       MaterializedViewRefreshTaskRun: o_MaterializedViewRefreshTaskRun,
     },
@@ -12533,6 +13183,7 @@ export const getMLTaskRun: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransformId: 0, TaskRunId: 0 },
     output: { StartedOn: D.ts, LastModifiedOn: D.ts, CompletedOn: D.ts },
   },
   errors: [
@@ -12570,6 +13221,13 @@ export const getMLTaskRuns: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TransformId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      Filter: { TaskRunType: 0, Status: 0, StartedBefore: 0, StartedAfter: 0 },
+      Sort: { Column: 0, SortDirection: 0 },
+    },
     output: {
       TaskRuns: D.list({
         StartedOn: D.ts,
@@ -12615,6 +13273,7 @@ export const getMLTransform: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransformId: 0 },
     output: { CreatedOn: D.ts, LastModifiedOn: D.ts },
   },
   errors: [
@@ -12650,6 +13309,12 @@ export const getMLTransforms: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      Filter: i_TransformFilterCriteria,
+      Sort: i_TransformSortCriteria,
+    },
     output: { Transforms: D.list({ CreatedOn: D.ts, LastModifiedOn: D.ts }) },
   },
   errors: [
@@ -12686,7 +13351,17 @@ export const getPartition: API.OperationMethod<
   GetPartitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Partition: o_Partition } },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      PartitionValues: 0,
+      AuditContext: i_AuditContext,
+    },
+    output: { Partition: o_Partition },
+  },
   errors: [
     EntityNotFoundException,
     FederationSourceException,
@@ -12718,7 +13393,10 @@ export const getPartitionIndexes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   PartitionIndexDescriptor
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0, DatabaseName: 0, TableName: 0, NextToken: 0 },
+  },
   errors: [
     ConflictException,
     EntityNotFoundException,
@@ -12757,7 +13435,23 @@ export const getPartitions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Partitions: D.list(o_Partition) } },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      Expression: 0,
+      NextToken: 0,
+      Segment: i_Segment,
+      MaxResults: 0,
+      ExcludeColumnSchema: 0,
+      TransactionId: 0,
+      QueryAsOfTime: 0,
+      AuditContext: i_AuditContext,
+    },
+    output: { Partitions: D.list(o_Partition) },
+  },
   errors: [
     EntityNotFoundException,
     FederationSourceException,
@@ -12793,7 +13487,24 @@ export const getPlan: API.OperationMethod<
   GetPlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Mapping: D.list({
+        SourceTable: 0,
+        SourcePath: 0,
+        SourceType: 0,
+        TargetTable: 0,
+        TargetPath: 0,
+        TargetType: 0,
+      }),
+      Source: i_CatalogEntry,
+      Sinks: D.list(i_CatalogEntry),
+      Location: i_Location,
+      Language: 0,
+      AdditionalPlanOptionsMap: 0,
+    },
+  },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -12819,7 +13530,7 @@ export const getRegistry: API.OperationMethod<
   GetRegistryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RegistryId: i_RegistryId } },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -12855,6 +13566,7 @@ export const getResourcePolicies: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: {
       GetResourcePoliciesResponseList: D.list({
         CreateTime: D.ts,
@@ -12894,7 +13606,11 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreateTime: D.ts, UpdateTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0 },
+    output: { CreateTime: D.ts, UpdateTime: D.ts },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -12921,7 +13637,7 @@ export const getSchema: API.OperationMethod<
   GetSchemaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SchemaId: i_SchemaId } },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -12948,7 +13664,10 @@ export const getSchemaByDefinition: API.OperationMethod<
   GetSchemaByDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SchemaId: i_SchemaId, SchemaDefinition: 0 },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -12975,7 +13694,14 @@ export const getSchemaVersion: API.OperationMethod<
   GetSchemaVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SchemaId: i_SchemaId,
+      SchemaVersionId: 0,
+      SchemaVersionNumber: i_SchemaVersionNumber,
+    },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -13004,7 +13730,15 @@ export const getSchemaVersionsDiff: API.OperationMethod<
   GetSchemaVersionsDiffError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SchemaId: i_SchemaId,
+      FirstSchemaVersionNumber: i_SchemaVersionNumber,
+      SecondSchemaVersionNumber: i_SchemaVersionNumber,
+      SchemaDiffType: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -13033,6 +13767,7 @@ export const getSecurityConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0 },
     output: { SecurityConfiguration: o_SecurityConfiguration },
   },
   errors: [
@@ -13064,6 +13799,7 @@ export const getSecurityConfigurations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
     output: { SecurityConfigurations: D.list(o_SecurityConfiguration) },
   },
   errors: [
@@ -13099,7 +13835,11 @@ export const getSession: API.OperationMethod<
   GetSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Session: o_Session } },
+  descriptor: {
+    service: svc,
+    input: { Id: 0, RequestOrigin: 0 },
+    output: { Session: o_Session },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -13132,6 +13872,7 @@ export const getSessionEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SessionId: 0 },
     output: {
       SparkConnect: { AuthToken: D.secret, AuthTokenExpirationTime: D.ts },
     },
@@ -13167,7 +13908,10 @@ export const getStatement: API.OperationMethod<
   GetStatementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SessionId: 0, Id: 0, RequestOrigin: 0 },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -13201,7 +13945,20 @@ export const getTable: API.OperationMethod<
   GetTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Table: o_Table } },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      Name: 0,
+      TransactionId: 0,
+      QueryAsOfTime: 0,
+      AuditContext: i_AuditContext,
+      IncludeStatusDetails: 0,
+      AttributesToGet: 0,
+    },
+    output: { Table: o_Table },
+  },
   errors: [
     EntityNotFoundException,
     FederationSourceException,
@@ -13233,7 +13990,11 @@ export const getTableOptimizer: API.OperationMethod<
   GetTableOptimizerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { TableOptimizer: o_TableOptimizer } },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0, DatabaseName: 0, TableName: 0, Type: 0 },
+    output: { TableOptimizer: o_TableOptimizer },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -13266,7 +14027,22 @@ export const getTables: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { TableList: D.list(o_Table) } },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      Expression: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      TransactionId: 0,
+      QueryAsOfTime: 0,
+      AuditContext: i_AuditContext,
+      IncludeStatusDetails: 0,
+      AttributesToGet: 0,
+    },
+    output: { TableList: D.list(o_Table) },
+  },
   errors: [
     EntityNotFoundException,
     FederationSourceException,
@@ -13302,7 +14078,17 @@ export const getTableVersion: API.OperationMethod<
   GetTableVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { TableVersion: o_TableVersion } },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      VersionId: 0,
+      AuditContext: i_AuditContext,
+    },
+    output: { TableVersion: o_TableVersion },
+  },
   errors: [
     EntityNotFoundException,
     GlueEncryptionException,
@@ -13335,6 +14121,14 @@ export const getTableVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      AuditContext: i_AuditContext,
+    },
     output: { TableVersions: D.list(o_TableVersion) },
   },
   errors: [
@@ -13369,7 +14163,7 @@ export const getTags: API.OperationMethod<
   GetTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -13396,7 +14190,7 @@ export const getTrigger: API.OperationMethod<
   GetTriggerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -13424,7 +14218,10 @@ export const getTriggers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Trigger
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0, DependentJobName: 0, MaxResults: 0 },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -13464,7 +14261,20 @@ export const getUnfilteredPartitionMetadata: API.OperationMethod<
   GetUnfilteredPartitionMetadataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Partition: o_Partition } },
+  descriptor: {
+    service: svc,
+    input: {
+      Region: 0,
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      PartitionValues: 0,
+      AuditContext: i_AuditContext,
+      SupportedPermissionTypes: 0,
+      QuerySessionContext: i_QuerySessionContext,
+    },
+    output: { Partition: o_Partition },
+  },
   errors: [
     EntityNotFoundException,
     FederationSourceException,
@@ -13505,6 +14315,19 @@ export const getUnfilteredPartitionsMetadata: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Region: 0,
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      Expression: 0,
+      AuditContext: i_AuditContext,
+      SupportedPermissionTypes: 0,
+      NextToken: 0,
+      Segment: i_Segment,
+      MaxResults: 0,
+      QuerySessionContext: i_QuerySessionContext,
+    },
     output: { UnfilteredPartitions: D.list({ Partition: o_Partition }) },
   },
   errors: [
@@ -13548,7 +14371,23 @@ export const getUnfilteredTableMetadata: API.OperationMethod<
   GetUnfilteredTableMetadataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Table: o_Table } },
+  descriptor: {
+    service: svc,
+    input: {
+      Region: 0,
+      CatalogId: 0,
+      DatabaseName: 0,
+      Name: 0,
+      AuditContext: i_AuditContext,
+      SupportedPermissionTypes: 0,
+      ParentResourceArn: 0,
+      RootResourceArn: 0,
+      SupportedDialect: { Dialect: 0, DialectVersion: 0 },
+      Permissions: 0,
+      QuerySessionContext: i_QuerySessionContext,
+    },
+    output: { Table: o_Table },
+  },
   errors: [
     EntityNotFoundException,
     FederationSourceException,
@@ -13582,6 +14421,7 @@ export const getUsageProfile: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0 },
     output: { CreatedOn: D.ts, LastModifiedOn: D.ts },
   },
   errors: [
@@ -13614,6 +14454,7 @@ export const getUserDefinedFunction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CatalogId: 0, DatabaseName: 0, FunctionName: 0 },
     output: { UserDefinedFunction: o_UserDefinedFunction },
   },
   errors: [
@@ -13647,6 +14488,14 @@ export const getUserDefinedFunctions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      Pattern: 0,
+      FunctionType: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { UserDefinedFunctions: D.list(o_UserDefinedFunction) },
   },
   errors: [
@@ -13681,7 +14530,11 @@ export const getWorkflow: API.OperationMethod<
   GetWorkflowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Workflow: o_Workflow } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, IncludeGraph: 0 },
+    output: { Workflow: o_Workflow },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -13708,7 +14561,11 @@ export const getWorkflowRun: API.OperationMethod<
   GetWorkflowRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Run: o_WorkflowRun } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, RunId: 0, IncludeGraph: 0 },
+    output: { Run: o_WorkflowRun },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -13735,7 +14592,7 @@ export const getWorkflowRunProperties: API.OperationMethod<
   GetWorkflowRunPropertiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, RunId: 0 } },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -13763,7 +14620,11 @@ export const getWorkflowRuns: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   WorkflowRun
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Runs: D.list(o_WorkflowRun) } },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, IncludeGraph: 0, NextToken: 0, MaxResults: 0 },
+    output: { Runs: D.list(o_WorkflowRun) },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -13794,7 +14655,7 @@ export const importCatalogToGlue: API.OperationMethod<
   ImportCatalogToGlueError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CatalogId: 0 } },
   errors: [InternalServiceException, OperationTimeoutException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -13817,7 +14678,7 @@ export const listAssetTypes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AssetTypeItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -13850,7 +14711,7 @@ export const listBlueprints: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   OrchestrationNameString
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0, Tags: 0 } },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -13880,7 +14741,7 @@ export const listColumnStatisticsTaskRuns: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [OperationTimeoutException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -13908,7 +14769,7 @@ export const listConnectionTypes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ConnectionTypeBrief
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [AccessDeniedException, InternalServiceException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -13938,7 +14799,7 @@ export const listCrawlers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0, Tags: 0 } },
   errors: [OperationTimeoutException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -13976,6 +14837,12 @@ export const listCrawls: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CrawlerName: 0,
+      MaxResults: 0,
+      Filters: D.list({ FieldName: 0, FilterOperator: 0, FieldValue: 0 }),
+      NextToken: 0,
+    },
     output: { Crawls: D.list({ StartTime: D.ts, EndTime: D.ts }) },
   },
   errors: [
@@ -14003,7 +14870,7 @@ export const listCustomEntityTypes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0, Tags: 0 } },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -14036,6 +14903,17 @@ export const listDataQualityResults: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: {
+        DataSource: i_DataSource,
+        JobName: 0,
+        JobRunId: 0,
+        StartedAfter: 0,
+        StartedBefore: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { Results: D.list({ StartedOn: D.ts }) },
   },
   errors: [
@@ -14068,7 +14946,16 @@ export const listDataQualityRuleRecommendationRuns: API.PaginatedOperationMethod
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Runs: D.list({ StartedOn: D.ts }) } },
+  descriptor: {
+    service: svc,
+    input: {
+      Filter: { DataSource: i_DataSource, StartedBefore: 0, StartedAfter: 0 },
+      NextToken: 0,
+      MaxResults: 0,
+      Tags: 0,
+    },
+    output: { Runs: D.list({ StartedOn: D.ts }) },
+  },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -14099,7 +14986,20 @@ export const listDataQualityRulesetEvaluationRuns: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Runs: D.list({ StartedOn: D.ts }) } },
+  descriptor: {
+    service: svc,
+    input: {
+      Filter: {
+        DataSource: i_DataSource,
+        StartedBefore: 0,
+        StartedAfter: 0,
+        RulesetName: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+    },
+    output: { Runs: D.list({ StartedOn: D.ts }) },
+  },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -14133,6 +15033,20 @@ export const listDataQualityRulesets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      Filter: {
+        Name: 0,
+        Description: 0,
+        CreatedBefore: 0,
+        CreatedAfter: 0,
+        LastModifiedBefore: 0,
+        LastModifiedAfter: 0,
+        TargetTable: i_DataQualityTargetTable,
+      },
+      Tags: 0,
+    },
     output: { Rulesets: D.list({ CreatedOn: D.ts, LastModifiedOn: D.ts }) },
   },
   errors: [
@@ -14166,6 +15080,13 @@ export const listDataQualityStatisticAnnotations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      StatisticId: 0,
+      ProfileId: 0,
+      TimestampFilter: i_TimestampFilter,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       Annotations: D.list({
         StatisticRecordedOn: D.ts,
@@ -14195,6 +15116,13 @@ export const listDataQualityStatistics: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      StatisticId: 0,
+      ProfileId: 0,
+      TimestampFilter: i_TimestampFilter,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       Statistics: D.list({
         RecordedOn: D.ts,
@@ -14234,7 +15162,7 @@ export const listDevEndpoints: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0, Tags: 0 } },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -14270,7 +15198,16 @@ export const listEntities: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Entity
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConnectionName: 0,
+      CatalogId: 0,
+      ParentEntityName: 0,
+      NextToken: 0,
+      DataStoreApiVersion: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -14306,7 +15243,7 @@ export const listFormTypes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   FormTypeItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -14340,7 +15277,7 @@ export const listGlossaries: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   GlossaryItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -14374,7 +15311,10 @@ export const listGlossaryTerms: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   GlossaryTermItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { GlossaryIdentifier: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -14410,7 +15350,14 @@ export const listIntegrationResourceProperties: API.OperationMethod<
   ListIntegrationResourcePropertiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Marker: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      MaxRecords: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -14442,7 +15389,15 @@ export const listIterableForms: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   IterableFormListItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AssetIdentifier: 0,
+      IterableFormName: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -14481,7 +15436,7 @@ export const listJobs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   NameString
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0, Tags: 0 } },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -14516,6 +15471,13 @@ export const listMaterializedViewRefreshTaskRuns: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       MaterializedViewRefreshTaskRuns: D.list(o_MaterializedViewRefreshTaskRun),
     },
@@ -14555,7 +15517,16 @@ export const listMLTransforms: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      Filter: i_TransformFilterCriteria,
+      Sort: i_TransformSortCriteria,
+      Tags: 0,
+    },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -14587,7 +15558,7 @@ export const listRegistries: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RegistryListItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -14622,7 +15593,10 @@ export const listSchemas: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   SchemaListItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { RegistryId: i_RegistryId, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -14656,7 +15630,10 @@ export const listSchemaVersions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   SchemaVersionListItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SchemaId: i_SchemaId, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -14690,7 +15667,11 @@ export const listSessions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Sessions: D.list(o_Session) } },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0, MaxResults: 0, Tags: 0, RequestOrigin: 0 },
+    output: { Sessions: D.list(o_Session) },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -14724,7 +15705,10 @@ export const listStatements: API.OperationMethod<
   ListStatementsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SessionId: 0, RequestOrigin: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -14758,6 +15742,14 @@ export const listTableOptimizerRuns: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      Type: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { TableOptimizerRuns: D.list(o_TableOptimizerRun) },
   },
   errors: [
@@ -14799,7 +15791,10 @@ export const listTriggers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   NameString
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0, DependentJobName: 0, MaxResults: 0, Tags: 0 },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -14835,6 +15830,7 @@ export const listUsageProfiles: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: { Profiles: D.list({ CreatedOn: D.ts, LastModifiedOn: D.ts }) },
   },
   errors: [
@@ -14869,7 +15865,7 @@ export const listWorkflows: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   NameString
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -14908,7 +15904,17 @@ export const modifyIntegration: API.OperationMethod<
   ModifyIntegrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreateTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      IntegrationIdentifier: 0,
+      Description: 0,
+      DataFilter: 0,
+      IntegrationConfig: i_IntegrationConfig,
+      IntegrationName: 0,
+    },
+    output: { CreateTime: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -14946,7 +15952,14 @@ export const putAsset: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      AssetTypeId: 0,
+      Identifier: 0,
+      Name: 0,
+      Description: 0,
+      Forms: D.map({ FormTypeId: 0, Content: 0 }),
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { CreatedAt: D.ts },
   },
   errors: [
@@ -14981,7 +15994,11 @@ export const putAssetType: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Forms: D.map({ FormTypeIdentifier: 0 }),
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -15015,7 +16032,15 @@ export const putAttachment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      AssetIdentifier: 0,
+      IterableFormName: 0,
+      ItemIdentifier: 0,
+      AttachmentName: 0,
+      Content: 0,
+      FormTypeId: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -15045,7 +16070,23 @@ export const putDataCatalogEncryptionSettings: API.OperationMethod<
   PutDataCatalogEncryptionSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DataCatalogEncryptionSettings: {
+        EncryptionAtRest: {
+          CatalogEncryptionMode: 0,
+          SseAwsKmsKeyId: 0,
+          CatalogEncryptionServiceRole: 0,
+        },
+        ConnectionPasswordEncryption: {
+          ReturnConnectionPasswordEncrypted: 0,
+          AwsKmsKeyId: 0,
+        },
+      },
+    },
+  },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -15074,7 +16115,11 @@ export const putDataCatalogExportConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ExportSetting: 0,
+      EncryptionConfiguration: { SseAlgorithm: 0, KmsKeyArn: 0 },
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -15102,7 +16147,7 @@ export const putDataQualityProfileAnnotation: API.OperationMethod<
   PutDataQualityProfileAnnotationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ProfileId: 0, InclusionAnnotation: 0 } },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -15131,7 +16176,7 @@ export const putFormType: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: { Name: 0, Schema: 0, ClientToken: D.m({ idempotency: true }) },
   },
   errors: [
     AccessDeniedException,
@@ -15161,7 +16206,16 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      PolicyInJson: 0,
+      ResourceArn: 0,
+      PolicyHashCondition: 0,
+      PolicyExistsCondition: 0,
+      EnableHybrid: 0,
+    },
+  },
   errors: [
     ConditionCheckFailureException,
     EntityNotFoundException,
@@ -15190,7 +16244,15 @@ export const putSchemaVersionMetadata: API.OperationMethod<
   PutSchemaVersionMetadataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SchemaId: i_SchemaId,
+      SchemaVersionNumber: i_SchemaVersionNumber,
+      SchemaVersionId: 0,
+      MetadataKeyValue: i_MetadataKeyValuePair,
+    },
+  },
   errors: [
     AccessDeniedException,
     AlreadyExistsException,
@@ -15221,7 +16283,7 @@ export const putWorkflowRunProperties: API.OperationMethod<
   PutWorkflowRunPropertiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, RunId: 0, RunProperties: 0 } },
   errors: [
     AlreadyExistsException,
     ConcurrentModificationException,
@@ -15250,7 +16312,17 @@ export const querySchemaVersionMetadata: API.OperationMethod<
   QuerySchemaVersionMetadataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SchemaId: i_SchemaId,
+      SchemaVersionNumber: i_SchemaVersionNumber,
+      SchemaVersionId: 0,
+      MetadataList: D.list(i_MetadataKeyValuePair),
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -15282,7 +16354,83 @@ export const registerConnectionType: API.OperationMethod<
   RegisterConnectionTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConnectionType: 0,
+      IntegrationType: 0,
+      Description: 0,
+      ConnectionProperties: {
+        Url: i_ConnectorProperty,
+        AdditionalRequestParameters: D.list(i_ConnectorProperty),
+      },
+      ConnectorAuthenticationConfiguration: {
+        AuthenticationTypes: 0,
+        OAuth2Properties: {
+          OAuth2GrantType: 0,
+          ClientCredentialsProperties: {
+            TokenUrl: i_ConnectorProperty,
+            RequestMethod: 0,
+            ContentType: 0,
+            ClientId: i_ConnectorProperty,
+            ClientSecret: i_ConnectorProperty,
+            Scope: i_ConnectorProperty,
+            TokenUrlParameters: D.list(i_ConnectorProperty),
+          },
+          JWTBearerProperties: {
+            TokenUrl: i_ConnectorProperty,
+            RequestMethod: 0,
+            ContentType: 0,
+            JwtToken: i_ConnectorProperty,
+            TokenUrlParameters: D.list(i_ConnectorProperty),
+          },
+          AuthorizationCodeProperties: {
+            AuthorizationCodeUrl: i_ConnectorProperty,
+            AuthorizationCode: i_ConnectorProperty,
+            RedirectUri: i_ConnectorProperty,
+            TokenUrl: i_ConnectorProperty,
+            RequestMethod: 0,
+            ContentType: 0,
+            ClientId: i_ConnectorProperty,
+            ClientSecret: i_ConnectorProperty,
+            Scope: i_ConnectorProperty,
+            Prompt: i_ConnectorProperty,
+            TokenUrlParameters: D.list(i_ConnectorProperty),
+          },
+        },
+        BasicAuthenticationProperties: {
+          Username: i_ConnectorProperty,
+          Password: i_ConnectorProperty,
+        },
+        CustomAuthenticationProperties: {
+          AuthenticationParameters: D.list(i_ConnectorProperty),
+        },
+      },
+      RestConfiguration: {
+        GlobalSourceConfiguration: i_SourceConfiguration,
+        ValidationEndpointConfiguration: i_SourceConfiguration,
+        EntityConfigurations: D.map({
+          SourceConfiguration: i_SourceConfiguration,
+          Schema: D.map({
+            Name: 0,
+            FieldDataType: 0,
+            ResponseDateFormat: 0,
+            IsPartitionable: 0,
+            IsNullable: 0,
+            IsQueryable: 0,
+            IsOrderable: 0,
+            FilterOverrides: {
+              FieldName: 0,
+              OperatorMappings: 0,
+              BetweenConfiguration: i_BetweenConfiguration,
+              DateTimeFormat: 0,
+            },
+          }),
+        }),
+      },
+      Tags: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -15317,7 +16465,10 @@ export const registerSchemaVersion: API.OperationMethod<
   RegisterSchemaVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SchemaId: i_SchemaId, SchemaDefinition: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -15345,7 +16496,15 @@ export const removeSchemaVersionMetadata: API.OperationMethod<
   RemoveSchemaVersionMetadataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SchemaId: i_SchemaId,
+      SchemaVersionNumber: i_SchemaVersionNumber,
+      SchemaVersionId: 0,
+      MetadataKeyValue: i_MetadataKeyValuePair,
+    },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -15379,7 +16538,7 @@ export const resetJobBookmark: API.OperationMethod<
   ResetJobBookmarkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobName: 0, RunId: 0 } },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -15408,7 +16567,7 @@ export const resumeWorkflowRun: API.OperationMethod<
   ResumeWorkflowRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, RunId: 0, NodeIds: 0 } },
   errors: [
     ConcurrentRunsExceededException,
     EntityNotFoundException,
@@ -15443,7 +16602,10 @@ export const runStatement: API.OperationMethod<
   RunStatementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SessionId: 0, Code: 0, RequestOrigin: 0 },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -15477,7 +16639,17 @@ export const searchAssets: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   SearchResultItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Items: D.list({ UpdatedAt: D.ts }) } },
+  descriptor: {
+    service: svc,
+    input: {
+      SearchText: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Sort: { Attribute: 0, Order: 0 },
+      FilterClause: i_SearchFilterClause,
+    },
+    output: { Items: D.list({ UpdatedAt: D.ts }) },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -15512,7 +16684,20 @@ export const searchTables: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { TableList: D.list(o_Table) } },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      NextToken: 0,
+      Filters: D.list({ Key: 0, Value: 0, Comparator: 0 }),
+      SearchText: 0,
+      SortCriteria: D.list({ FieldName: 0, Sort: 0 }),
+      MaxResults: 0,
+      ResourceShareType: 0,
+      IncludeStatusDetails: 0,
+    },
+    output: { TableList: D.list(o_Table) },
+  },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -15545,7 +16730,10 @@ export const startBlueprintRun: API.OperationMethod<
   StartBlueprintRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { BlueprintName: 0, Parameters: 0, RoleArn: 0 },
+  },
   errors: [
     EntityNotFoundException,
     IllegalBlueprintStateException,
@@ -15576,7 +16764,18 @@ export const startColumnStatisticsTaskRun: API.OperationMethod<
   StartColumnStatisticsTaskRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DatabaseName: 0,
+      TableName: 0,
+      ColumnNameList: 0,
+      Role: 0,
+      SampleSize: 0,
+      CatalogID: 0,
+      SecurityConfiguration: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ColumnStatisticsTaskRunningException,
@@ -15605,7 +16804,7 @@ export const startColumnStatisticsTaskRunSchedule: API.OperationMethod<
   StartColumnStatisticsTaskRunScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DatabaseName: 0, TableName: 0 } },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -15633,7 +16832,7 @@ export const startCrawler: API.OperationMethod<
   StartCrawlerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     CrawlerRunningException,
     EntityNotFoundException,
@@ -15662,7 +16861,7 @@ export const startCrawlerSchedule: API.OperationMethod<
   StartCrawlerScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CrawlerName: 0 } },
   errors: [
     EntityNotFoundException,
     NoScheduleException,
@@ -15692,7 +16891,19 @@ export const startDataQualityRuleRecommendationRun: API.OperationMethod<
   StartDataQualityRuleRecommendationRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DataSource: i_DataSource,
+      Role: 0,
+      NumberOfWorkers: 0,
+      Timeout: 0,
+      CreatedRulesetName: 0,
+      DataQualitySecurityConfiguration: 0,
+      ClientToken: 0,
+      AdditionalRunOptions: { CustomLogGroupPrefix: 0 },
+    },
+  },
   errors: [
     ConflictException,
     InternalServiceException,
@@ -15720,7 +16931,47 @@ export const startDataQualityRulesetEvaluationRun: API.OperationMethod<
   StartDataQualityRulesetEvaluationRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DataSource: i_DataSource,
+      Role: 0,
+      NumberOfWorkers: 0,
+      Timeout: 0,
+      ClientToken: 0,
+      AdditionalRunOptions: {
+        CloudWatchMetricsEnabled: 0,
+        ResultsS3Prefix: 0,
+        CompositeRuleEvaluationMethod: 0,
+        CustomLogGroupPrefix: 0,
+        RowLevelResults: {
+          MaxRowsToWrite: 0,
+          ResultType: 0,
+          CatalogTableConfig: i_CatalogTableConfigOptions,
+        },
+        ProfilingResults: {
+          WriteProfilingResultsEnabled: 0,
+          CatalogTableConfig: i_CatalogTableConfigOptions,
+          DistributionResults: {
+            WriteDistributionResultsEnabled: 0,
+            CatalogTableConfig: i_CatalogTableConfigOptions,
+          },
+        },
+        ObservationScope: 0,
+        ObservationMode: 0,
+        DataQualityRuleResults: {
+          WriteDataQualityRuleResultsEnabled: 0,
+          CatalogTableConfig: i_CatalogTableConfigOptions,
+        },
+        ObservationResults: {
+          WriteObservationResultsEnabled: 0,
+          CatalogTableConfig: i_CatalogTableConfigOptions,
+        },
+      },
+      RulesetNames: 0,
+      AdditionalDataSources: D.map(i_DataSource),
+    },
+  },
   errors: [
     ConflictException,
     EntityNotFoundException,
@@ -15756,7 +17007,7 @@ export const startExportLabelsTaskRun: API.OperationMethod<
   StartExportLabelsTaskRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TransformId: 0, OutputS3Path: 0 } },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -15808,7 +17059,10 @@ export const startImportLabelsTaskRun: API.OperationMethod<
   StartImportLabelsTaskRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TransformId: 0, InputS3Path: 0, ReplaceAllLabels: 0 },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -15839,7 +17093,24 @@ export const startJobRun: API.OperationMethod<
   StartJobRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      JobName: 0,
+      JobRunQueuingEnabled: 0,
+      JobRunId: 0,
+      Arguments: 0,
+      AllocatedCapacity: 0,
+      Timeout: 0,
+      MaxCapacity: 0,
+      SecurityConfiguration: 0,
+      NotificationProperty: i_NotificationProperty,
+      WorkerType: 0,
+      NumberOfWorkers: 0,
+      ExecutionClass: 0,
+      ExecutionRoleSessionPolicy: 0,
+    },
+  },
   errors: [
     ConcurrentRunsExceededException,
     EntityNotFoundException,
@@ -15871,7 +17142,10 @@ export const startMaterializedViewRefreshTaskRun: API.OperationMethod<
   StartMaterializedViewRefreshTaskRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0, DatabaseName: 0, TableName: 0, FullRefresh: 0 },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -15909,7 +17183,7 @@ export const startMLEvaluationTaskRun: API.OperationMethod<
   StartMLEvaluationTaskRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TransformId: 0 } },
   errors: [
     ConcurrentRunsExceededException,
     EntityNotFoundException,
@@ -15955,7 +17229,7 @@ export const startMLLabelingSetGenerationTaskRun: API.OperationMethod<
   StartMLLabelingSetGenerationTaskRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TransformId: 0, OutputS3Path: 0 } },
   errors: [
     ConcurrentRunsExceededException,
     EntityNotFoundException,
@@ -15987,7 +17261,7 @@ export const startTrigger: API.OperationMethod<
   StartTriggerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     ConcurrentRunsExceededException,
     EntityNotFoundException,
@@ -16018,7 +17292,7 @@ export const startWorkflowRun: API.OperationMethod<
   StartWorkflowRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, RunProperties: 0 } },
   errors: [
     ConcurrentRunsExceededException,
     EntityNotFoundException,
@@ -16047,7 +17321,7 @@ export const stopColumnStatisticsTaskRun: API.OperationMethod<
   StopColumnStatisticsTaskRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DatabaseName: 0, TableName: 0 } },
   errors: [
     ColumnStatisticsTaskNotRunningException,
     ColumnStatisticsTaskStoppingException,
@@ -16073,7 +17347,7 @@ export const stopColumnStatisticsTaskRunSchedule: API.OperationMethod<
   StopColumnStatisticsTaskRunScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DatabaseName: 0, TableName: 0 } },
   errors: [
     EntityNotFoundException,
     InvalidInputException,
@@ -16099,7 +17373,7 @@ export const stopCrawler: API.OperationMethod<
   StopCrawlerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     CrawlerNotRunningException,
     CrawlerStoppingException,
@@ -16128,7 +17402,7 @@ export const stopCrawlerSchedule: API.OperationMethod<
   StopCrawlerScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CrawlerName: 0 } },
   errors: [
     EntityNotFoundException,
     OperationTimeoutException,
@@ -16156,7 +17430,10 @@ export const stopMaterializedViewRefreshTaskRun: API.OperationMethod<
   StopMaterializedViewRefreshTaskRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0, DatabaseName: 0, TableName: 0 },
+  },
   errors: [
     AccessDeniedException,
     InvalidInputException,
@@ -16186,7 +17463,7 @@ export const stopSession: API.OperationMethod<
   StopSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0, RequestOrigin: 0 } },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -16216,7 +17493,7 @@ export const stopTrigger: API.OperationMethod<
   StopTriggerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     ConcurrentModificationException,
     EntityNotFoundException,
@@ -16245,7 +17522,7 @@ export const stopWorkflowRun: API.OperationMethod<
   StopWorkflowRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, RunId: 0 } },
   errors: [
     EntityNotFoundException,
     IllegalWorkflowStateException,
@@ -16275,7 +17552,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagsToAdd: 0 } },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -16311,7 +17588,18 @@ export const testConnection: API.OperationMethod<
   TestConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConnectionName: 0,
+      CatalogId: 0,
+      TestConnectionInput: {
+        ConnectionType: 0,
+        ConnectionProperties: 0,
+        AuthenticationConfiguration: i_AuthenticationConfigurationInput,
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -16343,7 +17631,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagsToRemove: 0 } },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -16374,7 +17662,12 @@ export const updateAsset: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Identifier: 0,
+      Name: 0,
+      Description: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { UpdatedAt: D.ts },
   },
   errors: [
@@ -16407,7 +17700,10 @@ export const updateBlueprint: API.OperationMethod<
   UpdateBlueprintError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, Description: 0, BlueprintLocation: 0 },
+  },
   errors: [
     ConcurrentModificationException,
     EntityNotFoundException,
@@ -16440,7 +17736,10 @@ export const updateCatalog: API.OperationMethod<
   UpdateCatalogError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0, CatalogInput: i_CatalogInput },
+  },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -16473,7 +17772,31 @@ export const updateClassifier: API.OperationMethod<
   UpdateClassifierError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      GrokClassifier: {
+        Name: 0,
+        Classification: 0,
+        GrokPattern: 0,
+        CustomPatterns: 0,
+      },
+      XMLClassifier: { Name: 0, Classification: 0, RowTag: 0 },
+      JsonClassifier: { Name: 0, JsonPath: 0 },
+      CsvClassifier: {
+        Name: 0,
+        Delimiter: 0,
+        QuoteSymbol: 0,
+        ContainsHeader: 0,
+        Header: 0,
+        DisableValueTrimming: 0,
+        AllowSingleColumn: 0,
+        CustomDatatypeConfigured: 0,
+        CustomDatatypes: 0,
+        Serde: 0,
+      },
+    },
+  },
   errors: [
     EntityNotFoundException,
     InvalidInputException,
@@ -16505,6 +17828,13 @@ export const updateColumnStatisticsForPartition: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      PartitionValues: 0,
+      ColumnStatisticsList: D.list(i_ColumnStatistics),
+    },
     output: { Errors: D.list(o_ColumnStatisticsError) },
   },
   errors: [
@@ -16539,6 +17869,12 @@ export const updateColumnStatisticsForTable: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      ColumnStatisticsList: D.list(i_ColumnStatistics),
+    },
     output: { Errors: D.list(o_ColumnStatisticsError) },
   },
   errors: [
@@ -16569,7 +17905,19 @@ export const updateColumnStatisticsTaskSettings: API.OperationMethod<
   UpdateColumnStatisticsTaskSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DatabaseName: 0,
+      TableName: 0,
+      Role: 0,
+      Schedule: 0,
+      ColumnNameList: 0,
+      SampleSize: 0,
+      CatalogID: 0,
+      SecurityConfiguration: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -16597,7 +17945,10 @@ export const updateConnection: API.OperationMethod<
   UpdateConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0, Name: 0, ConnectionInput: i_ConnectionInput },
+  },
   errors: [
     EntityNotFoundException,
     GlueEncryptionException,
@@ -16629,7 +17980,25 @@ export const updateCrawler: API.OperationMethod<
   UpdateCrawlerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Role: 0,
+      DatabaseName: 0,
+      Description: 0,
+      Targets: i_CrawlerTargets,
+      Schedule: 0,
+      Classifiers: 0,
+      TablePrefix: 0,
+      SchemaChangePolicy: i_SchemaChangePolicy,
+      RecrawlPolicy: i_RecrawlPolicy,
+      LineageConfiguration: i_LineageConfiguration,
+      LakeFormationConfiguration: i_LakeFormationConfiguration,
+      Configuration: 0,
+      CrawlerSecurityConfiguration: 0,
+    },
+  },
   errors: [
     CrawlerRunningException,
     EntityNotFoundException,
@@ -16660,7 +18029,7 @@ export const updateCrawlerSchedule: API.OperationMethod<
   UpdateCrawlerScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CrawlerName: 0, Schedule: 0 } },
   errors: [
     EntityNotFoundException,
     InvalidInputException,
@@ -16693,7 +18062,10 @@ export const updateDatabase: API.OperationMethod<
   UpdateDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CatalogId: 0, Name: 0, DatabaseInput: i_DatabaseInput },
+  },
   errors: [
     AlreadyExistsException,
     ConcurrentModificationException,
@@ -16728,7 +18100,7 @@ export const updateDataQualityRuleset: API.OperationMethod<
   UpdateDataQualityRulesetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, Description: 0, Ruleset: 0 } },
   errors: [
     AlreadyExistsException,
     EntityNotFoundException,
@@ -16759,7 +18131,19 @@ export const updateDevEndpoint: API.OperationMethod<
   UpdateDevEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EndpointName: 0,
+      PublicKey: 0,
+      AddPublicKeys: 0,
+      DeletePublicKeys: 0,
+      CustomLibraries: { ExtraPythonLibsS3Path: 0, ExtraJarsS3Path: 0 },
+      UpdateEtlLibraries: 0,
+      DeleteArguments: 0,
+      AddArguments: 0,
+    },
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -16792,7 +18176,12 @@ export const updateGlossary: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Identifier: 0,
+      Name: 0,
+      Description: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -16828,7 +18217,13 @@ export const updateGlossaryTerm: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Identifier: 0,
+      Name: 0,
+      ShortDescription: 0,
+      LongDescription: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -16861,7 +18256,10 @@ export const updateGlueIdentityCenterConfiguration: API.OperationMethod<
   UpdateGlueIdentityCenterConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Scopes: 0, UserBackgroundSessionsEnabled: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -16893,7 +18291,14 @@ export const updateIntegrationResourceProperty: API.OperationMethod<
   UpdateIntegrationResourcePropertyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceArn: 0,
+      SourceProcessingProperties: i_SourceProcessingProperties,
+      TargetProcessingProperties: i_TargetProcessingProperties,
+    },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -16928,7 +18333,15 @@ export const updateIntegrationTableProperties: API.OperationMethod<
   UpdateIntegrationTablePropertiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResourceArn: 0,
+      TableName: 0,
+      SourceTableConfig: i_SourceTableConfig,
+      TargetTableConfig: i_TargetTableConfig,
+    },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -16963,8 +18376,31 @@ export const updateJob: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      JobName: 0,
       JobUpdate: {
+        JobMode: 0,
+        JobRunQueuingEnabled: 0,
+        Description: 0,
+        LogUri: 0,
+        Role: 0,
+        ExecutionProperty: i_ExecutionProperty,
+        Command: i_JobCommand,
+        DefaultArguments: 0,
+        NonOverridableArguments: 0,
+        Connections: i_ConnectionsList,
+        MaxRetries: 0,
+        AllocatedCapacity: 0,
+        Timeout: 0,
+        MaxCapacity: 0,
+        WorkerType: 0,
+        NumberOfWorkers: 0,
+        SecurityConfiguration: 0,
+        NotificationProperty: i_NotificationProperty,
+        GlueVersion: 0,
         CodeGenConfigurationNodes: D.map(i_CodeGenConfigurationNode),
+        ExecutionClass: 0,
+        SourceControlDetails: i_SourceControlDetails,
+        MaintenanceWindow: 0,
       },
     },
   },
@@ -17001,7 +18437,20 @@ export const updateJobFromSourceControl: API.OperationMethod<
   UpdateJobFromSourceControlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      JobName: 0,
+      Provider: 0,
+      RepositoryName: 0,
+      RepositoryOwner: 0,
+      BranchName: 0,
+      Folder: 0,
+      CommitId: 0,
+      AuthStrategy: 0,
+      AuthToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AlreadyExistsException,
@@ -17036,7 +18485,22 @@ export const updateMLTransform: API.OperationMethod<
   UpdateMLTransformError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TransformId: 0,
+      Name: 0,
+      Description: 0,
+      Parameters: i_TransformParameters,
+      Role: 0,
+      GlueVersion: 0,
+      MaxCapacity: 0,
+      WorkerType: 0,
+      NumberOfWorkers: 0,
+      Timeout: 0,
+      MaxRetries: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -17065,7 +18529,16 @@ export const updatePartition: API.OperationMethod<
   UpdatePartitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      PartitionValueList: 0,
+      PartitionInput: i_PartitionInput,
+    },
+  },
   errors: [
     EntityNotFoundException,
     GlueEncryptionException,
@@ -17094,7 +18567,10 @@ export const updateRegistry: API.OperationMethod<
   UpdateRegistryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { RegistryId: i_RegistryId, Description: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -17129,7 +18605,15 @@ export const updateSchema: API.OperationMethod<
   UpdateSchemaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SchemaId: i_SchemaId,
+      SchemaVersionNumber: i_SchemaVersionNumber,
+      Compatibility: 0,
+      Description: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -17162,7 +18646,20 @@ export const updateSourceControlFromJob: API.OperationMethod<
   UpdateSourceControlFromJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      JobName: 0,
+      Provider: 0,
+      RepositoryName: 0,
+      RepositoryOwner: 0,
+      BranchName: 0,
+      Folder: 0,
+      CommitId: 0,
+      AuthStrategy: 0,
+      AuthToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     AlreadyExistsException,
@@ -17199,7 +18696,41 @@ export const updateTable: API.OperationMethod<
   UpdateTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      Name: 0,
+      TableInput: i_TableInput,
+      SkipArchive: 0,
+      TransactionId: 0,
+      VersionId: 0,
+      ViewUpdateAction: 0,
+      Force: 0,
+      UpdateOpenTableFormatInput: {
+        UpdateIcebergInput: {
+          UpdateIcebergTableInput: {
+            Updates: D.list({
+              Schema: i_IcebergSchema,
+              PartitionSpec: i_IcebergPartitionSpec,
+              SortOrder: i_IcebergSortOrder,
+              Location: 0,
+              Properties: 0,
+              Action: 0,
+              EncryptionKey: {
+                KeyId: 0,
+                EncryptedKeyMetadata: 0,
+                EncryptedById: 0,
+                Properties: 0,
+              },
+              KeyId: 0,
+            }),
+          },
+        },
+      },
+    },
+  },
   errors: [
     AlreadyExistsException,
     ConcurrentModificationException,
@@ -17236,7 +18767,16 @@ export const updateTableOptimizer: API.OperationMethod<
   UpdateTableOptimizerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      Type: 0,
+      TableOptimizerConfiguration: i_TableOptimizerConfiguration,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -17269,7 +18809,20 @@ export const updateTrigger: API.OperationMethod<
   UpdateTriggerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      TriggerUpdate: {
+        Name: 0,
+        Description: 0,
+        Schedule: 0,
+        Actions: D.list(i_Action),
+        Predicate: i_Predicate,
+        EventBatchingCondition: i_EventBatchingCondition,
+      },
+    },
+  },
   errors: [
     ConcurrentModificationException,
     EntityNotFoundException,
@@ -17299,7 +18852,10 @@ export const updateUsageProfile: API.OperationMethod<
   UpdateUsageProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, Description: 0, Configuration: i_ProfileConfiguration },
+  },
   errors: [
     ConcurrentModificationException,
     EntityNotFoundException,
@@ -17329,7 +18885,15 @@ export const updateUserDefinedFunction: API.OperationMethod<
   UpdateUserDefinedFunctionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      FunctionName: 0,
+      FunctionInput: i_UserDefinedFunctionInput,
+    },
+  },
   errors: [
     EntityNotFoundException,
     GlueEncryptionException,
@@ -17358,7 +18922,15 @@ export const updateWorkflow: API.OperationMethod<
   UpdateWorkflowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      DefaultRunProperties: 0,
+      MaxConcurrentRuns: 0,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     EntityNotFoundException,
@@ -17371,11 +18943,1047 @@ export const updateWorkflow: API.OperationMethod<
   operationName: "UpdateWorkflow",
 })) as any;
 
+const i_Action: D.LazyStruct = () => ({
+  JobName: 0,
+  Arguments: 0,
+  Timeout: 0,
+  SecurityConfiguration: 0,
+  NotificationProperty: i_NotificationProperty,
+  CrawlerName: 0,
+});
+const i_AuditContext: D.LazyStruct = () => ({
+  AdditionalAuditContext: 0,
+  RequestedColumns: 0,
+  AllColumnsRequested: 0,
+});
+const i_AuthenticationConfigurationInput: D.LazyStruct = () => ({
+  AuthenticationType: 0,
+  OAuth2Properties: {
+    OAuth2GrantType: 0,
+    OAuth2ClientApplication: {
+      UserManagedClientApplicationClientId: 0,
+      AWSManagedClientApplicationReference: 0,
+    },
+    TokenUrl: 0,
+    TokenUrlParametersMap: 0,
+    AuthorizationCodeProperties: { AuthorizationCode: 0, RedirectUri: 0 },
+    OAuth2Credentials: {
+      UserManagedClientApplicationClientSecret: 0,
+      AccessToken: 0,
+      RefreshToken: 0,
+      JwtToken: 0,
+    },
+  },
+  SecretArn: 0,
+  KmsKeyArn: 0,
+  BasicAuthenticationCredentials: { Username: 0, Password: 0 },
+  CustomAuthenticationCredentials: 0,
+});
+const i_BetweenConfiguration: D.LazyStruct = () => ({
+  LowBoundKey: 0,
+  HighBoundKey: 0,
+  Template: 0,
+});
+const i_CatalogEntry: D.LazyStruct = () => ({ DatabaseName: 0, TableName: 0 });
+const i_CatalogInput: D.LazyStruct = () => ({
+  Description: 0,
+  FederatedCatalog: { Identifier: 0, ConnectionName: 0, ConnectionType: 0 },
+  Parameters: 0,
+  TargetRedshiftCatalog: { CatalogArn: 0 },
+  CatalogProperties: {
+    DataLakeAccessProperties: {
+      DataLakeAccess: 0,
+      DataTransferRole: 0,
+      KmsKey: 0,
+      CatalogType: 0,
+    },
+    IcebergOptimizationProperties: {
+      RoleArn: 0,
+      Compaction: 0,
+      Retention: 0,
+      OrphanFileDeletion: 0,
+    },
+    CustomProperties: 0,
+  },
+  CreateTableDefaultPermissions: D.list(i_PrincipalPermissions),
+  CreateDatabaseDefaultPermissions: D.list(i_PrincipalPermissions),
+  AllowFullTableExternalDataAccess: 0,
+  OverwriteChildResourcePermissionsWithDefault: 0,
+});
+const i_CatalogTableConfigOptions: D.LazyStruct = () => ({
+  DatabaseName: 0,
+  TableName: 0,
+  S3Location: 0,
+  CatalogId: 0,
+});
 const i_CodeGenConfigurationNode: D.LazyStruct = () => ({
-  DirectKinesisSource: { StreamingOptions: i_KinesisStreamingSourceOptions },
-  DirectKafkaSource: { StreamingOptions: i_KafkaStreamingSourceOptions },
-  CatalogKinesisSource: { StreamingOptions: i_KinesisStreamingSourceOptions },
-  CatalogKafkaSource: { StreamingOptions: i_KafkaStreamingSourceOptions },
+  AthenaConnectorSource: {
+    Name: 0,
+    ConnectionName: 0,
+    ConnectorName: 0,
+    ConnectionType: 0,
+    ConnectionTable: 0,
+    SchemaName: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  JDBCConnectorSource: {
+    Name: 0,
+    ConnectionName: 0,
+    ConnectorName: 0,
+    ConnectionType: 0,
+    AdditionalOptions: {
+      FilterPredicate: 0,
+      PartitionColumn: 0,
+      LowerBound: 0,
+      UpperBound: 0,
+      NumPartitions: 0,
+      JobBookmarkKeys: 0,
+      JobBookmarkKeysSortOrder: 0,
+      DataTypeMapping: 0,
+    },
+    ConnectionTable: 0,
+    Query: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  SparkConnectorSource: {
+    Name: 0,
+    ConnectionName: 0,
+    ConnectorName: 0,
+    ConnectionType: 0,
+    AdditionalOptions: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  CatalogSource: {
+    Name: 0,
+    Database: 0,
+    Table: 0,
+    PartitionPredicate: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  RedshiftSource: {
+    Name: 0,
+    Database: 0,
+    Table: 0,
+    RedshiftTmpDir: 0,
+    TmpDirIAMRole: 0,
+  },
+  S3CatalogSource: {
+    Name: 0,
+    Database: 0,
+    Table: 0,
+    PartitionPredicate: 0,
+    AdditionalOptions: i_S3SourceAdditionalOptions,
+  },
+  S3CsvSource: {
+    Name: 0,
+    Paths: 0,
+    CompressionType: 0,
+    Exclusions: 0,
+    GroupSize: 0,
+    GroupFiles: 0,
+    Recurse: 0,
+    MaxBand: 0,
+    MaxFilesInBand: 0,
+    AdditionalOptions: i_S3DirectSourceAdditionalOptions,
+    Separator: 0,
+    Escaper: 0,
+    QuoteChar: 0,
+    Multiline: 0,
+    WithHeader: 0,
+    WriteHeader: 0,
+    SkipFirst: 0,
+    OptimizePerformance: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  S3JsonSource: {
+    Name: 0,
+    Paths: 0,
+    CompressionType: 0,
+    Exclusions: 0,
+    GroupSize: 0,
+    GroupFiles: 0,
+    Recurse: 0,
+    MaxBand: 0,
+    MaxFilesInBand: 0,
+    AdditionalOptions: i_S3DirectSourceAdditionalOptions,
+    JsonPath: 0,
+    Multiline: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  S3ParquetSource: {
+    Name: 0,
+    Paths: 0,
+    CompressionType: 0,
+    Exclusions: 0,
+    GroupSize: 0,
+    GroupFiles: 0,
+    Recurse: 0,
+    MaxBand: 0,
+    MaxFilesInBand: 0,
+    AdditionalOptions: i_S3DirectSourceAdditionalOptions,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  RelationalCatalogSource: { Name: 0, Database: 0, Table: 0 },
+  DynamoDBCatalogSource: {
+    Name: 0,
+    Database: 0,
+    Table: 0,
+    PitrEnabled: 0,
+    AdditionalOptions: { DynamodbExport: 0, DynamodbUnnestDDBJson: 0 },
+  },
+  JDBCConnectorTarget: {
+    Name: 0,
+    Inputs: 0,
+    ConnectionName: 0,
+    ConnectionTable: 0,
+    ConnectorName: 0,
+    ConnectionType: 0,
+    AdditionalOptions: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  SparkConnectorTarget: {
+    Name: 0,
+    Inputs: 0,
+    ConnectionName: 0,
+    ConnectorName: 0,
+    ConnectionType: 0,
+    AdditionalOptions: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  CatalogTarget: {
+    Name: 0,
+    Inputs: 0,
+    PartitionKeys: 0,
+    Database: 0,
+    Table: 0,
+  },
+  RedshiftTarget: {
+    Name: 0,
+    Inputs: 0,
+    Database: 0,
+    Table: 0,
+    RedshiftTmpDir: 0,
+    TmpDirIAMRole: 0,
+    UpsertRedshiftOptions: {
+      TableLocation: 0,
+      ConnectionName: 0,
+      UpsertKeys: 0,
+    },
+  },
+  S3CatalogTarget: {
+    Name: 0,
+    Inputs: 0,
+    PartitionKeys: 0,
+    Table: 0,
+    Database: 0,
+    SchemaChangePolicy: i_CatalogSchemaChangePolicy,
+    AutoDataQuality: i_AutoDataQuality,
+  },
+  S3GlueParquetTarget: {
+    Name: 0,
+    Inputs: 0,
+    PartitionKeys: 0,
+    Path: 0,
+    Compression: 0,
+    NumberTargetPartitions: 0,
+    SchemaChangePolicy: i_DirectSchemaChangePolicy,
+    AutoDataQuality: i_AutoDataQuality,
+  },
+  S3DirectTarget: {
+    Name: 0,
+    Inputs: 0,
+    PartitionKeys: 0,
+    Path: 0,
+    Compression: 0,
+    NumberTargetPartitions: 0,
+    Format: 0,
+    SchemaChangePolicy: i_DirectSchemaChangePolicy,
+    AutoDataQuality: i_AutoDataQuality,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  ApplyMapping: { Name: 0, Inputs: 0, Mapping: D.list(i_Mapping) },
+  SelectFields: { Name: 0, Inputs: 0, Paths: 0 },
+  DropFields: { Name: 0, Inputs: 0, Paths: 0 },
+  RenameField: { Name: 0, Inputs: 0, SourcePath: 0, TargetPath: 0 },
+  Spigot: { Name: 0, Inputs: 0, Path: 0, Topk: 0, Prob: 0 },
+  Join: {
+    Name: 0,
+    Inputs: 0,
+    JoinType: 0,
+    Columns: D.list({ From: 0, Keys: 0 }),
+  },
+  SplitFields: { Name: 0, Inputs: 0, Paths: 0 },
+  SelectFromCollection: { Name: 0, Inputs: 0, Index: 0 },
+  FillMissingValues: { Name: 0, Inputs: 0, ImputedPath: 0, FilledPath: 0 },
+  Filter: {
+    Name: 0,
+    Inputs: 0,
+    LogicalOperator: 0,
+    Filters: D.list(i_FilterExpression),
+  },
+  CustomCode: {
+    Name: 0,
+    Inputs: 0,
+    Code: 0,
+    ClassName: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  SparkSQL: {
+    Name: 0,
+    Inputs: 0,
+    SqlQuery: 0,
+    SqlAliases: D.list({ From: 0, Alias: 0 }),
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  DirectKinesisSource: {
+    Name: 0,
+    WindowSize: 0,
+    DetectSchema: 0,
+    StreamingOptions: i_KinesisStreamingSourceOptions,
+    DataPreviewOptions: i_StreamingDataPreviewOptions,
+  },
+  DirectKafkaSource: {
+    Name: 0,
+    StreamingOptions: i_KafkaStreamingSourceOptions,
+    WindowSize: 0,
+    DetectSchema: 0,
+    DataPreviewOptions: i_StreamingDataPreviewOptions,
+  },
+  CatalogKinesisSource: {
+    Name: 0,
+    WindowSize: 0,
+    DetectSchema: 0,
+    Table: 0,
+    Database: 0,
+    StreamingOptions: i_KinesisStreamingSourceOptions,
+    DataPreviewOptions: i_StreamingDataPreviewOptions,
+  },
+  CatalogKafkaSource: {
+    Name: 0,
+    WindowSize: 0,
+    DetectSchema: 0,
+    Table: 0,
+    Database: 0,
+    StreamingOptions: i_KafkaStreamingSourceOptions,
+    DataPreviewOptions: i_StreamingDataPreviewOptions,
+  },
+  DropNullFields: {
+    Name: 0,
+    Inputs: 0,
+    NullCheckBoxList: { IsEmpty: 0, IsNullString: 0, IsNegOne: 0 },
+    NullTextList: D.list({ Value: 0, Datatype: { Id: 0, Label: 0 } }),
+  },
+  Merge: { Name: 0, Inputs: 0, Source: 0, PrimaryKeys: 0 },
+  Union: { Name: 0, Inputs: 0, UnionType: 0 },
+  PIIDetection: {
+    Name: 0,
+    Inputs: 0,
+    PiiType: 0,
+    EntityTypesToDetect: 0,
+    OutputColumnName: 0,
+    SampleFraction: 0,
+    ThresholdFraction: 0,
+    MaskValue: 0,
+    RedactText: 0,
+    RedactChar: 0,
+    MatchPattern: 0,
+    NumLeftCharsToExclude: 0,
+    NumRightCharsToExclude: 0,
+    DetectionParameters: 0,
+    DetectionSensitivity: 0,
+  },
+  Aggregate: {
+    Name: 0,
+    Inputs: 0,
+    Groups: 0,
+    Aggs: D.list({ Column: 0, AggFunc: 0 }),
+  },
+  DropDuplicates: { Name: 0, Inputs: 0, Columns: 0 },
+  GovernedCatalogTarget: {
+    Name: 0,
+    Inputs: 0,
+    PartitionKeys: 0,
+    Table: 0,
+    Database: 0,
+    SchemaChangePolicy: i_CatalogSchemaChangePolicy,
+  },
+  GovernedCatalogSource: {
+    Name: 0,
+    Database: 0,
+    Table: 0,
+    PartitionPredicate: 0,
+    AdditionalOptions: i_S3SourceAdditionalOptions,
+  },
+  MicrosoftSQLServerCatalogSource: { Name: 0, Database: 0, Table: 0 },
+  MySQLCatalogSource: { Name: 0, Database: 0, Table: 0 },
+  OracleSQLCatalogSource: { Name: 0, Database: 0, Table: 0 },
+  PostgreSQLCatalogSource: { Name: 0, Database: 0, Table: 0 },
+  MicrosoftSQLServerCatalogTarget: {
+    Name: 0,
+    Inputs: 0,
+    Database: 0,
+    Table: 0,
+  },
+  MySQLCatalogTarget: { Name: 0, Inputs: 0, Database: 0, Table: 0 },
+  OracleSQLCatalogTarget: { Name: 0, Inputs: 0, Database: 0, Table: 0 },
+  PostgreSQLCatalogTarget: { Name: 0, Inputs: 0, Database: 0, Table: 0 },
+  Route: {
+    Name: 0,
+    Inputs: 0,
+    GroupFiltersList: D.list({
+      GroupName: 0,
+      Filters: D.list(i_FilterExpression),
+      LogicalOperator: 0,
+    }),
+  },
+  DynamicTransform: {
+    Name: 0,
+    TransformName: 0,
+    Inputs: 0,
+    Parameters: D.list({
+      Name: 0,
+      Type: 0,
+      ValidationRule: 0,
+      ValidationMessage: 0,
+      Value: 0,
+      ListType: 0,
+      IsOptional: 0,
+    }),
+    FunctionName: 0,
+    Path: 0,
+    Version: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  EvaluateDataQuality: {
+    Name: 0,
+    Inputs: 0,
+    Ruleset: 0,
+    Output: 0,
+    PublishingOptions: i_DQResultsPublishingOptions,
+    StopJobOnFailureOptions: i_DQStopJobOnFailureOptions,
+  },
+  S3CatalogHudiSource: {
+    Name: 0,
+    Database: 0,
+    Table: 0,
+    AdditionalHudiOptions: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  CatalogHudiSource: {
+    Name: 0,
+    Database: 0,
+    Table: 0,
+    AdditionalHudiOptions: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  S3HudiSource: {
+    Name: 0,
+    Paths: 0,
+    AdditionalHudiOptions: 0,
+    AdditionalOptions: i_S3DirectSourceAdditionalOptions,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  S3HudiCatalogTarget: {
+    Name: 0,
+    Inputs: 0,
+    PartitionKeys: 0,
+    Table: 0,
+    Database: 0,
+    AdditionalOptions: 0,
+    SchemaChangePolicy: i_CatalogSchemaChangePolicy,
+    AutoDataQuality: i_AutoDataQuality,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  S3HudiDirectTarget: {
+    Name: 0,
+    Inputs: 0,
+    Path: 0,
+    Compression: 0,
+    NumberTargetPartitions: 0,
+    PartitionKeys: 0,
+    Format: 0,
+    AdditionalOptions: 0,
+    SchemaChangePolicy: i_DirectSchemaChangePolicy,
+    AutoDataQuality: i_AutoDataQuality,
+  },
+  DirectJDBCSource: {
+    Name: 0,
+    Database: 0,
+    Table: 0,
+    ConnectionName: 0,
+    ConnectionType: 0,
+    RedshiftTmpDir: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  S3CatalogDeltaSource: {
+    Name: 0,
+    Database: 0,
+    Table: 0,
+    AdditionalDeltaOptions: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  CatalogDeltaSource: {
+    Name: 0,
+    Database: 0,
+    Table: 0,
+    AdditionalDeltaOptions: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  S3DeltaSource: {
+    Name: 0,
+    Paths: 0,
+    AdditionalDeltaOptions: 0,
+    AdditionalOptions: i_S3DirectSourceAdditionalOptions,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  S3DeltaCatalogTarget: {
+    Name: 0,
+    Inputs: 0,
+    PartitionKeys: 0,
+    Table: 0,
+    Database: 0,
+    AdditionalOptions: 0,
+    SchemaChangePolicy: i_CatalogSchemaChangePolicy,
+    AutoDataQuality: i_AutoDataQuality,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  S3DeltaDirectTarget: {
+    Name: 0,
+    Inputs: 0,
+    PartitionKeys: 0,
+    Path: 0,
+    Compression: 0,
+    NumberTargetPartitions: 0,
+    Format: 0,
+    AdditionalOptions: 0,
+    SchemaChangePolicy: i_DirectSchemaChangePolicy,
+    AutoDataQuality: i_AutoDataQuality,
+  },
+  AmazonRedshiftSource: { Name: 0, Data: i_AmazonRedshiftNodeData },
+  AmazonRedshiftTarget: { Name: 0, Data: i_AmazonRedshiftNodeData, Inputs: 0 },
+  EvaluateDataQualityMultiFrame: {
+    Name: 0,
+    Inputs: 0,
+    AdditionalDataSources: 0,
+    Ruleset: 0,
+    PublishingOptions: i_DQResultsPublishingOptions,
+    AdditionalOptions: 0,
+    StopJobOnFailureOptions: i_DQStopJobOnFailureOptions,
+  },
+  Recipe: {
+    Name: 0,
+    Inputs: 0,
+    RecipeReference: { RecipeArn: 0, RecipeVersion: 0 },
+    RecipeSteps: D.list({
+      Action: { Operation: 0, Parameters: 0 },
+      ConditionExpressions: D.list({ Condition: 0, Value: 0, TargetColumn: 0 }),
+    }),
+  },
+  SnowflakeSource: {
+    Name: 0,
+    Data: i_SnowflakeNodeData,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  SnowflakeTarget: { Name: 0, Data: i_SnowflakeNodeData, Inputs: 0 },
+  ConnectorDataSource: {
+    Name: 0,
+    ConnectionType: 0,
+    Data: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  ConnectorDataTarget: { Name: 0, ConnectionType: 0, Data: 0, Inputs: 0 },
+  S3CatalogIcebergSource: {
+    Name: 0,
+    Database: 0,
+    Table: 0,
+    AdditionalIcebergOptions: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  CatalogIcebergSource: {
+    Name: 0,
+    Database: 0,
+    Table: 0,
+    AdditionalIcebergOptions: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  S3IcebergCatalogTarget: {
+    Name: 0,
+    Inputs: 0,
+    PartitionKeys: 0,
+    Table: 0,
+    Database: 0,
+    AdditionalOptions: 0,
+    SchemaChangePolicy: i_CatalogSchemaChangePolicy,
+    AutoDataQuality: i_AutoDataQuality,
+  },
+  S3IcebergDirectTarget: {
+    Name: 0,
+    Inputs: 0,
+    PartitionKeys: 0,
+    Path: 0,
+    Format: 0,
+    AdditionalOptions: 0,
+    SchemaChangePolicy: i_DirectSchemaChangePolicy,
+    AutoDataQuality: i_AutoDataQuality,
+    Compression: 0,
+    NumberTargetPartitions: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  S3ExcelSource: {
+    Name: 0,
+    Paths: 0,
+    CompressionType: 0,
+    Exclusions: 0,
+    GroupSize: 0,
+    GroupFiles: 0,
+    Recurse: 0,
+    MaxBand: 0,
+    MaxFilesInBand: 0,
+    AdditionalOptions: i_S3DirectSourceAdditionalOptions,
+    NumberRows: 0,
+    SkipFooter: 0,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  S3HyperDirectTarget: {
+    Name: 0,
+    Inputs: 0,
+    Format: 0,
+    PartitionKeys: 0,
+    Path: 0,
+    Compression: 0,
+    SchemaChangePolicy: i_DirectSchemaChangePolicy,
+    AutoDataQuality: i_AutoDataQuality,
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+  DynamoDBELTConnectorSource: {
+    Name: 0,
+    ConnectionOptions: {
+      DynamodbExport: 0,
+      DynamodbUnnestDDBJson: 0,
+      DynamodbTableArn: 0,
+      DynamodbS3Bucket: 0,
+      DynamodbS3Prefix: 0,
+      DynamodbS3BucketOwner: 0,
+      DynamodbStsRoleArn: 0,
+    },
+    OutputSchemas: D.list(i_GlueSchema),
+  },
+});
+const i_CodeGenNodeArg: D.LazyStruct = () => ({ Name: 0, Value: 0, Param: 0 });
+const i_ColumnStatistics: D.LazyStruct = () => ({
+  ColumnName: 0,
+  ColumnType: 0,
+  AnalyzedTime: 0,
+  StatisticsData: {
+    Type: 0,
+    BooleanColumnStatisticsData: {
+      NumberOfTrues: 0,
+      NumberOfFalses: 0,
+      NumberOfNulls: 0,
+    },
+    DateColumnStatisticsData: {
+      MinimumValue: 0,
+      MaximumValue: 0,
+      NumberOfNulls: 0,
+      NumberOfDistinctValues: 0,
+    },
+    DecimalColumnStatisticsData: {
+      MinimumValue: i_DecimalNumber,
+      MaximumValue: i_DecimalNumber,
+      NumberOfNulls: 0,
+      NumberOfDistinctValues: 0,
+    },
+    DoubleColumnStatisticsData: {
+      MinimumValue: 0,
+      MaximumValue: 0,
+      NumberOfNulls: 0,
+      NumberOfDistinctValues: 0,
+    },
+    LongColumnStatisticsData: {
+      MinimumValue: 0,
+      MaximumValue: 0,
+      NumberOfNulls: 0,
+      NumberOfDistinctValues: 0,
+    },
+    StringColumnStatisticsData: {
+      MaximumLength: 0,
+      AverageLength: 0,
+      NumberOfNulls: 0,
+      NumberOfDistinctValues: 0,
+    },
+    BinaryColumnStatisticsData: {
+      MaximumLength: 0,
+      AverageLength: 0,
+      NumberOfNulls: 0,
+    },
+  },
+});
+const i_ConnectionInput: D.LazyStruct = () => ({
+  Name: 0,
+  Description: 0,
+  ConnectionType: 0,
+  MatchCriteria: 0,
+  ConnectionProperties: 0,
+  SparkProperties: 0,
+  AthenaProperties: 0,
+  PythonProperties: 0,
+  PhysicalConnectionRequirements: {
+    SubnetId: 0,
+    SecurityGroupIdList: 0,
+    AvailabilityZone: 0,
+  },
+  AuthenticationConfiguration: i_AuthenticationConfigurationInput,
+  ValidateCredentials: 0,
+  ValidateForComputeEnvironments: 0,
+});
+const i_ConnectionsList: D.LazyStruct = () => ({ Connections: 0 });
+const i_ConnectorProperty: D.LazyStruct = () => ({
+  Name: 0,
+  KeyOverride: 0,
+  Required: 0,
+  DefaultValue: 0,
+  AllowedValues: 0,
+  PropertyLocation: 0,
+  PropertyType: 0,
+  Format: 0,
+});
+const i_CrawlerTargets: D.LazyStruct = () => ({
+  S3Targets: D.list({
+    Path: 0,
+    Exclusions: 0,
+    ConnectionName: 0,
+    SampleSize: 0,
+    EventQueueArn: 0,
+    DlqEventQueueArn: 0,
+  }),
+  JdbcTargets: D.list({
+    ConnectionName: 0,
+    Path: 0,
+    Exclusions: 0,
+    EnableAdditionalMetadata: 0,
+  }),
+  MongoDBTargets: D.list({ ConnectionName: 0, Path: 0, ScanAll: 0 }),
+  DynamoDBTargets: D.list({ Path: 0, scanAll: 0, scanRate: 0 }),
+  CatalogTargets: D.list({
+    DatabaseName: 0,
+    Tables: 0,
+    ConnectionName: 0,
+    EventQueueArn: 0,
+    DlqEventQueueArn: 0,
+  }),
+  DeltaTargets: D.list({
+    DeltaTables: 0,
+    ConnectionName: 0,
+    WriteManifest: 0,
+    CreateNativeDeltaTable: 0,
+  }),
+  IcebergTargets: D.list({
+    Paths: 0,
+    ConnectionName: 0,
+    Exclusions: 0,
+    MaximumTraversalDepth: 0,
+  }),
+  HudiTargets: D.list({
+    Paths: 0,
+    ConnectionName: 0,
+    Exclusions: 0,
+    MaximumTraversalDepth: 0,
+  }),
+});
+const i_DataQualityTargetTable: D.LazyStruct = () => ({
+  TableName: 0,
+  DatabaseName: 0,
+  CatalogId: 0,
+});
+const i_DataSource: D.LazyStruct = () => ({
+  GlueTable: i_GlueTable,
+  DataQualityGlueTable: {
+    DatabaseName: 0,
+    TableName: 0,
+    CatalogId: 0,
+    ConnectionName: 0,
+    AdditionalOptions: 0,
+    PreProcessingQuery: 0,
+  },
+});
+const i_DatabaseInput: D.LazyStruct = () => ({
+  Name: 0,
+  Description: 0,
+  LocationUri: 0,
+  Parameters: 0,
+  CreateTableDefaultPermissions: D.list(i_PrincipalPermissions),
+  TargetDatabase: { CatalogId: 0, DatabaseName: 0, Region: 0 },
+  FederatedDatabase: { Identifier: 0, ConnectionName: 0, ConnectionType: 0 },
+});
+const i_EventBatchingCondition: D.LazyStruct = () => ({
+  BatchSize: 0,
+  BatchWindow: 0,
+});
+const i_ExecutionProperty: D.LazyStruct = () => ({ MaxConcurrentRuns: 0 });
+const i_GlueTable: D.LazyStruct = () => ({
+  DatabaseName: 0,
+  TableName: 0,
+  CatalogId: 0,
+  ConnectionName: 0,
+  AdditionalOptions: 0,
+});
+const i_IcebergPartitionSpec: D.LazyStruct = () => ({
+  Fields: D.list({ SourceId: 0, Transform: 0, Name: 0, FieldId: 0 }),
+  SpecId: 0,
+});
+const i_IcebergSchema: D.LazyStruct = () => ({
+  SchemaId: 0,
+  IdentifierFieldIds: 0,
+  Type: 0,
+  Fields: D.list({
+    Id: 0,
+    Name: 0,
+    Type: 0,
+    Required: 0,
+    Doc: 0,
+    InitialDefault: 0,
+    WriteDefault: 0,
+  }),
+});
+const i_IcebergSortOrder: D.LazyStruct = () => ({
+  OrderId: 0,
+  Fields: D.list({ SourceId: 0, Transform: 0, Direction: 0, NullOrder: 0 }),
+});
+const i_IntegrationConfig: D.LazyStruct = () => ({
+  RefreshInterval: 0,
+  SourceProperties: 0,
+  ContinuousSync: 0,
+});
+const i_JobCommand: D.LazyStruct = () => ({
+  Name: 0,
+  ScriptLocation: 0,
+  PythonVersion: 0,
+  Runtime: 0,
+});
+const i_LakeFormationConfiguration: D.LazyStruct = () => ({
+  UseLakeFormationCredentials: 0,
+  AccountId: 0,
+});
+const i_LineageConfiguration: D.LazyStruct = () => ({
+  CrawlerLineageSettings: 0,
+});
+const i_Location: D.LazyStruct = () => ({
+  Jdbc: D.list(i_CodeGenNodeArg),
+  S3: D.list(i_CodeGenNodeArg),
+  DynamoDB: D.list(i_CodeGenNodeArg),
+});
+const i_MetadataKeyValuePair: D.LazyStruct = () => ({
+  MetadataKey: 0,
+  MetadataValue: 0,
+});
+const i_NotificationProperty: D.LazyStruct = () => ({ NotifyDelayAfter: 0 });
+const i_PartitionIndex: D.LazyStruct = () => ({ Keys: 0, IndexName: 0 });
+const i_PartitionInput: D.LazyStruct = () => ({
+  Values: 0,
+  LastAccessTime: 0,
+  StorageDescriptor: i_StorageDescriptor,
+  Parameters: 0,
+  LastAnalyzedTime: 0,
+});
+const i_PartitionValueList: D.LazyStruct = () => ({ Values: 0 });
+const i_Predicate: D.LazyStruct = () => ({
+  Logical: 0,
+  Conditions: D.list({
+    LogicalOperator: 0,
+    JobName: 0,
+    State: 0,
+    CrawlerName: 0,
+    CrawlState: 0,
+  }),
+});
+const i_ProfileConfiguration: D.LazyStruct = () => ({
+  SessionConfiguration: D.map(i_ConfigurationObject),
+  JobConfiguration: D.map(i_ConfigurationObject),
+});
+const i_QuerySessionContext: D.LazyStruct = () => ({
+  QueryId: 0,
+  QueryStartTime: 0,
+  ClusterId: 0,
+  QueryAuthorizationId: 0,
+  AdditionalContext: 0,
+});
+const i_RecrawlPolicy: D.LazyStruct = () => ({ RecrawlBehavior: 0 });
+const i_RegistryId: D.LazyStruct = () => ({ RegistryName: 0, RegistryArn: 0 });
+const i_SchemaChangePolicy: D.LazyStruct = () => ({
+  UpdateBehavior: 0,
+  DeleteBehavior: 0,
+});
+const i_SchemaId: D.LazyStruct = () => ({
+  SchemaArn: 0,
+  SchemaName: 0,
+  RegistryName: 0,
+});
+const i_SchemaVersionNumber: D.LazyStruct = () => ({
+  LatestVersion: 0,
+  VersionNumber: 0,
+});
+const i_SearchFilterClause: D.LazyStruct = () => ({
+  AndAllFilters: D.list(i_SearchFilterClause),
+  OrAnyFilters: D.list(i_SearchFilterClause),
+  AttributeFilter: {
+    Attribute: 0,
+    Operator: 0,
+    Value: { StringValue: 0, LongValue: 0 },
+  },
+  MapFilter: { Attribute: 0, Key: 0, Value: { StringValue: 0 } },
+});
+const i_Segment: D.LazyStruct = () => ({ SegmentNumber: 0, TotalSegments: 0 });
+const i_SourceConfiguration: D.LazyStruct = () => ({
+  RequestMethod: 0,
+  RequestPath: 0,
+  RequestParameters: D.list(i_ConnectorProperty),
+  ResponseConfiguration: { ResultPath: 0, ErrorPath: 0 },
+  PaginationConfiguration: {
+    CursorConfiguration: {
+      NextPage: i_ExtractedParameter,
+      LimitParameter: i_ExtractedParameter,
+    },
+    OffsetConfiguration: {
+      OffsetParameter: i_ExtractedParameter,
+      LimitParameter: i_ExtractedParameter,
+    },
+  },
+  FilterConfiguration: {
+    FilterMode: 0,
+    OperatorMappings: 0,
+    DateTimeFormat: 0,
+    StripQuotes: 0,
+    BetweenConfiguration: i_BetweenConfiguration,
+    FilterStringConfiguration: {
+      QueryParameterName: 0,
+      QuoteStringValues: 0,
+      QuoteCharacter: 0,
+    },
+  },
+});
+const i_SourceControlDetails: D.LazyStruct = () => ({
+  Provider: 0,
+  Repository: 0,
+  Owner: 0,
+  Branch: 0,
+  Folder: 0,
+  LastCommitId: 0,
+  AuthStrategy: 0,
+  AuthToken: 0,
+});
+const i_SourceProcessingProperties: D.LazyStruct = () => ({ RoleArn: 0 });
+const i_SourceTableConfig: D.LazyStruct = () => ({
+  Fields: 0,
+  FilterPredicate: 0,
+  PrimaryKey: 0,
+  RecordUpdateField: 0,
+});
+const i_TableInput: D.LazyStruct = () => ({
+  Name: 0,
+  Description: 0,
+  Owner: 0,
+  LastAccessTime: 0,
+  LastAnalyzedTime: 0,
+  Retention: 0,
+  StorageDescriptor: i_StorageDescriptor,
+  PartitionKeys: D.list(i_Column),
+  ViewOriginalText: 0,
+  ViewExpandedText: 0,
+  TableType: 0,
+  Parameters: 0,
+  TargetTable: { CatalogId: 0, DatabaseName: 0, Name: 0, Region: 0 },
+  ViewDefinition: {
+    IsProtected: 0,
+    Definer: 0,
+    Representations: D.list({
+      Dialect: 0,
+      DialectVersion: 0,
+      ViewOriginalText: 0,
+      ValidationConnection: 0,
+      ViewExpandedText: 0,
+    }),
+    ViewVersionId: 0,
+    ViewVersionToken: 0,
+    RefreshSeconds: 0,
+    LastRefreshType: 0,
+    SubObjects: 0,
+    SubObjectVersionIds: 0,
+  },
+});
+const i_TableOptimizerConfiguration: D.LazyStruct = () => ({
+  roleArn: 0,
+  enabled: 0,
+  vpcConfiguration: { glueConnectionName: 0 },
+  compactionConfiguration: {
+    icebergConfiguration: {
+      strategy: 0,
+      minInputFiles: 0,
+      deleteFileThreshold: 0,
+    },
+  },
+  retentionConfiguration: {
+    icebergConfiguration: {
+      snapshotRetentionPeriodInDays: 0,
+      numberOfSnapshotsToRetain: 0,
+      cleanExpiredFiles: 0,
+      runRateInHours: 0,
+    },
+  },
+  orphanFileDeletionConfiguration: {
+    icebergConfiguration: {
+      orphanFileRetentionPeriodInDays: 0,
+      location: 0,
+      runRateInHours: 0,
+    },
+  },
+});
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_TargetProcessingProperties: D.LazyStruct = () => ({
+  RoleArn: 0,
+  KmsArn: 0,
+  ConnectionName: 0,
+  EventBusArn: 0,
+});
+const i_TargetTableConfig: D.LazyStruct = () => ({
+  UnnestSpec: 0,
+  PartitionSpec: D.list({ FieldName: 0, FunctionSpec: 0, ConversionSpec: 0 }),
+  TargetTableName: 0,
+});
+const i_TimestampFilter: D.LazyStruct = () => ({
+  RecordedBefore: 0,
+  RecordedAfter: 0,
+});
+const i_TransformFilterCriteria: D.LazyStruct = () => ({
+  Name: 0,
+  TransformType: 0,
+  Status: 0,
+  GlueVersion: 0,
+  CreatedBefore: 0,
+  CreatedAfter: 0,
+  LastModifiedBefore: 0,
+  LastModifiedAfter: 0,
+  Schema: D.list({ Name: 0, DataType: 0 }),
+});
+const i_TransformParameters: D.LazyStruct = () => ({
+  TransformType: 0,
+  FindMatchesParameters: {
+    PrimaryKeyColumnName: 0,
+    PrecisionRecallTradeoff: 0,
+    AccuracyCostTradeoff: 0,
+    EnforceProvidedLabels: 0,
+  },
+});
+const i_TransformSortCriteria: D.LazyStruct = () => ({
+  Column: 0,
+  SortDirection: 0,
+});
+const i_UserDefinedFunctionInput: D.LazyStruct = () => ({
+  FunctionName: 0,
+  ClassName: 0,
+  OwnerName: 0,
+  FunctionType: 0,
+  OwnerType: 0,
+  ResourceUris: D.list({ ResourceType: 0, Uri: 0 }),
 });
 const o_Blueprint: D.LazyStruct = () => ({
   CreatedOn: D.ts,
@@ -17510,11 +20118,201 @@ const o_WorkflowRun: D.LazyStruct = () => ({
   CompletedOn: D.ts,
   Graph: o_WorkflowGraph,
 });
+const i_AmazonRedshiftNodeData: D.LazyStruct = () => ({
+  AccessType: 0,
+  SourceType: 0,
+  Connection: i_Option,
+  Schema: i_Option,
+  Table: i_Option,
+  CatalogDatabase: i_Option,
+  CatalogTable: i_Option,
+  CatalogRedshiftSchema: 0,
+  CatalogRedshiftTable: 0,
+  TempDir: 0,
+  IamRole: i_Option,
+  AdvancedOptions: D.list({ Key: 0, Value: 0 }),
+  SampleQuery: 0,
+  PreAction: 0,
+  PostAction: 0,
+  Action: 0,
+  TablePrefix: 0,
+  Upsert: 0,
+  MergeAction: 0,
+  MergeWhenMatched: 0,
+  MergeWhenNotMatched: 0,
+  MergeClause: 0,
+  CrawlerConnection: 0,
+  TableSchema: D.list(i_Option),
+  StagingTable: 0,
+  SelectedColumns: D.list(i_Option),
+});
+const i_AutoDataQuality: D.LazyStruct = () => ({
+  IsEnabled: 0,
+  EvaluationContext: 0,
+});
+const i_CatalogSchemaChangePolicy: D.LazyStruct = () => ({
+  EnableUpdateCatalog: 0,
+  UpdateBehavior: 0,
+});
+const i_Column: D.LazyStruct = () => ({
+  Name: 0,
+  Type: 0,
+  Comment: 0,
+  Parameters: 0,
+});
+const i_ConfigurationObject: D.LazyStruct = () => ({
+  DefaultValue: 0,
+  AllowedValues: 0,
+  MinValue: 0,
+  MaxValue: 0,
+});
+const i_DQResultsPublishingOptions: D.LazyStruct = () => ({
+  EvaluationContext: 0,
+  ResultsS3Prefix: 0,
+  CloudWatchMetricsEnabled: 0,
+  ResultsPublishingEnabled: 0,
+});
+const i_DQStopJobOnFailureOptions: D.LazyStruct = () => ({
+  StopJobOnFailureTiming: 0,
+});
+const i_DecimalNumber: D.LazyStruct = () => ({ UnscaledValue: 0, Scale: 0 });
+const i_DirectSchemaChangePolicy: D.LazyStruct = () => ({
+  EnableUpdateCatalog: 0,
+  UpdateBehavior: 0,
+  Table: 0,
+  Database: 0,
+});
+const i_ExtractedParameter: D.LazyStruct = () => ({
+  Key: 0,
+  DefaultValue: 0,
+  PropertyLocation: 0,
+  Value: { ContentPath: 0, HeaderKey: 0 },
+});
+const i_FilterExpression: D.LazyStruct = () => ({
+  Operation: 0,
+  Negated: 0,
+  Values: D.list({ Type: 0, Value: 0 }),
+});
+const i_GlueSchema: D.LazyStruct = () => ({
+  Columns: D.list({ Name: 0, Type: 0, GlueStudioType: 0 }),
+});
 const i_KafkaStreamingSourceOptions: D.LazyStruct = () => ({
+  BootstrapServers: 0,
+  SecurityProtocol: 0,
+  ConnectionName: 0,
+  TopicName: 0,
+  Assign: 0,
+  SubscribePattern: 0,
+  Classification: 0,
+  Delimiter: 0,
+  StartingOffsets: 0,
+  EndingOffsets: 0,
+  PollTimeoutMs: 0,
+  NumRetries: 0,
+  RetryIntervalMs: 0,
+  MaxOffsetsPerTrigger: 0,
+  MinPartitions: 0,
+  IncludeHeaders: 0,
+  AddRecordTimestamp: 0,
+  EmitConsumerLagMetrics: 0,
   StartingTimestamp: D.tsAs("date-time"),
 });
 const i_KinesisStreamingSourceOptions: D.LazyStruct = () => ({
+  EndpointUrl: 0,
+  StreamName: 0,
+  Classification: 0,
+  Delimiter: 0,
+  StartingPosition: 0,
+  MaxFetchTimeInMs: 0,
+  MaxFetchRecordsPerShard: 0,
+  MaxRecordPerRead: 0,
+  AddIdleTimeBetweenReads: 0,
+  IdleTimeBetweenReadsInMs: 0,
+  DescribeShardInterval: 0,
+  NumRetries: 0,
+  RetryIntervalMs: 0,
+  MaxRetryIntervalMs: 0,
+  AvoidEmptyBatches: 0,
+  StreamArn: 0,
+  RoleArn: 0,
+  RoleSessionName: 0,
+  AddRecordTimestamp: 0,
+  EmitConsumerLagMetrics: 0,
   StartingTimestamp: D.tsAs("date-time"),
+  FanoutConsumerARN: 0,
+});
+const i_Mapping: D.LazyStruct = () => ({
+  ToKey: 0,
+  FromPath: 0,
+  FromType: 0,
+  ToType: 0,
+  Dropped: 0,
+  Children: D.list(i_Mapping),
+});
+const i_PrincipalPermissions: D.LazyStruct = () => ({
+  Principal: { DataLakePrincipalIdentifier: 0 },
+  Permissions: 0,
+});
+const i_S3DirectSourceAdditionalOptions: D.LazyStruct = () => ({
+  BoundedSize: 0,
+  BoundedFiles: 0,
+  EnableSamplePath: 0,
+  SamplePath: 0,
+});
+const i_S3SourceAdditionalOptions: D.LazyStruct = () => ({
+  BoundedSize: 0,
+  BoundedFiles: 0,
+});
+const i_SnowflakeNodeData: D.LazyStruct = () => ({
+  SourceType: 0,
+  Connection: i_Option,
+  Schema: 0,
+  Table: 0,
+  Database: 0,
+  TempDir: 0,
+  IamRole: i_Option,
+  AdditionalOptions: 0,
+  SampleQuery: 0,
+  PreAction: 0,
+  PostAction: 0,
+  Action: 0,
+  Upsert: 0,
+  MergeAction: 0,
+  MergeWhenMatched: 0,
+  MergeWhenNotMatched: 0,
+  MergeClause: 0,
+  StagingTable: 0,
+  SelectedColumns: D.list(i_Option),
+  AutoPushdown: 0,
+  TableSchema: D.list(i_Option),
+});
+const i_StorageDescriptor: D.LazyStruct = () => ({
+  Columns: D.list(i_Column),
+  Location: 0,
+  AdditionalLocations: 0,
+  InputFormat: 0,
+  OutputFormat: 0,
+  Compressed: 0,
+  NumberOfBuckets: 0,
+  SerdeInfo: { Name: 0, SerializationLibrary: 0, Parameters: 0 },
+  BucketColumns: 0,
+  SortColumns: D.list({ Column: 0, SortOrder: 0 }),
+  Parameters: 0,
+  SkewedInfo: {
+    SkewedColumnNames: 0,
+    SkewedColumnValues: 0,
+    SkewedColumnValueLocationMaps: 0,
+  },
+  StoredAsSubDirectories: 0,
+  SchemaReference: {
+    SchemaId: i_SchemaId,
+    SchemaVersionId: 0,
+    SchemaVersionNumber: 0,
+  },
+});
+const i_StreamingDataPreviewOptions: D.LazyStruct = () => ({
+  PollingTime: 0,
+  RecordPollingLimit: 0,
 });
 const o_DecimalNumber: D.LazyStruct = () => ({ UnscaledValue: D.blob });
 const o_KafkaStreamingSourceOptions: D.LazyStruct = () => ({
@@ -17529,3 +20327,4 @@ const o_WorkflowGraph: D.LazyStruct = () => ({
     CrawlerDetails: { Crawls: D.list({ StartedOn: D.ts, CompletedOn: D.ts }) },
   }),
 });
+const i_Option: D.LazyStruct = () => ({ Value: 0, Label: 0, Description: 0 });

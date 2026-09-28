@@ -1,5 +1,6 @@
 import type * as HttpClient from "effect/unstable/http/HttpClient";
 import * as API from "@distilled.cloud/core/api";
+import * as D from "@distilled.cloud/core/shape";
 import * as TE from "@distilled.cloud/core/error-class";
 import { AwsProtocol } from "../protocol.ts";
 import { awsJson1_1Protocol } from "../protocols/aws-json.ts";
@@ -1883,7 +1884,23 @@ export const createAnomalyMonitor: API.OperationMethod<
   CreateAnomalyMonitorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AnomalyMonitor: {
+        MonitorArn: 0,
+        MonitorName: 0,
+        CreationDate: 0,
+        LastUpdatedDate: 0,
+        LastEvaluatedDate: 0,
+        MonitorType: 0,
+        MonitorDimension: 0,
+        MonitorSpecification: i_Expression,
+        DimensionalValueCount: 0,
+      },
+      ResourceTags: D.list(i_ResourceTag),
+    },
+  },
   errors: [LimitExceededException, AnomalyMonitorAlreadyExists],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1906,7 +1923,22 @@ export const createAnomalySubscription: API.OperationMethod<
   CreateAnomalySubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AnomalySubscription: {
+        SubscriptionArn: 0,
+        AccountId: 0,
+        MonitorArnList: 0,
+        Subscribers: D.list(i_Subscriber),
+        Threshold: 0,
+        Frequency: 0,
+        SubscriptionName: 0,
+        ThresholdExpression: i_Expression,
+      },
+      ResourceTags: D.list(i_ResourceTag),
+    },
+  },
   errors: [
     LimitExceededException,
     UnknownMonitorException,
@@ -1930,7 +1962,18 @@ export const createCostCategoryDefinition: API.OperationMethod<
   CreateCostCategoryDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      EffectiveStart: 0,
+      RuleVersion: 0,
+      Rules: D.list(i_CostCategoryRule),
+      DefaultValue: 0,
+      SplitChargeRules: D.list(i_CostCategorySplitChargeRule),
+      ResourceTags: D.list(i_ResourceTag),
+    },
+  },
   errors: [LimitExceededException, ServiceQuotaExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1950,7 +1993,7 @@ export const deleteAnomalyMonitor: API.OperationMethod<
   DeleteAnomalyMonitorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MonitorArn: 0 } },
   errors: [LimitExceededException, UnknownMonitorException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1970,7 +2013,7 @@ export const deleteAnomalySubscription: API.OperationMethod<
   DeleteAnomalySubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SubscriptionArn: 0 } },
   errors: [LimitExceededException, UnknownSubscriptionException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1991,7 +2034,7 @@ export const deleteCostCategoryDefinition: API.OperationMethod<
   DeleteCostCategoryDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CostCategoryArn: 0 } },
   errors: [LimitExceededException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2017,7 +2060,7 @@ export const describeCostCategoryDefinition: API.OperationMethod<
   DescribeCostCategoryDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CostCategoryArn: 0, EffectiveOn: 0 } },
   errors: [LimitExceededException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2040,7 +2083,17 @@ export const getAnomalies: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Anomaly
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MonitorArn: 0,
+      DateInterval: { StartDate: 0, EndDate: 0 },
+      Feedback: 0,
+      TotalImpact: { NumericOperator: 0, StartValue: 0, EndValue: 0 },
+      NextPageToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [InvalidNextTokenException, LimitExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2069,7 +2122,10 @@ export const getAnomalyMonitors: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AnomalyMonitor
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MonitorArnList: 0, NextPageToken: 0, MaxResults: 0 },
+  },
   errors: [
     InvalidNextTokenException,
     LimitExceededException,
@@ -2102,7 +2158,15 @@ export const getAnomalySubscriptions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AnomalySubscription
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SubscriptionArnList: 0,
+      MonitorArn: 0,
+      NextPageToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     InvalidNextTokenException,
     LimitExceededException,
@@ -2133,7 +2197,10 @@ export const getApproximateUsageRecords: API.OperationMethod<
   GetApproximateUsageRecordsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Granularity: 0, Services: 0, ApproximationDimension: 0 },
+  },
   errors: [DataUnavailableException, LimitExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2155,7 +2222,7 @@ export const getCommitmentPurchaseAnalysis: API.OperationMethod<
   GetCommitmentPurchaseAnalysisError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AnalysisId: 0 } },
   errors: [
     AnalysisNotFoundException,
     DataUnavailableException,
@@ -2191,7 +2258,18 @@ export const getCostAndUsage: API.OperationMethod<
   GetCostAndUsageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TimePeriod: i_DateInterval,
+      Granularity: 0,
+      Filter: i_Expression,
+      Metrics: 0,
+      GroupBy: D.list(i_GroupDefinition),
+      BillingViewArn: 0,
+      NextPageToken: 0,
+    },
+  },
   errors: [
     BillExpirationException,
     BillingViewHealthStatusException,
@@ -2225,7 +2303,19 @@ export const getCostAndUsageComparisons: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   CostAndUsageComparison
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      BillingViewArn: 0,
+      BaselineTimePeriod: i_DateInterval,
+      ComparisonTimePeriod: i_DateInterval,
+      MetricForComparison: 0,
+      Filter: i_Expression,
+      GroupBy: D.list(i_GroupDefinition),
+      MaxResults: 0,
+      NextPageToken: 0,
+    },
+  },
   errors: [
     BillingViewHealthStatusException,
     DataUnavailableException,
@@ -2275,7 +2365,18 @@ export const getCostAndUsageWithResources: API.OperationMethod<
   GetCostAndUsageWithResourcesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TimePeriod: i_DateInterval,
+      Granularity: 0,
+      Filter: i_Expression,
+      Metrics: 0,
+      GroupBy: D.list(i_GroupDefinition),
+      BillingViewArn: 0,
+      NextPageToken: 0,
+    },
+  },
   errors: [
     BillExpirationException,
     BillingViewHealthStatusException,
@@ -2311,7 +2412,19 @@ export const getCostCategories: API.OperationMethod<
   GetCostCategoriesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SearchString: 0,
+      TimePeriod: i_DateInterval,
+      CostCategoryName: 0,
+      Filter: i_Expression,
+      SortBy: D.list(i_SortDefinition),
+      BillingViewArn: 0,
+      MaxResults: 0,
+      NextPageToken: 0,
+    },
+  },
   errors: [
     BillExpirationException,
     BillingViewHealthStatusException,
@@ -2345,7 +2458,19 @@ export const getCostComparisonDrivers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   CostComparisonDriver
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      BillingViewArn: 0,
+      BaselineTimePeriod: i_DateInterval,
+      ComparisonTimePeriod: i_DateInterval,
+      MetricForComparison: 0,
+      Filter: i_Expression,
+      GroupBy: D.list(i_GroupDefinition),
+      MaxResults: 0,
+      NextPageToken: 0,
+    },
+  },
   errors: [
     BillingViewHealthStatusException,
     DataUnavailableException,
@@ -2380,7 +2505,17 @@ export const getCostForecast: API.OperationMethod<
   GetCostForecastError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TimePeriod: i_DateInterval,
+      Metric: 0,
+      Granularity: 0,
+      Filter: i_Expression,
+      BillingViewArn: 0,
+      PredictionIntervalLevel: 0,
+    },
+  },
   errors: [
     BillingViewHealthStatusException,
     DataUnavailableException,
@@ -2411,7 +2546,20 @@ export const getDimensionValues: API.OperationMethod<
   GetDimensionValuesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SearchString: 0,
+      TimePeriod: i_DateInterval,
+      Dimension: 0,
+      Context: 0,
+      Filter: i_Expression,
+      SortBy: D.list(i_SortDefinition),
+      BillingViewArn: 0,
+      MaxResults: 0,
+      NextPageToken: 0,
+    },
+  },
   errors: [
     BillExpirationException,
     BillingViewHealthStatusException,
@@ -2472,7 +2620,19 @@ export const getReservationCoverage: API.OperationMethod<
   GetReservationCoverageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TimePeriod: i_DateInterval,
+      GroupBy: D.list(i_GroupDefinition),
+      Granularity: 0,
+      Filter: i_Expression,
+      Metrics: 0,
+      NextPageToken: 0,
+      SortBy: i_SortDefinition,
+      MaxResults: 0,
+    },
+  },
   errors: [
     DataUnavailableException,
     InvalidNextTokenException,
@@ -2515,7 +2675,21 @@ export const getReservationPurchaseRecommendation: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ReservationPurchaseRecommendation
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AccountId: 0,
+      Service: 0,
+      Filter: i_Expression,
+      AccountScope: 0,
+      LookbackPeriodInDays: 0,
+      TermInYears: 0,
+      PaymentOption: 0,
+      ServiceSpecification: { EC2Specification: { OfferingClass: 0 } },
+      PageSize: 0,
+      NextPageToken: 0,
+    },
+  },
   errors: [
     DataUnavailableException,
     InvalidNextTokenException,
@@ -2549,7 +2723,18 @@ export const getReservationUtilization: API.OperationMethod<
   GetReservationUtilizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TimePeriod: i_DateInterval,
+      GroupBy: D.list(i_GroupDefinition),
+      Granularity: 0,
+      Filter: i_Expression,
+      SortBy: i_SortDefinition,
+      NextPageToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     DataUnavailableException,
     InvalidNextTokenException,
@@ -2580,7 +2765,16 @@ export const getRightsizingRecommendation: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RightsizingRecommendation
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Filter: i_Expression,
+      Configuration: { RecommendationTarget: 0, BenefitsConsidered: 0 },
+      Service: 0,
+      PageSize: 0,
+      NextPageToken: 0,
+    },
+  },
   errors: [
     InvalidNextTokenException,
     LimitExceededException,
@@ -2611,7 +2805,7 @@ export const getSavingsPlanPurchaseRecommendationDetails: API.OperationMethod<
   GetSavingsPlanPurchaseRecommendationDetailsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RecommendationDetailId: 0 } },
   errors: [DataUnavailableException, LimitExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2648,7 +2842,19 @@ export const getSavingsPlansCoverage: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TimePeriod: i_DateInterval,
+      GroupBy: D.list(i_GroupDefinition),
+      Granularity: 0,
+      Filter: i_Expression,
+      Metrics: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SortBy: i_SortDefinition,
+    },
+  },
   errors: [
     DataUnavailableException,
     InvalidNextTokenException,
@@ -2680,7 +2886,19 @@ export const getSavingsPlansPurchaseRecommendation: API.OperationMethod<
   GetSavingsPlansPurchaseRecommendationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SavingsPlansType: 0,
+      TermInYears: 0,
+      PaymentOption: 0,
+      AccountScope: 0,
+      NextPageToken: 0,
+      PageSize: 0,
+      LookbackPeriodInDays: 0,
+      Filter: i_Expression,
+    },
+  },
   errors: [InvalidNextTokenException, LimitExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2706,7 +2924,15 @@ export const getSavingsPlansUtilization: API.OperationMethod<
   GetSavingsPlansUtilizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TimePeriod: i_DateInterval,
+      Granularity: 0,
+      Filter: i_Expression,
+      SortBy: i_SortDefinition,
+    },
+  },
   errors: [DataUnavailableException, LimitExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2737,7 +2963,17 @@ export const getSavingsPlansUtilizationDetails: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TimePeriod: i_DateInterval,
+      Filter: i_Expression,
+      DataType: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SortBy: i_SortDefinition,
+    },
+  },
   errors: [
     DataUnavailableException,
     InvalidNextTokenException,
@@ -2772,7 +3008,19 @@ export const getTags: API.OperationMethod<
   GetTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SearchString: 0,
+      TimePeriod: i_DateInterval,
+      TagKey: 0,
+      Filter: i_Expression,
+      SortBy: D.list(i_SortDefinition),
+      BillingViewArn: 0,
+      MaxResults: 0,
+      NextPageToken: 0,
+    },
+  },
   errors: [
     BillExpirationException,
     BillingViewHealthStatusException,
@@ -2804,7 +3052,17 @@ export const getUsageForecast: API.OperationMethod<
   GetUsageForecastError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TimePeriod: i_DateInterval,
+      Metric: 0,
+      Granularity: 0,
+      Filter: i_Expression,
+      BillingViewArn: 0,
+      PredictionIntervalLevel: 0,
+    },
+  },
   errors: [
     BillingViewHealthStatusException,
     DataUnavailableException,
@@ -2832,7 +3090,10 @@ export const listCommitmentPurchaseAnalyses: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AnalysisSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AnalysisStatus: 0, NextPageToken: 0, PageSize: 0, AnalysisIds: 0 },
+  },
   errors: [
     DataUnavailableException,
     InvalidNextTokenException,
@@ -2863,7 +3124,7 @@ export const listCostAllocationTagBackfillHistory: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   CostAllocationTagBackfillRequest
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [InvalidNextTokenException, LimitExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2891,7 +3152,10 @@ export const listCostAllocationTags: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   CostAllocationTag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Status: 0, TagKeys: 0, Type: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [InvalidNextTokenException, LimitExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2923,7 +3187,15 @@ export const listCostCategoryDefinitions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   CostCategoryReference
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EffectiveOn: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SupportedResourceTypes: 0,
+    },
+  },
   errors: [LimitExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2950,7 +3222,10 @@ export const listCostCategoryResourceAssociations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   CostCategoryResourceAssociation
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CostCategoryArn: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [LimitExceededException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2979,7 +3254,15 @@ export const listSavingsPlansPurchaseRecommendationGeneration: API.PaginatedOper
   Credentials | HttpClient.HttpClient,
   GenerationSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      GenerationStatus: 0,
+      RecommendationIds: 0,
+      PageSize: 0,
+      NextPageToken: 0,
+    },
+  },
   errors: [
     DataUnavailableException,
     InvalidNextTokenException,
@@ -3010,7 +3293,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [LimitExceededException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3027,7 +3310,7 @@ export const provideAnomalyFeedback: API.OperationMethod<
   ProvideAnomalyFeedbackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AnomalyId: 0, Feedback: 0 } },
   errors: [LimitExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3051,7 +3334,30 @@ export const startCommitmentPurchaseAnalysis: API.OperationMethod<
   StartCommitmentPurchaseAnalysisError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CommitmentPurchaseAnalysisConfiguration: {
+        SavingsPlansPurchaseAnalysisConfiguration: {
+          AccountScope: 0,
+          AccountId: 0,
+          AnalysisType: 0,
+          SavingsPlansToAdd: D.list({
+            PaymentOption: 0,
+            SavingsPlansType: 0,
+            Region: 0,
+            InstanceFamily: 0,
+            TermInYears: 0,
+            SavingsPlansCommitment: 0,
+            OfferingId: 0,
+          }),
+          SavingsPlansToExclude: 0,
+          LookBackTimePeriod: i_DateInterval,
+          SavingsPlansTargetCoverage: 0,
+        },
+      },
+    },
+  },
   errors: [
     DataUnavailableException,
     GenerationExistsException,
@@ -3078,7 +3384,7 @@ export const startCostAllocationTagBackfill: API.OperationMethod<
   StartCostAllocationTagBackfillError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { BackfillFrom: 0 } },
   errors: [BackfillLimitExceededException, LimitExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3106,7 +3412,7 @@ export const startSavingsPlansPurchaseRecommendationGeneration: API.OperationMet
   StartSavingsPlansPurchaseRecommendationGenerationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     DataUnavailableException,
     GenerationExistsException,
@@ -3140,7 +3446,10 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, ResourceTags: D.list(i_ResourceTag) },
+  },
   errors: [
     LimitExceededException,
     ResourceNotFoundException,
@@ -3165,7 +3474,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, ResourceTagKeys: 0 } },
   errors: [LimitExceededException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3186,7 +3495,7 @@ export const updateAnomalyMonitor: API.OperationMethod<
   UpdateAnomalyMonitorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MonitorArn: 0, MonitorName: 0 } },
   errors: [LimitExceededException, UnknownMonitorException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3211,7 +3520,18 @@ export const updateAnomalySubscription: API.OperationMethod<
   UpdateAnomalySubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SubscriptionArn: 0,
+      Threshold: 0,
+      Frequency: 0,
+      MonitorArnList: 0,
+      Subscribers: D.list(i_Subscriber),
+      SubscriptionName: 0,
+      ThresholdExpression: i_Expression,
+    },
+  },
   errors: [
     LimitExceededException,
     UnknownMonitorException,
@@ -3237,7 +3557,10 @@ export const updateCostAllocationTagsStatus: API.OperationMethod<
   UpdateCostAllocationTagsStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CostAllocationTagsStatus: D.list({ TagKey: 0, Status: 0 }) },
+  },
   errors: [LimitExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3260,7 +3583,17 @@ export const updateCostCategoryDefinition: API.OperationMethod<
   UpdateCostCategoryDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CostCategoryArn: 0,
+      EffectiveStart: 0,
+      RuleVersion: 0,
+      Rules: D.list(i_CostCategoryRule),
+      DefaultValue: 0,
+      SplitChargeRules: D.list(i_CostCategorySplitChargeRule),
+    },
+  },
   errors: [
     LimitExceededException,
     ResourceNotFoundException,
@@ -3270,3 +3603,29 @@ export const updateCostCategoryDefinition: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateCostCategoryDefinition",
 })) as any;
+
+const i_CostCategoryRule: D.LazyStruct = () => ({
+  Value: 0,
+  Rule: i_Expression,
+  InheritedValue: { DimensionName: 0, DimensionKey: 0 },
+  Type: 0,
+});
+const i_CostCategorySplitChargeRule: D.LazyStruct = () => ({
+  Source: 0,
+  Targets: 0,
+  Method: 0,
+  Parameters: D.list({ Type: 0, Values: 0 }),
+});
+const i_DateInterval: D.LazyStruct = () => ({ Start: 0, End: 0 });
+const i_Expression: D.LazyStruct = () => ({
+  Or: D.list(i_Expression),
+  And: D.list(i_Expression),
+  Not: i_Expression,
+  Dimensions: { Key: 0, Values: 0, MatchOptions: 0 },
+  Tags: { Key: 0, Values: 0, MatchOptions: 0 },
+  CostCategories: { Key: 0, Values: 0, MatchOptions: 0 },
+});
+const i_GroupDefinition: D.LazyStruct = () => ({ Type: 0, Key: 0 });
+const i_ResourceTag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_SortDefinition: D.LazyStruct = () => ({ Key: 0, SortOrder: 0 });
+const i_Subscriber: D.LazyStruct = () => ({ Address: 0, Type: 0, Status: 0 });

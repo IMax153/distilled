@@ -504,6 +504,23 @@ export const createPipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2022-01-01/osis/createPipeline",
+    input: {
+      PipelineName: 0,
+      MinUnits: 0,
+      MaxUnits: 0,
+      PipelineConfigurationBody: 0,
+      LogPublishingOptions: i_LogPublishingOptions,
+      VpcOptions: {
+        SubnetIds: 0,
+        SecurityGroupIds: 0,
+        VpcAttachmentOptions: { AttachToVpc: 0, CidrBlock: 0 },
+        VpcEndpointManagement: 0,
+      },
+      BufferOptions: i_BufferOptions,
+      EncryptionAtRestOptions: i_EncryptionAtRestOptions,
+      Tags: D.list(i_Tag),
+      PipelineRoleArn: 0,
+    },
     output: { Pipeline: o_Pipeline },
     body: true,
   },
@@ -542,6 +559,10 @@ export const createPipelineEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2022-01-01/osis/createPipelineEndpoint",
+    input: {
+      PipelineArn: 0,
+      VpcOptions: { SubnetIds: 0, SecurityGroupIds: 0 },
+    },
     body: true,
   },
   errors: [
@@ -578,6 +599,7 @@ export const deletePipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2022-01-01/osis/deletePipeline/{PipelineName}",
+    input: { PipelineName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -610,6 +632,7 @@ export const deletePipelineEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2022-01-01/osis/deletePipelineEndpoint/{EndpointId}",
+    input: { EndpointId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -642,6 +665,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /2022-01-01/osis/resourcePolicy/{ResourceArn}",
+    input: { ResourceArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -675,6 +699,7 @@ export const getPipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2022-01-01/osis/getPipeline/{PipelineName}",
+    input: { PipelineName: 0 },
     output: { Pipeline: o_Pipeline },
   },
   errors: [
@@ -711,7 +736,7 @@ export const getPipelineBlueprint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2022-01-01/osis/getPipelineBlueprint/{BlueprintName}",
-    input: { Format: D.m({ query: "format" }) },
+    input: { BlueprintName: 0, Format: D.m({ query: "format" }) },
   },
   errors: [
     AccessDeniedException,
@@ -748,6 +773,7 @@ export const getPipelineChangeProgress: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2022-01-01/osis/getPipelineChangeProgress/{PipelineName}",
+    input: { PipelineName: 0 },
     output: {
       ChangeProgressStatuses: D.list({
         StartTime: D.ts,
@@ -787,6 +813,7 @@ export const getResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /2022-01-01/osis/resourcePolicy/{ResourceArn}",
+    input: { ResourceArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -822,6 +849,7 @@ export const listPipelineBlueprints: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2022-01-01/osis/listPipelineBlueprints",
+    input: {},
   },
   errors: [
     AccessDeniedException,
@@ -1021,6 +1049,7 @@ export const putResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2022-01-01/osis/resourcePolicy/{ResourceArn}",
+    input: { ResourceArn: 0, Policy: 0 },
     body: true,
   },
   errors: [
@@ -1055,6 +1084,7 @@ export const revokePipelineEndpointConnections: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2022-01-01/osis/revokePipelineEndpointConnections",
+    input: { PipelineArn: 0, EndpointIds: 0 },
     body: true,
   },
   errors: [
@@ -1089,6 +1119,7 @@ export const startPipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2022-01-01/osis/startPipeline/{PipelineName}",
+    input: { PipelineName: 0 },
     output: { Pipeline: o_Pipeline },
   },
   errors: [
@@ -1125,6 +1156,7 @@ export const stopPipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2022-01-01/osis/stopPipeline/{PipelineName}",
+    input: { PipelineName: 0 },
     output: { Pipeline: o_Pipeline },
   },
   errors: [
@@ -1161,7 +1193,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2022-01-01/osis/tagResource",
-    input: { Arn: D.m({ query: "arn" }) },
+    input: { Arn: D.m({ query: "arn" }), Tags: D.list(i_Tag) },
     body: true,
   },
   errors: [
@@ -1197,7 +1229,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2022-01-01/osis/untagResource",
-    input: { Arn: D.m({ query: "arn" }) },
+    input: { Arn: D.m({ query: "arn" }), TagKeys: 0 },
     body: true,
   },
   errors: [
@@ -1233,6 +1265,16 @@ export const updatePipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /2022-01-01/osis/updatePipeline/{PipelineName}",
+    input: {
+      PipelineName: 0,
+      MinUnits: 0,
+      MaxUnits: 0,
+      PipelineConfigurationBody: 0,
+      LogPublishingOptions: i_LogPublishingOptions,
+      BufferOptions: i_BufferOptions,
+      EncryptionAtRestOptions: i_EncryptionAtRestOptions,
+      PipelineRoleArn: 0,
+    },
     output: { Pipeline: o_Pipeline },
     body: true,
   },
@@ -1269,6 +1311,7 @@ export const validatePipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /2022-01-01/osis/validatePipeline",
+    input: { PipelineConfigurationBody: 0 },
     body: true,
   },
   errors: [
@@ -1282,6 +1325,13 @@ export const validatePipeline: API.OperationMethod<
   operationName: "ValidatePipeline",
 })) as any;
 
+const i_BufferOptions: D.LazyStruct = () => ({ PersistentBufferEnabled: 0 });
+const i_EncryptionAtRestOptions: D.LazyStruct = () => ({ KmsKeyArn: 0 });
+const i_LogPublishingOptions: D.LazyStruct = () => ({
+  IsLoggingEnabled: 0,
+  CloudWatchLogDestination: { LogGroup: 0 },
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Pipeline: D.LazyStruct = () => ({
   CreatedAt: D.ts,
   LastUpdatedAt: D.ts,

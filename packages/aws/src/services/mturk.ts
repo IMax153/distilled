@@ -674,7 +674,10 @@ export const acceptQualificationRequest: API.OperationMethod<
   AcceptQualificationRequestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { QualificationRequestId: 0, IntegerValue: 0 },
+  },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -707,7 +710,10 @@ export const approveAssignment: API.OperationMethod<
   ApproveAssignmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AssignmentId: 0, RequesterFeedback: 0, OverrideRejection: 0 },
+  },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -739,7 +745,15 @@ export const associateQualificationWithWorker: API.OperationMethod<
   AssociateQualificationWithWorkerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      QualificationTypeId: 0,
+      WorkerId: 0,
+      IntegerValue: 0,
+      SendNotification: 0,
+    },
+  },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -772,7 +786,14 @@ export const createAdditionalAssignmentsForHIT: API.OperationMethod<
   CreateAdditionalAssignmentsForHITError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      HITId: 0,
+      NumberOfAdditionalAssignments: 0,
+      UniqueRequestToken: 0,
+    },
+  },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -802,7 +823,28 @@ export const createHIT: API.OperationMethod<
   CreateHITError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { HIT: o_HIT } },
+  descriptor: {
+    service: svc,
+    input: {
+      MaxAssignments: 0,
+      AutoApprovalDelayInSeconds: 0,
+      LifetimeInSeconds: 0,
+      AssignmentDurationInSeconds: 0,
+      Reward: 0,
+      Title: 0,
+      Keywords: 0,
+      Description: 0,
+      Question: 0,
+      RequesterAnnotation: 0,
+      QualificationRequirements: D.list(i_QualificationRequirement),
+      UniqueRequestToken: 0,
+      AssignmentReviewPolicy: i_ReviewPolicy,
+      HITReviewPolicy: i_ReviewPolicy,
+      HITLayoutId: 0,
+      HITLayoutParameters: D.list(i_HITLayoutParameter),
+    },
+    output: { HIT: o_HIT },
+  },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -822,7 +864,18 @@ export const createHITType: API.OperationMethod<
   CreateHITTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AutoApprovalDelayInSeconds: 0,
+      AssignmentDurationInSeconds: 0,
+      Reward: 0,
+      Title: 0,
+      Keywords: 0,
+      Description: 0,
+      QualificationRequirements: D.list(i_QualificationRequirement),
+    },
+  },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -853,7 +906,22 @@ export const createHITWithHITType: API.OperationMethod<
   CreateHITWithHITTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { HIT: o_HIT } },
+  descriptor: {
+    service: svc,
+    input: {
+      HITTypeId: 0,
+      MaxAssignments: 0,
+      LifetimeInSeconds: 0,
+      Question: 0,
+      RequesterAnnotation: 0,
+      UniqueRequestToken: 0,
+      AssignmentReviewPolicy: i_ReviewPolicy,
+      HITReviewPolicy: i_ReviewPolicy,
+      HITLayoutId: 0,
+      HITLayoutParameters: D.list(i_HITLayoutParameter),
+    },
+    output: { HIT: o_HIT },
+  },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -879,6 +947,18 @@ export const createQualificationType: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Name: 0,
+      Keywords: 0,
+      Description: 0,
+      QualificationTypeStatus: 0,
+      RetryDelayInSeconds: 0,
+      Test: 0,
+      AnswerKey: 0,
+      TestDurationInSeconds: 0,
+      AutoGranted: 0,
+      AutoGrantedValue: 0,
+    },
     output: { QualificationType: o_QualificationType },
   },
   errors: [RequestError, ServiceFault],
@@ -897,7 +977,7 @@ export const createWorkerBlock: API.OperationMethod<
   CreateWorkerBlockError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WorkerId: 0, Reason: 0 } },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -930,7 +1010,7 @@ export const deleteHIT: API.OperationMethod<
   DeleteHITError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { HITId: 0 } },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -966,7 +1046,7 @@ export const deleteQualificationType: API.OperationMethod<
   DeleteQualificationTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { QualificationTypeId: 0 } },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -983,7 +1063,7 @@ export const deleteWorkerBlock: API.OperationMethod<
   DeleteWorkerBlockError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WorkerId: 0, Reason: 0 } },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1007,7 +1087,10 @@ export const disassociateQualificationFromWorker: API.OperationMethod<
   DisassociateQualificationFromWorkerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { WorkerId: 0, QualificationTypeId: 0, Reason: 0 },
+  },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1026,7 +1109,7 @@ export const getAccountBalance: API.OperationMethod<
   GetAccountBalanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1045,6 +1128,7 @@ export const getAssignment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AssignmentId: 0 },
     output: { Assignment: o_Assignment, HIT: o_HIT },
   },
   errors: [RequestError, ServiceFault],
@@ -1077,7 +1161,10 @@ export const getFileUploadURL: API.OperationMethod<
   GetFileUploadURLError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AssignmentId: 0, QuestionIdentifier: 0 },
+  },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1094,7 +1181,7 @@ export const getHIT: API.OperationMethod<
   GetHITError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { HIT: o_HIT } },
+  descriptor: { service: svc, input: { HITId: 0 }, output: { HIT: o_HIT } },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1125,7 +1212,11 @@ export const getQualificationScore: API.OperationMethod<
   GetQualificationScoreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Qualification: o_Qualification } },
+  descriptor: {
+    service: svc,
+    input: { QualificationTypeId: 0, WorkerId: 0 },
+    output: { Qualification: o_Qualification },
+  },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1147,6 +1238,7 @@ export const getQualificationType: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { QualificationTypeId: 0 },
     output: { QualificationType: o_QualificationType },
   },
   errors: [RequestError, ServiceFault],
@@ -1193,7 +1285,11 @@ export const listAssignmentsForHIT: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Assignments: D.list(o_Assignment) } },
+  descriptor: {
+    service: svc,
+    input: { HITId: 0, NextToken: 0, MaxResults: 0, AssignmentStatuses: 0 },
+    output: { Assignments: D.list(o_Assignment) },
+  },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1221,6 +1317,7 @@ export const listBonusPayments: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { HITId: 0, AssignmentId: 0, NextToken: 0, MaxResults: 0 },
     output: { BonusPayments: D.list({ GrantTime: D.ts }) },
   },
   errors: [RequestError, ServiceFault],
@@ -1249,7 +1346,11 @@ export const listHITs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { HITs: D.list(o_HIT) } },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
+    output: { HITs: D.list(o_HIT) },
+  },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1278,7 +1379,11 @@ export const listHITsForQualificationType: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { HITs: D.list(o_HIT) } },
+  descriptor: {
+    service: svc,
+    input: { QualificationTypeId: 0, NextToken: 0, MaxResults: 0 },
+    output: { HITs: D.list(o_HIT) },
+  },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1311,6 +1416,7 @@ export const listQualificationRequests: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { QualificationTypeId: 0, NextToken: 0, MaxResults: 0 },
     output: { QualificationRequests: D.list({ SubmitTime: D.ts }) },
   },
   errors: [RequestError, ServiceFault],
@@ -1343,6 +1449,13 @@ export const listQualificationTypes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Query: 0,
+      MustBeRequestable: 0,
+      MustBeOwnedByCaller: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { QualificationTypes: D.list(o_QualificationType) },
   },
   errors: [RequestError, ServiceFault],
@@ -1371,7 +1484,11 @@ export const listReviewableHITs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { HITs: D.list(o_HIT) } },
+  descriptor: {
+    service: svc,
+    input: { HITTypeId: 0, Status: 0, NextToken: 0, MaxResults: 0 },
+    output: { HITs: D.list(o_HIT) },
+  },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1403,6 +1520,14 @@ export const listReviewPolicyResultsForHIT: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      HITId: 0,
+      PolicyLevels: 0,
+      RetrieveActions: 0,
+      RetrieveResults: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       AssignmentReviewReport: o_ReviewReport,
       HITReviewReport: o_ReviewReport,
@@ -1430,7 +1555,7 @@ export const listWorkerBlocks: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1459,6 +1584,7 @@ export const listWorkersWithQualificationType: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { QualificationTypeId: 0, Status: 0, NextToken: 0, MaxResults: 0 },
     output: { Qualifications: D.list(o_Qualification) },
   },
   errors: [RequestError, ServiceFault],
@@ -1489,7 +1615,10 @@ export const notifyWorkers: API.OperationMethod<
   NotifyWorkersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Subject: 0, MessageText: 0, WorkerIds: 0 },
+  },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1514,7 +1643,10 @@ export const rejectAssignment: API.OperationMethod<
   RejectAssignmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AssignmentId: 0, RequesterFeedback: 0 },
+  },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1539,7 +1671,7 @@ export const rejectQualificationRequest: API.OperationMethod<
   RejectQualificationRequestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { QualificationRequestId: 0, Reason: 0 } },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1567,7 +1699,16 @@ export const sendBonus: API.OperationMethod<
   SendBonusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      WorkerId: 0,
+      BonusAmount: 0,
+      AssignmentId: 0,
+      Reason: 0,
+      UniqueRequestToken: 0,
+    },
+  },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1591,7 +1732,10 @@ export const sendTestEventNotification: API.OperationMethod<
   SendTestEventNotificationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Notification: i_NotificationSpecification, TestEventType: 0 },
+  },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1612,7 +1756,7 @@ export const updateExpirationForHIT: API.OperationMethod<
   UpdateExpirationForHITError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { HITId: 0, ExpireAt: 0 } },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1634,7 +1778,7 @@ export const updateHITReviewStatus: API.OperationMethod<
   UpdateHITReviewStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { HITId: 0, Revert: 0 } },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1659,7 +1803,7 @@ export const updateHITTypeOfHIT: API.OperationMethod<
   UpdateHITTypeOfHITError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { HITId: 0, HITTypeId: 0 } },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1688,7 +1832,14 @@ export const updateNotificationSettings: API.OperationMethod<
   UpdateNotificationSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      HITTypeId: 0,
+      Notification: i_NotificationSpecification,
+      Active: 0,
+    },
+  },
   errors: [RequestError, ServiceFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1746,6 +1897,17 @@ export const updateQualificationType: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      QualificationTypeId: 0,
+      Description: 0,
+      QualificationTypeStatus: 0,
+      Test: 0,
+      AnswerKey: 0,
+      TestDurationInSeconds: 0,
+      RetryDelayInSeconds: 0,
+      AutoGranted: 0,
+      AutoGrantedValue: 0,
+    },
     output: { QualificationType: o_QualificationType },
   },
   errors: [RequestError, ServiceFault],
@@ -1754,6 +1916,29 @@ export const updateQualificationType: API.OperationMethod<
   operationName: "UpdateQualificationType",
 })) as any;
 
+const i_HITLayoutParameter: D.LazyStruct = () => ({ Name: 0, Value: 0 });
+const i_NotificationSpecification: D.LazyStruct = () => ({
+  Destination: 0,
+  Transport: 0,
+  Version: 0,
+  EventTypes: 0,
+});
+const i_QualificationRequirement: D.LazyStruct = () => ({
+  QualificationTypeId: 0,
+  Comparator: 0,
+  IntegerValues: 0,
+  LocaleValues: D.list({ Country: 0, Subdivision: 0 }),
+  RequiredToPreview: 0,
+  ActionsGuarded: 0,
+});
+const i_ReviewPolicy: D.LazyStruct = () => ({
+  PolicyName: 0,
+  Parameters: D.list({
+    Key: 0,
+    Values: 0,
+    MapEntries: D.list({ Key: 0, Values: 0 }),
+  }),
+});
 const o_Assignment: D.LazyStruct = () => ({
   AutoApprovalTime: D.ts,
   AcceptTime: D.ts,

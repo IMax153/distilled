@@ -1343,7 +1343,7 @@ export const batchGetNamedQuery: API.OperationMethod<
   BatchGetNamedQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NamedQueryIds: 0 } },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1369,6 +1369,7 @@ export const batchGetPreparedStatement: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { PreparedStatementNames: 0, WorkGroup: 0 },
     output: { PreparedStatements: D.list(o_PreparedStatement) },
   },
   errors: [InternalServerException, InvalidRequestException],
@@ -1397,6 +1398,7 @@ export const batchGetQueryExecution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { QueryExecutionIds: 0 },
     output: { QueryExecutions: D.list(o_QueryExecution) },
   },
   errors: [InternalServerException, InvalidRequestException],
@@ -1421,7 +1423,7 @@ export const cancelCapacityReservation: API.OperationMethod<
   CancelCapacityReservationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1442,7 +1444,10 @@ export const createCapacityReservation: API.OperationMethod<
   CreateCapacityReservationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TargetDpus: 0, Name: 0, Tags: D.list(i_Tag) },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1478,7 +1483,16 @@ export const createDataCatalog: API.OperationMethod<
   CreateDataCatalogError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Type: 0,
+      Description: 0,
+      Parameters: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1501,7 +1515,14 @@ export const createNamedQuery: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Description: 0,
+      Database: 0,
+      QueryString: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      WorkGroup: 0,
+    },
   },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
@@ -1525,7 +1546,10 @@ export const createNotebook: API.OperationMethod<
   CreateNotebookError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { WorkGroup: 0, Name: 0, ClientRequestToken: 0 },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -1549,7 +1573,15 @@ export const createPreparedStatement: API.OperationMethod<
   CreatePreparedStatementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      StatementName: 0,
+      WorkGroup: 0,
+      QueryStatement: 0,
+      Description: 0,
+    },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1574,7 +1606,7 @@ export const createPresignedNotebookUrl: API.OperationMethod<
   CreatePresignedNotebookUrlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SessionId: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -1599,7 +1631,39 @@ export const createWorkGroup: API.OperationMethod<
   CreateWorkGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Configuration: {
+        ResultConfiguration: i_ResultConfiguration,
+        ManagedQueryResultsConfiguration: {
+          Enabled: 0,
+          EncryptionConfiguration: i_ManagedQueryResultsEncryptionConfiguration,
+        },
+        EnforceWorkGroupConfiguration: 0,
+        PublishCloudWatchMetricsEnabled: 0,
+        BytesScannedCutoffPerQuery: 0,
+        RequesterPaysEnabled: 0,
+        EngineVersion: i_EngineVersion,
+        AdditionalConfiguration: 0,
+        ExecutionRole: 0,
+        MonitoringConfiguration: i_MonitoringConfiguration,
+        EngineConfiguration: i_EngineConfiguration,
+        CustomerContentEncryptionConfiguration:
+          i_CustomerContentEncryptionConfiguration,
+        EnableMinimumEncryptionConfiguration: 0,
+        IdentityCenterConfiguration: {
+          EnableIdentityCenter: 0,
+          IdentityCenterInstanceArn: 0,
+        },
+        QueryResultsS3AccessGrantsConfiguration:
+          i_QueryResultsS3AccessGrantsConfiguration,
+      },
+      Description: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1623,7 +1687,7 @@ export const deleteCapacityReservation: API.OperationMethod<
   DeleteCapacityReservationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1644,7 +1708,7 @@ export const deleteDataCatalog: API.OperationMethod<
   DeleteDataCatalogError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, DeleteCatalogOnly: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -1698,7 +1762,7 @@ export const deleteNotebook: API.OperationMethod<
   DeleteNotebookError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NotebookId: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -1725,7 +1789,7 @@ export const deletePreparedStatement: API.OperationMethod<
   DeletePreparedStatementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { StatementName: 0, WorkGroup: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -1751,7 +1815,10 @@ export const deleteWorkGroup: API.OperationMethod<
   DeleteWorkGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { WorkGroup: 0, RecursiveDeleteOption: 0 },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1774,6 +1841,7 @@ export const exportNotebook: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { NotebookId: 0 },
     output: { NotebookMetadata: o_NotebookMetadata },
   },
   errors: [
@@ -1800,7 +1868,11 @@ export const getCalculationExecution: API.OperationMethod<
   GetCalculationExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Status: o_CalculationStatus } },
+  descriptor: {
+    service: svc,
+    input: { CalculationExecutionId: 0 },
+    output: { Status: o_CalculationStatus },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -1825,7 +1897,7 @@ export const getCalculationExecutionCode: API.OperationMethod<
   GetCalculationExecutionCodeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CalculationExecutionId: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -1850,7 +1922,11 @@ export const getCalculationExecutionStatus: API.OperationMethod<
   GetCalculationExecutionStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Status: o_CalculationStatus } },
+  descriptor: {
+    service: svc,
+    input: { CalculationExecutionId: 0 },
+    output: { Status: o_CalculationStatus },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -1875,7 +1951,7 @@ export const getCapacityAssignmentConfiguration: API.OperationMethod<
   GetCapacityAssignmentConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CapacityReservationName: 0 } },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1897,6 +1973,7 @@ export const getCapacityReservation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0 },
     output: { CapacityReservation: o_CapacityReservation },
   },
   errors: [InternalServerException, InvalidRequestException],
@@ -1919,7 +1996,10 @@ export const getDatabase: API.OperationMethod<
   GetDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CatalogName: 0, DatabaseName: 0, WorkGroup: 0 },
+  },
   errors: [InternalServerException, InvalidRequestException, MetadataException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1940,7 +2020,7 @@ export const getDataCatalog: API.OperationMethod<
   GetDataCatalogError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0, WorkGroup: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -1966,7 +2046,7 @@ export const getNamedQuery: API.OperationMethod<
   GetNamedQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NamedQueryId: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -1993,6 +2073,7 @@ export const getNotebookMetadata: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { NotebookId: 0 },
     output: { NotebookMetadata: o_NotebookMetadata },
   },
   errors: [
@@ -2023,6 +2104,7 @@ export const getPreparedStatement: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { StatementName: 0, WorkGroup: 0 },
     output: { PreparedStatement: o_PreparedStatement },
   },
   errors: [
@@ -2051,7 +2133,11 @@ export const getQueryExecution: API.OperationMethod<
   GetQueryExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { QueryExecution: o_QueryExecution } },
+  descriptor: {
+    service: svc,
+    input: { QueryExecutionId: 0 },
+    output: { QueryExecution: o_QueryExecution },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2088,7 +2174,15 @@ export const getQueryResults: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      QueryExecutionId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      QueryResultType: 0,
+    },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2123,7 +2217,7 @@ export const getQueryRuntimeStatistics: API.OperationMethod<
   GetQueryRuntimeStatisticsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { QueryExecutionId: 0 } },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2144,7 +2238,7 @@ export const getResourceDashboard: API.OperationMethod<
   GetResourceDashboardError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2170,7 +2264,11 @@ export const getSession: API.OperationMethod<
   GetSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Status: o_SessionStatus } },
+  descriptor: {
+    service: svc,
+    input: { SessionId: 0 },
+    output: { Status: o_SessionStatus },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2195,7 +2293,11 @@ export const getSessionEndpoint: API.OperationMethod<
   GetSessionEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AuthTokenExpirationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { SessionId: 0 },
+    output: { AuthTokenExpirationTime: D.ts },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2220,7 +2322,11 @@ export const getSessionStatus: API.OperationMethod<
   GetSessionStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Status: o_SessionStatus } },
+  descriptor: {
+    service: svc,
+    input: { SessionId: 0 },
+    output: { Status: o_SessionStatus },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2245,7 +2351,11 @@ export const getTableMetadata: API.OperationMethod<
   GetTableMetadataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { TableMetadata: o_TableMetadata } },
+  descriptor: {
+    service: svc,
+    input: { CatalogName: 0, DatabaseName: 0, TableName: 0, WorkGroup: 0 },
+    output: { TableMetadata: o_TableMetadata },
+  },
   errors: [InternalServerException, InvalidRequestException, MetadataException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2266,7 +2376,11 @@ export const getWorkGroup: API.OperationMethod<
   GetWorkGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { WorkGroup: { CreationTime: D.ts } } },
+  descriptor: {
+    service: svc,
+    input: { WorkGroup: 0 },
+    output: { WorkGroup: { CreationTime: D.ts } },
+  },
   errors: [InternalServerException, InvalidRequestException, WorkGroupNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2292,7 +2406,17 @@ export const importNotebook: API.OperationMethod<
   ImportNotebookError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      WorkGroup: 0,
+      Name: 0,
+      Payload: 0,
+      Type: 0,
+      NotebookS3LocationUri: 0,
+      ClientRequestToken: 0,
+    },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2319,7 +2443,7 @@ export const listApplicationDPUSizes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2353,6 +2477,7 @@ export const listCalculationExecutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { SessionId: 0, StateFilter: 0, MaxResults: 0, NextToken: 0 },
     output: { Calculations: D.list({ Status: o_CalculationStatus }) },
   },
   errors: [
@@ -2386,6 +2511,7 @@ export const listCapacityReservations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: { CapacityReservations: D.list(o_CapacityReservation) },
   },
   errors: [InternalServerException, InvalidRequestException],
@@ -2414,7 +2540,10 @@ export const listDatabases: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Database
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CatalogName: 0, NextToken: 0, MaxResults: 0, WorkGroup: 0 },
+  },
   errors: [InternalServerException, InvalidRequestException, MetadataException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2444,7 +2573,10 @@ export const listDataCatalogs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DataCatalogSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0, MaxResults: 0, WorkGroup: 0 },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2472,7 +2604,7 @@ export const listEngineVersions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2501,7 +2633,15 @@ export const listExecutors: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SessionId: 0,
+      ExecutorStateFilter: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2533,7 +2673,10 @@ export const listNamedQueries: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0, MaxResults: 0, WorkGroup: 0 },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2561,6 +2704,7 @@ export const listNotebookMetadata: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Filters: { Name: 0 }, NextToken: 0, MaxResults: 0, WorkGroup: 0 },
     output: { NotebookMetadataList: D.list(o_NotebookMetadata) },
   },
   errors: [
@@ -2592,6 +2736,7 @@ export const listNotebookSessions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { NotebookId: 0, MaxResults: 0, NextToken: 0 },
     output: { NotebookSessionsList: D.list({ CreationTime: D.ts }) },
   },
   errors: [
@@ -2620,6 +2765,7 @@ export const listPreparedStatements: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { WorkGroup: 0, NextToken: 0, MaxResults: 0 },
     output: { PreparedStatements: D.list({ LastModifiedTime: D.ts }) },
   },
   errors: [InternalServerException, InvalidRequestException],
@@ -2650,7 +2796,10 @@ export const listQueryExecutions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0, MaxResults: 0, WorkGroup: 0 },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2682,6 +2831,7 @@ export const listSessions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { WorkGroup: 0, StateFilter: 0, MaxResults: 0, NextToken: 0 },
     output: { Sessions: D.list({ Status: o_SessionStatus }) },
   },
   errors: [
@@ -2716,6 +2866,14 @@ export const listTableMetadata: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CatalogName: 0,
+      DatabaseName: 0,
+      Expression: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      WorkGroup: 0,
+    },
     output: { TableMetadataList: D.list(o_TableMetadata) },
   },
   errors: [InternalServerException, InvalidRequestException, MetadataException],
@@ -2745,7 +2903,10 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Tag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceARN: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2778,6 +2939,7 @@ export const listWorkGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: { WorkGroups: D.list({ CreationTime: D.ts }) },
   },
   errors: [InternalServerException, InvalidRequestException],
@@ -2806,7 +2968,13 @@ export const putCapacityAssignmentConfiguration: API.OperationMethod<
   PutCapacityAssignmentConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CapacityReservationName: 0,
+      CapacityAssignments: D.list({ WorkGroupNames: 0 }),
+    },
+  },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2833,7 +3001,16 @@ export const startCalculationExecution: API.OperationMethod<
   StartCalculationExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SessionId: 0,
+      Description: 0,
+      CalculationConfiguration: { CodeBlock: 0 },
+      CodeBlock: 0,
+      ClientRequestToken: 0,
+    },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2865,7 +3042,18 @@ export const startQueryExecution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      QueryString: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      QueryExecutionContext: { Database: 0, Catalog: 0 },
+      ResultConfiguration: i_ResultConfiguration,
+      WorkGroup: 0,
+      ExecutionParameters: 0,
+      ResultReuseConfiguration: {
+        ResultReuseByAgeConfiguration: { Enabled: 0, MaxAgeInMinutes: 0 },
+      },
+      EngineConfiguration: i_EngineConfiguration,
+    },
   },
   errors: [
     InternalServerException,
@@ -2894,7 +3082,21 @@ export const startSession: API.OperationMethod<
   StartSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Description: 0,
+      WorkGroup: 0,
+      EngineConfiguration: i_EngineConfiguration,
+      ExecutionRole: 0,
+      MonitoringConfiguration: i_MonitoringConfiguration,
+      NotebookVersion: 0,
+      SessionIdleTimeoutInMinutes: 0,
+      ClientRequestToken: 0,
+      Tags: D.list(i_Tag),
+      CopyWorkGroupTags: 0,
+    },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2929,7 +3131,7 @@ export const stopCalculationExecution: API.OperationMethod<
   StopCalculationExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CalculationExecutionId: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2988,7 +3190,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -3017,7 +3219,7 @@ export const terminateSession: API.OperationMethod<
   TerminateSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SessionId: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -3042,7 +3244,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -3067,7 +3269,7 @@ export const updateCapacityReservation: API.OperationMethod<
   UpdateCapacityReservationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TargetDpus: 0, Name: 0 } },
   errors: [InternalServerException, InvalidRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3088,7 +3290,10 @@ export const updateDataCatalog: API.OperationMethod<
   UpdateDataCatalogError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Name: 0, Type: 0, Description: 0, Parameters: 0 },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -3114,7 +3319,10 @@ export const updateNamedQuery: API.OperationMethod<
   UpdateNamedQueryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NamedQueryId: 0, Name: 0, Description: 0, QueryString: 0 },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -3139,7 +3347,16 @@ export const updateNotebook: API.OperationMethod<
   UpdateNotebookError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      NotebookId: 0,
+      Payload: 0,
+      Type: 0,
+      SessionId: 0,
+      ClientRequestToken: 0,
+    },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -3164,7 +3381,10 @@ export const updateNotebookMetadata: API.OperationMethod<
   UpdateNotebookMetadataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NotebookId: 0, ClientRequestToken: 0, Name: 0 },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -3189,7 +3409,15 @@ export const updatePreparedStatement: API.OperationMethod<
   UpdatePreparedStatementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      StatementName: 0,
+      WorkGroup: 0,
+      QueryStatement: 0,
+      Description: 0,
+    },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -3215,13 +3443,98 @@ export const updateWorkGroup: API.OperationMethod<
   UpdateWorkGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      WorkGroup: 0,
+      Description: 0,
+      ConfigurationUpdates: {
+        EnforceWorkGroupConfiguration: 0,
+        ResultConfigurationUpdates: {
+          OutputLocation: 0,
+          RemoveOutputLocation: 0,
+          EncryptionConfiguration: i_EncryptionConfiguration,
+          RemoveEncryptionConfiguration: 0,
+          ExpectedBucketOwner: 0,
+          RemoveExpectedBucketOwner: 0,
+          AclConfiguration: i_AclConfiguration,
+          RemoveAclConfiguration: 0,
+        },
+        ManagedQueryResultsConfigurationUpdates: {
+          Enabled: 0,
+          EncryptionConfiguration: i_ManagedQueryResultsEncryptionConfiguration,
+          RemoveEncryptionConfiguration: 0,
+        },
+        PublishCloudWatchMetricsEnabled: 0,
+        BytesScannedCutoffPerQuery: 0,
+        RemoveBytesScannedCutoffPerQuery: 0,
+        RequesterPaysEnabled: 0,
+        EngineVersion: i_EngineVersion,
+        RemoveCustomerContentEncryptionConfiguration: 0,
+        AdditionalConfiguration: 0,
+        ExecutionRole: 0,
+        CustomerContentEncryptionConfiguration:
+          i_CustomerContentEncryptionConfiguration,
+        EnableMinimumEncryptionConfiguration: 0,
+        QueryResultsS3AccessGrantsConfiguration:
+          i_QueryResultsS3AccessGrantsConfiguration,
+        MonitoringConfiguration: i_MonitoringConfiguration,
+        EngineConfiguration: i_EngineConfiguration,
+      },
+      State: 0,
+    },
+  },
   errors: [InternalServerException, InvalidRequestException, WorkGroupNotFound],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "UpdateWorkGroup",
 })) as any;
 
+const i_AclConfiguration: D.LazyStruct = () => ({ S3AclOption: 0 });
+const i_CustomerContentEncryptionConfiguration: D.LazyStruct = () => ({
+  KmsKey: 0,
+});
+const i_EncryptionConfiguration: D.LazyStruct = () => ({
+  EncryptionOption: 0,
+  KmsKey: 0,
+});
+const i_EngineConfiguration: D.LazyStruct = () => ({
+  CoordinatorDpuSize: 0,
+  MaxConcurrentDpus: 0,
+  DefaultExecutorDpuSize: 0,
+  AdditionalConfigs: 0,
+  SparkProperties: 0,
+  Classifications: D.list({ Name: 0, Properties: 0 }),
+});
+const i_EngineVersion: D.LazyStruct = () => ({
+  SelectedEngineVersion: 0,
+  EffectiveEngineVersion: 0,
+});
+const i_ManagedQueryResultsEncryptionConfiguration: D.LazyStruct = () => ({
+  KmsKey: 0,
+});
+const i_MonitoringConfiguration: D.LazyStruct = () => ({
+  CloudWatchLoggingConfiguration: {
+    Enabled: 0,
+    LogGroup: 0,
+    LogStreamNamePrefix: 0,
+    LogTypes: 0,
+  },
+  ManagedLoggingConfiguration: { Enabled: 0, KmsKey: 0 },
+  S3LoggingConfiguration: { Enabled: 0, KmsKey: 0, LogLocation: 0 },
+});
+const i_QueryResultsS3AccessGrantsConfiguration: D.LazyStruct = () => ({
+  EnableS3AccessGrants: 0,
+  CreateUserLevelPrefix: 0,
+  AuthenticationType: 0,
+});
+const i_ResultConfiguration: D.LazyStruct = () => ({
+  OutputLocation: 0,
+  EncryptionConfiguration: i_EncryptionConfiguration,
+  ExpectedBucketOwner: 0,
+  AclConfiguration: i_AclConfiguration,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_CalculationStatus: D.LazyStruct = () => ({
   SubmissionDateTime: D.ts,
   CompletionDateTime: D.ts,

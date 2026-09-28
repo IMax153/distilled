@@ -984,8 +984,26 @@ export const createComponent: API.OperationMethod<
     service: svc,
     http: "POST /app/{appId}/environment/{environmentName}/components",
     input: {
+      appId: 0,
+      environmentName: 0,
       clientToken: D.m({ query: "clientToken", idempotency: true }),
-      componentToCreate: D.m({ payload: true }),
+      componentToCreate: D.m({
+        payload: true,
+        shape: {
+          name: 0,
+          sourceId: 0,
+          componentType: 0,
+          properties: D.map(i_ComponentProperty),
+          children: D.list(i_ComponentChild),
+          variants: D.list(i_ComponentVariant),
+          overrides: 0,
+          bindingProperties: D.map(i_ComponentBindingPropertiesValue),
+          collectionProperties: D.map(i_ComponentDataConfiguration),
+          tags: 0,
+          events: D.map(i_ComponentEvent),
+          schemaVersion: 0,
+        },
+      }),
     },
     output: { entity: D.m({ payload: true, shape: o_Component }) },
   },
@@ -1019,8 +1037,24 @@ export const createForm: API.OperationMethod<
     service: svc,
     http: "POST /app/{appId}/environment/{environmentName}/forms",
     input: {
+      appId: 0,
+      environmentName: 0,
       clientToken: D.m({ query: "clientToken", idempotency: true }),
-      formToCreate: D.m({ payload: true }),
+      formToCreate: D.m({
+        payload: true,
+        shape: {
+          name: 0,
+          dataType: i_FormDataTypeConfig,
+          formActionType: 0,
+          fields: D.map(i_FieldConfig),
+          style: i_FormStyle,
+          sectionalElements: D.map(i_SectionalElement),
+          schemaVersion: 0,
+          cta: i_FormCTA,
+          tags: 0,
+          labelDecorator: 0,
+        },
+      }),
     },
     output: { entity: D.m({ payload: true }) },
   },
@@ -1054,8 +1088,18 @@ export const createTheme: API.OperationMethod<
     service: svc,
     http: "POST /app/{appId}/environment/{environmentName}/themes",
     input: {
+      appId: 0,
+      environmentName: 0,
       clientToken: D.m({ query: "clientToken", idempotency: true }),
-      themeToCreate: D.m({ payload: true }),
+      themeToCreate: D.m({
+        payload: true,
+        shape: {
+          name: 0,
+          values: D.list(i_ThemeValues),
+          overrides: D.list(i_ThemeValues),
+          tags: 0,
+        },
+      }),
     },
     output: { entity: D.m({ payload: true, shape: o_Theme }) },
   },
@@ -1087,6 +1131,7 @@ export const deleteComponent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /app/{appId}/environment/{environmentName}/components/{id}",
+    input: { appId: 0, environmentName: 0, id: 0 },
   },
   errors: [
     InternalServerException,
@@ -1115,6 +1160,7 @@ export const deleteForm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /app/{appId}/environment/{environmentName}/forms/{id}",
+    input: { appId: 0, environmentName: 0, id: 0 },
   },
   errors: [
     InternalServerException,
@@ -1143,6 +1189,7 @@ export const deleteTheme: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /app/{appId}/environment/{environmentName}/themes/{id}",
+    input: { appId: 0, environmentName: 0, id: 0 },
   },
   errors: [
     InternalServerException,
@@ -1171,7 +1218,13 @@ export const exchangeCodeForToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tokens/{provider}",
-    input: { request: D.m({ payload: true }) },
+    input: {
+      provider: 0,
+      request: D.m({
+        payload: true,
+        shape: { code: 0, redirectUri: 0, clientId: 0 },
+      }),
+    },
     output: { accessToken: D.secret, refreshToken: D.secret },
   },
   errors: [InvalidParameterException],
@@ -1197,7 +1250,11 @@ export const exportComponents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "GET /export/app/{appId}/environment/{environmentName}/components",
-    input: { nextToken: D.m({ query: "nextToken" }) },
+    input: {
+      appId: 0,
+      environmentName: 0,
+      nextToken: D.m({ query: "nextToken" }),
+    },
     output: { entities: D.list(o_Component) },
   },
   errors: [InternalServerException, InvalidParameterException],
@@ -1228,7 +1285,11 @@ export const exportForms: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "GET /export/app/{appId}/environment/{environmentName}/forms",
-    input: { nextToken: D.m({ query: "nextToken" }) },
+    input: {
+      appId: 0,
+      environmentName: 0,
+      nextToken: D.m({ query: "nextToken" }),
+    },
   },
   errors: [InternalServerException, InvalidParameterException],
   protocol: AwsProtocol,
@@ -1258,7 +1319,11 @@ export const exportThemes: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "GET /export/app/{appId}/environment/{environmentName}/themes",
-    input: { nextToken: D.m({ query: "nextToken" }) },
+    input: {
+      appId: 0,
+      environmentName: 0,
+      nextToken: D.m({ query: "nextToken" }),
+    },
     output: { entities: D.list(o_Theme) },
   },
   errors: [InternalServerException, InvalidParameterException],
@@ -1290,6 +1355,7 @@ export const getCodegenJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /app/{appId}/environment/{environmentName}/codegen-jobs/{id}",
+    input: { appId: 0, environmentName: 0, id: 0 },
     output: { job: D.m({ payload: true, shape: o_CodegenJob }) },
   },
   errors: [
@@ -1320,6 +1386,7 @@ export const getComponent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /app/{appId}/environment/{environmentName}/components/{id}",
+    input: { appId: 0, environmentName: 0, id: 0 },
     output: { component: D.m({ payload: true, shape: o_Component }) },
   },
   errors: [
@@ -1349,6 +1416,7 @@ export const getForm: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /app/{appId}/environment/{environmentName}/forms/{id}",
+    input: { appId: 0, environmentName: 0, id: 0 },
     output: { form: D.m({ payload: true }) },
   },
   errors: [
@@ -1377,6 +1445,7 @@ export const getMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /app/{appId}/environment/{environmentName}/metadata",
+    input: { appId: 0, environmentName: 0 },
   },
   errors: [InvalidParameterException, UnauthorizedException],
   protocol: AwsProtocol,
@@ -1401,6 +1470,7 @@ export const getTheme: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /app/{appId}/environment/{environmentName}/themes/{id}",
+    input: { appId: 0, environmentName: 0, id: 0 },
     output: { theme: D.m({ payload: true, shape: o_Theme }) },
   },
   errors: [
@@ -1432,6 +1502,8 @@ export const listCodegenJobs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /app/{appId}/environment/{environmentName}/codegen-jobs",
     input: {
+      appId: 0,
+      environmentName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1472,6 +1544,8 @@ export const listComponents: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /app/{appId}/environment/{environmentName}/components",
     input: {
+      appId: 0,
+      environmentName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1506,6 +1580,8 @@ export const listForms: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /app/{appId}/environment/{environmentName}/forms",
     input: {
+      appId: 0,
+      environmentName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1538,7 +1614,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     InvalidParameterException,
@@ -1570,6 +1650,8 @@ export const listThemes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /app/{appId}/environment/{environmentName}/themes",
     input: {
+      appId: 0,
+      environmentName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1602,7 +1684,12 @@ export const putMetadataFlag: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /app/{appId}/environment/{environmentName}/metadata/features/{featureName}",
-    input: { body: D.m({ payload: true }) },
+    input: {
+      appId: 0,
+      environmentName: 0,
+      featureName: 0,
+      body: D.m({ payload: true, shape: { newValue: 0 } }),
+    },
   },
   errors: [InvalidParameterException, UnauthorizedException],
   protocol: AwsProtocol,
@@ -1625,7 +1712,13 @@ export const refreshToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tokens/{provider}/refresh",
-    input: { refreshTokenBody: D.m({ payload: true }) },
+    input: {
+      provider: 0,
+      refreshTokenBody: D.m({
+        payload: true,
+        shape: { token: 0, clientId: 0 },
+      }),
+    },
     output: { accessToken: D.secret },
   },
   errors: [InvalidParameterException],
@@ -1652,8 +1745,48 @@ export const startCodegenJob: API.OperationMethod<
     service: svc,
     http: "POST /app/{appId}/environment/{environmentName}/codegen-jobs",
     input: {
+      appId: 0,
+      environmentName: 0,
       clientToken: D.m({ query: "clientToken", idempotency: true }),
-      codegenJobToCreate: D.m({ payload: true }),
+      codegenJobToCreate: D.m({
+        payload: true,
+        shape: {
+          renderConfig: {
+            react: {
+              module: 0,
+              target: 0,
+              script: 0,
+              renderTypeDeclarations: 0,
+              inlineSourceMap: 0,
+              apiConfiguration: {
+                graphQLConfig: {
+                  typesFilePath: 0,
+                  queriesFilePath: 0,
+                  mutationsFilePath: 0,
+                  subscriptionsFilePath: 0,
+                  fragmentsFilePath: 0,
+                },
+                dataStoreConfig: {},
+                noApiConfig: {},
+              },
+              dependencies: 0,
+            },
+          },
+          genericDataSchema: {
+            dataSourceType: 0,
+            models: D.map({
+              fields: D.map(i_CodegenGenericDataField),
+              isJoinTable: 0,
+              primaryKeys: 0,
+            }),
+            enums: D.map({ values: 0 }),
+            nonModels: D.map({ fields: D.map(i_CodegenGenericDataField) }),
+          },
+          autoGenerateForms: 0,
+          features: { isRelationshipSupported: 0, isNonModelSupported: 0 },
+          tags: 0,
+        },
+      }),
     },
     output: { entity: D.m({ payload: true, shape: o_CodegenJob }) },
   },
@@ -1683,7 +1816,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     InvalidParameterException,
@@ -1715,7 +1853,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -1747,8 +1885,27 @@ export const updateComponent: API.OperationMethod<
     service: svc,
     http: "PATCH /app/{appId}/environment/{environmentName}/components/{id}",
     input: {
+      appId: 0,
+      environmentName: 0,
+      id: 0,
       clientToken: D.m({ query: "clientToken", idempotency: true }),
-      updatedComponent: D.m({ payload: true }),
+      updatedComponent: D.m({
+        payload: true,
+        shape: {
+          id: 0,
+          name: 0,
+          sourceId: 0,
+          componentType: 0,
+          properties: D.map(i_ComponentProperty),
+          children: D.list(i_ComponentChild),
+          variants: D.list(i_ComponentVariant),
+          overrides: 0,
+          bindingProperties: D.map(i_ComponentBindingPropertiesValue),
+          collectionProperties: D.map(i_ComponentDataConfiguration),
+          events: D.map(i_ComponentEvent),
+          schemaVersion: 0,
+        },
+      }),
     },
     output: { entity: D.m({ payload: true, shape: o_Component }) },
   },
@@ -1780,8 +1937,24 @@ export const updateForm: API.OperationMethod<
     service: svc,
     http: "PATCH /app/{appId}/environment/{environmentName}/forms/{id}",
     input: {
+      appId: 0,
+      environmentName: 0,
+      id: 0,
       clientToken: D.m({ query: "clientToken", idempotency: true }),
-      updatedForm: D.m({ payload: true }),
+      updatedForm: D.m({
+        payload: true,
+        shape: {
+          name: 0,
+          dataType: i_FormDataTypeConfig,
+          formActionType: 0,
+          fields: D.map(i_FieldConfig),
+          style: i_FormStyle,
+          sectionalElements: D.map(i_SectionalElement),
+          schemaVersion: 0,
+          cta: i_FormCTA,
+          labelDecorator: 0,
+        },
+      }),
     },
     output: { entity: D.m({ payload: true }) },
   },
@@ -1813,8 +1986,19 @@ export const updateTheme: API.OperationMethod<
     service: svc,
     http: "PATCH /app/{appId}/environment/{environmentName}/themes/{id}",
     input: {
+      appId: 0,
+      environmentName: 0,
+      id: 0,
       clientToken: D.m({ query: "clientToken", idempotency: true }),
-      updatedTheme: D.m({ payload: true }),
+      updatedTheme: D.m({
+        payload: true,
+        shape: {
+          id: 0,
+          name: 0,
+          values: D.list(i_ThemeValues),
+          overrides: D.list(i_ThemeValues),
+        },
+      }),
     },
     output: { entity: D.m({ payload: true, shape: o_Theme }) },
   },
@@ -1828,9 +2012,196 @@ export const updateTheme: API.OperationMethod<
   operationName: "UpdateTheme",
 })) as any;
 
+const i_CodegenGenericDataField: D.LazyStruct = () => ({
+  dataType: 0,
+  dataTypeValue: 0,
+  required: 0,
+  readOnly: 0,
+  isArray: 0,
+  relationship: {
+    type: 0,
+    relatedModelName: 0,
+    relatedModelFields: 0,
+    canUnlinkAssociatedModel: 0,
+    relatedJoinFieldName: 0,
+    relatedJoinTableName: 0,
+    belongsToFieldOnRelatedModel: 0,
+    associatedFields: 0,
+    isHasManyIndex: 0,
+  },
+});
+const i_ComponentBindingPropertiesValue: D.LazyStruct = () => ({
+  type: 0,
+  bindingProperties: {
+    model: 0,
+    field: 0,
+    predicates: D.list(i_Predicate),
+    userAttribute: 0,
+    bucket: 0,
+    key: 0,
+    defaultValue: 0,
+    slotName: 0,
+  },
+  defaultValue: 0,
+});
+const i_ComponentChild: D.LazyStruct = () => ({
+  componentType: 0,
+  name: 0,
+  properties: D.map(i_ComponentProperty),
+  children: D.list(i_ComponentChild),
+  events: D.map(i_ComponentEvent),
+  sourceId: 0,
+});
+const i_ComponentDataConfiguration: D.LazyStruct = () => ({
+  model: 0,
+  sort: D.list({ field: 0, direction: 0 }),
+  predicate: i_Predicate,
+  identifiers: 0,
+});
+const i_ComponentEvent: D.LazyStruct = () => ({
+  action: 0,
+  parameters: {
+    type: i_ComponentProperty,
+    url: i_ComponentProperty,
+    anchor: i_ComponentProperty,
+    target: i_ComponentProperty,
+    global: i_ComponentProperty,
+    model: 0,
+    id: i_ComponentProperty,
+    fields: D.map(i_ComponentProperty),
+    state: { componentName: 0, property: 0, set: i_ComponentProperty },
+  },
+  bindingEvent: 0,
+});
+const i_ComponentProperty: D.LazyStruct = () => ({
+  value: 0,
+  bindingProperties: i_ComponentPropertyBindingProperties,
+  collectionBindingProperties: i_ComponentPropertyBindingProperties,
+  defaultValue: 0,
+  model: 0,
+  bindings: D.map({ element: 0, property: 0 }),
+  event: 0,
+  userAttribute: 0,
+  concat: D.list(i_ComponentProperty),
+  condition: {
+    property: 0,
+    field: 0,
+    operator: 0,
+    operand: 0,
+    then: i_ComponentProperty,
+    else: i_ComponentProperty,
+    operandType: 0,
+  },
+  configured: 0,
+  type: 0,
+  importedValue: 0,
+  componentName: 0,
+  property: 0,
+});
+const i_ComponentVariant: D.LazyStruct = () => ({
+  variantValues: 0,
+  overrides: 0,
+});
+const i_FieldConfig: D.LazyStruct = () => ({
+  label: 0,
+  position: i_FieldPosition,
+  excluded: 0,
+  inputType: {
+    type: 0,
+    required: 0,
+    readOnly: 0,
+    placeholder: 0,
+    defaultValue: 0,
+    descriptiveText: 0,
+    defaultChecked: 0,
+    defaultCountryCode: 0,
+    valueMappings: {
+      values: D.list({
+        displayValue: i_FormInputValueProperty,
+        value: i_FormInputValueProperty,
+      }),
+      bindingProperties: D.map({ type: 0, bindingProperties: { model: 0 } }),
+    },
+    name: 0,
+    minValue: 0,
+    maxValue: 0,
+    step: 0,
+    value: 0,
+    isArray: 0,
+    fileUploaderConfig: {
+      accessLevel: 0,
+      acceptedFileTypes: 0,
+      showThumbnails: 0,
+      isResumable: 0,
+      maxFileCount: 0,
+      maxSize: 0,
+    },
+  },
+  validations: D.list({
+    type: 0,
+    strValues: 0,
+    numValues: 0,
+    validationMessage: 0,
+  }),
+});
+const i_FormCTA: D.LazyStruct = () => ({
+  position: 0,
+  clear: i_FormButton,
+  cancel: i_FormButton,
+  submit: i_FormButton,
+});
+const i_FormDataTypeConfig: D.LazyStruct = () => ({
+  dataSourceType: 0,
+  dataTypeName: 0,
+});
+const i_FormStyle: D.LazyStruct = () => ({
+  horizontalGap: i_FormStyleConfig,
+  verticalGap: i_FormStyleConfig,
+  outerPadding: i_FormStyleConfig,
+});
+const i_SectionalElement: D.LazyStruct = () => ({
+  type: 0,
+  position: i_FieldPosition,
+  text: 0,
+  level: 0,
+  orientation: 0,
+  excluded: 0,
+});
+const i_ThemeValues: D.LazyStruct = () => ({
+  key: 0,
+  value: { value: 0, children: D.list(i_ThemeValues) },
+});
 const o_CodegenJob: D.LazyStruct = () => ({
   createdAt: D.ts,
   modifiedAt: D.ts,
 });
 const o_Component: D.LazyStruct = () => ({ createdAt: D.ts, modifiedAt: D.ts });
 const o_Theme: D.LazyStruct = () => ({ createdAt: D.ts, modifiedAt: D.ts });
+const i_ComponentPropertyBindingProperties: D.LazyStruct = () => ({
+  property: 0,
+  field: 0,
+});
+const i_FieldPosition: D.LazyStruct = () => ({
+  fixed: 0,
+  rightOf: 0,
+  below: 0,
+});
+const i_FormButton: D.LazyStruct = () => ({
+  excluded: 0,
+  children: 0,
+  position: i_FieldPosition,
+});
+const i_FormInputValueProperty: D.LazyStruct = () => ({
+  value: 0,
+  bindingProperties: { property: 0, field: 0 },
+  concat: D.list(i_FormInputValueProperty),
+});
+const i_FormStyleConfig: D.LazyStruct = () => ({ tokenReference: 0, value: 0 });
+const i_Predicate: D.LazyStruct = () => ({
+  or: D.list(i_Predicate),
+  and: D.list(i_Predicate),
+  field: 0,
+  operator: 0,
+  operand: 0,
+  operandType: 0,
+});

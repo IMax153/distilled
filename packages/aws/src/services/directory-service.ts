@@ -1565,7 +1565,11 @@ export const acceptSharedDirectory: API.OperationMethod<
   AcceptSharedDirectoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { SharedDirectory: o_SharedDirectory } },
+  descriptor: {
+    service: svc,
+    input: { SharedDirectoryId: 0 },
+    output: { SharedDirectory: o_SharedDirectory },
+  },
   errors: [
     ClientException,
     DirectoryAlreadySharedException,
@@ -1604,7 +1608,14 @@ export const addIpRoutes: API.OperationMethod<
   AddIpRoutesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DirectoryId: 0,
+      IpRoutes: D.list({ CidrIp: 0, CidrIpv6: 0, Description: 0 }),
+      UpdateSecurityGroupForDirectoryControllers: 0,
+    },
+  },
   errors: [
     ClientException,
     DirectoryUnavailableException,
@@ -1640,7 +1651,14 @@ export const addRegion: API.OperationMethod<
   AddRegionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DirectoryId: 0,
+      RegionName: 0,
+      VPCSettings: i_DirectoryVpcSettings,
+    },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -1676,7 +1694,7 @@ export const addTagsToResource: API.OperationMethod<
   AddTagsToResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0, Tags: D.list(i_Tag) } },
   errors: [
     ClientException,
     EntityDoesNotExistException,
@@ -1707,7 +1725,7 @@ export const cancelSchemaExtension: API.OperationMethod<
   CancelSchemaExtensionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0, SchemaExtensionId: 0 } },
   errors: [ClientException, EntityDoesNotExistException, ServiceException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1733,7 +1751,25 @@ export const connectDirectory: API.OperationMethod<
   ConnectDirectoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      ShortName: 0,
+      Password: 0,
+      Description: 0,
+      Size: 0,
+      ConnectSettings: {
+        VpcId: 0,
+        SubnetIds: 0,
+        CustomerDnsIps: 0,
+        CustomerDnsIpsV6: 0,
+        CustomerUserName: 0,
+      },
+      Tags: D.list(i_Tag),
+      NetworkType: 0,
+    },
+  },
   errors: [
     ClientException,
     DirectoryLimitExceededException,
@@ -1765,7 +1801,7 @@ export const createAlias: API.OperationMethod<
   CreateAliasError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0, Alias: 0 } },
   errors: [
     ClientException,
     EntityAlreadyExistsException,
@@ -1797,7 +1833,16 @@ export const createComputer: API.OperationMethod<
   CreateComputerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DirectoryId: 0,
+      ComputerName: 0,
+      Password: 0,
+      OrganizationalUnitDistinguishedName: 0,
+      ComputerAttributes: D.list({ Name: 0, Value: 0 }),
+    },
+  },
   errors: [
     AuthenticationFailedException,
     ClientException,
@@ -1833,7 +1878,15 @@ export const createConditionalForwarder: API.OperationMethod<
   CreateConditionalForwarderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DirectoryId: 0,
+      RemoteDomainName: 0,
+      DnsIpAddrs: 0,
+      DnsIpv6Addrs: 0,
+    },
+  },
   errors: [
     ClientException,
     DirectoryUnavailableException,
@@ -1867,7 +1920,19 @@ export const createDirectory: API.OperationMethod<
   CreateDirectoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      ShortName: 0,
+      Password: 0,
+      Description: 0,
+      Size: 0,
+      VpcSettings: i_DirectoryVpcSettings,
+      Tags: D.list(i_Tag),
+      NetworkType: 0,
+    },
+  },
   errors: [
     ClientException,
     DirectoryLimitExceededException,
@@ -1904,7 +1969,10 @@ export const createHybridAD: API.OperationMethod<
   CreateHybridADError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SecretArn: 0, AssessmentId: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     ADAssessmentLimitExceededException,
     ClientException,
@@ -1937,7 +2005,7 @@ export const createLogSubscription: API.OperationMethod<
   CreateLogSubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0, LogGroupName: 0 } },
   errors: [
     ClientException,
     EntityAlreadyExistsException,
@@ -1971,7 +2039,19 @@ export const createMicrosoftAD: API.OperationMethod<
   CreateMicrosoftADError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      ShortName: 0,
+      Password: 0,
+      Description: 0,
+      VpcSettings: i_DirectoryVpcSettings,
+      Edition: 0,
+      Tags: D.list(i_Tag),
+      NetworkType: 0,
+    },
+  },
   errors: [
     ClientException,
     DirectoryLimitExceededException,
@@ -2002,7 +2082,7 @@ export const createSnapshot: API.OperationMethod<
   CreateSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0, Name: 0 } },
   errors: [
     ClientException,
     EntityDoesNotExistException,
@@ -2039,7 +2119,19 @@ export const createTrust: API.OperationMethod<
   CreateTrustError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DirectoryId: 0,
+      RemoteDomainName: 0,
+      TrustPassword: 0,
+      TrustDirection: 0,
+      TrustType: 0,
+      ConditionalForwarderIpAddrs: 0,
+      ConditionalForwarderIpv6Addrs: 0,
+      SelectiveAuth: 0,
+    },
+  },
   errors: [
     ClientException,
     EntityAlreadyExistsException,
@@ -2074,7 +2166,7 @@ export const deleteADAssessment: API.OperationMethod<
   DeleteADAssessmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AssessmentId: 0 } },
   errors: [
     ClientException,
     EntityDoesNotExistException,
@@ -2105,7 +2197,7 @@ export const deleteConditionalForwarder: API.OperationMethod<
   DeleteConditionalForwarderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0, RemoteDomainName: 0 } },
   errors: [
     ClientException,
     DirectoryUnavailableException,
@@ -2137,7 +2229,7 @@ export const deleteDirectory: API.OperationMethod<
   DeleteDirectoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0 } },
   errors: [ClientException, EntityDoesNotExistException, ServiceException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2159,7 +2251,7 @@ export const deleteLogSubscription: API.OperationMethod<
   DeleteLogSubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0 } },
   errors: [
     ClientException,
     EntityDoesNotExistException,
@@ -2186,7 +2278,7 @@ export const deleteSnapshot: API.OperationMethod<
   DeleteSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SnapshotId: 0 } },
   errors: [
     ClientException,
     EntityDoesNotExistException,
@@ -2215,7 +2307,10 @@ export const deleteTrust: API.OperationMethod<
   DeleteTrustError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TrustId: 0, DeleteAssociatedConditionalForwarder: 0 },
+  },
   errors: [
     ClientException,
     EntityDoesNotExistException,
@@ -2248,7 +2343,7 @@ export const deregisterCertificate: API.OperationMethod<
   DeregisterCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0, CertificateId: 0 } },
   errors: [
     CertificateDoesNotExistException,
     CertificateInUseException,
@@ -2279,7 +2374,7 @@ export const deregisterEventTopic: API.OperationMethod<
   DeregisterEventTopicError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0, TopicName: 0 } },
   errors: [
     ClientException,
     EntityDoesNotExistException,
@@ -2311,6 +2406,7 @@ export const describeADAssessment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AssessmentId: 0 },
     output: {
       Assessment: { StartTime: D.ts, LastUpdateDateTime: D.ts },
       AssessmentReports: D.list({
@@ -2347,7 +2443,11 @@ export const describeCAEnrollmentPolicy: API.OperationMethod<
   DescribeCAEnrollmentPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LastUpdatedDateTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { DirectoryId: 0 },
+    output: { LastUpdatedDateTime: D.ts },
+  },
   errors: [
     ClientException,
     DirectoryDoesNotExistException,
@@ -2379,6 +2479,7 @@ export const describeCertificate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DirectoryId: 0, CertificateId: 0 },
     output: { Certificate: { RegisteredDateTime: D.ts, ExpiryDateTime: D.ts } },
   },
   errors: [
@@ -2417,6 +2518,7 @@ export const describeClientAuthenticationSettings: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DirectoryId: 0, Type: 0, NextToken: 0, Limit: 0 },
     output: {
       ClientAuthenticationSettingsInfo: D.list({ LastUpdatedDateTime: D.ts }),
     },
@@ -2460,7 +2562,7 @@ export const describeConditionalForwarders: API.OperationMethod<
   DescribeConditionalForwardersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0, RemoteDomainNames: 0 } },
   errors: [
     ClientException,
     DirectoryUnavailableException,
@@ -2506,6 +2608,7 @@ export const describeDirectories: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DirectoryIds: 0, NextToken: 0, Limit: 0 },
     output: {
       DirectoryDescriptions: D.list({
         ShareNotes: D.secret,
@@ -2551,7 +2654,7 @@ export const describeDirectoryDataAccess: API.OperationMethod<
   DescribeDirectoryDataAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -2584,6 +2687,7 @@ export const describeDomainControllers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DirectoryId: 0, DomainControllerIds: 0, NextToken: 0, Limit: 0 },
     output: {
       DomainControllers: D.list({
         LaunchTime: D.ts,
@@ -2630,6 +2734,7 @@ export const describeEventTopics: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DirectoryId: 0, TopicNames: 0 },
     output: { EventTopics: D.list({ CreatedDateTime: D.ts }) },
   },
   errors: [
@@ -2664,6 +2769,7 @@ export const describeHybridADUpdate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DirectoryId: 0, UpdateType: 0, NextToken: 0 },
     output: {
       UpdateActivities: {
         SelfManagedInstances: D.list(o_HybridUpdateInfoEntry),
@@ -2704,6 +2810,7 @@ export const describeLDAPSSettings: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DirectoryId: 0, Type: 0, NextToken: 0, Limit: 0 },
     output: { LDAPSSettingsInfo: D.list({ LastUpdatedDateTime: D.ts }) },
   },
   errors: [
@@ -2747,6 +2854,7 @@ export const describeRegions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DirectoryId: 0, RegionName: 0, NextToken: 0 },
     output: {
       RegionsDescription: D.list({
         LaunchTime: D.ts,
@@ -2793,6 +2901,7 @@ export const describeSettings: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DirectoryId: 0, Status: 0, NextToken: 0 },
     output: {
       SettingEntries: D.list({
         LastUpdatedDateTime: D.ts,
@@ -2833,6 +2942,12 @@ export const describeSharedDirectories: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      OwnerDirectoryId: 0,
+      SharedDirectoryIds: 0,
+      NextToken: 0,
+      Limit: 0,
+    },
     output: { SharedDirectories: D.list(o_SharedDirectory) },
   },
   errors: [
@@ -2881,6 +2996,7 @@ export const describeSnapshots: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DirectoryId: 0, SnapshotIds: 0, NextToken: 0, Limit: 0 },
     output: { Snapshots: D.list({ StartTime: D.ts }) },
   },
   errors: [
@@ -2924,6 +3040,7 @@ export const describeTrusts: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DirectoryId: 0, TrustIds: 0, NextToken: 0, Limit: 0 },
     output: {
       Trusts: D.list({
         CreatedDateTime: D.ts,
@@ -2971,6 +3088,7 @@ export const describeUpdateDirectory: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DirectoryId: 0, UpdateType: 0, RegionName: 0, NextToken: 0 },
     output: {
       UpdateActivities: D.list({ StartTime: D.ts, LastUpdatedDateTime: D.ts }),
     },
@@ -3017,7 +3135,7 @@ export const disableCAEnrollmentPolicy: API.OperationMethod<
   DisableCAEnrollmentPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3050,7 +3168,7 @@ export const disableClientAuthentication: API.OperationMethod<
   DisableClientAuthenticationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0, Type: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3083,7 +3201,7 @@ export const disableDirectoryDataAccess: API.OperationMethod<
   DisableDirectoryDataAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3116,7 +3234,7 @@ export const disableLDAPS: API.OperationMethod<
   DisableLDAPSError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0, Type: 0 } },
   errors: [
     ClientException,
     DirectoryDoesNotExistException,
@@ -3146,7 +3264,7 @@ export const disableRadius: API.OperationMethod<
   DisableRadiusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0 } },
   errors: [ClientException, EntityDoesNotExistException, ServiceException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3169,7 +3287,10 @@ export const disableSso: API.OperationMethod<
   DisableSsoError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DirectoryId: 0, UserName: 0, Password: 0 },
+  },
   errors: [
     AuthenticationFailedException,
     ClientException,
@@ -3208,7 +3329,7 @@ export const enableCAEnrollmentPolicy: API.OperationMethod<
   EnableCAEnrollmentPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0, PcaConnectorArn: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3243,7 +3364,7 @@ export const enableClientAuthentication: API.OperationMethod<
   EnableClientAuthenticationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0, Type: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3277,7 +3398,7 @@ export const enableDirectoryDataAccess: API.OperationMethod<
   EnableDirectoryDataAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3311,7 +3432,7 @@ export const enableLDAPS: API.OperationMethod<
   EnableLDAPSError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0, Type: 0 } },
   errors: [
     ClientException,
     DirectoryDoesNotExistException,
@@ -3344,7 +3465,10 @@ export const enableRadius: API.OperationMethod<
   EnableRadiusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DirectoryId: 0, RadiusSettings: i_RadiusSettings },
+  },
   errors: [
     ClientException,
     EntityAlreadyExistsException,
@@ -3375,7 +3499,10 @@ export const enableSso: API.OperationMethod<
   EnableSsoError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DirectoryId: 0, UserName: 0, Password: 0 },
+  },
   errors: [
     AuthenticationFailedException,
     ClientException,
@@ -3402,7 +3529,7 @@ export const getDirectoryLimits: API.OperationMethod<
   GetDirectoryLimitsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [ClientException, EntityDoesNotExistException, ServiceException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3423,7 +3550,7 @@ export const getSnapshotLimits: API.OperationMethod<
   GetSnapshotLimitsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0 } },
   errors: [ClientException, EntityDoesNotExistException, ServiceException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3451,6 +3578,7 @@ export const listADAssessments: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DirectoryId: 0, NextToken: 0, Limit: 0 },
     output: {
       Assessments: D.list({ StartTime: D.ts, LastUpdateDateTime: D.ts }),
     },
@@ -3494,6 +3622,7 @@ export const listCertificates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DirectoryId: 0, NextToken: 0, Limit: 0 },
     output: { CertificatesInfo: D.list({ ExpiryDateTime: D.ts }) },
   },
   errors: [
@@ -3534,6 +3663,7 @@ export const listIpRoutes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DirectoryId: 0, NextToken: 0, Limit: 0 },
     output: { IpRoutesInfo: D.list({ AddedDateTime: D.ts }) },
   },
   errors: [
@@ -3572,6 +3702,7 @@ export const listLogSubscriptions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DirectoryId: 0, NextToken: 0, Limit: 0 },
     output: { LogSubscriptions: D.list({ SubscriptionCreatedDateTime: D.ts }) },
   },
   errors: [
@@ -3609,6 +3740,7 @@ export const listSchemaExtensions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { DirectoryId: 0, NextToken: 0, Limit: 0 },
     output: {
       SchemaExtensionsInfo: D.list({ StartDateTime: D.ts, EndDateTime: D.ts }),
     },
@@ -3647,7 +3779,10 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Tag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceId: 0, NextToken: 0, Limit: 0 },
+  },
   errors: [
     ClientException,
     EntityDoesNotExistException,
@@ -3686,7 +3821,15 @@ export const registerCertificate: API.OperationMethod<
   RegisterCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DirectoryId: 0,
+      CertificateData: 0,
+      Type: 0,
+      ClientCertAuthSettings: { OCSPUrl: 0 },
+    },
+  },
   errors: [
     CertificateAlreadyExistsException,
     CertificateLimitExceededException,
@@ -3722,7 +3865,7 @@ export const registerEventTopic: API.OperationMethod<
   RegisterEventTopicError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0, TopicName: 0 } },
   errors: [
     ClientException,
     EntityDoesNotExistException,
@@ -3750,7 +3893,7 @@ export const rejectSharedDirectory: API.OperationMethod<
   RejectSharedDirectoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SharedDirectoryId: 0 } },
   errors: [
     ClientException,
     DirectoryAlreadySharedException,
@@ -3779,7 +3922,10 @@ export const removeIpRoutes: API.OperationMethod<
   RemoveIpRoutesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DirectoryId: 0, CidrIps: 0, CidrIpv6s: 0 },
+  },
   errors: [
     ClientException,
     DirectoryUnavailableException,
@@ -3811,7 +3957,7 @@ export const removeRegion: API.OperationMethod<
   RemoveRegionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3840,7 +3986,7 @@ export const removeTagsFromResource: API.OperationMethod<
   RemoveTagsFromResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0, TagKeys: 0 } },
   errors: [
     ClientException,
     EntityDoesNotExistException,
@@ -3885,7 +4031,10 @@ export const resetUserPassword: API.OperationMethod<
   ResetUserPasswordError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DirectoryId: 0, UserName: 0, NewPassword: 0 },
+  },
   errors: [
     ClientException,
     DirectoryUnavailableException,
@@ -3922,7 +4071,7 @@ export const restoreFromSnapshot: API.OperationMethod<
   RestoreFromSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SnapshotId: 0 } },
   errors: [
     ClientException,
     EntityDoesNotExistException,
@@ -3970,7 +4119,15 @@ export const shareDirectory: API.OperationMethod<
   ShareDirectoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DirectoryId: 0,
+      ShareNotes: 0,
+      ShareTarget: { Id: 0, Type: 0 },
+      ShareMethod: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4025,7 +4182,19 @@ export const startADAssessment: API.OperationMethod<
   StartADAssessmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AssessmentConfiguration: {
+        CustomerDnsIps: 0,
+        DnsName: 0,
+        VpcSettings: i_DirectoryVpcSettings,
+        InstanceIds: 0,
+        SecurityGroupIds: 0,
+      },
+      DirectoryId: 0,
+    },
+  },
   errors: [
     ADAssessmentLimitExceededException,
     ClientException,
@@ -4056,7 +4225,15 @@ export const startSchemaExtension: API.OperationMethod<
   StartSchemaExtensionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DirectoryId: 0,
+      CreateSnapshotBeforeSchemaExtension: 0,
+      LdifContent: 0,
+      Description: 0,
+    },
+  },
   errors: [
     ClientException,
     DirectoryUnavailableException,
@@ -4086,7 +4263,10 @@ export const unshareDirectory: API.OperationMethod<
   UnshareDirectoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DirectoryId: 0, UnshareTarget: { Id: 0, Type: 0 } },
+  },
   errors: [
     ClientException,
     DirectoryNotSharedException,
@@ -4117,7 +4297,15 @@ export const updateConditionalForwarder: API.OperationMethod<
   UpdateConditionalForwarderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DirectoryId: 0,
+      RemoteDomainName: 0,
+      DnsIpAddrs: 0,
+      DnsIpv6Addrs: 0,
+    },
+  },
   errors: [
     ClientException,
     DirectoryUnavailableException,
@@ -4151,7 +4339,17 @@ export const updateDirectorySetup: API.OperationMethod<
   UpdateDirectorySetupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DirectoryId: 0,
+      UpdateType: 0,
+      OSUpdateSettings: { OSVersion: 0 },
+      DirectorySizeUpdateSettings: { DirectorySize: 0 },
+      NetworkUpdateSettings: { NetworkType: 0, CustomerDnsIpsV6: 0 },
+      CreateSnapshotBeforeUpdate: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4198,7 +4396,14 @@ export const updateHybridAD: API.OperationMethod<
   UpdateHybridADError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DirectoryId: 0,
+      HybridAdministratorAccountUpdate: { SecretArn: 0 },
+      SelfManagedInstancesSettings: { CustomerDnsIps: 0, InstanceIds: 0 },
+    },
+  },
   errors: [
     ADAssessmentLimitExceededException,
     ClientException,
@@ -4234,7 +4439,7 @@ export const updateNumberOfDomainControllers: API.OperationMethod<
   UpdateNumberOfDomainControllersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DirectoryId: 0, DesiredNumber: 0 } },
   errors: [
     ClientException,
     DirectoryUnavailableException,
@@ -4265,7 +4470,10 @@ export const updateRadius: API.OperationMethod<
   UpdateRadiusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DirectoryId: 0, RadiusSettings: i_RadiusSettings },
+  },
   errors: [
     ClientException,
     EntityDoesNotExistException,
@@ -4296,7 +4504,10 @@ export const updateSettings: API.OperationMethod<
   UpdateSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DirectoryId: 0, Settings: D.list({ Name: 0, Value: 0 }) },
+  },
   errors: [
     ClientException,
     DirectoryDoesNotExistException,
@@ -4328,7 +4539,7 @@ export const updateTrust: API.OperationMethod<
   UpdateTrustError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrustId: 0, SelectiveAuth: 0 } },
   errors: [
     ClientException,
     EntityDoesNotExistException,
@@ -4360,7 +4571,7 @@ export const verifyTrust: API.OperationMethod<
   VerifyTrustError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrustId: 0 } },
   errors: [
     ClientException,
     EntityDoesNotExistException,
@@ -4373,6 +4584,19 @@ export const verifyTrust: API.OperationMethod<
   operationName: "VerifyTrust",
 })) as any;
 
+const i_DirectoryVpcSettings: D.LazyStruct = () => ({ VpcId: 0, SubnetIds: 0 });
+const i_RadiusSettings: D.LazyStruct = () => ({
+  RadiusServers: 0,
+  RadiusServersIpv6: 0,
+  RadiusPort: 0,
+  RadiusTimeout: 0,
+  RadiusRetries: 0,
+  SharedSecret: 0,
+  AuthenticationProtocol: 0,
+  DisplayLabel: 0,
+  UseSameUsername: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_HybridUpdateInfoEntry: D.LazyStruct = () => ({
   StartTime: D.ts,
   LastUpdatedDateTime: D.ts,

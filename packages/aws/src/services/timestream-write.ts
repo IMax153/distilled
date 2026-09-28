@@ -575,7 +575,55 @@ export const createBatchLoadTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      DataModelConfiguration: {
+        DataModel: {
+          TimeColumn: 0,
+          TimeUnit: 0,
+          DimensionMappings: D.list({ SourceColumn: 0, DestinationColumn: 0 }),
+          MultiMeasureMappings: {
+            TargetMultiMeasureName: 0,
+            MultiMeasureAttributeMappings: D.list(
+              i_MultiMeasureAttributeMapping,
+            ),
+          },
+          MixedMeasureMappings: D.list({
+            MeasureName: 0,
+            SourceColumn: 0,
+            TargetMeasureName: 0,
+            MeasureValueType: 0,
+            MultiMeasureAttributeMappings: D.list(
+              i_MultiMeasureAttributeMapping,
+            ),
+          }),
+          MeasureNameColumn: 0,
+        },
+        DataModelS3Configuration: { BucketName: 0, ObjectKey: 0 },
+      },
+      DataSourceConfiguration: {
+        DataSourceS3Configuration: { BucketName: 0, ObjectKeyPrefix: 0 },
+        CsvConfiguration: {
+          ColumnSeparator: 0,
+          EscapeChar: 0,
+          QuoteChar: 0,
+          NullValue: 0,
+          TrimWhiteSpace: 0,
+        },
+        DataFormat: 0,
+      },
+      ReportConfiguration: {
+        ReportS3Configuration: {
+          BucketName: 0,
+          ObjectKeyPrefix: 0,
+          EncryptionOption: 0,
+          KmsKeyId: 0,
+        },
+      },
+      TargetDatabaseName: 0,
+      TargetTableName: 0,
+      RecordVersion: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -613,7 +661,11 @@ export const createDatabase: API.OperationMethod<
   CreateDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Database: o_Database } },
+  descriptor: {
+    service: svc,
+    input: { DatabaseName: 0, KmsKeyId: 0, Tags: D.list(i_Tag) },
+    output: { Database: o_Database },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -653,7 +705,18 @@ export const createTable: API.OperationMethod<
   CreateTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Table: o_Table } },
+  descriptor: {
+    service: svc,
+    input: {
+      DatabaseName: 0,
+      TableName: 0,
+      RetentionProperties: i_RetentionProperties,
+      Tags: D.list(i_Tag),
+      MagneticStoreWriteProperties: i_MagneticStoreWriteProperties,
+      Schema: i_Schema,
+    },
+    output: { Table: o_Table },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -697,7 +760,7 @@ export const deleteDatabase: API.OperationMethod<
   DeleteDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DatabaseName: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -736,7 +799,7 @@ export const deleteTable: API.OperationMethod<
   DeleteTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DatabaseName: 0, TableName: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -771,6 +834,7 @@ export const describeBatchLoadTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TaskId: 0 },
     output: {
       BatchLoadTaskDescription: {
         CreationTime: D.ts,
@@ -811,7 +875,11 @@ export const describeDatabase: API.OperationMethod<
   DescribeDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Database: o_Database } },
+  descriptor: {
+    service: svc,
+    input: { DatabaseName: 0 },
+    output: { Database: o_Database },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -856,7 +924,7 @@ export const describeEndpoints: API.OperationMethod<
   DescribeEndpointsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     InternalServerException,
     ThrottlingException,
@@ -888,7 +956,11 @@ export const describeTable: API.OperationMethod<
   DescribeTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Table: o_Table } },
+  descriptor: {
+    service: svc,
+    input: { DatabaseName: 0, TableName: 0 },
+    output: { Table: o_Table },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -923,6 +995,7 @@ export const listBatchLoadTasks: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, TaskStatus: 0 },
     output: {
       BatchLoadTasks: D.list({
         CreationTime: D.ts,
@@ -967,7 +1040,11 @@ export const listDatabases: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Databases: D.list(o_Database) } },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
+    output: { Databases: D.list(o_Database) },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1005,7 +1082,11 @@ export const listTables: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Tables: D.list(o_Table) } },
+  descriptor: {
+    service: svc,
+    input: { DatabaseName: 0, NextToken: 0, MaxResults: 0 },
+    output: { Tables: D.list(o_Table) },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1039,7 +1120,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [
     InvalidEndpointException,
     ResourceNotFoundException,
@@ -1068,7 +1149,7 @@ export const resumeBatchLoadTask: API.OperationMethod<
   ResumeBatchLoadTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TaskId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1100,7 +1181,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [
     InvalidEndpointException,
     ResourceNotFoundException,
@@ -1129,7 +1210,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [
     InvalidEndpointException,
     ResourceNotFoundException,
@@ -1165,7 +1246,11 @@ export const updateDatabase: API.OperationMethod<
   UpdateDatabaseError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Database: o_Database } },
+  descriptor: {
+    service: svc,
+    input: { DatabaseName: 0, KmsKeyId: 0 },
+    output: { Database: o_Database },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1203,7 +1288,17 @@ export const updateTable: API.OperationMethod<
   UpdateTableError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Table: o_Table } },
+  descriptor: {
+    service: svc,
+    input: {
+      DatabaseName: 0,
+      TableName: 0,
+      RetentionProperties: i_RetentionProperties,
+      MagneticStoreWriteProperties: i_MagneticStoreWriteProperties,
+      Schema: i_Schema,
+    },
+    output: { Table: o_Table },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1277,7 +1372,15 @@ export const writeRecords: API.OperationMethod<
   WriteRecordsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DatabaseName: 0,
+      TableName: 0,
+      CommonAttributes: i_Record,
+      Records: D.list(i_Record),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1292,6 +1395,40 @@ export const writeRecords: API.OperationMethod<
   operationName: "WriteRecords",
 })) as any;
 
+const i_MagneticStoreWriteProperties: D.LazyStruct = () => ({
+  EnableMagneticStoreWrites: 0,
+  MagneticStoreRejectedDataLocation: {
+    S3Configuration: {
+      BucketName: 0,
+      ObjectKeyPrefix: 0,
+      EncryptionOption: 0,
+      KmsKeyId: 0,
+    },
+  },
+});
+const i_MultiMeasureAttributeMapping: D.LazyStruct = () => ({
+  SourceColumn: 0,
+  TargetMultiMeasureAttributeName: 0,
+  MeasureValueType: 0,
+});
+const i_Record: D.LazyStruct = () => ({
+  Dimensions: D.list({ Name: 0, Value: 0, DimensionValueType: 0 }),
+  MeasureName: 0,
+  MeasureValue: 0,
+  MeasureValueType: 0,
+  Time: 0,
+  TimeUnit: 0,
+  Version: 0,
+  MeasureValues: D.list({ Name: 0, Value: 0, Type: 0 }),
+});
+const i_RetentionProperties: D.LazyStruct = () => ({
+  MemoryStoreRetentionPeriodInHours: 0,
+  MagneticStoreRetentionPeriodInDays: 0,
+});
+const i_Schema: D.LazyStruct = () => ({
+  CompositePartitionKey: D.list({ Type: 0, Name: 0, EnforcementInRecord: 0 }),
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Database: D.LazyStruct = () => ({
   CreationTime: D.ts,
   LastUpdatedTime: D.ts,

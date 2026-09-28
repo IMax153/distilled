@@ -1245,7 +1245,10 @@ export const associateBrowserSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /portals/{portalArn+}/browserSettings",
-    input: { browserSettingsArn: D.m({ query: "browserSettingsArn" }) },
+    input: {
+      portalArn: 0,
+      browserSettingsArn: D.m({ query: "browserSettingsArn" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1281,6 +1284,7 @@ export const associateDataProtectionSettings: API.OperationMethod<
     service: svc,
     http: "PUT /portals/{portalArn+}/dataProtectionSettings",
     input: {
+      portalArn: 0,
       dataProtectionSettingsArn: D.m({ query: "dataProtectionSettingsArn" }),
     },
   },
@@ -1317,7 +1321,10 @@ export const associateIpAccessSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /portals/{portalArn+}/ipAccessSettings",
-    input: { ipAccessSettingsArn: D.m({ query: "ipAccessSettingsArn" }) },
+    input: {
+      portalArn: 0,
+      ipAccessSettingsArn: D.m({ query: "ipAccessSettingsArn" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1352,7 +1359,10 @@ export const associateNetworkSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /portals/{portalArn+}/networkSettings",
-    input: { networkSettingsArn: D.m({ query: "networkSettingsArn" }) },
+    input: {
+      portalArn: 0,
+      networkSettingsArn: D.m({ query: "networkSettingsArn" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1387,7 +1397,10 @@ export const associateSessionLogger: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /portals/{portalArn+}/sessionLogger",
-    input: { sessionLoggerArn: D.m({ query: "sessionLoggerArn" }) },
+    input: {
+      portalArn: 0,
+      sessionLoggerArn: D.m({ query: "sessionLoggerArn" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1422,7 +1435,7 @@ export const associateTrustStore: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /portals/{portalArn+}/trustStores",
-    input: { trustStoreArn: D.m({ query: "trustStoreArn" }) },
+    input: { portalArn: 0, trustStoreArn: D.m({ query: "trustStoreArn" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1458,6 +1471,7 @@ export const associateUserAccessLoggingSettings: API.OperationMethod<
     service: svc,
     http: "PUT /portals/{portalArn+}/userAccessLoggingSettings",
     input: {
+      portalArn: 0,
       userAccessLoggingSettingsArn: D.m({
         query: "userAccessLoggingSettingsArn",
       }),
@@ -1496,7 +1510,7 @@ export const associateUserSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /portals/{portalArn+}/userSettings",
-    input: { userSettingsArn: D.m({ query: "userSettingsArn" }) },
+    input: { portalArn: 0, userSettingsArn: D.m({ query: "userSettingsArn" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1532,7 +1546,14 @@ export const createBrowserSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /browserSettings",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      tags: D.list(i_Tag),
+      customerManagedKey: 0,
+      additionalEncryptionContext: 0,
+      browserPolicy: 0,
+      clientToken: D.m({ idempotency: true }),
+      webContentFilteringPolicy: i_WebContentFilteringPolicy,
+    },
     body: true,
   },
   errors: [
@@ -1570,7 +1591,15 @@ export const createDataProtectionSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /dataProtectionSettings",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      displayName: 0,
+      description: 0,
+      tags: D.list(i_Tag),
+      customerManagedKey: 0,
+      additionalEncryptionContext: 0,
+      inlineRedactionConfiguration: i_InlineRedactionConfiguration,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1608,7 +1637,14 @@ export const createIdentityProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /identityProviders",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      portalArn: 0,
+      identityProviderName: 0,
+      identityProviderType: 0,
+      identityProviderDetails: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -1645,7 +1681,15 @@ export const createIpAccessSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ipAccessSettings",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      displayName: 0,
+      description: 0,
+      tags: D.list(i_Tag),
+      customerManagedKey: 0,
+      additionalEncryptionContext: 0,
+      ipRules: D.list(i_IpRule),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1681,7 +1725,13 @@ export const createNetworkSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /networkSettings",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      vpcId: 0,
+      subnetIds: 0,
+      securityGroupIds: 0,
+      tags: D.list(i_Tag),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1718,7 +1768,17 @@ export const createPortal: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /portals",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      displayName: 0,
+      tags: D.list(i_Tag),
+      customerManagedKey: 0,
+      additionalEncryptionContext: 0,
+      clientToken: D.m({ idempotency: true }),
+      authenticationType: 0,
+      instanceType: 0,
+      maxConcurrentSessions: 0,
+      portalCustomDomain: 0,
+    },
     body: true,
   },
   errors: [
@@ -1755,7 +1815,15 @@ export const createSessionLogger: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sessionLoggers",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      eventFilter: i_EventFilter,
+      logConfiguration: i_LogConfiguration,
+      displayName: 0,
+      customerManagedKey: 0,
+      additionalEncryptionContext: 0,
+      tags: D.list(i_Tag),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1791,7 +1859,11 @@ export const createTrustStore: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /trustStores",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      certificateList: 0,
+      tags: D.list(i_Tag),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1827,7 +1899,11 @@ export const createUserAccessLoggingSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /userAccessLoggingSettings",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      kinesisStreamArn: 0,
+      tags: D.list(i_Tag),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1864,7 +1940,31 @@ export const createUserSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /userSettings",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      copyAllowed: 0,
+      pasteAllowed: 0,
+      downloadAllowed: 0,
+      uploadAllowed: 0,
+      printAllowed: 0,
+      tags: D.list(i_Tag),
+      disconnectTimeoutInMinutes: 0,
+      idleDisconnectTimeoutInMinutes: 0,
+      clientToken: D.m({ idempotency: true }),
+      cookieSynchronizationConfiguration: i_CookieSynchronizationConfiguration,
+      customerManagedKey: 0,
+      additionalEncryptionContext: 0,
+      deepLinkAllowed: 0,
+      toolbarConfiguration: i_ToolbarConfiguration,
+      brandingConfigurationInput: {
+        logo: i_IconImageInput,
+        wallpaper: i_WallpaperImageInput,
+        favicon: i_IconImageInput,
+        localizedStrings: D.map(i_LocalizedBrandingStrings),
+        colorTheme: 0,
+        termsOfService: 0,
+      },
+      webAuthnAllowed: 0,
+    },
     body: true,
   },
   errors: [
@@ -1900,6 +2000,7 @@ export const deleteBrowserSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /browserSettings/{browserSettingsArn+}",
+    input: { browserSettingsArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1932,6 +2033,7 @@ export const deleteDataProtectionSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /dataProtectionSettings/{dataProtectionSettingsArn+}",
+    input: { dataProtectionSettingsArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1964,6 +2066,7 @@ export const deleteIdentityProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /identityProviders/{identityProviderArn+}",
+    input: { identityProviderArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1996,6 +2099,7 @@ export const deleteIpAccessSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /ipAccessSettings/{ipAccessSettingsArn+}",
+    input: { ipAccessSettingsArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2028,6 +2132,7 @@ export const deleteNetworkSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /networkSettings/{networkSettingsArn+}",
+    input: { networkSettingsArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2057,7 +2162,11 @@ export const deletePortal: API.OperationMethod<
   DeletePortalError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /portals/{portalArn+}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /portals/{portalArn+}",
+    input: { portalArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2089,6 +2198,7 @@ export const deleteSessionLogger: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /sessionLoggers/{sessionLoggerArn+}",
+    input: { sessionLoggerArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2118,7 +2228,11 @@ export const deleteTrustStore: API.OperationMethod<
   DeleteTrustStoreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /trustStores/{trustStoreArn+}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /trustStores/{trustStoreArn+}",
+    input: { trustStoreArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2150,6 +2264,7 @@ export const deleteUserAccessLoggingSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /userAccessLoggingSettings/{userAccessLoggingSettingsArn+}",
+    input: { userAccessLoggingSettingsArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2179,7 +2294,11 @@ export const deleteUserSettings: API.OperationMethod<
   DeleteUserSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /userSettings/{userSettingsArn+}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /userSettings/{userSettingsArn+}",
+    input: { userSettingsArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2212,6 +2331,7 @@ export const disassociateBrowserSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /portals/{portalArn+}/browserSettings",
+    input: { portalArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2246,6 +2366,7 @@ export const disassociateDataProtectionSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /portals/{portalArn+}/dataProtectionSettings",
+    input: { portalArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2280,6 +2401,7 @@ export const disassociateIpAccessSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /portals/{portalArn+}/ipAccessSettings",
+    input: { portalArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2314,6 +2436,7 @@ export const disassociateNetworkSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /portals/{portalArn+}/networkSettings",
+    input: { portalArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2347,6 +2470,7 @@ export const disassociateSessionLogger: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /portals/{portalArn+}/sessionLogger",
+    input: { portalArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2380,6 +2504,7 @@ export const disassociateTrustStore: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /portals/{portalArn+}/trustStores",
+    input: { portalArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2414,6 +2539,7 @@ export const disassociateUserAccessLoggingSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /portals/{portalArn+}/userAccessLoggingSettings",
+    input: { portalArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2448,6 +2574,7 @@ export const disassociateUserSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /portals/{portalArn+}/userSettings",
+    input: { portalArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2481,6 +2608,7 @@ export const expireSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /portals/{portalId}/sessions/{sessionId}",
+    input: { portalId: 0, sessionId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2513,6 +2641,7 @@ export const getBrowserSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /browserSettings/{browserSettingsArn+}",
+    input: { browserSettingsArn: 0 },
     output: { browserSettings: o_BrowserSettings },
   },
   errors: [
@@ -2546,6 +2675,7 @@ export const getDataProtectionSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /dataProtectionSettings/{dataProtectionSettingsArn+}",
+    input: { dataProtectionSettingsArn: 0 },
     output: { dataProtectionSettings: o_DataProtectionSettings },
   },
   errors: [
@@ -2579,6 +2709,7 @@ export const getIdentityProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /identityProviders/{identityProviderArn+}",
+    input: { identityProviderArn: 0 },
     output: { identityProvider: o_IdentityProvider },
   },
   errors: [
@@ -2612,6 +2743,7 @@ export const getIpAccessSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /ipAccessSettings/{ipAccessSettingsArn+}",
+    input: { ipAccessSettingsArn: 0 },
     output: { ipAccessSettings: o_IpAccessSettings },
   },
   errors: [
@@ -2645,6 +2777,7 @@ export const getNetworkSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /networkSettings/{networkSettingsArn+}",
+    input: { networkSettingsArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2677,6 +2810,7 @@ export const getPortal: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /portals/{portalArn+}",
+    input: { portalArn: 0 },
     output: { portal: o_Portal },
   },
   errors: [
@@ -2707,7 +2841,11 @@ export const getPortalServiceProviderMetadata: API.OperationMethod<
   GetPortalServiceProviderMetadataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /portalIdp/{portalArn+}" },
+  descriptor: {
+    service: svc,
+    http: "GET /portalIdp/{portalArn+}",
+    input: { portalArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2739,6 +2877,7 @@ export const getSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /portals/{portalId}/sessions/{sessionId}",
+    input: { portalId: 0, sessionId: 0 },
     output: {
       session: {
         username: D.secret,
@@ -2779,6 +2918,7 @@ export const getSessionLogger: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /sessionLoggers/{sessionLoggerArn+}",
+    input: { sessionLoggerArn: 0 },
     output: { sessionLogger: o_SessionLogger },
   },
   errors: [
@@ -2809,7 +2949,11 @@ export const getTrustStore: API.OperationMethod<
   GetTrustStoreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /trustStores/{trustStoreArn+}" },
+  descriptor: {
+    service: svc,
+    http: "GET /trustStores/{trustStoreArn+}",
+    input: { trustStoreArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2841,7 +2985,7 @@ export const getTrustStoreCertificate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /trustStores/{trustStoreArn+}/certificate",
-    input: { thumbprint: D.m({ query: "thumbprint" }) },
+    input: { trustStoreArn: 0, thumbprint: D.m({ query: "thumbprint" }) },
     output: {
       certificate: { notValidBefore: D.ts, notValidAfter: D.ts, body: D.blob },
     },
@@ -2877,6 +3021,7 @@ export const getUserAccessLoggingSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /userAccessLoggingSettings/{userAccessLoggingSettingsArn+}",
+    input: { userAccessLoggingSettingsArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2909,6 +3054,7 @@ export const getUserSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /userSettings/{userSettingsArn+}",
+    input: { userSettingsArn: 0 },
     output: { userSettings: o_UserSettings },
   },
   errors: [
@@ -3033,6 +3179,7 @@ export const listIdentityProviders: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      portalArn: 0,
     },
     output: { identityProviders: D.list({ identityProviderName: D.secret }) },
   },
@@ -3249,6 +3396,7 @@ export const listSessions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /portals/{portalId}/sessions",
     input: {
+      portalId: 0,
       username: D.m({ query: "username" }),
       sessionId: D.m({ query: "sessionId" }),
       sortBy: D.m({ query: "sortBy" }),
@@ -3297,6 +3445,7 @@ export const listTagsForResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tags/{resourceArn+}",
+    input: { resourceArn: 0 },
     output: { tags: D.list({ Key: D.secret, Value: D.secret }) },
   },
   errors: [
@@ -3332,6 +3481,7 @@ export const listTrustStoreCertificates: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /trustStores/{trustStoreArn+}/certificates",
     input: {
+      trustStoreArn: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -3503,7 +3653,11 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags/{resourceArn+}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      resourceArn: 0,
+      tags: D.list(i_Tag),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -3538,7 +3692,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn+}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -3571,7 +3725,12 @@ export const updateBrowserSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /browserSettings/{browserSettingsArn+}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      browserSettingsArn: 0,
+      browserPolicy: 0,
+      clientToken: D.m({ idempotency: true }),
+      webContentFilteringPolicy: i_WebContentFilteringPolicy,
+    },
     output: { browserSettings: o_BrowserSettings },
     body: true,
   },
@@ -3606,7 +3765,13 @@ export const updateDataProtectionSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /dataProtectionSettings/{dataProtectionSettingsArn+}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      dataProtectionSettingsArn: 0,
+      inlineRedactionConfiguration: i_InlineRedactionConfiguration,
+      displayName: 0,
+      description: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { dataProtectionSettings: o_DataProtectionSettings },
     body: true,
   },
@@ -3641,7 +3806,13 @@ export const updateIdentityProvider: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /identityProviders/{identityProviderArn+}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      identityProviderArn: 0,
+      identityProviderName: 0,
+      identityProviderType: 0,
+      identityProviderDetails: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { identityProvider: o_IdentityProvider },
     body: true,
   },
@@ -3676,7 +3847,13 @@ export const updateIpAccessSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /ipAccessSettings/{ipAccessSettingsArn+}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      ipAccessSettingsArn: 0,
+      displayName: 0,
+      description: 0,
+      ipRules: D.list(i_IpRule),
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { ipAccessSettings: o_IpAccessSettings },
     body: true,
   },
@@ -3711,7 +3888,13 @@ export const updateNetworkSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /networkSettings/{networkSettingsArn+}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      networkSettingsArn: 0,
+      vpcId: 0,
+      subnetIds: 0,
+      securityGroupIds: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -3747,6 +3930,14 @@ export const updatePortal: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /portals/{portalArn+}",
+    input: {
+      portalArn: 0,
+      displayName: 0,
+      authenticationType: 0,
+      instanceType: 0,
+      maxConcurrentSessions: 0,
+      portalCustomDomain: 0,
+    },
     output: { portal: o_Portal },
     body: true,
   },
@@ -3783,6 +3974,12 @@ export const updateSessionLogger: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /sessionLoggers/{sessionLoggerArn+}",
+    input: {
+      sessionLoggerArn: 0,
+      eventFilter: i_EventFilter,
+      logConfiguration: i_LogConfiguration,
+      displayName: 0,
+    },
     output: { sessionLogger: o_SessionLogger },
     body: true,
   },
@@ -3818,7 +4015,12 @@ export const updateTrustStore: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /trustStores/{trustStoreArn+}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      trustStoreArn: 0,
+      certificatesToAdd: 0,
+      certificatesToDelete: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -3853,7 +4055,11 @@ export const updateUserAccessLoggingSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /userAccessLoggingSettings/{userAccessLoggingSettingsArn+}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      userAccessLoggingSettingsArn: 0,
+      kinesisStreamArn: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -3887,7 +4093,29 @@ export const updateUserSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /userSettings/{userSettingsArn+}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      userSettingsArn: 0,
+      copyAllowed: 0,
+      pasteAllowed: 0,
+      downloadAllowed: 0,
+      uploadAllowed: 0,
+      printAllowed: 0,
+      disconnectTimeoutInMinutes: 0,
+      idleDisconnectTimeoutInMinutes: 0,
+      clientToken: D.m({ idempotency: true }),
+      cookieSynchronizationConfiguration: i_CookieSynchronizationConfiguration,
+      deepLinkAllowed: 0,
+      toolbarConfiguration: i_ToolbarConfiguration,
+      brandingConfigurationInput: {
+        logo: i_IconImageInput,
+        wallpaper: i_WallpaperImageInput,
+        favicon: i_IconImageInput,
+        localizedStrings: D.map(i_LocalizedBrandingStrings),
+        colorTheme: 0,
+        termsOfService: 0,
+      },
+      webAuthnAllowed: 0,
+    },
     output: { userSettings: o_UserSettings },
     body: true,
   },
@@ -3903,6 +4131,66 @@ export const updateUserSettings: API.OperationMethod<
   operationName: "UpdateUserSettings",
 })) as any;
 
+const i_CookieSynchronizationConfiguration: D.LazyStruct = () => ({
+  allowlist: D.list(i_CookieSpecification),
+  blocklist: D.list(i_CookieSpecification),
+});
+const i_EventFilter: D.LazyStruct = () => ({ all: {}, include: 0 });
+const i_IconImageInput: D.LazyStruct = () => ({ blob: 0, s3Uri: 0 });
+const i_InlineRedactionConfiguration: D.LazyStruct = () => ({
+  inlineRedactionPatterns: D.list({
+    builtInPatternId: 0,
+    customPattern: {
+      patternName: 0,
+      patternRegex: 0,
+      patternDescription: 0,
+      keywordRegex: 0,
+    },
+    redactionPlaceHolder: {
+      redactionPlaceHolderType: 0,
+      redactionPlaceHolderText: 0,
+    },
+    enforcedUrls: 0,
+    exemptUrls: 0,
+    confidenceLevel: 0,
+  }),
+  globalEnforcedUrls: 0,
+  globalExemptUrls: 0,
+  globalConfidenceLevel: 0,
+});
+const i_IpRule: D.LazyStruct = () => ({ ipRange: 0, description: 0 });
+const i_LocalizedBrandingStrings: D.LazyStruct = () => ({
+  browserTabTitle: 0,
+  welcomeText: 0,
+  loginTitle: 0,
+  loginDescription: 0,
+  loginButtonText: 0,
+  contactLink: 0,
+  contactButtonText: 0,
+  loadingText: 0,
+});
+const i_LogConfiguration: D.LazyStruct = () => ({
+  s3: {
+    bucket: 0,
+    keyPrefix: 0,
+    bucketOwner: 0,
+    logFileFormat: 0,
+    folderStructure: 0,
+  },
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_ToolbarConfiguration: D.LazyStruct = () => ({
+  toolbarType: 0,
+  visualMode: 0,
+  hiddenToolbarItems: 0,
+  maxDisplayResolution: 0,
+});
+const i_WallpaperImageInput: D.LazyStruct = () => ({ blob: 0, s3Uri: 0 });
+const i_WebContentFilteringPolicy: D.LazyStruct = () => ({
+  blockedCategories: 0,
+  allowedUrls: 0,
+  blockedUrls: 0,
+});
 const o_BrandingConfiguration: D.LazyStruct = () => ({
   logo: o_ImageMetadata,
   wallpaper: o_ImageMetadata,
@@ -3965,6 +4253,11 @@ const o_SessionLogger: D.LazyStruct = () => ({
 const o_UserSettings: D.LazyStruct = () => ({
   cookieSynchronizationConfiguration: o_CookieSynchronizationConfiguration,
   brandingConfiguration: o_BrandingConfiguration,
+});
+const i_CookieSpecification: D.LazyStruct = () => ({
+  domain: 0,
+  name: 0,
+  path: 0,
 });
 const o_CookieSpecification: D.LazyStruct = () => ({
   domain: D.secret,

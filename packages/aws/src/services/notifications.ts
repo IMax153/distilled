@@ -767,6 +767,7 @@ export const associateChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /channels/associate/{arn}",
+    input: { arn: 0, notificationConfigurationArn: 0 },
     body: true,
   },
   errors: [
@@ -804,6 +805,7 @@ export const associateManagedNotificationAccountContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contacts/associate-managed-notification/{contactIdentifier}",
+    input: { contactIdentifier: 0, managedNotificationConfigurationArn: 0 },
     body: true,
   },
   errors: [
@@ -843,6 +845,7 @@ export const associateManagedNotificationAdditionalChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /channels/associate-managed-notification/{channelArn}",
+    input: { channelArn: 0, managedNotificationConfigurationArn: 0 },
     body: true,
   },
   errors: [
@@ -880,6 +883,7 @@ export const associateOrganizationalUnit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /organizational-units/associate/{organizationalUnitId}",
+    input: { organizationalUnitId: 0, notificationConfigurationArn: 0 },
     body: true,
   },
   errors: [
@@ -914,7 +918,18 @@ export const createEventRule: API.OperationMethod<
   CreateEventRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /event-rules", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /event-rules",
+    input: {
+      notificationConfigurationArn: 0,
+      source: 0,
+      eventType: 0,
+      eventPattern: 0,
+      regions: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -949,6 +964,7 @@ export const createNotificationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /notification-configurations",
+    input: { name: 0, description: 0, aggregationDuration: 0, tags: 0 },
     body: true,
   },
   errors: [
@@ -981,7 +997,11 @@ export const deleteEventRule: API.OperationMethod<
   DeleteEventRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /event-rules/{arn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /event-rules/{arn}",
+    input: { arn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1015,6 +1035,7 @@ export const deleteNotificationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /notification-configurations/{arn}",
+    input: { arn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1051,6 +1072,7 @@ export const deregisterNotificationHub: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /notification-hubs/{notificationHubRegion}",
+    input: { notificationHubRegion: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1083,7 +1105,7 @@ export const disableNotificationsAccessForOrganization: API.OperationMethod<
   DisableNotificationsAccessForOrganizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /organization/access" },
+  descriptor: { service: svc, http: "DELETE /organization/access", input: {} },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1117,6 +1139,7 @@ export const disassociateChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /channels/disassociate/{arn}",
+    input: { arn: 0, notificationConfigurationArn: 0 },
     body: true,
   },
   errors: [
@@ -1151,6 +1174,7 @@ export const disassociateManagedNotificationAccountContact: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /contacts/disassociate-managed-notification/{contactIdentifier}",
+    input: { contactIdentifier: 0, managedNotificationConfigurationArn: 0 },
     body: true,
   },
   errors: [
@@ -1187,6 +1211,7 @@ export const disassociateManagedNotificationAdditionalChannel: API.OperationMeth
   descriptor: {
     service: svc,
     http: "PUT /channels/disassociate-managed-notification/{channelArn}",
+    input: { channelArn: 0, managedNotificationConfigurationArn: 0 },
     body: true,
   },
   errors: [
@@ -1220,6 +1245,7 @@ export const disassociateOrganizationalUnit: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /organizational-units/disassociate/{organizationalUnitId}",
+    input: { organizationalUnitId: 0, notificationConfigurationArn: 0 },
     body: true,
   },
   errors: [
@@ -1252,7 +1278,7 @@ export const enableNotificationsAccessForOrganization: API.OperationMethod<
   EnableNotificationsAccessForOrganizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /organization/access" },
+  descriptor: { service: svc, http: "POST /organization/access", input: {} },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1286,6 +1312,7 @@ export const getEventRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /event-rules/{arn}",
+    input: { arn: 0 },
     output: { creationTime: D.ts },
   },
   errors: [
@@ -1319,7 +1346,7 @@ export const getManagedNotificationChildEvent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /managed-notification-child-events/{arn}",
-    input: { locale: D.m({ query: "locale" }) },
+    input: { arn: 0, locale: D.m({ query: "locale" }) },
     output: { creationTime: D.ts, content: { startTime: D.ts, endTime: D.ts } },
   },
   errors: [
@@ -1353,6 +1380,7 @@ export const getManagedNotificationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /managed-notification-configurations/{arn}",
+    input: { arn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1385,7 +1413,7 @@ export const getManagedNotificationEvent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /managed-notification-events/{arn}",
-    input: { locale: D.m({ query: "locale" }) },
+    input: { arn: 0, locale: D.m({ query: "locale" }) },
     output: { creationTime: D.ts, content: { startTime: D.ts, endTime: D.ts } },
   },
   errors: [
@@ -1419,6 +1447,7 @@ export const getNotificationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /notification-configurations/{arn}",
+    input: { arn: 0 },
     output: { creationTime: D.ts },
   },
   errors: [
@@ -1454,7 +1483,7 @@ export const getNotificationEvent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /notification-events/{arn}",
-    input: { locale: D.m({ query: "locale" }) },
+    input: { arn: 0, locale: D.m({ query: "locale" }) },
     output: {
       creationTime: D.ts,
       content: {
@@ -1491,7 +1520,7 @@ export const getNotificationsAccessForOrganization: API.OperationMethod<
   GetNotificationsAccessForOrganizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /organization/access" },
+  descriptor: { service: svc, http: "GET /organization/access", input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1663,6 +1692,7 @@ export const listManagedNotificationChildEvents: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /list-managed-notification-child-events/{aggregateManagedNotificationEventArn}",
     input: {
+      aggregateManagedNotificationEventArn: 0,
       startTime: D.m({ query: "startTime" }),
       endTime: D.m({ query: "endTime" }),
       locale: D.m({ query: "locale" }),
@@ -2042,7 +2072,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{arn}" },
+  descriptor: { service: svc, http: "GET /tags/{arn}", input: { arn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2077,6 +2107,7 @@ export const registerNotificationHub: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /notification-hubs",
+    input: { notificationHubRegion: 0 },
     output: { creationTime: D.ts, lastActivationTime: D.ts },
     body: true,
   },
@@ -2113,7 +2144,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{arn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{arn}",
+    input: { arn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2147,7 +2183,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{arn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { arn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -2178,7 +2214,12 @@ export const updateEventRule: API.OperationMethod<
   UpdateEventRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /event-rules/{arn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /event-rules/{arn}",
+    input: { arn: 0, eventPattern: 0, regions: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2212,6 +2253,7 @@ export const updateNotificationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /notification-configurations/{arn}",
+    input: { arn: 0, name: 0, description: 0, aggregationDuration: 0 },
     body: true,
   },
   errors: [

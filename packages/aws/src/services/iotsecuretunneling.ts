@@ -248,7 +248,7 @@ export const closeTunnel: API.OperationMethod<
   CloseTunnelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { tunnelId: 0, delete: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -269,6 +269,7 @@ export const describeTunnel: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { tunnelId: 0 },
     output: {
       tunnel: {
         sourceConnectionState: o_ConnectionState,
@@ -294,7 +295,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -317,6 +318,7 @@ export const listTunnels: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { thingName: 0, maxResults: 0, nextToken: 0 },
     output: {
       tunnelSummaries: D.list({ createdAt: D.ts, lastUpdatedAt: D.ts }),
     },
@@ -347,6 +349,12 @@ export const openTunnel: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      description: 0,
+      tags: D.list(i_Tag),
+      destinationConfig: i_DestinationConfig,
+      timeoutConfig: { maxLifetimeTimeoutMinutes: 0 },
+    },
     output: { sourceAccessToken: D.secret, destinationAccessToken: D.secret },
   },
   errors: [LimitExceededException],
@@ -377,6 +385,11 @@ export const rotateTunnelAccessToken: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      tunnelId: 0,
+      clientMode: 0,
+      destinationConfig: i_DestinationConfig,
+    },
     output: { sourceAccessToken: D.secret, destinationAccessToken: D.secret },
   },
   errors: [ResourceNotFoundException],
@@ -395,7 +408,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: D.list(i_Tag) } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -412,11 +425,13 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "UntagResource",
 })) as any;
 
+const i_DestinationConfig: D.LazyStruct = () => ({ thingName: 0, services: 0 });
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
 const o_ConnectionState: D.LazyStruct = () => ({ lastUpdatedAt: D.ts });

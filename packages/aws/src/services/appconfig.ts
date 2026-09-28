@@ -1017,7 +1017,12 @@ export const createApplication: API.OperationMethod<
   CreateApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /applications", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /applications",
+    input: { Name: 0, Description: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     InternalServerException,
@@ -1074,6 +1079,17 @@ export const createConfigurationProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{ApplicationId}/configurationprofiles",
+    input: {
+      ApplicationId: 0,
+      Name: 0,
+      Description: 0,
+      LocationUri: 0,
+      RetrievalRoleArn: 0,
+      Validators: D.list(i_Validator),
+      Tags: 0,
+      Type: 0,
+      KmsKeyIdentifier: 0,
+    },
     output: { Validators: D.list(o_Validator) },
     body: true,
   },
@@ -1105,7 +1121,21 @@ export const createDeploymentStrategy: API.OperationMethod<
   CreateDeploymentStrategyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /deploymentstrategies", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /deploymentstrategies",
+    input: {
+      Name: 0,
+      Description: 0,
+      DeploymentDurationInMinutes: 0,
+      FinalBakeTimeInMinutes: 0,
+      GrowthFactor: 0,
+      GrowthType: 0,
+      ReplicateTo: 0,
+      Tags: 0,
+    },
+    body: true,
+  },
   errors: [
     BadRequestException,
     InternalServerException,
@@ -1141,6 +1171,13 @@ export const createEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{ApplicationId}/environments",
+    input: {
+      ApplicationId: 0,
+      Name: 0,
+      Description: 0,
+      Monitors: D.list(i_Monitor),
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1173,6 +1210,20 @@ export const createExperimentDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{ApplicationIdentifier}/experimentdefinitions",
+    input: {
+      ApplicationIdentifier: 0,
+      Name: 0,
+      ConfigurationProfileIdentifier: 0,
+      EnvironmentIdentifier: 0,
+      FlagKey: 0,
+      Treatments: D.list(i_TreatmentInput),
+      Control: i_TreatmentInput,
+      AudienceRule: 0,
+      Hypothesis: 0,
+      AudienceDescription: 0,
+      LaunchCriteria: 0,
+      Tags: 0,
+    },
     output: { CreatedAt: D.ts, UpdatedAt: D.ts },
     body: true,
   },
@@ -1226,7 +1277,14 @@ export const createExtension: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /extensions",
-    input: { LatestVersionNumber: D.m({ header: "Latest-Version-Number" }) },
+    input: {
+      Name: 0,
+      Description: 0,
+      Actions: D.map(D.list(i_Action)),
+      Parameters: D.map(i_Parameter),
+      Tags: 0,
+      LatestVersionNumber: D.m({ header: "Latest-Version-Number" }),
+    },
     body: true,
   },
   errors: [
@@ -1266,7 +1324,18 @@ export const createExtensionAssociation: API.OperationMethod<
   CreateExtensionAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /extensionassociations", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /extensionassociations",
+    input: {
+      ExtensionIdentifier: 0,
+      ExtensionVersionNumber: 0,
+      ResourceIdentifier: 0,
+      Parameters: 0,
+      Tags: 0,
+    },
+    body: true,
+  },
   errors: [
     BadRequestException,
     InternalServerException,
@@ -1302,8 +1371,10 @@ export const createHostedConfigurationVersion: API.OperationMethod<
     service: svc,
     http: "POST /applications/{ApplicationId}/configurationprofiles/{ConfigurationProfileId}/hostedconfigurationversions",
     input: {
+      ApplicationId: 0,
+      ConfigurationProfileId: 0,
       Description: D.m({ header: "Description" }),
-      Content: D.m({ payload: true, shape: D.stream }),
+      Content: D.m({ payload: true, shape: D.blob }),
       ContentType: D.m({ header: "Content-Type" }),
       LatestVersionNumber: D.m({ header: "Latest-Version-Number" }),
       VersionLabel: D.m({ header: "VersionLabel" }),
@@ -1313,7 +1384,7 @@ export const createHostedConfigurationVersion: API.OperationMethod<
       ConfigurationProfileId: D.m({ header: "Configuration-Profile-Id" }),
       VersionNumber: D.m({ header: "Version-Number", shape: D.num }),
       Description: D.m({ header: "Description" }),
-      Content: D.m({ payload: true, shape: D.stream }),
+      Content: D.m({ payload: true, shape: D.secretBlob }),
       ContentType: D.m({ header: "Content-Type" }),
       VersionLabel: D.m({ header: "VersionLabel" }),
       KmsKeyArn: D.m({ header: "KmsKeyArn" }),
@@ -1346,7 +1417,11 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /applications/{ApplicationId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /applications/{ApplicationId}",
+    input: { ApplicationId: 0 },
+  },
   errors: [
     BadRequestException,
     InternalServerException,
@@ -1380,6 +1455,8 @@ export const deleteConfigurationProfile: API.OperationMethod<
     service: svc,
     http: "DELETE /applications/{ApplicationId}/configurationprofiles/{ConfigurationProfileId}",
     input: {
+      ApplicationId: 0,
+      ConfigurationProfileId: 0,
       DeletionProtectionCheck: D.m({
         header: "x-amzn-deletion-protection-check",
       }),
@@ -1413,6 +1490,7 @@ export const deleteDeploymentStrategy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /deployementstrategies/{DeploymentStrategyId}",
+    input: { DeploymentStrategyId: 0 },
   },
   errors: [
     BadRequestException,
@@ -1446,6 +1524,8 @@ export const deleteEnvironment: API.OperationMethod<
     service: svc,
     http: "DELETE /applications/{ApplicationId}/environments/{EnvironmentId}",
     input: {
+      EnvironmentId: 0,
+      ApplicationId: 0,
       DeletionProtectionCheck: D.m({
         header: "x-amzn-deletion-protection-check",
       }),
@@ -1480,7 +1560,11 @@ export const deleteExperimentDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{ApplicationIdentifier}/experimentdefinitions/{ExperimentDefinitionIdentifier}",
-    input: { DeleteType: D.m({ query: "delete_type" }) },
+    input: {
+      ApplicationIdentifier: 0,
+      ExperimentDefinitionIdentifier: 0,
+      DeleteType: D.m({ query: "delete_type" }),
+    },
   },
   errors: [
     BadRequestException,
@@ -1511,7 +1595,7 @@ export const deleteExtension: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /extensions/{ExtensionIdentifier}",
-    input: { VersionNumber: D.m({ query: "version" }) },
+    input: { ExtensionIdentifier: 0, VersionNumber: D.m({ query: "version" }) },
   },
   errors: [
     BadRequestException,
@@ -1541,6 +1625,7 @@ export const deleteExtensionAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /extensionassociations/{ExtensionAssociationId}",
+    input: { ExtensionAssociationId: 0 },
   },
   errors: [
     BadRequestException,
@@ -1570,6 +1655,7 @@ export const deleteHostedConfigurationVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{ApplicationId}/configurationprofiles/{ConfigurationProfileId}/hostedconfigurationversions/{VersionNumber}",
+    input: { ApplicationId: 0, ConfigurationProfileId: 0, VersionNumber: 0 },
   },
   errors: [
     BadRequestException,
@@ -1616,7 +1702,11 @@ export const getApplication: API.OperationMethod<
   GetApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /applications/{ApplicationId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /applications/{ApplicationId}",
+    input: { ApplicationId: 0 },
+  },
   errors: [
     BadRequestException,
     InternalServerException,
@@ -1653,13 +1743,16 @@ export const getConfiguration: API.OperationMethod<
     service: svc,
     http: "GET /applications/{Application}/environments/{Environment}/configurations/{Configuration}",
     input: {
+      Application: 0,
+      Environment: 0,
+      Configuration: 0,
       ClientId: D.m({ query: "client_id" }),
       ClientConfigurationVersion: D.m({
         query: "client_configuration_version",
       }),
     },
     output: {
-      Content: D.m({ payload: true, shape: D.stream }),
+      Content: D.m({ payload: true, shape: D.secretBlob }),
       ConfigurationVersion: D.m({ header: "Configuration-Version" }),
       ContentType: D.m({ header: "Content-Type" }),
     },
@@ -1691,6 +1784,7 @@ export const getConfigurationProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{ApplicationId}/configurationprofiles/{ConfigurationProfileId}",
+    input: { ApplicationId: 0, ConfigurationProfileId: 0 },
     output: { Validators: D.list(o_Validator) },
   },
   errors: [
@@ -1720,6 +1814,7 @@ export const getDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{ApplicationId}/environments/{EnvironmentId}/deployments/{DeploymentNumber}",
+    input: { ApplicationId: 0, EnvironmentId: 0, DeploymentNumber: 0 },
     output: {
       EventLog: D.list(o_DeploymentEvent),
       StartedAt: D.ts,
@@ -1757,6 +1852,7 @@ export const getDeploymentStrategy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /deploymentstrategies/{DeploymentStrategyId}",
+    input: { DeploymentStrategyId: 0 },
   },
   errors: [
     BadRequestException,
@@ -1790,6 +1886,7 @@ export const getEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{ApplicationId}/environments/{EnvironmentId}",
+    input: { ApplicationId: 0, EnvironmentId: 0 },
   },
   errors: [
     BadRequestException,
@@ -1818,6 +1915,7 @@ export const getExperimentDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{ApplicationIdentifier}/experimentdefinitions/{ExperimentDefinitionIdentifier}",
+    input: { ApplicationIdentifier: 0, ExperimentDefinitionIdentifier: 0 },
     output: { CreatedAt: D.ts, UpdatedAt: D.ts },
   },
   errors: [
@@ -1847,6 +1945,11 @@ export const getExperimentRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{ApplicationIdentifier}/experimentdefinitions/{ExperimentDefinitionIdentifier}/experimentruns/{Run}",
+    input: {
+      ApplicationIdentifier: 0,
+      ExperimentDefinitionIdentifier: 0,
+      Run: 0,
+    },
     output: { StartedAt: D.ts, UpdatedAt: D.ts, EndedAt: D.ts },
   },
   errors: [
@@ -1876,7 +1979,10 @@ export const getExtension: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /extensions/{ExtensionIdentifier}",
-    input: { VersionNumber: D.m({ query: "version_number" }) },
+    input: {
+      ExtensionIdentifier: 0,
+      VersionNumber: D.m({ query: "version_number" }),
+    },
   },
   errors: [
     BadRequestException,
@@ -1907,6 +2013,7 @@ export const getExtensionAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /extensionassociations/{ExtensionAssociationId}",
+    input: { ExtensionAssociationId: 0 },
   },
   errors: [
     BadRequestException,
@@ -1935,12 +2042,13 @@ export const getHostedConfigurationVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{ApplicationId}/configurationprofiles/{ConfigurationProfileId}/hostedconfigurationversions/{VersionNumber}",
+    input: { ApplicationId: 0, ConfigurationProfileId: 0, VersionNumber: 0 },
     output: {
       ApplicationId: D.m({ header: "Application-Id" }),
       ConfigurationProfileId: D.m({ header: "Configuration-Profile-Id" }),
       VersionNumber: D.m({ header: "Version-Number", shape: D.num }),
       Description: D.m({ header: "Description" }),
-      Content: D.m({ payload: true, shape: D.stream }),
+      Content: D.m({ payload: true, shape: D.secretBlob }),
       ContentType: D.m({ header: "Content-Type" }),
       VersionLabel: D.m({ header: "VersionLabel" }),
       KmsKeyArn: D.m({ header: "KmsKeyArn" }),
@@ -2009,6 +2117,7 @@ export const listConfigurationProfiles: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{ApplicationId}/configurationprofiles",
     input: {
+      ApplicationId: 0,
       MaxResults: D.m({ query: "max_results" }),
       NextToken: D.m({ query: "next_token" }),
       Type: D.m({ query: "type" }),
@@ -2049,6 +2158,8 @@ export const listDeployments: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{ApplicationId}/environments/{EnvironmentId}/deployments",
     input: {
+      ApplicationId: 0,
+      EnvironmentId: 0,
       MaxResults: D.m({ query: "max_results" }),
       NextToken: D.m({ query: "next_token" }),
     },
@@ -2123,6 +2234,7 @@ export const listEnvironments: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{ApplicationId}/environments",
     input: {
+      ApplicationId: 0,
       MaxResults: D.m({ query: "max_results" }),
       NextToken: D.m({ query: "next_token" }),
     },
@@ -2208,6 +2320,9 @@ export const listExperimentRunEvents: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{ApplicationIdentifier}/experimentdefinitions/{ExperimentDefinitionIdentifier}/experimentruns/{Run}/events",
     input: {
+      ApplicationIdentifier: 0,
+      ExperimentDefinitionIdentifier: 0,
+      Run: 0,
       MaxResults: D.m({ query: "max_results" }),
       NextToken: D.m({ query: "next_token" }),
     },
@@ -2248,6 +2363,8 @@ export const listExperimentRuns: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{ApplicationIdentifier}/experimentdefinitions/{ExperimentDefinitionIdentifier}/experimentruns",
     input: {
+      ApplicationIdentifier: 0,
+      ExperimentDefinitionIdentifier: 0,
       MaxResults: D.m({ query: "max_results" }),
       NextToken: D.m({ query: "next_token" }),
       Status: D.m({ query: "status" }),
@@ -2368,6 +2485,8 @@ export const listHostedConfigurationVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{ApplicationId}/configurationprofiles/{ConfigurationProfileId}/hostedconfigurationversions",
     input: {
+      ApplicationId: 0,
+      ConfigurationProfileId: 0,
       MaxResults: D.m({ query: "max_results" }),
       NextToken: D.m({ query: "next_token" }),
       VersionLabel: D.m({ query: "version_label" }),
@@ -2403,7 +2522,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     BadRequestException,
     InternalServerException,
@@ -2434,6 +2557,18 @@ export const startDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{ApplicationId}/environments/{EnvironmentId}/deployments",
+    input: {
+      ApplicationId: 0,
+      EnvironmentId: 0,
+      DeploymentStrategyId: 0,
+      ConfigurationProfileId: 0,
+      ConfigurationVersion: 0,
+      Description: 0,
+      Tags: 0,
+      KmsKeyIdentifier: 0,
+      DynamicExtensionParameters: 0,
+      LatestDeploymentNumber: 0,
+    },
     output: {
       EventLog: D.list(o_DeploymentEvent),
       StartedAt: D.ts,
@@ -2472,6 +2607,15 @@ export const startExperimentRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{ApplicationIdentifier}/experimentdefinitions/{ExperimentDefinitionIdentifier}/experimentruns",
+    input: {
+      ApplicationIdentifier: 0,
+      ExperimentDefinitionIdentifier: 0,
+      Description: 0,
+      ExposurePercentage: 0,
+      TreatmentOverrides: i_TreatmentOverrides,
+      Tags: 0,
+      DeploymentParameters: i_DeploymentParameters,
+    },
     output: { StartedAt: D.ts, UpdatedAt: D.ts, EndedAt: D.ts },
     body: true,
   },
@@ -2508,7 +2652,12 @@ export const stopDeployment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /applications/{ApplicationId}/environments/{EnvironmentId}/deployments/{DeploymentNumber}",
-    input: { AllowRevert: D.m({ header: "Allow-Revert" }) },
+    input: {
+      ApplicationId: 0,
+      EnvironmentId: 0,
+      DeploymentNumber: 0,
+      AllowRevert: D.m({ header: "Allow-Revert" }),
+    },
     output: {
       EventLog: D.list(o_DeploymentEvent),
       StartedAt: D.ts,
@@ -2543,6 +2692,17 @@ export const stopExperimentRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /applications/{ApplicationIdentifier}/experimentdefinitions/{ExperimentDefinitionIdentifier}/experimentruns/{Run}/stop",
+    input: {
+      ApplicationIdentifier: 0,
+      ExperimentDefinitionIdentifier: 0,
+      Run: 0,
+      Result: {
+        ExecutiveSummary: 0,
+        ReasonsToLaunch: 0,
+        ReasonsNotToLaunch: 0,
+      },
+      DeploymentParameters: i_DeploymentParameters,
+    },
     output: { StartedAt: D.ts, UpdatedAt: D.ts, EndedAt: D.ts },
     body: true,
   },
@@ -2573,7 +2733,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     InternalServerException,
@@ -2601,7 +2766,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     BadRequestException,
@@ -2626,7 +2791,15 @@ export const updateAccountSettings: API.OperationMethod<
   UpdateAccountSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /settings", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /settings",
+    input: {
+      DeletionProtection: { Enabled: 0, ProtectionPeriodInMinutes: 0 },
+      VendedMetrics: { Enabled: 0 },
+    },
+    body: true,
+  },
   errors: [BadRequestException, InternalServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2650,6 +2823,7 @@ export const updateApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /applications/{ApplicationId}",
+    input: { ApplicationId: 0, Name: 0, Description: 0 },
     body: true,
   },
   errors: [
@@ -2679,6 +2853,15 @@ export const updateConfigurationProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /applications/{ApplicationId}/configurationprofiles/{ConfigurationProfileId}",
+    input: {
+      ApplicationId: 0,
+      ConfigurationProfileId: 0,
+      Name: 0,
+      Description: 0,
+      RetrievalRoleArn: 0,
+      Validators: D.list(i_Validator),
+      KmsKeyIdentifier: 0,
+    },
     output: { Validators: D.list(o_Validator) },
     body: true,
   },
@@ -2709,6 +2892,14 @@ export const updateDeploymentStrategy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /deploymentstrategies/{DeploymentStrategyId}",
+    input: {
+      DeploymentStrategyId: 0,
+      Description: 0,
+      DeploymentDurationInMinutes: 0,
+      FinalBakeTimeInMinutes: 0,
+      GrowthFactor: 0,
+      GrowthType: 0,
+    },
     body: true,
   },
   errors: [
@@ -2738,6 +2929,13 @@ export const updateEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /applications/{ApplicationId}/environments/{EnvironmentId}",
+    input: {
+      ApplicationId: 0,
+      EnvironmentId: 0,
+      Name: 0,
+      Description: 0,
+      Monitors: D.list(i_Monitor),
+    },
     body: true,
   },
   errors: [
@@ -2768,6 +2966,16 @@ export const updateExperimentDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /applications/{ApplicationIdentifier}/experimentdefinitions/{ExperimentDefinitionIdentifier}",
+    input: {
+      ApplicationIdentifier: 0,
+      ExperimentDefinitionIdentifier: 0,
+      Treatments: D.list(i_TreatmentInput),
+      Control: i_TreatmentInput,
+      Hypothesis: 0,
+      AudienceRule: 0,
+      AudienceDescription: 0,
+      LaunchCriteria: 0,
+    },
     output: { CreatedAt: D.ts, UpdatedAt: D.ts },
     body: true,
   },
@@ -2800,6 +3008,15 @@ export const updateExperimentRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /applications/{ApplicationIdentifier}/experimentdefinitions/{ExperimentDefinitionIdentifier}/experimentruns/{Run}/update",
+    input: {
+      ApplicationIdentifier: 0,
+      ExperimentDefinitionIdentifier: 0,
+      Run: 0,
+      Description: 0,
+      ExposurePercentage: 0,
+      TreatmentOverrides: i_TreatmentOverrides,
+      DeploymentParameters: i_DeploymentParameters,
+    },
     output: { StartedAt: D.ts, UpdatedAt: D.ts, EndedAt: D.ts },
     body: true,
   },
@@ -2834,6 +3051,13 @@ export const updateExtension: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /extensions/{ExtensionIdentifier}",
+    input: {
+      ExtensionIdentifier: 0,
+      Description: 0,
+      Actions: D.map(D.list(i_Action)),
+      Parameters: D.map(i_Parameter),
+      VersionNumber: 0,
+    },
     body: true,
   },
   errors: [
@@ -2866,6 +3090,7 @@ export const updateExtensionAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /extensionassociations/{ExtensionAssociationId}",
+    input: { ExtensionAssociationId: 0, Parameters: 0 },
     body: true,
   },
   errors: [
@@ -2895,7 +3120,11 @@ export const validateConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications/{ApplicationId}/configurationprofiles/{ConfigurationProfileId}/validators",
-    input: { ConfigurationVersion: D.m({ query: "configuration_version" }) },
+    input: {
+      ApplicationId: 0,
+      ConfigurationProfileId: 0,
+      ConfigurationVersion: D.m({ query: "configuration_version" }),
+    },
   },
   errors: [
     BadRequestException,
@@ -2907,5 +3136,37 @@ export const validateConfiguration: API.OperationMethod<
   operationName: "ValidateConfiguration",
 })) as any;
 
+const i_Action: D.LazyStruct = () => ({
+  Name: 0,
+  Description: 0,
+  Uri: 0,
+  RoleArn: 0,
+});
+const i_DeploymentParameters: D.LazyStruct = () => ({
+  DynamicExtensionParameters: 0,
+  Tags: 0,
+});
+const i_Monitor: D.LazyStruct = () => ({ AlarmArn: 0, AlarmRoleArn: 0 });
+const i_Parameter: D.LazyStruct = () => ({
+  Description: 0,
+  Required: 0,
+  Dynamic: 0,
+});
+const i_TreatmentInput: D.LazyStruct = () => ({
+  Weight: 0,
+  Description: 0,
+  FlagValue: {
+    Enabled: 0,
+    AttributeValues: D.map({
+      StringValue: 0,
+      NumberValue: 0,
+      BooleanValue: 0,
+      StringArray: 0,
+      NumberArray: 0,
+    }),
+  },
+});
+const i_TreatmentOverrides: D.LazyStruct = () => ({ Inline: 0 });
+const i_Validator: D.LazyStruct = () => ({ Type: 0, Content: 0 });
 const o_DeploymentEvent: D.LazyStruct = () => ({ OccurredAt: D.ts });
 const o_Validator: D.LazyStruct = () => ({ Content: D.secret });

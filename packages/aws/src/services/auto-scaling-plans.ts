@@ -400,7 +400,14 @@ export const createScalingPlan: API.OperationMethod<
   CreateScalingPlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ScalingPlanName: 0,
+      ApplicationSource: i_ApplicationSource,
+      ScalingInstructions: D.list(i_ScalingInstruction),
+    },
+  },
   errors: [
     ConcurrentUpdateException,
     InternalServiceException,
@@ -433,7 +440,10 @@ export const deleteScalingPlan: API.OperationMethod<
   DeleteScalingPlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ScalingPlanName: 0, ScalingPlanVersion: 0 },
+  },
   errors: [
     ConcurrentUpdateException,
     InternalServiceException,
@@ -460,7 +470,15 @@ export const describeScalingPlanResources: API.OperationMethod<
   DescribeScalingPlanResourcesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ScalingPlanName: 0,
+      ScalingPlanVersion: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     ConcurrentUpdateException,
     InternalServiceException,
@@ -489,6 +507,13 @@ export const describeScalingPlans: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ScalingPlanNames: 0,
+      ScalingPlanVersion: 0,
+      ApplicationSources: D.list(i_ApplicationSource),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       ScalingPlans: D.list({ StatusStartTime: D.ts, CreationTime: D.ts }),
     },
@@ -523,6 +548,16 @@ export const getScalingPlanResourceForecastData: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ScalingPlanName: 0,
+      ScalingPlanVersion: 0,
+      ServiceNamespace: 0,
+      ResourceId: 0,
+      ScalableDimension: 0,
+      ForecastDataType: 0,
+      StartTime: 0,
+      EndTime: 0,
+    },
     output: { Datapoints: D.list({ Timestamp: D.ts }) },
   },
   errors: [InternalServiceException, ValidationException],
@@ -549,7 +584,15 @@ export const updateScalingPlan: API.OperationMethod<
   UpdateScalingPlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ScalingPlanName: 0,
+      ScalingPlanVersion: 0,
+      ApplicationSource: i_ApplicationSource,
+      ScalingInstructions: D.list(i_ScalingInstruction),
+    },
+  },
   errors: [
     ConcurrentUpdateException,
     InternalServiceException,
@@ -560,3 +603,51 @@ export const updateScalingPlan: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateScalingPlan",
 })) as any;
+
+const i_ApplicationSource: D.LazyStruct = () => ({
+  CloudFormationStackARN: 0,
+  TagFilters: D.list({ Key: 0, Values: 0 }),
+});
+const i_ScalingInstruction: D.LazyStruct = () => ({
+  ServiceNamespace: 0,
+  ResourceId: 0,
+  ScalableDimension: 0,
+  MinCapacity: 0,
+  MaxCapacity: 0,
+  TargetTrackingConfigurations: D.list({
+    PredefinedScalingMetricSpecification: {
+      PredefinedScalingMetricType: 0,
+      ResourceLabel: 0,
+    },
+    CustomizedScalingMetricSpecification: {
+      MetricName: 0,
+      Namespace: 0,
+      Dimensions: D.list(i_MetricDimension),
+      Statistic: 0,
+      Unit: 0,
+    },
+    TargetValue: 0,
+    DisableScaleIn: 0,
+    ScaleOutCooldown: 0,
+    ScaleInCooldown: 0,
+    EstimatedInstanceWarmup: 0,
+  }),
+  PredefinedLoadMetricSpecification: {
+    PredefinedLoadMetricType: 0,
+    ResourceLabel: 0,
+  },
+  CustomizedLoadMetricSpecification: {
+    MetricName: 0,
+    Namespace: 0,
+    Dimensions: D.list(i_MetricDimension),
+    Statistic: 0,
+    Unit: 0,
+  },
+  ScheduledActionBufferTime: 0,
+  PredictiveScalingMaxCapacityBehavior: 0,
+  PredictiveScalingMaxCapacityBuffer: 0,
+  PredictiveScalingMode: 0,
+  ScalingPolicyUpdateBehavior: 0,
+  DisableDynamicScaling: 0,
+});
+const i_MetricDimension: D.LazyStruct = () => ({ Name: 0, Value: 0 });

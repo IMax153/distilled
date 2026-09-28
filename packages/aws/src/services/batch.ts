@@ -2327,7 +2327,12 @@ export const cancelJob: API.OperationMethod<
   CancelJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/canceljob", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/canceljob",
+    input: { jobId: 0, reason: 0 },
+    body: true,
+  },
   errors: [ClientException, ServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2375,6 +2380,56 @@ export const createComputeEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/createcomputeenvironment",
+    input: {
+      computeEnvironmentName: 0,
+      type: 0,
+      state: 0,
+      unmanagedvCpus: 0,
+      computeResources: {
+        type: 0,
+        allocationStrategy: 0,
+        minvCpus: 0,
+        maxvCpus: 0,
+        desiredvCpus: 0,
+        instanceTypes: 0,
+        imageId: 0,
+        subnets: 0,
+        securityGroupIds: 0,
+        ec2KeyPair: 0,
+        instanceRole: 0,
+        tags: 0,
+        placementGroup: 0,
+        bidPercentage: 0,
+        spotIamFleetRole: 0,
+        launchTemplate: i_LaunchTemplateSpecification,
+        ec2Configuration: D.list(i_Ec2Configuration),
+        scalingPolicy: i_ComputeScalingPolicy,
+        managedInstancesProvider: {
+          propagateTags: 0,
+          infrastructureRoleArn: 0,
+          instanceLaunchTemplate: {
+            ec2InstanceProfileArn: 0,
+            networkConfiguration: i_ManagedInstancesNetworkConfiguration,
+            instanceRequirements: i_InstanceRequirementsRequest,
+            capacityOptionType: 0,
+            storageConfiguration: i_ManagedInstancesStorageConfiguration,
+            monitoring: 0,
+            fipsEnabled: 0,
+            capacityReservations: i_CapacityReservationRequest,
+            instanceMetadataTagsPropagation: 0,
+            localStorageConfiguration:
+              i_ManagedInstancesLocalStorageConfiguration,
+          },
+          infrastructureOptimization: i_InfrastructureOptimization,
+        },
+        capacityTags: 0,
+      },
+      serviceRole: 0,
+      tags: 0,
+      eksConfiguration: { eksClusterArn: 0, kubernetesNamespace: 0 },
+      context: 0,
+      ecsSettings: i_EcsSettings,
+    },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -2399,6 +2454,12 @@ export const createConsumableResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/createconsumableresource",
+    input: {
+      consumableResourceName: 0,
+      totalQuantity: 0,
+      resourceType: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -2429,7 +2490,22 @@ export const createJobQueue: API.OperationMethod<
   CreateJobQueueError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/createjobqueue", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/createjobqueue",
+    input: {
+      jobQueueName: 0,
+      state: 0,
+      schedulingPolicyArn: 0,
+      priority: 0,
+      computeEnvironmentOrder: D.list(i_ComputeEnvironmentOrder),
+      serviceEnvironmentOrder: D.list(i_ServiceEnvironmentOrder),
+      jobQueueType: 0,
+      tags: 0,
+      jobStateTimeLimitActions: D.list(i_JobStateTimeLimitAction),
+    },
+    body: true,
+  },
   errors: [
     ClientException,
     ServerException,
@@ -2454,7 +2530,20 @@ export const createQuotaShare: API.OperationMethod<
   CreateQuotaShareError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/createquotashare", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/createquotashare",
+    input: {
+      quotaShareName: 0,
+      jobQueue: 0,
+      capacityLimits: D.list(i_QuotaShareCapacityLimit),
+      resourceSharingConfiguration: i_QuotaShareResourceSharingConfiguration,
+      preemptionConfiguration: i_QuotaSharePreemptionConfiguration,
+      state: 0,
+      tags: 0,
+    },
+    body: true,
+  },
   errors: [ClientException, ServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2477,6 +2566,12 @@ export const createSchedulingPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/createschedulingpolicy",
+    input: {
+      name: 0,
+      quotaSharePolicy: i_QuotaSharePolicy,
+      fairsharePolicy: i_FairsharePolicy,
+      tags: 0,
+    },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -2501,6 +2596,13 @@ export const createServiceEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/createserviceenvironment",
+    input: {
+      serviceEnvironmentName: 0,
+      serviceEnvironmentType: 0,
+      state: 0,
+      capacityLimits: D.list(i_CapacityLimit),
+      tags: 0,
+    },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -2535,6 +2637,7 @@ export const deleteComputeEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/deletecomputeenvironment",
+    input: { computeEnvironment: 0 },
     body: true,
   },
   errors: [
@@ -2565,6 +2668,7 @@ export const deleteConsumableResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/deleteconsumableresource",
+    input: { consumableResource: 0 },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -2593,7 +2697,12 @@ export const deleteJobQueue: API.OperationMethod<
   DeleteJobQueueError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/deletejobqueue", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/deletejobqueue",
+    input: { jobQueue: 0 },
+    body: true,
+  },
   errors: [
     ClientException,
     ServerException,
@@ -2620,7 +2729,12 @@ export const deleteQuotaShare: API.OperationMethod<
   DeleteQuotaShareError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/deletequotashare", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/deletequotashare",
+    input: { quotaShareArn: 0 },
+    body: true,
+  },
   errors: [ClientException, ServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2645,6 +2759,7 @@ export const deleteSchedulingPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/deleteschedulingpolicy",
+    input: { arn: 0 },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -2669,6 +2784,7 @@ export const deleteServiceEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/deleteserviceenvironment",
+    input: { serviceEnvironment: 0 },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -2694,6 +2810,7 @@ export const deregisterJobDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/deregisterjobdefinition",
+    input: { jobDefinition: 0 },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -2723,6 +2840,7 @@ export const describeComputeEnvironments: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/describecomputeenvironments",
+    input: { computeEnvironments: 0, maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -2753,6 +2871,7 @@ export const describeConsumableResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/describeconsumableresource",
+    input: { consumableResource: 0 },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -2779,6 +2898,13 @@ export const describeJobDefinitions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/describejobdefinitions",
+    input: {
+      jobDefinitions: 0,
+      maxResults: 0,
+      jobDefinitionName: 0,
+      status: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -2807,7 +2933,12 @@ export const describeJobQueues: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   JobQueueDetail
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /v1/describejobqueues", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/describejobqueues",
+    input: { jobQueues: 0, maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [ClientException, ServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2833,7 +2964,12 @@ export const describeJobs: API.OperationMethod<
   DescribeJobsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/describejobs", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/describejobs",
+    input: { jobs: 0 },
+    body: true,
+  },
   errors: [ClientException, ServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2853,7 +2989,12 @@ export const describeQuotaShare: API.OperationMethod<
   DescribeQuotaShareError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/describequotashare", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/describequotashare",
+    input: { quotaShareArn: 0 },
+    body: true,
+  },
   errors: [ClientException, ServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2876,6 +3017,7 @@ export const describeSchedulingPolicies: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/describeschedulingpolicies",
+    input: { arns: 0 },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -2901,6 +3043,7 @@ export const describeServiceEnvironments: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/describeserviceenvironments",
+    input: { serviceEnvironments: 0, maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -2928,7 +3071,12 @@ export const describeServiceJob: API.OperationMethod<
   DescribeServiceJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/describeservicejob", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/describeservicejob",
+    input: { jobId: 0 },
+    body: true,
+  },
   errors: [ClientException, ServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2954,6 +3102,7 @@ export const getJobQueueSnapshot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/getjobqueuesnapshot",
+    input: { jobQueue: 0 },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -2979,6 +3128,7 @@ export const listConsumableResources: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/listconsumableresources",
+    input: { filters: D.list(i_KeyValuesPair), maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -3012,7 +3162,20 @@ export const listJobs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   JobSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /v1/listjobs", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/listjobs",
+    input: {
+      jobQueue: 0,
+      arrayJobId: 0,
+      multiNodeJobId: 0,
+      jobStatus: 0,
+      maxResults: 0,
+      nextToken: 0,
+      filters: D.list(i_KeyValuesPair),
+    },
+    body: true,
+  },
   errors: [ClientException, ServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3042,6 +3205,12 @@ export const listJobsByConsumableResource: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/listjobsbyconsumableresource",
+    input: {
+      consumableResource: 0,
+      filters: D.list(i_KeyValuesPair),
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -3070,7 +3239,12 @@ export const listQuotaShares: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   QuotaShareDetail
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /v1/listquotashares", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/listquotashares",
+    input: { jobQueue: 0, maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [ClientException, ServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3100,6 +3274,7 @@ export const listSchedulingPolicies: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/listschedulingpolicies",
+    input: { maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -3128,7 +3303,18 @@ export const listServiceJobs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ServiceJobSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /v1/listservicejobs", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/listservicejobs",
+    input: {
+      jobQueue: 0,
+      jobStatus: 0,
+      maxResults: 0,
+      nextToken: 0,
+      filters: D.list(i_KeyValuesPair),
+    },
+    body: true,
+  },
   errors: [ClientException, ServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3155,7 +3341,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /v1/tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [ClientException, ServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3178,6 +3368,33 @@ export const registerJobDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/registerjobdefinition",
+    input: {
+      jobDefinitionName: 0,
+      type: 0,
+      parameters: 0,
+      schedulingPriority: 0,
+      containerProperties: i_ContainerProperties,
+      nodeProperties: {
+        numNodes: 0,
+        mainNode: 0,
+        nodeRangeProperties: D.list({
+          targetNodes: 0,
+          container: i_ContainerProperties,
+          instanceTypes: 0,
+          ecsProperties: i_EcsProperties,
+          eksProperties: i_EksProperties,
+          consumableResourceProperties: i_ConsumableResourceProperties,
+        }),
+      },
+      retryStrategy: i_RetryStrategy,
+      propagateTags: 0,
+      timeout: i_JobTimeout,
+      tags: 0,
+      platformCapabilities: 0,
+      eksProperties: i_EksProperties,
+      ecsProperties: i_EcsProperties,
+      consumableResourceProperties: i_ConsumableResourceProperties,
+    },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -3208,7 +3425,40 @@ export const submitJob: API.OperationMethod<
   SubmitJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/submitjob", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/submitjob",
+    input: {
+      jobName: 0,
+      jobQueue: 0,
+      shareIdentifier: 0,
+      schedulingPriorityOverride: 0,
+      arrayProperties: { size: 0 },
+      dependsOn: D.list({ jobId: 0, type: 0 }),
+      jobDefinition: 0,
+      parameters: 0,
+      containerOverrides: i_ContainerOverrides,
+      nodeOverrides: {
+        numNodes: 0,
+        nodePropertyOverrides: D.list({
+          targetNodes: 0,
+          containerOverrides: i_ContainerOverrides,
+          ecsPropertiesOverride: i_EcsPropertiesOverride,
+          instanceTypes: 0,
+          eksPropertiesOverride: i_EksPropertiesOverride,
+          consumableResourcePropertiesOverride: i_ConsumableResourceProperties,
+        }),
+      },
+      retryStrategy: i_RetryStrategy,
+      propagateTags: 0,
+      timeout: i_JobTimeout,
+      tags: 0,
+      eksPropertiesOverride: i_EksPropertiesOverride,
+      ecsPropertiesOverride: i_EcsPropertiesOverride,
+      consumableResourcePropertiesOverride: i_ConsumableResourceProperties,
+    },
+    body: true,
+  },
   errors: [ClientException, ServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3231,7 +3481,23 @@ export const submitServiceJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/submitservicejob",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      jobName: 0,
+      jobQueue: 0,
+      retryStrategy: {
+        attempts: 0,
+        evaluateOnExit: D.list({ action: 0, onStatusReason: 0 }),
+      },
+      schedulingPriority: 0,
+      serviceRequestPayload: 0,
+      serviceJobType: 0,
+      shareIdentifier: 0,
+      quotaShareName: 0,
+      preemptionConfiguration: { preemptionRetriesBeforeTermination: 0 },
+      timeoutConfig: { attemptDurationSeconds: 0 },
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -3254,7 +3520,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [ClientException, ServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3277,7 +3548,12 @@ export const terminateJob: API.OperationMethod<
   TerminateJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/terminatejob", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/terminatejob",
+    input: { jobId: 0, reason: 0 },
+    body: true,
+  },
   errors: [ClientException, ServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3300,6 +3576,7 @@ export const terminateServiceJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/terminateservicejob",
+    input: { jobId: 0, reason: 0 },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -3324,7 +3601,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [ClientException, ServerException],
   protocol: AwsProtocol,
@@ -3350,6 +3627,52 @@ export const updateComputeEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/updatecomputeenvironment",
+    input: {
+      computeEnvironment: 0,
+      state: 0,
+      unmanagedvCpus: 0,
+      computeResources: {
+        minvCpus: 0,
+        maxvCpus: 0,
+        desiredvCpus: 0,
+        subnets: 0,
+        securityGroupIds: 0,
+        allocationStrategy: 0,
+        instanceTypes: 0,
+        ec2KeyPair: 0,
+        instanceRole: 0,
+        tags: 0,
+        placementGroup: 0,
+        bidPercentage: 0,
+        launchTemplate: i_LaunchTemplateSpecification,
+        ec2Configuration: D.list(i_Ec2Configuration),
+        updateToLatestImageVersion: 0,
+        type: 0,
+        imageId: 0,
+        scalingPolicy: i_ComputeScalingPolicy,
+        managedInstancesProvider: {
+          propagateTags: 0,
+          infrastructureRoleArn: 0,
+          instanceLaunchTemplate: {
+            ec2InstanceProfileArn: 0,
+            networkConfiguration: i_ManagedInstancesNetworkConfiguration,
+            instanceRequirements: i_InstanceRequirementsRequest,
+            storageConfiguration: i_ManagedInstancesStorageConfiguration,
+            monitoring: 0,
+            capacityReservations: i_CapacityReservationRequest,
+            instanceMetadataTagsPropagation: 0,
+            localStorageConfiguration:
+              i_ManagedInstancesLocalStorageConfiguration,
+          },
+          infrastructureOptimization: i_InfrastructureOptimization,
+        },
+        capacityTags: 0,
+      },
+      serviceRole: 0,
+      updatePolicy: { terminateJobsOnUpdate: 0, jobExecutionTimeoutMinutes: 0 },
+      context: 0,
+      ecsSettings: i_EcsSettings,
+    },
     body: true,
   },
   errors: [
@@ -3379,7 +3702,12 @@ export const updateConsumableResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/updateconsumableresource",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      consumableResource: 0,
+      operation: 0,
+      quantity: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -3403,7 +3731,20 @@ export const updateJobQueue: API.OperationMethod<
   UpdateJobQueueError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/updatejobqueue", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/updatejobqueue",
+    input: {
+      jobQueue: 0,
+      state: 0,
+      schedulingPolicyArn: 0,
+      priority: 0,
+      computeEnvironmentOrder: D.list(i_ComputeEnvironmentOrder),
+      serviceEnvironmentOrder: D.list(i_ServiceEnvironmentOrder),
+      jobStateTimeLimitActions: D.list(i_JobStateTimeLimitAction),
+    },
+    body: true,
+  },
   errors: [
     ClientException,
     ServerException,
@@ -3428,7 +3769,18 @@ export const updateQuotaShare: API.OperationMethod<
   UpdateQuotaShareError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/updatequotashare", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/updatequotashare",
+    input: {
+      quotaShareArn: 0,
+      capacityLimits: D.list(i_QuotaShareCapacityLimit),
+      resourceSharingConfiguration: i_QuotaShareResourceSharingConfiguration,
+      preemptionConfiguration: i_QuotaSharePreemptionConfiguration,
+      state: 0,
+    },
+    body: true,
+  },
   errors: [ClientException, ServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3451,6 +3803,11 @@ export const updateSchedulingPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/updateschedulingpolicy",
+    input: {
+      arn: 0,
+      quotaSharePolicy: i_QuotaSharePolicy,
+      fairsharePolicy: i_FairsharePolicy,
+    },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -3475,6 +3832,11 @@ export const updateServiceEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/updateserviceenvironment",
+    input: {
+      serviceEnvironment: 0,
+      state: 0,
+      capacityLimits: D.list(i_CapacityLimit),
+    },
     body: true,
   },
   errors: [ClientException, ServerException],
@@ -3496,9 +3858,300 @@ export const updateServiceJob: API.OperationMethod<
   UpdateServiceJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/updateservicejob", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/updateservicejob",
+    input: { jobId: 0, schedulingPriority: 0 },
+    body: true,
+  },
   errors: [ClientException, ServerException],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "UpdateServiceJob",
 })) as any;
+
+const i_CapacityLimit: D.LazyStruct = () => ({
+  maxCapacity: 0,
+  capacityUnit: 0,
+});
+const i_CapacityReservationRequest: D.LazyStruct = () => ({
+  reservationGroupArn: 0,
+  reservationPreference: 0,
+});
+const i_ComputeEnvironmentOrder: D.LazyStruct = () => ({
+  order: 0,
+  computeEnvironment: 0,
+});
+const i_ComputeScalingPolicy: D.LazyStruct = () => ({
+  minScaleDownDelayMinutes: 0,
+});
+const i_ConsumableResourceProperties: D.LazyStruct = () => ({
+  consumableResourceList: D.list({ consumableResource: 0, quantity: 0 }),
+});
+const i_ContainerOverrides: D.LazyStruct = () => ({
+  vcpus: 0,
+  memory: 0,
+  command: 0,
+  instanceType: 0,
+  environment: D.list(i_KeyValuePair),
+  resourceRequirements: D.list(i_ResourceRequirement),
+});
+const i_ContainerProperties: D.LazyStruct = () => ({
+  image: 0,
+  vcpus: 0,
+  memory: 0,
+  command: 0,
+  jobRoleArn: 0,
+  executionRoleArn: 0,
+  volumes: D.list(i_Volume),
+  environment: D.list(i_KeyValuePair),
+  mountPoints: D.list(i_MountPoint),
+  readonlyRootFilesystem: 0,
+  privileged: 0,
+  ulimits: D.list(i_Ulimit),
+  user: 0,
+  instanceType: 0,
+  resourceRequirements: D.list(i_ResourceRequirement),
+  linuxParameters: i_LinuxParameters,
+  logConfiguration: i_LogConfiguration,
+  secrets: D.list(i_Secret),
+  networkConfiguration: i_NetworkConfiguration,
+  fargatePlatformConfiguration: { platformVersion: 0 },
+  enableExecuteCommand: 0,
+  ephemeralStorage: i_EphemeralStorage,
+  runtimePlatform: i_RuntimePlatform,
+  repositoryCredentials: i_RepositoryCredentials,
+});
+const i_Ec2Configuration: D.LazyStruct = () => ({
+  imageType: 0,
+  imageIdOverride: 0,
+  batchImageStatus: 0,
+  imageKubernetesVersion: 0,
+});
+const i_EcsProperties: D.LazyStruct = () => ({
+  taskProperties: D.list({
+    containers: D.list({
+      command: 0,
+      dependsOn: D.list({ containerName: 0, condition: 0 }),
+      environment: D.list(i_KeyValuePair),
+      essential: 0,
+      firelensConfiguration: { type: 0, options: 0 },
+      image: 0,
+      linuxParameters: i_LinuxParameters,
+      logConfiguration: i_LogConfiguration,
+      mountPoints: D.list(i_MountPoint),
+      name: 0,
+      privileged: 0,
+      readonlyRootFilesystem: 0,
+      repositoryCredentials: i_RepositoryCredentials,
+      resourceRequirements: D.list(i_ResourceRequirement),
+      secrets: D.list(i_Secret),
+      ulimits: D.list(i_Ulimit),
+      user: 0,
+      startTimeout: 0,
+      stopTimeout: 0,
+    }),
+    ephemeralStorage: i_EphemeralStorage,
+    executionRoleArn: 0,
+    platformVersion: 0,
+    ipcMode: 0,
+    taskRoleArn: 0,
+    pidMode: 0,
+    networkConfiguration: i_NetworkConfiguration,
+    runtimePlatform: i_RuntimePlatform,
+    volumes: D.list(i_Volume),
+    enableExecuteCommand: 0,
+    networkMode: 0,
+  }),
+});
+const i_EcsPropertiesOverride: D.LazyStruct = () => ({
+  taskProperties: D.list({
+    containers: D.list({
+      command: 0,
+      environment: D.list(i_KeyValuePair),
+      name: 0,
+      resourceRequirements: D.list(i_ResourceRequirement),
+    }),
+  }),
+});
+const i_EcsSettings: D.LazyStruct = () => ({ containerInsights: 0 });
+const i_EksProperties: D.LazyStruct = () => ({
+  podProperties: {
+    serviceAccountName: 0,
+    hostNetwork: 0,
+    dnsPolicy: 0,
+    imagePullSecrets: D.list({ name: 0 }),
+    containers: D.list(i_EksContainer),
+    initContainers: D.list(i_EksContainer),
+    volumes: D.list({
+      name: 0,
+      hostPath: { path: 0 },
+      emptyDir: { medium: 0, sizeLimit: 0 },
+      secret: { secretName: 0, optional: 0 },
+      persistentVolumeClaim: { claimName: 0, readOnly: 0 },
+    }),
+    metadata: i_EksMetadata,
+    shareProcessNamespace: 0,
+  },
+});
+const i_EksPropertiesOverride: D.LazyStruct = () => ({
+  podProperties: {
+    containers: D.list(i_EksContainerOverride),
+    initContainers: D.list(i_EksContainerOverride),
+    metadata: i_EksMetadata,
+  },
+});
+const i_FairsharePolicy: D.LazyStruct = () => ({
+  shareDecaySeconds: 0,
+  computeReservation: 0,
+  shareDistribution: D.list({ shareIdentifier: 0, weightFactor: 0 }),
+});
+const i_InfrastructureOptimization: D.LazyStruct = () => ({ scaleInAfter: 0 });
+const i_InstanceRequirementsRequest: D.LazyStruct = () => ({
+  allowedInstanceTypes: 0,
+});
+const i_JobStateTimeLimitAction: D.LazyStruct = () => ({
+  reason: 0,
+  state: 0,
+  maxTimeSeconds: 0,
+  action: 0,
+});
+const i_JobTimeout: D.LazyStruct = () => ({ attemptDurationSeconds: 0 });
+const i_KeyValuesPair: D.LazyStruct = () => ({ name: 0, values: 0 });
+const i_LaunchTemplateSpecification: D.LazyStruct = () => ({
+  launchTemplateId: 0,
+  launchTemplateName: 0,
+  version: 0,
+  overrides: D.list({
+    launchTemplateId: 0,
+    launchTemplateName: 0,
+    version: 0,
+    targetInstanceTypes: 0,
+    userdataType: 0,
+  }),
+  userdataType: 0,
+});
+const i_ManagedInstancesLocalStorageConfiguration: D.LazyStruct = () => ({
+  useLocalStorage: 0,
+});
+const i_ManagedInstancesNetworkConfiguration: D.LazyStruct = () => ({
+  subnets: 0,
+  securityGroups: 0,
+});
+const i_ManagedInstancesStorageConfiguration: D.LazyStruct = () => ({
+  storageSizeGiB: 0,
+});
+const i_QuotaShareCapacityLimit: D.LazyStruct = () => ({
+  maxCapacity: 0,
+  capacityUnit: 0,
+});
+const i_QuotaSharePolicy: D.LazyStruct = () => ({
+  idleResourceAssignmentStrategy: 0,
+});
+const i_QuotaSharePreemptionConfiguration: D.LazyStruct = () => ({
+  inSharePreemption: 0,
+});
+const i_QuotaShareResourceSharingConfiguration: D.LazyStruct = () => ({
+  strategy: 0,
+  borrowLimit: 0,
+});
+const i_RetryStrategy: D.LazyStruct = () => ({
+  attempts: 0,
+  evaluateOnExit: D.list({
+    onStatusReason: 0,
+    onReason: 0,
+    onExitCode: 0,
+    action: 0,
+  }),
+});
+const i_ServiceEnvironmentOrder: D.LazyStruct = () => ({
+  order: 0,
+  serviceEnvironment: 0,
+});
+const i_EksContainer: D.LazyStruct = () => ({
+  name: 0,
+  image: 0,
+  imagePullPolicy: 0,
+  command: 0,
+  args: 0,
+  env: D.list(i_EksContainerEnvironmentVariable),
+  resources: i_EksContainerResourceRequirements,
+  volumeMounts: D.list({ name: 0, mountPath: 0, subPath: 0, readOnly: 0 }),
+  securityContext: {
+    runAsUser: 0,
+    runAsGroup: 0,
+    privileged: 0,
+    allowPrivilegeEscalation: 0,
+    readOnlyRootFilesystem: 0,
+    runAsNonRoot: 0,
+  },
+});
+const i_EksContainerOverride: D.LazyStruct = () => ({
+  name: 0,
+  image: 0,
+  command: 0,
+  args: 0,
+  env: D.list(i_EksContainerEnvironmentVariable),
+  resources: i_EksContainerResourceRequirements,
+});
+const i_EksMetadata: D.LazyStruct = () => ({
+  labels: 0,
+  annotations: 0,
+  namespace: 0,
+});
+const i_EphemeralStorage: D.LazyStruct = () => ({ sizeInGiB: 0 });
+const i_KeyValuePair: D.LazyStruct = () => ({ name: 0, value: 0 });
+const i_LinuxParameters: D.LazyStruct = () => ({
+  devices: D.list({ hostPath: 0, containerPath: 0, permissions: 0 }),
+  initProcessEnabled: 0,
+  sharedMemorySize: 0,
+  tmpfs: D.list({ containerPath: 0, size: 0, mountOptions: 0 }),
+  maxSwap: 0,
+  swappiness: 0,
+});
+const i_LogConfiguration: D.LazyStruct = () => ({
+  logDriver: 0,
+  options: 0,
+  secretOptions: D.list(i_Secret),
+});
+const i_MountPoint: D.LazyStruct = () => ({
+  containerPath: 0,
+  readOnly: 0,
+  sourceVolume: 0,
+});
+const i_NetworkConfiguration: D.LazyStruct = () => ({ assignPublicIp: 0 });
+const i_RepositoryCredentials: D.LazyStruct = () => ({
+  credentialsParameter: 0,
+});
+const i_ResourceRequirement: D.LazyStruct = () => ({ value: 0, type: 0 });
+const i_RuntimePlatform: D.LazyStruct = () => ({
+  operatingSystemFamily: 0,
+  cpuArchitecture: 0,
+});
+const i_Secret: D.LazyStruct = () => ({ name: 0, valueFrom: 0 });
+const i_Ulimit: D.LazyStruct = () => ({ hardLimit: 0, name: 0, softLimit: 0 });
+const i_Volume: D.LazyStruct = () => ({
+  host: { sourcePath: 0 },
+  name: 0,
+  efsVolumeConfiguration: {
+    fileSystemId: 0,
+    rootDirectory: 0,
+    transitEncryption: 0,
+    transitEncryptionPort: 0,
+    authorizationConfig: { accessPointId: 0, iam: 0 },
+  },
+  s3filesVolumeConfiguration: {
+    fileSystemArn: 0,
+    rootDirectory: 0,
+    transitEncryptionPort: 0,
+    accessPointArn: 0,
+  },
+});
+const i_EksContainerEnvironmentVariable: D.LazyStruct = () => ({
+  name: 0,
+  value: 0,
+});
+const i_EksContainerResourceRequirements: D.LazyStruct = () => ({
+  limits: 0,
+  requests: 0,
+});

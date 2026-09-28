@@ -2119,7 +2119,7 @@ export const addTagsToResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: { ResourceName: 0, Tags: D.list(i_Tag, { item: "Tag" }) },
     output: { TagList: D.list({}, { item: "Tag" }) },
   },
   errors: [
@@ -2168,6 +2168,11 @@ export const authorizeCacheSecurityGroupIngress: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CacheSecurityGroupName: 0,
+      EC2SecurityGroupName: 0,
+      EC2SecurityGroupOwnerId: 0,
+    },
     output: { CacheSecurityGroup: o_CacheSecurityGroup },
   },
   errors: [
@@ -2199,6 +2204,7 @@ export const batchApplyUpdateAction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ReplicationGroupIds: 0, CacheClusterIds: 0, ServiceUpdateName: 0 },
     output: {
       ProcessedUpdateActions: D.list({}, { item: "ProcessedUpdateAction" }),
       UnprocessedUpdateActions: D.list({}, { item: "UnprocessedUpdateAction" }),
@@ -2227,6 +2233,7 @@ export const batchStopUpdateAction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ReplicationGroupIds: 0, CacheClusterIds: 0, ServiceUpdateName: 0 },
     output: {
       ProcessedUpdateActions: D.list({}, { item: "ProcessedUpdateAction" }),
       UnprocessedUpdateActions: D.list({}, { item: "UnprocessedUpdateAction" }),
@@ -2254,6 +2261,7 @@ export const completeMigration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ReplicationGroupId: 0, Force: 0 },
     output: { ReplicationGroup: o_ReplicationGroup },
   },
   errors: [
@@ -2287,7 +2295,12 @@ export const copyServerlessCacheSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      SourceServerlessCacheSnapshotName: 0,
+      TargetServerlessCacheSnapshotName: 0,
+      KmsKeyId: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { ServerlessCacheSnapshot: o_ServerlessCacheSnapshot },
   },
   errors: [
@@ -2395,7 +2408,13 @@ export const copySnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      SourceSnapshotName: 0,
+      TargetSnapshotName: 0,
+      TargetBucket: 0,
+      KmsKeyId: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { Snapshot: o_Snapshot },
   },
   errors: [
@@ -2443,17 +2462,40 @@ export const createCacheCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      CacheClusterId: 0,
+      ReplicationGroupId: 0,
+      AZMode: 0,
+      PreferredAvailabilityZone: 0,
       PreferredAvailabilityZones: D.list(0, {
         item: "PreferredAvailabilityZone",
       }),
+      NumCacheNodes: 0,
+      CacheNodeType: 0,
+      Engine: 0,
+      EngineVersion: 0,
+      CacheParameterGroupName: 0,
+      CacheSubnetGroupName: 0,
       CacheSecurityGroupNames: D.list(0, { item: "CacheSecurityGroupName" }),
       SecurityGroupIds: D.list(0, { item: "SecurityGroupId" }),
-      Tags: D.list(0, { item: "Tag" }),
+      Tags: D.list(i_Tag, { item: "Tag" }),
       SnapshotArns: D.list(0, { item: "SnapshotArn" }),
+      SnapshotName: 0,
+      PreferredMaintenanceWindow: 0,
+      Port: 0,
+      NotificationTopicArn: 0,
+      AutoMinorVersionUpgrade: 0,
+      SnapshotRetentionLimit: 0,
+      SnapshotWindow: 0,
+      AuthToken: 0,
+      OutpostMode: 0,
+      PreferredOutpostArn: 0,
       PreferredOutpostArns: D.list(0, { item: "PreferredOutpostArn" }),
-      LogDeliveryConfigurations: D.list(0, {
+      LogDeliveryConfigurations: D.list(i_LogDeliveryConfigurationRequest, {
         item: "LogDeliveryConfigurationRequest",
       }),
+      TransitEncryptionEnabled: 0,
+      NetworkType: 0,
+      IpDiscovery: 0,
     },
     output: { CacheCluster: o_CacheCluster },
   },
@@ -2509,7 +2551,12 @@ export const createCacheParameterGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      CacheParameterGroupName: 0,
+      CacheParameterGroupFamily: 0,
+      Description: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { CacheParameterGroup: o_CacheParameterGroup },
   },
   errors: [
@@ -2548,7 +2595,11 @@ export const createCacheSecurityGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      CacheSecurityGroupName: 0,
+      Description: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { CacheSecurityGroup: o_CacheSecurityGroup },
   },
   errors: [
@@ -2586,8 +2637,10 @@ export const createCacheSubnetGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      CacheSubnetGroupName: 0,
+      CacheSubnetGroupDescription: 0,
       SubnetIds: D.list(0, { item: "SubnetIdentifier" }),
-      Tags: D.list(0, { item: "Tag" }),
+      Tags: D.list(i_Tag, { item: "Tag" }),
     },
     output: { CacheSubnetGroup: o_CacheSubnetGroup },
   },
@@ -2633,6 +2686,11 @@ export const createGlobalReplicationGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      GlobalReplicationGroupIdSuffix: 0,
+      GlobalReplicationGroupDescription: 0,
+      PrimaryReplicationGroupId: 0,
+    },
     output: { GlobalReplicationGroup: o_GlobalReplicationGroup },
   },
   errors: [
@@ -2714,21 +2772,59 @@ export const createReplicationGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ReplicationGroupId: 0,
+      ReplicationGroupDescription: 0,
+      GlobalReplicationGroupId: 0,
+      PrimaryClusterId: 0,
+      AutomaticFailoverEnabled: 0,
+      MultiAZEnabled: 0,
+      NumCacheClusters: 0,
       PreferredCacheClusterAZs: D.list(0, { item: "AvailabilityZone" }),
+      NumNodeGroups: 0,
+      ReplicasPerNodeGroup: 0,
       NodeGroupConfiguration: D.list(
         {
+          NodeGroupId: 0,
+          Slots: 0,
+          ReplicaCount: 0,
+          PrimaryAvailabilityZone: 0,
           ReplicaAvailabilityZones: D.list(0, { item: "AvailabilityZone" }),
+          PrimaryOutpostArn: 0,
           ReplicaOutpostArns: D.list(0, { item: "OutpostArn" }),
         },
         { item: "NodeGroupConfiguration" },
       ),
+      CacheNodeType: 0,
+      Engine: 0,
+      EngineVersion: 0,
+      CacheParameterGroupName: 0,
+      CacheSubnetGroupName: 0,
       CacheSecurityGroupNames: D.list(0, { item: "CacheSecurityGroupName" }),
       SecurityGroupIds: D.list(0, { item: "SecurityGroupId" }),
-      Tags: D.list(0, { item: "Tag" }),
+      Tags: D.list(i_Tag, { item: "Tag" }),
       SnapshotArns: D.list(0, { item: "SnapshotArn" }),
-      LogDeliveryConfigurations: D.list(0, {
+      SnapshotName: 0,
+      PreferredMaintenanceWindow: 0,
+      Port: 0,
+      NotificationTopicArn: 0,
+      AutoMinorVersionUpgrade: 0,
+      SnapshotRetentionLimit: 0,
+      SnapshotWindow: 0,
+      AuthToken: 0,
+      TransitEncryptionEnabled: 0,
+      AtRestEncryptionEnabled: 0,
+      KmsKeyId: 0,
+      UserGroupIds: 0,
+      LogDeliveryConfigurations: D.list(i_LogDeliveryConfigurationRequest, {
         item: "LogDeliveryConfigurationRequest",
       }),
+      DataTieringEnabled: 0,
+      NetworkType: 0,
+      IpDiscovery: 0,
+      TransitEncryptionMode: 0,
+      ClusterMode: 0,
+      ServerlessCacheSnapshotName: 0,
+      Durability: 0,
     },
     output: { ReplicationGroup: o_ReplicationGroup },
   },
@@ -2783,10 +2879,20 @@ export const createServerlessCache: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ServerlessCacheName: 0,
+      Description: 0,
+      Engine: 0,
+      MajorEngineVersion: 0,
+      CacheUsageLimits: i_CacheUsageLimits,
+      KmsKeyId: 0,
       SecurityGroupIds: D.list(0, { item: "SecurityGroupId" }),
       SnapshotArnsToRestore: D.list(0, { item: "SnapshotArn" }),
-      Tags: D.list(0, { item: "Tag" }),
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      UserGroupId: 0,
       SubnetIds: D.list(0, { item: "SubnetId" }),
+      SnapshotRetentionLimit: 0,
+      DailySnapshotTime: 0,
+      NetworkType: 0,
     },
     output: { ServerlessCache: o_ServerlessCache },
   },
@@ -2829,7 +2935,12 @@ export const createServerlessCacheSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      ServerlessCacheSnapshotName: 0,
+      ServerlessCacheName: 0,
+      KmsKeyId: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { ServerlessCacheSnapshot: o_ServerlessCacheSnapshot },
   },
   errors: [
@@ -2873,7 +2984,13 @@ export const createSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      ReplicationGroupId: 0,
+      CacheClusterId: 0,
+      SnapshotName: 0,
+      KmsKeyId: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { Snapshot: o_Snapshot },
   },
   errors: [
@@ -2914,7 +3031,16 @@ export const createUser: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      UserId: 0,
+      UserName: 0,
+      Engine: 0,
+      Passwords: 0,
+      AccessString: 0,
+      NoPasswordRequired: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+      AuthenticationMode: i_AuthenticationMode,
+    },
     output: { UserGroupIds: D.list(), Authentication: o_Authentication },
   },
   errors: [
@@ -2953,7 +3079,12 @@ export const createUserGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      UserGroupId: 0,
+      Engine: 0,
+      UserIds: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: {
       UserIds: D.list(),
       PendingChanges: o_UserGroupPendingChanges,
@@ -2994,8 +3125,11 @@ export const decreaseNodeGroupsInGlobalReplicationGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      GlobalReplicationGroupId: 0,
+      NodeGroupCount: 0,
       GlobalNodeGroupsToRemove: D.list(0, { item: "GlobalNodeGroupId" }),
       GlobalNodeGroupsToRetain: D.list(0, { item: "GlobalNodeGroupId" }),
+      ApplyImmediately: 0,
     },
     output: { GlobalReplicationGroup: o_GlobalReplicationGroup },
   },
@@ -3039,9 +3173,13 @@ export const decreaseReplicaCount: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ReplicationGroupId: 0,
+      NewReplicaCount: 0,
       ReplicaConfiguration: D.list(i_ConfigureShard, {
         item: "ConfigureShard",
       }),
+      ReplicasToRemove: 0,
+      ApplyImmediately: 0,
     },
     output: { ReplicationGroup: o_ReplicationGroup },
   },
@@ -3101,7 +3239,11 @@ export const deleteCacheCluster: API.OperationMethod<
   DeleteCacheClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CacheCluster: o_CacheCluster } },
+  descriptor: {
+    service: svc,
+    input: { CacheClusterId: 0, FinalSnapshotIdentifier: 0 },
+    output: { CacheCluster: o_CacheCluster },
+  },
   errors: [
     CacheClusterNotFoundFault,
     InvalidCacheClusterStateFault,
@@ -3133,7 +3275,7 @@ export const deleteCacheParameterGroup: API.OperationMethod<
   DeleteCacheParameterGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CacheParameterGroupName: 0 } },
   errors: [
     CacheParameterGroupNotFoundFault,
     InvalidCacheParameterGroupStateFault,
@@ -3163,7 +3305,7 @@ export const deleteCacheSecurityGroup: API.OperationMethod<
   DeleteCacheSecurityGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CacheSecurityGroupName: 0 } },
   errors: [
     CacheSecurityGroupNotFoundFault,
     InvalidCacheSecurityGroupStateFault,
@@ -3191,7 +3333,7 @@ export const deleteCacheSubnetGroup: API.OperationMethod<
   DeleteCacheSubnetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CacheSubnetGroupName: 0 } },
   errors: [CacheSubnetGroupInUse, CacheSubnetGroupNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3232,6 +3374,7 @@ export const deleteGlobalReplicationGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { GlobalReplicationGroupId: 0, RetainPrimaryReplicationGroup: 0 },
     output: { GlobalReplicationGroup: o_GlobalReplicationGroup },
   },
   errors: [
@@ -3277,6 +3420,11 @@ export const deleteReplicationGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ReplicationGroupId: 0,
+      RetainPrimaryCluster: 0,
+      FinalSnapshotIdentifier: 0,
+    },
     output: { ReplicationGroup: o_ReplicationGroup },
   },
   errors: [
@@ -3314,7 +3462,11 @@ export const deleteServerlessCache: API.OperationMethod<
   DeleteServerlessCacheError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ServerlessCache: o_ServerlessCache } },
+  descriptor: {
+    service: svc,
+    input: { ServerlessCacheName: 0, FinalSnapshotName: 0 },
+    output: { ServerlessCache: o_ServerlessCache },
+  },
   errors: [
     InvalidCredentialsException,
     InvalidParameterCombinationException,
@@ -3346,6 +3498,7 @@ export const deleteServerlessCacheSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ServerlessCacheSnapshotName: 0 },
     output: { ServerlessCacheSnapshot: o_ServerlessCacheSnapshot },
   },
   errors: [
@@ -3378,7 +3531,11 @@ export const deleteSnapshot: API.OperationMethod<
   DeleteSnapshotError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Snapshot: o_Snapshot } },
+  descriptor: {
+    service: svc,
+    input: { SnapshotName: 0 },
+    output: { Snapshot: o_Snapshot },
+  },
   errors: [
     InvalidParameterCombinationException,
     InvalidParameterValueException,
@@ -3410,6 +3567,7 @@ export const deleteUser: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserId: 0 },
     output: { UserGroupIds: D.list(), Authentication: o_Authentication },
   },
   errors: [
@@ -3443,6 +3601,7 @@ export const deleteUserGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserGroupId: 0 },
     output: {
       UserIds: D.list(),
       PendingChanges: o_UserGroupPendingChanges,
@@ -3498,6 +3657,13 @@ export const describeCacheClusters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CacheClusterId: 0,
+      MaxRecords: 0,
+      Marker: 0,
+      ShowCacheNodeInfo: 0,
+      ShowCacheClustersNotInReplicationGroups: 0,
+    },
     output: { CacheClusters: D.list(o_CacheCluster, { item: "CacheCluster" }) },
   },
   errors: [
@@ -3529,6 +3695,14 @@ export const describeCacheEngineVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Engine: 0,
+      EngineVersion: 0,
+      CacheParameterGroupFamily: 0,
+      MaxRecords: 0,
+      Marker: 0,
+      DefaultOnly: 0,
+    },
     output: { CacheEngineVersions: D.list({}, { item: "CacheEngineVersion" }) },
   },
   errors: [],
@@ -3561,6 +3735,7 @@ export const describeCacheParameterGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { CacheParameterGroupName: 0, MaxRecords: 0, Marker: 0 },
     output: {
       CacheParameterGroups: D.list(o_CacheParameterGroup, {
         item: "CacheParameterGroup",
@@ -3600,6 +3775,7 @@ export const describeCacheParameters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { CacheParameterGroupName: 0, Source: 0, MaxRecords: 0, Marker: 0 },
     output: {
       Parameters: D.list(o_Parameter, { item: "Parameter" }),
       CacheNodeTypeSpecificParameters: D.list(
@@ -3643,6 +3819,7 @@ export const describeCacheSecurityGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { CacheSecurityGroupName: 0, MaxRecords: 0, Marker: 0 },
     output: {
       CacheSecurityGroups: D.list(o_CacheSecurityGroup, {
         item: "CacheSecurityGroup",
@@ -3683,6 +3860,7 @@ export const describeCacheSubnetGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { CacheSubnetGroupName: 0, MaxRecords: 0, Marker: 0 },
     output: {
       CacheSubnetGroups: D.list(o_CacheSubnetGroup, {
         item: "CacheSubnetGroup",
@@ -3718,6 +3896,7 @@ export const describeEngineDefaultParameters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { CacheParameterGroupFamily: 0, MaxRecords: 0, Marker: 0 },
     output: {
       EngineDefaults: {
         Parameters: D.list(o_Parameter, { item: "Parameter" }),
@@ -3764,6 +3943,15 @@ export const describeEvents: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      SourceIdentifier: 0,
+      SourceType: 0,
+      StartTime: 0,
+      EndTime: 0,
+      Duration: 0,
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: { Events: D.list({ Date: D.ts }, { item: "Event" }) },
   },
   errors: [
@@ -3799,6 +3987,12 @@ export const describeGlobalReplicationGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      GlobalReplicationGroupId: 0,
+      MaxRecords: 0,
+      Marker: 0,
+      ShowMemberInfo: 0,
+    },
     output: {
       GlobalReplicationGroups: D.list(o_GlobalReplicationGroup, {
         item: "GlobalReplicationGroup",
@@ -3842,6 +4036,7 @@ export const describeReplicationGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ReplicationGroupId: 0, MaxRecords: 0, Marker: 0 },
     output: {
       ReplicationGroups: D.list(o_ReplicationGroup, {
         item: "ReplicationGroup",
@@ -3882,6 +4077,16 @@ export const describeReservedCacheNodes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ReservedCacheNodeId: 0,
+      ReservedCacheNodesOfferingId: 0,
+      CacheNodeType: 0,
+      Duration: 0,
+      ProductDescription: 0,
+      OfferingType: 0,
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       ReservedCacheNodes: D.list(o_ReservedCacheNode, {
         item: "ReservedCacheNode",
@@ -3921,6 +4126,15 @@ export const describeReservedCacheNodesOfferings: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ReservedCacheNodesOfferingId: 0,
+      CacheNodeType: 0,
+      Duration: 0,
+      ProductDescription: 0,
+      OfferingType: 0,
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       ReservedCacheNodesOfferings: D.list(
         {
@@ -3970,6 +4184,7 @@ export const describeServerlessCaches: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ServerlessCacheName: 0, MaxResults: 0, NextToken: 0 },
     output: { ServerlessCaches: D.list(o_ServerlessCache) },
   },
   errors: [
@@ -4009,6 +4224,13 @@ export const describeServerlessCacheSnapshots: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ServerlessCacheName: 0,
+      ServerlessCacheSnapshotName: 0,
+      SnapshotType: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       ServerlessCacheSnapshots: D.list(o_ServerlessCacheSnapshot, {
         item: "ServerlessCacheSnapshot",
@@ -4049,6 +4271,12 @@ export const describeServiceUpdates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ServiceUpdateName: 0,
+      ServiceUpdateStatus: 0,
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       ServiceUpdates: D.list(
         {
@@ -4100,6 +4328,15 @@ export const describeSnapshots: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ReplicationGroupId: 0,
+      CacheClusterId: 0,
+      SnapshotName: 0,
+      SnapshotSource: 0,
+      Marker: 0,
+      MaxRecords: 0,
+      ShowNodeGroupConfig: 0,
+    },
     output: { Snapshots: D.list(o_Snapshot, { item: "Snapshot" }) },
   },
   errors: [
@@ -4135,6 +4372,18 @@ export const describeUpdateActions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ServiceUpdateName: 0,
+      ReplicationGroupIds: 0,
+      CacheClusterIds: 0,
+      Engine: 0,
+      ServiceUpdateStatus: 0,
+      ServiceUpdateTimeRange: { StartTime: 0, EndTime: 0 },
+      UpdateActionStatus: 0,
+      ShowNodeLevelUpdateStatus: 0,
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       UpdateActions: D.list(
         {
@@ -4204,6 +4453,7 @@ export const describeUserGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { UserGroupId: 0, MaxRecords: 0, Marker: 0 },
     output: {
       UserGroups: D.list({
         UserIds: D.list(),
@@ -4246,6 +4496,13 @@ export const describeUsers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Engine: 0,
+      UserId: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      MaxRecords: 0,
+      Marker: 0,
+    },
     output: {
       Users: D.list({
         UserGroupIds: D.list(),
@@ -4288,6 +4545,11 @@ export const disassociateGlobalReplicationGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      GlobalReplicationGroupId: 0,
+      ReplicationGroupId: 0,
+      ReplicationGroupRegion: 0,
+    },
     output: { GlobalReplicationGroup: o_GlobalReplicationGroup },
   },
   errors: [
@@ -4318,6 +4580,7 @@ export const exportServerlessCacheSnapshot: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ServerlessCacheSnapshotName: 0, S3BucketName: 0 },
     output: { ServerlessCacheSnapshot: o_ServerlessCacheSnapshot },
   },
   errors: [
@@ -4349,6 +4612,11 @@ export const failoverGlobalReplicationGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      GlobalReplicationGroupId: 0,
+      PrimaryRegion: 0,
+      PrimaryReplicationGroupId: 0,
+    },
     output: { GlobalReplicationGroup: o_GlobalReplicationGroup },
   },
   errors: [
@@ -4379,14 +4647,19 @@ export const increaseNodeGroupsInGlobalReplicationGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      GlobalReplicationGroupId: 0,
+      NodeGroupCount: 0,
       RegionalConfigurations: D.list(
         {
+          ReplicationGroupId: 0,
+          ReplicationGroupRegion: 0,
           ReshardingConfiguration: D.list(i_ReshardingConfiguration, {
             item: "ReshardingConfiguration",
           }),
         },
         { item: "RegionalConfiguration" },
       ),
+      ApplyImmediately: 0,
     },
     output: { GlobalReplicationGroup: o_GlobalReplicationGroup },
   },
@@ -4429,9 +4702,12 @@ export const increaseReplicaCount: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ReplicationGroupId: 0,
+      NewReplicaCount: 0,
       ReplicaConfiguration: D.list(i_ConfigureShard, {
         item: "ConfigureShard",
       }),
+      ApplyImmediately: 0,
     },
     output: { ReplicationGroup: o_ReplicationGroup },
   },
@@ -4477,6 +4753,7 @@ export const listAllowedNodeTypeModifications: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CacheClusterId: 0, ReplicationGroupId: 0 },
     output: {
       ScaleUpModifications: D.list(),
       ScaleDownModifications: D.list(),
@@ -4530,6 +4807,7 @@ export const listTagsForResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResourceName: 0 },
     output: { TagList: D.list({}, { item: "Tag" }) },
   },
   errors: [
@@ -4580,13 +4858,31 @@ export const modifyCacheCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      CacheClusterId: 0,
+      NumCacheNodes: 0,
       CacheNodeIdsToRemove: D.list(0, { item: "CacheNodeId" }),
+      AZMode: 0,
       NewAvailabilityZones: D.list(0, { item: "PreferredAvailabilityZone" }),
       CacheSecurityGroupNames: D.list(0, { item: "CacheSecurityGroupName" }),
       SecurityGroupIds: D.list(0, { item: "SecurityGroupId" }),
-      LogDeliveryConfigurations: D.list(0, {
+      PreferredMaintenanceWindow: 0,
+      NotificationTopicArn: 0,
+      CacheParameterGroupName: 0,
+      NotificationTopicStatus: 0,
+      ApplyImmediately: 0,
+      Engine: 0,
+      EngineVersion: 0,
+      AutoMinorVersionUpgrade: 0,
+      SnapshotRetentionLimit: 0,
+      SnapshotWindow: 0,
+      CacheNodeType: 0,
+      AuthToken: 0,
+      AuthTokenUpdateStrategy: 0,
+      LogDeliveryConfigurations: D.list(i_LogDeliveryConfigurationRequest, {
         item: "LogDeliveryConfigurationRequest",
       }),
+      IpDiscovery: 0,
+      ScaleConfig: { ScalePercentage: 0, ScaleIntervalMinutes: 0 },
     },
     output: { CacheCluster: o_CacheCluster },
   },
@@ -4627,7 +4923,12 @@ export const modifyCacheParameterGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ParameterNameValues: D.list(0, { item: "ParameterNameValue" }) },
+    input: {
+      CacheParameterGroupName: 0,
+      ParameterNameValues: D.list(i_ParameterNameValue, {
+        item: "ParameterNameValue",
+      }),
+    },
   },
   errors: [
     CacheParameterGroupNotFoundFault,
@@ -4659,7 +4960,11 @@ export const modifyCacheSubnetGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { SubnetIds: D.list(0, { item: "SubnetIdentifier" }) },
+    input: {
+      CacheSubnetGroupName: 0,
+      CacheSubnetGroupDescription: 0,
+      SubnetIds: D.list(0, { item: "SubnetIdentifier" }),
+    },
     output: { CacheSubnetGroup: o_CacheSubnetGroup },
   },
   errors: [
@@ -4690,6 +4995,16 @@ export const modifyGlobalReplicationGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      GlobalReplicationGroupId: 0,
+      ApplyImmediately: 0,
+      CacheNodeType: 0,
+      Engine: 0,
+      EngineVersion: 0,
+      CacheParameterGroupName: 0,
+      GlobalReplicationGroupDescription: 0,
+      AutomaticFailoverEnabled: 0,
+    },
     output: { GlobalReplicationGroup: o_GlobalReplicationGroup },
   },
   errors: [
@@ -4740,11 +5055,39 @@ export const modifyReplicationGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ReplicationGroupId: 0,
+      ReplicationGroupDescription: 0,
+      PrimaryClusterId: 0,
+      SnapshottingClusterId: 0,
+      AutomaticFailoverEnabled: 0,
+      MultiAZEnabled: 0,
+      NodeGroupId: 0,
       CacheSecurityGroupNames: D.list(0, { item: "CacheSecurityGroupName" }),
       SecurityGroupIds: D.list(0, { item: "SecurityGroupId" }),
-      LogDeliveryConfigurations: D.list(0, {
+      PreferredMaintenanceWindow: 0,
+      NotificationTopicArn: 0,
+      CacheParameterGroupName: 0,
+      NotificationTopicStatus: 0,
+      ApplyImmediately: 0,
+      Engine: 0,
+      EngineVersion: 0,
+      AutoMinorVersionUpgrade: 0,
+      SnapshotRetentionLimit: 0,
+      SnapshotWindow: 0,
+      CacheNodeType: 0,
+      AuthToken: 0,
+      AuthTokenUpdateStrategy: 0,
+      UserGroupIdsToAdd: 0,
+      UserGroupIdsToRemove: 0,
+      RemoveUserGroups: 0,
+      LogDeliveryConfigurations: D.list(i_LogDeliveryConfigurationRequest, {
         item: "LogDeliveryConfigurationRequest",
       }),
+      IpDiscovery: 0,
+      TransitEncryptionEnabled: 0,
+      TransitEncryptionMode: 0,
+      ClusterMode: 0,
+      Durability: 0,
     },
     output: { ReplicationGroup: o_ReplicationGroup },
   },
@@ -4796,6 +5139,9 @@ export const modifyReplicationGroupShardConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      ReplicationGroupId: 0,
+      NodeGroupCount: 0,
+      ApplyImmediately: 0,
       ReshardingConfiguration: D.list(i_ReshardingConfiguration, {
         item: "ReshardingConfiguration",
       }),
@@ -4842,7 +5188,18 @@ export const modifyServerlessCache: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { SecurityGroupIds: D.list(0, { item: "SecurityGroupId" }) },
+    input: {
+      ServerlessCacheName: 0,
+      Description: 0,
+      CacheUsageLimits: i_CacheUsageLimits,
+      RemoveUserGroup: 0,
+      UserGroupId: 0,
+      SecurityGroupIds: D.list(0, { item: "SecurityGroupId" }),
+      SnapshotRetentionLimit: 0,
+      DailySnapshotTime: 0,
+      Engine: 0,
+      MajorEngineVersion: 0,
+    },
     output: { ServerlessCache: o_ServerlessCache },
   },
   errors: [
@@ -4878,6 +5235,15 @@ export const modifyUser: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      UserId: 0,
+      AccessString: 0,
+      AppendAccessString: 0,
+      Passwords: 0,
+      NoPasswordRequired: 0,
+      AuthenticationMode: i_AuthenticationMode,
+      Engine: 0,
+    },
     output: { UserGroupIds: D.list(), Authentication: o_Authentication },
   },
   errors: [
@@ -4913,6 +5279,7 @@ export const modifyUserGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { UserGroupId: 0, UserIdsToAdd: 0, UserIdsToRemove: 0, Engine: 0 },
     output: {
       UserIds: D.list(),
       PendingChanges: o_UserGroupPendingChanges,
@@ -4955,7 +5322,12 @@ export const purchaseReservedCacheNodesOffering: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Tags: D.list(0, { item: "Tag" }) },
+    input: {
+      ReservedCacheNodesOfferingId: 0,
+      ReservedCacheNodeId: 0,
+      CacheNodeCount: 0,
+      Tags: D.list(i_Tag, { item: "Tag" }),
+    },
     output: { ReservedCacheNode: o_ReservedCacheNode },
   },
   errors: [
@@ -4988,6 +5360,7 @@ export const rebalanceSlotsInGlobalReplicationGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { GlobalReplicationGroupId: 0, ApplyImmediately: 0 },
     output: { GlobalReplicationGroup: o_GlobalReplicationGroup },
   },
   errors: [
@@ -5030,7 +5403,10 @@ export const rebootCacheCluster: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { CacheNodeIdsToReboot: D.list(0, { item: "CacheNodeId" }) },
+    input: {
+      CacheClusterId: 0,
+      CacheNodeIdsToReboot: D.list(0, { item: "CacheNodeId" }),
+    },
     output: { CacheCluster: o_CacheCluster },
   },
   errors: [CacheClusterNotFoundFault, InvalidCacheClusterStateFault],
@@ -5072,6 +5448,7 @@ export const removeTagsFromResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResourceName: 0, TagKeys: 0 },
     output: { TagList: D.list({}, { item: "Tag" }) },
   },
   errors: [
@@ -5118,7 +5495,13 @@ export const resetCacheParameterGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ParameterNameValues: D.list(0, { item: "ParameterNameValue" }) },
+    input: {
+      CacheParameterGroupName: 0,
+      ResetAllParameters: 0,
+      ParameterNameValues: D.list(i_ParameterNameValue, {
+        item: "ParameterNameValue",
+      }),
+    },
   },
   errors: [
     CacheParameterGroupNotFoundFault,
@@ -5151,6 +5534,11 @@ export const revokeCacheSecurityGroupIngress: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CacheSecurityGroupName: 0,
+      EC2SecurityGroupName: 0,
+      EC2SecurityGroupOwnerId: 0,
+    },
     output: { CacheSecurityGroup: o_CacheSecurityGroup },
   },
   errors: [
@@ -5182,6 +5570,10 @@ export const startMigration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ReplicationGroupId: 0,
+      CustomerNodeEndpointList: D.list(i_CustomerNodeEndpoint),
+    },
     output: { ReplicationGroup: o_ReplicationGroup },
   },
   errors: [
@@ -5267,6 +5659,7 @@ export const testFailover: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ReplicationGroupId: 0, NodeGroupId: 0 },
     output: { ReplicationGroup: o_ReplicationGroup },
   },
   errors: [
@@ -5302,6 +5695,10 @@ export const testMigration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ReplicationGroupId: 0,
+      CustomerNodeEndpointList: D.list(i_CustomerNodeEndpoint),
+    },
     output: { ReplicationGroup: o_ReplicationGroup },
   },
   errors: [
@@ -5315,13 +5712,37 @@ export const testMigration: API.OperationMethod<
   operationName: "TestMigration",
 })) as any;
 
+const i_AuthenticationMode: D.LazyStruct = () => ({ Type: 0, Passwords: 0 });
+const i_CacheUsageLimits: D.LazyStruct = () => ({
+  DataStorage: { Maximum: 0, Minimum: 0, Unit: 0 },
+  ECPUPerSecond: { Maximum: 0, Minimum: 0 },
+});
 const i_ConfigureShard: D.LazyStruct = () => ({
+  NodeGroupId: 0,
+  NewReplicaCount: 0,
   PreferredAvailabilityZones: D.list(0, { item: "PreferredAvailabilityZone" }),
   PreferredOutpostArns: D.list(0, { item: "PreferredOutpostArn" }),
 });
+const i_CustomerNodeEndpoint: D.LazyStruct = () => ({ Address: 0, Port: 0 });
+const i_LogDeliveryConfigurationRequest: D.LazyStruct = () => ({
+  LogType: 0,
+  DestinationType: 0,
+  DestinationDetails: {
+    CloudWatchLogsDetails: { LogGroup: 0 },
+    KinesisFirehoseDetails: { DeliveryStream: 0 },
+  },
+  LogFormat: 0,
+  Enabled: 0,
+});
+const i_ParameterNameValue: D.LazyStruct = () => ({
+  ParameterName: 0,
+  ParameterValue: 0,
+});
 const i_ReshardingConfiguration: D.LazyStruct = () => ({
+  NodeGroupId: 0,
   PreferredAvailabilityZones: D.list(0, { item: "AvailabilityZone" }),
 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Authentication: D.LazyStruct = () => ({ PasswordCount: D.num });
 const o_CacheCluster: D.LazyStruct = () => ({
   ConfigurationEndpoint: o_Endpoint,

@@ -1,5 +1,6 @@
 import type * as HttpClient from "effect/unstable/http/HttpClient";
 import * as API from "@distilled.cloud/core/api";
+import * as D from "@distilled.cloud/core/shape";
 import * as TE from "@distilled.cloud/core/error-class";
 import { AwsProtocol } from "../protocol.ts";
 import { awsJson1_1Protocol } from "../protocols/aws-json.ts";
@@ -353,7 +354,10 @@ export const addTagsToResource: API.OperationMethod<
   AddTagsToResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, TagList: D.list({ Key: 0, Value: 0 }) },
+  },
   errors: [
     CloudHsmInternalException,
     CloudHsmServiceException,
@@ -390,7 +394,7 @@ export const createHapg: API.OperationMethod<
   CreateHapgError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Label: 0 } },
   errors: [
     CloudHsmInternalException,
     CloudHsmServiceException,
@@ -435,7 +439,19 @@ export const createHsm: API.OperationMethod<
   CreateHsmError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SubnetId: 0,
+      SshKey: 0,
+      EniIp: 0,
+      IamRoleArn: 0,
+      ExternalId: 0,
+      SubscriptionType: 0,
+      ClientToken: 0,
+      SyslogIp: 0,
+    },
+  },
   errors: [
     CloudHsmInternalException,
     CloudHsmServiceException,
@@ -471,7 +487,7 @@ export const createLunaClient: API.OperationMethod<
   CreateLunaClientError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Label: 0, Certificate: 0 } },
   errors: [
     CloudHsmInternalException,
     CloudHsmServiceException,
@@ -507,7 +523,7 @@ export const deleteHapg: API.OperationMethod<
   DeleteHapgError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { HapgArn: 0 } },
   errors: [
     CloudHsmInternalException,
     CloudHsmServiceException,
@@ -544,7 +560,7 @@ export const deleteHsm: API.OperationMethod<
   DeleteHsmError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { HsmArn: 0 } },
   errors: [
     CloudHsmInternalException,
     CloudHsmServiceException,
@@ -580,7 +596,7 @@ export const deleteLunaClient: API.OperationMethod<
   DeleteLunaClientError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ClientArn: 0 } },
   errors: [
     CloudHsmInternalException,
     CloudHsmServiceException,
@@ -616,7 +632,7 @@ export const describeHapg: API.OperationMethod<
   DescribeHapgError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { HapgArn: 0 } },
   errors: [
     CloudHsmInternalException,
     CloudHsmServiceException,
@@ -653,7 +669,7 @@ export const describeHsm: API.OperationMethod<
   DescribeHsmError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { HsmArn: 0, HsmSerialNumber: 0 } },
   errors: [
     CloudHsmInternalException,
     CloudHsmServiceException,
@@ -689,7 +705,10 @@ export const describeLunaClient: API.OperationMethod<
   DescribeLunaClientError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ClientArn: 0, CertificateFingerprint: 0 },
+  },
   errors: [
     CloudHsmInternalException,
     CloudHsmServiceException,
@@ -726,7 +745,10 @@ export const getConfig: API.OperationMethod<
   GetConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ClientArn: 0, ClientVersion: 0, HapgList: 0 },
+  },
   errors: [
     CloudHsmInternalException,
     CloudHsmServiceException,
@@ -762,7 +784,7 @@ export const listAvailableZones: API.OperationMethod<
   ListAvailableZonesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     CloudHsmInternalException,
     CloudHsmServiceException,
@@ -803,7 +825,7 @@ export const listHapgs: API.OperationMethod<
   ListHapgsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0 } },
   errors: [
     CloudHsmInternalException,
     CloudHsmServiceException,
@@ -845,7 +867,7 @@ export const listHsms: API.OperationMethod<
   ListHsmsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0 } },
   errors: [
     CloudHsmInternalException,
     CloudHsmServiceException,
@@ -886,7 +908,7 @@ export const listLunaClients: API.OperationMethod<
   ListLunaClientsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0 } },
   errors: [
     CloudHsmInternalException,
     CloudHsmServiceException,
@@ -922,7 +944,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     CloudHsmInternalException,
     CloudHsmServiceException,
@@ -958,7 +980,10 @@ export const modifyHapg: API.OperationMethod<
   ModifyHapgError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { HapgArn: 0, Label: 0, PartitionSerialList: 0 },
+  },
   errors: [
     CloudHsmInternalException,
     CloudHsmServiceException,
@@ -999,7 +1024,17 @@ export const modifyHsm: API.OperationMethod<
   ModifyHsmError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      HsmArn: 0,
+      SubnetId: 0,
+      EniIp: 0,
+      IamRoleArn: 0,
+      ExternalId: 0,
+      SyslogIp: 0,
+    },
+  },
   errors: [
     CloudHsmInternalException,
     CloudHsmServiceException,
@@ -1034,7 +1069,7 @@ export const modifyLunaClient: API.OperationMethod<
   ModifyLunaClientError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ClientArn: 0, Certificate: 0 } },
   errors: [CloudHsmServiceException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1069,7 +1104,7 @@ export const removeTagsFromResource: API.OperationMethod<
   RemoveTagsFromResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeyList: 0 } },
   errors: [
     CloudHsmInternalException,
     CloudHsmServiceException,

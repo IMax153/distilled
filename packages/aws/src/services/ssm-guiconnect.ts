@@ -249,7 +249,15 @@ export const updateConnectionRecordingPreferences: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateConnectionRecordingPreferences",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ConnectionRecordingPreferences: {
+        RecordingDestinations: {
+          S3Buckets: D.list({ BucketOwner: 0, BucketName: 0 }),
+        },
+        KMSKeyArn: 0,
+      },
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [

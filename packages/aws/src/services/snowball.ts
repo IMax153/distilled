@@ -704,7 +704,7 @@ export const cancelCluster: API.OperationMethod<
   CancelClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ClusterId: 0 } },
   errors: [
     InvalidJobStateException,
     InvalidResourceException,
@@ -732,7 +732,7 @@ export const cancelJob: API.OperationMethod<
   CancelJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [
     InvalidJobStateException,
     InvalidResourceException,
@@ -759,7 +759,28 @@ export const createAddress: API.OperationMethod<
   CreateAddressError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Address: {
+        AddressId: 0,
+        Name: 0,
+        Company: 0,
+        Street1: 0,
+        Street2: 0,
+        Street3: 0,
+        City: 0,
+        StateOrProvince: 0,
+        PrefectureOrDistrict: 0,
+        Landmark: 0,
+        Country: 0,
+        PostalCode: 0,
+        PhoneNumber: 0,
+        IsRestricted: 0,
+        Type: 0,
+      },
+    },
+  },
   errors: [InvalidAddressException, UnsupportedAddressException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -784,6 +805,25 @@ export const createCluster: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      JobType: 0,
+      Resources: i_JobResource,
+      OnDeviceServiceConfiguration: i_OnDeviceServiceConfiguration,
+      Description: 0,
+      AddressId: 0,
+      KmsKeyARN: 0,
+      RoleARN: 0,
+      SnowballType: 0,
+      ShippingOption: 0,
+      Notification: i_Notification,
+      ForwardingAddressId: 0,
+      TaxDocuments: i_TaxDocuments,
+      RemoteManagement: 0,
+      InitialClusterSize: 0,
+      ForceCreateJobs: 0,
+      LongTermPricingIds: 0,
+      SnowballCapacityPreference: 0,
+    },
     output: { JobListEntries: D.list(o_JobListEntry) },
   },
   errors: [
@@ -892,7 +932,34 @@ export const createJob: API.OperationMethod<
   CreateJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      JobType: 0,
+      Resources: i_JobResource,
+      OnDeviceServiceConfiguration: i_OnDeviceServiceConfiguration,
+      Description: 0,
+      AddressId: 0,
+      KmsKeyARN: 0,
+      RoleARN: 0,
+      SnowballCapacityPreference: 0,
+      ShippingOption: 0,
+      Notification: i_Notification,
+      ClusterId: 0,
+      SnowballType: 0,
+      ForwardingAddressId: 0,
+      TaxDocuments: i_TaxDocuments,
+      DeviceConfiguration: {
+        SnowconeDeviceConfiguration: {
+          WirelessConnection: { IsWifiEnabled: 0 },
+        },
+      },
+      RemoteManagement: 0,
+      LongTermPricingId: 0,
+      ImpactLevel: 0,
+      PickupDetails: i_PickupDetails,
+    },
+  },
   errors: [
     ClusterLimitExceededException,
     Ec2RequestFailedException,
@@ -918,7 +985,14 @@ export const createLongTermPricing: API.OperationMethod<
   CreateLongTermPricingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LongTermPricingType: 0,
+      IsLongTermPricingAutoRenew: 0,
+      SnowballType: 0,
+    },
+  },
   errors: [InvalidResourceException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -941,7 +1015,7 @@ export const createReturnShippingLabel: API.OperationMethod<
   CreateReturnShippingLabelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0, ShippingOption: 0 } },
   errors: [
     ConflictException,
     InvalidInputCombinationException,
@@ -965,7 +1039,7 @@ export const describeAddress: API.OperationMethod<
   DescribeAddressError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AddressId: 0 } },
   errors: [InvalidResourceException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -988,7 +1062,7 @@ export const describeAddresses: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Address
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [InvalidNextTokenException, InvalidResourceException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1014,6 +1088,7 @@ export const describeCluster: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ClusterId: 0 },
     output: { ClusterMetadata: { CreationDate: D.ts } },
   },
   errors: [InvalidResourceException],
@@ -1035,6 +1110,7 @@ export const describeJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: {
       JobMetadata: o_JobMetadata,
       SubJobMetadata: D.list(o_JobMetadata),
@@ -1060,7 +1136,11 @@ export const describeReturnShippingLabel: API.OperationMethod<
   DescribeReturnShippingLabelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ExpirationDate: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { JobId: 0 },
+    output: { ExpirationDate: D.ts },
+  },
   errors: [
     ConflictException,
     InvalidJobStateException,
@@ -1102,7 +1182,7 @@ export const getJobManifest: API.OperationMethod<
   GetJobManifestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [InvalidJobStateException, InvalidResourceException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1136,7 +1216,7 @@ export const getJobUnlockCode: API.OperationMethod<
   GetJobUnlockCodeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [InvalidJobStateException, InvalidResourceException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1157,7 +1237,7 @@ export const getSnowballUsage: API.OperationMethod<
   GetSnowballUsageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1178,7 +1258,7 @@ export const getSoftwareUpdates: API.OperationMethod<
   GetSoftwareUpdatesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [InvalidJobStateException, InvalidResourceException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1203,6 +1283,7 @@ export const listClusterJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ClusterId: 0, MaxResults: 0, NextToken: 0 },
     output: { JobListEntries: D.list(o_JobListEntry) },
   },
   errors: [InvalidNextTokenException, InvalidResourceException],
@@ -1232,6 +1313,7 @@ export const listClusters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
     output: { ClusterListEntries: D.list({ CreationDate: D.ts }) },
   },
   errors: [InvalidNextTokenException],
@@ -1263,7 +1345,7 @@ export const listCompatibleImages: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   CompatibleImage
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [Ec2RequestFailedException, InvalidNextTokenException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1293,6 +1375,7 @@ export const listJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
     output: { JobListEntries: D.list(o_JobListEntry) },
   },
   errors: [InvalidNextTokenException],
@@ -1323,6 +1406,7 @@ export const listLongTermPricing: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
     output: {
       LongTermPricingEntries: D.list({
         LongTermPricingEndDate: D.ts,
@@ -1353,7 +1437,7 @@ export const listPickupLocations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [InvalidResourceException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1379,7 +1463,18 @@ export const listServiceVersions: API.OperationMethod<
   ListServiceVersionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ServiceName: 0,
+      DependentServices: D.list({
+        ServiceName: 0,
+        ServiceVersion: { Version: 0 },
+      }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [InvalidNextTokenException, InvalidResourceException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1405,7 +1500,20 @@ export const updateCluster: API.OperationMethod<
   UpdateClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterId: 0,
+      RoleARN: 0,
+      Description: 0,
+      Resources: i_JobResource,
+      OnDeviceServiceConfiguration: i_OnDeviceServiceConfiguration,
+      AddressId: 0,
+      ShippingOption: 0,
+      Notification: i_Notification,
+      ForwardingAddressId: 0,
+    },
+  },
   errors: [
     Ec2RequestFailedException,
     InvalidInputCombinationException,
@@ -1437,7 +1545,22 @@ export const updateJob: API.OperationMethod<
   UpdateJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      JobId: 0,
+      RoleARN: 0,
+      Notification: i_Notification,
+      Resources: i_JobResource,
+      OnDeviceServiceConfiguration: i_OnDeviceServiceConfiguration,
+      AddressId: 0,
+      ShippingOption: 0,
+      Description: 0,
+      SnowballCapacityPreference: 0,
+      ForwardingAddressId: 0,
+      PickupDetails: i_PickupDetails,
+    },
+  },
   errors: [
     ClusterLimitExceededException,
     Ec2RequestFailedException,
@@ -1464,7 +1587,7 @@ export const updateJobShipmentState: API.OperationMethod<
   UpdateJobShipmentStateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0, ShipmentState: 0 } },
   errors: [InvalidJobStateException, InvalidResourceException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1483,13 +1606,59 @@ export const updateLongTermPricing: API.OperationMethod<
   UpdateLongTermPricingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LongTermPricingId: 0,
+      ReplacementJob: 0,
+      IsLongTermPricingAutoRenew: 0,
+    },
+  },
   errors: [InvalidResourceException],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "UpdateLongTermPricing",
 })) as any;
 
+const i_JobResource: D.LazyStruct = () => ({
+  S3Resources: D.list({
+    BucketArn: 0,
+    KeyRange: { BeginMarker: 0, EndMarker: 0 },
+    TargetOnDeviceServices: D.list({ ServiceName: 0, TransferOption: 0 }),
+  }),
+  LambdaResources: D.list({
+    LambdaArn: 0,
+    EventTriggers: D.list({ EventResourceARN: 0 }),
+  }),
+  Ec2AmiResources: D.list({ AmiId: 0, SnowballAmiId: 0 }),
+});
+const i_Notification: D.LazyStruct = () => ({
+  SnsTopicARN: 0,
+  JobStatesToNotify: 0,
+  NotifyAll: 0,
+  DevicePickupSnsTopicARN: 0,
+});
+const i_OnDeviceServiceConfiguration: D.LazyStruct = () => ({
+  NFSOnDeviceService: { StorageLimit: 0, StorageUnit: 0 },
+  TGWOnDeviceService: { StorageLimit: 0, StorageUnit: 0 },
+  EKSOnDeviceService: { KubernetesVersion: 0, EKSAnywhereVersion: 0 },
+  S3OnDeviceService: {
+    StorageLimit: 0,
+    StorageUnit: 0,
+    ServiceSize: 0,
+    FaultTolerance: 0,
+  },
+});
+const i_PickupDetails: D.LazyStruct = () => ({
+  Name: 0,
+  PhoneNumber: 0,
+  Email: 0,
+  IdentificationNumber: 0,
+  IdentificationExpirationDate: 0,
+  IdentificationIssuingOrg: 0,
+  DevicePickupId: 0,
+});
+const i_TaxDocuments: D.LazyStruct = () => ({ IND: { GSTIN: 0 } });
 const o_JobListEntry: D.LazyStruct = () => ({ CreationDate: D.ts });
 const o_JobMetadata: D.LazyStruct = () => ({
   CreationDate: D.ts,

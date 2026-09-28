@@ -1180,7 +1180,7 @@ export const addRegion: API.OperationMethod<
   AddRegionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InstanceArn: 0, RegionName: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1212,7 +1212,14 @@ export const attachCustomerManagedPolicyReferenceToPermissionSet: API.OperationM
   AttachCustomerManagedPolicyReferenceToPermissionSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceArn: 0,
+      PermissionSetArn: 0,
+      CustomerManagedPolicyReference: i_CustomerManagedPolicyReference,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1247,7 +1254,10 @@ export const attachManagedPolicyToPermissionSet: API.OperationMethod<
   AttachManagedPolicyToPermissionSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceArn: 0, PermissionSetArn: 0, ManagedPolicyArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1288,6 +1298,14 @@ export const createAccountAssignment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      InstanceArn: 0,
+      TargetId: 0,
+      TargetType: 0,
+      PermissionSetArn: 0,
+      PrincipalType: 0,
+      PrincipalId: 0,
+    },
     output: {
       AccountAssignmentCreationStatus: o_AccountAssignmentOperationStatus,
     },
@@ -1328,7 +1346,16 @@ export const createApplication: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceArn: 0,
+      ApplicationProviderArn: 0,
+      Name: 0,
+      Description: 0,
+      PortalOptions: { SignInOptions: i_SignInOptions, Visibility: 0 },
+      Tags: D.list(i_Tag),
+      Status: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1362,7 +1389,10 @@ export const createApplicationAssignment: API.OperationMethod<
   CreateApplicationAssignmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ApplicationArn: 0, PrincipalId: 0, PrincipalType: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1402,7 +1432,11 @@ export const createInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1436,7 +1470,14 @@ export const createInstanceAccessControlAttributeConfiguration: API.OperationMet
   CreateInstanceAccessControlAttributeConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceArn: 0,
+      InstanceAccessControlAttributeConfiguration:
+        i_InstanceAccessControlAttributeConfiguration,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1470,7 +1511,18 @@ export const createPermissionSet: API.OperationMethod<
   CreatePermissionSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { PermissionSet: o_PermissionSet } },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      InstanceArn: 0,
+      SessionDuration: 0,
+      RelayState: 0,
+      Tags: D.list(i_Tag),
+    },
+    output: { PermissionSet: o_PermissionSet },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1506,7 +1558,21 @@ export const createTrustedTokenIssuer: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      InstanceArn: 0,
+      Name: 0,
+      TrustedTokenIssuerType: 0,
+      TrustedTokenIssuerConfiguration: {
+        OidcJwtConfiguration: {
+          IssuerUrl: 0,
+          ClaimAttributePath: 0,
+          IdentityStoreAttributePath: 0,
+          JwksRetrievalOption: 0,
+        },
+      },
+      ClientToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1542,6 +1608,14 @@ export const deleteAccountAssignment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      InstanceArn: 0,
+      TargetId: 0,
+      TargetType: 0,
+      PermissionSetArn: 0,
+      PrincipalType: 0,
+      PrincipalId: 0,
+    },
     output: {
       AccountAssignmentDeletionStatus: o_AccountAssignmentOperationStatus,
     },
@@ -1576,7 +1650,7 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ApplicationArn: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1607,7 +1681,7 @@ export const deleteApplicationAccessScope: API.OperationMethod<
   DeleteApplicationAccessScopeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ApplicationArn: 0, Scope: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1638,7 +1712,10 @@ export const deleteApplicationAssignment: API.OperationMethod<
   DeleteApplicationAssignmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ApplicationArn: 0, PrincipalId: 0, PrincipalType: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1669,7 +1746,10 @@ export const deleteApplicationAuthenticationMethod: API.OperationMethod<
   DeleteApplicationAuthenticationMethodError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ApplicationArn: 0, AuthenticationMethodType: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1700,7 +1780,7 @@ export const deleteApplicationGrant: API.OperationMethod<
   DeleteApplicationGrantError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ApplicationArn: 0, GrantType: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1731,7 +1811,7 @@ export const deleteInlinePolicyFromPermissionSet: API.OperationMethod<
   DeleteInlinePolicyFromPermissionSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InstanceArn: 0, PermissionSetArn: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1761,7 +1841,7 @@ export const deleteInstance: API.OperationMethod<
   DeleteInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InstanceArn: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1791,7 +1871,7 @@ export const deleteInstanceAccessControlAttributeConfiguration: API.OperationMet
   DeleteInstanceAccessControlAttributeConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InstanceArn: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1822,7 +1902,7 @@ export const deletePermissionsBoundaryFromPermissionSet: API.OperationMethod<
   DeletePermissionsBoundaryFromPermissionSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InstanceArn: 0, PermissionSetArn: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1853,7 +1933,7 @@ export const deletePermissionSet: API.OperationMethod<
   DeletePermissionSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InstanceArn: 0, PermissionSetArn: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1886,7 +1966,7 @@ export const deleteTrustedTokenIssuer: API.OperationMethod<
   DeleteTrustedTokenIssuerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrustedTokenIssuerArn: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1918,6 +1998,7 @@ export const describeAccountAssignmentCreationStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { InstanceArn: 0, AccountAssignmentCreationRequestId: 0 },
     output: {
       AccountAssignmentCreationStatus: o_AccountAssignmentOperationStatus,
     },
@@ -1952,6 +2033,7 @@ export const describeAccountAssignmentDeletionStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { InstanceArn: 0, AccountAssignmentDeletionRequestId: 0 },
     output: {
       AccountAssignmentDeletionStatus: o_AccountAssignmentOperationStatus,
     },
@@ -1984,7 +2066,11 @@ export const describeApplication: API.OperationMethod<
   DescribeApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedDate: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ApplicationArn: 0 },
+    output: { CreatedDate: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2013,7 +2099,10 @@ export const describeApplicationAssignment: API.OperationMethod<
   DescribeApplicationAssignmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ApplicationArn: 0, PrincipalId: 0, PrincipalType: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2042,7 +2131,7 @@ export const describeApplicationProvider: API.OperationMethod<
   DescribeApplicationProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ApplicationProviderArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2076,7 +2165,11 @@ export const describeInstance: API.OperationMethod<
   DescribeInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedDate: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { InstanceArn: 0 },
+    output: { CreatedDate: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2104,7 +2197,7 @@ export const describeInstanceAccessControlAttributeConfiguration: API.OperationM
   DescribeInstanceAccessControlAttributeConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InstanceArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2133,7 +2226,11 @@ export const describePermissionSet: API.OperationMethod<
   DescribePermissionSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { PermissionSet: o_PermissionSet } },
+  descriptor: {
+    service: svc,
+    input: { InstanceArn: 0, PermissionSetArn: 0 },
+    output: { PermissionSet: o_PermissionSet },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2164,6 +2261,7 @@ export const describePermissionSetProvisioningStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { InstanceArn: 0, ProvisionPermissionSetRequestId: 0 },
     output: {
       PermissionSetProvisioningStatus: o_PermissionSetProvisioningStatus,
     },
@@ -2204,7 +2302,11 @@ export const describeRegion: API.OperationMethod<
   DescribeRegionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AddedDate: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { InstanceArn: 0, RegionName: 0 },
+    output: { AddedDate: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2233,7 +2335,7 @@ export const describeTrustedTokenIssuer: API.OperationMethod<
   DescribeTrustedTokenIssuerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrustedTokenIssuerArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2263,7 +2365,14 @@ export const detachCustomerManagedPolicyReferenceFromPermissionSet: API.Operatio
   DetachCustomerManagedPolicyReferenceFromPermissionSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceArn: 0,
+      PermissionSetArn: 0,
+      CustomerManagedPolicyReference: i_CustomerManagedPolicyReference,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2294,7 +2403,10 @@ export const detachManagedPolicyFromPermissionSet: API.OperationMethod<
   DetachManagedPolicyFromPermissionSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceArn: 0, PermissionSetArn: 0, ManagedPolicyArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2324,7 +2436,7 @@ export const getApplicationAccessScope: API.OperationMethod<
   GetApplicationAccessScopeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ApplicationArn: 0, Scope: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2353,7 +2465,7 @@ export const getApplicationAssignmentConfiguration: API.OperationMethod<
   GetApplicationAssignmentConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ApplicationArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2382,7 +2494,10 @@ export const getApplicationAuthenticationMethod: API.OperationMethod<
   GetApplicationAuthenticationMethodError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ApplicationArn: 0, AuthenticationMethodType: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2411,7 +2526,7 @@ export const getApplicationGrant: API.OperationMethod<
   GetApplicationGrantError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ApplicationArn: 0, GrantType: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2442,7 +2557,7 @@ export const getApplicationSessionConfiguration: API.OperationMethod<
   GetApplicationSessionConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ApplicationArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2471,7 +2586,7 @@ export const getInlinePolicyForPermissionSet: API.OperationMethod<
   GetInlinePolicyForPermissionSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InstanceArn: 0, PermissionSetArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2500,7 +2615,7 @@ export const getPermissionsBoundaryForPermissionSet: API.OperationMethod<
   GetPermissionsBoundaryForPermissionSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InstanceArn: 0, PermissionSetArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2532,6 +2647,12 @@ export const listAccountAssignmentCreationStatus: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      InstanceArn: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filter: i_OperationStatusFilter,
+    },
     output: {
       AccountAssignmentsCreationStatus: D.list(
         o_AccountAssignmentOperationStatusMetadata,
@@ -2575,6 +2696,12 @@ export const listAccountAssignmentDeletionStatus: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      InstanceArn: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filter: i_OperationStatusFilter,
+    },
     output: {
       AccountAssignmentsDeletionStatus: D.list(
         o_AccountAssignmentOperationStatusMetadata,
@@ -2616,7 +2743,16 @@ export const listAccountAssignments: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AccountAssignment
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceArn: 0,
+      AccountId: 0,
+      PermissionSetArn: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2652,7 +2788,17 @@ export const listAccountAssignmentsForPrincipal: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AccountAssignmentForPrincipal
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceArn: 0,
+      PrincipalId: 0,
+      PrincipalType: 0,
+      Filter: { AccountId: 0 },
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2688,7 +2834,16 @@ export const listAccountsForProvisionedPermissionSet: API.PaginatedOperationMeth
   Credentials | HttpClient.HttpClient,
   AccountId
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceArn: 0,
+      PermissionSetArn: 0,
+      ProvisioningStatus: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2724,7 +2879,10 @@ export const listApplicationAccessScopes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ScopeDetails
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ApplicationArn: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2760,7 +2918,10 @@ export const listApplicationAssignments: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ApplicationAssignment
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ApplicationArn: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2796,7 +2957,17 @@ export const listApplicationAssignmentsForPrincipal: API.PaginatedOperationMetho
   Credentials | HttpClient.HttpClient,
   ApplicationAssignmentForPrincipal
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceArn: 0,
+      PrincipalId: 0,
+      PrincipalType: 0,
+      Filter: { ApplicationArn: 0 },
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2832,7 +3003,7 @@ export const listApplicationAuthenticationMethods: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AuthenticationMethodItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ApplicationArn: 0, NextToken: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2867,7 +3038,7 @@ export const listApplicationGrants: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   GrantItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ApplicationArn: 0, NextToken: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2901,7 +3072,7 @@ export const listApplicationProviders: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ApplicationProvider
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2937,6 +3108,12 @@ export const listApplications: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      InstanceArn: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filter: { ApplicationAccount: 0, ApplicationProvider: 0 },
+    },
     output: { Applications: D.list({ CreatedDate: D.ts }) },
   },
   errors: [
@@ -2973,7 +3150,10 @@ export const listCustomerManagedPolicyReferencesInPermissionSet: API.PaginatedOp
   Credentials | HttpClient.HttpClient,
   CustomerManagedPolicyReference
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceArn: 0, PermissionSetArn: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3010,6 +3190,7 @@ export const listInstances: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
     output: {
       Instances: D.list({
         CreatedDate: D.ts,
@@ -3051,7 +3232,10 @@ export const listManagedPoliciesInPermissionSet: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AttachedManagedPolicy
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceArn: 0, PermissionSetArn: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3089,6 +3273,12 @@ export const listPermissionSetProvisioningStatus: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      InstanceArn: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filter: i_OperationStatusFilter,
+    },
     output: { PermissionSetsProvisioningStatus: D.list({ CreatedDate: D.ts }) },
   },
   errors: [
@@ -3126,7 +3316,10 @@ export const listPermissionSets: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   PermissionSetArn
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceArn: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3162,7 +3355,16 @@ export const listPermissionSetsProvisionedToAccount: API.PaginatedOperationMetho
   Credentials | HttpClient.HttpClient,
   PermissionSetArn
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceArn: 0,
+      AccountId: 0,
+      ProvisioningStatus: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3205,7 +3407,11 @@ export const listRegions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RegionMetadata
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Regions: D.list(o_RegionMetadata) } },
+  descriptor: {
+    service: svc,
+    input: { InstanceArn: 0, MaxResults: 0, NextToken: 0 },
+    output: { Regions: D.list(o_RegionMetadata) },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3240,7 +3446,10 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Tag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceArn: 0, ResourceArn: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3274,7 +3483,10 @@ export const listTrustedTokenIssuers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TrustedTokenIssuerMetadata
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceArn: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3311,6 +3523,7 @@ export const provisionPermissionSet: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { InstanceArn: 0, PermissionSetArn: 0, TargetId: 0, TargetType: 0 },
     output: {
       PermissionSetProvisioningStatus: o_PermissionSetProvisioningStatus,
     },
@@ -3345,7 +3558,10 @@ export const putApplicationAccessScope: API.OperationMethod<
   PutApplicationAccessScopeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Scope: 0, AuthorizedTargets: 0, ApplicationArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3376,7 +3592,10 @@ export const putApplicationAssignmentConfiguration: API.OperationMethod<
   PutApplicationAssignmentConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ApplicationArn: 0, AssignmentRequired: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3407,7 +3626,14 @@ export const putApplicationAuthenticationMethod: API.OperationMethod<
   PutApplicationAuthenticationMethodError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ApplicationArn: 0,
+      AuthenticationMethodType: 0,
+      AuthenticationMethod: { Iam: { ActorPolicy: 0 } },
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3463,7 +3689,24 @@ export const putApplicationGrant: API.OperationMethod<
   PutApplicationGrantError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ApplicationArn: 0,
+      GrantType: 0,
+      Grant: {
+        AuthorizationCode: { RedirectUris: 0 },
+        JwtBearer: {
+          AuthorizedTokenIssuers: D.list({
+            TrustedTokenIssuerArn: 0,
+            AuthorizedAudiences: 0,
+          }),
+        },
+        RefreshToken: {},
+        TokenExchange: {},
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3496,7 +3739,10 @@ export const putApplicationSessionConfiguration: API.OperationMethod<
   PutApplicationSessionConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ApplicationArn: 0, UserBackgroundSessionApplicationStatus: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3530,7 +3776,10 @@ export const putInlinePolicyToPermissionSet: API.OperationMethod<
   PutInlinePolicyToPermissionSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceArn: 0, PermissionSetArn: 0, InlinePolicy: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3562,7 +3811,17 @@ export const putPermissionsBoundaryToPermissionSet: API.OperationMethod<
   PutPermissionsBoundaryToPermissionSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceArn: 0,
+      PermissionSetArn: 0,
+      PermissionsBoundary: {
+        CustomerManagedPolicyReference: i_CustomerManagedPolicyReference,
+        ManagedPolicyArn: 0,
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3601,7 +3860,7 @@ export const removeRegion: API.OperationMethod<
   RemoveRegionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InstanceArn: 0, RegionName: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3633,7 +3892,10 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceArn: 0, ResourceArn: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3665,7 +3927,10 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceArn: 0, ResourceArn: 0, TagKeys: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3696,7 +3961,16 @@ export const updateApplication: API.OperationMethod<
   UpdateApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ApplicationArn: 0,
+      Name: 0,
+      Description: 0,
+      Status: 0,
+      PortalOptions: { SignInOptions: i_SignInOptions },
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3735,7 +4009,15 @@ export const updateInstance: API.OperationMethod<
   UpdateInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      InstanceArn: 0,
+      EncryptionConfiguration: { KeyType: 0, KmsKeyArn: 0 },
+      PermissionSetsEnabled: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3766,7 +4048,14 @@ export const updateInstanceAccessControlAttributeConfiguration: API.OperationMet
   UpdateInstanceAccessControlAttributeConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceArn: 0,
+      InstanceAccessControlAttributeConfiguration:
+        i_InstanceAccessControlAttributeConfiguration,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3797,7 +4086,16 @@ export const updatePermissionSet: API.OperationMethod<
   UpdatePermissionSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceArn: 0,
+      PermissionSetArn: 0,
+      Description: 0,
+      SessionDuration: 0,
+      RelayState: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3830,7 +4128,20 @@ export const updateTrustedTokenIssuer: API.OperationMethod<
   UpdateTrustedTokenIssuerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TrustedTokenIssuerArn: 0,
+      Name: 0,
+      TrustedTokenIssuerConfiguration: {
+        OidcJwtConfiguration: {
+          ClaimAttributePath: 0,
+          IdentityStoreAttributePath: 0,
+          JwksRetrievalOption: 0,
+        },
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3844,6 +4155,16 @@ export const updateTrustedTokenIssuer: API.OperationMethod<
   operationName: "UpdateTrustedTokenIssuer",
 })) as any;
 
+const i_CustomerManagedPolicyReference: D.LazyStruct = () => ({
+  Name: 0,
+  Path: 0,
+});
+const i_InstanceAccessControlAttributeConfiguration: D.LazyStruct = () => ({
+  AccessControlAttributes: D.list({ Key: 0, Value: { Source: 0 } }),
+});
+const i_OperationStatusFilter: D.LazyStruct = () => ({ Status: 0 });
+const i_SignInOptions: D.LazyStruct = () => ({ Origin: 0, ApplicationUrl: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_AccountAssignmentOperationStatus: D.LazyStruct = () => ({
   CreatedDate: D.ts,
 });

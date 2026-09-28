@@ -382,6 +382,8 @@ export const encodeJson = (
   }
   const struct = isStruct(s) ? s : undefined;
   for (const key in obj) {
+    // Request structures are closed: keys the model doesn't have are dropped
+    if (struct !== undefined && !(key in struct)) continue;
     const member = struct?.[key] as Member | undefined;
     const spec = specOf(member);
     if (spec !== undefined && isBound(spec)) continue;

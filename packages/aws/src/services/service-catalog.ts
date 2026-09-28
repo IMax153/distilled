@@ -1741,7 +1741,10 @@ export const acceptPortfolioShare: API.OperationMethod<
   AcceptPortfolioShareError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AcceptLanguage: 0, PortfolioId: 0, PortfolioShareType: 0 },
+  },
   errors: [
     InvalidParametersException,
     LimitExceededException,
@@ -1767,7 +1770,7 @@ export const associateBudgetWithResource: API.OperationMethod<
   AssociateBudgetWithResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { BudgetName: 0, ResourceId: 0 } },
   errors: [
     DuplicateResourceException,
     InvalidParametersException,
@@ -1809,7 +1812,15 @@ export const associatePrincipalWithPortfolio: API.OperationMethod<
   AssociatePrincipalWithPortfolioError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceptLanguage: 0,
+      PortfolioId: 0,
+      PrincipalARN: 0,
+      PrincipalType: 0,
+    },
+  },
   errors: [
     InvalidParametersException,
     LimitExceededException,
@@ -1836,7 +1847,15 @@ export const associateProductWithPortfolio: API.OperationMethod<
   AssociateProductWithPortfolioError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceptLanguage: 0,
+      ProductId: 0,
+      PortfolioId: 0,
+      SourcePortfolioId: 0,
+    },
+  },
   errors: [
     InvalidParametersException,
     LimitExceededException,
@@ -1864,7 +1883,13 @@ export const associateServiceActionWithProvisioningArtifact: API.OperationMethod
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      ProductId: 0,
+      ProvisioningArtifactId: 0,
+      ServiceActionId: 0,
+      AcceptLanguage: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     DuplicateResourceException,
@@ -1894,7 +1919,7 @@ export const associateTagOptionWithResource: API.OperationMethod<
   AssociateTagOptionWithResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0, TagOptionId: 0 } },
   errors: [
     DuplicateResourceException,
     InvalidParametersException,
@@ -1920,7 +1945,13 @@ export const batchAssociateServiceActionWithProvisioningArtifact: API.OperationM
   BatchAssociateServiceActionWithProvisioningArtifactError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ServiceActionAssociations: D.list(i_ServiceActionAssociation),
+      AcceptLanguage: 0,
+    },
+  },
   errors: [InvalidParametersException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1939,7 +1970,13 @@ export const batchDisassociateServiceActionFromProvisioningArtifact: API.Operati
   BatchDisassociateServiceActionFromProvisioningArtifactError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ServiceActionAssociations: D.list(i_ServiceActionAssociation),
+      AcceptLanguage: 0,
+    },
+  },
   errors: [InvalidParametersException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1969,7 +2006,15 @@ export const copyProduct: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      AcceptLanguage: 0,
+      SourceProductArn: 0,
+      TargetProductId: 0,
+      TargetProductName: 0,
+      SourceProvisioningArtifactIdentifiers: 0,
+      CopyOptions: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
   },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -1996,7 +2041,15 @@ export const createConstraint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      AcceptLanguage: 0,
+      PortfolioId: 0,
+      ProductId: 0,
+      Parameters: 0,
+      Type: 0,
+      Description: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     DuplicateResourceException,
@@ -2027,7 +2080,14 @@ export const createPortfolio: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      AcceptLanguage: 0,
+      DisplayName: 0,
+      Description: 0,
+      ProviderName: 0,
+      Tags: D.list(i_Tag),
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
     output: { PortfolioDetail: o_PortfolioDetail },
   },
   errors: [
@@ -2076,7 +2136,17 @@ export const createPortfolioShare: API.OperationMethod<
   CreatePortfolioShareError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceptLanguage: 0,
+      PortfolioId: 0,
+      AccountId: 0,
+      OrganizationNode: i_OrganizationNode,
+      ShareTagOptions: 0,
+      SharePrincipals: 0,
+    },
+  },
   errors: [
     InvalidParametersException,
     InvalidStateException,
@@ -2112,7 +2182,21 @@ export const createProduct: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      AcceptLanguage: 0,
+      Name: 0,
+      Owner: 0,
+      Description: 0,
+      Distributor: 0,
+      SupportDescription: 0,
+      SupportEmail: 0,
+      SupportUrl: 0,
+      ProductType: 0,
+      Tags: D.list(i_Tag),
+      ProvisioningArtifactParameters: i_ProvisioningArtifactProperties,
+      IdempotencyToken: D.m({ idempotency: true }),
+      SourceConnection: i_SourceConnection,
+    },
     output: {
       ProductViewDetail: o_ProductViewDetail,
       ProvisioningArtifactDetail: o_ProvisioningArtifactDetail,
@@ -2154,7 +2238,19 @@ export const createProvisionedProductPlan: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      AcceptLanguage: 0,
+      PlanName: 0,
+      PlanType: 0,
+      NotificationArns: 0,
+      PathId: 0,
+      ProductId: 0,
+      ProvisionedProductName: 0,
+      ProvisioningArtifactId: 0,
+      ProvisioningParameters: D.list(i_UpdateProvisioningParameter),
+      IdempotencyToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     InvalidParametersException,
@@ -2188,7 +2284,12 @@ export const createProvisioningArtifact: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      AcceptLanguage: 0,
+      ProductId: 0,
+      Parameters: i_ProvisioningArtifactProperties,
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
     output: { ProvisioningArtifactDetail: o_ProvisioningArtifactDetail },
   },
   errors: [
@@ -2216,7 +2317,14 @@ export const createServiceAction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      DefinitionType: 0,
+      Definition: 0,
+      Description: 0,
+      AcceptLanguage: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
   },
   errors: [InvalidParametersException, LimitExceededException],
   protocol: AwsProtocol,
@@ -2238,7 +2346,7 @@ export const createTagOption: API.OperationMethod<
   CreateTagOptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Key: 0, Value: 0 } },
   errors: [
     DuplicateResourceException,
     LimitExceededException,
@@ -2264,7 +2372,7 @@ export const deleteConstraint: API.OperationMethod<
   DeleteConstraintError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AcceptLanguage: 0, Id: 0 } },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2291,7 +2399,7 @@ export const deletePortfolio: API.OperationMethod<
   DeletePortfolioError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AcceptLanguage: 0, Id: 0 } },
   errors: [
     InvalidParametersException,
     ResourceInUseException,
@@ -2322,7 +2430,15 @@ export const deletePortfolioShare: API.OperationMethod<
   DeletePortfolioShareError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceptLanguage: 0,
+      PortfolioId: 0,
+      AccountId: 0,
+      OrganizationNode: i_OrganizationNode,
+    },
+  },
   errors: [
     InvalidParametersException,
     InvalidStateException,
@@ -2353,7 +2469,7 @@ export const deleteProduct: API.OperationMethod<
   DeleteProductError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AcceptLanguage: 0, Id: 0 } },
   errors: [
     InvalidParametersException,
     ResourceInUseException,
@@ -2378,7 +2494,10 @@ export const deleteProvisionedProductPlan: API.OperationMethod<
   DeleteProvisionedProductPlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AcceptLanguage: 0, PlanId: 0, IgnoreErrors: 0 },
+  },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2403,7 +2522,10 @@ export const deleteProvisioningArtifact: API.OperationMethod<
   DeleteProvisioningArtifactError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AcceptLanguage: 0, ProductId: 0, ProvisioningArtifactId: 0 },
+  },
   errors: [
     InvalidParametersException,
     ResourceInUseException,
@@ -2430,7 +2552,11 @@ export const deleteServiceAction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      Id: 0,
+      AcceptLanguage: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     InvalidParametersException,
@@ -2458,7 +2584,7 @@ export const deleteTagOption: API.OperationMethod<
   DeleteTagOptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0 } },
   errors: [
     ResourceInUseException,
     ResourceNotFoundException,
@@ -2479,7 +2605,7 @@ export const describeConstraint: API.OperationMethod<
   DescribeConstraintError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AcceptLanguage: 0, Id: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2498,7 +2624,10 @@ export const describeCopyProductStatus: API.OperationMethod<
   DescribeCopyProductStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AcceptLanguage: 0, CopyProductToken: 0 },
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2517,7 +2646,11 @@ export const describePortfolio: API.OperationMethod<
   DescribePortfolioError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { PortfolioDetail: o_PortfolioDetail } },
+  descriptor: {
+    service: svc,
+    input: { AcceptLanguage: 0, Id: 0 },
+    output: { PortfolioDetail: o_PortfolioDetail },
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2544,7 +2677,10 @@ export const describePortfolioShares: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { PortfolioId: 0, Type: 0, PageToken: 0, PageSize: 0 },
+  },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2571,7 +2707,7 @@ export const describePortfolioShareStatus: API.OperationMethod<
   DescribePortfolioShareStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PortfolioShareToken: 0 } },
   errors: [
     InvalidParametersException,
     OperationNotSupportedException,
@@ -2603,6 +2739,7 @@ export const describeProduct: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AcceptLanguage: 0, Id: 0, Name: 0 },
     output: { ProvisioningArtifacts: D.list(o_ProvisioningArtifact) },
   },
   errors: [InvalidParametersException, ResourceNotFoundException],
@@ -2626,6 +2763,7 @@ export const describeProductAsAdmin: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AcceptLanguage: 0, Id: 0, Name: 0, SourcePortfolioId: 0 },
     output: {
       ProductViewDetail: o_ProductViewDetail,
       ProvisioningArtifactSummaries: D.list({ CreatedTime: D.ts }),
@@ -2652,6 +2790,7 @@ export const describeProductView: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AcceptLanguage: 0, Id: 0 },
     output: { ProvisioningArtifacts: D.list(o_ProvisioningArtifact) },
   },
   errors: [InvalidParametersException, ResourceNotFoundException],
@@ -2675,6 +2814,7 @@ export const describeProvisionedProduct: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AcceptLanguage: 0, Id: 0, Name: 0 },
     output: { ProvisionedProductDetail: o_ProvisionedProductDetail },
   },
   errors: [InvalidParametersException, ResourceNotFoundException],
@@ -2698,6 +2838,7 @@ export const describeProvisionedProductPlan: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AcceptLanguage: 0, PlanId: 0, PageSize: 0, PageToken: 0 },
     output: {
       ProvisionedProductPlanDetails: { CreatedTime: D.ts, UpdatedTime: D.ts },
     },
@@ -2723,6 +2864,15 @@ export const describeProvisioningArtifact: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AcceptLanguage: 0,
+      ProvisioningArtifactId: 0,
+      ProductId: 0,
+      ProvisioningArtifactName: 0,
+      ProductName: 0,
+      Verbose: 0,
+      IncludeProvisioningArtifactParameters: 0,
+    },
     output: { ProvisioningArtifactDetail: o_ProvisioningArtifactDetail },
   },
   errors: [InvalidParametersException, ResourceNotFoundException],
@@ -2752,7 +2902,18 @@ export const describeProvisioningParameters: API.OperationMethod<
   DescribeProvisioningParametersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceptLanguage: 0,
+      ProductId: 0,
+      ProductName: 0,
+      ProvisioningArtifactId: 0,
+      ProvisioningArtifactName: 0,
+      PathId: 0,
+      PathName: 0,
+    },
+  },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2776,7 +2937,11 @@ export const describeRecord: API.OperationMethod<
   DescribeRecordError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { RecordDetail: o_RecordDetail } },
+  descriptor: {
+    service: svc,
+    input: { AcceptLanguage: 0, Id: 0, PageToken: 0, PageSize: 0 },
+    output: { RecordDetail: o_RecordDetail },
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2795,7 +2960,7 @@ export const describeServiceAction: API.OperationMethod<
   DescribeServiceActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0, AcceptLanguage: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2815,7 +2980,10 @@ export const describeServiceActionExecutionParameters: API.OperationMethod<
   DescribeServiceActionExecutionParametersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ProvisionedProductId: 0, ServiceActionId: 0, AcceptLanguage: 0 },
+  },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2835,7 +3003,7 @@ export const describeTagOption: API.OperationMethod<
   DescribeTagOptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0 } },
   errors: [ResourceNotFoundException, TagOptionNotMigratedException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2869,7 +3037,7 @@ export const disableAWSOrganizationsAccess: API.OperationMethod<
   DisableAWSOrganizationsAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     InvalidStateException,
     OperationNotSupportedException,
@@ -2892,7 +3060,7 @@ export const disassociateBudgetFromResource: API.OperationMethod<
   DisassociateBudgetFromResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { BudgetName: 0, ResourceId: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2931,7 +3099,15 @@ export const disassociatePrincipalFromPortfolio: API.OperationMethod<
   DisassociatePrincipalFromPortfolioError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceptLanguage: 0,
+      PortfolioId: 0,
+      PrincipalARN: 0,
+      PrincipalType: 0,
+    },
+  },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2954,7 +3130,10 @@ export const disassociateProductFromPortfolio: API.OperationMethod<
   DisassociateProductFromPortfolioError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AcceptLanguage: 0, ProductId: 0, PortfolioId: 0 },
+  },
   errors: [
     InvalidParametersException,
     ResourceInUseException,
@@ -2980,7 +3159,13 @@ export const disassociateServiceActionFromProvisioningArtifact: API.OperationMet
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      ProductId: 0,
+      ProvisioningArtifactId: 0,
+      ServiceActionId: 0,
+      AcceptLanguage: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
   },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -3001,7 +3186,7 @@ export const disassociateTagOptionFromResource: API.OperationMethod<
   DisassociateTagOptionFromResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0, TagOptionId: 0 } },
   errors: [ResourceNotFoundException, TagOptionNotMigratedException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3035,7 +3220,7 @@ export const enableAWSOrganizationsAccess: API.OperationMethod<
   EnableAWSOrganizationsAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     InvalidStateException,
     OperationNotSupportedException,
@@ -3062,7 +3247,11 @@ export const executeProvisionedProductPlan: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      AcceptLanguage: 0,
+      PlanId: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
     output: { RecordDetail: o_RecordDetail },
   },
   errors: [
@@ -3092,7 +3281,13 @@ export const executeProvisionedProductServiceAction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ExecuteToken: D.m({ idempotency: true }) },
+    input: {
+      ProvisionedProductId: 0,
+      ServiceActionId: 0,
+      ExecuteToken: D.m({ idempotency: true }),
+      AcceptLanguage: 0,
+      Parameters: 0,
+    },
     output: { RecordDetail: o_RecordDetail },
   },
   errors: [
@@ -3120,7 +3315,7 @@ export const getAWSOrganizationsAccessStatus: API.OperationMethod<
   GetAWSOrganizationsAccessStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [OperationNotSupportedException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3141,7 +3336,17 @@ export const getProvisionedProductOutputs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceptLanguage: 0,
+      ProvisionedProductId: 0,
+      ProvisionedProductName: 0,
+      OutputKeys: 0,
+      PageSize: 0,
+      PageToken: 0,
+    },
+  },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3195,7 +3400,14 @@ export const importAsProvisionedProduct: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      AcceptLanguage: 0,
+      ProductId: 0,
+      ProvisioningArtifactId: 0,
+      ProvisionedProductName: 0,
+      PhysicalId: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
     output: { RecordDetail: o_RecordDetail },
   },
   errors: [
@@ -3227,6 +3439,12 @@ export const listAcceptedPortfolioShares: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AcceptLanguage: 0,
+      PageToken: 0,
+      PageSize: 0,
+      PortfolioShareType: 0,
+    },
     output: { PortfolioDetails: D.list(o_PortfolioDetail) },
   },
   errors: [InvalidParametersException, OperationNotSupportedException],
@@ -3254,7 +3472,10 @@ export const listBudgetsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AcceptLanguage: 0, ResourceId: 0, PageSize: 0, PageToken: 0 },
+  },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3280,7 +3501,16 @@ export const listConstraintsForPortfolio: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceptLanguage: 0,
+      PortfolioId: 0,
+      ProductId: 0,
+      PageSize: 0,
+      PageToken: 0,
+    },
+  },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3326,7 +3556,10 @@ export const listLaunchPaths: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AcceptLanguage: 0, ProductId: 0, PageSize: 0, PageToken: 0 },
+  },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3357,7 +3590,16 @@ export const listOrganizationPortfolioAccess: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceptLanguage: 0,
+      PortfolioId: 0,
+      OrganizationNodeType: 0,
+      PageToken: 0,
+      PageSize: 0,
+    },
+  },
   errors: [
     InvalidParametersException,
     OperationNotSupportedException,
@@ -3389,7 +3631,16 @@ export const listPortfolioAccess: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceptLanguage: 0,
+      PortfolioId: 0,
+      OrganizationParentId: 0,
+      PageToken: 0,
+      PageSize: 0,
+    },
+  },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3414,6 +3665,7 @@ export const listPortfolios: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { AcceptLanguage: 0, PageToken: 0, PageSize: 0 },
     output: { PortfolioDetails: D.list(o_PortfolioDetail) },
   },
   errors: [InvalidParametersException],
@@ -3443,6 +3695,7 @@ export const listPortfoliosForProduct: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { AcceptLanguage: 0, ProductId: 0, PageToken: 0, PageSize: 0 },
     output: { PortfolioDetails: D.list(o_PortfolioDetail) },
   },
   errors: [InvalidParametersException, ResourceNotFoundException],
@@ -3470,7 +3723,10 @@ export const listPrincipalsForPortfolio: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AcceptLanguage: 0, PortfolioId: 0, PageSize: 0, PageToken: 0 },
+  },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3495,7 +3751,16 @@ export const listProvisionedProductPlans: API.OperationMethod<
   ListProvisionedProductPlansError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceptLanguage: 0,
+      ProvisionProductId: 0,
+      PageSize: 0,
+      PageToken: 0,
+      AccessLevelFilter: i_AccessLevelFilter,
+    },
+  },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3517,6 +3782,7 @@ export const listProvisioningArtifacts: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AcceptLanguage: 0, ProductId: 0 },
     output: {
       ProvisioningArtifactDetails: D.list(o_ProvisioningArtifactDetail),
     },
@@ -3543,6 +3809,7 @@ export const listProvisioningArtifactsForServiceAction: API.PaginatedOperationMe
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ServiceActionId: 0, PageSize: 0, PageToken: 0, AcceptLanguage: 0 },
     output: {
       ProvisioningArtifactViews: D.list({
         ProvisioningArtifact: o_ProvisioningArtifact,
@@ -3572,6 +3839,13 @@ export const listRecordHistory: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AcceptLanguage: 0,
+      AccessLevelFilter: i_AccessLevelFilter,
+      SearchFilter: { Key: 0, Value: 0 },
+      PageSize: 0,
+      PageToken: 0,
+    },
     output: { RecordDetails: D.list(o_RecordDetail) },
   },
   errors: [InvalidParametersException],
@@ -3597,6 +3871,7 @@ export const listResourcesForTagOption: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { TagOptionId: 0, ResourceType: 0, PageSize: 0, PageToken: 0 },
     output: { ResourceDetails: D.list({ CreatedTime: D.ts }) },
   },
   errors: [
@@ -3625,7 +3900,10 @@ export const listServiceActions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AcceptLanguage: 0, PageSize: 0, PageToken: 0 },
+  },
   errors: [InvalidParametersException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3651,7 +3929,16 @@ export const listServiceActionsForProvisioningArtifact: API.PaginatedOperationMe
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProductId: 0,
+      ProvisioningArtifactId: 0,
+      PageSize: 0,
+      PageToken: 0,
+      AcceptLanguage: 0,
+    },
+  },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3676,7 +3963,15 @@ export const listStackInstancesForProvisionedProduct: API.OperationMethod<
   ListStackInstancesForProvisionedProductError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceptLanguage: 0,
+      ProvisionedProductId: 0,
+      PageToken: 0,
+      PageSize: 0,
+    },
+  },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3697,7 +3992,14 @@ export const listTagOptions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Filters: { Key: 0, Value: 0, Active: 0 },
+      PageSize: 0,
+      PageToken: 0,
+    },
+  },
   errors: [InvalidParametersException, TagOptionNotMigratedException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3725,7 +4027,15 @@ export const notifyProvisionProductEngineWorkflowResult: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      WorkflowToken: 0,
+      RecordId: 0,
+      Status: 0,
+      FailureReason: 0,
+      ResourceIdentifier: { UniqueTag: { Key: 0, Value: 0 } },
+      Outputs: D.list(i_RecordOutput),
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
   },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -3749,7 +4059,13 @@ export const notifyTerminateProvisionedProductEngineWorkflowResult: API.Operatio
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      WorkflowToken: 0,
+      RecordId: 0,
+      Status: 0,
+      FailureReason: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
   },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -3773,7 +4089,14 @@ export const notifyUpdateProvisionedProductEngineWorkflowResult: API.OperationMe
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      WorkflowToken: 0,
+      RecordId: 0,
+      Status: 0,
+      FailureReason: 0,
+      Outputs: D.list(i_RecordOutput),
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
   },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -3826,7 +4149,28 @@ export const provisionProduct: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ProvisionToken: D.m({ idempotency: true }) },
+    input: {
+      AcceptLanguage: 0,
+      ProductId: 0,
+      ProductName: 0,
+      ProvisioningArtifactId: 0,
+      ProvisioningArtifactName: 0,
+      PathId: 0,
+      PathName: 0,
+      ProvisionedProductName: 0,
+      ProvisioningParameters: D.list({ Key: 0, Value: 0 }),
+      ProvisioningPreferences: {
+        StackSetAccounts: 0,
+        StackSetRegions: 0,
+        StackSetFailureToleranceCount: 0,
+        StackSetFailureTolerancePercentage: 0,
+        StackSetMaxConcurrencyCount: 0,
+        StackSetMaxConcurrencyPercentage: 0,
+      },
+      Tags: D.list(i_Tag),
+      NotificationArns: 0,
+      ProvisionToken: D.m({ idempotency: true }),
+    },
     output: { RecordDetail: o_RecordDetail },
   },
   errors: [
@@ -3851,7 +4195,10 @@ export const rejectPortfolioShare: API.OperationMethod<
   RejectPortfolioShareError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AcceptLanguage: 0, PortfolioId: 0, PortfolioShareType: 0 },
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3874,6 +4221,12 @@ export const scanProvisionedProducts: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AcceptLanguage: 0,
+      AccessLevelFilter: i_AccessLevelFilter,
+      PageSize: 0,
+      PageToken: 0,
+    },
     output: { ProvisionedProducts: D.list(o_ProvisionedProductDetail) },
   },
   errors: [InvalidParametersException],
@@ -3893,7 +4246,17 @@ export const searchProducts: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceptLanguage: 0,
+      Filters: 0,
+      PageSize: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      PageToken: 0,
+    },
+  },
   errors: [InvalidParametersException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3921,6 +4284,16 @@ export const searchProductsAsAdmin: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AcceptLanguage: 0,
+      PortfolioId: 0,
+      Filters: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      PageToken: 0,
+      PageSize: 0,
+      ProductSource: 0,
+    },
     output: { ProductViewDetails: D.list(o_ProductViewDetail) },
   },
   errors: [InvalidParametersException, ResourceNotFoundException],
@@ -3949,6 +4322,15 @@ export const searchProvisionedProducts: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AcceptLanguage: 0,
+      AccessLevelFilter: i_AccessLevelFilter,
+      Filters: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      PageSize: 0,
+      PageToken: 0,
+    },
     output: { ProvisionedProducts: D.list({ CreatedTime: D.ts }) },
   },
   errors: [InvalidParametersException],
@@ -3980,7 +4362,14 @@ export const terminateProvisionedProduct: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { TerminateToken: D.m({ idempotency: true }) },
+    input: {
+      ProvisionedProductName: 0,
+      ProvisionedProductId: 0,
+      TerminateToken: D.m({ idempotency: true }),
+      IgnoreErrors: 0,
+      AcceptLanguage: 0,
+      RetainPhysicalResources: 0,
+    },
     output: { RecordDetail: o_RecordDetail },
   },
   errors: [ResourceNotFoundException],
@@ -4002,7 +4391,10 @@ export const updateConstraint: API.OperationMethod<
   UpdateConstraintError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AcceptLanguage: 0, Id: 0, Description: 0, Parameters: 0 },
+  },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4026,7 +4418,19 @@ export const updatePortfolio: API.OperationMethod<
   UpdatePortfolioError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { PortfolioDetail: o_PortfolioDetail } },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceptLanguage: 0,
+      Id: 0,
+      DisplayName: 0,
+      Description: 0,
+      ProviderName: 0,
+      AddTags: D.list(i_Tag),
+      RemoveTags: 0,
+    },
+    output: { PortfolioDetail: o_PortfolioDetail },
+  },
   errors: [
     InvalidParametersException,
     LimitExceededException,
@@ -4071,7 +4475,17 @@ export const updatePortfolioShare: API.OperationMethod<
   UpdatePortfolioShareError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AcceptLanguage: 0,
+      PortfolioId: 0,
+      AccountId: 0,
+      OrganizationNode: i_OrganizationNode,
+      ShareTagOptions: 0,
+      SharePrincipals: 0,
+    },
+  },
   errors: [
     InvalidParametersException,
     InvalidStateException,
@@ -4099,6 +4513,20 @@ export const updateProduct: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AcceptLanguage: 0,
+      Id: 0,
+      Name: 0,
+      Owner: 0,
+      Description: 0,
+      Distributor: 0,
+      SupportDescription: 0,
+      SupportEmail: 0,
+      SupportUrl: 0,
+      AddTags: D.list(i_Tag),
+      RemoveTags: 0,
+      SourceConnection: i_SourceConnection,
+    },
     output: { ProductViewDetail: o_ProductViewDetail },
   },
   errors: [
@@ -4132,7 +4560,29 @@ export const updateProvisionedProduct: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { UpdateToken: D.m({ idempotency: true }) },
+    input: {
+      AcceptLanguage: 0,
+      ProvisionedProductName: 0,
+      ProvisionedProductId: 0,
+      ProductId: 0,
+      ProductName: 0,
+      ProvisioningArtifactId: 0,
+      ProvisioningArtifactName: 0,
+      PathId: 0,
+      PathName: 0,
+      ProvisioningParameters: D.list(i_UpdateProvisioningParameter),
+      ProvisioningPreferences: {
+        StackSetAccounts: 0,
+        StackSetRegions: 0,
+        StackSetFailureToleranceCount: 0,
+        StackSetFailureTolerancePercentage: 0,
+        StackSetMaxConcurrencyCount: 0,
+        StackSetMaxConcurrencyPercentage: 0,
+        StackSetOperationType: 0,
+      },
+      Tags: D.list(i_Tag),
+      UpdateToken: D.m({ idempotency: true }),
+    },
     output: { RecordDetail: o_RecordDetail },
   },
   errors: [InvalidParametersException, ResourceNotFoundException],
@@ -4157,7 +4607,12 @@ export const updateProvisionedProductProperties: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { IdempotencyToken: D.m({ idempotency: true }) },
+    input: {
+      AcceptLanguage: 0,
+      ProvisionedProductId: 0,
+      ProvisionedProductProperties: 0,
+      IdempotencyToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     InvalidParametersException,
@@ -4186,6 +4641,15 @@ export const updateProvisioningArtifact: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AcceptLanguage: 0,
+      ProductId: 0,
+      ProvisioningArtifactId: 0,
+      Name: 0,
+      Description: 0,
+      Active: 0,
+      Guidance: 0,
+    },
     output: { ProvisioningArtifactDetail: o_ProvisioningArtifactDetail },
   },
   errors: [InvalidParametersException, ResourceNotFoundException],
@@ -4207,7 +4671,10 @@ export const updateServiceAction: API.OperationMethod<
   UpdateServiceActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Id: 0, Name: 0, Definition: 0, Description: 0, AcceptLanguage: 0 },
+  },
   errors: [InvalidParametersException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4229,7 +4696,7 @@ export const updateTagOption: API.OperationMethod<
   UpdateTagOptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0, Value: 0, Active: 0 } },
   errors: [
     DuplicateResourceException,
     InvalidParametersException,
@@ -4241,6 +4708,37 @@ export const updateTagOption: API.OperationMethod<
   operationName: "UpdateTagOption",
 })) as any;
 
+const i_AccessLevelFilter: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_OrganizationNode: D.LazyStruct = () => ({ Type: 0, Value: 0 });
+const i_ProvisioningArtifactProperties: D.LazyStruct = () => ({
+  Name: 0,
+  Description: 0,
+  Info: 0,
+  Type: 0,
+  DisableTemplateValidation: 0,
+});
+const i_RecordOutput: D.LazyStruct = () => ({
+  OutputKey: 0,
+  OutputValue: 0,
+  Description: 0,
+});
+const i_ServiceActionAssociation: D.LazyStruct = () => ({
+  ServiceActionId: 0,
+  ProductId: 0,
+  ProvisioningArtifactId: 0,
+});
+const i_SourceConnection: D.LazyStruct = () => ({
+  Type: 0,
+  ConnectionParameters: {
+    CodeStar: { ConnectionArn: 0, Repository: 0, Branch: 0, ArtifactPath: 0 },
+  },
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_UpdateProvisioningParameter: D.LazyStruct = () => ({
+  Key: 0,
+  Value: 0,
+  UsePreviousValue: 0,
+});
 const o_PortfolioDetail: D.LazyStruct = () => ({ CreatedTime: D.ts });
 const o_ProductViewDetail: D.LazyStruct = () => ({
   CreatedTime: D.ts,

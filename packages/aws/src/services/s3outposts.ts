@@ -249,6 +249,13 @@ export const createEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /S3Outposts/CreateEndpoint",
+    input: {
+      OutpostId: 0,
+      SubnetId: 0,
+      SecurityGroupId: 0,
+      AccessType: 0,
+      CustomerOwnedIpv4Pool: 0,
+    },
     body: true,
   },
   errors: [

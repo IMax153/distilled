@@ -2142,7 +2142,7 @@ export const cancelImageCreation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /CancelImageCreation",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { imageBuildVersionArn: 0, clientToken: D.m({ idempotency: true }) },
     body: true,
   },
   errors: [
@@ -2183,7 +2183,7 @@ export const cancelLifecycleExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /CancelLifecycleExecution",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { lifecycleExecutionId: 0, clientToken: D.m({ idempotency: true }) },
     body: true,
   },
   errors: [
@@ -2234,7 +2234,20 @@ export const createComponent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /CreateComponent",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      semanticVersion: 0,
+      description: 0,
+      changeDescription: 0,
+      platform: 0,
+      supportedOsVersions: 0,
+      data: 0,
+      uri: 0,
+      kmsKeyId: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+      dryRun: 0,
+    },
     body: true,
   },
   errors: [
@@ -2282,7 +2295,27 @@ export const createContainerRecipe: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /CreateContainerRecipe",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      containerType: 0,
+      name: 0,
+      description: 0,
+      semanticVersion: 0,
+      components: D.list(i_ComponentConfiguration),
+      instanceConfiguration: {
+        image: 0,
+        blockDeviceMappings: D.list(i_InstanceBlockDeviceMapping),
+      },
+      dockerfileTemplateData: 0,
+      dockerfileTemplateUri: 0,
+      platformOverride: 0,
+      imageOsVersionOverride: 0,
+      parentImage: 0,
+      tags: 0,
+      workingDirectory: 0,
+      targetRepository: i_TargetContainerRepository,
+      kmsKeyId: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2329,7 +2362,13 @@ export const createDistributionConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /CreateDistributionConfiguration",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      distributions: D.list(i_Distribution),
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2376,7 +2415,20 @@ export const createImage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /CreateImage",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      imageRecipeArn: 0,
+      containerRecipeArn: 0,
+      distributionConfigurationArn: 0,
+      infrastructureConfigurationArn: 0,
+      imageTestsConfiguration: i_ImageTestsConfiguration,
+      enhancedImageMetadataEnabled: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+      imageScanningConfiguration: i_ImageScanningConfiguration,
+      workflows: D.list(i_WorkflowConfiguration),
+      executionRole: 0,
+      loggingConfiguration: i_ImageLoggingConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -2420,7 +2472,25 @@ export const createImagePipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /CreateImagePipeline",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      imageRecipeArn: 0,
+      containerRecipeArn: 0,
+      infrastructureConfigurationArn: 0,
+      distributionConfigurationArn: 0,
+      imageTestsConfiguration: i_ImageTestsConfiguration,
+      enhancedImageMetadataEnabled: 0,
+      schedule: i_Schedule,
+      status: 0,
+      tags: 0,
+      imageTags: 0,
+      clientToken: D.m({ idempotency: true }),
+      imageScanningConfiguration: i_ImageScanningConfiguration,
+      workflows: D.list(i_WorkflowConfiguration),
+      executionRole: 0,
+      loggingConfiguration: i_PipelineLoggingConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -2466,7 +2536,23 @@ export const createImageRecipe: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /CreateImageRecipe",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      semanticVersion: 0,
+      components: D.list(i_ComponentConfiguration),
+      parentImage: 0,
+      blockDeviceMappings: D.list(i_InstanceBlockDeviceMapping),
+      tags: 0,
+      workingDirectory: 0,
+      additionalInstanceConfiguration: {
+        systemsManagerAgent: { uninstallAfterBuild: 0 },
+        userDataOverride: 0,
+      },
+      amiTags: 0,
+      amiWatermarks: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2513,7 +2599,23 @@ export const createInfrastructureConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /CreateInfrastructureConfiguration",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      instanceTypes: 0,
+      instanceProfileName: 0,
+      securityGroupIds: 0,
+      subnetId: 0,
+      logging: i_Logging,
+      keyPair: 0,
+      terminateInstanceOnFailure: 0,
+      snsTopicArn: 0,
+      resourceTags: 0,
+      instanceMetadataOptions: i_InstanceMetadataOptions,
+      tags: 0,
+      placement: i_Placement,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2558,7 +2660,17 @@ export const createLifecyclePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /CreateLifecyclePolicy",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      status: 0,
+      executionRole: 0,
+      resourceType: 0,
+      policyDetails: D.list(i_LifecyclePolicyDetail),
+      resourceSelection: i_LifecyclePolicyResourceSelection,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2604,7 +2716,19 @@ export const createWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /CreateWorkflow",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      semanticVersion: 0,
+      description: 0,
+      changeDescription: 0,
+      data: 0,
+      uri: 0,
+      kmsKeyId: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+      type: 0,
+      dryRun: 0,
+    },
     body: true,
   },
   errors: [
@@ -3027,7 +3151,14 @@ export const distributeImage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /DistributeImage",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      sourceImage: 0,
+      distributionConfigurationArn: 0,
+      executionRole: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+      loggingConfiguration: i_ImageLoggingConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -3557,6 +3688,7 @@ export const getMarketplaceResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetMarketplaceResource",
+    input: { resourceType: 0, resourceArn: 0, resourceLocation: 0 },
     body: true,
   },
   errors: [
@@ -3705,7 +3837,20 @@ export const importComponent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /ImportComponent",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      semanticVersion: 0,
+      description: 0,
+      changeDescription: 0,
+      type: 0,
+      format: 0,
+      platform: 0,
+      data: 0,
+      uri: 0,
+      kmsKeyId: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -3747,7 +3892,21 @@ export const importDiskImage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /ImportDiskImage",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      semanticVersion: 0,
+      description: 0,
+      platform: 0,
+      osVersion: 0,
+      executionRole: 0,
+      infrastructureConfigurationArn: 0,
+      uri: 0,
+      loggingConfiguration: i_ImageLoggingConfiguration,
+      tags: 0,
+      registerImageOptions: { secureBootEnabled: 0, uefiData: 0 },
+      windowsConfiguration: { imageIndex: 0 },
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -3786,7 +3945,17 @@ export const importVmImage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /ImportVmImage",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      semanticVersion: 0,
+      description: 0,
+      platform: 0,
+      osVersion: 0,
+      vmImportTaskId: 0,
+      loggingConfiguration: i_ImageLoggingConfiguration,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [ClientException, ServiceException, ServiceUnavailableException],
@@ -3819,6 +3988,7 @@ export const listComponentBuildVersions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListComponentBuildVersions",
+    input: { componentVersionArn: 0, maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [
@@ -3871,7 +4041,18 @@ export const listComponents: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ComponentVersion
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListComponents", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListComponents",
+    input: {
+      owner: 0,
+      filters: D.list(i_Filter),
+      byName: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
+    body: true,
+  },
   errors: [
     CallRateLimitExceededException,
     ClientException,
@@ -3911,7 +4092,12 @@ export const listContainerRecipes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ContainerRecipeSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListContainerRecipes", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListContainerRecipes",
+    input: { owner: 0, filters: D.list(i_Filter), maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [
     CallRateLimitExceededException,
     ClientException,
@@ -3954,6 +4140,7 @@ export const listDistributionConfigurations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListDistributionConfigurations",
+    input: { filters: D.list(i_Filter), maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [
@@ -3998,6 +4185,12 @@ export const listImageBuildVersions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListImageBuildVersions",
+    input: {
+      imageVersionArn: 0,
+      filters: D.list(i_Filter),
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { imageSummaryList: D.list(o_ImageSummary) },
     body: true,
   },
@@ -4042,7 +4235,12 @@ export const listImagePackages: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ImagePackage
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListImagePackages", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListImagePackages",
+    input: { imageBuildVersionArn: 0, maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [
     CallRateLimitExceededException,
     ClientException,
@@ -4087,6 +4285,12 @@ export const listImagePipelineImages: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListImagePipelineImages",
+    input: {
+      imagePipelineArn: 0,
+      filters: D.list(i_Filter),
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { imageSummaryList: D.list(o_ImageSummary) },
     body: true,
   },
@@ -4130,7 +4334,12 @@ export const listImagePipelines: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ImagePipeline
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListImagePipelines", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListImagePipelines",
+    input: { filters: D.list(i_Filter), maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [
     CallRateLimitExceededException,
     ClientException,
@@ -4170,7 +4379,12 @@ export const listImageRecipes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ImageRecipeSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListImageRecipes", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListImageRecipes",
+    input: { owner: 0, filters: D.list(i_Filter), maxResults: 0, nextToken: 0 },
+    body: true,
+  },
   errors: [
     CallRateLimitExceededException,
     ClientException,
@@ -4211,7 +4425,19 @@ export const listImages: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ImageVersion
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListImages", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListImages",
+    input: {
+      owner: 0,
+      filters: D.list(i_Filter),
+      byName: 0,
+      maxResults: 0,
+      nextToken: 0,
+      includeDeprecated: 0,
+    },
+    body: true,
+  },
   errors: [
     CallRateLimitExceededException,
     ClientException,
@@ -4268,6 +4494,7 @@ export const listImageScanFindingAggregations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListImageScanFindingAggregations",
+    input: { filter: i_Filter, nextToken: 0 },
     body: true,
   },
   errors: [
@@ -4311,6 +4538,11 @@ export const listImageScanFindings: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListImageScanFindings",
+    input: {
+      filters: D.list({ name: 0, values: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       findings: D.list({
         firstObservedAt: D.ts,
@@ -4365,6 +4597,7 @@ export const listInfrastructureConfigurations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListInfrastructureConfigurations",
+    input: { filters: D.list(i_Filter), maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [
@@ -4409,6 +4642,12 @@ export const listLifecycleExecutionResources: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListLifecycleExecutionResources",
+    input: {
+      lifecycleExecutionId: 0,
+      parentResourceId: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { resources: D.list({ startTime: D.ts, endTime: D.ts }) },
     body: true,
   },
@@ -4454,6 +4693,7 @@ export const listLifecycleExecutions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListLifecycleExecutions",
+    input: { maxResults: 0, nextToken: 0, resourceArn: 0 },
     output: { lifecycleExecutions: D.list(o_LifecycleExecution) },
     body: true,
   },
@@ -4499,6 +4739,7 @@ export const listLifecyclePolicies: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListLifecyclePolicies",
+    input: { filters: D.list(i_Filter), maxResults: 0, nextToken: 0 },
     output: {
       lifecyclePolicySummaryList: D.list({
         dateCreated: D.ts,
@@ -4542,7 +4783,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InvalidParameterException,
     ResourceNotFoundException,
@@ -4576,6 +4821,7 @@ export const listWaitingWorkflowSteps: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListWaitingWorkflowSteps",
+    input: { maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [
@@ -4620,6 +4866,7 @@ export const listWorkflowBuildVersions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListWorkflowBuildVersions",
+    input: { workflowVersionArn: 0, maxResults: 0, nextToken: 0 },
     body: true,
   },
   errors: [
@@ -4665,6 +4912,7 @@ export const listWorkflowExecutions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListWorkflowExecutions",
+    input: { maxResults: 0, nextToken: 0, imageBuildVersionArn: 0 },
     body: true,
   },
   errors: [
@@ -4706,7 +4954,18 @@ export const listWorkflows: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   WorkflowVersion
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListWorkflows", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListWorkflows",
+    input: {
+      owner: 0,
+      filters: D.list(i_Filter),
+      byName: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
+    body: true,
+  },
   errors: [
     CallRateLimitExceededException,
     ClientException,
@@ -4750,6 +5009,7 @@ export const listWorkflowStepExecutions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListWorkflowStepExecutions",
+    input: { maxResults: 0, nextToken: 0, workflowExecutionId: 0 },
     body: true,
   },
   errors: [
@@ -4793,7 +5053,12 @@ export const putComponentPolicy: API.OperationMethod<
   PutComponentPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /PutComponentPolicy", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /PutComponentPolicy",
+    input: { componentArn: 0, policy: 0 },
+    body: true,
+  },
   errors: [
     CallRateLimitExceededException,
     ClientException,
@@ -4838,6 +5103,7 @@ export const putContainerRecipePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /PutContainerRecipePolicy",
+    input: { containerRecipeArn: 0, policy: 0 },
     body: true,
   },
   errors: [
@@ -4876,7 +5142,12 @@ export const putImagePolicy: API.OperationMethod<
   PutImagePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /PutImagePolicy", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /PutImagePolicy",
+    input: { imageArn: 0, policy: 0 },
+    body: true,
+  },
   errors: [
     CallRateLimitExceededException,
     ClientException,
@@ -4913,7 +5184,12 @@ export const putImageRecipePolicy: API.OperationMethod<
   PutImageRecipePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /PutImageRecipePolicy", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /PutImageRecipePolicy",
+    input: { imageRecipeArn: 0, policy: 0 },
+    body: true,
+  },
   errors: [
     CallRateLimitExceededException,
     ClientException,
@@ -4951,7 +5227,7 @@ export const retryImage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /RetryImage",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { imageBuildVersionArn: 0, clientToken: D.m({ idempotency: true }) },
     body: true,
   },
   errors: [
@@ -4994,7 +5270,13 @@ export const sendWorkflowStepAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /SendWorkflowStepAction",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      stepExecutionId: 0,
+      imageBuildVersionArn: 0,
+      action: 0,
+      reason: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -5037,7 +5319,11 @@ export const startImagePipelineExecution: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /StartImagePipelineExecution",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      imagePipelineArn: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -5080,7 +5366,15 @@ export const startResourceStateUpdate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /StartResourceStateUpdate",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      resourceArn: 0,
+      state: { status: 0 },
+      executionRole: 0,
+      includeResources: { amis: 0, snapshots: 0, containers: 0 },
+      exclusionRules: { amis: i_LifecyclePolicyDetailExclusionRulesAmis },
+      updateAt: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -5113,7 +5407,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InvalidParameterException,
     ResourceNotFoundException,
@@ -5141,7 +5440,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InvalidParameterException,
@@ -5178,7 +5477,12 @@ export const updateDistributionConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /UpdateDistributionConfiguration",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      distributionConfigurationArn: 0,
+      description: 0,
+      distributions: D.list(i_Distribution),
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -5227,7 +5531,24 @@ export const updateImagePipeline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /UpdateImagePipeline",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      imagePipelineArn: 0,
+      description: 0,
+      imageRecipeArn: 0,
+      containerRecipeArn: 0,
+      infrastructureConfigurationArn: 0,
+      distributionConfigurationArn: 0,
+      imageTestsConfiguration: i_ImageTestsConfiguration,
+      enhancedImageMetadataEnabled: 0,
+      schedule: i_Schedule,
+      status: 0,
+      clientToken: D.m({ idempotency: true }),
+      imageScanningConfiguration: i_ImageScanningConfiguration,
+      workflows: D.list(i_WorkflowConfiguration),
+      loggingConfiguration: i_PipelineLoggingConfiguration,
+      executionRole: 0,
+      imageTags: 0,
+    },
     body: true,
   },
   errors: [
@@ -5271,7 +5592,22 @@ export const updateInfrastructureConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /UpdateInfrastructureConfiguration",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      infrastructureConfigurationArn: 0,
+      description: 0,
+      instanceTypes: 0,
+      instanceProfileName: 0,
+      securityGroupIds: 0,
+      subnetId: 0,
+      logging: i_Logging,
+      keyPair: 0,
+      terminateInstanceOnFailure: 0,
+      snsTopicArn: 0,
+      resourceTags: 0,
+      instanceMetadataOptions: i_InstanceMetadataOptions,
+      placement: i_Placement,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -5314,7 +5650,16 @@ export const updateLifecyclePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /UpdateLifecyclePolicy",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      lifecyclePolicyArn: 0,
+      description: 0,
+      status: 0,
+      executionRole: 0,
+      resourceType: 0,
+      policyDetails: D.list(i_LifecyclePolicyDetail),
+      resourceSelection: i_LifecyclePolicyResourceSelection,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -5333,6 +5678,139 @@ export const updateLifecyclePolicy: API.OperationMethod<
   operationName: "UpdateLifecyclePolicy",
 })) as any;
 
+const i_ComponentConfiguration: D.LazyStruct = () => ({
+  componentArn: 0,
+  parameters: D.list({ name: 0, value: 0 }),
+});
+const i_Distribution: D.LazyStruct = () => ({
+  region: 0,
+  amiDistributionConfiguration: {
+    name: 0,
+    description: 0,
+    targetAccountIds: 0,
+    amiTags: 0,
+    kmsKeyId: 0,
+    launchPermission: {
+      userIds: 0,
+      userGroups: 0,
+      organizationArns: 0,
+      organizationalUnitArns: 0,
+    },
+  },
+  containerDistributionConfiguration: {
+    description: 0,
+    containerTags: 0,
+    targetRepository: i_TargetContainerRepository,
+  },
+  licenseConfigurationArns: 0,
+  launchTemplateConfigurations: D.list({
+    launchTemplateId: 0,
+    accountId: 0,
+    setDefaultVersion: 0,
+  }),
+  s3ExportConfiguration: {
+    roleName: 0,
+    diskImageFormat: 0,
+    s3Bucket: 0,
+    s3Prefix: 0,
+  },
+  fastLaunchConfigurations: D.list({
+    enabled: 0,
+    snapshotConfiguration: { targetResourceCount: 0 },
+    maxParallelLaunches: 0,
+    launchTemplate: {
+      launchTemplateId: 0,
+      launchTemplateName: 0,
+      launchTemplateVersion: 0,
+    },
+    accountId: 0,
+  }),
+  ssmParameterConfigurations: D.list({
+    amiAccountId: 0,
+    parameterName: 0,
+    dataType: 0,
+  }),
+});
+const i_Filter: D.LazyStruct = () => ({ name: 0, values: 0 });
+const i_ImageLoggingConfiguration: D.LazyStruct = () => ({ logGroupName: 0 });
+const i_ImageScanningConfiguration: D.LazyStruct = () => ({
+  imageScanningEnabled: 0,
+  ecrConfiguration: { repositoryName: 0, containerTags: 0 },
+});
+const i_ImageTestsConfiguration: D.LazyStruct = () => ({
+  imageTestsEnabled: 0,
+  timeoutMinutes: 0,
+});
+const i_InstanceBlockDeviceMapping: D.LazyStruct = () => ({
+  deviceName: 0,
+  ebs: {
+    encrypted: 0,
+    deleteOnTermination: 0,
+    iops: 0,
+    kmsKeyId: 0,
+    snapshotId: 0,
+    volumeSize: 0,
+    volumeType: 0,
+    throughput: 0,
+  },
+  virtualName: 0,
+  noDevice: 0,
+});
+const i_InstanceMetadataOptions: D.LazyStruct = () => ({
+  httpTokens: 0,
+  httpPutResponseHopLimit: 0,
+});
+const i_LifecyclePolicyDetail: D.LazyStruct = () => ({
+  action: {
+    type: 0,
+    includeResources: { amis: 0, snapshots: 0, containers: 0 },
+  },
+  filter: { type: 0, value: 0, unit: 0, retainAtLeast: 0 },
+  exclusionRules: {
+    tagMap: 0,
+    amis: i_LifecyclePolicyDetailExclusionRulesAmis,
+  },
+});
+const i_LifecyclePolicyDetailExclusionRulesAmis: D.LazyStruct = () => ({
+  isPublic: 0,
+  regions: 0,
+  sharedAccounts: 0,
+  lastLaunched: { value: 0, unit: 0 },
+  tagMap: 0,
+});
+const i_LifecyclePolicyResourceSelection: D.LazyStruct = () => ({
+  recipes: D.list({ name: 0, semanticVersion: 0 }),
+  tagMap: 0,
+});
+const i_Logging: D.LazyStruct = () => ({
+  s3Logs: { s3BucketName: 0, s3KeyPrefix: 0 },
+});
+const i_PipelineLoggingConfiguration: D.LazyStruct = () => ({
+  imageLogGroupName: 0,
+  pipelineLogGroupName: 0,
+});
+const i_Placement: D.LazyStruct = () => ({
+  availabilityZone: 0,
+  tenancy: 0,
+  hostId: 0,
+  hostResourceGroupArn: 0,
+});
+const i_Schedule: D.LazyStruct = () => ({
+  scheduleExpression: 0,
+  timezone: 0,
+  pipelineExecutionStartCondition: 0,
+  autoDisablePolicy: { failureCount: 0 },
+});
+const i_TargetContainerRepository: D.LazyStruct = () => ({
+  service: 0,
+  repositoryName: 0,
+});
+const i_WorkflowConfiguration: D.LazyStruct = () => ({
+  workflowArn: 0,
+  parameters: D.list({ name: 0, value: 0 }),
+  parallelGroup: 0,
+  onFailure: 0,
+});
 const o_ImageSummary: D.LazyStruct = () => ({ deprecationTime: D.ts });
 const o_LifecycleExecution: D.LazyStruct = () => ({
   startTime: D.ts,

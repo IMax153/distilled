@@ -1192,7 +1192,12 @@ export const addLFTagsToResource: API.OperationMethod<
   AddLFTagsToResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /AddLFTagsToResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /AddLFTagsToResource",
+    input: { CatalogId: 0, Resource: i_Resource, LFTags: D.list(i_LFTagPair) },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -1240,6 +1245,12 @@ export const assumeDecoratedRoleWithSAML: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /AssumeDecoratedRoleWithSAML",
+    input: {
+      SAMLAssertion: 0,
+      RoleArn: 0,
+      PrincipalArn: 0,
+      DurationSeconds: 0,
+    },
     output: {
       SecretAccessKey: D.secret,
       SessionToken: D.secret,
@@ -1272,7 +1283,12 @@ export const batchGrantPermissions: API.OperationMethod<
   BatchGrantPermissionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /BatchGrantPermissions", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /BatchGrantPermissions",
+    input: { CatalogId: 0, Entries: D.list(i_BatchPermissionsRequestEntry) },
+    body: true,
+  },
   errors: [InvalidInputException, OperationTimeoutException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1295,6 +1311,7 @@ export const batchRevokePermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /BatchRevokePermissions",
+    input: { CatalogId: 0, Entries: D.list(i_BatchPermissionsRequestEntry) },
     body: true,
   },
   errors: [InvalidInputException, OperationTimeoutException],
@@ -1321,7 +1338,12 @@ export const cancelTransaction: API.OperationMethod<
   CancelTransactionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CancelTransaction", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CancelTransaction",
+    input: { TransactionId: 0 },
+    body: true,
+  },
   errors: [
     ConcurrentModificationException,
     EntityNotFoundException,
@@ -1353,7 +1375,12 @@ export const commitTransaction: API.OperationMethod<
   CommitTransactionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CommitTransaction", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CommitTransaction",
+    input: { TransactionId: 0 },
+    body: true,
+  },
   errors: [
     ConcurrentModificationException,
     EntityNotFoundException,
@@ -1385,7 +1412,12 @@ export const createDataCellsFilter: API.OperationMethod<
   CreateDataCellsFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CreateDataCellsFilter", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CreateDataCellsFilter",
+    input: { TableData: i_DataCellsFilter },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     AlreadyExistsException,
@@ -1420,6 +1452,13 @@ export const createLakeFormationIdentityCenterConfiguration: API.OperationMethod
   descriptor: {
     service: svc,
     http: "POST /CreateLakeFormationIdentityCenterConfiguration",
+    input: {
+      CatalogId: 0,
+      InstanceArn: 0,
+      ExternalFiltering: i_ExternalFilteringConfiguration,
+      ShareRecipients: D.list(i_DataLakePrincipal),
+      ServiceIntegrations: D.list(i_ServiceIntegrationUnion),
+    },
     body: true,
   },
   errors: [
@@ -1457,6 +1496,11 @@ export const createLakeFormationOptIn: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateLakeFormationOptIn",
+    input: {
+      Principal: i_DataLakePrincipal,
+      Resource: i_Resource,
+      Condition: i_Condition,
+    },
     body: true,
   },
   errors: [
@@ -1491,7 +1535,12 @@ export const createLFTag: API.OperationMethod<
   CreateLFTagError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CreateLFTag", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CreateLFTag",
+    input: { CatalogId: 0, TagKey: 0, TagValues: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -1530,7 +1579,17 @@ export const createLFTagExpression: API.OperationMethod<
   CreateLFTagExpressionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CreateLFTagExpression", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CreateLFTagExpression",
+    input: {
+      Name: 0,
+      Description: 0,
+      CatalogId: 0,
+      Expression: D.list(i_LFTag),
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -1560,7 +1619,12 @@ export const deleteDataCellsFilter: API.OperationMethod<
   DeleteDataCellsFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteDataCellsFilter", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteDataCellsFilter",
+    input: { TableCatalogId: 0, DatabaseName: 0, TableName: 0, Name: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -1593,6 +1657,7 @@ export const deleteLakeFormationIdentityCenterConfiguration: API.OperationMethod
   descriptor: {
     service: svc,
     http: "POST /DeleteLakeFormationIdentityCenterConfiguration",
+    input: { CatalogId: 0 },
     body: true,
   },
   errors: [
@@ -1629,6 +1694,11 @@ export const deleteLakeFormationOptIn: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteLakeFormationOptIn",
+    input: {
+      Principal: i_DataLakePrincipal,
+      Resource: i_Resource,
+      Condition: i_Condition,
+    },
     body: true,
   },
   errors: [
@@ -1667,7 +1737,12 @@ export const deleteLFTag: API.OperationMethod<
   DeleteLFTagError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteLFTag", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteLFTag",
+    input: { CatalogId: 0, TagKey: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -1697,7 +1772,12 @@ export const deleteLFTagExpression: API.OperationMethod<
   DeleteLFTagExpressionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteLFTagExpression", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteLFTagExpression",
+    input: { Name: 0, CatalogId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -1734,7 +1814,18 @@ export const deleteObjectsOnCancel: API.OperationMethod<
   DeleteObjectsOnCancelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteObjectsOnCancel", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteObjectsOnCancel",
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      TransactionId: 0,
+      Objects: D.list({ Uri: 0, ETag: 0 }),
+    },
+    body: true,
+  },
   errors: [
     ConcurrentModificationException,
     EntityNotFoundException,
@@ -1768,7 +1859,12 @@ export const deregisterResource: API.OperationMethod<
   DeregisterResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeregisterResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeregisterResource",
+    input: { ResourceArn: 0 },
+    body: true,
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -1800,6 +1896,7 @@ export const describeLakeFormationIdentityCenterConfiguration: API.OperationMeth
   descriptor: {
     service: svc,
     http: "POST /DescribeLakeFormationIdentityCenterConfiguration",
+    input: { CatalogId: 0 },
     body: true,
   },
   errors: [
@@ -1832,6 +1929,7 @@ export const describeResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DescribeResource",
+    input: { ResourceArn: 0 },
     output: { ResourceInfo: o_ResourceInfo },
     body: true,
   },
@@ -1864,6 +1962,7 @@ export const describeTransaction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DescribeTransaction",
+    input: { TransactionId: 0 },
     output: { TransactionDescription: o_TransactionDescription },
     body: true,
   },
@@ -1898,7 +1997,12 @@ export const extendTransaction: API.OperationMethod<
   ExtendTransactionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /ExtendTransaction", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ExtendTransaction",
+    input: { TransactionId: 0 },
+    body: true,
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -1929,7 +2033,12 @@ export const getDataCellsFilter: API.OperationMethod<
   GetDataCellsFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetDataCellsFilter", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetDataCellsFilter",
+    input: { TableCatalogId: 0, DatabaseName: 0, TableName: 0, Name: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -1956,7 +2065,7 @@ export const getDataLakePrincipal: API.OperationMethod<
   GetDataLakePrincipalError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetDataLakePrincipal" },
+  descriptor: { service: svc, http: "POST /GetDataLakePrincipal", input: {} },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -1981,7 +2090,12 @@ export const getDataLakeSettings: API.OperationMethod<
   GetDataLakeSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetDataLakeSettings", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetDataLakeSettings",
+    input: { CatalogId: 0 },
+    body: true,
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -2012,6 +2126,7 @@ export const getEffectivePermissionsForPath: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetEffectivePermissionsForPath",
+    input: { CatalogId: 0, ResourceArn: 0, NextToken: 0, MaxResults: 0 },
     output: { Permissions: D.list(o_PrincipalResourcePermissions) },
     body: true,
   },
@@ -2047,7 +2162,12 @@ export const getLFTag: API.OperationMethod<
   GetLFTagError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetLFTag", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetLFTag",
+    input: { CatalogId: 0, TagKey: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -2076,7 +2196,12 @@ export const getLFTagExpression: API.OperationMethod<
   GetLFTagExpressionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetLFTagExpression", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetLFTagExpression",
+    input: { Name: 0, CatalogId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -2103,7 +2228,12 @@ export const getQueryState: API.OperationMethod<
   GetQueryStateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetQueryState", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetQueryState",
+    input: { QueryId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -2135,6 +2265,7 @@ export const getQueryStatistics: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetQueryStatistics",
+    input: { QueryId: 0 },
     output: { QuerySubmissionTime: D.ts },
     body: true,
   },
@@ -2169,7 +2300,12 @@ export const getResourceLFTags: API.OperationMethod<
   GetResourceLFTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetResourceLFTags", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetResourceLFTags",
+    input: { CatalogId: 0, Resource: i_Resource, ShowAssignedLFTags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -2202,7 +2338,21 @@ export const getTableObjects: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /GetTableObjects", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetTableObjects",
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      TransactionId: 0,
+      QueryAsOfTime: 0,
+      PartitionPredicate: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+    body: true,
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -2262,6 +2412,12 @@ export const getTemporaryDataLocationCredentials: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetTemporaryDataLocationCredentials",
+    input: {
+      DurationSeconds: 0,
+      AuditContext: i_AuditContext,
+      DataLocations: 0,
+      CredentialsScope: 0,
+    },
     output: {
       Credentials: {
         SecretAccessKey: D.secret,
@@ -2305,6 +2461,14 @@ export const getTemporaryGluePartitionCredentials: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetTemporaryGluePartitionCredentials",
+    input: {
+      TableArn: 0,
+      Partition: { Values: 0 },
+      Permissions: 0,
+      DurationSeconds: 0,
+      AuditContext: i_AuditContext,
+      SupportedPermissionTypes: 0,
+    },
     output: {
       SecretAccessKey: D.secret,
       SessionToken: D.secret,
@@ -2347,6 +2511,21 @@ export const getTemporaryGlueTableCredentials: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetTemporaryGlueTableCredentials",
+    input: {
+      TableArn: 0,
+      Permissions: 0,
+      DurationSeconds: 0,
+      AuditContext: i_AuditContext,
+      SupportedPermissionTypes: 0,
+      S3Path: 0,
+      QuerySessionContext: {
+        QueryId: 0,
+        QueryStartTime: 0,
+        ClusterId: 0,
+        QueryAuthorizationId: 0,
+        AdditionalContext: 0,
+      },
+    },
     output: {
       SecretAccessKey: D.secret,
       SessionToken: D.secret,
@@ -2386,6 +2565,7 @@ export const getWorkUnitResults: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetWorkUnitResults",
+    input: { QueryId: 0, WorkUnitId: 0, WorkUnitToken: 0 },
     output: { ResultStream: D.m({ payload: true, shape: D.stream }) },
     body: true,
   },
@@ -2419,7 +2599,12 @@ export const getWorkUnits: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   WorkUnitRange
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /GetWorkUnits", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetWorkUnits",
+    input: { NextToken: 0, PageSize: 0, QueryId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ExpiredException,
@@ -2456,7 +2641,19 @@ export const grantPermissions: API.OperationMethod<
   GrantPermissionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GrantPermissions", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GrantPermissions",
+    input: {
+      CatalogId: 0,
+      Principal: i_DataLakePrincipal,
+      Resource: i_Resource,
+      Permissions: 0,
+      Condition: i_Condition,
+      PermissionsWithGrantOption: 0,
+    },
+    body: true,
+  },
   errors: [
     ConcurrentModificationException,
     EntityNotFoundException,
@@ -2484,7 +2681,12 @@ export const listDataCellsFilter: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DataCellsFilter
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListDataCellsFilter", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListDataCellsFilter",
+    input: { Table: i_TableResource, NextToken: 0, MaxResults: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -2523,6 +2725,12 @@ export const listLakeFormationOptIns: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListLakeFormationOptIns",
+    input: {
+      Principal: i_DataLakePrincipal,
+      Resource: i_Resource,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { LakeFormationOptInsInfoList: D.list({ LastModified: D.ts }) },
     body: true,
   },
@@ -2561,7 +2769,12 @@ export const listLFTagExpressions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   LFTagExpression
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListLFTagExpressions", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListLFTagExpressions",
+    input: { CatalogId: 0, MaxResults: 0, NextToken: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -2597,7 +2810,12 @@ export const listLFTags: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   LFTagPair
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListLFTags", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListLFTags",
+    input: { CatalogId: 0, ResourceShareType: 0, MaxResults: 0, NextToken: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -2641,6 +2859,15 @@ export const listPermissions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListPermissions",
+    input: {
+      CatalogId: 0,
+      Principal: i_DataLakePrincipal,
+      ResourceType: 0,
+      Resource: i_Resource,
+      NextToken: 0,
+      MaxResults: 0,
+      IncludeRelated: 0,
+    },
     output: {
       PrincipalResourcePermissions: D.list(o_PrincipalResourcePermissions),
     },
@@ -2680,6 +2907,15 @@ export const listResources: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListResources",
+    input: {
+      FilterConditionList: D.list({
+        Field: 0,
+        ComparisonOperator: 0,
+        StringValueList: 0,
+      }),
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { ResourceInfoList: D.list(o_ResourceInfo) },
     body: true,
   },
@@ -2717,6 +2953,14 @@ export const listTableStorageOptimizers: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListTableStorageOptimizers",
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      StorageOptimizerType: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -2755,6 +2999,7 @@ export const listTransactions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListTransactions",
+    input: { CatalogId: 0, StatusFilter: 0, MaxResults: 0, NextToken: 0 },
     output: { Transactions: D.list(o_TransactionDescription) },
     body: true,
   },
@@ -2789,7 +3034,26 @@ export const putDataLakeSettings: API.OperationMethod<
   PutDataLakeSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /PutDataLakeSettings", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /PutDataLakeSettings",
+    input: {
+      CatalogId: 0,
+      DataLakeSettings: {
+        DataLakeAdmins: D.list(i_DataLakePrincipal),
+        ReadOnlyAdmins: D.list(i_DataLakePrincipal),
+        CreateDatabaseDefaultPermissions: D.list(i_PrincipalPermissions),
+        CreateTableDefaultPermissions: D.list(i_PrincipalPermissions),
+        Parameters: 0,
+        TrustedResourceOwners: 0,
+        AllowExternalDataFiltering: 0,
+        AllowFullTableExternalDataAccess: 0,
+        ExternalDataFilteringAllowList: D.list(i_DataLakePrincipal),
+        AuthorizedSessionTagValueList: 0,
+      },
+    },
+    body: true,
+  },
   errors: [
     InternalServiceException,
     InvalidInputException,
@@ -2829,7 +3093,20 @@ export const registerResource: API.OperationMethod<
   RegisterResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /RegisterResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /RegisterResource",
+    input: {
+      ResourceArn: 0,
+      UseServiceLinkedRole: 0,
+      RoleArn: 0,
+      WithFederation: 0,
+      HybridAccessEnabled: 0,
+      WithPrivilegedAccess: 0,
+      ExpectedResourceOwnerAccount: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     AlreadyExistsException,
@@ -2865,6 +3142,7 @@ export const removeLFTagsFromResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /RemoveLFTagsFromResource",
+    input: { CatalogId: 0, Resource: i_Resource, LFTags: D.list(i_LFTagPair) },
     body: true,
   },
   errors: [
@@ -2896,7 +3174,19 @@ export const revokePermissions: API.OperationMethod<
   RevokePermissionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /RevokePermissions", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /RevokePermissions",
+    input: {
+      CatalogId: 0,
+      Principal: i_DataLakePrincipal,
+      Resource: i_Resource,
+      Permissions: 0,
+      Condition: i_Condition,
+      PermissionsWithGrantOption: 0,
+    },
+    body: true,
+  },
   errors: [
     ConcurrentModificationException,
     EntityNotFoundException,
@@ -2929,6 +3219,12 @@ export const searchDatabasesByLFTags: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /SearchDatabasesByLFTags",
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      CatalogId: 0,
+      Expression: D.list(i_LFTag),
+    },
     body: true,
   },
   errors: [
@@ -2968,7 +3264,17 @@ export const searchTablesByLFTags: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TaggedTable
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /SearchTablesByLFTags", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /SearchTablesByLFTags",
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      CatalogId: 0,
+      Expression: D.list(i_LFTag),
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -3005,7 +3311,21 @@ export const startQueryPlanning: API.OperationMethod<
   StartQueryPlanningError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /StartQueryPlanning", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /StartQueryPlanning",
+    input: {
+      QueryPlanningContext: {
+        CatalogId: 0,
+        DatabaseName: 0,
+        QueryAsOfTime: 0,
+        QueryParameters: 0,
+        TransactionId: 0,
+      },
+      QueryString: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServiceException,
@@ -3031,7 +3351,12 @@ export const startTransaction: API.OperationMethod<
   StartTransactionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /StartTransaction", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /StartTransaction",
+    input: { TransactionType: 0 },
+    body: true,
+  },
   errors: [InternalServiceException, OperationTimeoutException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3055,7 +3380,12 @@ export const updateDataCellsFilter: API.OperationMethod<
   UpdateDataCellsFilterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UpdateDataCellsFilter", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UpdateDataCellsFilter",
+    input: { TableData: i_DataCellsFilter },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -3089,6 +3419,13 @@ export const updateLakeFormationIdentityCenterConfiguration: API.OperationMethod
   descriptor: {
     service: svc,
     http: "POST /UpdateLakeFormationIdentityCenterConfiguration",
+    input: {
+      CatalogId: 0,
+      ShareRecipients: D.list(i_DataLakePrincipal),
+      ServiceIntegrations: D.list(i_ServiceIntegrationUnion),
+      ApplicationStatus: 0,
+      ExternalFiltering: i_ExternalFilteringConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -3121,7 +3458,12 @@ export const updateLFTag: API.OperationMethod<
   UpdateLFTagError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UpdateLFTag", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UpdateLFTag",
+    input: { CatalogId: 0, TagKey: 0, TagValuesToDelete: 0, TagValuesToAdd: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -3153,7 +3495,17 @@ export const updateLFTagExpression: API.OperationMethod<
   UpdateLFTagExpressionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UpdateLFTagExpression", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UpdateLFTagExpression",
+    input: {
+      Name: 0,
+      Description: 0,
+      CatalogId: 0,
+      Expression: D.list(i_LFTag),
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     EntityNotFoundException,
@@ -3182,7 +3534,18 @@ export const updateResource: API.OperationMethod<
   UpdateResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UpdateResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UpdateResource",
+    input: {
+      RoleArn: 0,
+      ResourceArn: 0,
+      WithFederation: 0,
+      HybridAccessEnabled: 0,
+      ExpectedResourceOwnerAccount: 0,
+    },
+    body: true,
+  },
   errors: [
     EntityNotFoundException,
     InternalServiceException,
@@ -3214,7 +3577,21 @@ export const updateTableObjects: API.OperationMethod<
   UpdateTableObjectsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UpdateTableObjects", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UpdateTableObjects",
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      TransactionId: 0,
+      WriteOperations: D.list({
+        AddObject: { Uri: 0, ETag: 0, Size: 0, PartitionValues: 0 },
+        DeleteObject: { Uri: 0, ETag: 0, PartitionValues: 0 },
+      }),
+    },
+    body: true,
+  },
   errors: [
     ConcurrentModificationException,
     EntityNotFoundException,
@@ -3249,6 +3626,12 @@ export const updateTableStorageOptimizer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateTableStorageOptimizer",
+    input: {
+      CatalogId: 0,
+      DatabaseName: 0,
+      TableName: 0,
+      StorageOptimizerConfig: 0,
+    },
     body: true,
   },
   errors: [
@@ -3262,6 +3645,79 @@ export const updateTableStorageOptimizer: API.OperationMethod<
   operationName: "UpdateTableStorageOptimizer",
 })) as any;
 
+const i_AuditContext: D.LazyStruct = () => ({ AdditionalAuditContext: 0 });
+const i_BatchPermissionsRequestEntry: D.LazyStruct = () => ({
+  Id: 0,
+  Principal: i_DataLakePrincipal,
+  Resource: i_Resource,
+  Permissions: 0,
+  Condition: i_Condition,
+  PermissionsWithGrantOption: 0,
+});
+const i_Condition: D.LazyStruct = () => ({ Expression: 0 });
+const i_DataCellsFilter: D.LazyStruct = () => ({
+  TableCatalogId: 0,
+  DatabaseName: 0,
+  TableName: 0,
+  Name: 0,
+  RowFilter: { FilterExpression: 0, AllRowsWildcard: {} },
+  ColumnNames: 0,
+  ColumnWildcard: i_ColumnWildcard,
+  VersionId: 0,
+});
+const i_DataLakePrincipal: D.LazyStruct = () => ({
+  DataLakePrincipalIdentifier: 0,
+});
+const i_ExternalFilteringConfiguration: D.LazyStruct = () => ({
+  Status: 0,
+  AuthorizedTargets: 0,
+});
+const i_LFTag: D.LazyStruct = () => ({ TagKey: 0, TagValues: 0 });
+const i_LFTagPair: D.LazyStruct = () => ({
+  CatalogId: 0,
+  TagKey: 0,
+  TagValues: 0,
+});
+const i_PrincipalPermissions: D.LazyStruct = () => ({
+  Principal: i_DataLakePrincipal,
+  Permissions: 0,
+});
+const i_Resource: D.LazyStruct = () => ({
+  Catalog: { Id: 0 },
+  Database: { CatalogId: 0, Name: 0 },
+  Table: i_TableResource,
+  TableWithColumns: {
+    CatalogId: 0,
+    DatabaseName: 0,
+    Name: 0,
+    ColumnNames: 0,
+    ColumnWildcard: i_ColumnWildcard,
+  },
+  DataLocation: { CatalogId: 0, ResourceArn: 0 },
+  DataCellsFilter: {
+    TableCatalogId: 0,
+    DatabaseName: 0,
+    TableName: 0,
+    Name: 0,
+  },
+  LFTag: { CatalogId: 0, TagKey: 0, TagValues: 0 },
+  LFTagPolicy: {
+    CatalogId: 0,
+    ResourceType: 0,
+    Expression: D.list(i_LFTag),
+    ExpressionName: 0,
+  },
+  LFTagExpression: { CatalogId: 0, Name: 0 },
+});
+const i_ServiceIntegrationUnion: D.LazyStruct = () => ({
+  Redshift: D.list({ RedshiftConnect: { Authorization: 0 } }),
+});
+const i_TableResource: D.LazyStruct = () => ({
+  CatalogId: 0,
+  DatabaseName: 0,
+  Name: 0,
+  TableWildcard: {},
+});
 const o_PrincipalResourcePermissions: D.LazyStruct = () => ({
   LastUpdated: D.ts,
 });
@@ -3270,3 +3726,4 @@ const o_TransactionDescription: D.LazyStruct = () => ({
   TransactionStartTime: D.ts,
   TransactionEndTime: D.ts,
 });
+const i_ColumnWildcard: D.LazyStruct = () => ({ ExcludedColumnNames: 0 });

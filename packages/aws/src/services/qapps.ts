@@ -934,7 +934,7 @@ export const associateLibraryItemReview: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /catalog.associateItemRating",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: { instanceId: D.m({ header: "instance-id" }), libraryItemId: 0 },
     body: true,
   },
   errors: [
@@ -973,7 +973,7 @@ export const associateQAppWithUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps.install",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: { instanceId: D.m({ header: "instance-id" }), appId: 0 },
     body: true,
   },
   errors: [
@@ -1011,7 +1011,10 @@ export const batchCreateCategory: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /catalog.createCategories",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: {
+      instanceId: D.m({ header: "instance-id" }),
+      categories: D.list({ id: 0, title: 0, color: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -1049,7 +1052,7 @@ export const batchDeleteCategory: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /catalog.deleteCategories",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: { instanceId: D.m({ header: "instance-id" }), categories: 0 },
     body: true,
   },
   errors: [
@@ -1087,7 +1090,10 @@ export const batchUpdateCategory: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /catalog.updateCategories",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: {
+      instanceId: D.m({ header: "instance-id" }),
+      categories: D.list({ id: 0, title: 0, color: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -1125,7 +1131,12 @@ export const createLibraryItem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /catalog.createItem",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: {
+      instanceId: D.m({ header: "instance-id" }),
+      appId: 0,
+      appVersion: 0,
+      categories: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -1164,7 +1175,15 @@ export const createPresignedUrl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps.createPresignedUrl",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: {
+      instanceId: D.m({ header: "instance-id" }),
+      cardId: 0,
+      appId: 0,
+      fileContentsSha256: 0,
+      fileName: 0,
+      scope: 0,
+      sessionId: 0,
+    },
     output: { presignedUrlExpiration: D.ts },
     body: true,
   },
@@ -1202,7 +1221,13 @@ export const createQApp: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps.create",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: {
+      instanceId: D.m({ header: "instance-id" }),
+      title: 0,
+      description: 0,
+      appDefinition: i_AppDefinitionInput,
+      tags: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -1242,7 +1267,7 @@ export const deleteLibraryItem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /catalog.deleteItem",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: { instanceId: D.m({ header: "instance-id" }), libraryItemId: 0 },
     body: true,
   },
   errors: [
@@ -1279,7 +1304,7 @@ export const deleteQApp: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps.delete",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: { instanceId: D.m({ header: "instance-id" }), appId: 0 },
     body: true,
   },
   errors: [
@@ -1355,7 +1380,7 @@ export const disassociateLibraryItemReview: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /catalog.disassociateItemRating",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: { instanceId: D.m({ header: "instance-id" }), libraryItemId: 0 },
     body: true,
   },
   errors: [
@@ -1393,7 +1418,7 @@ export const disassociateQAppFromUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps.uninstall",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: { instanceId: D.m({ header: "instance-id" }), appId: 0 },
     body: true,
   },
   errors: [
@@ -1431,7 +1456,7 @@ export const exportQAppSessionData: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /runtime.exportQAppSessionData",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: { instanceId: D.m({ header: "instance-id" }), sessionId: 0 },
     output: { expiresAt: D.ts },
     body: true,
   },
@@ -1639,7 +1664,15 @@ export const importDocument: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps.importDocument",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: {
+      instanceId: D.m({ header: "instance-id" }),
+      cardId: 0,
+      appId: 0,
+      fileContentsBase64: 0,
+      fileName: 0,
+      scope: 0,
+      sessionId: 0,
+    },
     body: true,
   },
   errors: [
@@ -1842,7 +1875,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceARN}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceARN}",
+    input: { resourceARN: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1874,7 +1911,13 @@ export const predictQApp: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps.predictQApp",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: {
+      instanceId: D.m({ header: "instance-id" }),
+      options: {
+        conversation: D.list({ body: 0, type: 0 }),
+        problemStatement: 0,
+      },
+    },
     output: {
       app: {
         appDefinition: {
@@ -1919,7 +1962,14 @@ export const startQAppSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /runtime.startQAppSession",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: {
+      instanceId: D.m({ header: "instance-id" }),
+      appId: 0,
+      appVersion: 0,
+      initialValues: D.list(i_CardValue),
+      sessionId: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -1957,7 +2007,7 @@ export const stopQAppSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /runtime.deleteMiniAppRun",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: { instanceId: D.m({ header: "instance-id" }), sessionId: 0 },
     body: true,
   },
   errors: [
@@ -1991,7 +2041,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceARN}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceARN}",
+    input: { resourceARN: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2024,7 +2079,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceARN}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceARN: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -2059,7 +2114,12 @@ export const updateLibraryItem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /catalog.updateItem",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: {
+      instanceId: D.m({ header: "instance-id" }),
+      libraryItemId: 0,
+      status: 0,
+      categories: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -2098,7 +2158,11 @@ export const updateLibraryItemMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /catalog.updateItemMetadata",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: {
+      instanceId: D.m({ header: "instance-id" }),
+      libraryItemId: 0,
+      isVerified: 0,
+    },
     body: true,
   },
   errors: [
@@ -2136,7 +2200,13 @@ export const updateQApp: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps.update",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: {
+      instanceId: D.m({ header: "instance-id" }),
+      appId: 0,
+      title: 0,
+      description: 0,
+      appDefinition: i_AppDefinitionInput,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -2174,7 +2244,12 @@ export const updateQAppPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /apps.updateQAppPermissions",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: {
+      instanceId: D.m({ header: "instance-id" }),
+      appId: 0,
+      grantPermissions: D.list(i_PermissionInput),
+      revokePermissions: D.list(i_PermissionInput),
+    },
     body: true,
   },
   errors: [
@@ -2211,7 +2286,11 @@ export const updateQAppSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /runtime.updateQAppSession",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: {
+      instanceId: D.m({ header: "instance-id" }),
+      sessionId: 0,
+      values: D.list(i_CardValue),
+    },
     body: true,
   },
   errors: [
@@ -2249,7 +2328,12 @@ export const updateQAppSessionMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /runtime.updateQAppSessionMetadata",
-    input: { instanceId: D.m({ header: "instance-id" }) },
+    input: {
+      instanceId: D.m({ header: "instance-id" }),
+      sessionId: 0,
+      sessionName: 0,
+      sharingConfiguration: { enabled: 0, acceptResponses: 0, revealCards: 0 },
+    },
     body: true,
   },
   errors: [
@@ -2266,6 +2350,49 @@ export const updateQAppSessionMetadata: API.OperationMethod<
   operationName: "UpdateQAppSessionMetadata",
 })) as any;
 
+const i_AppDefinitionInput: D.LazyStruct = () => ({
+  cards: D.list({
+    textInput: { title: 0, id: 0, type: 0, placeholder: 0, defaultValue: 0 },
+    qQuery: {
+      title: 0,
+      id: 0,
+      type: 0,
+      prompt: 0,
+      outputSource: 0,
+      attributeFilter: i_AttributeFilter,
+    },
+    qPlugin: {
+      title: 0,
+      id: 0,
+      type: 0,
+      prompt: 0,
+      pluginId: 0,
+      actionIdentifier: 0,
+    },
+    fileUpload: {
+      title: 0,
+      id: 0,
+      type: 0,
+      filename: 0,
+      fileId: 0,
+      allowOverride: 0,
+    },
+    formInput: {
+      title: 0,
+      id: 0,
+      type: 0,
+      metadata: { schema: 0 },
+      computeMode: 0,
+    },
+  }),
+  initialPrompt: 0,
+});
+const i_CardValue: D.LazyStruct = () => ({
+  cardId: 0,
+  value: 0,
+  submissionMutation: { submissionId: 0, mutationType: 0 },
+});
+const i_PermissionInput: D.LazyStruct = () => ({ action: 0, principal: 0 });
 const o_AttributeFilter: D.LazyStruct = () => ({
   andAllFilters: D.list(o_AttributeFilter),
   orAllFilters: D.list(o_AttributeFilter),
@@ -2278,6 +2405,22 @@ const o_AttributeFilter: D.LazyStruct = () => ({
   lessThan: o_DocumentAttribute,
   lessThanOrEquals: o_DocumentAttribute,
 });
+const i_AttributeFilter: D.LazyStruct = () => ({
+  andAllFilters: D.list(i_AttributeFilter),
+  orAllFilters: D.list(i_AttributeFilter),
+  notFilter: i_AttributeFilter,
+  equalsTo: i_DocumentAttribute,
+  containsAll: i_DocumentAttribute,
+  containsAny: i_DocumentAttribute,
+  greaterThan: i_DocumentAttribute,
+  greaterThanOrEquals: i_DocumentAttribute,
+  lessThan: i_DocumentAttribute,
+  lessThanOrEquals: i_DocumentAttribute,
+});
 const o_DocumentAttribute: D.LazyStruct = () => ({
   value: { dateValue: D.ts },
+});
+const i_DocumentAttribute: D.LazyStruct = () => ({
+  name: 0,
+  value: { stringValue: 0, stringListValue: 0, longValue: 0, dateValue: 0 },
 });

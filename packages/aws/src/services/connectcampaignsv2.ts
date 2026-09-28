@@ -847,7 +847,19 @@ export const createCampaign: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/campaigns",
-    input: { schedule: i_Schedule },
+    input: {
+      name: 0,
+      connectInstanceId: 0,
+      channelSubtypeConfig: i_ChannelSubtypeConfig,
+      type: 0,
+      source: i_Source,
+      connectCampaignFlowArn: 0,
+      schedule: i_Schedule,
+      entryLimitsConfig: i_EntryLimitsConfig,
+      communicationTimeConfig: i_CommunicationTimeConfig,
+      communicationLimitsOverride: i_CommunicationLimitsConfig,
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -879,7 +891,11 @@ export const deleteCampaign: API.OperationMethod<
   DeleteCampaignError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v2/campaigns/{id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v2/campaigns/{id}",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -910,7 +926,7 @@ export const deleteCampaignChannelSubtypeConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/campaigns/{id}/channel-subtype-config",
-    input: { channelSubtype: D.m({ query: "channelSubtype" }) },
+    input: { id: 0, channelSubtype: D.m({ query: "channelSubtype" }) },
   },
   errors: [
     AccessDeniedException,
@@ -944,7 +960,7 @@ export const deleteCampaignCommunicationLimits: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/campaigns/{id}/communication-limits",
-    input: { config: D.m({ query: "config" }) },
+    input: { id: 0, config: D.m({ query: "config" }) },
   },
   errors: [
     AccessDeniedException,
@@ -979,7 +995,7 @@ export const deleteCampaignCommunicationTime: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/campaigns/{id}/communication-time",
-    input: { config: D.m({ query: "config" }) },
+    input: { id: 0, config: D.m({ query: "config" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1011,7 +1027,11 @@ export const deleteCampaignEntryLimits: API.OperationMethod<
   DeleteCampaignEntryLimitsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v2/campaigns/{id}/entry-limits" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v2/campaigns/{id}/entry-limits",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1045,7 +1065,10 @@ export const deleteConnectInstanceConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/connect-instance/{connectInstanceId}/config",
-    input: { campaignDeletionPolicy: D.m({ query: "campaignDeletionPolicy" }) },
+    input: {
+      connectInstanceId: 0,
+      campaignDeletionPolicy: D.m({ query: "campaignDeletionPolicy" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1079,6 +1102,14 @@ export const deleteConnectInstanceIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/connect-instance/{connectInstanceId}/integrations/delete",
+    input: {
+      connectInstanceId: 0,
+      integrationIdentifier: {
+        customerProfiles: { domainArn: 0 },
+        qConnect: { knowledgeBaseArn: 0 },
+        lambda: { functionArn: 0 },
+      },
+    },
     body: true,
   },
   errors: [
@@ -1112,6 +1143,7 @@ export const deleteInstanceOnboardingJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/connect-instance/{connectInstanceId}/onboarding",
+    input: { connectInstanceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1143,6 +1175,7 @@ export const describeCampaign: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/campaigns/{id}",
+    input: { id: 0 },
     output: {
       campaign: {
         channelSubtypeConfig: {
@@ -1184,7 +1217,11 @@ export const getCampaignState: API.OperationMethod<
   GetCampaignStateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v2/campaigns/{id}/state" },
+  descriptor: {
+    service: svc,
+    http: "GET /v2/campaigns/{id}/state",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1212,7 +1249,12 @@ export const getCampaignStateBatch: API.OperationMethod<
   GetCampaignStateBatchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/campaigns-state", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/campaigns-state",
+    input: { campaignIds: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1242,6 +1284,7 @@ export const getConnectInstanceConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/connect-instance/{connectInstanceId}/config",
+    input: { connectInstanceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1272,6 +1315,7 @@ export const getInstanceCommunicationLimits: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/connect-instance/{connectInstanceId}/communication-limits",
+    input: { connectInstanceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1302,6 +1346,7 @@ export const getInstanceOnboardingJobStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/connect-instance/{connectInstanceId}/onboarding",
+    input: { connectInstanceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1332,6 +1377,11 @@ export const listCampaigns: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/campaigns-summary",
+    input: {
+      maxResults: 0,
+      nextToken: 0,
+      filters: { instanceIdFilter: { value: 0, operator: 0 } },
+    },
     output: { campaignSummaryList: D.list({ schedule: o_Schedule }) },
     body: true,
   },
@@ -1368,6 +1418,7 @@ export const listConnectInstanceIntegrations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/connect-instance/{connectInstanceId}/integrations",
     input: {
+      connectInstanceId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -1406,7 +1457,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v2/tags/{arn}" },
+  descriptor: { service: svc, http: "GET /v2/tags/{arn}", input: { arn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1437,7 +1488,11 @@ export const pauseCampaign: API.OperationMethod<
   PauseCampaignError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/campaigns/{id}/pause" },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/campaigns/{id}/pause",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1472,6 +1527,14 @@ export const putConnectInstanceIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/connect-instance/{connectInstanceId}/integrations",
+    input: {
+      connectInstanceId: 0,
+      integrationConfig: {
+        customerProfiles: { domainArn: 0, objectTypeNames: 0 },
+        qConnect: { knowledgeBaseArn: 0 },
+        lambda: { functionArn: 0 },
+      },
+    },
     body: true,
   },
   errors: [
@@ -1506,6 +1569,10 @@ export const putInstanceCommunicationLimits: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/connect-instance/{connectInstanceId}/communication-limits",
+    input: {
+      connectInstanceId: 0,
+      communicationLimitsConfig: { allChannelSubtypes: i_CommunicationLimits },
+    },
     body: true,
   },
   errors: [
@@ -1542,7 +1609,38 @@ export const putOutboundRequestBatch: API.OperationMethod<
     service: svc,
     http: "PUT /v2/campaigns/{id}/outbound-requests",
     input: {
-      outboundRequests: D.list({ expirationTime: D.tsAs("date-time") }),
+      id: 0,
+      outboundRequests: D.list({
+        clientToken: 0,
+        expirationTime: D.tsAs("date-time"),
+        channelSubtypeParameters: {
+          telephony: {
+            destinationPhoneNumber: 0,
+            attributes: 0,
+            connectSourcePhoneNumber: 0,
+            answerMachineDetectionConfig: i_AnswerMachineDetectionConfig,
+            ringTimeout: 0,
+          },
+          sms: {
+            destinationPhoneNumber: 0,
+            connectSourcePhoneNumberArn: 0,
+            templateArn: 0,
+            templateParameters: 0,
+          },
+          email: {
+            destinationEmailAddress: 0,
+            connectSourceEmailAddress: 0,
+            templateArn: 0,
+            templateParameters: 0,
+          },
+          whatsApp: {
+            destinationPhoneNumber: 0,
+            connectSourcePhoneNumberArn: 0,
+            templateArn: 0,
+            templateParameters: 0,
+          },
+        },
+      }),
     },
     body: true,
   },
@@ -1582,7 +1680,18 @@ export const putProfileOutboundRequestBatch: API.OperationMethod<
     service: svc,
     http: "PUT /v2/campaigns/{id}/profile-outbound-requests",
     input: {
-      profileOutboundRequests: D.list({ expirationTime: D.tsAs("date-time") }),
+      id: 0,
+      profileOutboundRequests: D.list({
+        clientToken: 0,
+        profileId: 0,
+        expirationTime: D.tsAs("date-time"),
+        eventTriggerContext: {
+          sourceEvent: 0,
+          channelContext: {
+            webNotificationContext: { sessionId: 0, browserId: 0 },
+          },
+        },
+      }),
     },
     body: true,
   },
@@ -1618,7 +1727,11 @@ export const resumeCampaign: API.OperationMethod<
   ResumeCampaignError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/campaigns/{id}/resume" },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/campaigns/{id}/resume",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1651,7 +1764,11 @@ export const startCampaign: API.OperationMethod<
   StartCampaignError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/campaigns/{id}/start" },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/campaigns/{id}/start",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1686,6 +1803,10 @@ export const startInstanceOnboardingJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v2/connect-instance/{connectInstanceId}/onboarding",
+    input: {
+      connectInstanceId: 0,
+      encryptionConfig: { enabled: 0, encryptionType: 0, keyArn: 0 },
+    },
     body: true,
   },
   errors: [
@@ -1719,7 +1840,11 @@ export const stopCampaign: API.OperationMethod<
   StopCampaignError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/campaigns/{id}/stop" },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/campaigns/{id}/stop",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1750,7 +1875,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/tags/{arn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/tags/{arn}",
+    input: { arn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1782,7 +1912,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/tags/{arn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { arn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1815,6 +1945,7 @@ export const updateCampaignChannelSubtypeConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/campaigns/{id}/channel-subtype-config",
+    input: { id: 0, channelSubtypeConfig: i_ChannelSubtypeConfig },
     body: true,
   },
   errors: [
@@ -1849,6 +1980,7 @@ export const updateCampaignCommunicationLimits: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/campaigns/{id}/communication-limits",
+    input: { id: 0, communicationLimitsOverride: i_CommunicationLimitsConfig },
     body: true,
   },
   errors: [
@@ -1884,6 +2016,7 @@ export const updateCampaignCommunicationTime: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/campaigns/{id}/communication-time",
+    input: { id: 0, communicationTimeConfig: i_CommunicationTimeConfig },
     body: true,
   },
   errors: [
@@ -1919,6 +2052,7 @@ export const updateCampaignEntryLimits: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/campaigns/{id}/entry-limits",
+    input: { id: 0, entryLimitsConfig: i_EntryLimitsConfig },
     body: true,
   },
   errors: [
@@ -1954,6 +2088,7 @@ export const updateCampaignFlowAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/campaigns/{id}/flow",
+    input: { id: 0, connectCampaignFlowArn: 0 },
     body: true,
   },
   errors: [
@@ -1988,6 +2123,7 @@ export const updateCampaignName: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/campaigns/{id}/name",
+    input: { id: 0, name: 0 },
     body: true,
   },
   errors: [
@@ -2022,7 +2158,7 @@ export const updateCampaignSchedule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/campaigns/{id}/schedule",
-    input: { schedule: i_Schedule },
+    input: { id: 0, schedule: i_Schedule },
     body: true,
   },
   errors: [
@@ -2058,6 +2194,7 @@ export const updateCampaignSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/campaigns/{id}/source",
+    input: { id: 0, source: i_Source },
     body: true,
   },
   errors: [
@@ -2073,8 +2210,107 @@ export const updateCampaignSource: API.OperationMethod<
   operationName: "UpdateCampaignSource",
 })) as any;
 
+const i_AnswerMachineDetectionConfig: D.LazyStruct = () => ({
+  enableAnswerMachineDetection: 0,
+  awaitAnswerMachinePrompt: 0,
+});
+const i_ChannelSubtypeConfig: D.LazyStruct = () => ({
+  telephony: {
+    capacity: 0,
+    connectQueueId: 0,
+    outboundMode: {
+      progressive: { bandwidthAllocation: 0 },
+      predictive: {
+        bandwidthAllocation: 0,
+        pacingStrategies: D.list({
+          abandonmentRate: {
+            targetRate: 0,
+            connectionStartPoint: 0,
+            connectionThresholdSeconds: 0,
+            evaluationWindow: 0,
+          },
+        }),
+      },
+      agentless: i_AgentlessConfig,
+      preview: {
+        bandwidthAllocation: 0,
+        timeoutConfig: { durationInSeconds: 0 },
+        agentActions: 0,
+      },
+    },
+    defaultOutboundConfig: {
+      connectContactFlowId: 0,
+      connectSourcePhoneNumber: 0,
+      answerMachineDetectionConfig: i_AnswerMachineDetectionConfig,
+      ringTimeout: 0,
+    },
+  },
+  sms: {
+    capacity: 0,
+    outboundMode: { agentless: i_AgentlessConfig },
+    defaultOutboundConfig: {
+      connectSourcePhoneNumberArn: 0,
+      wisdomTemplateArn: 0,
+    },
+  },
+  email: {
+    capacity: 0,
+    outboundMode: { agentless: i_AgentlessConfig },
+    defaultOutboundConfig: {
+      connectSourceEmailAddress: 0,
+      sourceEmailAddressDisplayName: 0,
+      wisdomTemplateArn: 0,
+    },
+  },
+  whatsApp: {
+    capacity: 0,
+    outboundMode: { agentless: i_AgentlessConfig },
+    defaultOutboundConfig: {
+      connectSourcePhoneNumberArn: 0,
+      wisdomTemplateArn: 0,
+    },
+  },
+});
+const i_CommunicationLimits: D.LazyStruct = () => ({
+  communicationLimitsList: D.list({
+    maxCountPerRecipient: 0,
+    frequency: 0,
+    unit: 0,
+  }),
+});
+const i_CommunicationLimitsConfig: D.LazyStruct = () => ({
+  allChannelSubtypes: i_CommunicationLimits,
+  instanceLimitsHandling: 0,
+});
+const i_CommunicationTimeConfig: D.LazyStruct = () => ({
+  localTimeZoneConfig: {
+    defaultTimeZone: 0,
+    localTimeZoneDetection: 0,
+    localTimeZoneDetectionScope: 0,
+  },
+  telephony: i_TimeWindow,
+  sms: i_TimeWindow,
+  email: i_TimeWindow,
+  whatsApp: i_TimeWindow,
+});
+const i_EntryLimitsConfig: D.LazyStruct = () => ({
+  maxEntryCount: 0,
+  minEntryInterval: 0,
+});
 const i_Schedule: D.LazyStruct = () => ({
   startTime: D.tsAs("date-time"),
   endTime: D.tsAs("date-time"),
+  refreshFrequency: 0,
+});
+const i_Source: D.LazyStruct = () => ({
+  customerProfilesSegmentArn: 0,
+  eventTrigger: { customerProfilesDomainArn: 0 },
 });
 const o_Schedule: D.LazyStruct = () => ({ startTime: D.ts, endTime: D.ts });
+const i_AgentlessConfig: D.LazyStruct = () => ({});
+const i_TimeWindow: D.LazyStruct = () => ({
+  openHours: { dailyHours: D.map(D.list({ startTime: 0, endTime: 0 })) },
+  restrictedPeriods: {
+    restrictedPeriodList: D.list({ name: 0, startDate: 0, endDate: 0 }),
+  },
+});

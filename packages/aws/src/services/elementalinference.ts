@@ -513,7 +513,12 @@ export const associateFeed: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/feed/{id}/associate",
-    input: { associatedResourceName: D.m({ idempotency: true }) },
+    input: {
+      id: 0,
+      associatedResourceName: D.m({ idempotency: true }),
+      outputs: D.list(i_CreateOutput),
+      dryRun: 0,
+    },
     body: true,
   },
   errors: [
@@ -547,7 +552,12 @@ export const createDictionary: API.OperationMethod<
   CreateDictionaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/dictionary", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/dictionary",
+    input: { name: 0, language: 0, entries: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -580,7 +590,17 @@ export const createFeed: API.OperationMethod<
   CreateFeedError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/feed", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/feed",
+    input: {
+      name: 0,
+      accessRoleArn: 0,
+      outputs: D.list(i_CreateOutput),
+      tags: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -611,7 +631,11 @@ export const deleteDictionary: API.OperationMethod<
   DeleteDictionaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v1/dictionary/{id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v1/dictionary/{id}",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -642,7 +666,7 @@ export const deleteFeed: API.OperationMethod<
   DeleteFeedError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v1/feed/{id}" },
+  descriptor: { service: svc, http: "DELETE /v1/feed/{id}", input: { id: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -676,7 +700,11 @@ export const disassociateFeed: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/feed/{id}/disassociate",
-    input: { associatedResourceName: D.m({ idempotency: true }) },
+    input: {
+      id: 0,
+      associatedResourceName: D.m({ idempotency: true }),
+      dryRun: 0,
+    },
     body: true,
   },
   errors: [
@@ -708,7 +736,11 @@ export const exportDictionaryEntries: API.OperationMethod<
   ExportDictionaryEntriesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/dictionary/{id}/entries/export" },
+  descriptor: {
+    service: svc,
+    http: "GET /v1/dictionary/{id}/entries/export",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerErrorException,
@@ -737,7 +769,11 @@ export const getDictionary: API.OperationMethod<
   GetDictionaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/dictionary/{id}" },
+  descriptor: {
+    service: svc,
+    http: "GET /v1/dictionary/{id}",
+    input: { id: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerErrorException,
@@ -765,7 +801,7 @@ export const getFeed: API.OperationMethod<
   GetFeedError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/feed/{id}" },
+  descriptor: { service: svc, http: "GET /v1/feed/{id}", input: { id: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerErrorException,
@@ -798,6 +834,7 @@ export const getFixture: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/fixtures/{fixtureId}",
+    input: { fixtureId: 0 },
     output: { scheduledStart: D.ts },
   },
   errors: [
@@ -914,7 +951,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /v1/tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerErrorException,
@@ -948,6 +989,14 @@ export const searchFixtures: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/fixtures",
+    input: {
+      sport: 0,
+      startDate: 0,
+      endDate: 0,
+      filters: D.list({ name: 0, values: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { fixtures: D.list({ scheduledStart: D.ts }) },
     body: true,
   },
@@ -987,7 +1036,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1021,7 +1075,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1053,7 +1107,12 @@ export const updateDictionary: API.OperationMethod<
   UpdateDictionaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /v1/dictionary/{id}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /v1/dictionary/{id}",
+    input: { id: 0, name: 0, language: 0, entries: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1091,7 +1150,23 @@ export const updateFeed: API.OperationMethod<
   UpdateFeedError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /v1/feed/{id}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /v1/feed/{id}",
+    input: {
+      name: 0,
+      accessRoleArn: 0,
+      id: 0,
+      outputs: D.list({
+        name: 0,
+        outputConfig: i_OutputConfig,
+        status: 0,
+        description: 0,
+        fromAssociation: 0,
+      }),
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1105,3 +1180,20 @@ export const updateFeed: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateFeed",
 })) as any;
+
+const i_CreateOutput: D.LazyStruct = () => ({
+  name: 0,
+  outputConfig: i_OutputConfig,
+  status: 0,
+  description: 0,
+});
+const i_OutputConfig: D.LazyStruct = () => ({
+  cropping: { templateGroups: D.list({ name: 0, templateUris: 0 }) },
+  clipping: { callbackMetadata: 0, dataSourceConfiguration: { fixtureId: 0 } },
+  subtitling: {
+    language: 0,
+    aspectRatio: { width: 0, height: 0 },
+    dictionary: 0,
+    profanityFilter: 0,
+  },
+});

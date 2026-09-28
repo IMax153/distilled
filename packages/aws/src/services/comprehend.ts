@@ -2012,7 +2012,7 @@ export const batchDetectDominantLanguage: API.OperationMethod<
   BatchDetectDominantLanguageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TextList: 0 } },
   errors: [
     BatchSizeLimitExceededException,
     InternalServerException,
@@ -2042,7 +2042,7 @@ export const batchDetectEntities: API.OperationMethod<
   BatchDetectEntitiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TextList: 0, LanguageCode: 0 } },
   errors: [
     BatchSizeLimitExceededException,
     InternalServerException,
@@ -2071,7 +2071,7 @@ export const batchDetectKeyPhrases: API.OperationMethod<
   BatchDetectKeyPhrasesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TextList: 0, LanguageCode: 0 } },
   errors: [
     BatchSizeLimitExceededException,
     InternalServerException,
@@ -2102,7 +2102,7 @@ export const batchDetectSentiment: API.OperationMethod<
   BatchDetectSentimentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TextList: 0, LanguageCode: 0 } },
   errors: [
     BatchSizeLimitExceededException,
     InternalServerException,
@@ -2133,7 +2133,7 @@ export const batchDetectSyntax: API.OperationMethod<
   BatchDetectSyntaxError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TextList: 0, LanguageCode: 0 } },
   errors: [
     BatchSizeLimitExceededException,
     InternalServerException,
@@ -2165,7 +2165,7 @@ export const batchDetectTargetedSentiment: API.OperationMethod<
   BatchDetectTargetedSentimentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TextList: 0, LanguageCode: 0 } },
   errors: [
     BatchSizeLimitExceededException,
     InternalServerException,
@@ -2214,7 +2214,15 @@ export const classifyDocument: API.OperationMethod<
   ClassifyDocumentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Text: 0,
+      EndpointArn: 0,
+      Bytes: 0,
+      DocumentReaderConfig: i_DocumentReaderConfig,
+    },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2244,7 +2252,7 @@ export const containsPiiEntities: API.OperationMethod<
   ContainsPiiEntitiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Text: 0, LanguageCode: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2278,7 +2286,30 @@ export const createDataset: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      FlywheelArn: 0,
+      DatasetName: 0,
+      DatasetType: 0,
+      Description: 0,
+      InputDataConfig: {
+        AugmentedManifests: D.list({
+          AttributeNames: 0,
+          S3Uri: 0,
+          AnnotationDataS3Uri: 0,
+          SourceDocumentsS3Uri: 0,
+          DocumentType: 0,
+        }),
+        DataFormat: 0,
+        DocumentClassifierInputDataConfig: { S3Uri: 0, LabelDelimiter: 0 },
+        EntityRecognizerInputDataConfig: {
+          Annotations: { S3Uri: 0 },
+          Documents: { S3Uri: 0, InputFormat: 0 },
+          EntityList: { S3Uri: 0 },
+        },
+      },
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     InternalServerException,
@@ -2319,7 +2350,30 @@ export const createDocumentClassifier: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      DocumentClassifierName: 0,
+      VersionName: 0,
+      DataAccessRoleArn: 0,
+      Tags: D.list(i_Tag),
+      InputDataConfig: {
+        DataFormat: 0,
+        S3Uri: 0,
+        TestS3Uri: 0,
+        LabelDelimiter: 0,
+        AugmentedManifests: D.list(i_AugmentedManifestsListItem),
+        DocumentType: 0,
+        Documents: { S3Uri: 0, TestS3Uri: 0 },
+        DocumentReaderConfig: i_DocumentReaderConfig,
+      },
+      OutputDataConfig: { S3Uri: 0, KmsKeyId: 0, FlywheelStatsS3Prefix: 0 },
+      ClientRequestToken: D.m({ idempotency: true }),
+      LanguageCode: 0,
+      VolumeKmsKeyId: 0,
+      VpcConfig: i_VpcConfig,
+      Mode: 0,
+      ModelKmsKeyId: 0,
+      ModelPolicy: 0,
+    },
   },
   errors: [
     InternalServerException,
@@ -2359,7 +2413,15 @@ export const createEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      EndpointName: 0,
+      ModelArn: 0,
+      DesiredInferenceUnits: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+      DataAccessRoleArn: 0,
+      FlywheelArn: 0,
+    },
   },
   errors: [
     InternalServerException,
@@ -2399,7 +2461,26 @@ export const createEntityRecognizer: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      RecognizerName: 0,
+      VersionName: 0,
+      DataAccessRoleArn: 0,
+      Tags: D.list(i_Tag),
+      InputDataConfig: {
+        DataFormat: 0,
+        EntityTypes: D.list(i_EntityTypesListItem),
+        Documents: { S3Uri: 0, TestS3Uri: 0, InputFormat: 0 },
+        Annotations: { S3Uri: 0, TestS3Uri: 0 },
+        EntityList: { S3Uri: 0 },
+        AugmentedManifests: D.list(i_AugmentedManifestsListItem),
+      },
+      ClientRequestToken: D.m({ idempotency: true }),
+      LanguageCode: 0,
+      VolumeKmsKeyId: 0,
+      VpcConfig: i_VpcConfig,
+      ModelKmsKeyId: 0,
+      ModelPolicy: 0,
+    },
   },
   errors: [
     InternalServerException,
@@ -2453,7 +2534,26 @@ export const createFlywheel: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      FlywheelName: 0,
+      ActiveModelArn: 0,
+      DataAccessRoleArn: 0,
+      TaskConfig: {
+        LanguageCode: 0,
+        DocumentClassificationConfig: { Mode: 0, Labels: 0 },
+        EntityRecognitionConfig: { EntityTypes: D.list(i_EntityTypesListItem) },
+      },
+      ModelType: 0,
+      DataLakeS3Uri: 0,
+      DataSecurityConfig: {
+        ModelKmsKeyId: 0,
+        VolumeKmsKeyId: 0,
+        DataLakeKmsKeyId: 0,
+        VpcConfig: i_VpcConfig,
+      },
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     InternalServerException,
@@ -2497,7 +2597,7 @@ export const deleteDocumentClassifier: API.OperationMethod<
   DeleteDocumentClassifierError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DocumentClassifierArn: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2529,7 +2629,7 @@ export const deleteEndpoint: API.OperationMethod<
   DeleteEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EndpointArn: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2567,7 +2667,7 @@ export const deleteEntityRecognizer: API.OperationMethod<
   DeleteEntityRecognizerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EntityRecognizerArn: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2602,7 +2702,7 @@ export const deleteFlywheel: API.OperationMethod<
   DeleteFlywheelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FlywheelArn: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2630,7 +2730,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, PolicyRevisionId: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -2660,6 +2760,7 @@ export const describeDataset: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DatasetArn: 0 },
     output: { DatasetProperties: o_DatasetProperties },
   },
   errors: [
@@ -2691,6 +2792,7 @@ export const describeDocumentClassificationJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: {
       DocumentClassificationJobProperties:
         o_DocumentClassificationJobProperties,
@@ -2724,6 +2826,7 @@ export const describeDocumentClassifier: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DocumentClassifierArn: 0 },
     output: { DocumentClassifierProperties: o_DocumentClassifierProperties },
   },
   errors: [
@@ -2755,6 +2858,7 @@ export const describeDominantLanguageDetectionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: {
       DominantLanguageDetectionJobProperties:
         o_DominantLanguageDetectionJobProperties,
@@ -2790,6 +2894,7 @@ export const describeEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { EndpointArn: 0 },
     output: { EndpointProperties: o_EndpointProperties },
   },
   errors: [
@@ -2821,6 +2926,7 @@ export const describeEntitiesDetectionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: {
       EntitiesDetectionJobProperties: o_EntitiesDetectionJobProperties,
     },
@@ -2854,6 +2960,7 @@ export const describeEntityRecognizer: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { EntityRecognizerArn: 0 },
     output: { EntityRecognizerProperties: o_EntityRecognizerProperties },
   },
   errors: [
@@ -2885,6 +2992,7 @@ export const describeEventsDetectionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: { EventsDetectionJobProperties: o_EventsDetectionJobProperties },
   },
   errors: [
@@ -2917,6 +3025,7 @@ export const describeFlywheel: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { FlywheelArn: 0 },
     output: { FlywheelProperties: o_FlywheelProperties },
   },
   errors: [
@@ -2949,6 +3058,7 @@ export const describeFlywheelIteration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { FlywheelArn: 0, FlywheelIterationId: 0 },
     output: { FlywheelIterationProperties: o_FlywheelIterationProperties },
   },
   errors: [
@@ -2980,6 +3090,7 @@ export const describeKeyPhrasesDetectionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: {
       KeyPhrasesDetectionJobProperties: o_KeyPhrasesDetectionJobProperties,
     },
@@ -3013,6 +3124,7 @@ export const describePiiEntitiesDetectionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: {
       PiiEntitiesDetectionJobProperties: o_PiiEntitiesDetectionJobProperties,
     },
@@ -3045,6 +3157,7 @@ export const describeResourcePolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResourceArn: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [
@@ -3075,6 +3188,7 @@ export const describeSentimentDetectionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: {
       SentimentDetectionJobProperties: o_SentimentDetectionJobProperties,
     },
@@ -3108,6 +3222,7 @@ export const describeTargetedSentimentDetectionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: {
       TargetedSentimentDetectionJobProperties:
         o_TargetedSentimentDetectionJobProperties,
@@ -3142,6 +3257,7 @@ export const describeTopicsDetectionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: { TopicsDetectionJobProperties: o_TopicsDetectionJobProperties },
   },
   errors: [
@@ -3170,7 +3286,7 @@ export const detectDominantLanguage: API.OperationMethod<
   DetectDominantLanguageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Text: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -3214,7 +3330,16 @@ export const detectEntities: API.OperationMethod<
   DetectEntitiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Text: 0,
+      LanguageCode: 0,
+      EndpointArn: 0,
+      Bytes: 0,
+      DocumentReaderConfig: i_DocumentReaderConfig,
+    },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -3242,7 +3367,7 @@ export const detectKeyPhrases: API.OperationMethod<
   DetectKeyPhrasesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Text: 0, LanguageCode: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -3270,7 +3395,7 @@ export const detectPiiEntities: API.OperationMethod<
   DetectPiiEntitiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Text: 0, LanguageCode: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -3298,7 +3423,7 @@ export const detectSentiment: API.OperationMethod<
   DetectSentimentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Text: 0, LanguageCode: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -3327,7 +3452,7 @@ export const detectSyntax: API.OperationMethod<
   DetectSyntaxError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Text: 0, LanguageCode: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -3356,7 +3481,7 @@ export const detectTargetedSentiment: API.OperationMethod<
   DetectTargetedSentimentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Text: 0, LanguageCode: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -3385,7 +3510,10 @@ export const detectToxicContent: API.OperationMethod<
   DetectToxicContentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TextSegments: D.list({ Text: 0 }), LanguageCode: 0 },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -3424,7 +3552,17 @@ export const importModel: API.OperationMethod<
   ImportModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SourceModelArn: 0,
+      ModelName: 0,
+      VersionName: 0,
+      ModelKmsKeyId: 0,
+      DataAccessRoleArn: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -3461,6 +3599,17 @@ export const listDatasets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      FlywheelArn: 0,
+      Filter: {
+        Status: 0,
+        DatasetType: 0,
+        CreationTimeAfter: 0,
+        CreationTimeBefore: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { DatasetPropertiesList: D.list(o_DatasetProperties) },
   },
   errors: [
@@ -3498,6 +3647,16 @@ export const listDocumentClassificationJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: {
+        JobName: 0,
+        JobStatus: 0,
+        SubmitTimeBefore: 0,
+        SubmitTimeAfter: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       DocumentClassificationJobPropertiesList: D.list(
         o_DocumentClassificationJobProperties,
@@ -3538,6 +3697,16 @@ export const listDocumentClassifiers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: {
+        Status: 0,
+        DocumentClassifierName: 0,
+        SubmitTimeBefore: 0,
+        SubmitTimeAfter: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       DocumentClassifierPropertiesList: D.list(o_DocumentClassifierProperties),
     },
@@ -3575,6 +3744,7 @@ export const listDocumentClassifierSummaries: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: {
       DocumentClassifierSummariesList: D.list({ LatestVersionCreatedAt: D.ts }),
     },
@@ -3612,6 +3782,16 @@ export const listDominantLanguageDetectionJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: {
+        JobName: 0,
+        JobStatus: 0,
+        SubmitTimeBefore: 0,
+        SubmitTimeAfter: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       DominantLanguageDetectionJobPropertiesList: D.list(
         o_DominantLanguageDetectionJobProperties,
@@ -3652,6 +3832,16 @@ export const listEndpoints: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: {
+        ModelArn: 0,
+        Status: 0,
+        CreationTimeBefore: 0,
+        CreationTimeAfter: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { EndpointPropertiesList: D.list(o_EndpointProperties) },
   },
   errors: [
@@ -3688,6 +3878,16 @@ export const listEntitiesDetectionJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: {
+        JobName: 0,
+        JobStatus: 0,
+        SubmitTimeBefore: 0,
+        SubmitTimeAfter: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       EntitiesDetectionJobPropertiesList: D.list(
         o_EntitiesDetectionJobProperties,
@@ -3734,6 +3934,16 @@ export const listEntityRecognizers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: {
+        Status: 0,
+        RecognizerName: 0,
+        SubmitTimeBefore: 0,
+        SubmitTimeAfter: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       EntityRecognizerPropertiesList: D.list(o_EntityRecognizerProperties),
     },
@@ -3771,6 +3981,7 @@ export const listEntityRecognizerSummaries: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: {
       EntityRecognizerSummariesList: D.list({ LatestVersionCreatedAt: D.ts }),
     },
@@ -3809,6 +4020,16 @@ export const listEventsDetectionJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: {
+        JobName: 0,
+        JobStatus: 0,
+        SubmitTimeBefore: 0,
+        SubmitTimeAfter: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       EventsDetectionJobPropertiesList: D.list(o_EventsDetectionJobProperties),
     },
@@ -3851,6 +4072,12 @@ export const listFlywheelIterationHistory: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      FlywheelArn: 0,
+      Filter: { CreationTimeAfter: 0, CreationTimeBefore: 0 },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       FlywheelIterationPropertiesList: D.list(o_FlywheelIterationProperties),
     },
@@ -3890,6 +4117,11 @@ export const listFlywheels: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: { Status: 0, CreationTimeAfter: 0, CreationTimeBefore: 0 },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       FlywheelSummaryList: D.list({
         CreationTime: D.ts,
@@ -3931,6 +4163,16 @@ export const listKeyPhrasesDetectionJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: {
+        JobName: 0,
+        JobStatus: 0,
+        SubmitTimeBefore: 0,
+        SubmitTimeAfter: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       KeyPhrasesDetectionJobPropertiesList: D.list(
         o_KeyPhrasesDetectionJobProperties,
@@ -3971,6 +4213,16 @@ export const listPiiEntitiesDetectionJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: {
+        JobName: 0,
+        JobStatus: 0,
+        SubmitTimeBefore: 0,
+        SubmitTimeAfter: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       PiiEntitiesDetectionJobPropertiesList: D.list(
         o_PiiEntitiesDetectionJobProperties,
@@ -4012,6 +4264,16 @@ export const listSentimentDetectionJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: {
+        JobName: 0,
+        JobStatus: 0,
+        SubmitTimeBefore: 0,
+        SubmitTimeAfter: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       SentimentDetectionJobPropertiesList: D.list(
         o_SentimentDetectionJobProperties,
@@ -4048,7 +4310,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -4077,6 +4339,16 @@ export const listTargetedSentimentDetectionJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: {
+        JobName: 0,
+        JobStatus: 0,
+        SubmitTimeBefore: 0,
+        SubmitTimeAfter: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       TargetedSentimentDetectionJobPropertiesList: D.list(
         o_TargetedSentimentDetectionJobProperties,
@@ -4117,6 +4389,16 @@ export const listTopicsDetectionJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filter: {
+        JobName: 0,
+        JobStatus: 0,
+        SubmitTimeBefore: 0,
+        SubmitTimeAfter: 0,
+      },
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       TopicsDetectionJobPropertiesList: D.list(o_TopicsDetectionJobProperties),
     },
@@ -4153,7 +4435,10 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, ResourcePolicy: 0, PolicyRevisionId: 0 },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -4187,7 +4472,18 @@ export const startDocumentClassificationJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      JobName: 0,
+      DocumentClassifierArn: 0,
+      InputDataConfig: i_InputDataConfig,
+      OutputDataConfig: i_OutputDataConfig,
+      DataAccessRoleArn: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      VolumeKmsKeyId: 0,
+      VpcConfig: i_VpcConfig,
+      Tags: D.list(i_Tag),
+      FlywheelArn: 0,
+    },
   },
   errors: [
     InternalServerException,
@@ -4225,7 +4521,16 @@ export const startDominantLanguageDetectionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      InputDataConfig: i_InputDataConfig,
+      OutputDataConfig: i_OutputDataConfig,
+      DataAccessRoleArn: 0,
+      JobName: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      VolumeKmsKeyId: 0,
+      VpcConfig: i_VpcConfig,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     InternalServerException,
@@ -4266,7 +4571,19 @@ export const startEntitiesDetectionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      InputDataConfig: i_InputDataConfig,
+      OutputDataConfig: i_OutputDataConfig,
+      DataAccessRoleArn: 0,
+      JobName: 0,
+      EntityRecognizerArn: 0,
+      LanguageCode: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      VolumeKmsKeyId: 0,
+      VpcConfig: i_VpcConfig,
+      Tags: D.list(i_Tag),
+      FlywheelArn: 0,
+    },
   },
   errors: [
     InternalServerException,
@@ -4303,7 +4620,16 @@ export const startEventsDetectionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      InputDataConfig: i_InputDataConfig,
+      OutputDataConfig: i_OutputDataConfig,
+      DataAccessRoleArn: 0,
+      JobName: 0,
+      LanguageCode: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      TargetEventTypes: 0,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     InternalServerException,
@@ -4337,7 +4663,10 @@ export const startFlywheelIteration: API.OperationMethod<
   StartFlywheelIterationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { FlywheelArn: 0, ClientRequestToken: 0 },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -4371,7 +4700,17 @@ export const startKeyPhrasesDetectionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      InputDataConfig: i_InputDataConfig,
+      OutputDataConfig: i_OutputDataConfig,
+      DataAccessRoleArn: 0,
+      JobName: 0,
+      LanguageCode: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      VolumeKmsKeyId: 0,
+      VpcConfig: i_VpcConfig,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     InternalServerException,
@@ -4405,7 +4744,17 @@ export const startPiiEntitiesDetectionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      InputDataConfig: i_InputDataConfig,
+      OutputDataConfig: i_OutputDataConfig,
+      Mode: 0,
+      RedactionConfig: { PiiEntityTypes: 0, MaskMode: 0, MaskCharacter: 0 },
+      DataAccessRoleArn: 0,
+      JobName: 0,
+      LanguageCode: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     InternalServerException,
@@ -4441,7 +4790,17 @@ export const startSentimentDetectionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      InputDataConfig: i_InputDataConfig,
+      OutputDataConfig: i_OutputDataConfig,
+      DataAccessRoleArn: 0,
+      JobName: 0,
+      LanguageCode: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      VolumeKmsKeyId: 0,
+      VpcConfig: i_VpcConfig,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     InternalServerException,
@@ -4477,7 +4836,17 @@ export const startTargetedSentimentDetectionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      InputDataConfig: i_InputDataConfig,
+      OutputDataConfig: i_OutputDataConfig,
+      DataAccessRoleArn: 0,
+      JobName: 0,
+      LanguageCode: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      VolumeKmsKeyId: 0,
+      VpcConfig: i_VpcConfig,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     InternalServerException,
@@ -4512,7 +4881,17 @@ export const startTopicsDetectionJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      InputDataConfig: i_InputDataConfig,
+      OutputDataConfig: i_OutputDataConfig,
+      DataAccessRoleArn: 0,
+      JobName: 0,
+      NumberOfTopics: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      VolumeKmsKeyId: 0,
+      VpcConfig: i_VpcConfig,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     InternalServerException,
@@ -4553,7 +4932,7 @@ export const stopDominantLanguageDetectionJob: API.OperationMethod<
   StopDominantLanguageDetectionJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -4590,7 +4969,7 @@ export const stopEntitiesDetectionJob: API.OperationMethod<
   StopEntitiesDetectionJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -4616,7 +4995,7 @@ export const stopEventsDetectionJob: API.OperationMethod<
   StopEventsDetectionJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -4654,7 +5033,7 @@ export const stopKeyPhrasesDetectionJob: API.OperationMethod<
   StopKeyPhrasesDetectionJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -4679,7 +5058,7 @@ export const stopPiiEntitiesDetectionJob: API.OperationMethod<
   StopPiiEntitiesDetectionJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -4716,7 +5095,7 @@ export const stopSentimentDetectionJob: API.OperationMethod<
   StopSentimentDetectionJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -4753,7 +5132,7 @@ export const stopTargetedSentimentDetectionJob: API.OperationMethod<
   StopTargetedSentimentDetectionJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobId: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -4785,7 +5164,7 @@ export const stopTrainingDocumentClassifier: API.OperationMethod<
   StopTrainingDocumentClassifierError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DocumentClassifierArn: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -4818,7 +5197,7 @@ export const stopTrainingEntityRecognizer: API.OperationMethod<
   StopTrainingEntityRecognizerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EntityRecognizerArn: 0 } },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -4848,7 +5227,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     ConcurrentModificationException,
     InternalServerException,
@@ -4877,7 +5256,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     ConcurrentModificationException,
     InternalServerException,
@@ -4909,7 +5288,16 @@ export const updateEndpoint: API.OperationMethod<
   UpdateEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EndpointArn: 0,
+      DesiredModelArn: 0,
+      DesiredInferenceUnits: 0,
+      DesiredDataAccessRoleArn: 0,
+      FlywheelArn: 0,
+    },
+  },
   errors: [
     InternalServerException,
     InvalidRequestException,
@@ -4942,6 +5330,16 @@ export const updateFlywheel: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      FlywheelArn: 0,
+      ActiveModelArn: 0,
+      DataAccessRoleArn: 0,
+      DataSecurityConfig: {
+        ModelKmsKeyId: 0,
+        VolumeKmsKeyId: 0,
+        VpcConfig: i_VpcConfig,
+      },
+    },
     output: { FlywheelProperties: o_FlywheelProperties },
   },
   errors: [
@@ -4956,6 +5354,28 @@ export const updateFlywheel: API.OperationMethod<
   operationName: "UpdateFlywheel",
 })) as any;
 
+const i_AugmentedManifestsListItem: D.LazyStruct = () => ({
+  S3Uri: 0,
+  Split: 0,
+  AttributeNames: 0,
+  AnnotationDataS3Uri: 0,
+  SourceDocumentsS3Uri: 0,
+  DocumentType: 0,
+});
+const i_DocumentReaderConfig: D.LazyStruct = () => ({
+  DocumentReadAction: 0,
+  DocumentReadMode: 0,
+  FeatureTypes: 0,
+});
+const i_EntityTypesListItem: D.LazyStruct = () => ({ Type: 0 });
+const i_InputDataConfig: D.LazyStruct = () => ({
+  S3Uri: 0,
+  InputFormat: 0,
+  DocumentReaderConfig: i_DocumentReaderConfig,
+});
+const i_OutputDataConfig: D.LazyStruct = () => ({ S3Uri: 0, KmsKeyId: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_VpcConfig: D.LazyStruct = () => ({ SecurityGroupIds: 0, Subnets: 0 });
 const o_DatasetProperties: D.LazyStruct = () => ({
   CreationTime: D.ts,
   EndTime: D.ts,

@@ -677,7 +677,15 @@ export const deleteScalingPolicy: API.OperationMethod<
   DeleteScalingPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      PolicyName: 0,
+      ServiceNamespace: 0,
+      ResourceId: 0,
+      ScalableDimension: 0,
+    },
+  },
   errors: [
     ConcurrentUpdateException,
     InternalServiceException,
@@ -706,7 +714,15 @@ export const deleteScheduledAction: API.OperationMethod<
   DeleteScheduledActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ServiceNamespace: 0,
+      ScheduledActionName: 0,
+      ResourceId: 0,
+      ScalableDimension: 0,
+    },
+  },
   errors: [
     ConcurrentUpdateException,
     InternalServiceException,
@@ -737,7 +753,10 @@ export const deregisterScalableTarget: API.OperationMethod<
   DeregisterScalableTargetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServiceNamespace: 0, ResourceId: 0, ScalableDimension: 0 },
+  },
   errors: [
     ConcurrentUpdateException,
     InternalServiceException,
@@ -770,6 +789,13 @@ export const describeScalableTargets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ServiceNamespace: 0,
+      ResourceIds: 0,
+      ScalableDimension: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { ScalableTargets: D.list({ CreationTime: D.ts }) },
   },
   errors: [
@@ -813,6 +839,14 @@ export const describeScalingActivities: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ServiceNamespace: 0,
+      ResourceId: 0,
+      ScalableDimension: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      IncludeNotScaledActivities: 0,
+    },
     output: { ScalingActivities: D.list({ StartTime: D.ts, EndTime: D.ts }) },
   },
   errors: [
@@ -856,6 +890,14 @@ export const describeScalingPolicies: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      PolicyNames: 0,
+      ServiceNamespace: 0,
+      ResourceId: 0,
+      ScalableDimension: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { ScalingPolicies: D.list({ CreationTime: D.ts }) },
   },
   errors: [
@@ -899,6 +941,14 @@ export const describeScheduledActions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ScheduledActionNames: 0,
+      ServiceNamespace: 0,
+      ResourceId: 0,
+      ScalableDimension: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       ScheduledActions: D.list({
         StartTime: D.ts,
@@ -948,6 +998,14 @@ export const getPredictiveScalingForecast: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ServiceNamespace: 0,
+      ResourceId: 0,
+      ScalableDimension: 0,
+      PolicyName: 0,
+      StartTime: 0,
+      EndTime: 0,
+    },
     output: {
       LoadForecast: D.list({ Timestamps: D.list(D.ts) }),
       CapacityForecast: { Timestamps: D.list(D.ts) },
@@ -977,7 +1035,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1029,7 +1087,86 @@ export const putScalingPolicy: API.OperationMethod<
   PutScalingPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      PolicyName: 0,
+      ServiceNamespace: 0,
+      ResourceId: 0,
+      ScalableDimension: 0,
+      PolicyType: 0,
+      StepScalingPolicyConfiguration: {
+        AdjustmentType: 0,
+        StepAdjustments: D.list({
+          MetricIntervalLowerBound: 0,
+          MetricIntervalUpperBound: 0,
+          ScalingAdjustment: 0,
+        }),
+        MinAdjustmentMagnitude: 0,
+        Cooldown: 0,
+        MetricAggregationType: 0,
+      },
+      TargetTrackingScalingPolicyConfiguration: {
+        TargetValue: 0,
+        PredefinedMetricSpecification: {
+          PredefinedMetricType: 0,
+          ResourceLabel: 0,
+        },
+        CustomizedMetricSpecification: {
+          MetricName: 0,
+          Namespace: 0,
+          Dimensions: D.list({ Name: 0, Value: 0 }),
+          Statistic: 0,
+          Unit: 0,
+          Metrics: D.list({
+            Expression: 0,
+            Id: 0,
+            Label: 0,
+            MetricStat: {
+              Metric: {
+                Dimensions: D.list({ Name: 0, Value: 0 }),
+                MetricName: 0,
+                Namespace: 0,
+              },
+              Stat: 0,
+              Unit: 0,
+            },
+            ReturnData: 0,
+          }),
+        },
+        ScaleOutCooldown: 0,
+        ScaleInCooldown: 0,
+        DisableScaleIn: 0,
+      },
+      PredictiveScalingPolicyConfiguration: {
+        MetricSpecifications: D.list({
+          TargetValue: 0,
+          PredefinedMetricPairSpecification: {
+            PredefinedMetricType: 0,
+            ResourceLabel: 0,
+          },
+          PredefinedScalingMetricSpecification: {
+            PredefinedMetricType: 0,
+            ResourceLabel: 0,
+          },
+          PredefinedLoadMetricSpecification: {
+            PredefinedMetricType: 0,
+            ResourceLabel: 0,
+          },
+          CustomizedScalingMetricSpecification:
+            i_PredictiveScalingCustomizedMetricSpecification,
+          CustomizedLoadMetricSpecification:
+            i_PredictiveScalingCustomizedMetricSpecification,
+          CustomizedCapacityMetricSpecification:
+            i_PredictiveScalingCustomizedMetricSpecification,
+        }),
+        Mode: 0,
+        SchedulingBufferTime: 0,
+        MaxCapacityBreachBehavior: 0,
+        MaxCapacityBuffer: 0,
+      },
+    },
+  },
   errors: [
     ConcurrentUpdateException,
     FailedResourceAccessException,
@@ -1076,7 +1213,20 @@ export const putScheduledAction: API.OperationMethod<
   PutScheduledActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ServiceNamespace: 0,
+      Schedule: 0,
+      Timezone: 0,
+      ScheduledActionName: 0,
+      ResourceId: 0,
+      ScalableDimension: 0,
+      StartTime: 0,
+      EndTime: 0,
+      ScalableTargetAction: { MinCapacity: 0, MaxCapacity: 0 },
+    },
+  },
   errors: [
     ConcurrentUpdateException,
     InternalServiceException,
@@ -1140,7 +1290,23 @@ export const registerScalableTarget: API.OperationMethod<
   RegisterScalableTargetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ServiceNamespace: 0,
+      ResourceId: 0,
+      ScalableDimension: 0,
+      MinCapacity: 0,
+      MaxCapacity: 0,
+      RoleARN: 0,
+      SuspendedState: {
+        DynamicScalingInSuspended: 0,
+        DynamicScalingOutSuspended: 0,
+        ScheduledScalingSuspended: 0,
+      },
+      Tags: 0,
+    },
+  },
   errors: [
     ConcurrentUpdateException,
     InternalServiceException,
@@ -1182,7 +1348,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: 0 } },
   errors: [
     ResourceNotFoundException,
     TooManyTagsException,
@@ -1207,9 +1373,27 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "UntagResource",
 })) as any;
+
+const i_PredictiveScalingCustomizedMetricSpecification: D.LazyStruct = () => ({
+  MetricDataQueries: D.list({
+    Id: 0,
+    Expression: 0,
+    MetricStat: {
+      Metric: {
+        Dimensions: D.list({ Name: 0, Value: 0 }),
+        MetricName: 0,
+        Namespace: 0,
+      },
+      Stat: 0,
+      Unit: 0,
+    },
+    Label: 0,
+    ReturnData: 0,
+  }),
+});

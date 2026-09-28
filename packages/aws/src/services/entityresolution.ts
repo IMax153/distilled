@@ -966,6 +966,14 @@ export const addPolicyStatement: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /policies/{arn}/{statementId}",
+    input: {
+      arn: 0,
+      statementId: 0,
+      effect: 0,
+      action: 0,
+      principal: 0,
+      condition: 0,
+    },
     body: true,
   },
   errors: [
@@ -999,6 +1007,7 @@ export const batchDeleteUniqueId: API.OperationMethod<
     service: svc,
     http: "DELETE /matchingworkflows/{workflowName}/uniqueids",
     input: {
+      workflowName: 0,
       inputSource: D.m({ header: "inputSource" }),
       uniqueIds: D.m({ header: "uniqueIds" }),
     },
@@ -1032,7 +1041,21 @@ export const createIdMappingWorkflow: API.OperationMethod<
   CreateIdMappingWorkflowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /idmappingworkflows", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /idmappingworkflows",
+    input: {
+      workflowName: 0,
+      description: 0,
+      inputSourceConfig: D.list(i_IdMappingWorkflowInputSource),
+      outputSourceConfig: D.list(i_IdMappingWorkflowOutputSource),
+      idMappingTechniques: i_IdMappingTechniques,
+      incrementalRunConfig: i_IdMappingIncrementalRunConfig,
+      roleArn: 0,
+      tags: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1066,6 +1089,17 @@ export const createIdNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /idnamespaces",
+    input: {
+      idNamespaceName: 0,
+      description: 0,
+      inputSourceConfig: D.list(i_IdNamespaceInputSource),
+      idMappingWorkflowProperties: D.list(
+        i_IdNamespaceIdMappingWorkflowProperties,
+      ),
+      type: 0,
+      roleArn: 0,
+      tags: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -1101,7 +1135,21 @@ export const createMatchingWorkflow: API.OperationMethod<
   CreateMatchingWorkflowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /matchingworkflows", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /matchingworkflows",
+    input: {
+      workflowName: 0,
+      description: 0,
+      inputSourceConfig: D.list(i_InputSource),
+      outputSourceConfig: D.list(i_OutputSource),
+      resolutionTechniques: i_ResolutionTechniques,
+      incrementalRunConfig: i_IncrementalRunConfig,
+      roleArn: 0,
+      tags: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1132,7 +1180,17 @@ export const createSchemaMapping: API.OperationMethod<
   CreateSchemaMappingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /schemas", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /schemas",
+    input: {
+      schemaName: 0,
+      description: 0,
+      mappedInputFields: D.list(i_SchemaInputAttribute),
+      tags: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1166,6 +1224,7 @@ export const deleteIdMappingWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /idmappingworkflows/{workflowName}",
+    input: { workflowName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1197,7 +1256,11 @@ export const deleteIdNamespace: API.OperationMethod<
   DeleteIdNamespaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /idnamespaces/{idNamespaceName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /idnamespaces/{idNamespaceName}",
+    input: { idNamespaceName: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1231,6 +1294,7 @@ export const deleteMatchingWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /matchingworkflows/{workflowName}",
+    input: { workflowName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1262,7 +1326,11 @@ export const deletePolicyStatement: API.OperationMethod<
   DeletePolicyStatementError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /policies/{arn}/{statementId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /policies/{arn}/{statementId}",
+    input: { arn: 0, statementId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1293,7 +1361,11 @@ export const deleteSchemaMapping: API.OperationMethod<
   DeleteSchemaMappingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /schemas/{schemaName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /schemas/{schemaName}",
+    input: { schemaName: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1328,6 +1400,15 @@ export const generateMatchId: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /matchingworkflows/{workflowName}/generateMatches",
+    input: {
+      workflowName: 0,
+      records: D.list({
+        inputSourceARN: 0,
+        uniqueId: 0,
+        recordAttributeMap: 0,
+      }),
+      processingType: 0,
+    },
     body: true,
   },
   errors: [
@@ -1361,6 +1442,7 @@ export const getIdMappingJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /idmappingworkflows/{workflowName}/jobs/{jobId}",
+    input: { workflowName: 0, jobId: 0 },
     output: { startTime: D.ts, endTime: D.ts },
   },
   errors: [
@@ -1394,6 +1476,7 @@ export const getIdMappingWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /idmappingworkflows/{workflowName}",
+    input: { workflowName: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1427,6 +1510,7 @@ export const getIdNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /idnamespaces/{idNamespaceName}",
+    input: { idNamespaceName: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1462,6 +1546,7 @@ export const getMatchId: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /matchingworkflows/{workflowName}/matches",
+    input: { workflowName: 0, record: 0, applyNormalization: 0 },
     body: true,
   },
   errors: [
@@ -1495,6 +1580,7 @@ export const getMatchingJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /matchingworkflows/{workflowName}/jobs/{jobId}",
+    input: { workflowName: 0, jobId: 0 },
     output: { startTime: D.ts, endTime: D.ts },
   },
   errors: [
@@ -1528,6 +1614,7 @@ export const getMatchingWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /matchingworkflows/{workflowName}",
+    input: { workflowName: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1558,7 +1645,7 @@ export const getPolicy: API.OperationMethod<
   GetPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /policies/{arn}" },
+  descriptor: { service: svc, http: "GET /policies/{arn}", input: { arn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1590,6 +1677,7 @@ export const getProviderService: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /providerservices/{providerName}/{providerServiceName}",
+    input: { providerName: 0, providerServiceName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1622,6 +1710,7 @@ export const getSchemaMapping: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /schemas/{schemaName}",
+    input: { schemaName: 0 },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },
   errors: [
@@ -1657,6 +1746,7 @@ export const listIdMappingJobs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /idmappingworkflows/{workflowName}/jobs",
     input: {
+      workflowName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1787,6 +1877,7 @@ export const listMatchingJobs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /matchingworkflows/{workflowName}/jobs",
     input: {
+      workflowName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1950,7 +2041,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1978,7 +2073,12 @@ export const putPolicy: API.OperationMethod<
   PutPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /policies/{arn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /policies/{arn}",
+    input: { arn: 0, token: 0, policy: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2013,6 +2113,11 @@ export const startIdMappingJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /idmappingworkflows/{workflowName}/jobs",
+    input: {
+      workflowName: 0,
+      outputSourceConfig: D.list({ roleArn: 0, outputS3Path: 0, KMSArn: 0 }),
+      jobType: 0,
+    },
     body: true,
   },
   errors: [
@@ -2050,6 +2155,7 @@ export const startMatchingJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /matchingworkflows/{workflowName}/jobs",
+    input: { workflowName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2079,7 +2185,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -2106,7 +2217,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [InternalServerException, ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -2135,6 +2246,15 @@ export const updateIdMappingWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /idmappingworkflows/{workflowName}",
+    input: {
+      workflowName: 0,
+      description: 0,
+      inputSourceConfig: D.list(i_IdMappingWorkflowInputSource),
+      outputSourceConfig: D.list(i_IdMappingWorkflowOutputSource),
+      idMappingTechniques: i_IdMappingTechniques,
+      incrementalRunConfig: i_IdMappingIncrementalRunConfig,
+      roleArn: 0,
+    },
     body: true,
   },
   errors: [
@@ -2168,6 +2288,15 @@ export const updateIdNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /idnamespaces/{idNamespaceName}",
+    input: {
+      idNamespaceName: 0,
+      description: 0,
+      inputSourceConfig: D.list(i_IdNamespaceInputSource),
+      idMappingWorkflowProperties: D.list(
+        i_IdNamespaceIdMappingWorkflowProperties,
+      ),
+      roleArn: 0,
+    },
     output: { createdAt: D.ts, updatedAt: D.ts },
     body: true,
   },
@@ -2204,6 +2333,15 @@ export const updateMatchingWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /matchingworkflows/{workflowName}",
+    input: {
+      workflowName: 0,
+      description: 0,
+      inputSourceConfig: D.list(i_InputSource),
+      outputSourceConfig: D.list(i_OutputSource),
+      resolutionTechniques: i_ResolutionTechniques,
+      incrementalRunConfig: i_IncrementalRunConfig,
+      roleArn: 0,
+    },
     body: true,
   },
   errors: [
@@ -2237,7 +2375,16 @@ export const updateSchemaMapping: API.OperationMethod<
   UpdateSchemaMappingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /schemas/{schemaName}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /schemas/{schemaName}",
+    input: {
+      schemaName: 0,
+      description: 0,
+      mappedInputFields: D.list(i_SchemaInputAttribute),
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2251,4 +2398,81 @@ export const updateSchemaMapping: API.OperationMethod<
   operationName: "UpdateSchemaMapping",
 })) as any;
 
+const i_IdMappingIncrementalRunConfig: D.LazyStruct = () => ({
+  incrementalRunType: 0,
+});
+const i_IdMappingTechniques: D.LazyStruct = () => ({
+  idMappingType: 0,
+  ruleBasedProperties: {
+    rules: D.list(i_Rule),
+    ruleDefinitionType: 0,
+    attributeMatchingModel: 0,
+    recordMatchingModel: 0,
+  },
+  providerProperties: i_ProviderProperties,
+});
+const i_IdMappingWorkflowInputSource: D.LazyStruct = () => ({
+  inputSourceARN: 0,
+  schemaName: 0,
+  type: 0,
+});
+const i_IdMappingWorkflowOutputSource: D.LazyStruct = () => ({
+  KMSArn: 0,
+  outputS3Path: 0,
+});
+const i_IdNamespaceIdMappingWorkflowProperties: D.LazyStruct = () => ({
+  idMappingType: 0,
+  ruleBasedProperties: {
+    rules: D.list(i_Rule),
+    ruleDefinitionTypes: 0,
+    attributeMatchingModel: 0,
+    recordMatchingModels: 0,
+  },
+  providerProperties: { providerServiceArn: 0, providerConfiguration: 0 },
+});
+const i_IdNamespaceInputSource: D.LazyStruct = () => ({
+  inputSourceARN: 0,
+  schemaName: 0,
+});
+const i_IncrementalRunConfig: D.LazyStruct = () => ({ incrementalRunType: 0 });
+const i_InputSource: D.LazyStruct = () => ({
+  inputSourceARN: 0,
+  schemaName: 0,
+  applyNormalization: 0,
+});
+const i_OutputSource: D.LazyStruct = () => ({
+  KMSArn: 0,
+  outputS3Path: 0,
+  output: D.list({ name: 0, hashed: 0 }),
+  applyNormalization: 0,
+  customerProfilesIntegrationConfig: { domainArn: 0, objectTypeArn: 0 },
+});
+const i_ResolutionTechniques: D.LazyStruct = () => ({
+  resolutionType: 0,
+  ruleBasedProperties: {
+    rules: D.list(i_Rule),
+    attributeMatchingModel: 0,
+    matchPurpose: 0,
+  },
+  ruleConditionProperties: {
+    rules: D.list({ ruleName: 0, condition: 0 }),
+    matchingConfig: { enableTransitiveMatching: 0 },
+  },
+  enableRealTimeMatching: 0,
+  providerProperties: i_ProviderProperties,
+});
+const i_SchemaInputAttribute: D.LazyStruct = () => ({
+  fieldName: 0,
+  type: 0,
+  groupName: 0,
+  matchKey: 0,
+  subType: 0,
+  hashed: 0,
+});
 const o_JobSummary: D.LazyStruct = () => ({ startTime: D.ts, endTime: D.ts });
+const i_ProviderProperties: D.LazyStruct = () => ({
+  providerServiceArn: 0,
+  providerConfiguration: 0,
+  intermediateSourceConfiguration: { intermediateS3Path: 0 },
+});
+const i_Rule: D.LazyStruct = () => ({ ruleName: 0, matchingKeys: 0 });

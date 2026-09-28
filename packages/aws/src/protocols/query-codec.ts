@@ -104,6 +104,8 @@ export const serializeQueryMembers = (
   params: string[],
 ): void => {
   for (const name in value) {
+    // Closed structure: keys the model doesn't have are dropped
+    if (struct !== undefined && !(name in struct)) continue;
     const member = struct?.[name];
     const spec = specOf(member as never);
     const wire =

@@ -679,7 +679,7 @@ export const associateSourceViews: API.OperationMethod<
   AssociateSourceViewsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0, sourceViews: 0 } },
   errors: [
     AccessDeniedException,
     BillingViewHealthStatusException,
@@ -716,7 +716,14 @@ export const createBillingView: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      sourceViews: 0,
+      dataFilterExpression: i_Expression,
+      clientToken: D.m({ idempotency: true }),
+      resourceTags: D.list(i_ResourceTag),
+    },
     output: { createdAt: D.ts },
   },
   errors: [
@@ -750,7 +757,7 @@ export const deleteBillingView: API.OperationMethod<
   DeleteBillingViewError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0, force: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -781,7 +788,7 @@ export const disassociateSourceViews: API.OperationMethod<
   DisassociateSourceViewsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0, sourceViews: 0 } },
   errors: [
     AccessDeniedException,
     BillingViewHealthStatusException,
@@ -811,7 +818,15 @@ export const getBillingPreferences: API.OperationMethod<
   GetBillingPreferencesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      nextToken: 0,
+      maxResults: 0,
+      features: 0,
+      filters: D.list({ name: 0, value: 0 }),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -841,6 +856,7 @@ export const getBillingView: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { arn: 0 },
     output: {
       billingView: {
         name: D.secret,
@@ -882,7 +898,17 @@ export const getCreditAllocationHistory: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   CreditAllocationHistoryEntry
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      accountId: 0,
+      creditId: 0,
+      startDate: 0,
+      endDate: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -919,6 +945,7 @@ export const getCredits: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { accountId: 0, startDate: 0, endDate: 0, payerAccountFlag: 0 },
     output: {
       credits: D.list({ startDate: D.ts, endDate: D.ts, exhaustDate: D.ts }),
     },
@@ -952,6 +979,7 @@ export const getEnterpriseSupportChargeSummary: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { billingMonth: 0 },
     output: {
       billingPeriodStartDate: D.ts,
       billingPeriodEndDate: D.ts,
@@ -989,6 +1017,7 @@ export const getEnterpriseSupportContractDetails: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { billingMonth: 0 },
     output: {
       supportReservedInstanceAmortizationStartDate: D.ts,
       supportSavingsPlansAmortizationStartDate: D.ts,
@@ -1024,7 +1053,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1057,6 +1086,16 @@ export const listBillingViews: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      activeTimeRange: { activeAfterInclusive: 0, activeBeforeInclusive: 0 },
+      arns: 0,
+      billingViewTypes: 0,
+      names: D.list({ searchOption: 0, searchValue: 0 }),
+      ownerAccountId: 0,
+      sourceAccountId: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { billingViews: D.list({ name: D.secret, description: D.secret }) },
   },
   errors: [
@@ -1095,6 +1134,7 @@ export const listEnterpriseSupportLinkedAccountCharges: API.PaginatedOperationMe
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { billingMonth: 0, accountId: 0, maxResults: 0, nextToken: 0 },
     output: {
       linkedAccount: D.list({
         linkedTimePeriods: D.list(o_EnterpriseSupportTimePeriod),
@@ -1137,7 +1177,7 @@ export const listSourceViewsForBillingView: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   BillingViewArn
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { arn: 0, maxResults: 0, nextToken: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1172,7 +1212,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1200,7 +1240,7 @@ export const redeemCredits: API.OperationMethod<
   RedeemCreditsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { promoCode: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1228,7 +1268,10 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { resourceArn: 0, resourceTags: D.list(i_ResourceTag) },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1257,7 +1300,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, resourceTagKeys: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1287,7 +1330,13 @@ export const updateBillingPreferences: API.OperationMethod<
   UpdateBillingPreferencesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      feature: 0,
+      billingPreferencesPerKey: D.list({ key: 0, value: 0 }),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1318,7 +1367,16 @@ export const updateBillingView: API.OperationMethod<
   UpdateBillingViewError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { updatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      arn: 0,
+      name: 0,
+      description: 0,
+      dataFilterExpression: i_Expression,
+    },
+    output: { updatedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     BillingViewHealthStatusException,
@@ -1334,6 +1392,13 @@ export const updateBillingView: API.OperationMethod<
   operationName: "UpdateBillingView",
 })) as any;
 
+const i_Expression: D.LazyStruct = () => ({
+  dimensions: { key: 0, values: 0 },
+  tags: { key: 0, values: 0 },
+  costCategories: { key: 0, values: 0 },
+  timeRange: { beginDateInclusive: 0, endDateInclusive: 0 },
+});
+const i_ResourceTag: D.LazyStruct = () => ({ key: 0, value: 0 });
 const o_EnterpriseSupportTimePeriod: D.LazyStruct = () => ({
   beginDate: D.ts,
   endDate: D.ts,

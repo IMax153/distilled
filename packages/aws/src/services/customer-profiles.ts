@@ -2880,6 +2880,7 @@ export const addProfileKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/profiles/keys",
+    input: { ProfileId: 0, KeyName: 0, Values: 0, DomainName: 0 },
     body: true,
   },
   errors: [
@@ -2913,6 +2914,12 @@ export const batchGetCalculatedAttributeForProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/calculated-attributes/{CalculatedAttributeName}/batch-get-for-profiles",
+    input: {
+      CalculatedAttributeName: 0,
+      DomainName: 0,
+      ProfileIds: 0,
+      ConditionOverrides: i_ConditionOverrides,
+    },
     output: {
       CalculatedAttributeValues: D.list({ LastObjectTimestamp: D.ts }),
     },
@@ -2949,6 +2956,7 @@ export const batchGetProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/batch-get-profiles",
+    input: { DomainName: 0, ProfileIds: 0 },
     output: { Profiles: D.list(o_Profile) },
     body: true,
   },
@@ -2995,6 +3003,11 @@ export const batchPutProfileObject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{DomainName}/profiles/objects/batch-put-profile-object",
+    input: {
+      DomainName: 0,
+      ObjectTypeName: 0,
+      Items: D.list({ Id: 0, Object: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -3033,6 +3046,26 @@ export const createCalculatedAttributeDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/calculated-attributes/{CalculatedAttributeName}",
+    input: {
+      DomainName: 0,
+      CalculatedAttributeName: 0,
+      DisplayName: 0,
+      Description: 0,
+      AttributeDetails: { Attributes: D.list({ Name: 0 }), Expression: 0 },
+      Conditions: i_Conditions,
+      Filter: {
+        Include: 0,
+        Groups: D.list({
+          Type: 0,
+          Dimensions: D.list({
+            Attributes: D.map({ DimensionType: 0, Values: 0 }),
+          }),
+        }),
+      },
+      Statistic: 0,
+      UseHistoricalData: 0,
+      Tags: 0,
+    },
     output: {
       Description: D.secret,
       Statistic: D.secret,
@@ -3091,6 +3124,16 @@ export const createDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}",
+    input: {
+      DomainName: 0,
+      DefaultExpirationDays: 0,
+      DefaultEncryptionKey: 0,
+      DeadLetterQueueUrl: 0,
+      Matching: i_MatchingRequest,
+      RuleBasedMatching: i_RuleBasedMatchingRequest,
+      DataStore: i_DataStoreRequest,
+      Tags: 0,
+    },
     output: { CreatedAt: D.ts, LastUpdatedAt: D.ts },
     body: true,
   },
@@ -3126,6 +3169,16 @@ export const createDomainLayout: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/layouts/{LayoutDefinitionName}",
+    input: {
+      DomainName: 0,
+      LayoutDefinitionName: 0,
+      Description: 0,
+      DisplayName: 0,
+      IsDefault: 0,
+      LayoutType: 0,
+      Layout: 0,
+      Tags: 0,
+    },
     output: {
       Description: D.secret,
       Layout: D.secret,
@@ -3169,6 +3222,7 @@ export const createEventStream: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/event-streams/{EventStreamName}",
+    input: { DomainName: 0, Uri: 0, EventStreamName: 0, Tags: 0 },
     body: true,
   },
   errors: [
@@ -3206,6 +3260,16 @@ export const createEventTrigger: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/event-triggers/{EventTriggerName}",
+    input: {
+      DomainName: 0,
+      EventTriggerName: 0,
+      ObjectTypeName: 0,
+      Description: 0,
+      EventTriggerConditions: D.list(i_EventTriggerCondition),
+      SegmentFilter: 0,
+      EventTriggerLimits: i_EventTriggerLimits,
+      Tags: 0,
+    },
     output: { Description: D.secret, CreatedAt: D.ts, LastUpdatedAt: D.ts },
     body: true,
   },
@@ -3241,6 +3305,19 @@ export const createIntegrationWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/workflows/integrations",
+    input: {
+      DomainName: 0,
+      WorkflowType: 0,
+      IntegrationConfig: {
+        AppflowIntegration: {
+          FlowDefinition: i_FlowDefinition,
+          Batches: D.list({ StartTime: 0, EndTime: 0 }),
+        },
+      },
+      ObjectTypeName: 0,
+      RoleArn: 0,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -3277,6 +3354,34 @@ export const createProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/profiles",
+    input: {
+      DomainName: 0,
+      AccountNumber: 0,
+      AdditionalInformation: 0,
+      PartyType: 0,
+      BusinessName: 0,
+      FirstName: 0,
+      MiddleName: 0,
+      LastName: 0,
+      BirthDate: 0,
+      Gender: 0,
+      PhoneNumber: 0,
+      MobilePhoneNumber: 0,
+      HomePhoneNumber: 0,
+      BusinessPhoneNumber: 0,
+      EmailAddress: 0,
+      PersonalEmailAddress: 0,
+      BusinessEmailAddress: 0,
+      Address: i_Address,
+      ShippingAddress: i_Address,
+      MailingAddress: i_Address,
+      BillingAddress: i_Address,
+      Attributes: 0,
+      PartyTypeString: 0,
+      GenderString: 0,
+      ProfileType: 0,
+      EngagementPreferences: i_EngagementPreferences,
+    },
     body: true,
   },
   errors: [
@@ -3310,6 +3415,15 @@ export const createRecommender: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/recommenders/{RecommenderName}",
+    input: {
+      DomainName: 0,
+      RecommenderName: 0,
+      RecommenderRecipeName: 0,
+      RecommenderConfig: i_RecommenderConfig,
+      Description: 0,
+      RecommenderSchemaName: 0,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -3343,6 +3457,14 @@ export const createRecommenderFilter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/recommender-filters/{RecommenderFilterName}",
+    input: {
+      DomainName: 0,
+      RecommenderFilterName: 0,
+      RecommenderFilterExpression: 0,
+      RecommenderSchemaName: 0,
+      Description: 0,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -3376,6 +3498,14 @@ export const createRecommenderSchema: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/recommender-schemas/{RecommenderSchemaName}",
+    input: {
+      DomainName: 0,
+      RecommenderSchemaName: 0,
+      Fields: D.map(
+        D.list({ TargetFieldName: 0, ContentType: 0, FeatureType: 0 }),
+      ),
+      Tags: 0,
+    },
     output: { CreatedAt: D.ts },
     body: true,
   },
@@ -3410,6 +3540,18 @@ export const createSegmentDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/segment-definitions/{SegmentDefinitionName}",
+    input: {
+      DomainName: 0,
+      SegmentDefinitionName: 0,
+      DisplayName: 0,
+      Description: 0,
+      SegmentGroups: { Groups: D.list(i_Group), Include: 0 },
+      SegmentSqlQuery: 0,
+      SegmentSort: {
+        Attributes: D.list({ Name: 0, DataType: 0, Order: 0, Type: 0 }),
+      },
+      Tags: 0,
+    },
     output: { Description: D.secret, CreatedAt: D.ts },
     body: true,
   },
@@ -3444,6 +3586,11 @@ export const createSegmentEstimate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/segment-estimates",
+    input: {
+      DomainName: 0,
+      SegmentQuery: { Groups: D.list(i_Group), Include: 0 },
+      SegmentSqlQuery: 0,
+    },
     output: { StatusCode: D.m({ status: true }) },
     body: true,
   },
@@ -3478,6 +3625,14 @@ export const createSegmentSnapshot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/segments/{SegmentDefinitionName}/snapshots",
+    input: {
+      DomainName: 0,
+      SegmentDefinitionName: 0,
+      DataFormat: 0,
+      EncryptionKey: 0,
+      RoleArn: 0,
+      DestinationUri: 0,
+    },
     body: true,
   },
   errors: [
@@ -3512,6 +3667,13 @@ export const createUploadJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/upload-jobs",
+    input: {
+      DomainName: 0,
+      DisplayName: 0,
+      Fields: D.map(i_ObjectTypeField),
+      UniqueKey: 0,
+      DataExpiry: 0,
+    },
     body: true,
   },
   errors: [
@@ -3548,6 +3710,7 @@ export const deleteCalculatedAttributeDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domains/{DomainName}/calculated-attributes/{CalculatedAttributeName}",
+    input: { DomainName: 0, CalculatedAttributeName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3578,7 +3741,11 @@ export const deleteDomain: API.OperationMethod<
   DeleteDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /domains/{DomainName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /domains/{DomainName}",
+    input: { DomainName: 0 },
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -3611,6 +3778,7 @@ export const deleteDomainLayout: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domains/{DomainName}/layouts/{LayoutDefinitionName}",
+    input: { DomainName: 0, LayoutDefinitionName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3643,6 +3811,7 @@ export const deleteDomainObjectType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domains/{DomainName}/domain-object-types/{ObjectTypeName}",
+    input: { DomainName: 0, ObjectTypeName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3675,6 +3844,7 @@ export const deleteEventStream: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domains/{DomainName}/event-streams/{EventStreamName}",
+    input: { DomainName: 0, EventStreamName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3709,6 +3879,7 @@ export const deleteEventTrigger: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domains/{DomainName}/event-triggers/{EventTriggerName}",
+    input: { DomainName: 0, EventTriggerName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3741,6 +3912,7 @@ export const deleteIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/integrations/delete",
+    input: { DomainName: 0, Uri: 0 },
     body: true,
   },
   errors: [
@@ -3774,6 +3946,7 @@ export const deleteProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/profiles/delete",
+    input: { ProfileId: 0, DomainName: 0 },
     body: true,
   },
   errors: [
@@ -3807,6 +3980,7 @@ export const deleteProfileKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/profiles/keys/delete",
+    input: { ProfileId: 0, KeyName: 0, Values: 0, DomainName: 0 },
     body: true,
   },
   errors: [
@@ -3840,6 +4014,12 @@ export const deleteProfileObject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/profiles/objects/delete",
+    input: {
+      ProfileId: 0,
+      ProfileObjectUniqueKey: 0,
+      ObjectTypeName: 0,
+      DomainName: 0,
+    },
     body: true,
   },
   errors: [
@@ -3876,6 +4056,7 @@ export const deleteProfileObjectType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domains/{DomainName}/object-types/{ObjectTypeName}",
+    input: { DomainName: 0, ObjectTypeName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3908,6 +4089,7 @@ export const deleteRecommender: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domains/{DomainName}/recommenders/{RecommenderName}",
+    input: { DomainName: 0, RecommenderName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3940,6 +4122,7 @@ export const deleteRecommenderFilter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domains/{DomainName}/recommender-filters/{RecommenderFilterName}",
+    input: { DomainName: 0, RecommenderFilterName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3972,6 +4155,7 @@ export const deleteRecommenderSchema: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domains/{DomainName}/recommender-schemas/{RecommenderSchemaName}",
+    input: { DomainName: 0, RecommenderSchemaName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4004,6 +4188,7 @@ export const deleteSegmentDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domains/{DomainName}/segment-definitions/{SegmentDefinitionName}",
+    input: { DomainName: 0, SegmentDefinitionName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4037,6 +4222,7 @@ export const deleteWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /domains/{DomainName}/workflows/{WorkflowId}",
+    input: { DomainName: 0, WorkflowId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4069,6 +4255,7 @@ export const detectProfileObjectType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/detect/object-types",
+    input: { Objects: 0, DomainName: 0 },
     body: true,
   },
   errors: [
@@ -4114,6 +4301,12 @@ export const getAutoMergingPreview: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/identity-resolution-jobs/auto-merging-preview",
+    input: {
+      DomainName: 0,
+      Consolidation: i_Consolidation,
+      ConflictResolution: i_ConflictResolution,
+      MinAllowedConfidenceScoreForMerging: 0,
+    },
     body: true,
   },
   errors: [
@@ -4148,6 +4341,7 @@ export const getCalculatedAttributeDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}/calculated-attributes/{CalculatedAttributeName}",
+    input: { DomainName: 0, CalculatedAttributeName: 0 },
     output: {
       Description: D.secret,
       CreatedAt: D.ts,
@@ -4186,6 +4380,7 @@ export const getCalculatedAttributeForProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}/profile/{ProfileId}/calculated-attributes/{CalculatedAttributeName}",
+    input: { DomainName: 0, ProfileId: 0, CalculatedAttributeName: 0 },
     output: { LastObjectTimestamp: D.ts },
   },
   errors: [
@@ -4219,6 +4414,7 @@ export const getDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}",
+    input: { DomainName: 0 },
     output: { CreatedAt: D.ts, LastUpdatedAt: D.ts },
   },
   errors: [
@@ -4253,6 +4449,7 @@ export const getDomainLayout: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}/layouts/{LayoutDefinitionName}",
+    input: { DomainName: 0, LayoutDefinitionName: 0 },
     output: {
       Description: D.secret,
       Layout: D.secret,
@@ -4291,6 +4488,7 @@ export const getDomainObjectType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}/domain-object-types/{ObjectTypeName}",
+    input: { DomainName: 0, ObjectTypeName: 0 },
     output: { Description: D.secret, CreatedAt: D.ts, LastUpdatedAt: D.ts },
   },
   errors: [
@@ -4324,6 +4522,7 @@ export const getEventStream: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}/event-streams/{EventStreamName}",
+    input: { DomainName: 0, EventStreamName: 0 },
     output: {
       CreatedAt: D.ts,
       StoppedSince: D.ts,
@@ -4361,6 +4560,7 @@ export const getEventTrigger: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}/event-triggers/{EventTriggerName}",
+    input: { DomainName: 0, EventTriggerName: 0 },
     output: { Description: D.secret, CreatedAt: D.ts, LastUpdatedAt: D.ts },
   },
   errors: [
@@ -4397,6 +4597,7 @@ export const getIdentityResolutionJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}/identity-resolution-jobs/{JobId}",
+    input: { DomainName: 0, JobId: 0 },
     output: {
       JobStartTime: D.ts,
       JobEndTime: D.ts,
@@ -4435,6 +4636,7 @@ export const getIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/integrations",
+    input: { DomainName: 0, Uri: 0 },
     output: { CreatedAt: D.ts, LastUpdatedAt: D.ts },
     body: true,
   },
@@ -4509,6 +4711,7 @@ export const getMatches: API.OperationMethod<
     input: {
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
+      DomainName: 0,
     },
     output: { MatchGenerationDate: D.ts },
   },
@@ -4549,6 +4752,7 @@ export const getObjectTypeAttributeStatistics: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/object-types/{ObjectTypeName}/attributes/{AttributeName}/statistics",
+    input: { DomainName: 0, ObjectTypeName: 0, AttributeName: 0 },
     output: { CalculatedAt: D.ts },
   },
   errors: [
@@ -4582,6 +4786,7 @@ export const getProfileHistoryRecord: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}/profiles/{ProfileId}/history-records/{Id}",
+    input: { DomainName: 0, ProfileId: 0, Id: 0 },
     output: { CreatedAt: D.ts, LastUpdatedAt: D.ts, Content: D.secret },
   },
   errors: [
@@ -4615,6 +4820,7 @@ export const getProfileObjectType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}/object-types/{ObjectTypeName}",
+    input: { DomainName: 0, ObjectTypeName: 0 },
     output: { Description: D.secret, CreatedAt: D.ts, LastUpdatedAt: D.ts },
   },
   errors: [
@@ -4650,7 +4856,11 @@ export const getProfileObjectTypeTemplate: API.OperationMethod<
   GetProfileObjectTypeTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /templates/{TemplateId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /templates/{TemplateId}",
+    input: { TemplateId: 0 },
+  },
   errors: [
     AccessDeniedException,
     BadRequestException,
@@ -4682,6 +4892,23 @@ export const getProfileRecommendations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/profiles/{ProfileId}/recommendations",
+    input: {
+      DomainName: 0,
+      ProfileId: 0,
+      RecommenderName: 0,
+      Context: 0,
+      RecommenderFilters: D.list({ Name: 0, Values: 0 }),
+      RecommenderPromotionalFilters: D.list({
+        Name: 0,
+        Values: 0,
+        PromotionName: 0,
+        PercentPromotedItems: 0,
+      }),
+      CandidateIds: 0,
+      MaxResults: 0,
+      MetadataConfig: { MetadataColumns: 0 },
+      DiversityConfig: { Enabled: 0, Values: 0 },
+    },
     output: {
       Recommendations: D.list({
         CatalogItem: {
@@ -4733,7 +4960,11 @@ export const getRecommender: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}/recommenders/{RecommenderName}",
-    input: { TrainingMetricsCount: D.m({ query: "training-metrics-count" }) },
+    input: {
+      DomainName: 0,
+      RecommenderName: 0,
+      TrainingMetricsCount: D.m({ query: "training-metrics-count" }),
+    },
     output: {
       Description: D.secret,
       LastUpdatedAt: D.ts,
@@ -4773,6 +5004,7 @@ export const getRecommenderFilter: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}/recommender-filters/{RecommenderFilterName}",
+    input: { DomainName: 0, RecommenderFilterName: 0 },
     output: {
       RecommenderFilterExpression: D.secret,
       CreatedAt: D.ts,
@@ -4810,6 +5042,7 @@ export const getRecommenderSchema: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}/recommender-schemas/{RecommenderSchemaName}",
+    input: { DomainName: 0, RecommenderSchemaName: 0 },
     output: { CreatedAt: D.ts },
   },
   errors: [
@@ -4843,6 +5076,7 @@ export const getSegmentDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}/segment-definitions/{SegmentDefinitionName}",
+    input: { DomainName: 0, SegmentDefinitionName: 0 },
     output: {
       Description: D.secret,
       SegmentGroups: {
@@ -4887,6 +5121,7 @@ export const getSegmentEstimate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}/segment-estimates/{EstimateId}",
+    input: { DomainName: 0, EstimateId: 0 },
     output: { StatusCode: D.m({ status: true }) },
   },
   errors: [
@@ -4920,6 +5155,7 @@ export const getSegmentMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/segments/{SegmentDefinitionName}/membership",
+    input: { DomainName: 0, SegmentDefinitionName: 0, ProfileIds: 0 },
     output: { Profiles: D.list({ Profile: o_Profile }), LastComputedAt: D.ts },
     body: true,
   },
@@ -4954,6 +5190,7 @@ export const getSegmentSnapshot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}/segments/{SegmentDefinitionName}/snapshots/{SnapshotId}",
+    input: { DomainName: 0, SegmentDefinitionName: 0, SnapshotId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4993,6 +5230,10 @@ export const getSimilarProfiles: API.PaginatedOperationMethod<
     input: {
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
+      DomainName: 0,
+      MatchType: 0,
+      SearchKey: 0,
+      SearchValue: 0,
     },
     body: true,
   },
@@ -5033,6 +5274,7 @@ export const getUploadJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}/upload-jobs/{JobId}",
+    input: { DomainName: 0, JobId: 0 },
     output: { CreatedAt: D.ts, CompletedAt: D.ts },
   },
   errors: [
@@ -5067,6 +5309,7 @@ export const getUploadJobPath: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}/upload-jobs/{JobId}/path",
+    input: { DomainName: 0, JobId: 0 },
     output: { ValidUntil: D.ts },
   },
   errors: [
@@ -5100,6 +5343,7 @@ export const getWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}/workflows/{WorkflowId}",
+    input: { DomainName: 0, WorkflowId: 0 },
     output: { StartDate: D.ts, LastUpdatedAt: D.ts },
   },
   errors: [
@@ -5134,6 +5378,8 @@ export const getWorkflowSteps: API.OperationMethod<
     service: svc,
     http: "GET /domains/{DomainName}/workflows/{WorkflowId}/steps",
     input: {
+      DomainName: 0,
+      WorkflowId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -5175,6 +5421,7 @@ export const listAccountIntegrations: API.OperationMethod<
     service: svc,
     http: "POST /integrations",
     input: {
+      Uri: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
       IncludeHidden: D.m({ query: "include-hidden" }),
@@ -5214,6 +5461,7 @@ export const listCalculatedAttributeDefinitions: API.OperationMethod<
     service: svc,
     http: "GET /domains/{DomainName}/calculated-attributes",
     input: {
+      DomainName: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -5259,6 +5507,8 @@ export const listCalculatedAttributesForProfile: API.OperationMethod<
     input: {
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
+      DomainName: 0,
+      ProfileId: 0,
     },
     output: { Items: D.list({ LastObjectTimestamp: D.ts }) },
   },
@@ -5296,6 +5546,7 @@ export const listDomainLayouts: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /domains/{DomainName}/layouts",
     input: {
+      DomainName: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -5346,6 +5597,7 @@ export const listDomainObjectTypes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /domains/{DomainName}/domain-object-types",
     input: {
+      DomainName: 0,
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
     },
@@ -5433,6 +5685,7 @@ export const listEventStreams: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /domains/{DomainName}/event-streams",
     input: {
+      DomainName: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -5482,6 +5735,7 @@ export const listEventTriggers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /domains/{DomainName}/event-triggers",
     input: {
+      DomainName: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -5526,6 +5780,7 @@ export const listIdentityResolutionJobs: API.OperationMethod<
     service: svc,
     http: "GET /domains/{DomainName}/identity-resolution-jobs",
     input: {
+      DomainName: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -5568,6 +5823,7 @@ export const listIntegrations: API.OperationMethod<
     service: svc,
     http: "GET /domains/{DomainName}/integrations",
     input: {
+      DomainName: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
       IncludeHidden: D.m({ query: "include-hidden" }),
@@ -5609,6 +5865,8 @@ export const listObjectTypeAttributes: API.PaginatedOperationMethod<
     input: {
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
+      DomainName: 0,
+      ObjectTypeName: 0,
     },
     output: { Items: D.list({ LastUpdatedAt: D.ts }) },
   },
@@ -5652,6 +5910,9 @@ export const listObjectTypeAttributeValues: API.OperationMethod<
     input: {
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
+      DomainName: 0,
+      ObjectTypeName: 0,
+      AttributeName: 0,
     },
     output: { Items: D.list({ Value: D.secret, LastUpdatedAt: D.ts }) },
   },
@@ -5686,6 +5947,7 @@ export const listProfileAttributeValues: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /domains/{DomainName}/profile-attributes/{AttributeName}/values",
+    input: { DomainName: 0, AttributeName: 0 },
     output: { StatusCode: D.m({ status: true }) },
   },
   errors: [
@@ -5720,8 +5982,13 @@ export const listProfileHistoryRecords: API.OperationMethod<
     service: svc,
     http: "POST /domains/{DomainName}/profiles/history-records",
     input: {
+      DomainName: 0,
+      ProfileId: 0,
+      ObjectTypeName: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
+      ActionType: 0,
+      PerformedBy: 0,
     },
     output: {
       ProfileHistoryRecords: D.list({ CreatedAt: D.ts, LastUpdatedAt: D.ts }),
@@ -5762,6 +6029,10 @@ export const listProfileObjects: API.OperationMethod<
     input: {
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
+      DomainName: 0,
+      ObjectTypeName: 0,
+      ProfileId: 0,
+      ObjectFilter: { KeyName: 0, Values: 0 },
     },
     output: { Items: D.list({ Object: D.secret }) },
     body: true,
@@ -5798,6 +6069,7 @@ export const listProfileObjectTypes: API.OperationMethod<
     service: svc,
     http: "GET /domains/{DomainName}/object-types",
     input: {
+      DomainName: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -5872,6 +6144,7 @@ export const listRecommenderFilters: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /domains/{DomainName}/recommender-filters",
     input: {
+      DomainName: 0,
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
     },
@@ -5963,6 +6236,7 @@ export const listRecommenders: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /domains/{DomainName}/recommenders",
     input: {
+      DomainName: 0,
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
     },
@@ -6014,6 +6288,7 @@ export const listRecommenderSchemas: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /domains/{DomainName}/recommender-schemas",
     input: {
+      DomainName: 0,
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
     },
@@ -6060,6 +6335,7 @@ export const listRuleBasedMatches: API.PaginatedOperationMethod<
     input: {
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
+      DomainName: 0,
     },
   },
   errors: [
@@ -6101,6 +6377,7 @@ export const listSegmentDefinitions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /domains/{DomainName}/segment-definitions",
     input: {
+      DomainName: 0,
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
     },
@@ -6139,7 +6416,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     BadRequestException,
     InternalServerException,
@@ -6171,6 +6452,7 @@ export const listUploadJobs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /domains/{DomainName}/upload-jobs",
     input: {
+      DomainName: 0,
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
     },
@@ -6214,6 +6496,11 @@ export const listWorkflows: API.OperationMethod<
     service: svc,
     http: "POST /domains/{DomainName}/workflows",
     input: {
+      DomainName: 0,
+      WorkflowType: 0,
+      Status: 0,
+      QueryStartDate: 0,
+      QueryEndDate: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -6278,6 +6565,36 @@ export const mergeProfiles: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /domains/{DomainName}/profiles/objects/merge",
+    input: {
+      DomainName: 0,
+      MainProfileId: 0,
+      ProfileIdsToBeMerged: 0,
+      FieldSourceProfileIds: {
+        AccountNumber: 0,
+        AdditionalInformation: 0,
+        PartyType: 0,
+        BusinessName: 0,
+        FirstName: 0,
+        MiddleName: 0,
+        LastName: 0,
+        BirthDate: 0,
+        Gender: 0,
+        PhoneNumber: 0,
+        MobilePhoneNumber: 0,
+        HomePhoneNumber: 0,
+        BusinessPhoneNumber: 0,
+        EmailAddress: 0,
+        PersonalEmailAddress: 0,
+        BusinessEmailAddress: 0,
+        Address: 0,
+        ShippingAddress: 0,
+        MailingAddress: 0,
+        BillingAddress: 0,
+        Attributes: 0,
+        ProfileType: 0,
+        EngagementPreferences: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -6310,6 +6627,14 @@ export const putDomainObjectType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{DomainName}/domain-object-types/{ObjectTypeName}",
+    input: {
+      DomainName: 0,
+      ObjectTypeName: 0,
+      Description: 0,
+      EncryptionKey: 0,
+      Fields: D.map({ Source: 0, Target: 0, ContentType: 0, FeatureType: 0 }),
+      Tags: 0,
+    },
     output: { Description: D.secret, CreatedAt: D.ts, LastUpdatedAt: D.ts },
     body: true,
   },
@@ -6351,6 +6676,17 @@ export const putIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{DomainName}/integrations",
+    input: {
+      DomainName: 0,
+      Uri: 0,
+      ObjectTypeName: 0,
+      ObjectTypeNames: 0,
+      Tags: 0,
+      FlowDefinition: i_FlowDefinition,
+      RoleArn: 0,
+      EventTriggerNames: 0,
+      Scope: 0,
+    },
     output: { CreatedAt: D.ts, LastUpdatedAt: D.ts },
     body: true,
   },
@@ -6397,6 +6733,7 @@ export const putProfileObject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{DomainName}/profiles/objects",
+    input: { ObjectTypeName: 0, Object: 0, DomainName: 0 },
     body: true,
   },
   errors: [
@@ -6433,6 +6770,21 @@ export const putProfileObjectType: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{DomainName}/object-types/{ObjectTypeName}",
+    input: {
+      DomainName: 0,
+      ObjectTypeName: 0,
+      Description: 0,
+      TemplateId: 0,
+      ExpirationDays: 0,
+      EncryptionKey: 0,
+      AllowProfileCreation: 0,
+      SourceLastUpdatedTimestampFormat: 0,
+      MaxProfileObjectCount: 0,
+      SourcePriority: 0,
+      Fields: D.map(i_ObjectTypeField),
+      Keys: D.map(D.list({ StandardIdentifiers: 0, FieldNames: 0 })),
+      Tags: 0,
+    },
     output: { Description: D.secret, CreatedAt: D.ts, LastUpdatedAt: D.ts },
     body: true,
   },
@@ -6476,6 +6828,11 @@ export const searchProfiles: API.OperationMethod<
     input: {
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
+      DomainName: 0,
+      KeyName: 0,
+      Values: 0,
+      AdditionalSearchKeys: D.list({ KeyName: 0, Values: 0 }),
+      LogicalOperator: 0,
     },
     output: { Items: D.list(o_Profile) },
     body: true,
@@ -6511,6 +6868,7 @@ export const startRecommender: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{DomainName}/recommenders/{RecommenderName}/start",
+    input: { DomainName: 0, RecommenderName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -6543,6 +6901,7 @@ export const startUploadJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{DomainName}/upload-jobs/{JobId}",
+    input: { DomainName: 0, JobId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -6575,6 +6934,7 @@ export const stopRecommender: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{DomainName}/recommenders/{RecommenderName}/stop",
+    input: { DomainName: 0, RecommenderName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -6607,6 +6967,7 @@ export const stopUploadJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{DomainName}/upload-jobs/{JobId}/stop",
+    input: { DomainName: 0, JobId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -6648,7 +7009,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     InternalServerException,
@@ -6677,7 +7043,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     BadRequestException,
@@ -6710,6 +7076,13 @@ export const updateCalculatedAttributeDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{DomainName}/calculated-attributes/{CalculatedAttributeName}",
+    input: {
+      DomainName: 0,
+      CalculatedAttributeName: 0,
+      DisplayName: 0,
+      Description: 0,
+      Conditions: i_Conditions,
+    },
     output: {
       Description: D.secret,
       CreatedAt: D.ts,
@@ -6761,6 +7134,16 @@ export const updateDomain: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{DomainName}",
+    input: {
+      DomainName: 0,
+      DefaultExpirationDays: 0,
+      DefaultEncryptionKey: 0,
+      DeadLetterQueueUrl: 0,
+      Matching: i_MatchingRequest,
+      RuleBasedMatching: i_RuleBasedMatchingRequest,
+      DataStore: i_DataStoreRequest,
+      Tags: 0,
+    },
     output: { CreatedAt: D.ts, LastUpdatedAt: D.ts },
     body: true,
   },
@@ -6796,6 +7179,15 @@ export const updateDomainLayout: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{DomainName}/layouts/{LayoutDefinitionName}",
+    input: {
+      DomainName: 0,
+      LayoutDefinitionName: 0,
+      Description: 0,
+      DisplayName: 0,
+      IsDefault: 0,
+      LayoutType: 0,
+      Layout: 0,
+    },
     output: {
       Description: D.secret,
       Layout: D.secret,
@@ -6835,6 +7227,15 @@ export const updateEventTrigger: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{DomainName}/event-triggers/{EventTriggerName}",
+    input: {
+      DomainName: 0,
+      EventTriggerName: 0,
+      ObjectTypeName: 0,
+      Description: 0,
+      EventTriggerConditions: D.list(i_EventTriggerCondition),
+      SegmentFilter: 0,
+      EventTriggerLimits: i_EventTriggerLimits,
+    },
     output: { Description: D.secret, CreatedAt: D.ts, LastUpdatedAt: D.ts },
     body: true,
   },
@@ -6874,6 +7275,35 @@ export const updateProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /domains/{DomainName}/profiles",
+    input: {
+      DomainName: 0,
+      ProfileId: 0,
+      AdditionalInformation: 0,
+      AccountNumber: 0,
+      PartyType: 0,
+      BusinessName: 0,
+      FirstName: 0,
+      MiddleName: 0,
+      LastName: 0,
+      BirthDate: 0,
+      Gender: 0,
+      PhoneNumber: 0,
+      MobilePhoneNumber: 0,
+      HomePhoneNumber: 0,
+      BusinessPhoneNumber: 0,
+      EmailAddress: 0,
+      PersonalEmailAddress: 0,
+      BusinessEmailAddress: 0,
+      Address: i_UpdateAddress,
+      ShippingAddress: i_UpdateAddress,
+      MailingAddress: i_UpdateAddress,
+      BillingAddress: i_UpdateAddress,
+      Attributes: 0,
+      PartyTypeString: 0,
+      GenderString: 0,
+      ProfileType: 0,
+      EngagementPreferences: i_EngagementPreferences,
+    },
     body: true,
   },
   errors: [
@@ -6907,6 +7337,13 @@ export const updateRecommender: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /domains/{DomainName}/recommenders/{RecommenderName}",
+    input: {
+      DomainName: 0,
+      RecommenderName: 0,
+      Description: 0,
+      RecommenderConfig: i_RecommenderConfig,
+      RecommenderVersionName: 0,
+    },
     body: true,
   },
   errors: [
@@ -6921,6 +7358,204 @@ export const updateRecommender: API.OperationMethod<
   operationName: "UpdateRecommender",
 })) as any;
 
+const i_Address: D.LazyStruct = () => ({
+  Address1: 0,
+  Address2: 0,
+  Address3: 0,
+  Address4: 0,
+  City: 0,
+  County: 0,
+  State: 0,
+  Province: 0,
+  Country: 0,
+  PostalCode: 0,
+});
+const i_ConditionOverrides: D.LazyStruct = () => ({
+  Range: { Start: 0, End: 0, Unit: 0 },
+});
+const i_Conditions: D.LazyStruct = () => ({
+  Range: {
+    Value: 0,
+    Unit: 0,
+    ValueRange: { Start: 0, End: 0 },
+    TimestampSource: 0,
+    TimestampFormat: 0,
+  },
+  ObjectCount: 0,
+  Threshold: { Value: 0, Operator: 0 },
+});
+const i_ConflictResolution: D.LazyStruct = () => ({
+  ConflictResolvingModel: 0,
+  SourceName: 0,
+});
+const i_Consolidation: D.LazyStruct = () => ({ MatchingAttributesList: 0 });
+const i_DataStoreRequest: D.LazyStruct = () => ({ Enabled: 0 });
+const i_EngagementPreferences: D.LazyStruct = () => ({
+  Phone: D.list(i_ContactPreference),
+  Email: D.list(i_ContactPreference),
+});
+const i_EventTriggerCondition: D.LazyStruct = () => ({
+  EventTriggerDimensions: D.list({
+    ObjectAttributes: D.list({
+      Source: 0,
+      FieldName: 0,
+      ComparisonOperator: 0,
+      Values: 0,
+    }),
+  }),
+  LogicalOperator: 0,
+});
+const i_EventTriggerLimits: D.LazyStruct = () => ({
+  EventExpiration: 0,
+  Periods: D.list({
+    Unit: 0,
+    Value: 0,
+    MaxInvocationsPerProfile: 0,
+    Unlimited: 0,
+  }),
+});
+const i_FlowDefinition: D.LazyStruct = () => ({
+  Description: 0,
+  FlowName: 0,
+  KmsArn: 0,
+  SourceFlowConfig: {
+    ConnectorProfileName: 0,
+    ConnectorType: 0,
+    IncrementalPullConfig: { DatetimeTypeFieldName: 0 },
+    SourceConnectorProperties: {
+      Marketo: { Object: 0 },
+      S3: { BucketName: 0, BucketPrefix: 0 },
+      Salesforce: {
+        Object: 0,
+        EnableDynamicFieldUpdate: 0,
+        IncludeDeletedRecords: 0,
+      },
+      ServiceNow: { Object: 0 },
+      Zendesk: { Object: 0 },
+    },
+  },
+  Tasks: D.list({
+    ConnectorOperator: {
+      Marketo: 0,
+      S3: 0,
+      Salesforce: 0,
+      ServiceNow: 0,
+      Zendesk: 0,
+    },
+    DestinationField: 0,
+    SourceFields: 0,
+    TaskProperties: 0,
+    TaskType: 0,
+  }),
+  TriggerConfig: {
+    TriggerType: 0,
+    TriggerProperties: {
+      Scheduled: {
+        ScheduleExpression: 0,
+        DataPullMode: 0,
+        ScheduleStartTime: 0,
+        ScheduleEndTime: 0,
+        Timezone: 0,
+        ScheduleOffset: 0,
+        FirstExecutionFrom: 0,
+      },
+    },
+  },
+});
+const i_Group: D.LazyStruct = () => ({
+  Dimensions: D.list({
+    ProfileAttributes: {
+      AccountNumber: i_ProfileDimension,
+      AdditionalInformation: { DimensionType: 0, Values: 0 },
+      FirstName: i_ProfileDimension,
+      LastName: i_ProfileDimension,
+      MiddleName: i_ProfileDimension,
+      GenderString: i_ProfileDimension,
+      PartyTypeString: i_ProfileDimension,
+      BirthDate: { DimensionType: 0, Values: 0 },
+      PhoneNumber: i_ProfileDimension,
+      BusinessName: i_ProfileDimension,
+      BusinessPhoneNumber: i_ProfileDimension,
+      HomePhoneNumber: i_ProfileDimension,
+      MobilePhoneNumber: i_ProfileDimension,
+      EmailAddress: i_ProfileDimension,
+      PersonalEmailAddress: i_ProfileDimension,
+      BusinessEmailAddress: i_ProfileDimension,
+      Address: i_AddressDimension,
+      ShippingAddress: i_AddressDimension,
+      MailingAddress: i_AddressDimension,
+      BillingAddress: i_AddressDimension,
+      Attributes: D.map({ DimensionType: 0, Values: 0 }),
+      ProfileType: { DimensionType: 0, Values: 0 },
+    },
+    CalculatedAttributes: D.map({
+      DimensionType: 0,
+      Values: 0,
+      ConditionOverrides: i_ConditionOverrides,
+    }),
+  }),
+  SourceSegments: D.list({ SegmentDefinitionName: 0 }),
+  SourceType: 0,
+  Type: 0,
+});
+const i_MatchingRequest: D.LazyStruct = () => ({
+  Enabled: 0,
+  JobSchedule: { DayOfTheWeek: 0, Time: 0 },
+  AutoMerging: {
+    Enabled: 0,
+    Consolidation: i_Consolidation,
+    ConflictResolution: i_ConflictResolution,
+    MinAllowedConfidenceScoreForMerging: 0,
+  },
+  ExportingConfig: i_ExportingConfig,
+});
+const i_ObjectTypeField: D.LazyStruct = () => ({
+  Source: 0,
+  Target: 0,
+  ContentType: 0,
+});
+const i_RecommenderConfig: D.LazyStruct = () => ({
+  EventsConfig: {
+    EventParametersList: D.list({
+      EventType: 0,
+      EventValueThreshold: 0,
+      EventWeight: 0,
+    }),
+  },
+  TrainingFrequency: 0,
+  InferenceConfig: { MinProvisionedTPS: 0 },
+  IncludedColumns: 0,
+  ExcludedColumns: 0,
+  DiversityConfig: {
+    DiversityColumns: D.list({ Name: 0, CapType: 0, Target: 0 }),
+  },
+});
+const i_RuleBasedMatchingRequest: D.LazyStruct = () => ({
+  Enabled: 0,
+  MatchingRules: D.list({ Rule: 0 }),
+  MaxAllowedRuleLevelForMerging: 0,
+  MaxAllowedRuleLevelForMatching: 0,
+  AttributeTypesSelector: {
+    AttributeMatchingModel: 0,
+    Address: 0,
+    PhoneNumber: 0,
+    EmailAddress: 0,
+  },
+  ConflictResolution: i_ConflictResolution,
+  ExportingConfig: i_ExportingConfig,
+});
+const i_UpdateAddress: D.LazyStruct = () => ({
+  Address1: 0,
+  Address2: 0,
+  Address3: 0,
+  Address4: 0,
+  City: 0,
+  County: 0,
+  State: 0,
+  Province: 0,
+  Country: 0,
+  PostalCode: 0,
+});
 const o_ListIntegrationItem: D.LazyStruct = () => ({
   CreatedAt: D.ts,
   LastUpdatedAt: D.ts,
@@ -6949,4 +7584,25 @@ const o_Profile: D.LazyStruct = () => ({
 const o_RecommenderUpdate: D.LazyStruct = () => ({
   CreatedAt: D.ts,
   LastUpdatedAt: D.ts,
+});
+const i_AddressDimension: D.LazyStruct = () => ({
+  City: i_ProfileDimension,
+  Country: i_ProfileDimension,
+  County: i_ProfileDimension,
+  PostalCode: i_ProfileDimension,
+  Province: i_ProfileDimension,
+  State: i_ProfileDimension,
+});
+const i_ContactPreference: D.LazyStruct = () => ({
+  KeyName: 0,
+  KeyValue: 0,
+  ProfileId: 0,
+  ContactType: 0,
+});
+const i_ExportingConfig: D.LazyStruct = () => ({
+  S3Exporting: { S3BucketName: 0, S3KeyName: 0 },
+});
+const i_ProfileDimension: D.LazyStruct = () => ({
+  DimensionType: 0,
+  Values: 0,
 });

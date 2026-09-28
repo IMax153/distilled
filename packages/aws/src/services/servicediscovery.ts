@@ -731,7 +731,12 @@ export const createHttpNamespace: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { CreatorRequestId: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      CreatorRequestId: D.m({ idempotency: true }),
+      Description: 0,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     DuplicateRequest,
@@ -770,7 +775,14 @@ export const createPrivateDnsNamespace: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { CreatorRequestId: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      CreatorRequestId: D.m({ idempotency: true }),
+      Description: 0,
+      Vpc: 0,
+      Tags: D.list(i_Tag),
+      Properties: { DnsProperties: { SOA: i_SOA } },
+    },
   },
   errors: [
     DuplicateRequest,
@@ -810,7 +822,13 @@ export const createPublicDnsNamespace: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { CreatorRequestId: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      CreatorRequestId: D.m({ idempotency: true }),
+      Description: 0,
+      Tags: D.list(i_Tag),
+      Properties: { DnsProperties: { SOA: i_SOA } },
+    },
   },
   errors: [
     DuplicateRequest,
@@ -864,7 +882,21 @@ export const createService: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { CreatorRequestId: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      NamespaceId: 0,
+      CreatorRequestId: D.m({ idempotency: true }),
+      Description: 0,
+      DnsConfig: {
+        NamespaceId: 0,
+        RoutingPolicy: 0,
+        DnsRecords: D.list(i_DnsRecord),
+      },
+      HealthCheckConfig: i_HealthCheckConfig,
+      HealthCheckCustomConfig: { FailureThreshold: 0 },
+      Tags: D.list(i_Tag),
+      Type: 0,
+    },
     output: { Service: o_Service },
   },
   errors: [
@@ -895,7 +927,7 @@ export const deleteNamespace: API.OperationMethod<
   DeleteNamespaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0 } },
   errors: [DuplicateRequest, InvalidInput, NamespaceNotFound, ResourceInUse],
   protocol: AwsProtocol,
   retry: Retry,
@@ -917,7 +949,7 @@ export const deleteService: API.OperationMethod<
   DeleteServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0 } },
   errors: [InvalidInput, ResourceInUse, ServiceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -937,7 +969,7 @@ export const deleteServiceAttributes: API.OperationMethod<
   DeleteServiceAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServiceId: 0, Attributes: 0 } },
   errors: [InvalidInput, ServiceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -961,7 +993,7 @@ export const deregisterInstance: API.OperationMethod<
   DeregisterInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServiceId: 0, InstanceId: 0 } },
   errors: [
     DuplicateRequest,
     InstanceNotFound,
@@ -993,7 +1025,18 @@ export const discoverInstances: API.OperationMethod<
   DiscoverInstancesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      NamespaceName: 0,
+      ServiceName: 0,
+      MaxResults: 0,
+      QueryParameters: 0,
+      OptionalParameters: 0,
+      HealthStatus: 0,
+      OwnerAccount: 0,
+    },
+  },
   errors: [
     InvalidInput,
     NamespaceNotFound,
@@ -1021,7 +1064,10 @@ export const discoverInstancesRevision: API.OperationMethod<
   DiscoverInstancesRevisionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NamespaceName: 0, ServiceName: 0, OwnerAccount: 0 },
+  },
   errors: [
     InvalidInput,
     NamespaceNotFound,
@@ -1048,7 +1094,7 @@ export const getInstance: API.OperationMethod<
   GetInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServiceId: 0, InstanceId: 0 } },
   errors: [InstanceNotFound, InvalidInput, ServiceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1075,7 +1121,10 @@ export const getInstancesHealthStatus: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServiceId: 0, Instances: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [InstanceNotFound, InvalidInput, ServiceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1097,7 +1146,11 @@ export const getNamespace: API.OperationMethod<
   GetNamespaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Namespace: { CreateDate: D.ts } } },
+  descriptor: {
+    service: svc,
+    input: { Id: 0 },
+    output: { Namespace: { CreateDate: D.ts } },
+  },
   errors: [InvalidInput, NamespaceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1119,6 +1172,7 @@ export const getOperation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { OperationId: 0, OwnerAccount: 0 },
     output: { Operation: { CreateDate: D.ts, UpdateDate: D.ts } },
   },
   errors: [InvalidInput, OperationNotFound],
@@ -1137,7 +1191,11 @@ export const getService: API.OperationMethod<
   GetServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Service: o_Service } },
+  descriptor: {
+    service: svc,
+    input: { Id: 0 },
+    output: { Service: o_Service },
+  },
   errors: [InvalidInput, ServiceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1157,7 +1215,7 @@ export const getServiceAttributes: API.OperationMethod<
   GetServiceAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServiceId: 0 } },
   errors: [InvalidInput, ServiceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1176,7 +1234,10 @@ export const listInstances: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServiceId: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [InvalidInput, ServiceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1201,6 +1262,11 @@ export const listNamespaces: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      Filters: D.list({ Name: 0, Values: 0, Condition: 0 }),
+    },
     output: { Namespaces: D.list({ CreateDate: D.ts }) },
   },
   errors: [InvalidInput],
@@ -1225,7 +1291,14 @@ export const listOperations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      Filters: D.list({ Name: 0, Values: 0, Condition: 0 }),
+    },
+  },
   errors: [InvalidInput],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1251,6 +1324,11 @@ export const listServices: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      Filters: D.list({ Name: 0, Values: 0, Condition: 0 }),
+    },
     output: { Services: D.list({ CreateDate: D.ts }) },
   },
   errors: [InvalidInput],
@@ -1277,7 +1355,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [InvalidInput, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1334,7 +1412,12 @@ export const registerInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { CreatorRequestId: D.m({ idempotency: true }) },
+    input: {
+      ServiceId: 0,
+      InstanceId: 0,
+      CreatorRequestId: D.m({ idempotency: true }),
+      Attributes: 0,
+    },
   },
   errors: [
     DuplicateRequest,
@@ -1362,7 +1445,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [InvalidInput, ResourceNotFoundException, TooManyTagsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1382,7 +1465,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [InvalidInput, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1407,7 +1490,11 @@ export const updateHttpNamespace: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { UpdaterRequestId: D.m({ idempotency: true }) },
+    input: {
+      Id: 0,
+      UpdaterRequestId: D.m({ idempotency: true }),
+      Namespace: { Description: 0 },
+    },
   },
   errors: [DuplicateRequest, InvalidInput, NamespaceNotFound, ResourceInUse],
   protocol: AwsProtocol,
@@ -1438,7 +1525,10 @@ export const updateInstanceCustomHealthStatus: API.OperationMethod<
   UpdateInstanceCustomHealthStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ServiceId: 0, InstanceId: 0, Status: 0 },
+  },
   errors: [
     CustomHealthNotFound,
     InstanceNotFound,
@@ -1468,7 +1558,14 @@ export const updatePrivateDnsNamespace: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { UpdaterRequestId: D.m({ idempotency: true }) },
+    input: {
+      Id: 0,
+      UpdaterRequestId: D.m({ idempotency: true }),
+      Namespace: {
+        Description: 0,
+        Properties: { DnsProperties: { SOA: i_SOAChange } },
+      },
+    },
   },
   errors: [DuplicateRequest, InvalidInput, NamespaceNotFound, ResourceInUse],
   protocol: AwsProtocol,
@@ -1493,7 +1590,14 @@ export const updatePublicDnsNamespace: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { UpdaterRequestId: D.m({ idempotency: true }) },
+    input: {
+      Id: 0,
+      UpdaterRequestId: D.m({ idempotency: true }),
+      Namespace: {
+        Description: 0,
+        Properties: { DnsProperties: { SOA: i_SOAChange } },
+      },
+    },
   },
   errors: [DuplicateRequest, InvalidInput, NamespaceNotFound, ResourceInUse],
   protocol: AwsProtocol,
@@ -1543,7 +1647,17 @@ export const updateService: API.OperationMethod<
   UpdateServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Id: 0,
+      Service: {
+        Description: 0,
+        DnsConfig: { DnsRecords: D.list(i_DnsRecord) },
+        HealthCheckConfig: i_HealthCheckConfig,
+      },
+    },
+  },
   errors: [DuplicateRequest, InvalidInput, ServiceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1564,7 +1678,7 @@ export const updateServiceAttributes: API.OperationMethod<
   UpdateServiceAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ServiceId: 0, Attributes: 0 } },
   errors: [
     InvalidInput,
     ServiceAttributesLimitExceededException,
@@ -1575,4 +1689,13 @@ export const updateServiceAttributes: API.OperationMethod<
   operationName: "UpdateServiceAttributes",
 })) as any;
 
+const i_DnsRecord: D.LazyStruct = () => ({ Type: 0, TTL: 0 });
+const i_HealthCheckConfig: D.LazyStruct = () => ({
+  Type: 0,
+  ResourcePath: 0,
+  FailureThreshold: 0,
+});
+const i_SOA: D.LazyStruct = () => ({ TTL: 0 });
+const i_SOAChange: D.LazyStruct = () => ({ TTL: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Service: D.LazyStruct = () => ({ CreateDate: D.ts });

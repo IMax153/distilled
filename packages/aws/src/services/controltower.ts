@@ -635,7 +635,12 @@ export const createLandingZone: API.OperationMethod<
   CreateLandingZoneError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /create-landingzone", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /create-landingzone",
+    input: { version: 0, remediationTypes: 0, tags: 0, manifest: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -669,7 +674,12 @@ export const deleteLandingZone: API.OperationMethod<
   DeleteLandingZoneError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /delete-landingzone", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /delete-landingzone",
+    input: { landingZoneIdentifier: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -703,7 +713,12 @@ export const disableBaseline: API.OperationMethod<
   DisableBaselineError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /disable-baseline", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /disable-baseline",
+    input: { enabledBaselineIdentifier: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -737,7 +752,16 @@ export const disableControl: API.OperationMethod<
   DisableControlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /disable-control", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /disable-control",
+    input: {
+      controlIdentifier: 0,
+      targetIdentifier: 0,
+      enabledControlIdentifier: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -771,7 +795,18 @@ export const enableBaseline: API.OperationMethod<
   EnableBaselineError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /enable-baseline", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /enable-baseline",
+    input: {
+      baselineVersion: 0,
+      parameters: D.list(i_EnabledBaselineParameter),
+      baselineIdentifier: 0,
+      targetIdentifier: 0,
+      tags: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -805,7 +840,17 @@ export const enableControl: API.OperationMethod<
   EnableControlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /enable-control", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /enable-control",
+    input: {
+      controlIdentifier: 0,
+      targetIdentifier: 0,
+      tags: 0,
+      parameters: D.list(i_EnabledControlParameter),
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -837,7 +882,12 @@ export const getBaseline: API.OperationMethod<
   GetBaselineError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /get-baseline", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /get-baseline",
+    input: { baselineIdentifier: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -871,6 +921,7 @@ export const getBaselineOperation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /get-baseline-operation",
+    input: { operationIdentifier: 0 },
     output: { baselineOperation: { startTime: D.ts, endTime: D.ts } },
     body: true,
   },
@@ -906,6 +957,7 @@ export const getControlOperation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /get-control-operation",
+    input: { operationIdentifier: 0 },
     output: { controlOperation: { startTime: D.ts, endTime: D.ts } },
     body: true,
   },
@@ -938,7 +990,12 @@ export const getEnabledBaseline: API.OperationMethod<
   GetEnabledBaselineError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /get-enabled-baseline", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /get-enabled-baseline",
+    input: { enabledBaselineIdentifier: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -968,7 +1025,12 @@ export const getEnabledControl: API.OperationMethod<
   GetEnabledControlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /get-enabled-control", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /get-enabled-control",
+    input: { enabledControlIdentifier: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -998,7 +1060,12 @@ export const getLandingZone: API.OperationMethod<
   GetLandingZoneError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /get-landingzone", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /get-landingzone",
+    input: { landingZoneIdentifier: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1032,6 +1099,7 @@ export const getLandingZoneOperation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /get-landingzone-operation",
+    input: { operationIdentifier: 0 },
     output: { operationDetails: { startTime: D.ts, endTime: D.ts } },
     body: true,
   },
@@ -1065,7 +1133,12 @@ export const listBaselines: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   BaselineSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /list-baselines", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /list-baselines",
+    input: { nextToken: 0, maxResults: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1103,6 +1176,17 @@ export const listControlOperations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-control-operations",
+    input: {
+      filter: {
+        controlIdentifiers: 0,
+        targetIdentifiers: 0,
+        enabledControlIdentifiers: 0,
+        statuses: 0,
+        controlOperationTypes: 0,
+      },
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { controlOperations: D.list({ startTime: D.ts, endTime: D.ts }) },
     body: true,
   },
@@ -1143,6 +1227,18 @@ export const listEnabledBaselines: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-enabled-baselines",
+    input: {
+      filter: {
+        targetIdentifiers: 0,
+        baselineIdentifiers: 0,
+        parentIdentifiers: 0,
+        statuses: 0,
+        inheritanceDriftStatuses: 0,
+      },
+      nextToken: 0,
+      maxResults: 0,
+      includeChildren: 0,
+    },
     body: true,
   },
   errors: [
@@ -1180,7 +1276,25 @@ export const listEnabledControls: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   EnabledControlSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /list-enabled-controls", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /list-enabled-controls",
+    input: {
+      targetIdentifier: 0,
+      nextToken: 0,
+      maxResults: 0,
+      filter: {
+        controlIdentifiers: 0,
+        statuses: 0,
+        driftStatuses: 0,
+        parentIdentifiers: 0,
+        inheritanceDriftStatuses: 0,
+        resourceDriftStatuses: 0,
+      },
+      includeChildren: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1219,6 +1333,7 @@ export const listLandingZoneOperations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-landingzone-operations",
+    input: { filter: { types: 0, statuses: 0 }, nextToken: 0, maxResults: 0 },
     body: true,
   },
   errors: [
@@ -1258,7 +1373,12 @@ export const listLandingZones: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   LandingZoneSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /list-landingzones", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /list-landingzones",
+    input: { nextToken: 0, maxResults: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1292,7 +1412,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1326,6 +1450,7 @@ export const resetEnabledBaseline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /reset-enabled-baseline",
+    input: { enabledBaselineIdentifier: 0 },
     body: true,
   },
   errors: [
@@ -1361,7 +1486,12 @@ export const resetEnabledControl: API.OperationMethod<
   ResetEnabledControlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /reset-enabled-control", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /reset-enabled-control",
+    input: { enabledControlIdentifier: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1394,7 +1524,12 @@ export const resetLandingZone: API.OperationMethod<
   ResetLandingZoneError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /reset-landingzone", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /reset-landingzone",
+    input: { landingZoneIdentifier: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1424,7 +1559,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1454,7 +1594,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -1489,6 +1629,11 @@ export const updateEnabledBaseline: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /update-enabled-baseline",
+    input: {
+      baselineVersion: 0,
+      parameters: D.list(i_EnabledBaselineParameter),
+      enabledBaselineIdentifier: 0,
+    },
     body: true,
   },
   errors: [
@@ -1533,6 +1678,10 @@ export const updateEnabledControl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /update-enabled-control",
+    input: {
+      parameters: D.list(i_EnabledControlParameter),
+      enabledControlIdentifier: 0,
+    },
     body: true,
   },
   errors: [
@@ -1567,7 +1716,17 @@ export const updateLandingZone: API.OperationMethod<
   UpdateLandingZoneError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /update-landingzone", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /update-landingzone",
+    input: {
+      version: 0,
+      remediationTypes: 0,
+      landingZoneIdentifier: 0,
+      manifest: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1581,3 +1740,6 @@ export const updateLandingZone: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateLandingZone",
 })) as any;
+
+const i_EnabledBaselineParameter: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_EnabledControlParameter: D.LazyStruct = () => ({ key: 0, value: 0 });

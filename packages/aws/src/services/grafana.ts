@@ -595,7 +595,11 @@ export const associateLicense: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/licenses/{licenseType}",
-    input: { grafanaToken: D.m({ header: "Grafana-Token" }) },
+    input: {
+      workspaceId: 0,
+      licenseType: 0,
+      grafanaToken: D.m({ header: "Grafana-Token" }),
+    },
     output: { workspace: o_WorkspaceDescription },
   },
   errors: [
@@ -632,7 +636,27 @@ export const createWorkspace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      accountAccessType: 0,
+      clientToken: D.m({ idempotency: true }),
+      organizationRoleName: 0,
+      permissionType: 0,
+      stackSetName: 0,
+      workspaceDataSources: 0,
+      workspaceDescription: 0,
+      workspaceName: 0,
+      workspaceNotificationDestinations: 0,
+      workspaceOrganizationalUnits: 0,
+      workspaceRoleArn: 0,
+      authenticationProviders: 0,
+      tags: 0,
+      vpcConfiguration: i_VpcConfiguration,
+      configuration: 0,
+      networkAccessControl: i_NetworkAccessConfiguration,
+      grafanaVersion: 0,
+      ipAddressType: 0,
+      kmsKeyId: 0,
+    },
     output: { workspace: o_WorkspaceDescription },
     body: true,
   },
@@ -672,6 +696,7 @@ export const createWorkspaceApiKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/apikeys",
+    input: { keyName: 0, keyRole: 0, secondsToLive: 0, workspaceId: 0 },
     output: { key: D.secret },
     body: true,
   },
@@ -716,6 +741,7 @@ export const createWorkspaceServiceAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/serviceaccounts",
+    input: { name: 0, grafanaRole: 0, workspaceId: 0 },
     body: true,
   },
   errors: [
@@ -759,6 +785,7 @@ export const createWorkspaceServiceAccountToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/serviceaccounts/{serviceAccountId}/tokens",
+    input: { name: 0, secondsToLive: 0, serviceAccountId: 0, workspaceId: 0 },
     output: { serviceAccountToken: { key: D.secret } },
     body: true,
   },
@@ -796,6 +823,7 @@ export const deleteWorkspace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{workspaceId}",
+    input: { workspaceId: 0 },
     output: { workspace: o_WorkspaceDescription },
   },
   errors: [
@@ -833,6 +861,7 @@ export const deleteWorkspaceApiKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{workspaceId}/apikeys/{keyName}",
+    input: { keyName: 0, workspaceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -871,6 +900,7 @@ export const deleteWorkspaceServiceAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{workspaceId}/serviceaccounts/{serviceAccountId}",
+    input: { serviceAccountId: 0, workspaceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -909,6 +939,7 @@ export const deleteWorkspaceServiceAccountToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{workspaceId}/serviceaccounts/{serviceAccountId}/tokens/{tokenId}",
+    input: { tokenId: 0, serviceAccountId: 0, workspaceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -942,6 +973,7 @@ export const describeWorkspace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceId}",
+    input: { workspaceId: 0 },
     output: { workspace: o_WorkspaceDescription },
   },
   errors: [
@@ -976,6 +1008,7 @@ export const describeWorkspaceAuthentication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceId}/authentication",
+    input: { workspaceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1008,6 +1041,7 @@ export const describeWorkspaceConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /workspaces/{workspaceId}/configuration",
+    input: { workspaceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1039,6 +1073,7 @@ export const disassociateLicense: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /workspaces/{workspaceId}/licenses/{licenseType}",
+    input: { workspaceId: 0, licenseType: 0 },
     output: { workspace: o_WorkspaceDescription },
   },
   errors: [
@@ -1079,6 +1114,7 @@ export const listPermissions: API.PaginatedOperationMethod<
       userType: D.m({ query: "userType" }),
       userId: D.m({ query: "userId" }),
       groupId: D.m({ query: "groupId" }),
+      workspaceId: 0,
     },
   },
   errors: [
@@ -1115,7 +1151,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1241,6 +1281,7 @@ export const listWorkspaceServiceAccounts: API.PaginatedOperationMethod<
     input: {
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      workspaceId: 0,
     },
   },
   errors: [
@@ -1290,6 +1331,8 @@ export const listWorkspaceServiceAccountTokens: API.PaginatedOperationMethod<
     input: {
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
+      serviceAccountId: 0,
+      workspaceId: 0,
     },
     output: {
       serviceAccountTokens: D.list({
@@ -1336,7 +1379,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1368,7 +1416,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1401,6 +1449,14 @@ export const updatePermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /workspaces/{workspaceId}/permissions",
+    input: {
+      updateInstructionBatch: D.list({
+        action: 0,
+        role: 0,
+        users: D.list({ id: 0, type: 0 }),
+      }),
+      workspaceId: 0,
+    },
     body: true,
   },
   errors: [
@@ -1439,6 +1495,24 @@ export const updateWorkspace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workspaces/{workspaceId}",
+    input: {
+      accountAccessType: 0,
+      organizationRoleName: 0,
+      permissionType: 0,
+      stackSetName: 0,
+      workspaceDataSources: 0,
+      workspaceDescription: 0,
+      workspaceId: 0,
+      workspaceName: 0,
+      workspaceNotificationDestinations: 0,
+      workspaceOrganizationalUnits: 0,
+      workspaceRoleArn: 0,
+      vpcConfiguration: i_VpcConfiguration,
+      removeVpcConfiguration: 0,
+      networkAccessControl: i_NetworkAccessConfiguration,
+      removeNetworkAccessConfiguration: 0,
+      ipAddressType: 0,
+    },
     output: { workspace: o_WorkspaceDescription },
     body: true,
   },
@@ -1477,6 +1551,24 @@ export const updateWorkspaceAuthentication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /workspaces/{workspaceId}/authentication",
+    input: {
+      workspaceId: 0,
+      authenticationProviders: 0,
+      samlConfiguration: {
+        idpMetadata: { url: 0, xml: 0 },
+        assertionAttributes: {
+          name: 0,
+          login: 0,
+          email: 0,
+          groups: 0,
+          role: 0,
+          org: 0,
+        },
+        roleValues: { editor: 0, admin: 0 },
+        allowedOrganizations: 0,
+        loginValidityDuration: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -1512,6 +1604,7 @@ export const updateWorkspaceConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /workspaces/{workspaceId}/configuration",
+    input: { configuration: 0, workspaceId: 0, grafanaVersion: 0 },
     body: true,
   },
   errors: [
@@ -1527,6 +1620,14 @@ export const updateWorkspaceConfiguration: API.OperationMethod<
   operationName: "UpdateWorkspaceConfiguration",
 })) as any;
 
+const i_NetworkAccessConfiguration: D.LazyStruct = () => ({
+  prefixListIds: 0,
+  vpceIds: 0,
+});
+const i_VpcConfiguration: D.LazyStruct = () => ({
+  securityGroupIds: 0,
+  subnetIds: 0,
+});
 const o_WorkspaceDescription: D.LazyStruct = () => ({
   created: D.ts,
   description: D.secret,

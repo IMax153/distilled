@@ -440,7 +440,21 @@ export const createSchedule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /schedules/{Name}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      GroupName: 0,
+      ScheduleExpression: 0,
+      StartDate: 0,
+      EndDate: 0,
+      Description: 0,
+      ScheduleExpressionTimezone: 0,
+      State: 0,
+      KmsKeyArn: 0,
+      Target: i_Target,
+      FlexibleTimeWindow: i_FlexibleTimeWindow,
+      ClientToken: D.m({ idempotency: true }),
+      ActionAfterCompletion: 0,
+    },
     body: true,
   },
   errors: [
@@ -476,7 +490,11 @@ export const createScheduleGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /schedule-groups/{Name}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -511,6 +529,7 @@ export const deleteSchedule: API.OperationMethod<
     service: svc,
     http: "DELETE /schedules/{Name}",
     input: {
+      Name: 0,
       GroupName: D.m({ query: "groupName" }),
       ClientToken: D.m({ query: "clientToken", idempotency: true }),
     },
@@ -551,7 +570,10 @@ export const deleteScheduleGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /schedule-groups/{Name}",
-    input: { ClientToken: D.m({ query: "clientToken", idempotency: true }) },
+    input: {
+      Name: 0,
+      ClientToken: D.m({ query: "clientToken", idempotency: true }),
+    },
   },
   errors: [
     ConflictException,
@@ -583,7 +605,7 @@ export const getSchedule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /schedules/{Name}",
-    input: { GroupName: D.m({ query: "groupName" }) },
+    input: { Name: 0, GroupName: D.m({ query: "groupName" }) },
     output: {
       StartDate: D.ts,
       EndDate: D.ts,
@@ -620,6 +642,7 @@ export const getScheduleGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /schedule-groups/{Name}",
+    input: { Name: 0 },
     output: { CreationDate: D.ts, LastModificationDate: D.ts },
   },
   errors: [
@@ -737,7 +760,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -765,7 +792,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -797,7 +829,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "TagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "TagKeys" }) },
   },
   errors: [
     ConflictException,
@@ -836,7 +868,21 @@ export const updateSchedule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /schedules/{Name}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      GroupName: 0,
+      ScheduleExpression: 0,
+      StartDate: 0,
+      EndDate: 0,
+      Description: 0,
+      ScheduleExpressionTimezone: 0,
+      State: 0,
+      KmsKeyArn: 0,
+      Target: i_Target,
+      FlexibleTimeWindow: i_FlexibleTimeWindow,
+      ClientToken: D.m({ idempotency: true }),
+      ActionAfterCompletion: 0,
+    },
     body: true,
   },
   errors: [
@@ -851,3 +897,44 @@ export const updateSchedule: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateSchedule",
 })) as any;
+
+const i_FlexibleTimeWindow: D.LazyStruct = () => ({
+  Mode: 0,
+  MaximumWindowInMinutes: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_Target: D.LazyStruct = () => ({
+  Arn: 0,
+  RoleArn: 0,
+  DeadLetterConfig: { Arn: 0 },
+  RetryPolicy: { MaximumEventAgeInSeconds: 0, MaximumRetryAttempts: 0 },
+  Input: 0,
+  EcsParameters: {
+    TaskDefinitionArn: 0,
+    TaskCount: 0,
+    LaunchType: 0,
+    NetworkConfiguration: {
+      awsvpcConfiguration: { Subnets: 0, SecurityGroups: 0, AssignPublicIp: 0 },
+    },
+    PlatformVersion: 0,
+    Group: 0,
+    CapacityProviderStrategy: D.list({
+      capacityProvider: 0,
+      weight: 0,
+      base: 0,
+    }),
+    EnableECSManagedTags: 0,
+    EnableExecuteCommand: 0,
+    PlacementConstraints: D.list({ type: 0, expression: 0 }),
+    PlacementStrategy: D.list({ type: 0, field: 0 }),
+    PropagateTags: 0,
+    ReferenceId: 0,
+    Tags: 0,
+  },
+  EventBridgeParameters: { DetailType: 0, Source: 0 },
+  KinesisParameters: { PartitionKey: 0 },
+  SageMakerPipelineParameters: {
+    PipelineParameterList: D.list({ Name: 0, Value: 0 }),
+  },
+  SqsParameters: { MessageGroupId: 0 },
+});

@@ -2184,7 +2184,13 @@ export const associateFaces: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      CollectionId: 0,
+      UserId: 0,
+      FaceIds: 0,
+      UserMatchThreshold: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2276,7 +2282,15 @@ export const compareFaces: API.OperationMethod<
   CompareFacesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SourceImage: i_Image,
+      TargetImage: i_Image,
+      SimilarityThreshold: 0,
+      QualityFilter: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ImageTooLargeException,
@@ -2337,7 +2351,18 @@ export const copyProjectVersion: API.OperationMethod<
   CopyProjectVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SourceProjectArn: 0,
+      SourceProjectVersionArn: 0,
+      DestinationProjectArn: 0,
+      VersionName: 0,
+      OutputConfig: i_OutputConfig,
+      Tags: 0,
+      KmsKeyId: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -2388,7 +2413,7 @@ export const createCollection: API.OperationMethod<
   CreateCollectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CollectionId: 0, Tags: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -2446,7 +2471,18 @@ export const createDataset: API.OperationMethod<
   CreateDatasetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DatasetSource: {
+        GroundTruthManifest: i_GroundTruthManifest,
+        DatasetArn: 0,
+      },
+      DatasetType: 0,
+      ProjectArn: 0,
+      Tags: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -2490,7 +2526,21 @@ export const createFaceLivenessSession: API.OperationMethod<
   CreateFaceLivenessSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      KmsKeyId: 0,
+      Settings: {
+        OutputConfig: { S3Bucket: 0, S3KeyPrefix: 0 },
+        AuditImagesLimit: 0,
+        ChallengePreferences: D.list({
+          Type: 0,
+          Versions: { Minimum: 0, Maximum: 0 },
+        }),
+      },
+      ClientRequestToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -2526,7 +2576,10 @@ export const createProject: API.OperationMethod<
   CreateProjectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ProjectName: 0, Feature: 0, AutoUpdate: 0, Tags: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -2589,7 +2642,20 @@ export const createProjectVersion: API.OperationMethod<
   CreateProjectVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProjectArn: 0,
+      VersionName: 0,
+      OutputConfig: i_OutputConfig,
+      TrainingData: { Assets: D.list(i_Asset) },
+      TestingData: { Assets: D.list(i_Asset), AutoCreate: 0 },
+      Tags: 0,
+      KmsKeyId: 0,
+      VersionDescription: 0,
+      FeatureConfig: { ContentModeration: { ConfidenceThreshold: 0 } },
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -2653,7 +2719,27 @@ export const createStreamProcessor: API.OperationMethod<
   CreateStreamProcessorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Input: { KinesisVideoStream: { Arn: 0 } },
+      Output: {
+        KinesisDataStream: { Arn: 0 },
+        S3Destination: { Bucket: 0, KeyPrefix: 0 },
+      },
+      Name: 0,
+      Settings: {
+        FaceSearch: { CollectionId: 0, FaceMatchThreshold: 0 },
+        ConnectedHome: { Labels: 0, MinConfidence: 0 },
+      },
+      RoleArn: 0,
+      Tags: 0,
+      NotificationChannel: { SNSTopicArn: 0 },
+      KmsKeyId: 0,
+      RegionsOfInterest: D.list(i_RegionOfInterest),
+      DataSharingPreference: i_StreamProcessorDataSharingPreference,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -2699,7 +2785,11 @@ export const createUser: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      CollectionId: 0,
+      UserId: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -2739,7 +2829,7 @@ export const deleteCollection: API.OperationMethod<
   DeleteCollectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CollectionId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -2783,7 +2873,7 @@ export const deleteDataset: API.OperationMethod<
   DeleteDatasetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DatasetArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -2820,7 +2910,7 @@ export const deleteFaces: API.OperationMethod<
   DeleteFacesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CollectionId: 0, FaceIds: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -2861,7 +2951,7 @@ export const deleteProject: API.OperationMethod<
   DeleteProjectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ProjectArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -2900,7 +2990,10 @@ export const deleteProjectPolicy: API.OperationMethod<
   DeleteProjectPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ProjectArn: 0, PolicyName: 0, PolicyRevisionId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -2941,7 +3034,7 @@ export const deleteProjectVersion: API.OperationMethod<
   DeleteProjectVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ProjectVersionArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -2975,7 +3068,7 @@ export const deleteStreamProcessor: API.OperationMethod<
   DeleteStreamProcessorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -3015,7 +3108,11 @@ export const deleteUser: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      CollectionId: 0,
+      UserId: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -3054,7 +3151,11 @@ export const describeCollection: API.OperationMethod<
   DescribeCollectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { CollectionId: 0 },
+    output: { CreationTimestamp: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -3092,6 +3193,7 @@ export const describeDataset: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DatasetArn: 0 },
     output: {
       DatasetDescription: {
         CreationTimestamp: D.ts,
@@ -3134,6 +3236,7 @@ export const describeProjects: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, ProjectNames: 0, Features: 0 },
     output: {
       ProjectDescriptions: D.list({
         CreationTimestamp: D.ts,
@@ -3186,6 +3289,7 @@ export const describeProjectVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ProjectArn: 0, VersionNames: 0, NextToken: 0, MaxResults: 0 },
     output: {
       ProjectVersionDescriptions: D.list({
         CreationTimestamp: D.ts,
@@ -3233,6 +3337,7 @@ export const describeStreamProcessor: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0 },
     output: { CreationTimestamp: D.ts, LastUpdateTimestamp: D.ts },
   },
   errors: [
@@ -3311,7 +3416,15 @@ export const detectCustomLabels: API.OperationMethod<
   DetectCustomLabelsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProjectVersionArn: 0,
+      Image: i_Image,
+      MaxResults: 0,
+      MinConfidence: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ImageTooLargeException,
@@ -3369,7 +3482,7 @@ export const detectFaces: API.OperationMethod<
   DetectFacesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Image: i_Image, Attributes: 0 } },
   errors: [
     AccessDeniedException,
     ImageTooLargeException,
@@ -3507,7 +3620,19 @@ export const detectLabels: API.OperationMethod<
   DetectLabelsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Image: i_Image,
+      MaxLabels: 0,
+      MinConfidence: 0,
+      Features: 0,
+      Settings: {
+        GeneralLabels: i_GeneralLabelsSettings,
+        ImageProperties: { MaxDominantColors: 0 },
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     ImageTooLargeException,
@@ -3563,7 +3688,19 @@ export const detectModerationLabels: API.OperationMethod<
   DetectModerationLabelsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Image: i_Image,
+      MinConfidence: 0,
+      HumanLoopConfig: {
+        HumanLoopName: 0,
+        FlowDefinitionArn: 0,
+        DataAttributes: { ContentClassifiers: 0 },
+      },
+      ProjectVersion: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     HumanLoopQuotaExceededException,
@@ -3632,7 +3769,13 @@ export const detectProtectiveEquipment: API.OperationMethod<
   DetectProtectiveEquipmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Image: i_Image,
+      SummarizationAttributes: { MinConfidence: 0, RequiredEquipmentTypes: 0 },
+    },
+  },
   errors: [
     AccessDeniedException,
     ImageTooLargeException,
@@ -3696,7 +3839,16 @@ export const detectText: API.OperationMethod<
   DetectTextError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Image: i_Image,
+      Filters: {
+        WordFilter: i_DetectionFilter,
+        RegionsOfInterest: D.list(i_RegionOfInterest),
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     ImageTooLargeException,
@@ -3740,7 +3892,12 @@ export const disassociateFaces: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      CollectionId: 0,
+      UserId: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      FaceIds: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -3789,7 +3946,7 @@ export const distributeDatasetEntries: API.OperationMethod<
   DistributeDatasetEntriesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Datasets: D.list({ Arn: 0 }) } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -3829,7 +3986,7 @@ export const getCelebrityInfo: API.OperationMethod<
   GetCelebrityInfoError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -3905,7 +4062,10 @@ export const getCelebrityRecognition: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { JobId: 0, MaxResults: 0, NextToken: 0, SortBy: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -3974,7 +4134,10 @@ export const getContentModeration: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { JobId: 0, MaxResults: 0, NextToken: 0, SortBy: 0, AggregateBy: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -4030,7 +4193,10 @@ export const getFaceDetection: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { JobId: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -4078,6 +4244,7 @@ export const getFaceLivenessSessionResults: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SessionId: 0 },
     output: { ReferenceImage: o_AuditImage, AuditImages: D.list(o_AuditImage) },
   },
   errors: [
@@ -4142,7 +4309,10 @@ export const getFaceSearch: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { JobId: 0, MaxResults: 0, NextToken: 0, SortBy: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -4246,7 +4416,10 @@ export const getLabelDetection: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { JobId: 0, MaxResults: 0, NextToken: 0, SortBy: 0, AggregateBy: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -4286,6 +4459,7 @@ export const getMediaAnalysisJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobId: 0 },
     output: { CreationTimestamp: D.ts, CompletionTimestamp: D.ts },
   },
   errors: [
@@ -4352,7 +4526,10 @@ export const getPersonTracking: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { JobId: 0, MaxResults: 0, NextToken: 0, SortBy: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -4416,7 +4593,10 @@ export const getSegmentDetection: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { JobId: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -4476,7 +4656,10 @@ export const getTextDetection: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { JobId: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -4608,7 +4791,17 @@ export const indexFaces: API.OperationMethod<
   IndexFacesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CollectionId: 0,
+      Image: i_Image,
+      ExternalImageId: 0,
+      DetectionAttributes: 0,
+      MaxFaces: 0,
+      QualityFilter: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ImageTooLargeException,
@@ -4653,7 +4846,7 @@ export const listCollections: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   CollectionId
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -4710,7 +4903,18 @@ export const listDatasetEntries: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DatasetEntry
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DatasetArn: 0,
+      ContainsLabels: 0,
+      Labeled: 0,
+      SourceRefContains: 0,
+      HasErrors: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -4760,7 +4964,10 @@ export const listDatasetLabels: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DatasetLabelDescription
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DatasetArn: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -4808,7 +5015,16 @@ export const listFaces: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Face
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CollectionId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      UserId: 0,
+      FaceIds: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -4849,6 +5065,7 @@ export const listMediaAnalysisJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: {
       MediaAnalysisJobs: D.list({
         CreationTimestamp: D.ts,
@@ -4901,6 +5118,7 @@ export const listProjectPolicies: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ProjectArn: 0, NextToken: 0, MaxResults: 0 },
     output: {
       ProjectPolicies: D.list({
         CreationTimestamp: D.ts,
@@ -4946,7 +5164,7 @@ export const listStreamProcessors: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -4986,7 +5204,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -5023,7 +5241,10 @@ export const listUsers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   User
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CollectionId: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -5086,7 +5307,15 @@ export const putProjectPolicy: API.OperationMethod<
   PutProjectPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProjectArn: 0,
+      PolicyName: 0,
+      PolicyRevisionId: 0,
+      PolicyDocument: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -5155,7 +5384,7 @@ export const recognizeCelebrities: API.OperationMethod<
   RecognizeCelebritiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Image: i_Image } },
   errors: [
     AccessDeniedException,
     ImageTooLargeException,
@@ -5205,7 +5434,10 @@ export const searchFaces: API.OperationMethod<
   SearchFacesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CollectionId: 0, FaceId: 0, MaxFaces: 0, FaceMatchThreshold: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -5280,7 +5512,16 @@ export const searchFacesByImage: API.OperationMethod<
   SearchFacesByImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CollectionId: 0,
+      Image: i_Image,
+      MaxFaces: 0,
+      FaceMatchThreshold: 0,
+      QualityFilter: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ImageTooLargeException,
@@ -5319,7 +5560,16 @@ export const searchUsers: API.OperationMethod<
   SearchUsersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CollectionId: 0,
+      UserId: 0,
+      FaceId: 0,
+      UserMatchThreshold: 0,
+      MaxUsers: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -5363,7 +5613,16 @@ export const searchUsersByImage: API.OperationMethod<
   SearchUsersByImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CollectionId: 0,
+      Image: i_Image,
+      UserMatchThreshold: 0,
+      MaxUsers: 0,
+      QualityFilter: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ImageTooLargeException,
@@ -5412,7 +5671,15 @@ export const startCelebrityRecognition: API.OperationMethod<
   StartCelebrityRecognitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Video: i_Video,
+      ClientRequestToken: 0,
+      NotificationChannel: i_NotificationChannel,
+      JobTag: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     IdempotentParameterMismatchException,
@@ -5462,7 +5729,16 @@ export const startContentModeration: API.OperationMethod<
   StartContentModerationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Video: i_Video,
+      MinConfidence: 0,
+      ClientRequestToken: 0,
+      NotificationChannel: i_NotificationChannel,
+      JobTag: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     IdempotentParameterMismatchException,
@@ -5512,7 +5788,16 @@ export const startFaceDetection: API.OperationMethod<
   StartFaceDetectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Video: i_Video,
+      ClientRequestToken: 0,
+      NotificationChannel: i_NotificationChannel,
+      FaceAttributes: 0,
+      JobTag: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     IdempotentParameterMismatchException,
@@ -5560,7 +5845,17 @@ export const startFaceSearch: API.OperationMethod<
   StartFaceSearchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Video: i_Video,
+      ClientRequestToken: 0,
+      FaceMatchThreshold: 0,
+      CollectionId: 0,
+      NotificationChannel: i_NotificationChannel,
+      JobTag: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     IdempotentParameterMismatchException,
@@ -5625,7 +5920,18 @@ export const startLabelDetection: API.OperationMethod<
   StartLabelDetectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Video: i_Video,
+      ClientRequestToken: 0,
+      MinConfidence: 0,
+      NotificationChannel: i_NotificationChannel,
+      JobTag: 0,
+      Features: 0,
+      Settings: { GeneralLabels: i_GeneralLabelsSettings },
+    },
+  },
   errors: [
     AccessDeniedException,
     IdempotentParameterMismatchException,
@@ -5667,7 +5973,16 @@ export const startMediaAnalysisJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      JobName: 0,
+      OperationsConfig: {
+        DetectModerationLabels: { MinConfidence: 0, ProjectVersion: 0 },
+      },
+      Input: { S3Object: i_S3Object },
+      OutputConfig: { S3Bucket: 0, S3KeyPrefix: 0 },
+      KmsKeyId: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -5722,7 +6037,15 @@ export const startPersonTracking: API.OperationMethod<
   StartPersonTrackingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Video: i_Video,
+      ClientRequestToken: 0,
+      NotificationChannel: i_NotificationChannel,
+      JobTag: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     IdempotentParameterMismatchException,
@@ -5770,7 +6093,10 @@ export const startProjectVersion: API.OperationMethod<
   StartProjectVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ProjectVersionArn: 0, MinInferenceUnits: 0, MaxInferenceUnits: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -5823,7 +6149,23 @@ export const startSegmentDetection: API.OperationMethod<
   StartSegmentDetectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Video: i_Video,
+      ClientRequestToken: 0,
+      NotificationChannel: i_NotificationChannel,
+      JobTag: 0,
+      Filters: {
+        TechnicalCueFilter: {
+          MinSegmentConfidence: 0,
+          BlackFrame: { MaxPixelThreshold: 0, MinCoveragePercentage: 0 },
+        },
+        ShotFilter: { MinSegmentConfidence: 0 },
+      },
+      SegmentTypes: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     IdempotentParameterMismatchException,
@@ -5862,7 +6204,16 @@ export const startStreamProcessor: API.OperationMethod<
   StartStreamProcessorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      StartSelector: {
+        KVSStreamStartSelector: { ProducerTimestamp: 0, FragmentNumber: 0 },
+      },
+      StopSelector: { MaxDurationInSeconds: 0 },
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -5906,7 +6257,19 @@ export const startTextDetection: API.OperationMethod<
   StartTextDetectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Video: i_Video,
+      ClientRequestToken: 0,
+      NotificationChannel: i_NotificationChannel,
+      JobTag: 0,
+      Filters: {
+        WordFilter: i_DetectionFilter,
+        RegionsOfInterest: D.list(i_RegionOfInterest),
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     IdempotentParameterMismatchException,
@@ -5947,7 +6310,7 @@ export const stopProjectVersion: API.OperationMethod<
   StopProjectVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ProjectVersionArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -5980,7 +6343,7 @@ export const stopStreamProcessor: API.OperationMethod<
   StopStreamProcessorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -6018,7 +6381,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -6054,7 +6417,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -6113,7 +6476,10 @@ export const updateDatasetEntries: API.OperationMethod<
   UpdateDatasetEntriesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DatasetArn: 0, Changes: { GroundTruth: 0 } },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -6147,7 +6513,18 @@ export const updateStreamProcessor: API.OperationMethod<
   UpdateStreamProcessorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      SettingsForUpdate: {
+        ConnectedHomeForUpdate: { Labels: 0, MinConfidence: 0 },
+      },
+      RegionsOfInterestForUpdate: D.list(i_RegionOfInterest),
+      DataSharingPreferenceForUpdate: i_StreamProcessorDataSharingPreference,
+      ParametersToDelete: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerError,
@@ -6162,4 +6539,34 @@ export const updateStreamProcessor: API.OperationMethod<
   operationName: "UpdateStreamProcessor",
 })) as any;
 
+const i_Asset: D.LazyStruct = () => ({
+  GroundTruthManifest: i_GroundTruthManifest,
+});
+const i_DetectionFilter: D.LazyStruct = () => ({
+  MinConfidence: 0,
+  MinBoundingBoxHeight: 0,
+  MinBoundingBoxWidth: 0,
+});
+const i_GeneralLabelsSettings: D.LazyStruct = () => ({
+  LabelInclusionFilters: 0,
+  LabelExclusionFilters: 0,
+  LabelCategoryInclusionFilters: 0,
+  LabelCategoryExclusionFilters: 0,
+});
+const i_GroundTruthManifest: D.LazyStruct = () => ({ S3Object: i_S3Object });
+const i_Image: D.LazyStruct = () => ({ Bytes: 0, S3Object: i_S3Object });
+const i_NotificationChannel: D.LazyStruct = () => ({
+  SNSTopicArn: 0,
+  RoleArn: 0,
+});
+const i_OutputConfig: D.LazyStruct = () => ({ S3Bucket: 0, S3KeyPrefix: 0 });
+const i_RegionOfInterest: D.LazyStruct = () => ({
+  BoundingBox: { Width: 0, Height: 0, Left: 0, Top: 0 },
+  Polygon: D.list({ X: 0, Y: 0 }),
+});
+const i_S3Object: D.LazyStruct = () => ({ Bucket: 0, Name: 0, Version: 0 });
+const i_StreamProcessorDataSharingPreference: D.LazyStruct = () => ({
+  OptIn: 0,
+});
+const i_Video: D.LazyStruct = () => ({ S3Object: i_S3Object });
 const o_AuditImage: D.LazyStruct = () => ({ Bytes: D.secretBlob });

@@ -2205,7 +2205,10 @@ export const associateApprovalRuleTemplateWithRepository: API.OperationMethod<
   AssociateApprovalRuleTemplateWithRepositoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { approvalRuleTemplateName: 0, repositoryName: 0 },
+  },
   errors: [
     ApprovalRuleTemplateDoesNotExistException,
     ApprovalRuleTemplateNameRequiredException,
@@ -2246,7 +2249,10 @@ export const batchAssociateApprovalRuleTemplateWithRepositories: API.OperationMe
   BatchAssociateApprovalRuleTemplateWithRepositoriesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { approvalRuleTemplateName: 0, repositoryNames: 0 },
+  },
   errors: [
     ApprovalRuleTemplateDoesNotExistException,
     ApprovalRuleTemplateNameRequiredException,
@@ -2296,7 +2302,21 @@ export const batchDescribeMergeConflicts: API.OperationMethod<
   BatchDescribeMergeConflictsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      repositoryName: 0,
+      destinationCommitSpecifier: 0,
+      sourceCommitSpecifier: 0,
+      mergeOption: 0,
+      maxMergeHunks: 0,
+      maxConflictFiles: 0,
+      filePaths: 0,
+      conflictDetailLevel: 0,
+      conflictResolutionStrategy: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     CommitDoesNotExistException,
     CommitRequiredException,
@@ -2346,7 +2366,10 @@ export const batchDisassociateApprovalRuleTemplateFromRepositories: API.Operatio
   BatchDisassociateApprovalRuleTemplateFromRepositoriesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { approvalRuleTemplateName: 0, repositoryNames: 0 },
+  },
   errors: [
     ApprovalRuleTemplateDoesNotExistException,
     ApprovalRuleTemplateNameRequiredException,
@@ -2385,7 +2408,7 @@ export const batchGetCommits: API.OperationMethod<
   BatchGetCommitsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { commitIds: 0, repositoryName: 0 } },
   errors: [
     CommitIdsLimitExceededException,
     CommitIdsListRequiredException,
@@ -2430,6 +2453,7 @@ export const batchGetRepositories: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { repositoryNames: 0 },
     output: { repositories: D.list(o_RepositoryMetadata) },
   },
   errors: [
@@ -2471,6 +2495,11 @@ export const createApprovalRuleTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      approvalRuleTemplateName: 0,
+      approvalRuleTemplateContent: 0,
+      approvalRuleTemplateDescription: 0,
+    },
     output: { approvalRuleTemplate: o_ApprovalRuleTemplate },
   },
   errors: [
@@ -2514,7 +2543,10 @@ export const createBranch: API.OperationMethod<
   CreateBranchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { repositoryName: 0, branchName: 0, commitId: 0 },
+  },
   errors: [
     BranchNameExistsException,
     BranchNameRequiredException,
@@ -2585,7 +2617,26 @@ export const createCommit: API.OperationMethod<
   CreateCommitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      repositoryName: 0,
+      branchName: 0,
+      parentCommitId: 0,
+      authorName: 0,
+      email: 0,
+      commitMessage: 0,
+      keepEmptyFolders: 0,
+      putFiles: D.list({
+        filePath: 0,
+        fileMode: 0,
+        fileContent: 0,
+        sourceFile: { filePath: 0, isMove: 0 },
+      }),
+      deleteFiles: D.list(i_DeleteFileEntry),
+      setFileModes: D.list(i_SetFileModeEntry),
+    },
+  },
   errors: [
     BranchDoesNotExistException,
     BranchNameIsTagNameException,
@@ -2669,7 +2720,16 @@ export const createPullRequest: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      title: 0,
+      description: 0,
+      targets: D.list({
+        repositoryName: 0,
+        sourceReference: 0,
+        destinationReference: 0,
+      }),
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     output: { pullRequest: o_PullRequest },
   },
   errors: [
@@ -2730,7 +2790,11 @@ export const createPullRequestApprovalRule: API.OperationMethod<
   CreatePullRequestApprovalRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { approvalRule: o_ApprovalRule } },
+  descriptor: {
+    service: svc,
+    input: { pullRequestId: 0, approvalRuleName: 0, approvalRuleContent: 0 },
+    output: { approvalRule: o_ApprovalRule },
+  },
   errors: [
     ApprovalRuleContentRequiredException,
     ApprovalRuleNameAlreadyExistsException,
@@ -2783,6 +2847,12 @@ export const createRepository: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      repositoryName: 0,
+      repositoryDescription: 0,
+      tags: 0,
+      kmsKeyId: 0,
+    },
     output: { repositoryMetadata: o_RepositoryMetadata },
   },
   errors: [
@@ -2862,7 +2932,22 @@ export const createUnreferencedMergeCommit: API.OperationMethod<
   CreateUnreferencedMergeCommitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      repositoryName: 0,
+      sourceCommitSpecifier: 0,
+      destinationCommitSpecifier: 0,
+      mergeOption: 0,
+      conflictDetailLevel: 0,
+      conflictResolutionStrategy: 0,
+      authorName: 0,
+      email: 0,
+      commitMessage: 0,
+      keepEmptyFolders: 0,
+      conflictResolution: i_ConflictResolution,
+    },
+  },
   errors: [
     CommitDoesNotExistException,
     CommitMessageLengthExceededException,
@@ -2920,7 +3005,7 @@ export const deleteApprovalRuleTemplate: API.OperationMethod<
   DeleteApprovalRuleTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { approvalRuleTemplateName: 0 } },
   errors: [
     ApprovalRuleTemplateInUseException,
     ApprovalRuleTemplateNameRequiredException,
@@ -2953,7 +3038,7 @@ export const deleteBranch: API.OperationMethod<
   DeleteBranchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { repositoryName: 0, branchName: 0 } },
   errors: [
     BranchNameRequiredException,
     DefaultBranchCannotBeDeletedException,
@@ -2987,7 +3072,11 @@ export const deleteCommentContent: API.OperationMethod<
   DeleteCommentContentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { comment: o_Comment } },
+  descriptor: {
+    service: svc,
+    input: { commentId: 0 },
+    output: { comment: o_Comment },
+  },
   errors: [
     CommentDeletedException,
     CommentDoesNotExistException,
@@ -3034,7 +3123,19 @@ export const deleteFile: API.OperationMethod<
   DeleteFileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      repositoryName: 0,
+      branchName: 0,
+      filePath: 0,
+      parentCommitId: 0,
+      keepEmptyFolders: 0,
+      commitMessage: 0,
+      name: 0,
+      email: 0,
+    },
+  },
   errors: [
     BranchDoesNotExistException,
     BranchNameIsTagNameException,
@@ -3089,7 +3190,10 @@ export const deletePullRequestApprovalRule: API.OperationMethod<
   DeletePullRequestApprovalRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { pullRequestId: 0, approvalRuleName: 0 },
+  },
   errors: [
     ApprovalRuleNameRequiredException,
     CannotDeleteApprovalRuleFromTemplateException,
@@ -3131,7 +3235,7 @@ export const deleteRepository: API.OperationMethod<
   DeleteRepositoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { repositoryName: 0 } },
   errors: [
     EncryptionIntegrityChecksFailedException,
     EncryptionKeyAccessDeniedException,
@@ -3183,7 +3287,20 @@ export const describeMergeConflicts: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      repositoryName: 0,
+      destinationCommitSpecifier: 0,
+      sourceCommitSpecifier: 0,
+      mergeOption: 0,
+      maxMergeHunks: 0,
+      filePath: 0,
+      conflictDetailLevel: 0,
+      conflictResolutionStrategy: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     CommitDoesNotExistException,
     CommitRequiredException,
@@ -3246,6 +3363,13 @@ export const describePullRequestEvents: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      pullRequestId: 0,
+      pullRequestEventType: 0,
+      actorArn: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { pullRequestEvents: D.list({ eventDate: D.ts }) },
   },
   errors: [
@@ -3298,7 +3422,10 @@ export const disassociateApprovalRuleTemplateFromRepository: API.OperationMethod
   DisassociateApprovalRuleTemplateFromRepositoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { approvalRuleTemplateName: 0, repositoryName: 0 },
+  },
   errors: [
     ApprovalRuleTemplateDoesNotExistException,
     ApprovalRuleTemplateNameRequiredException,
@@ -3339,7 +3466,7 @@ export const evaluatePullRequestApprovalRules: API.OperationMethod<
   EvaluatePullRequestApprovalRulesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { pullRequestId: 0, revisionId: 0 } },
   errors: [
     EncryptionIntegrityChecksFailedException,
     EncryptionKeyAccessDeniedException,
@@ -3374,6 +3501,7 @@ export const getApprovalRuleTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { approvalRuleTemplateName: 0 },
     output: { approvalRuleTemplate: o_ApprovalRuleTemplate },
   },
   errors: [
@@ -3409,7 +3537,11 @@ export const getBlob: API.OperationMethod<
   GetBlobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { content: D.blob } },
+  descriptor: {
+    service: svc,
+    input: { repositoryName: 0, blobId: 0 },
+    output: { content: D.blob },
+  },
   errors: [
     BlobIdDoesNotExistException,
     BlobIdRequiredException,
@@ -3463,7 +3595,18 @@ export const getBlobDifferences: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DiffHunk
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      repositoryName: 0,
+      afterBlobId: 0,
+      beforeBlobId: 0,
+      contextLines: 0,
+      ignoreWhitespace: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     BlobIdDoesNotExistException,
     BlobIdRequiredException,
@@ -3514,7 +3657,7 @@ export const getBranch: API.OperationMethod<
   GetBranchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { repositoryName: 0, branchName: 0 } },
   errors: [
     BranchDoesNotExistException,
     BranchNameRequiredException,
@@ -3556,7 +3699,11 @@ export const getComment: API.OperationMethod<
   GetCommentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { comment: o_Comment } },
+  descriptor: {
+    service: svc,
+    input: { commentId: 0 },
+    output: { comment: o_Comment },
+  },
   errors: [
     CommentDeletedException,
     CommentDoesNotExistException,
@@ -3592,7 +3739,10 @@ export const getCommentReactions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { commentId: 0, reactionUserArn: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     CommentDeletedException,
     CommentDoesNotExistException,
@@ -3642,6 +3792,13 @@ export const getCommentsForComparedCommit: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      repositoryName: 0,
+      beforeCommitId: 0,
+      afterCommitId: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       commentsForComparedCommitData: D.list({ comments: D.list(o_Comment) }),
     },
@@ -3705,6 +3862,14 @@ export const getCommentsForPullRequest: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      pullRequestId: 0,
+      repositoryName: 0,
+      beforeCommitId: 0,
+      afterCommitId: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       commentsForPullRequestData: D.list({ comments: D.list(o_Comment) }),
     },
@@ -3760,7 +3925,7 @@ export const getCommit: API.OperationMethod<
   GetCommitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { repositoryName: 0, commitId: 0 } },
   errors: [
     CommitIdDoesNotExistException,
     CommitIdRequiredException,
@@ -3812,7 +3977,18 @@ export const getDifferences: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      repositoryName: 0,
+      beforeCommitSpecifier: 0,
+      afterCommitSpecifier: 0,
+      beforePath: 0,
+      afterPath: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     CommitDoesNotExistException,
     CommitRequiredException,
@@ -3866,7 +4042,11 @@ export const getFile: API.OperationMethod<
   GetFileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { fileContent: D.blob } },
+  descriptor: {
+    service: svc,
+    input: { repositoryName: 0, commitSpecifier: 0, filePath: 0 },
+    output: { fileContent: D.blob },
+  },
   errors: [
     CommitDoesNotExistException,
     EncryptionIntegrityChecksFailedException,
@@ -3912,7 +4092,10 @@ export const getFolder: API.OperationMethod<
   GetFolderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { repositoryName: 0, commitSpecifier: 0, folderPath: 0 },
+  },
   errors: [
     CommitDoesNotExistException,
     EncryptionIntegrityChecksFailedException,
@@ -3957,7 +4140,16 @@ export const getMergeCommit: API.OperationMethod<
   GetMergeCommitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      repositoryName: 0,
+      sourceCommitSpecifier: 0,
+      destinationCommitSpecifier: 0,
+      conflictDetailLevel: 0,
+      conflictResolutionStrategy: 0,
+    },
+  },
   errors: [
     CommitDoesNotExistException,
     CommitRequiredException,
@@ -4012,7 +4204,19 @@ export const getMergeConflicts: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      repositoryName: 0,
+      destinationCommitSpecifier: 0,
+      sourceCommitSpecifier: 0,
+      mergeOption: 0,
+      conflictDetailLevel: 0,
+      maxConflictFiles: 0,
+      conflictResolutionStrategy: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     CommitDoesNotExistException,
     CommitRequiredException,
@@ -4076,7 +4280,16 @@ export const getMergeOptions: API.OperationMethod<
   GetMergeOptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      repositoryName: 0,
+      sourceCommitSpecifier: 0,
+      destinationCommitSpecifier: 0,
+      conflictDetailLevel: 0,
+      conflictResolutionStrategy: 0,
+    },
+  },
   errors: [
     CommitDoesNotExistException,
     CommitRequiredException,
@@ -4119,7 +4332,11 @@ export const getPullRequest: API.OperationMethod<
   GetPullRequestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { pullRequest: o_PullRequest } },
+  descriptor: {
+    service: svc,
+    input: { pullRequestId: 0 },
+    output: { pullRequest: o_PullRequest },
+  },
   errors: [
     EncryptionIntegrityChecksFailedException,
     EncryptionKeyAccessDeniedException,
@@ -4157,7 +4374,7 @@ export const getPullRequestApprovalStates: API.OperationMethod<
   GetPullRequestApprovalStatesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { pullRequestId: 0, revisionId: 0 } },
   errors: [
     EncryptionIntegrityChecksFailedException,
     EncryptionKeyAccessDeniedException,
@@ -4197,7 +4414,7 @@ export const getPullRequestOverrideState: API.OperationMethod<
   GetPullRequestOverrideStateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { pullRequestId: 0, revisionId: 0 } },
   errors: [
     EncryptionIntegrityChecksFailedException,
     EncryptionKeyAccessDeniedException,
@@ -4242,6 +4459,7 @@ export const getRepository: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { repositoryName: 0 },
     output: { repositoryMetadata: o_RepositoryMetadata },
   },
   errors: [
@@ -4278,7 +4496,7 @@ export const getRepositoryTriggers: API.OperationMethod<
   GetRepositoryTriggersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { repositoryName: 0 } },
   errors: [
     EncryptionIntegrityChecksFailedException,
     EncryptionKeyAccessDeniedException,
@@ -4309,7 +4527,7 @@ export const listApprovalRuleTemplates: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0, maxResults: 0 } },
   errors: [InvalidContinuationTokenException, InvalidMaxResultsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4343,7 +4561,10 @@ export const listAssociatedApprovalRuleTemplatesForRepository: API.PaginatedOper
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { repositoryName: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     EncryptionIntegrityChecksFailedException,
     EncryptionKeyAccessDeniedException,
@@ -4387,7 +4608,7 @@ export const listBranches: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   BranchName
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { repositoryName: 0, nextToken: 0 } },
   errors: [
     EncryptionIntegrityChecksFailedException,
     EncryptionKeyAccessDeniedException,
@@ -4435,7 +4656,16 @@ export const listFileCommitHistory: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      repositoryName: 0,
+      commitSpecifier: 0,
+      filePath: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     CommitDoesNotExistException,
     CommitRequiredException,
@@ -4488,7 +4718,16 @@ export const listPullRequests: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      repositoryName: 0,
+      authorArn: 0,
+      pullRequestStatus: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
+  },
   errors: [
     AuthorDoesNotExistException,
     EncryptionIntegrityChecksFailedException,
@@ -4529,7 +4768,7 @@ export const listRepositories: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RepositoryNameIdPair
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0, sortBy: 0, order: 0 } },
   errors: [
     InvalidContinuationTokenException,
     InvalidOrderException,
@@ -4567,7 +4806,10 @@ export const listRepositoriesForApprovalRuleTemplate: API.PaginatedOperationMeth
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { approvalRuleTemplateName: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     ApprovalRuleTemplateDoesNotExistException,
     ApprovalRuleTemplateNameRequiredException,
@@ -4606,7 +4848,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, nextToken: 0 } },
   errors: [
     InvalidRepositoryNameException,
     InvalidResourceArnException,
@@ -4648,7 +4890,15 @@ export const mergeBranchesByFastForward: API.OperationMethod<
   MergeBranchesByFastForwardError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      repositoryName: 0,
+      sourceCommitSpecifier: 0,
+      destinationCommitSpecifier: 0,
+      targetBranch: 0,
+    },
+  },
   errors: [
     BranchDoesNotExistException,
     BranchNameIsTagNameException,
@@ -4725,7 +4975,22 @@ export const mergeBranchesBySquash: API.OperationMethod<
   MergeBranchesBySquashError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      repositoryName: 0,
+      sourceCommitSpecifier: 0,
+      destinationCommitSpecifier: 0,
+      targetBranch: 0,
+      conflictDetailLevel: 0,
+      conflictResolutionStrategy: 0,
+      authorName: 0,
+      email: 0,
+      commitMessage: 0,
+      keepEmptyFolders: 0,
+      conflictResolution: i_ConflictResolution,
+    },
+  },
   errors: [
     BranchDoesNotExistException,
     BranchNameIsTagNameException,
@@ -4822,7 +5087,22 @@ export const mergeBranchesByThreeWay: API.OperationMethod<
   MergeBranchesByThreeWayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      repositoryName: 0,
+      sourceCommitSpecifier: 0,
+      destinationCommitSpecifier: 0,
+      targetBranch: 0,
+      conflictDetailLevel: 0,
+      conflictResolutionStrategy: 0,
+      authorName: 0,
+      email: 0,
+      commitMessage: 0,
+      keepEmptyFolders: 0,
+      conflictResolution: i_ConflictResolution,
+    },
+  },
   errors: [
     BranchDoesNotExistException,
     BranchNameIsTagNameException,
@@ -4900,7 +5180,11 @@ export const mergePullRequestByFastForward: API.OperationMethod<
   MergePullRequestByFastForwardError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { pullRequest: o_PullRequest } },
+  descriptor: {
+    service: svc,
+    input: { pullRequestId: 0, repositoryName: 0, sourceCommitId: 0 },
+    output: { pullRequest: o_PullRequest },
+  },
   errors: [
     ConcurrentReferenceUpdateException,
     EncryptionIntegrityChecksFailedException,
@@ -4977,7 +5261,22 @@ export const mergePullRequestBySquash: API.OperationMethod<
   MergePullRequestBySquashError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { pullRequest: o_PullRequest } },
+  descriptor: {
+    service: svc,
+    input: {
+      pullRequestId: 0,
+      repositoryName: 0,
+      sourceCommitId: 0,
+      conflictDetailLevel: 0,
+      conflictResolutionStrategy: 0,
+      commitMessage: 0,
+      authorName: 0,
+      email: 0,
+      keepEmptyFolders: 0,
+      conflictResolution: i_ConflictResolution,
+    },
+    output: { pullRequest: o_PullRequest },
+  },
   errors: [
     CommitMessageLengthExceededException,
     ConcurrentReferenceUpdateException,
@@ -5073,7 +5372,22 @@ export const mergePullRequestByThreeWay: API.OperationMethod<
   MergePullRequestByThreeWayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { pullRequest: o_PullRequest } },
+  descriptor: {
+    service: svc,
+    input: {
+      pullRequestId: 0,
+      repositoryName: 0,
+      sourceCommitId: 0,
+      conflictDetailLevel: 0,
+      conflictResolutionStrategy: 0,
+      commitMessage: 0,
+      authorName: 0,
+      email: 0,
+      keepEmptyFolders: 0,
+      conflictResolution: i_ConflictResolution,
+    },
+    output: { pullRequest: o_PullRequest },
+  },
   errors: [
     CommitMessageLengthExceededException,
     ConcurrentReferenceUpdateException,
@@ -5145,7 +5459,10 @@ export const overridePullRequestApprovalRules: API.OperationMethod<
   OverridePullRequestApprovalRulesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { pullRequestId: 0, revisionId: 0, overrideStatus: 0 },
+  },
   errors: [
     EncryptionIntegrityChecksFailedException,
     EncryptionKeyAccessDeniedException,
@@ -5204,7 +5521,14 @@ export const postCommentForComparedCommit: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      repositoryName: 0,
+      beforeCommitId: 0,
+      afterCommitId: 0,
+      location: i_Location,
+      content: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     output: { comment: o_Comment },
   },
   errors: [
@@ -5277,7 +5601,15 @@ export const postCommentForPullRequest: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      pullRequestId: 0,
+      repositoryName: 0,
+      beforeCommitId: 0,
+      afterCommitId: 0,
+      location: i_Location,
+      content: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     output: { comment: o_Comment },
   },
   errors: [
@@ -5335,7 +5667,11 @@ export const postCommentReply: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      inReplyTo: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      content: 0,
+    },
     output: { comment: o_Comment },
   },
   errors: [
@@ -5372,7 +5708,7 @@ export const putCommentReaction: API.OperationMethod<
   PutCommentReactionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { commentId: 0, reactionValue: 0 } },
   errors: [
     CommentDeletedException,
     CommentDoesNotExistException,
@@ -5428,7 +5764,20 @@ export const putFile: API.OperationMethod<
   PutFileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      repositoryName: 0,
+      branchName: 0,
+      fileContent: 0,
+      filePath: 0,
+      fileMode: 0,
+      parentCommitId: 0,
+      commitMessage: 0,
+      name: 0,
+      email: 0,
+    },
+  },
   errors: [
     BranchDoesNotExistException,
     BranchNameIsTagNameException,
@@ -5498,7 +5847,10 @@ export const putRepositoryTriggers: API.OperationMethod<
   PutRepositoryTriggersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { repositoryName: 0, triggers: D.list(i_RepositoryTrigger) },
+  },
   errors: [
     EncryptionIntegrityChecksFailedException,
     EncryptionKeyAccessDeniedException,
@@ -5549,7 +5901,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: 0 } },
   errors: [
     InvalidRepositoryNameException,
     InvalidResourceArnException,
@@ -5600,7 +5952,10 @@ export const testRepositoryTriggers: API.OperationMethod<
   TestRepositoryTriggersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { repositoryName: 0, triggers: D.list(i_RepositoryTrigger) },
+  },
   errors: [
     EncryptionIntegrityChecksFailedException,
     EncryptionKeyAccessDeniedException,
@@ -5650,7 +6005,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [
     InvalidRepositoryNameException,
     InvalidResourceArnException,
@@ -5688,6 +6043,11 @@ export const updateApprovalRuleTemplateContent: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      approvalRuleTemplateName: 0,
+      newRuleContent: 0,
+      existingRuleContentSha256: 0,
+    },
     output: { approvalRuleTemplate: o_ApprovalRuleTemplate },
   },
   errors: [
@@ -5720,6 +6080,7 @@ export const updateApprovalRuleTemplateDescription: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { approvalRuleTemplateName: 0, approvalRuleTemplateDescription: 0 },
     output: { approvalRuleTemplate: o_ApprovalRuleTemplate },
   },
   errors: [
@@ -5750,6 +6111,7 @@ export const updateApprovalRuleTemplateName: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { oldApprovalRuleTemplateName: 0, newApprovalRuleTemplateName: 0 },
     output: { approvalRuleTemplate: o_ApprovalRuleTemplate },
   },
   errors: [
@@ -5781,7 +6143,11 @@ export const updateComment: API.OperationMethod<
   UpdateCommentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { comment: o_Comment } },
+  descriptor: {
+    service: svc,
+    input: { commentId: 0, content: 0 },
+    output: { comment: o_Comment },
+  },
   errors: [
     CommentContentRequiredException,
     CommentContentSizeLimitExceededException,
@@ -5820,7 +6186,10 @@ export const updateDefaultBranch: API.OperationMethod<
   UpdateDefaultBranchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { repositoryName: 0, defaultBranchName: 0 },
+  },
   errors: [
     BranchDoesNotExistException,
     BranchNameRequiredException,
@@ -5867,7 +6236,16 @@ export const updatePullRequestApprovalRuleContent: API.OperationMethod<
   UpdatePullRequestApprovalRuleContentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { approvalRule: o_ApprovalRule } },
+  descriptor: {
+    service: svc,
+    input: {
+      pullRequestId: 0,
+      approvalRuleName: 0,
+      existingRuleContentSha256: 0,
+      newRuleContent: 0,
+    },
+    output: { approvalRule: o_ApprovalRule },
+  },
   errors: [
     ApprovalRuleContentRequiredException,
     ApprovalRuleDoesNotExistException,
@@ -5918,7 +6296,10 @@ export const updatePullRequestApprovalState: API.OperationMethod<
   UpdatePullRequestApprovalStateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { pullRequestId: 0, revisionId: 0, approvalState: 0 },
+  },
   errors: [
     ApprovalStateRequiredException,
     EncryptionIntegrityChecksFailedException,
@@ -5958,7 +6339,11 @@ export const updatePullRequestDescription: API.OperationMethod<
   UpdatePullRequestDescriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { pullRequest: o_PullRequest } },
+  descriptor: {
+    service: svc,
+    input: { pullRequestId: 0, description: 0 },
+    output: { pullRequest: o_PullRequest },
+  },
   errors: [
     InvalidDescriptionException,
     InvalidPullRequestIdException,
@@ -5993,7 +6378,11 @@ export const updatePullRequestStatus: API.OperationMethod<
   UpdatePullRequestStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { pullRequest: o_PullRequest } },
+  descriptor: {
+    service: svc,
+    input: { pullRequestId: 0, pullRequestStatus: 0 },
+    output: { pullRequest: o_PullRequest },
+  },
   errors: [
     EncryptionIntegrityChecksFailedException,
     EncryptionKeyAccessDeniedException,
@@ -6029,7 +6418,11 @@ export const updatePullRequestTitle: API.OperationMethod<
   UpdatePullRequestTitleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { pullRequest: o_PullRequest } },
+  descriptor: {
+    service: svc,
+    input: { pullRequestId: 0, title: 0 },
+    output: { pullRequest: o_PullRequest },
+  },
   errors: [
     InvalidPullRequestIdException,
     InvalidTitleException,
@@ -6069,7 +6462,10 @@ export const updateRepositoryDescription: API.OperationMethod<
   UpdateRepositoryDescriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { repositoryName: 0, repositoryDescription: 0 },
+  },
   errors: [
     EncryptionIntegrityChecksFailedException,
     EncryptionKeyAccessDeniedException,
@@ -6108,7 +6504,7 @@ export const updateRepositoryEncryptionKey: API.OperationMethod<
   UpdateRepositoryEncryptionKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { repositoryName: 0, kmsKeyId: 0 } },
   errors: [
     EncryptionIntegrityChecksFailedException,
     EncryptionKeyAccessDeniedException,
@@ -6146,7 +6542,7 @@ export const updateRepositoryName: API.OperationMethod<
   UpdateRepositoryNameError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { oldName: 0, newName: 0 } },
   errors: [
     InvalidRepositoryNameException,
     RepositoryDoesNotExistException,
@@ -6158,6 +6554,30 @@ export const updateRepositoryName: API.OperationMethod<
   operationName: "UpdateRepositoryName",
 })) as any;
 
+const i_ConflictResolution: D.LazyStruct = () => ({
+  replaceContents: D.list({
+    filePath: 0,
+    replacementType: 0,
+    content: 0,
+    fileMode: 0,
+  }),
+  deleteFiles: D.list(i_DeleteFileEntry),
+  setFileModes: D.list(i_SetFileModeEntry),
+});
+const i_DeleteFileEntry: D.LazyStruct = () => ({ filePath: 0 });
+const i_Location: D.LazyStruct = () => ({
+  filePath: 0,
+  filePosition: 0,
+  relativeFileVersion: 0,
+});
+const i_RepositoryTrigger: D.LazyStruct = () => ({
+  name: 0,
+  destinationArn: 0,
+  customData: 0,
+  branches: 0,
+  events: 0,
+});
+const i_SetFileModeEntry: D.LazyStruct = () => ({ filePath: 0, fileMode: 0 });
 const o_ApprovalRule: D.LazyStruct = () => ({
   lastModifiedDate: D.ts,
   creationDate: D.ts,

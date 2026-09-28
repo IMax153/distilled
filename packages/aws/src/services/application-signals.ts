@@ -1098,6 +1098,12 @@ export const batchDeleteInstrumentationConfigurations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /batch-delete-instrumentation-configurations",
+    input: {
+      DeletionTarget: {
+        Scope: { Service: 0, Environment: 0, InstrumentationType: 0 },
+        ResourceArns: { ResourceArns: 0, InstrumentationType: 0 },
+      },
+    },
     body: true,
   },
   errors: [ThrottlingException, ValidationException],
@@ -1128,6 +1134,7 @@ export const batchGetServiceLevelObjectiveBudgetReport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /budget-report",
+    input: { Timestamp: 0, SloIds: 0 },
     output: { Timestamp: D.ts, Reports: D.list({ Goal: o_Goal }) },
     body: true,
   },
@@ -1151,7 +1158,16 @@ export const batchUpdateExclusionWindows: API.OperationMethod<
   BatchUpdateExclusionWindowsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /exclusion-windows", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /exclusion-windows",
+    input: {
+      SloIds: 0,
+      AddExclusionWindows: D.list(i_ExclusionWindow),
+      RemoveExclusionWindows: D.list(i_ExclusionWindow),
+    },
+    body: true,
+  },
   errors: [ResourceNotFoundException, ThrottlingException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1180,6 +1196,35 @@ export const createInstrumentationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /create-instrumentation-configuration",
+    input: {
+      InstrumentationType: 0,
+      Service: 0,
+      Environment: 0,
+      SignalType: 0,
+      Location: { CodeLocation: i_CodeLocation },
+      Description: 0,
+      ExpiresAt: 0,
+      AttributeFilters: 0,
+      CaptureConfiguration: {
+        CodeCapture: {
+          CaptureArguments: 0,
+          CaptureReturn: 0,
+          CaptureStackTrace: 0,
+          CaptureLocals: 0,
+          CaptureLimits: {
+            MaxHits: 0,
+            MaxStringLength: 0,
+            MaxCollectionWidth: 0,
+            MaxCollectionDepth: 0,
+            MaxStackFrames: 0,
+            MaxStackTraceSize: 0,
+            MaxObjectDepth: 0,
+            MaxFieldsPerObject: 0,
+          },
+        },
+      },
+      Tags: D.list(i_Tag),
+    },
     output: { ExpiresAt: D.ts, CreatedAt: D.ts },
     body: true,
   },
@@ -1255,6 +1300,17 @@ export const createServiceLevelObjective: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /slo",
+    input: {
+      Name: 0,
+      Description: 0,
+      SliConfig: i_ServiceLevelIndicatorConfig,
+      RequestBasedSliConfig: i_RequestBasedServiceLevelIndicatorConfig,
+      Goal: i_Goal,
+      Tags: D.list(i_Tag),
+      BurnRateConfigurations: D.list(i_BurnRateConfiguration),
+      CreateRecommendedSlo: 0,
+      AutoInvestigationEnabled: 0,
+    },
     output: { Slo: o_ServiceLevelObjective },
     body: true,
   },
@@ -1308,6 +1364,13 @@ export const deleteInstrumentationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-instrumentation-configuration",
+    input: {
+      InstrumentationType: 0,
+      Service: 0,
+      Environment: 0,
+      SignalType: 0,
+      LocationIdentifier: i_LocationIdentifier,
+    },
     body: true,
   },
   errors: [ResourceNotFoundException, ThrottlingException, ValidationException],
@@ -1330,7 +1393,7 @@ export const deleteServiceLevelObjective: API.OperationMethod<
   DeleteServiceLevelObjectiveError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /slo/{Id}" },
+  descriptor: { service: svc, http: "DELETE /slo/{Id}", input: { Id: 0 } },
   errors: [ResourceNotFoundException, ThrottlingException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1354,6 +1417,13 @@ export const getInstrumentationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /get-instrumentation-configuration",
+    input: {
+      InstrumentationType: 0,
+      Service: 0,
+      Environment: 0,
+      SignalType: 0,
+      LocationIdentifier: i_LocationIdentifier,
+    },
     output: { Configuration: { ExpiresAt: D.ts, CreatedAt: D.ts } },
     body: true,
   },
@@ -1383,6 +1453,18 @@ export const getInstrumentationConfigurationStatus: API.PaginatedOperationMethod
   descriptor: {
     service: svc,
     http: "POST /get-instrumentation-configuration-status",
+    input: {
+      InstrumentationType: 0,
+      Service: 0,
+      Environment: 0,
+      SignalType: 0,
+      LocationIdentifier: i_LocationIdentifier,
+      Status: 0,
+      StartTime: 0,
+      EndTime: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { Events: D.list({ Time: D.ts }) },
     body: true,
   },
@@ -1415,8 +1497,9 @@ export const getService: API.OperationMethod<
     service: svc,
     http: "POST /service",
     input: {
-      StartTime: D.m({ query: "StartTime" }),
-      EndTime: D.m({ query: "EndTime" }),
+      StartTime: D.m({ query: "StartTime", shape: D.tsAs("epoch-seconds") }),
+      EndTime: D.m({ query: "EndTime", shape: D.tsAs("epoch-seconds") }),
+      KeyAttributes: 0,
     },
     output: { StartTime: D.ts, EndTime: D.ts },
     body: true,
@@ -1444,6 +1527,7 @@ export const getServiceLevelObjective: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /slo/{Id}",
+    input: { Id: 0 },
     output: { Slo: o_ServiceLevelObjective },
   },
   errors: [ResourceNotFoundException, ThrottlingException, ValidationException],
@@ -1469,8 +1553,25 @@ export const listAuditFindings: API.OperationMethod<
     service: svc,
     http: "POST /auditFindings",
     input: {
-      StartTime: D.m({ query: "StartTime" }),
-      EndTime: D.m({ query: "EndTime" }),
+      StartTime: D.m({ query: "StartTime", shape: D.tsAs("epoch-seconds") }),
+      EndTime: D.m({ query: "EndTime", shape: D.tsAs("epoch-seconds") }),
+      Auditors: 0,
+      AuditTargets: D.list({
+        Type: 0,
+        Data: {
+          Service: i_ServiceEntity,
+          Slo: { SloName: 0, SloArn: 0 },
+          ServiceOperation: {
+            Service: i_ServiceEntity,
+            Operation: 0,
+            MetricType: 0,
+          },
+          Canary: { CanaryName: 0 },
+        },
+      }),
+      DetailLevel: 0,
+      NextToken: 0,
+      MaxResults: 0,
     },
     output: {
       StartTime: D.ts,
@@ -1505,6 +1606,9 @@ export const listEntityEvents: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /events",
     input: {
+      Entity: 0,
+      StartTime: 0,
+      EndTime: 0,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
     },
@@ -1577,6 +1681,14 @@ export const listInstrumentationConfigurations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-instrumentation-configurations",
+    input: {
+      Service: 0,
+      Environment: 0,
+      InstrumentationType: 0,
+      SyncedAt: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       LatestConfigurations: D.list({ ExpiresAt: D.ts, CreatedAt: D.ts }),
       SyncedAt: D.ts,
@@ -1613,8 +1725,9 @@ export const listServiceDependencies: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /service-dependencies",
     input: {
-      StartTime: D.m({ query: "StartTime" }),
-      EndTime: D.m({ query: "EndTime" }),
+      StartTime: D.m({ query: "StartTime", shape: D.tsAs("epoch-seconds") }),
+      EndTime: D.m({ query: "EndTime", shape: D.tsAs("epoch-seconds") }),
+      KeyAttributes: 0,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
     },
@@ -1651,8 +1764,9 @@ export const listServiceDependents: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /service-dependents",
     input: {
-      StartTime: D.m({ query: "StartTime" }),
-      EndTime: D.m({ query: "EndTime" }),
+      StartTime: D.m({ query: "StartTime", shape: D.tsAs("epoch-seconds") }),
+      EndTime: D.m({ query: "EndTime", shape: D.tsAs("epoch-seconds") }),
+      KeyAttributes: 0,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
     },
@@ -1690,6 +1804,7 @@ export const listServiceLevelObjectiveExclusionWindows: API.PaginatedOperationMe
     service: svc,
     http: "GET /slo/{Id}/exclusion-windows",
     input: {
+      Id: 0,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
     },
@@ -1725,11 +1840,15 @@ export const listServiceLevelObjectives: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /slos",
     input: {
+      KeyAttributes: 0,
       OperationName: D.m({ query: "OperationName" }),
+      DependencyConfig: i_DependencyConfig,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
+      MetricSourceTypes: 0,
       IncludeLinkedAccounts: D.m({ query: "IncludeLinkedAccounts" }),
       SloOwnerAwsAccountId: D.m({ query: "SloOwnerAwsAccountId" }),
+      MetricSource: i_MetricSource,
     },
     output: { SloSummaries: D.list({ CreatedTime: D.ts }) },
     body: true,
@@ -1764,8 +1883,9 @@ export const listServiceOperations: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /service-operations",
     input: {
-      StartTime: D.m({ query: "StartTime" }),
-      EndTime: D.m({ query: "EndTime" }),
+      StartTime: D.m({ query: "StartTime", shape: D.tsAs("epoch-seconds") }),
+      EndTime: D.m({ query: "EndTime", shape: D.tsAs("epoch-seconds") }),
+      KeyAttributes: 0,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
     },
@@ -1802,8 +1922,8 @@ export const listServices: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /services",
     input: {
-      StartTime: D.m({ query: "StartTime" }),
-      EndTime: D.m({ query: "EndTime" }),
+      StartTime: D.m({ query: "StartTime", shape: D.tsAs("epoch-seconds") }),
+      EndTime: D.m({ query: "EndTime", shape: D.tsAs("epoch-seconds") }),
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
       IncludeLinkedAccounts: D.m({ query: "IncludeLinkedAccounts" }),
@@ -1840,6 +1960,18 @@ export const listServiceStates: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /service/states",
+    input: {
+      StartTime: 0,
+      EndTime: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      IncludeLinkedAccounts: 0,
+      AwsAccountId: 0,
+      AttributeFilters: D.list({
+        AttributeFilterName: 0,
+        AttributeFilterValues: 0,
+      }),
+    },
     output: {
       StartTime: D.ts,
       EndTime: D.ts,
@@ -1900,6 +2032,13 @@ export const putGroupingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /grouping-configuration",
+    input: {
+      GroupingAttributeDefinitions: D.list({
+        GroupingName: 0,
+        GroupingSourceKeys: 0,
+        DefaultGroupingValue: 0,
+      }),
+    },
     output: { GroupingConfiguration: { UpdatedAt: D.ts } },
     body: true,
   },
@@ -1927,6 +2066,18 @@ export const reportInstrumentationConfigurationStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /report-instrumentation-configuration-status",
+    input: {
+      Service: 0,
+      Environment: 0,
+      Configurations: D.list({
+        InstrumentationType: 0,
+        SignalType: 0,
+        LocationHash: 0,
+        Status: 0,
+        Time: 0,
+        ErrorCause: 0,
+      }),
+    },
     output: { UnprocessedStatusEvents: D.list({ Time: D.ts }) },
     body: true,
   },
@@ -1968,7 +2119,7 @@ export const startDiscovery: API.OperationMethod<
   StartDiscoveryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /start-discovery" },
+  descriptor: { service: svc, http: "POST /start-discovery", input: {} },
   errors: [AccessDeniedException, ThrottlingException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1997,7 +2148,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tag-resource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tag-resource",
+    input: { ResourceArn: 0, Tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     ResourceNotFoundException,
     ServiceQuotaExceededException,
@@ -2021,7 +2177,12 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /untag-resource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /untag-resource",
+    input: { ResourceArn: 0, TagKeys: 0 },
+    body: true,
+  },
   errors: [ResourceNotFoundException, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2047,6 +2208,15 @@ export const updateServiceLevelObjective: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /slo/{Id}",
+    input: {
+      Id: 0,
+      Description: 0,
+      SliConfig: i_ServiceLevelIndicatorConfig,
+      RequestBasedSliConfig: i_RequestBasedServiceLevelIndicatorConfig,
+      Goal: i_Goal,
+      BurnRateConfigurations: D.list(i_BurnRateConfiguration),
+      AutoInvestigationEnabled: 0,
+    },
     output: { Slo: o_ServiceLevelObjective },
     body: true,
   },
@@ -2056,6 +2226,84 @@ export const updateServiceLevelObjective: API.OperationMethod<
   operationName: "UpdateServiceLevelObjective",
 })) as any;
 
+const i_BurnRateConfiguration: D.LazyStruct = () => ({
+  LookBackWindowMinutes: 0,
+});
+const i_CodeLocation: D.LazyStruct = () => ({
+  Language: 0,
+  CodeUnit: 0,
+  ClassName: 0,
+  MethodName: 0,
+  FilePath: 0,
+  LineNumber: 0,
+});
+const i_DependencyConfig: D.LazyStruct = () => ({
+  DependencyKeyAttributes: 0,
+  DependencyOperationName: 0,
+});
+const i_ExclusionWindow: D.LazyStruct = () => ({
+  Window: { DurationUnit: 0, Duration: 0 },
+  StartTime: 0,
+  RecurrenceRule: { Expression: 0 },
+  Reason: 0,
+});
+const i_Goal: D.LazyStruct = () => ({
+  Interval: {
+    RollingInterval: { DurationUnit: 0, Duration: 0 },
+    CalendarInterval: { StartTime: 0, DurationUnit: 0, Duration: 0 },
+  },
+  AttainmentGoal: 0,
+  WarningThreshold: 0,
+});
+const i_LocationIdentifier: D.LazyStruct = () => ({
+  CodeLocation: i_CodeLocation,
+  LocationHash: 0,
+});
+const i_MetricSource: D.LazyStruct = () => ({
+  MetricSourceKeyAttributes: 0,
+  MetricSourceAttributes: 0,
+});
+const i_RequestBasedServiceLevelIndicatorConfig: D.LazyStruct = () => ({
+  RequestBasedSliMetricConfig: {
+    KeyAttributes: 0,
+    OperationName: 0,
+    MetricType: 0,
+    TotalRequestCountMetric: D.list(i_MetricDataQuery),
+    MonitoredRequestCountMetric: {
+      GoodCountMetric: D.list(i_MetricDataQuery),
+      BadCountMetric: D.list(i_MetricDataQuery),
+    },
+    DependencyConfig: i_DependencyConfig,
+    MetricSource: i_MetricSource,
+    MetricName: 0,
+    CompositeSliConfig: i_CompositeSliConfig,
+  },
+  MetricThreshold: 0,
+  ComparisonOperator: 0,
+});
+const i_ServiceEntity: D.LazyStruct = () => ({
+  Type: 0,
+  Name: 0,
+  Environment: 0,
+  AwsAccountId: 0,
+});
+const i_ServiceLevelIndicatorConfig: D.LazyStruct = () => ({
+  SliMetricConfig: {
+    KeyAttributes: 0,
+    OperationName: 0,
+    MetricType: 0,
+    MetricName: 0,
+    Statistic: 0,
+    PeriodSeconds: 0,
+    MetricSource: i_MetricSource,
+    MetricDataQueries: D.list(i_MetricDataQuery),
+    DependencyConfig: i_DependencyConfig,
+    CompositeSliConfig: i_CompositeSliConfig,
+  },
+  MetricThreshold: 0,
+  ComparisonOperator: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_ChangeEvent: D.LazyStruct = () => ({ Timestamp: D.ts });
 const o_Goal: D.LazyStruct = () => ({
   Interval: { CalendarInterval: { StartTime: D.ts } },
@@ -2064,4 +2312,26 @@ const o_ServiceLevelObjective: D.LazyStruct = () => ({
   CreatedTime: D.ts,
   LastUpdatedTime: D.ts,
   Goal: o_Goal,
+});
+const i_CompositeSliConfig: D.LazyStruct = () => ({
+  SelectionConfig: { Type: 0, Pattern: 0 },
+  Components: D.list({ OperationName: 0 }),
+});
+const i_MetricDataQuery: D.LazyStruct = () => ({
+  Id: 0,
+  MetricStat: {
+    Metric: {
+      Namespace: 0,
+      MetricName: 0,
+      Dimensions: D.list({ Name: 0, Value: 0 }),
+    },
+    Period: 0,
+    Stat: 0,
+    Unit: 0,
+  },
+  Expression: 0,
+  Label: 0,
+  ReturnData: 0,
+  Period: 0,
+  AccountId: 0,
 });

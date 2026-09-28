@@ -708,7 +708,11 @@ export const deleteLexicon: API.OperationMethod<
   DeleteLexiconError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v1/lexicons/{Name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v1/lexicons/{Name}",
+    input: { Name: 0 },
+  },
   errors: [LexiconNotFoundException, ServiceFailureException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -782,6 +786,7 @@ export const getLexicon: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/lexicons/{Name}",
+    input: { Name: 0 },
     output: {
       Lexicon: { Content: D.secret },
       LexiconAttributes: o_LexiconAttributes,
@@ -813,6 +818,7 @@ export const getSpeechSynthesisTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/synthesisTasks/{TaskId}",
+    input: { TaskId: 0 },
     output: { SynthesisTask: o_SynthesisTask },
   },
   errors: [
@@ -911,7 +917,12 @@ export const putLexicon: API.OperationMethod<
   PutLexiconError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /v1/lexicons/{Name}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /v1/lexicons/{Name}",
+    input: { Name: 0, Content: 0 },
+    body: true,
+  },
   errors: [
     InvalidLexiconException,
     LexiconSizeExceededException,
@@ -959,7 +970,14 @@ export const startSpeechSynthesisStream: API.OperationMethod<
       VoiceId: D.m({ header: "x-amzn-VoiceId" }),
       ActionStream: D.m({
         payload: true,
-        shape: D.events({ TextEvent: 0, CloseStreamEvent: 0 }),
+        shape: D.events({
+          TextEvent: {
+            Text: 0,
+            TextType: 0,
+            FlushStreamConfiguration: { Force: 0 },
+          },
+          CloseStreamEvent: {},
+        }),
       }),
     },
     output: {
@@ -1025,6 +1043,20 @@ export const startSpeechSynthesisTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/synthesisTasks",
+    input: {
+      Engine: 0,
+      LanguageCode: 0,
+      LexiconNames: 0,
+      OutputFormat: 0,
+      OutputS3BucketName: 0,
+      OutputS3KeyPrefix: 0,
+      SampleRate: 0,
+      SnsTopicArn: 0,
+      SpeechMarkTypes: 0,
+      Text: 0,
+      TextType: 0,
+      VoiceId: 0,
+    },
     output: { SynthesisTask: o_SynthesisTask },
     body: true,
   },
@@ -1074,6 +1106,17 @@ export const synthesizeSpeech: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/speech",
+    input: {
+      Engine: 0,
+      LanguageCode: 0,
+      LexiconNames: 0,
+      OutputFormat: 0,
+      SampleRate: 0,
+      SpeechMarkTypes: 0,
+      Text: 0,
+      TextType: 0,
+      VoiceId: 0,
+    },
     output: {
       AudioStream: D.m({ payload: true, shape: D.stream }),
       ContentType: D.m({ header: "Content-Type" }),

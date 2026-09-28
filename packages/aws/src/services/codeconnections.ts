@@ -608,7 +608,15 @@ export const createConnection: API.OperationMethod<
   CreateConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProviderType: 0,
+      ConnectionName: 0,
+      Tags: D.list(i_Tag),
+      HostArn: 0,
+    },
+  },
   errors: [
     LimitExceededException,
     ResourceNotFoundException,
@@ -635,7 +643,16 @@ export const createHost: API.OperationMethod<
   CreateHostError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      ProviderType: 0,
+      ProviderEndpoint: 0,
+      VpcConfiguration: i_VpcConfiguration,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [LimitExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -660,7 +677,16 @@ export const createRepositoryLink: API.OperationMethod<
   CreateRepositoryLinkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ConnectionArn: 0,
+      OwnerId: 0,
+      RepositoryName: 0,
+      EncryptionKeyArn: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -695,7 +721,20 @@ export const createSyncConfiguration: API.OperationMethod<
   CreateSyncConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Branch: 0,
+      ConfigFile: 0,
+      RepositoryLinkId: 0,
+      ResourceName: 0,
+      RoleArn: 0,
+      SyncType: 0,
+      PublishDeploymentStatus: 0,
+      TriggerResourceUpdateOn: 0,
+      PullRequestComment: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -720,7 +759,7 @@ export const deleteConnection: API.OperationMethod<
   DeleteConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConnectionArn: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -742,7 +781,7 @@ export const deleteHost: API.OperationMethod<
   DeleteHostError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { HostArn: 0 } },
   errors: [ResourceNotFoundException, ResourceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -768,7 +807,7 @@ export const deleteRepositoryLink: API.OperationMethod<
   DeleteRepositoryLinkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RepositoryLinkId: 0 } },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -801,7 +840,7 @@ export const deleteSyncConfiguration: API.OperationMethod<
   DeleteSyncConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SyncType: 0, ResourceName: 0 } },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -828,7 +867,7 @@ export const getConnection: API.OperationMethod<
   GetConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ConnectionArn: 0 } },
   errors: [ResourceNotFoundException, ResourceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -849,7 +888,7 @@ export const getHost: API.OperationMethod<
   GetHostError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { HostArn: 0 } },
   errors: [ResourceNotFoundException, ResourceUnavailableException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -874,7 +913,7 @@ export const getRepositoryLink: API.OperationMethod<
   GetRepositoryLinkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RepositoryLinkId: 0 } },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -907,6 +946,7 @@ export const getRepositorySyncStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Branch: 0, RepositoryLinkId: 0, SyncType: 0 },
     output: { LatestSync: { StartedAt: D.ts, Events: D.list({ Time: D.ts }) } },
   },
   errors: [
@@ -940,6 +980,7 @@ export const getResourceSyncStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResourceName: 0, SyncType: 0 },
     output: {
       LatestSuccessfulSync: o_ResourceSyncAttempt,
       LatestSync: o_ResourceSyncAttempt,
@@ -975,6 +1016,7 @@ export const getSyncBlockerSummary: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { SyncType: 0, ResourceName: 0 },
     output: { SyncBlockerSummary: { LatestBlockers: D.list(o_SyncBlocker) } },
   },
   errors: [
@@ -1005,7 +1047,7 @@ export const getSyncConfiguration: API.OperationMethod<
   GetSyncConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SyncType: 0, ResourceName: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1029,7 +1071,15 @@ export const listConnections: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProviderTypeFilter: 0,
+      HostArnFilter: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1052,7 +1102,7 @@ export const listHosts: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1082,7 +1132,7 @@ export const listRepositoryLinks: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -1117,7 +1167,7 @@ export const listRepositorySyncDefinitions: API.OperationMethod<
   ListRepositorySyncDefinitionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RepositoryLinkId: 0, SyncType: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1147,7 +1197,10 @@ export const listSyncConfigurations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MaxResults: 0, NextToken: 0, RepositoryLinkId: 0, SyncType: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1175,7 +1228,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1196,7 +1249,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [LimitExceededException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1213,7 +1266,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1235,7 +1288,14 @@ export const updateHost: API.OperationMethod<
   UpdateHostError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      HostArn: 0,
+      ProviderEndpoint: 0,
+      VpcConfiguration: i_VpcConfiguration,
+    },
+  },
   errors: [
     ConflictException,
     ResourceNotFoundException,
@@ -1267,7 +1327,10 @@ export const updateRepositoryLink: API.OperationMethod<
   UpdateRepositoryLinkError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ConnectionArn: 0, EncryptionKeyArn: 0, RepositoryLinkId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConditionalCheckFailedException,
@@ -1300,7 +1363,11 @@ export const updateSyncBlocker: API.OperationMethod<
   UpdateSyncBlockerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { SyncBlocker: o_SyncBlocker } },
+  descriptor: {
+    service: svc,
+    input: { Id: 0, SyncType: 0, ResourceName: 0, ResolvedReason: 0 },
+    output: { SyncBlocker: o_SyncBlocker },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1333,7 +1400,20 @@ export const updateSyncConfiguration: API.OperationMethod<
   UpdateSyncConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Branch: 0,
+      ConfigFile: 0,
+      RepositoryLinkId: 0,
+      ResourceName: 0,
+      RoleArn: 0,
+      SyncType: 0,
+      PublishDeploymentStatus: 0,
+      TriggerResourceUpdateOn: 0,
+      PullRequestComment: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConcurrentModificationException,
@@ -1348,6 +1428,13 @@ export const updateSyncConfiguration: API.OperationMethod<
   operationName: "UpdateSyncConfiguration",
 })) as any;
 
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_VpcConfiguration: D.LazyStruct = () => ({
+  VpcId: 0,
+  SubnetIds: 0,
+  SecurityGroupIds: 0,
+  TlsCertificate: 0,
+});
 const o_ResourceSyncAttempt: D.LazyStruct = () => ({
   Events: D.list({ Time: D.ts }),
   StartedAt: D.ts,

@@ -1522,7 +1522,7 @@ export const associateVehicleFleet: API.OperationMethod<
   AssociateVehicleFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { vehicleName: 0, fleetId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1558,7 +1558,20 @@ export const batchCreateVehicle: API.OperationMethod<
   BatchCreateVehicleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      vehicles: D.list({
+        vehicleName: 0,
+        modelManifestArn: 0,
+        decoderManifestArn: 0,
+        attributes: 0,
+        associationBehavior: 0,
+        tags: D.list(i_Tag),
+        stateTemplates: D.list(i_StateTemplateAssociation),
+      }),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1593,7 +1606,21 @@ export const batchUpdateVehicle: API.OperationMethod<
   BatchUpdateVehicleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      vehicles: D.list({
+        vehicleName: 0,
+        modelManifestArn: 0,
+        decoderManifestArn: 0,
+        attributes: 0,
+        attributeUpdateMode: 0,
+        stateTemplatesToAdd: D.list(i_StateTemplateAssociation),
+        stateTemplatesToRemove: 0,
+        stateTemplatesToUpdate: D.list(i_StateTemplateAssociation),
+      }),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1631,7 +1658,67 @@ export const createCampaign: API.OperationMethod<
   CreateCampaignError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      signalCatalogArn: 0,
+      targetArn: 0,
+      startTime: 0,
+      expiryTime: 0,
+      postTriggerCollectionDuration: 0,
+      diagnosticsMode: 0,
+      spoolingMode: 0,
+      compression: 0,
+      priority: 0,
+      signalsToCollect: D.list({
+        name: 0,
+        maxSampleCount: 0,
+        minimumSamplingIntervalMs: 0,
+        dataPartitionId: 0,
+      }),
+      collectionScheme: {
+        timeBasedCollectionScheme: { periodMs: 0 },
+        conditionBasedCollectionScheme: {
+          expression: 0,
+          minimumTriggerIntervalMs: 0,
+          triggerMode: 0,
+          conditionLanguageVersion: 0,
+        },
+      },
+      dataExtraDimensions: 0,
+      tags: D.list(i_Tag),
+      dataDestinationConfigs: D.list({
+        s3Config: {
+          bucketArn: 0,
+          dataFormat: 0,
+          storageCompressionFormat: 0,
+          prefix: 0,
+        },
+        timestreamConfig: { timestreamTableArn: 0, executionRoleArn: 0 },
+        mqttTopicConfig: { mqttTopicArn: 0, executionRoleArn: 0 },
+      }),
+      dataPartitions: D.list({
+        id: 0,
+        storageOptions: {
+          maximumSize: { unit: 0, value: 0 },
+          storageLocation: 0,
+          minimumTimeToLive: { unit: 0, value: 0 },
+        },
+        uploadOptions: { expression: 0, conditionLanguageVersion: 0 },
+      }),
+      signalsToFetch: D.list({
+        fullyQualifiedName: 0,
+        signalFetchConfig: {
+          timeBased: { executionFrequencyMs: 0 },
+          conditionBased: { conditionExpression: 0, triggerMode: 0 },
+        },
+        conditionLanguageVersion: 0,
+        actions: 0,
+      }),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1672,7 +1759,18 @@ export const createDecoderManifest: API.OperationMethod<
   CreateDecoderManifestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      modelManifestArn: 0,
+      signalDecoders: D.list(i_SignalDecoder),
+      networkInterfaces: D.list(i_NetworkInterface),
+      defaultForUnmappedSignals: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1710,7 +1808,15 @@ export const createFleet: API.OperationMethod<
   CreateFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      fleetId: 0,
+      description: 0,
+      signalCatalogArn: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1747,7 +1853,16 @@ export const createModelManifest: API.OperationMethod<
   CreateModelManifestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      nodes: 0,
+      signalCatalogArn: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1781,7 +1896,15 @@ export const createSignalCatalog: API.OperationMethod<
   CreateSignalCatalogError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      nodes: D.list(i_Node),
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1817,7 +1940,18 @@ export const createStateTemplate: API.OperationMethod<
   CreateStateTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      signalCatalogArn: 0,
+      stateTemplateProperties: 0,
+      dataExtraDimensions: 0,
+      metadataExtraDimensions: 0,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1859,7 +1993,18 @@ export const createVehicle: API.OperationMethod<
   CreateVehicleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      vehicleName: 0,
+      modelManifestArn: 0,
+      decoderManifestArn: 0,
+      attributes: 0,
+      associationBehavior: 0,
+      tags: D.list(i_Tag),
+      stateTemplates: D.list(i_StateTemplateAssociation),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1890,7 +2035,7 @@ export const deleteCampaign: API.OperationMethod<
   DeleteCampaignError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -1919,7 +2064,7 @@ export const deleteDecoderManifest: API.OperationMethod<
   DeleteDecoderManifestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1949,7 +2094,7 @@ export const deleteFleet: API.OperationMethod<
   DeleteFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { fleetId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1977,7 +2122,7 @@ export const deleteModelManifest: API.OperationMethod<
   DeleteModelManifestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2006,7 +2151,7 @@ export const deleteSignalCatalog: API.OperationMethod<
   DeleteSignalCatalogError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2034,7 +2179,7 @@ export const deleteStateTemplate: API.OperationMethod<
   DeleteStateTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { identifier: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2061,7 +2206,7 @@ export const deleteVehicle: API.OperationMethod<
   DeleteVehicleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { vehicleName: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2090,7 +2235,7 @@ export const disassociateVehicleFleet: API.OperationMethod<
   DisassociateVehicleFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { vehicleName: 0, fleetId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2122,6 +2267,7 @@ export const getCampaign: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { name: 0 },
     output: {
       startTime: D.ts,
       expiryTime: D.ts,
@@ -2170,6 +2316,7 @@ export const getDecoderManifest: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { name: 0 },
     output: { creationTime: D.ts, lastModificationTime: D.ts },
   },
   errors: [
@@ -2201,6 +2348,7 @@ export const getEncryptionConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {},
     output: { creationTime: D.ts, lastModificationTime: D.ts },
   },
   errors: [
@@ -2233,6 +2381,7 @@ export const getFleet: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { fleetId: 0 },
     output: { creationTime: D.ts, lastModificationTime: D.ts },
   },
   errors: [
@@ -2260,7 +2409,7 @@ export const getLoggingOptions: API.OperationMethod<
   GetLoggingOptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [AccessDeniedException, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2284,6 +2433,7 @@ export const getModelManifest: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { name: 0 },
     output: { creationTime: D.ts, lastModificationTime: D.ts },
   },
   errors: [
@@ -2321,6 +2471,7 @@ export const getRegisterAccountStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {},
     output: { creationTime: D.ts, lastModificationTime: D.ts },
   },
   errors: [
@@ -2352,6 +2503,7 @@ export const getSignalCatalog: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { name: 0 },
     output: { creationTime: D.ts, lastModificationTime: D.ts },
   },
   errors: [
@@ -2385,6 +2537,7 @@ export const getStateTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { identifier: 0 },
     output: { creationTime: D.ts, lastModificationTime: D.ts },
   },
   errors: [
@@ -2417,6 +2570,7 @@ export const getVehicle: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { vehicleName: 0 },
     output: { creationTime: D.ts, lastModificationTime: D.ts },
   },
   errors: [
@@ -2448,7 +2602,10 @@ export const getVehicleStatus: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   VehicleStatus
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { nextToken: 0, maxResults: 0, vehicleName: 0 },
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -2486,7 +2643,15 @@ export const importDecoderManifest: API.OperationMethod<
   ImportDecoderManifestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      networkFileDefinitions: D.list({
+        canDbc: { networkInterface: 0, canDbcFiles: 0, signalsMap: 0 },
+      }),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2521,7 +2686,15 @@ export const importSignalCatalog: API.OperationMethod<
   ImportSignalCatalogError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      vss: { vssJson: 0 },
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2556,6 +2729,7 @@ export const listCampaigns: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0, status: 0, listResponseScope: 0 },
     output: {
       campaignSummaries: D.list({
         creationTime: D.ts,
@@ -2594,7 +2768,7 @@ export const listDecoderManifestNetworkInterfaces: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   NetworkInterface
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0, nextToken: 0, maxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2633,6 +2807,12 @@ export const listDecoderManifests: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      modelManifestArn: 0,
+      nextToken: 0,
+      maxResults: 0,
+      listResponseScope: 0,
+    },
     output: {
       summaries: D.list({ creationTime: D.ts, lastModificationTime: D.ts }),
     },
@@ -2673,7 +2853,7 @@ export const listDecoderManifestSignals: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   SignalDecoder
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0, nextToken: 0, maxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2713,6 +2893,7 @@ export const listFleets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0, listResponseScope: 0 },
     output: {
       fleetSummaries: D.list({
         creationTime: D.ts,
@@ -2757,7 +2938,10 @@ export const listFleetsForVehicle: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   FleetId
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { vehicleName: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2796,7 +2980,7 @@ export const listModelManifestNodes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Node
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0, nextToken: 0, maxResults: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2836,6 +3020,12 @@ export const listModelManifests: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      signalCatalogArn: 0,
+      nextToken: 0,
+      maxResults: 0,
+      listResponseScope: 0,
+    },
     output: {
       summaries: D.list({ creationTime: D.ts, lastModificationTime: D.ts }),
     },
@@ -2877,7 +3067,10 @@ export const listSignalCatalogNodes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Node
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { name: 0, nextToken: 0, maxResults: 0, signalNodeType: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2920,6 +3113,7 @@ export const listSignalCatalogs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0 },
     output: {
       summaries: D.list({ creationTime: D.ts, lastModificationTime: D.ts }),
     },
@@ -2961,6 +3155,7 @@ export const listStateTemplates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0, listResponseScope: 0 },
     output: {
       summaries: D.list({ creationTime: D.ts, lastModificationTime: D.ts }),
     },
@@ -2998,7 +3193,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3031,6 +3226,14 @@ export const listVehicles: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      modelManifestArn: 0,
+      attributeNames: 0,
+      attributeValues: 0,
+      nextToken: 0,
+      maxResults: 0,
+      listResponseScope: 0,
+    },
     output: {
       vehicleSummaries: D.list({
         creationTime: D.ts,
@@ -3074,7 +3277,10 @@ export const listVehiclesInFleet: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   VehicleName
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { fleetId: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3113,7 +3319,7 @@ export const putEncryptionConfiguration: API.OperationMethod<
   PutEncryptionConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { kmsKeyId: 0, encryptionType: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3143,7 +3349,10 @@ export const putLoggingOptions: API.OperationMethod<
   PutLoggingOptionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { cloudWatchLogDelivery: { logType: 0, logGroupName: 0 } },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3197,6 +3406,13 @@ export const registerAccount: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      timestreamResources: {
+        timestreamDatabaseName: 0,
+        timestreamTableName: 0,
+      },
+      iamResources: { roleArn: 0 },
+    },
     output: { creationTime: D.ts, lastModificationTime: D.ts },
   },
   errors: [
@@ -3229,7 +3445,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3258,7 +3474,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3287,7 +3503,10 @@ export const updateCampaign: API.OperationMethod<
   UpdateCampaignError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { name: 0, description: 0, dataExtraDimensions: 0, action: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3321,7 +3540,21 @@ export const updateDecoderManifest: API.OperationMethod<
   UpdateDecoderManifestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      signalDecodersToAdd: D.list(i_SignalDecoder),
+      signalDecodersToUpdate: D.list(i_SignalDecoder),
+      signalDecodersToRemove: 0,
+      networkInterfacesToAdd: D.list(i_NetworkInterface),
+      networkInterfacesToUpdate: D.list(i_NetworkInterface),
+      networkInterfacesToRemove: 0,
+      status: 0,
+      defaultForUnmappedSignals: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3353,7 +3586,7 @@ export const updateFleet: API.OperationMethod<
   UpdateFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { fleetId: 0, description: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3386,7 +3619,16 @@ export const updateModelManifest: API.OperationMethod<
   UpdateModelManifestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      nodesToAdd: 0,
+      nodesToRemove: 0,
+      status: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3421,7 +3663,16 @@ export const updateSignalCatalog: API.OperationMethod<
   UpdateSignalCatalogError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      description: 0,
+      nodesToAdd: D.list(i_Node),
+      nodesToUpdate: D.list(i_Node),
+      nodesToRemove: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3458,7 +3709,17 @@ export const updateStateTemplate: API.OperationMethod<
   UpdateStateTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      identifier: 0,
+      description: 0,
+      stateTemplatePropertiesToAdd: 0,
+      stateTemplatePropertiesToRemove: 0,
+      dataExtraDimensions: 0,
+      metadataExtraDimensions: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3493,7 +3754,19 @@ export const updateVehicle: API.OperationMethod<
   UpdateVehicleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      vehicleName: 0,
+      modelManifestArn: 0,
+      decoderManifestArn: 0,
+      attributes: 0,
+      attributeUpdateMode: 0,
+      stateTemplatesToAdd: D.list(i_StateTemplateAssociation),
+      stateTemplatesToRemove: 0,
+      stateTemplatesToUpdate: D.list(i_StateTemplateAssociation),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3507,3 +3780,140 @@ export const updateVehicle: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateVehicle",
 })) as any;
+
+const i_NetworkInterface: D.LazyStruct = () => ({
+  interfaceId: 0,
+  type: 0,
+  canInterface: { name: 0, protocolName: 0, protocolVersion: 0 },
+  obdInterface: {
+    name: 0,
+    requestMessageId: 0,
+    obdStandard: 0,
+    pidRequestIntervalSeconds: 0,
+    dtcRequestIntervalSeconds: 0,
+    useExtendedIds: 0,
+    hasTransmissionEcu: 0,
+  },
+  vehicleMiddleware: { name: 0, protocolName: 0 },
+  customDecodingInterface: { name: 0 },
+});
+const i_Node: D.LazyStruct = () => ({
+  branch: {
+    fullyQualifiedName: 0,
+    description: 0,
+    deprecationMessage: 0,
+    comment: 0,
+  },
+  sensor: {
+    fullyQualifiedName: 0,
+    dataType: 0,
+    description: 0,
+    unit: 0,
+    allowedValues: 0,
+    min: 0,
+    max: 0,
+    deprecationMessage: 0,
+    comment: 0,
+    structFullyQualifiedName: 0,
+  },
+  actuator: {
+    fullyQualifiedName: 0,
+    dataType: 0,
+    description: 0,
+    unit: 0,
+    allowedValues: 0,
+    min: 0,
+    max: 0,
+    assignedValue: 0,
+    deprecationMessage: 0,
+    comment: 0,
+    structFullyQualifiedName: 0,
+  },
+  attribute: {
+    fullyQualifiedName: 0,
+    dataType: 0,
+    description: 0,
+    unit: 0,
+    allowedValues: 0,
+    min: 0,
+    max: 0,
+    assignedValue: 0,
+    defaultValue: 0,
+    deprecationMessage: 0,
+    comment: 0,
+  },
+  struct: {
+    fullyQualifiedName: 0,
+    description: 0,
+    deprecationMessage: 0,
+    comment: 0,
+  },
+  property: {
+    fullyQualifiedName: 0,
+    dataType: 0,
+    dataEncoding: 0,
+    description: 0,
+    deprecationMessage: 0,
+    comment: 0,
+    structFullyQualifiedName: 0,
+  },
+});
+const i_SignalDecoder: D.LazyStruct = () => ({
+  fullyQualifiedName: 0,
+  type: 0,
+  interfaceId: 0,
+  canSignal: {
+    messageId: 0,
+    isBigEndian: 0,
+    isSigned: 0,
+    startBit: 0,
+    offset: 0,
+    factor: 0,
+    length: 0,
+    name: 0,
+    signalValueType: 0,
+  },
+  obdSignal: {
+    pidResponseLength: 0,
+    serviceMode: 0,
+    pid: 0,
+    scaling: 0,
+    offset: 0,
+    startByte: 0,
+    byteLength: 0,
+    bitRightShift: 0,
+    bitMaskLength: 0,
+    isSigned: 0,
+    signalValueType: 0,
+  },
+  messageSignal: { topicName: 0, structuredMessage: i_StructuredMessage },
+  customDecodingSignal: { id: 0 },
+});
+const i_StateTemplateAssociation: D.LazyStruct = () => ({
+  identifier: 0,
+  stateTemplateUpdateStrategy: {
+    periodic: { stateTemplateUpdateRate: { unit: 0, value: 0 } },
+    onChange: {},
+  },
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_StructuredMessage: D.LazyStruct = () => ({
+  primitiveMessageDefinition: {
+    ros2PrimitiveMessageDefinition: {
+      primitiveType: 0,
+      offset: 0,
+      scaling: 0,
+      upperBound: 0,
+    },
+  },
+  structuredMessageListDefinition: {
+    name: 0,
+    memberType: i_StructuredMessage,
+    listType: 0,
+    capacity: 0,
+  },
+  structuredMessageDefinition: D.list({
+    fieldName: 0,
+    dataType: i_StructuredMessage,
+  }),
+});

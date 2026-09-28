@@ -1962,6 +1962,7 @@ export const acceptAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /attachments/{AttachmentId}/accept",
+    input: { AttachmentId: 0 },
     output: { Attachment: o_Attachment },
   },
   errors: [
@@ -2002,6 +2003,7 @@ export const associateConnectPeer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /global-networks/{GlobalNetworkId}/connect-peer-associations",
+    input: { GlobalNetworkId: 0, ConnectPeerId: 0, DeviceId: 0, LinkId: 0 },
     body: true,
   },
   errors: [
@@ -2049,6 +2051,12 @@ export const associateCustomerGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /global-networks/{GlobalNetworkId}/customer-gateway-associations",
+    input: {
+      CustomerGatewayArn: 0,
+      GlobalNetworkId: 0,
+      DeviceId: 0,
+      LinkId: 0,
+    },
     body: true,
   },
   errors: [
@@ -2086,6 +2094,7 @@ export const associateLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /global-networks/{GlobalNetworkId}/link-associations",
+    input: { GlobalNetworkId: 0, DeviceId: 0, LinkId: 0 },
     body: true,
   },
   errors: [
@@ -2129,6 +2138,12 @@ export const associateTransitGatewayConnectPeer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /global-networks/{GlobalNetworkId}/transit-gateway-connect-peer-associations",
+    input: {
+      GlobalNetworkId: 0,
+      TransitGatewayConnectPeerArn: 0,
+      DeviceId: 0,
+      LinkId: 0,
+    },
     body: true,
   },
   errors: [
@@ -2169,7 +2184,15 @@ export const createConnectAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /connect-attachments",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      CoreNetworkId: 0,
+      EdgeLocation: 0,
+      TransportAttachmentId: 0,
+      RoutingPolicyLabel: 0,
+      Options: { Protocol: 0 },
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { ConnectAttachment: o_ConnectAttachment },
     body: true,
   },
@@ -2206,6 +2229,15 @@ export const createConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /global-networks/{GlobalNetworkId}/connections",
+    input: {
+      GlobalNetworkId: 0,
+      DeviceId: 0,
+      ConnectedDeviceId: 0,
+      LinkId: 0,
+      ConnectedLinkId: 0,
+      Description: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { Connection: o_Connection },
     body: true,
   },
@@ -2243,7 +2275,16 @@ export const createConnectPeer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /connect-peers",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ConnectAttachmentId: 0,
+      CoreNetworkAddress: 0,
+      PeerAddress: 0,
+      BgpOptions: { PeerAsn: 0 },
+      InsideCidrBlocks: 0,
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+      SubnetArn: 0,
+    },
     output: { ConnectPeer: o_ConnectPeer },
     body: true,
   },
@@ -2281,7 +2322,13 @@ export const createCoreNetwork: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /core-networks",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      GlobalNetworkId: 0,
+      Description: 0,
+      Tags: D.list(i_Tag),
+      PolicyDocument: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { CoreNetwork: o_CoreNetwork },
     body: true,
   },
@@ -2320,7 +2367,12 @@ export const createCoreNetworkPrefixListAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /prefix-list",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      CoreNetworkId: 0,
+      PrefixListArn: 0,
+      PrefixListAlias: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2359,6 +2411,18 @@ export const createDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /global-networks/{GlobalNetworkId}/devices",
+    input: {
+      GlobalNetworkId: 0,
+      AWSLocation: i_AWSLocation,
+      Description: 0,
+      Type: 0,
+      Vendor: 0,
+      Model: 0,
+      SerialNumber: 0,
+      Location: i_Location,
+      SiteId: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { Device: o_Device },
     body: true,
   },
@@ -2396,7 +2460,14 @@ export const createDirectConnectGatewayAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /direct-connect-gateway-attachments",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      CoreNetworkId: 0,
+      DirectConnectGatewayArn: 0,
+      RoutingPolicyLabel: 0,
+      EdgeLocations: 0,
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: {
       DirectConnectGatewayAttachment: o_DirectConnectGatewayAttachment,
     },
@@ -2435,6 +2506,7 @@ export const createGlobalNetwork: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /global-networks",
+    input: { Description: 0, Tags: D.list(i_Tag) },
     output: { GlobalNetwork: o_GlobalNetwork },
     body: true,
   },
@@ -2472,6 +2544,15 @@ export const createLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /global-networks/{GlobalNetworkId}/links",
+    input: {
+      GlobalNetworkId: 0,
+      Description: 0,
+      Type: 0,
+      Bandwidth: i_Bandwidth,
+      Provider: 0,
+      SiteId: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { Link: o_Link },
     body: true,
   },
@@ -2510,6 +2591,12 @@ export const createSite: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /global-networks/{GlobalNetworkId}/sites",
+    input: {
+      GlobalNetworkId: 0,
+      Description: 0,
+      Location: i_Location,
+      Tags: D.list(i_Tag),
+    },
     output: { Site: o_Site },
     body: true,
   },
@@ -2547,7 +2634,13 @@ export const createSiteToSiteVpnAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /site-to-site-vpn-attachments",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      CoreNetworkId: 0,
+      VpnConnectionArn: 0,
+      RoutingPolicyLabel: 0,
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { SiteToSiteVpnAttachment: o_SiteToSiteVpnAttachment },
     body: true,
   },
@@ -2584,7 +2677,12 @@ export const createTransitGatewayPeering: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /transit-gateway-peerings",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      CoreNetworkId: 0,
+      TransitGatewayArn: 0,
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { TransitGatewayPeering: o_TransitGatewayPeering },
     body: true,
   },
@@ -2621,7 +2719,13 @@ export const createTransitGatewayRouteTableAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /transit-gateway-route-table-attachments",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      PeeringId: 0,
+      TransitGatewayRouteTableArn: 0,
+      RoutingPolicyLabel: 0,
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: {
       TransitGatewayRouteTableAttachment: o_TransitGatewayRouteTableAttachment,
     },
@@ -2660,7 +2764,15 @@ export const createVpcAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /vpc-attachments",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      CoreNetworkId: 0,
+      VpcArn: 0,
+      SubnetArns: 0,
+      Options: i_VpcOptions,
+      RoutingPolicyLabel: 0,
+      Tags: D.list(i_Tag),
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { VpcAttachment: o_VpcAttachment },
     body: true,
   },
@@ -2697,6 +2809,7 @@ export const deleteAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /attachments/{AttachmentId}",
+    input: { AttachmentId: 0 },
     output: { Attachment: o_Attachment },
   },
   errors: [
@@ -2732,6 +2845,7 @@ export const deleteConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /global-networks/{GlobalNetworkId}/connections/{ConnectionId}",
+    input: { GlobalNetworkId: 0, ConnectionId: 0 },
     output: { Connection: o_Connection },
   },
   errors: [
@@ -2767,6 +2881,7 @@ export const deleteConnectPeer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /connect-peers/{ConnectPeerId}",
+    input: { ConnectPeerId: 0 },
     output: { ConnectPeer: o_ConnectPeer },
   },
   errors: [
@@ -2802,6 +2917,7 @@ export const deleteCoreNetwork: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /core-networks/{CoreNetworkId}",
+    input: { CoreNetworkId: 0 },
     output: { CoreNetwork: o_CoreNetwork },
   },
   errors: [
@@ -2837,6 +2953,7 @@ export const deleteCoreNetworkPolicyVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /core-networks/{CoreNetworkId}/core-network-policy-versions/{PolicyVersionId}",
+    input: { CoreNetworkId: 0, PolicyVersionId: 0 },
     output: { CoreNetworkPolicy: o_CoreNetworkPolicy },
   },
   errors: [
@@ -2873,6 +2990,7 @@ export const deleteCoreNetworkPrefixListAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /prefix-list/{PrefixListArn}/core-network/{CoreNetworkId}",
+    input: { CoreNetworkId: 0, PrefixListArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2909,6 +3027,7 @@ export const deleteDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /global-networks/{GlobalNetworkId}/devices/{DeviceId}",
+    input: { GlobalNetworkId: 0, DeviceId: 0 },
     output: { Device: o_Device },
   },
   errors: [
@@ -2945,6 +3064,7 @@ export const deleteGlobalNetwork: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /global-networks/{GlobalNetworkId}",
+    input: { GlobalNetworkId: 0 },
     output: { GlobalNetwork: o_GlobalNetwork },
   },
   errors: [
@@ -2981,6 +3101,7 @@ export const deleteLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /global-networks/{GlobalNetworkId}/links/{LinkId}",
+    input: { GlobalNetworkId: 0, LinkId: 0 },
     output: { Link: o_Link },
   },
   errors: [
@@ -3016,6 +3137,7 @@ export const deletePeering: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /peerings/{PeeringId}",
+    input: { PeeringId: 0 },
     output: { Peering: o_Peering },
   },
   errors: [
@@ -3047,7 +3169,11 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /resource-policy/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /resource-policy/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3080,6 +3206,7 @@ export const deleteSite: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /global-networks/{GlobalNetworkId}/sites/{SiteId}",
+    input: { GlobalNetworkId: 0, SiteId: 0 },
     output: { Site: o_Site },
   },
   errors: [
@@ -3116,6 +3243,7 @@ export const deregisterTransitGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /global-networks/{GlobalNetworkId}/transit-gateway-registrations/{TransitGatewayArn}",
+    input: { GlobalNetworkId: 0, TransitGatewayArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3198,6 +3326,7 @@ export const disassociateConnectPeer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /global-networks/{GlobalNetworkId}/connect-peer-associations/{ConnectPeerId}",
+    input: { GlobalNetworkId: 0, ConnectPeerId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3232,6 +3361,7 @@ export const disassociateCustomerGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /global-networks/{GlobalNetworkId}/customer-gateway-associations/{CustomerGatewayArn}",
+    input: { GlobalNetworkId: 0, CustomerGatewayArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3268,6 +3398,7 @@ export const disassociateLink: API.OperationMethod<
     service: svc,
     http: "DELETE /global-networks/{GlobalNetworkId}/link-associations",
     input: {
+      GlobalNetworkId: 0,
       DeviceId: D.m({ query: "deviceId" }),
       LinkId: D.m({ query: "linkId" }),
     },
@@ -3305,6 +3436,7 @@ export const disassociateTransitGatewayConnectPeer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /global-networks/{GlobalNetworkId}/transit-gateway-connect-peer-associations/{TransitGatewayConnectPeerArn}",
+    input: { GlobalNetworkId: 0, TransitGatewayConnectPeerArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3339,6 +3471,7 @@ export const executeCoreNetworkChangeSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /core-networks/{CoreNetworkId}/core-network-change-sets/{PolicyVersionId}/execute",
+    input: { CoreNetworkId: 0, PolicyVersionId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3372,6 +3505,7 @@ export const getConnectAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /connect-attachments/{AttachmentId}",
+    input: { AttachmentId: 0 },
     output: { ConnectAttachment: o_ConnectAttachment },
   },
   errors: [
@@ -3407,6 +3541,7 @@ export const getConnections: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /global-networks/{GlobalNetworkId}/connections",
     input: {
+      GlobalNetworkId: 0,
       ConnectionIds: D.m({ query: "connectionIds" }),
       DeviceId: D.m({ query: "deviceId" }),
       MaxResults: D.m({ query: "maxResults" }),
@@ -3451,6 +3586,7 @@ export const getConnectPeer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /connect-peers/{ConnectPeerId}",
+    input: { ConnectPeerId: 0 },
     output: { ConnectPeer: o_ConnectPeer },
   },
   errors: [
@@ -3487,6 +3623,7 @@ export const getConnectPeerAssociations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /global-networks/{GlobalNetworkId}/connect-peer-associations",
     input: {
+      GlobalNetworkId: 0,
       ConnectPeerIds: D.m({ query: "connectPeerIds" }),
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
@@ -3530,6 +3667,7 @@ export const getCoreNetwork: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /core-networks/{CoreNetworkId}",
+    input: { CoreNetworkId: 0 },
     output: { CoreNetwork: o_CoreNetwork },
   },
   errors: [
@@ -3565,6 +3703,8 @@ export const getCoreNetworkChangeEvents: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /core-networks/{CoreNetworkId}/core-network-change-events/{PolicyVersionId}",
     input: {
+      CoreNetworkId: 0,
+      PolicyVersionId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -3609,6 +3749,8 @@ export const getCoreNetworkChangeSet: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /core-networks/{CoreNetworkId}/core-network-change-sets/{PolicyVersionId}",
     input: {
+      CoreNetworkId: 0,
+      PolicyVersionId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -3651,6 +3793,7 @@ export const getCoreNetworkPolicy: API.OperationMethod<
     service: svc,
     http: "GET /core-networks/{CoreNetworkId}/core-network-policy",
     input: {
+      CoreNetworkId: 0,
       PolicyVersionId: D.m({ query: "policyVersionId" }),
       Alias: D.m({ query: "alias" }),
     },
@@ -3691,6 +3834,7 @@ export const getCustomerGatewayAssociations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /global-networks/{GlobalNetworkId}/customer-gateway-associations",
     input: {
+      GlobalNetworkId: 0,
       CustomerGatewayArns: D.m({ query: "customerGatewayArns" }),
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
@@ -3736,6 +3880,7 @@ export const getDevices: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /global-networks/{GlobalNetworkId}/devices",
     input: {
+      GlobalNetworkId: 0,
       DeviceIds: D.m({ query: "deviceIds" }),
       SiteId: D.m({ query: "siteId" }),
       MaxResults: D.m({ query: "maxResults" }),
@@ -3780,6 +3925,7 @@ export const getDirectConnectGatewayAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /direct-connect-gateway-attachments/{AttachmentId}",
+    input: { AttachmentId: 0 },
     output: {
       DirectConnectGatewayAttachment: o_DirectConnectGatewayAttachment,
     },
@@ -3818,6 +3964,7 @@ export const getLinkAssociations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /global-networks/{GlobalNetworkId}/link-associations",
     input: {
+      GlobalNetworkId: 0,
       DeviceId: D.m({ query: "deviceId" }),
       LinkId: D.m({ query: "linkId" }),
       MaxResults: D.m({ query: "maxResults" }),
@@ -3865,6 +4012,7 @@ export const getLinks: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /global-networks/{GlobalNetworkId}/links",
     input: {
+      GlobalNetworkId: 0,
       LinkIds: D.m({ query: "linkIds" }),
       SiteId: D.m({ query: "siteId" }),
       Type: D.m({ query: "type" }),
@@ -3912,6 +4060,7 @@ export const getNetworkResourceCounts: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /global-networks/{GlobalNetworkId}/network-resource-count",
     input: {
+      GlobalNetworkId: 0,
       ResourceType: D.m({ query: "resourceType" }),
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
@@ -3955,6 +4104,7 @@ export const getNetworkResourceRelationships: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /global-networks/{GlobalNetworkId}/network-resource-relationships",
     input: {
+      GlobalNetworkId: 0,
       CoreNetworkId: D.m({ query: "coreNetworkId" }),
       RegisteredGatewayArn: D.m({ query: "registeredGatewayArn" }),
       AwsRegion: D.m({ query: "awsRegion" }),
@@ -4006,6 +4156,7 @@ export const getNetworkResources: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /global-networks/{GlobalNetworkId}/network-resources",
     input: {
+      GlobalNetworkId: 0,
       CoreNetworkId: D.m({ query: "coreNetworkId" }),
       RegisteredGatewayArn: D.m({ query: "registeredGatewayArn" }),
       AwsRegion: D.m({ query: "awsRegion" }),
@@ -4054,6 +4205,30 @@ export const getNetworkRoutes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /global-networks/{GlobalNetworkId}/network-routes",
+    input: {
+      GlobalNetworkId: 0,
+      RouteTableIdentifier: {
+        TransitGatewayRouteTableArn: 0,
+        CoreNetworkSegmentEdge: {
+          CoreNetworkId: 0,
+          SegmentName: 0,
+          EdgeLocation: 0,
+        },
+        CoreNetworkNetworkFunctionGroup: {
+          CoreNetworkId: 0,
+          NetworkFunctionGroupName: 0,
+          EdgeLocation: 0,
+        },
+      },
+      ExactCidrMatches: 0,
+      LongestPrefixMatches: 0,
+      SubnetOfMatches: 0,
+      SupernetOfMatches: 0,
+      PrefixListIds: 0,
+      States: 0,
+      Types: 0,
+      DestinationFilters: 0,
+    },
     output: { RouteTableTimestamp: D.ts },
     body: true,
   },
@@ -4090,6 +4265,7 @@ export const getNetworkTelemetry: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /global-networks/{GlobalNetworkId}/network-telemetry",
     input: {
+      GlobalNetworkId: 0,
       CoreNetworkId: D.m({ query: "coreNetworkId" }),
       RegisteredGatewayArn: D.m({ query: "registeredGatewayArn" }),
       AwsRegion: D.m({ query: "awsRegion" }),
@@ -4134,7 +4310,11 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /resource-policy/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /resource-policy/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4165,6 +4345,7 @@ export const getRouteAnalysis: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /global-networks/{GlobalNetworkId}/route-analyses/{RouteAnalysisId}",
+    input: { GlobalNetworkId: 0, RouteAnalysisId: 0 },
     output: { RouteAnalysis: o_RouteAnalysis },
   },
   errors: [
@@ -4200,6 +4381,7 @@ export const getSites: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /global-networks/{GlobalNetworkId}/sites",
     input: {
+      GlobalNetworkId: 0,
       SiteIds: D.m({ query: "siteIds" }),
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
@@ -4243,6 +4425,7 @@ export const getSiteToSiteVpnAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /site-to-site-vpn-attachments/{AttachmentId}",
+    input: { AttachmentId: 0 },
     output: { SiteToSiteVpnAttachment: o_SiteToSiteVpnAttachment },
   },
   errors: [
@@ -4279,6 +4462,7 @@ export const getTransitGatewayConnectPeerAssociations: API.PaginatedOperationMet
     service: svc,
     http: "GET /global-networks/{GlobalNetworkId}/transit-gateway-connect-peer-associations",
     input: {
+      GlobalNetworkId: 0,
       TransitGatewayConnectPeerArns: D.m({
         query: "transitGatewayConnectPeerArns",
       }),
@@ -4324,6 +4508,7 @@ export const getTransitGatewayPeering: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /transit-gateway-peerings/{PeeringId}",
+    input: { PeeringId: 0 },
     output: { TransitGatewayPeering: o_TransitGatewayPeering },
   },
   errors: [
@@ -4360,6 +4545,7 @@ export const getTransitGatewayRegistrations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /global-networks/{GlobalNetworkId}/transit-gateway-registrations",
     input: {
+      GlobalNetworkId: 0,
       TransitGatewayArns: D.m({ query: "transitGatewayArns" }),
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
@@ -4402,6 +4588,7 @@ export const getTransitGatewayRouteTableAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /transit-gateway-route-table-attachments/{AttachmentId}",
+    input: { AttachmentId: 0 },
     output: {
       TransitGatewayRouteTableAttachment: o_TransitGatewayRouteTableAttachment,
     },
@@ -4437,6 +4624,7 @@ export const getVpcAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /vpc-attachments/{AttachmentId}",
+    input: { AttachmentId: 0 },
     output: { VpcAttachment: o_VpcAttachment },
   },
   errors: [
@@ -4472,6 +4660,7 @@ export const listAttachmentRoutingPolicyAssociations: API.PaginatedOperationMeth
     service: svc,
     http: "GET /routing-policy-label/core-network/{CoreNetworkId}",
     input: {
+      CoreNetworkId: 0,
       AttachmentId: D.m({ query: "attachmentId" }),
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
@@ -4606,6 +4795,7 @@ export const listCoreNetworkPolicyVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /core-networks/{CoreNetworkId}/core-network-policy-versions",
     input: {
+      CoreNetworkId: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -4650,6 +4840,7 @@ export const listCoreNetworkPrefixListAssociations: API.PaginatedOperationMethod
     service: svc,
     http: "GET /prefix-list/core-network/{CoreNetworkId}",
     input: {
+      CoreNetworkId: 0,
       PrefixListArn: D.m({ query: "prefixListArn" }),
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
@@ -4694,6 +4885,14 @@ export const listCoreNetworkRoutingInformation: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /core-networks/{CoreNetworkId}/core-network-routing-information",
     input: {
+      CoreNetworkId: 0,
+      SegmentName: 0,
+      EdgeLocation: 0,
+      NextHopFilters: 0,
+      LocalPreferenceMatches: 0,
+      ExactAsPathMatches: 0,
+      MedMatches: 0,
+      CommunityMatches: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -4844,7 +5043,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4878,7 +5081,12 @@ export const putAttachmentRoutingPolicyLabel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /routing-policy-label",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      CoreNetworkId: 0,
+      AttachmentId: 0,
+      RoutingPolicyLabel: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -4916,7 +5124,13 @@ export const putCoreNetworkPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /core-networks/{CoreNetworkId}/core-network-policy",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      CoreNetworkId: 0,
+      PolicyDocument: 0,
+      Description: 0,
+      LatestVersionId: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { CoreNetworkPolicy: o_CoreNetworkPolicy },
     body: true,
   },
@@ -4954,6 +5168,7 @@ export const putResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /resource-policy/{ResourceArn}",
+    input: { PolicyDocument: 0, ResourceArn: 0 },
     body: true,
   },
   errors: [
@@ -4993,6 +5208,7 @@ export const registerTransitGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /global-networks/{GlobalNetworkId}/transit-gateway-registrations",
+    input: { GlobalNetworkId: 0, TransitGatewayArn: 0 },
     body: true,
   },
   errors: [
@@ -5028,6 +5244,7 @@ export const rejectAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /attachments/{AttachmentId}/reject",
+    input: { AttachmentId: 0 },
     output: { Attachment: o_Attachment },
   },
   errors: [
@@ -5064,6 +5281,7 @@ export const removeAttachmentRoutingPolicyLabel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /routing-policy-label/core-network/{CoreNetworkId}/attachment/{AttachmentId}",
+    input: { CoreNetworkId: 0, AttachmentId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -5099,6 +5317,7 @@ export const restoreCoreNetworkPolicyVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /core-networks/{CoreNetworkId}/core-network-policy-versions/{PolicyVersionId}/restore",
+    input: { CoreNetworkId: 0, PolicyVersionId: 0 },
     output: { CoreNetworkPolicy: o_CoreNetworkPolicy },
   },
   errors: [
@@ -5134,6 +5353,7 @@ export const startOrganizationServiceAccessUpdate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /organizations/service-access",
+    input: { Action: 0 },
     body: true,
   },
   errors: [
@@ -5170,6 +5390,13 @@ export const startRouteAnalysis: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /global-networks/{GlobalNetworkId}/route-analyses",
+    input: {
+      GlobalNetworkId: 0,
+      Source: i_RouteAnalysisEndpointOptionsSpecification,
+      Destination: i_RouteAnalysisEndpointOptionsSpecification,
+      IncludeReturnPath: 0,
+      UseMiddleboxes: 0,
+    },
     output: { RouteAnalysis: o_RouteAnalysis },
     body: true,
   },
@@ -5204,7 +5431,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5239,7 +5471,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -5275,6 +5507,13 @@ export const updateConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /global-networks/{GlobalNetworkId}/connections/{ConnectionId}",
+    input: {
+      GlobalNetworkId: 0,
+      ConnectionId: 0,
+      LinkId: 0,
+      ConnectedLinkId: 0,
+      Description: 0,
+    },
     output: { Connection: o_Connection },
     body: true,
   },
@@ -5311,6 +5550,7 @@ export const updateCoreNetwork: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /core-networks/{CoreNetworkId}",
+    input: { CoreNetworkId: 0, Description: 0 },
     output: { CoreNetwork: o_CoreNetwork },
     body: true,
   },
@@ -5348,6 +5588,18 @@ export const updateDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /global-networks/{GlobalNetworkId}/devices/{DeviceId}",
+    input: {
+      GlobalNetworkId: 0,
+      DeviceId: 0,
+      AWSLocation: i_AWSLocation,
+      Description: 0,
+      Type: 0,
+      Vendor: 0,
+      Model: 0,
+      SerialNumber: 0,
+      Location: i_Location,
+      SiteId: 0,
+    },
     output: { Device: o_Device },
     body: true,
   },
@@ -5384,6 +5636,7 @@ export const updateDirectConnectGatewayAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /direct-connect-gateway-attachments/{AttachmentId}",
+    input: { AttachmentId: 0, EdgeLocations: 0 },
     output: {
       DirectConnectGatewayAttachment: o_DirectConnectGatewayAttachment,
     },
@@ -5423,6 +5676,7 @@ export const updateGlobalNetwork: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /global-networks/{GlobalNetworkId}",
+    input: { GlobalNetworkId: 0, Description: 0 },
     output: { GlobalNetwork: o_GlobalNetwork },
     body: true,
   },
@@ -5461,6 +5715,14 @@ export const updateLink: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /global-networks/{GlobalNetworkId}/links/{LinkId}",
+    input: {
+      GlobalNetworkId: 0,
+      LinkId: 0,
+      Description: 0,
+      Type: 0,
+      Bandwidth: i_Bandwidth,
+      Provider: 0,
+    },
     output: { Link: o_Link },
     body: true,
   },
@@ -5498,6 +5760,7 @@ export const updateNetworkResourceMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /global-networks/{GlobalNetworkId}/network-resources/{ResourceArn}/metadata",
+    input: { GlobalNetworkId: 0, ResourceArn: 0, Metadata: 0 },
     body: true,
   },
   errors: [
@@ -5534,6 +5797,12 @@ export const updateSite: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /global-networks/{GlobalNetworkId}/sites/{SiteId}",
+    input: {
+      GlobalNetworkId: 0,
+      SiteId: 0,
+      Description: 0,
+      Location: i_Location,
+    },
     output: { Site: o_Site },
     body: true,
   },
@@ -5570,6 +5839,12 @@ export const updateVpcAttachment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /vpc-attachments/{AttachmentId}",
+    input: {
+      AttachmentId: 0,
+      AddSubnetArns: 0,
+      RemoveSubnetArns: 0,
+      Options: i_VpcOptions,
+    },
     output: { VpcAttachment: o_VpcAttachment },
     body: true,
   },
@@ -5586,6 +5861,24 @@ export const updateVpcAttachment: API.OperationMethod<
   operationName: "UpdateVpcAttachment",
 })) as any;
 
+const i_AWSLocation: D.LazyStruct = () => ({ Zone: 0, SubnetArn: 0 });
+const i_Bandwidth: D.LazyStruct = () => ({ UploadSpeed: 0, DownloadSpeed: 0 });
+const i_Location: D.LazyStruct = () => ({
+  Address: 0,
+  Latitude: 0,
+  Longitude: 0,
+});
+const i_RouteAnalysisEndpointOptionsSpecification: D.LazyStruct = () => ({
+  TransitGatewayAttachmentArn: 0,
+  IpAddress: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_VpcOptions: D.LazyStruct = () => ({
+  Ipv6Support: 0,
+  ApplianceModeSupport: 0,
+  DnsSupport: 0,
+  SecurityGroupReferencingSupport: 0,
+});
 const o_Attachment: D.LazyStruct = () => ({ CreatedAt: D.ts, UpdatedAt: D.ts });
 const o_ConnectAttachment: D.LazyStruct = () => ({ Attachment: o_Attachment });
 const o_ConnectPeer: D.LazyStruct = () => ({ CreatedAt: D.ts });

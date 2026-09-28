@@ -1352,7 +1352,15 @@ export const associateFirewallRuleGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { CreatorRequestId: D.m({ idempotency: true }) },
+    input: {
+      CreatorRequestId: D.m({ idempotency: true }),
+      FirewallRuleGroupId: 0,
+      VpcId: 0,
+      Priority: 0,
+      Name: 0,
+      MutationProtection: 0,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1390,7 +1398,10 @@ export const associateResolverEndpointIpAddress: API.OperationMethod<
   AssociateResolverEndpointIpAddressError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResolverEndpointId: 0, IpAddress: i_IpAddressUpdate },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidParameterException,
@@ -1431,7 +1442,10 @@ export const associateResolverQueryLogConfig: API.OperationMethod<
   AssociateResolverQueryLogConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResolverQueryLogConfigId: 0, ResourceId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -1469,7 +1483,7 @@ export const associateResolverRule: API.OperationMethod<
   AssociateResolverRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResolverRuleId: 0, Name: 0, VPCId: 0 } },
   errors: [
     InternalServiceErrorException,
     InvalidParameterException,
@@ -1501,7 +1515,28 @@ export const batchCreateFirewallRule: API.OperationMethod<
   BatchCreateFirewallRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CreateFirewallRuleEntries: D.list({
+        CreatorRequestId: 0,
+        FirewallRuleGroupId: 0,
+        FirewallDomainListId: 0,
+        Priority: 0,
+        Action: 0,
+        BlockResponse: 0,
+        BlockOverrideDomain: 0,
+        BlockOverrideDnsType: 0,
+        BlockOverrideTtl: 0,
+        Name: 0,
+        FirewallDomainRedirectionAction: 0,
+        Qtype: 0,
+        DnsThreatProtection: 0,
+        ConfidenceThreshold: 0,
+        FirewallRuleType: i_FirewallRuleType,
+      }),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -1530,7 +1565,17 @@ export const batchDeleteFirewallRule: API.OperationMethod<
   BatchDeleteFirewallRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DeleteFirewallRuleEntries: D.list({
+        FirewallRuleGroupId: 0,
+        FirewallDomainListId: 0,
+        FirewallThreatProtectionId: 0,
+        Qtype: 0,
+      }),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -1559,7 +1604,28 @@ export const batchUpdateFirewallRule: API.OperationMethod<
   BatchUpdateFirewallRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UpdateFirewallRuleEntries: D.list({
+        FirewallRuleGroupId: 0,
+        FirewallDomainListId: 0,
+        FirewallThreatProtectionId: 0,
+        Priority: 0,
+        Action: 0,
+        BlockResponse: 0,
+        BlockOverrideDomain: 0,
+        BlockOverrideDnsType: 0,
+        BlockOverrideTtl: 0,
+        Name: 0,
+        FirewallDomainRedirectionAction: 0,
+        Qtype: 0,
+        DnsThreatProtection: 0,
+        ConfidenceThreshold: 0,
+        FirewallRuleType: i_FirewallRuleType,
+      }),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -1590,7 +1656,11 @@ export const createFirewallDomainList: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { CreatorRequestId: D.m({ idempotency: true }) },
+    input: {
+      CreatorRequestId: D.m({ idempotency: true }),
+      Name: 0,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1631,7 +1701,23 @@ export const createFirewallRule: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { CreatorRequestId: D.m({ idempotency: true }) },
+    input: {
+      CreatorRequestId: D.m({ idempotency: true }),
+      FirewallRuleGroupId: 0,
+      FirewallDomainListId: 0,
+      Priority: 0,
+      Action: 0,
+      BlockResponse: 0,
+      BlockOverrideDomain: 0,
+      BlockOverrideDnsType: 0,
+      BlockOverrideTtl: 0,
+      Name: 0,
+      FirewallDomainRedirectionAction: 0,
+      Qtype: 0,
+      DnsThreatProtection: 0,
+      ConfidenceThreshold: 0,
+      FirewallRuleType: i_FirewallRuleType,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1665,7 +1751,11 @@ export const createFirewallRuleGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { CreatorRequestId: D.m({ idempotency: true }) },
+    input: {
+      CreatorRequestId: D.m({ idempotency: true }),
+      Name: 0,
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1696,7 +1786,17 @@ export const createOutpostResolver: API.OperationMethod<
   CreateOutpostResolverError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CreatorRequestId: 0,
+      Name: 0,
+      InstanceCount: 0,
+      PreferredInstanceType: 0,
+      OutpostArn: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -1735,7 +1835,25 @@ export const createResolverEndpoint: API.OperationMethod<
   CreateResolverEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CreatorRequestId: 0,
+      Name: 0,
+      SecurityGroupIds: 0,
+      Direction: 0,
+      IpAddresses: D.list({ SubnetId: 0, Ip: 0, Ipv6: 0 }),
+      OutpostArn: 0,
+      PreferredInstanceType: 0,
+      Tags: D.list(i_Tag),
+      ResolverEndpointType: 0,
+      Protocols: 0,
+      RniEnhancedMetricsEnabled: 0,
+      TargetNameServerMetricsEnabled: 0,
+      Dns64Enabled: 0,
+      Ipv6InternetAccessEnabled: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -1780,7 +1898,12 @@ export const createResolverQueryLogConfig: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { CreatorRequestId: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      DestinationArn: 0,
+      CreatorRequestId: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1818,7 +1941,19 @@ export const createResolverRule: API.OperationMethod<
   CreateResolverRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CreatorRequestId: 0,
+      Name: 0,
+      RuleType: 0,
+      DomainName: 0,
+      TargetIps: D.list(i_TargetAddress),
+      ResolverEndpointId: 0,
+      Tags: D.list(i_Tag),
+      DelegationRecord: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -1851,7 +1986,7 @@ export const deleteFirewallDomainList: API.OperationMethod<
   DeleteFirewallDomainListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FirewallDomainListId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1882,7 +2017,15 @@ export const deleteFirewallRule: API.OperationMethod<
   DeleteFirewallRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FirewallRuleGroupId: 0,
+      FirewallDomainListId: 0,
+      FirewallThreatProtectionId: 0,
+      Qtype: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -1912,7 +2055,7 @@ export const deleteFirewallRuleGroup: API.OperationMethod<
   DeleteFirewallRuleGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FirewallRuleGroupId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1943,7 +2086,7 @@ export const deleteOutpostResolver: API.OperationMethod<
   DeleteOutpostResolverError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1979,7 +2122,7 @@ export const deleteResolverEndpoint: API.OperationMethod<
   DeleteResolverEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResolverEndpointId: 0 } },
   errors: [
     InternalServiceErrorException,
     InvalidParameterException,
@@ -2019,7 +2162,7 @@ export const deleteResolverQueryLogConfig: API.OperationMethod<
   DeleteResolverQueryLogConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResolverQueryLogConfigId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2052,7 +2195,7 @@ export const deleteResolverRule: API.OperationMethod<
   DeleteResolverRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResolverRuleId: 0 } },
   errors: [
     InternalServiceErrorException,
     InvalidParameterException,
@@ -2083,7 +2226,7 @@ export const disassociateFirewallRuleGroup: API.OperationMethod<
   DisassociateFirewallRuleGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FirewallRuleGroupAssociationId: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2118,7 +2261,10 @@ export const disassociateResolverEndpointIpAddress: API.OperationMethod<
   DisassociateResolverEndpointIpAddressError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResolverEndpointId: 0, IpAddress: i_IpAddressUpdate },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidParameterException,
@@ -2158,7 +2304,10 @@ export const disassociateResolverQueryLogConfig: API.OperationMethod<
   DisassociateResolverQueryLogConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResolverQueryLogConfigId: 0, ResourceId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2191,7 +2340,7 @@ export const disassociateResolverRule: API.OperationMethod<
   DisassociateResolverRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { VPCId: 0, ResolverRuleId: 0 } },
   errors: [
     InternalServiceErrorException,
     InvalidParameterException,
@@ -2221,7 +2370,7 @@ export const getFirewallConfig: API.OperationMethod<
   GetFirewallConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2249,7 +2398,7 @@ export const getFirewallDomainList: API.OperationMethod<
   GetFirewallDomainListError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FirewallDomainListId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2276,7 +2425,7 @@ export const getFirewallRuleGroup: API.OperationMethod<
   GetFirewallRuleGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FirewallRuleGroupId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2303,7 +2452,7 @@ export const getFirewallRuleGroupAssociation: API.OperationMethod<
   GetFirewallRuleGroupAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FirewallRuleGroupAssociationId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2332,7 +2481,7 @@ export const getFirewallRuleGroupPolicy: API.OperationMethod<
   GetFirewallRuleGroupPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Arn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2362,7 +2511,7 @@ export const getOutpostResolver: API.OperationMethod<
   GetOutpostResolverError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Id: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2393,7 +2542,7 @@ export const getResolverConfig: API.OperationMethod<
   GetResolverConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2424,7 +2573,7 @@ export const getResolverDnssecConfig: API.OperationMethod<
   GetResolverDnssecConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2454,7 +2603,7 @@ export const getResolverEndpoint: API.OperationMethod<
   GetResolverEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResolverEndpointId: 0 } },
   errors: [
     InternalServiceErrorException,
     InvalidParameterException,
@@ -2484,7 +2633,7 @@ export const getResolverQueryLogConfig: API.OperationMethod<
   GetResolverQueryLogConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResolverQueryLogConfigId: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2516,7 +2665,10 @@ export const getResolverQueryLogConfigAssociation: API.OperationMethod<
   GetResolverQueryLogConfigAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResolverQueryLogConfigAssociationId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2547,7 +2699,7 @@ export const getResolverQueryLogConfigPolicy: API.OperationMethod<
   GetResolverQueryLogConfigPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Arn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2576,7 +2728,7 @@ export const getResolverRule: API.OperationMethod<
   GetResolverRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResolverRuleId: 0 } },
   errors: [
     InternalServiceErrorException,
     InvalidParameterException,
@@ -2604,7 +2756,7 @@ export const getResolverRuleAssociation: API.OperationMethod<
   GetResolverRuleAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResolverRuleAssociationId: 0 } },
   errors: [
     InternalServiceErrorException,
     InvalidParameterException,
@@ -2632,7 +2784,7 @@ export const getResolverRulePolicy: API.OperationMethod<
   GetResolverRulePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Arn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2673,7 +2825,10 @@ export const importFirewallDomains: API.OperationMethod<
   ImportFirewallDomainsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { FirewallDomainListId: 0, Operation: 0, DomainFileUrl: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2706,7 +2861,7 @@ export const listFirewallConfigs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   FirewallConfig
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2742,7 +2897,7 @@ export const listFirewallDomainLists: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   FirewallDomainListMetadata
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2779,7 +2934,10 @@ export const listFirewallDomains: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   FirewallDomainName
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { FirewallDomainListId: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2816,7 +2974,17 @@ export const listFirewallRuleGroupAssociations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   FirewallRuleGroupAssociation
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FirewallRuleGroupId: 0,
+      VpcId: 0,
+      Priority: 0,
+      Status: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2852,7 +3020,7 @@ export const listFirewallRuleGroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   FirewallRuleGroupMetadata
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2891,7 +3059,16 @@ export const listFirewallRules: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   FirewallRule
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FirewallRuleGroupId: 0,
+      Priority: 0,
+      Action: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2928,7 +3105,10 @@ export const listFirewallRuleTypes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   FirewallRuleTypeDefinition
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { RuleType: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -2963,7 +3143,10 @@ export const listOutpostResolvers: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   OutpostResolver
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { OutpostArn: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -3002,7 +3185,7 @@ export const listResolverConfigs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ResolverConfig
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -3041,7 +3224,10 @@ export const listResolverDnssecConfigs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ResolverDnssecConfig
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MaxResults: 0, NextToken: 0, Filters: D.list(i_Filter) },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -3078,7 +3264,10 @@ export const listResolverEndpointIpAddresses: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   IpAddressResponse
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResolverEndpointId: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidNextTokenException,
@@ -3114,7 +3303,10 @@ export const listResolverEndpoints: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ResolverEndpoint
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MaxResults: 0, NextToken: 0, Filters: D.list(i_Filter) },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidNextTokenException,
@@ -3151,7 +3343,16 @@ export const listResolverQueryLogConfigAssociations: API.PaginatedOperationMetho
   Credentials | HttpClient.HttpClient,
   ResolverQueryLogConfigAssociation
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list(i_Filter),
+      SortBy: 0,
+      SortOrder: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -3190,7 +3391,16 @@ export const listResolverQueryLogConfigs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ResolverQueryLogConfig
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list(i_Filter),
+      SortBy: 0,
+      SortOrder: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -3227,7 +3437,10 @@ export const listResolverRuleAssociations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ResolverRuleAssociation
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MaxResults: 0, NextToken: 0, Filters: D.list(i_Filter) },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidNextTokenException,
@@ -3263,7 +3476,10 @@ export const listResolverRules: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ResolverRule
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MaxResults: 0, NextToken: 0, Filters: D.list(i_Filter) },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidNextTokenException,
@@ -3300,7 +3516,10 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Tag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [
     InternalServiceErrorException,
     InvalidNextTokenException,
@@ -3338,7 +3557,7 @@ export const putFirewallRuleGroupPolicy: API.OperationMethod<
   PutFirewallRuleGroupPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Arn: 0, FirewallRuleGroupPolicy: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -3369,7 +3588,10 @@ export const putResolverQueryLogConfigPolicy: API.OperationMethod<
   PutResolverQueryLogConfigPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Arn: 0, ResolverQueryLogConfigPolicy: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -3400,7 +3622,7 @@ export const putResolverRulePolicy: API.OperationMethod<
   PutResolverRulePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Arn: 0, ResolverRulePolicy: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -3431,7 +3653,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     InternalServiceErrorException,
     InvalidParameterException,
@@ -3462,7 +3684,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     InternalServiceErrorException,
     InvalidParameterException,
@@ -3492,7 +3714,7 @@ export const updateFirewallConfig: API.OperationMethod<
   UpdateFirewallConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0, FirewallFailOpen: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -3523,7 +3745,10 @@ export const updateFirewallDomains: API.OperationMethod<
   UpdateFirewallDomainsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { FirewallDomainListId: 0, Operation: 0, Domains: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3555,7 +3780,26 @@ export const updateFirewallRule: API.OperationMethod<
   UpdateFirewallRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FirewallRuleGroupId: 0,
+      FirewallDomainListId: 0,
+      FirewallThreatProtectionId: 0,
+      Priority: 0,
+      Action: 0,
+      BlockResponse: 0,
+      BlockOverrideDomain: 0,
+      BlockOverrideDnsType: 0,
+      BlockOverrideTtl: 0,
+      Name: 0,
+      FirewallDomainRedirectionAction: 0,
+      Qtype: 0,
+      DnsThreatProtection: 0,
+      ConfidenceThreshold: 0,
+      FirewallRuleType: i_FirewallRuleType,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3586,7 +3830,15 @@ export const updateFirewallRuleGroupAssociation: API.OperationMethod<
   UpdateFirewallRuleGroupAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FirewallRuleGroupAssociationId: 0,
+      Priority: 0,
+      MutationProtection: 0,
+      Name: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3618,7 +3870,10 @@ export const updateOutpostResolver: API.OperationMethod<
   UpdateOutpostResolverError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Id: 0, Name: 0, InstanceCount: 0, PreferredInstanceType: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3654,7 +3909,10 @@ export const updateResolverConfig: API.OperationMethod<
   UpdateResolverConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceId: 0, AutodefinedReverseFlag: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -3688,7 +3946,7 @@ export const updateResolverDnssecConfig: API.OperationMethod<
   UpdateResolverDnssecConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0, Validation: 0 } },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -3720,7 +3978,20 @@ export const updateResolverEndpoint: API.OperationMethod<
   UpdateResolverEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResolverEndpointId: 0,
+      Name: 0,
+      ResolverEndpointType: 0,
+      UpdateIpAddresses: D.list({ IpId: 0, Ipv6: 0 }),
+      Protocols: 0,
+      RniEnhancedMetricsEnabled: 0,
+      TargetNameServerMetricsEnabled: 0,
+      Dns64Enabled: 0,
+      Ipv6InternetAccessEnabled: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -3754,7 +4025,17 @@ export const updateResolverRule: API.OperationMethod<
   UpdateResolverRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ResolverRuleId: 0,
+      Config: {
+        Name: 0,
+        TargetIps: D.list(i_TargetAddress),
+        ResolverEndpointId: 0,
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceErrorException,
@@ -3769,3 +4050,25 @@ export const updateResolverRule: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateResolverRule",
 })) as any;
+
+const i_Filter: D.LazyStruct = () => ({ Name: 0, Values: 0 });
+const i_FirewallRuleType: D.LazyStruct = () => ({
+  PartnerThreatProtection: { Partner: 0 },
+  FirewallAdvancedContentCategory: { Category: 0 },
+  FirewallAdvancedThreatCategory: { Category: 0 },
+  DnsThreatProtection: { Value: 0, ConfidenceThreshold: 0 },
+});
+const i_IpAddressUpdate: D.LazyStruct = () => ({
+  IpId: 0,
+  SubnetId: 0,
+  Ip: 0,
+  Ipv6: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_TargetAddress: D.LazyStruct = () => ({
+  Ip: 0,
+  Port: 0,
+  Ipv6: 0,
+  Protocol: 0,
+  ServerNameIndication: 0,
+});

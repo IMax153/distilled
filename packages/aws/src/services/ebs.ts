@@ -335,6 +335,7 @@ export const completeSnapshot: API.OperationMethod<
     service: svc,
     http: "POST /snapshots/completion/{SnapshotId}",
     input: {
+      SnapshotId: 0,
       ChangedBlocksCount: D.m({ header: "x-amz-ChangedBlocksCount" }),
       Checksum: D.m({ header: "x-amz-Checksum" }),
       ChecksumAlgorithm: D.m({ header: "x-amz-Checksum-Algorithm" }),
@@ -382,7 +383,11 @@ export const getSnapshotBlock: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /snapshots/{SnapshotId}/blocks/{BlockIndex}",
-    input: { BlockToken: D.m({ query: "blockToken" }) },
+    input: {
+      SnapshotId: 0,
+      BlockIndex: 0,
+      BlockToken: D.m({ query: "blockToken" }),
+    },
     output: {
       DataLength: D.m({ header: "x-amz-Data-Length", shape: D.num }),
       BlockData: D.m({ payload: true, shape: D.stream }),
@@ -432,6 +437,7 @@ export const listChangedBlocks: API.PaginatedOperationMethod<
     http: "GET /snapshots/{SecondSnapshotId}/changedblocks",
     input: {
       FirstSnapshotId: D.m({ query: "firstSnapshotId" }),
+      SecondSnapshotId: 0,
       NextToken: D.m({ query: "pageToken" }),
       MaxResults: D.m({ query: "maxResults" }),
       StartingBlockIndex: D.m({ query: "startingBlockIndex" }),
@@ -483,6 +489,7 @@ export const listSnapshotBlocks: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /snapshots/{SnapshotId}/blocks",
     input: {
+      SnapshotId: 0,
       NextToken: D.m({ query: "pageToken" }),
       MaxResults: D.m({ query: "maxResults" }),
       StartingBlockIndex: D.m({ query: "startingBlockIndex" }),
@@ -538,6 +545,8 @@ export const putSnapshotBlock: API.OperationMethod<
     service: svc,
     http: "PUT /snapshots/{SnapshotId}/blocks/{BlockIndex}",
     input: {
+      SnapshotId: 0,
+      BlockIndex: 0,
       BlockData: D.m({ payload: true, shape: D.stream }),
       DataLength: D.m({ header: "x-amz-Data-Length" }),
       Progress: D.m({ header: "x-amz-Progress" }),
@@ -594,7 +603,16 @@ export const startSnapshot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /snapshots",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      VolumeSize: 0,
+      ParentSnapshotId: 0,
+      Tags: D.list({ Key: 0, Value: 0 }),
+      Description: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Encrypted: 0,
+      KmsKeyArn: 0,
+      Timeout: 0,
+    },
     output: { StartTime: D.ts, KmsKeyArn: D.secret },
     body: true,
   },

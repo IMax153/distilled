@@ -645,7 +645,17 @@ export const amendBenefitApplication: API.OperationMethod<
   AmendBenefitApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Catalog: 0,
+      ClientToken: 0,
+      Revision: 0,
+      Identifier: 0,
+      AmendmentReason: 0,
+      Amendments: D.list({ FieldPath: 0, NewValue: 0 }),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -676,7 +686,10 @@ export const associateBenefitApplicationResource: API.OperationMethod<
   AssociateBenefitApplicationResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Catalog: 0, BenefitApplicationIdentifier: 0, ResourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -707,7 +720,10 @@ export const cancelBenefitApplication: API.OperationMethod<
   CancelBenefitApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Catalog: 0, ClientToken: 0, Identifier: 0, Reason: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -738,7 +754,22 @@ export const createBenefitApplication: API.OperationMethod<
   CreateBenefitApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Catalog: 0,
+      ClientToken: 0,
+      Name: 0,
+      Description: 0,
+      BenefitIdentifier: 0,
+      FulfillmentTypes: 0,
+      BenefitApplicationDetails: 0,
+      Tags: D.list(i_Tag),
+      AssociatedResources: 0,
+      PartnerContacts: D.list(i_Contact),
+      FileDetails: D.list(i_FileInput),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -769,7 +800,10 @@ export const disassociateBenefitApplicationResource: API.OperationMethod<
   DisassociateBenefitApplicationResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Catalog: 0, BenefitApplicationIdentifier: 0, ResourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -799,7 +833,7 @@ export const getBenefit: API.OperationMethod<
   GetBenefitError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Catalog: 0, Identifier: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -830,6 +864,7 @@ export const getBenefitAllocation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Catalog: 0, Identifier: 0 },
     output: {
       FulfillmentDetail: {
         DisbursementDetails: { IssuanceDetails: o_IssuanceDetail },
@@ -873,6 +908,7 @@ export const getBenefitApplication: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Catalog: 0, Identifier: 0 },
     output: {
       CreatedAt: D.ts,
       UpdatedAt: D.ts,
@@ -917,6 +953,15 @@ export const listBenefitAllocations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Catalog: 0,
+      FulfillmentTypes: 0,
+      BenefitIdentifiers: 0,
+      BenefitApplicationIdentifiers: 0,
+      Status: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       BenefitAllocationSummaries: D.list({ CreatedAt: D.ts, ExpiresAt: D.ts }),
     },
@@ -958,6 +1003,22 @@ export const listBenefitApplications: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Catalog: 0,
+      Programs: 0,
+      FulfillmentTypes: 0,
+      BenefitIdentifiers: 0,
+      Status: 0,
+      Stages: 0,
+      AssociatedResources: D.list({
+        ResourceType: 0,
+        ResourceIdentifier: 0,
+        ResourceArn: 0,
+      }),
+      AssociatedResourceArns: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       BenefitApplicationSummaries: D.list({ CreatedAt: D.ts, UpdatedAt: D.ts }),
     },
@@ -997,7 +1058,17 @@ export const listBenefits: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   BenefitSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Catalog: 0,
+      Programs: 0,
+      FulfillmentTypes: 0,
+      Status: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1032,7 +1103,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1062,7 +1133,10 @@ export const recallBenefitApplication: API.OperationMethod<
   RecallBenefitApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Catalog: 0, ClientToken: 0, Identifier: 0, Reason: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1093,7 +1167,7 @@ export const submitBenefitApplication: API.OperationMethod<
   SubmitBenefitApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Catalog: 0, Identifier: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1125,7 +1199,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1158,7 +1232,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1190,7 +1264,20 @@ export const updateBenefitApplication: API.OperationMethod<
   UpdateBenefitApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Catalog: 0,
+      ClientToken: 0,
+      Name: 0,
+      Description: 0,
+      Identifier: 0,
+      Revision: 0,
+      BenefitApplicationDetails: 0,
+      PartnerContacts: D.list(i_Contact),
+      FileDetails: D.list(i_FileInput),
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1204,4 +1291,13 @@ export const updateBenefitApplication: API.OperationMethod<
   operationName: "UpdateBenefitApplication",
 })) as any;
 
+const i_Contact: D.LazyStruct = () => ({
+  Email: 0,
+  FirstName: 0,
+  LastName: 0,
+  BusinessTitle: 0,
+  Phone: 0,
+});
+const i_FileInput: D.LazyStruct = () => ({ FileURI: 0, BusinessUseCase: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_IssuanceDetail: D.LazyStruct = () => ({ IssuedAt: D.ts });

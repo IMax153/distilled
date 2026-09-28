@@ -1556,7 +1556,7 @@ export const acknowledgeJob: API.OperationMethod<
   AcknowledgeJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { jobId: 0, nonce: 0 } },
   errors: [InvalidNonceException, JobNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1579,7 +1579,7 @@ export const acknowledgeThirdPartyJob: API.OperationMethod<
   AcknowledgeThirdPartyJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { jobId: 0, nonce: 0, clientToken: 0 } },
   errors: [
     InvalidClientTokenException,
     InvalidNonceException,
@@ -1608,7 +1608,32 @@ export const createCustomActionType: API.OperationMethod<
   CreateCustomActionTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      category: 0,
+      provider: 0,
+      version: 0,
+      settings: {
+        thirdPartyConfigurationUrl: 0,
+        entityUrlTemplate: 0,
+        executionUrlTemplate: 0,
+        revisionUrlTemplate: 0,
+      },
+      configurationProperties: D.list({
+        name: 0,
+        required: 0,
+        key: 0,
+        secret: 0,
+        queryable: 0,
+        description: 0,
+        type: 0,
+      }),
+      inputArtifactDetails: i_ArtifactDetails,
+      outputArtifactDetails: i_ArtifactDetails,
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidTagsException,
@@ -1647,7 +1672,10 @@ export const createPipeline: API.OperationMethod<
   CreatePipelineError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { pipeline: i_PipelineDeclaration, tags: D.list(i_Tag) },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidActionDeclarationException,
@@ -1685,7 +1713,7 @@ export const deleteCustomActionType: API.OperationMethod<
   DeleteCustomActionTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { category: 0, provider: 0, version: 0 } },
   errors: [ConcurrentModificationException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1705,7 +1733,7 @@ export const deletePipeline: API.OperationMethod<
   DeletePipelineError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [ConcurrentModificationException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1728,7 +1756,7 @@ export const deleteWebhook: API.OperationMethod<
   DeleteWebhookError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0 } },
   errors: [ConcurrentModificationException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1750,7 +1778,7 @@ export const deregisterWebhookWithThirdParty: API.OperationMethod<
   DeregisterWebhookWithThirdPartyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { webhookName: 0 } },
   errors: [ValidationException, WebhookNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1772,7 +1800,10 @@ export const disableStageTransition: API.OperationMethod<
   DisableStageTransitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { pipelineName: 0, stageName: 0, transitionType: 0, reason: 0 },
+  },
   errors: [
     PipelineNotFoundException,
     StageNotFoundException,
@@ -1797,7 +1828,10 @@ export const enableStageTransition: API.OperationMethod<
   EnableStageTransitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { pipelineName: 0, stageName: 0, transitionType: 0 },
+  },
   errors: [
     PipelineNotFoundException,
     StageNotFoundException,
@@ -1823,7 +1857,10 @@ export const getActionType: API.OperationMethod<
   GetActionTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { category: 0, owner: 0, provider: 0, version: 0 },
+  },
   errors: [ActionTypeNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1848,7 +1885,11 @@ export const getJobDetails: API.OperationMethod<
   GetJobDetailsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { jobDetails: { data: o_JobData } } },
+  descriptor: {
+    service: svc,
+    input: { jobId: 0 },
+    output: { jobDetails: { data: o_JobData } },
+  },
   errors: [JobNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1873,6 +1914,7 @@ export const getPipeline: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { name: 0, version: 0 },
     output: {
       metadata: { created: D.ts, updated: D.ts, pollingDisabledAt: D.ts },
     },
@@ -1905,6 +1947,7 @@ export const getPipelineExecution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { pipelineName: 0, pipelineExecutionId: 0 },
     output: {
       pipelineExecution: { artifactRevisions: D.list({ created: D.ts }) },
     },
@@ -1939,6 +1982,7 @@ export const getPipelineState: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { name: 0 },
     output: {
       stageStates: D.list({
         inboundTransitionState: { lastChangedAt: D.ts },
@@ -1983,6 +2027,7 @@ export const getThirdPartyJobDetails: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { jobId: 0, clientToken: 0 },
     output: {
       jobDetails: { data: { artifactCredentials: o_AWSSessionCredentials } },
     },
@@ -2016,6 +2061,15 @@ export const listActionExecutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      pipelineName: 0,
+      filter: {
+        pipelineExecutionId: 0,
+        latestInPipelineExecution: i_LatestInPipelineExecutionFilter,
+      },
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       actionExecutionDetails: D.list({ startTime: D.ts, lastUpdateTime: D.ts }),
     },
@@ -2052,7 +2106,10 @@ export const listActionTypes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ActionType
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { actionOwnerFilter: 0, nextToken: 0, regionFilter: 0 },
+  },
   errors: [InvalidNextTokenException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2082,6 +2139,13 @@ export const listDeployActionExecutionTargets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      pipelineName: 0,
+      actionExecutionId: 0,
+      filters: D.list({ name: 0, values: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       targets: D.list({
         startTime: D.ts,
@@ -2128,6 +2192,12 @@ export const listPipelineExecutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      pipelineName: 0,
+      maxResults: 0,
+      filter: { succeededInStage: { stageName: 0 } },
+      nextToken: 0,
+    },
     output: {
       pipelineExecutionSummaries: D.list({
         startTime: D.ts,
@@ -2167,6 +2237,7 @@ export const listPipelines: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { nextToken: 0, maxResults: 0 },
     output: { pipelines: D.list({ created: D.ts, updated: D.ts }) },
   },
   errors: [InvalidNextTokenException, ValidationException],
@@ -2200,6 +2271,15 @@ export const listRuleExecutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      pipelineName: 0,
+      filter: {
+        pipelineExecutionId: 0,
+        latestInPipelineExecution: i_LatestInPipelineExecutionFilter,
+      },
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       ruleExecutionDetails: D.list({ startTime: D.ts, lastUpdateTime: D.ts }),
     },
@@ -2236,7 +2316,7 @@ export const listRuleTypes: API.OperationMethod<
   ListRuleTypesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ruleOwnerFilter: 0, regionFilter: 0 } },
   errors: [InvalidNextTokenException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2260,7 +2340,10 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Tag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { resourceArn: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     InvalidArnException,
     InvalidNextTokenException,
@@ -2296,7 +2379,11 @@ export const listWebhooks: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ListWebhookItem
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { webhooks: D.list(o_ListWebhookItem) } },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
+    output: { webhooks: D.list(o_ListWebhookItem) },
+  },
   errors: [InvalidNextTokenException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2329,7 +2416,15 @@ export const overrideStageCondition: API.OperationMethod<
   OverrideStageConditionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      pipelineName: 0,
+      stageName: 0,
+      pipelineExecutionId: 0,
+      conditionType: 0,
+    },
+  },
   errors: [
     ConcurrentPipelineExecutionsLimitExceededException,
     ConditionNotOverridableException,
@@ -2365,7 +2460,11 @@ export const pollForJobs: API.OperationMethod<
   PollForJobsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { jobs: D.list({ data: o_JobData }) } },
+  descriptor: {
+    service: svc,
+    input: { actionTypeId: i_ActionTypeId, maxBatchSize: 0, queryParam: 0 },
+    output: { jobs: D.list({ data: o_JobData }) },
+  },
   errors: [ActionTypeNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2390,7 +2489,10 @@ export const pollForThirdPartyJobs: API.OperationMethod<
   PollForThirdPartyJobsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { actionTypeId: i_ActionTypeId, maxBatchSize: 0 },
+  },
   errors: [ActionTypeNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2414,7 +2516,15 @@ export const putActionRevision: API.OperationMethod<
   PutActionRevisionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      pipelineName: 0,
+      stageName: 0,
+      actionName: 0,
+      actionRevision: { revisionId: 0, revisionChangeId: 0, created: 0 },
+    },
+  },
   errors: [
     ActionNotFoundException,
     ConcurrentPipelineExecutionsLimitExceededException,
@@ -2445,7 +2555,17 @@ export const putApprovalResult: API.OperationMethod<
   PutApprovalResultError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { approvedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      pipelineName: 0,
+      stageName: 0,
+      actionName: 0,
+      result: { summary: 0, status: 0 },
+      token: 0,
+    },
+    output: { approvedAt: D.ts },
+  },
   errors: [
     ActionNotFoundException,
     ApprovalAlreadyCompletedException,
@@ -2474,7 +2594,10 @@ export const putJobFailureResult: API.OperationMethod<
   PutJobFailureResultError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { jobId: 0, failureDetails: i_FailureDetails },
+  },
   errors: [InvalidJobStateException, JobNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2497,7 +2620,16 @@ export const putJobSuccessResult: API.OperationMethod<
   PutJobSuccessResultError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      jobId: 0,
+      currentRevision: i_CurrentRevision,
+      continuationToken: 0,
+      executionDetails: i_ExecutionDetails,
+      outputVariables: 0,
+    },
+  },
   errors: [
     InvalidJobStateException,
     JobNotFoundException,
@@ -2525,7 +2657,10 @@ export const putThirdPartyJobFailureResult: API.OperationMethod<
   PutThirdPartyJobFailureResultError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { jobId: 0, clientToken: 0, failureDetails: i_FailureDetails },
+  },
   errors: [
     InvalidClientTokenException,
     InvalidJobStateException,
@@ -2553,7 +2688,16 @@ export const putThirdPartyJobSuccessResult: API.OperationMethod<
   PutThirdPartyJobSuccessResultError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      jobId: 0,
+      clientToken: 0,
+      currentRevision: i_CurrentRevision,
+      continuationToken: 0,
+      executionDetails: i_ExecutionDetails,
+    },
+  },
   errors: [
     InvalidClientTokenException,
     InvalidJobStateException,
@@ -2601,7 +2745,21 @@ export const putWebhook: API.OperationMethod<
   PutWebhookError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { webhook: o_ListWebhookItem } },
+  descriptor: {
+    service: svc,
+    input: {
+      webhook: {
+        name: 0,
+        targetPipeline: 0,
+        targetAction: 0,
+        filters: D.list({ jsonPath: 0, matchEquals: 0 }),
+        authentication: 0,
+        authenticationConfiguration: { AllowedIPRange: 0, SecretToken: 0 },
+      },
+      tags: D.list(i_Tag),
+    },
+    output: { webhook: o_ListWebhookItem },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidTagsException,
@@ -2631,7 +2789,7 @@ export const registerWebhookWithThirdParty: API.OperationMethod<
   RegisterWebhookWithThirdPartyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { webhookName: 0 } },
   errors: [ValidationException, WebhookNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2663,7 +2821,15 @@ export const retryStageExecution: API.OperationMethod<
   RetryStageExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      pipelineName: 0,
+      stageName: 0,
+      pipelineExecutionId: 0,
+      retryMode: 0,
+    },
+  },
   errors: [
     ConcurrentPipelineExecutionsLimitExceededException,
     ConflictException,
@@ -2696,7 +2862,10 @@ export const rollbackStage: API.OperationMethod<
   RollbackStageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { pipelineName: 0, stageName: 0, targetPipelineExecutionId: 0 },
+  },
   errors: [
     ConflictException,
     PipelineExecutionNotFoundException,
@@ -2729,7 +2898,16 @@ export const startPipelineExecution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      variables: D.list({ name: 0, value: 0 }),
+      clientRequestToken: D.m({ idempotency: true }),
+      sourceRevisions: D.list({
+        actionName: 0,
+        revisionType: 0,
+        revisionValue: 0,
+      }),
+    },
   },
   errors: [
     ConcurrentPipelineExecutionsLimitExceededException,
@@ -2763,7 +2941,10 @@ export const stopPipelineExecution: API.OperationMethod<
   StopPipelineExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { pipelineName: 0, pipelineExecutionId: 0, abandon: 0, reason: 0 },
+  },
   errors: [
     ConflictException,
     DuplicatedStopRequestException,
@@ -2794,7 +2975,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: D.list(i_Tag) } },
   errors: [
     ConcurrentModificationException,
     InvalidArnException,
@@ -2824,7 +3005,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [
     ConcurrentModificationException,
     InvalidArnException,
@@ -2854,7 +3035,44 @@ export const updateActionType: API.OperationMethod<
   UpdateActionTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      actionType: {
+        description: 0,
+        executor: {
+          configuration: {
+            lambdaExecutorConfiguration: { lambdaFunctionArn: 0 },
+            jobWorkerExecutorConfiguration: {
+              pollingAccounts: 0,
+              pollingServicePrincipals: 0,
+            },
+          },
+          type: 0,
+          policyStatementsTemplate: 0,
+          jobTimeout: 0,
+        },
+        id: { category: 0, owner: 0, provider: 0, version: 0 },
+        inputArtifactDetails: i_ActionTypeArtifactDetails,
+        outputArtifactDetails: i_ActionTypeArtifactDetails,
+        permissions: { allowedAccounts: 0 },
+        properties: D.list({
+          name: 0,
+          optional: 0,
+          key: 0,
+          noEcho: 0,
+          queryable: 0,
+          description: 0,
+        }),
+        urls: {
+          configurationUrl: 0,
+          entityUrlTemplate: 0,
+          executionUrlTemplate: 0,
+          revisionUrlTemplate: 0,
+        },
+      },
+    },
+  },
   errors: [
     ActionTypeNotFoundException,
     RequestFailedException,
@@ -2885,7 +3103,7 @@ export const updatePipeline: API.OperationMethod<
   UpdatePipelineError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { pipeline: i_PipelineDeclaration } },
   errors: [
     InvalidActionDeclarationException,
     InvalidBlockerDeclarationException,
@@ -2899,6 +3117,93 @@ export const updatePipeline: API.OperationMethod<
   operationName: "UpdatePipeline",
 })) as any;
 
+const i_ActionTypeArtifactDetails: D.LazyStruct = () => ({
+  minimumCount: 0,
+  maximumCount: 0,
+});
+const i_ActionTypeId: D.LazyStruct = () => ({
+  category: 0,
+  owner: 0,
+  provider: 0,
+  version: 0,
+});
+const i_ArtifactDetails: D.LazyStruct = () => ({
+  minimumCount: 0,
+  maximumCount: 0,
+});
+const i_CurrentRevision: D.LazyStruct = () => ({
+  revision: 0,
+  changeIdentifier: 0,
+  created: 0,
+  revisionSummary: 0,
+});
+const i_ExecutionDetails: D.LazyStruct = () => ({
+  summary: 0,
+  externalExecutionId: 0,
+  percentComplete: 0,
+});
+const i_FailureDetails: D.LazyStruct = () => ({
+  type: 0,
+  message: 0,
+  externalExecutionId: 0,
+});
+const i_LatestInPipelineExecutionFilter: D.LazyStruct = () => ({
+  pipelineExecutionId: 0,
+  startTimeRange: 0,
+});
+const i_PipelineDeclaration: D.LazyStruct = () => ({
+  name: 0,
+  roleArn: 0,
+  artifactStore: i_ArtifactStore,
+  artifactStores: D.map(i_ArtifactStore),
+  stages: D.list({
+    name: 0,
+    blockers: D.list({ name: 0, type: 0 }),
+    actions: D.list({
+      name: 0,
+      actionTypeId: i_ActionTypeId,
+      runOrder: 0,
+      configuration: 0,
+      commands: 0,
+      outputArtifacts: D.list({ name: 0, files: 0 }),
+      inputArtifacts: D.list(i_InputArtifact),
+      outputVariables: 0,
+      roleArn: 0,
+      region: 0,
+      namespace: 0,
+      timeoutInMinutes: 0,
+      environmentVariables: D.list({ name: 0, value: 0, type: 0 }),
+    }),
+    onFailure: {
+      result: 0,
+      retryConfiguration: { retryMode: 0 },
+      conditions: D.list(i_Condition),
+    },
+    onSuccess: { conditions: D.list(i_Condition) },
+    beforeEntry: { conditions: D.list(i_Condition) },
+  }),
+  version: 0,
+  executionMode: 0,
+  pipelineType: 0,
+  variables: D.list({ name: 0, defaultValue: 0, description: 0 }),
+  triggers: D.list({
+    providerType: 0,
+    gitConfiguration: {
+      sourceActionName: 0,
+      push: D.list({
+        tags: { includes: 0, excludes: 0 },
+        branches: i_GitBranchFilterCriteria,
+        filePaths: i_GitFilePathFilterCriteria,
+      }),
+      pullRequest: D.list({
+        events: 0,
+        branches: i_GitBranchFilterCriteria,
+        filePaths: i_GitFilePathFilterCriteria,
+      }),
+    },
+  }),
+});
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
 const o_AWSSessionCredentials: D.LazyStruct = () => ({
   accessKeyId: D.secret,
   secretAccessKey: D.secret,
@@ -2920,3 +3225,30 @@ const o_StageConditionState: D.LazyStruct = () => ({
     }),
   }),
 });
+const i_ArtifactStore: D.LazyStruct = () => ({
+  type: 0,
+  location: 0,
+  encryptionKey: { id: 0, type: 0 },
+});
+const i_Condition: D.LazyStruct = () => ({
+  result: 0,
+  rules: D.list({
+    name: 0,
+    ruleTypeId: { category: 0, owner: 0, provider: 0, version: 0 },
+    configuration: 0,
+    commands: 0,
+    inputArtifacts: D.list(i_InputArtifact),
+    roleArn: 0,
+    region: 0,
+    timeoutInMinutes: 0,
+  }),
+});
+const i_GitBranchFilterCriteria: D.LazyStruct = () => ({
+  includes: 0,
+  excludes: 0,
+});
+const i_GitFilePathFilterCriteria: D.LazyStruct = () => ({
+  includes: 0,
+  excludes: 0,
+});
+const i_InputArtifact: D.LazyStruct = () => ({ name: 0 });

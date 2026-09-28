@@ -2865,7 +2865,7 @@ export const addTagsToResource: API.OperationMethod<
   AddTagsToResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2887,6 +2887,7 @@ export const applyPendingMaintenanceAction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ReplicationInstanceArn: 0, ApplyAction: 0, OptInType: 0 },
     output: {
       ResourcePendingMaintenanceActions: o_ResourcePendingMaintenanceActions,
     },
@@ -2919,7 +2920,12 @@ export const batchStartRecommendations: API.OperationMethod<
   BatchStartRecommendationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Data: D.list({ DatabaseId: 0, Settings: i_RecommendationSettings }),
+    },
+  },
   errors: [AccessDeniedFault, InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2944,7 +2950,10 @@ export const cancelMetadataModelConversion: API.OperationMethod<
   CancelMetadataModelConversionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MigrationProjectIdentifier: 0, RequestIdentifier: 0 },
+  },
   errors: [AccessDeniedFault, InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2969,7 +2978,10 @@ export const cancelMetadataModelCreation: API.OperationMethod<
   CancelMetadataModelCreationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MigrationProjectIdentifier: 0, RequestIdentifier: 0 },
+  },
   errors: [AccessDeniedFault, InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2996,6 +3008,7 @@ export const cancelReplicationTaskAssessmentRun: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ReplicationTaskAssessmentRunArn: 0 },
     output: { ReplicationTaskAssessmentRun: o_ReplicationTaskAssessmentRun },
   },
   errors: [AccessDeniedFault, InvalidResourceStateFault, ResourceNotFoundFault],
@@ -3022,7 +3035,18 @@ export const createDataMigration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { SourceDataSettings: D.list(i_SourceDataSetting) },
+    input: {
+      DataMigrationName: 0,
+      MigrationProjectIdentifier: 0,
+      DataMigrationType: 0,
+      ServiceAccessRoleArn: 0,
+      EnableCloudwatchLogs: 0,
+      SourceDataSettings: D.list(i_SourceDataSetting),
+      TargetDataSettings: D.list(i_TargetDataSetting),
+      NumberOfJobs: 0,
+      Tags: D.list(i_Tag),
+      SelectionRules: 0,
+    },
     output: { DataMigration: o_DataMigration },
   },
   errors: [
@@ -3057,7 +3081,18 @@ export const createDataProvider: API.OperationMethod<
   CreateDataProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DataProvider: o_DataProvider } },
+  descriptor: {
+    service: svc,
+    input: {
+      DataProviderName: 0,
+      Description: 0,
+      Engine: 0,
+      Virtual: 0,
+      Settings: i_DataProviderSettings,
+      Tags: D.list(i_Tag),
+    },
+    output: { DataProvider: o_DataProvider },
+  },
   errors: [
     AccessDeniedFault,
     FailedDependencyFault,
@@ -3094,7 +3129,47 @@ export const createEndpoint: API.OperationMethod<
   CreateEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Endpoint: o_Endpoint } },
+  descriptor: {
+    service: svc,
+    input: {
+      EndpointIdentifier: 0,
+      EndpointType: 0,
+      EngineName: 0,
+      Username: 0,
+      Password: 0,
+      ServerName: 0,
+      Port: 0,
+      DatabaseName: 0,
+      ExtraConnectionAttributes: 0,
+      KmsKeyId: 0,
+      Tags: D.list(i_Tag),
+      CertificateArn: 0,
+      SslMode: 0,
+      ServiceAccessRoleArn: 0,
+      ExternalTableDefinition: 0,
+      DynamoDbSettings: i_DynamoDbSettings,
+      S3Settings: i_S3Settings,
+      DmsTransferSettings: i_DmsTransferSettings,
+      MongoDbSettings: i_MongoDbSettings,
+      KinesisSettings: i_KinesisSettings,
+      KafkaSettings: i_KafkaSettings,
+      ElasticsearchSettings: i_ElasticsearchSettings,
+      NeptuneSettings: i_NeptuneSettings,
+      RedshiftSettings: i_RedshiftSettings,
+      PostgreSQLSettings: i_PostgreSQLSettings,
+      MySQLSettings: i_MySQLSettings,
+      OracleSettings: i_OracleSettings,
+      SybaseSettings: i_SybaseSettings,
+      MicrosoftSQLServerSettings: i_MicrosoftSQLServerSettings,
+      IBMDb2Settings: i_IBMDb2Settings,
+      ResourceIdentifier: 0,
+      DocDbSettings: i_DocDbSettings,
+      RedisSettings: i_RedisSettings,
+      GcpMySQLSettings: i_GcpMySQLSettings,
+      TimestreamSettings: i_TimestreamSettings,
+    },
+    output: { Endpoint: o_Endpoint },
+  },
   errors: [
     AccessDeniedFault,
     InvalidResourceStateFault,
@@ -3145,7 +3220,18 @@ export const createEventSubscription: API.OperationMethod<
   CreateEventSubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SubscriptionName: 0,
+      SnsTopicArn: 0,
+      SourceType: 0,
+      EventCategories: 0,
+      SourceIds: 0,
+      Enabled: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     KMSAccessDeniedFault,
     KMSDisabledFault,
@@ -3181,7 +3267,15 @@ export const createFleetAdvisorCollector: API.OperationMethod<
   CreateFleetAdvisorCollectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CollectorName: 0,
+      Description: 0,
+      ServiceAccessRoleArn: 0,
+      S3BucketName: 0,
+    },
+  },
   errors: [
     AccessDeniedFault,
     InvalidResourceStateFault,
@@ -3218,7 +3312,21 @@ export const createInstanceProfile: API.OperationMethod<
   CreateInstanceProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { InstanceProfile: o_InstanceProfile } },
+  descriptor: {
+    service: svc,
+    input: {
+      AvailabilityZone: 0,
+      KmsKeyArn: 0,
+      PubliclyAccessible: 0,
+      Tags: D.list(i_Tag),
+      NetworkType: 0,
+      InstanceProfileName: 0,
+      Description: 0,
+      SubnetGroupIdentifier: 0,
+      VpcSecurityGroups: 0,
+    },
+    output: { InstanceProfile: o_InstanceProfile },
+  },
   errors: [
     AccessDeniedFault,
     FailedDependencyFault,
@@ -3262,6 +3370,16 @@ export const createMigrationProject: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MigrationProjectName: 0,
+      SourceDataProviderDescriptors: D.list(i_DataProviderDescriptorDefinition),
+      TargetDataProviderDescriptors: D.list(i_DataProviderDescriptorDefinition),
+      InstanceProfileIdentifier: 0,
+      TransformationRules: 0,
+      Description: 0,
+      Tags: D.list(i_Tag),
+      SchemaConversionApplicationAttributes: i_SCApplicationAttributes,
+    },
     output: { MigrationProject: o_MigrationProject },
   },
   errors: [
@@ -3301,6 +3419,18 @@ export const createReplicationConfig: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ReplicationConfigIdentifier: 0,
+      SourceEndpointArn: 0,
+      TargetEndpointArn: 0,
+      ComputeConfig: i_ComputeConfig,
+      ReplicationType: 0,
+      TableMappings: 0,
+      ReplicationSettings: 0,
+      SupplementalSettings: 0,
+      ResourceIdentifier: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { ReplicationConfig: o_ReplicationConfig },
   },
   errors: [
@@ -3350,6 +3480,25 @@ export const createReplicationInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ReplicationInstanceIdentifier: 0,
+      AllocatedStorage: 0,
+      ReplicationInstanceClass: 0,
+      VpcSecurityGroupIds: 0,
+      AvailabilityZone: 0,
+      ReplicationSubnetGroupIdentifier: 0,
+      PreferredMaintenanceWindow: 0,
+      MultiAZ: 0,
+      EngineVersion: 0,
+      AutoMinorVersionUpgrade: 0,
+      Tags: D.list(i_Tag),
+      KmsKeyId: 0,
+      PubliclyAccessible: 0,
+      DnsNameServers: 0,
+      ResourceIdentifier: 0,
+      NetworkType: 0,
+      KerberosAuthenticationSettings: i_KerberosAuthenticationSettings,
+    },
     output: { ReplicationInstance: o_ReplicationInstance },
   },
   errors: [
@@ -3396,7 +3545,15 @@ export const createReplicationSubnetGroup: API.OperationMethod<
   CreateReplicationSubnetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ReplicationSubnetGroupIdentifier: 0,
+      ReplicationSubnetGroupDescription: 0,
+      SubnetIds: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedFault,
     InvalidSubnet,
@@ -3427,7 +3584,25 @@ export const createReplicationTask: API.OperationMethod<
   CreateReplicationTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ReplicationTask: o_ReplicationTask } },
+  descriptor: {
+    service: svc,
+    input: {
+      ReplicationTaskIdentifier: 0,
+      SourceEndpointArn: 0,
+      TargetEndpointArn: 0,
+      ReplicationInstanceArn: 0,
+      MigrationType: 0,
+      TableMappings: 0,
+      ReplicationTaskSettings: 0,
+      CdcStartTime: 0,
+      CdcStartPosition: 0,
+      CdcStopPosition: 0,
+      Tags: D.list(i_Tag),
+      TaskData: 0,
+      ResourceIdentifier: 0,
+    },
+    output: { ReplicationTask: o_ReplicationTask },
+  },
   errors: [
     AccessDeniedFault,
     InvalidResourceStateFault,
@@ -3454,7 +3629,11 @@ export const deleteCertificate: API.OperationMethod<
   DeleteCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Certificate: o_Certificate } },
+  descriptor: {
+    service: svc,
+    input: { CertificateArn: 0 },
+    output: { Certificate: o_Certificate },
+  },
   errors: [InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3475,7 +3654,10 @@ export const deleteConnection: API.OperationMethod<
   DeleteConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { EndpointArn: 0, ReplicationInstanceArn: 0 },
+  },
   errors: [AccessDeniedFault, InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3496,7 +3678,11 @@ export const deleteDataMigration: API.OperationMethod<
   DeleteDataMigrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DataMigration: o_DataMigration } },
+  descriptor: {
+    service: svc,
+    input: { DataMigrationIdentifier: 0 },
+    output: { DataMigration: o_DataMigration },
+  },
   errors: [
     FailedDependencyFault,
     InvalidResourceStateFault,
@@ -3529,7 +3715,11 @@ export const deleteDataProvider: API.OperationMethod<
   DeleteDataProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DataProvider: o_DataProvider } },
+  descriptor: {
+    service: svc,
+    input: { DataProviderIdentifier: 0 },
+    output: { DataProvider: o_DataProvider },
+  },
   errors: [
     AccessDeniedFault,
     FailedDependencyFault,
@@ -3557,7 +3747,11 @@ export const deleteEndpoint: API.OperationMethod<
   DeleteEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Endpoint: o_Endpoint } },
+  descriptor: {
+    service: svc,
+    input: { EndpointArn: 0 },
+    output: { Endpoint: o_Endpoint },
+  },
   errors: [InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3578,7 +3772,7 @@ export const deleteEventSubscription: API.OperationMethod<
   DeleteEventSubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SubscriptionName: 0 } },
   errors: [AccessDeniedFault, InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3601,7 +3795,7 @@ export const deleteFleetAdvisorCollector: API.OperationMethod<
   DeleteFleetAdvisorCollectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CollectorReferencedId: 0 } },
   errors: [
     AccessDeniedFault,
     CollectorNotFoundFault,
@@ -3628,7 +3822,7 @@ export const deleteFleetAdvisorDatabases: API.OperationMethod<
   DeleteFleetAdvisorDatabasesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DatabaseIds: 0 } },
   errors: [AccessDeniedFault, InvalidOperationFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3657,7 +3851,11 @@ export const deleteInstanceProfile: API.OperationMethod<
   DeleteInstanceProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { InstanceProfile: o_InstanceProfile } },
+  descriptor: {
+    service: svc,
+    input: { InstanceProfileIdentifier: 0 },
+    output: { InstanceProfile: o_InstanceProfile },
+  },
   errors: [
     AccessDeniedFault,
     FailedDependencyFault,
@@ -3692,6 +3890,7 @@ export const deleteMigrationProject: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { MigrationProjectIdentifier: 0 },
     output: { MigrationProject: o_MigrationProject },
   },
   errors: [
@@ -3724,6 +3923,7 @@ export const deleteReplicationConfig: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ReplicationConfigArn: 0 },
     output: { ReplicationConfig: o_ReplicationConfig },
   },
   errors: [AccessDeniedFault, InvalidResourceStateFault, ResourceNotFoundFault],
@@ -3750,6 +3950,7 @@ export const deleteReplicationInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ReplicationInstanceArn: 0 },
     output: { ReplicationInstance: o_ReplicationInstance },
   },
   errors: [InvalidResourceStateFault, ResourceNotFoundFault],
@@ -3772,7 +3973,7 @@ export const deleteReplicationSubnetGroup: API.OperationMethod<
   DeleteReplicationSubnetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ReplicationSubnetGroupIdentifier: 0 } },
   errors: [AccessDeniedFault, InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3792,7 +3993,11 @@ export const deleteReplicationTask: API.OperationMethod<
   DeleteReplicationTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ReplicationTask: o_ReplicationTask } },
+  descriptor: {
+    service: svc,
+    input: { ReplicationTaskArn: 0 },
+    output: { ReplicationTask: o_ReplicationTask },
+  },
   errors: [InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3819,6 +4024,7 @@ export const deleteReplicationTaskAssessmentRun: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ReplicationTaskAssessmentRunArn: 0 },
     output: { ReplicationTaskAssessmentRun: o_ReplicationTaskAssessmentRun },
   },
   errors: [AccessDeniedFault, InvalidResourceStateFault, ResourceNotFoundFault],
@@ -3844,7 +4050,7 @@ export const describeAccountAttributes: API.OperationMethod<
   DescribeAccountAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3884,7 +4090,19 @@ export const describeApplicableIndividualAssessments: API.PaginatedOperationMeth
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ReplicationTaskArn: 0,
+      ReplicationInstanceArn: 0,
+      ReplicationConfigArn: 0,
+      SourceEngineName: 0,
+      TargetEngineName: 0,
+      MigrationType: 0,
+      MaxRecords: 0,
+      Marker: 0,
+    },
+  },
   errors: [AccessDeniedFault, InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3907,7 +4125,11 @@ export const describeCertificates: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Certificates: D.list(o_Certificate) } },
+  descriptor: {
+    service: svc,
+    input: { Filters: D.list(i_Filter), MaxRecords: 0, Marker: 0 },
+    output: { Certificates: D.list(o_Certificate) },
+  },
   errors: [ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3931,7 +4153,10 @@ export const describeConnections: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Filters: D.list(i_Filter), MaxRecords: 0, Marker: 0 },
+  },
   errors: [ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3959,7 +4184,7 @@ export const describeConversionConfiguration: API.OperationMethod<
   DescribeConversionConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MigrationProjectIdentifier: 0 } },
   errors: [ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3983,6 +4208,13 @@ export const describeDataMigrations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filters: D.list(i_Filter),
+      MaxRecords: 0,
+      Marker: 0,
+      WithoutSettings: 0,
+      WithoutStatistics: 0,
+    },
     output: { DataMigrations: D.list(o_DataMigration) },
   },
   errors: [
@@ -4023,6 +4255,7 @@ export const describeDataProviders: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Filters: D.list(i_Filter), MaxRecords: 0, Marker: 0 },
     output: { DataProviders: D.list(o_DataProvider) },
   },
   errors: [AccessDeniedFault, FailedDependencyFault, ResourceNotFoundFault],
@@ -4047,7 +4280,11 @@ export const describeEndpoints: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Endpoints: D.list(o_Endpoint) } },
+  descriptor: {
+    service: svc,
+    input: { Filters: D.list(i_Filter), MaxRecords: 0, Marker: 0 },
+    output: { Endpoints: D.list(o_Endpoint) },
+  },
   errors: [ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4071,7 +4308,10 @@ export const describeEndpointSettings: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { EngineName: 0, MaxRecords: 0, Marker: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4094,7 +4334,10 @@ export const describeEndpointTypes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Filters: D.list(i_Filter), MaxRecords: 0, Marker: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4119,6 +4362,7 @@ export const describeEngineVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxRecords: 0, Marker: 0 },
     output: {
       EngineVersions: D.list({
         LaunchDate: D.ts,
@@ -4151,7 +4395,10 @@ export const describeEventCategories: API.OperationMethod<
   DescribeEventCategoriesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SourceType: 0, Filters: D.list(i_Filter) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4171,7 +4418,21 @@ export const describeEvents: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Events: D.list({ Date: D.ts }) } },
+  descriptor: {
+    service: svc,
+    input: {
+      SourceIdentifier: 0,
+      SourceType: 0,
+      StartTime: 0,
+      EndTime: 0,
+      Duration: 0,
+      EventCategories: 0,
+      Filters: D.list(i_Filter),
+      MaxRecords: 0,
+      Marker: 0,
+    },
+    output: { Events: D.list({ Date: D.ts }) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4202,7 +4463,15 @@ export const describeEventSubscriptions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SubscriptionName: 0,
+      Filters: D.list(i_Filter),
+      MaxRecords: 0,
+      Marker: 0,
+    },
+  },
   errors: [ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4231,7 +4500,15 @@ export const describeExtensionPackAssociations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MigrationProjectIdentifier: 0,
+      Filters: D.list(i_Filter),
+      Marker: 0,
+      MaxRecords: 0,
+    },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4258,7 +4535,10 @@ export const describeFleetAdvisorCollectors: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Filters: D.list(i_Filter), MaxRecords: 0, NextToken: 0 },
+  },
   errors: [InvalidResourceStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4285,7 +4565,10 @@ export const describeFleetAdvisorDatabases: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Filters: D.list(i_Filter), MaxRecords: 0, NextToken: 0 },
+  },
   errors: [InvalidResourceStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4313,7 +4596,7 @@ export const describeFleetAdvisorLsaAnalysis: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxRecords: 0, NextToken: 0 } },
   errors: [InvalidResourceStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4341,7 +4624,10 @@ export const describeFleetAdvisorSchemaObjectSummary: API.PaginatedOperationMeth
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Filters: D.list(i_Filter), MaxRecords: 0, NextToken: 0 },
+  },
   errors: [InvalidResourceStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4368,7 +4654,10 @@ export const describeFleetAdvisorSchemas: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Filters: D.list(i_Filter), MaxRecords: 0, NextToken: 0 },
+  },
   errors: [InvalidResourceStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4402,6 +4691,7 @@ export const describeInstanceProfiles: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Filters: D.list(i_Filter), MaxRecords: 0, Marker: 0 },
     output: { InstanceProfiles: D.list(o_InstanceProfile) },
   },
   errors: [AccessDeniedFault, FailedDependencyFault, ResourceNotFoundFault],
@@ -4432,7 +4722,10 @@ export const describeMetadataModel: API.OperationMethod<
   DescribeMetadataModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SelectionRules: 0, MigrationProjectIdentifier: 0, Origin: 0 },
+  },
   errors: [AccessDeniedFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4458,7 +4751,15 @@ export const describeMetadataModelAssessments: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MigrationProjectIdentifier: 0,
+      Filters: D.list(i_Filter),
+      Marker: 0,
+      MaxRecords: 0,
+    },
+  },
   errors: [ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4488,7 +4789,16 @@ export const describeMetadataModelChildren: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   MetadataModelReference
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SelectionRules: 0,
+      MigrationProjectIdentifier: 0,
+      Origin: 0,
+      Marker: 0,
+      MaxRecords: 0,
+    },
+  },
   errors: [AccessDeniedFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4523,7 +4833,15 @@ export const describeMetadataModelConversions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MigrationProjectIdentifier: 0,
+      Filters: D.list(i_Filter),
+      Marker: 0,
+      MaxRecords: 0,
+    },
+  },
   errors: [ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4558,7 +4876,15 @@ export const describeMetadataModelCreations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   SchemaConversionRequest
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Filters: D.list(i_Filter),
+      Marker: 0,
+      MaxRecords: 0,
+      MigrationProjectIdentifier: 0,
+    },
+  },
   errors: [AccessDeniedFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4590,7 +4916,15 @@ export const describeMetadataModelExportsAsScript: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MigrationProjectIdentifier: 0,
+      Filters: D.list(i_Filter),
+      Marker: 0,
+      MaxRecords: 0,
+    },
+  },
   errors: [ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4621,7 +4955,15 @@ export const describeMetadataModelExportsToTarget: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MigrationProjectIdentifier: 0,
+      Filters: D.list(i_Filter),
+      Marker: 0,
+      MaxRecords: 0,
+    },
+  },
   errors: [ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4652,7 +4994,15 @@ export const describeMetadataModelImports: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MigrationProjectIdentifier: 0,
+      Filters: D.list(i_Filter),
+      Marker: 0,
+      MaxRecords: 0,
+    },
+  },
   errors: [ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4686,6 +5036,7 @@ export const describeMigrationProjects: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Filters: D.list(i_Filter), MaxRecords: 0, Marker: 0 },
     output: { MigrationProjects: D.list(o_MigrationProject) },
   },
   errors: [AccessDeniedFault, FailedDependencyFault, ResourceNotFoundFault],
@@ -4711,7 +5062,7 @@ export const describeOrderableReplicationInstances: API.PaginatedOperationMethod
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxRecords: 0, Marker: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4739,6 +5090,12 @@ export const describePendingMaintenanceActions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ReplicationInstanceArn: 0,
+      Filters: D.list(i_Filter),
+      Marker: 0,
+      MaxRecords: 0,
+    },
     output: {
       PendingMaintenanceActions: D.list(o_ResourcePendingMaintenanceActions),
     },
@@ -4771,7 +5128,10 @@ export const describeRecommendationLimitations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Filters: D.list(i_Filter), MaxRecords: 0, NextToken: 0 },
+  },
   errors: [AccessDeniedFault, InvalidResourceStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4800,7 +5160,10 @@ export const describeRecommendations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Filters: D.list(i_Filter), MaxRecords: 0, NextToken: 0 },
+  },
   errors: [AccessDeniedFault, InvalidResourceStateFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4827,6 +5190,7 @@ export const describeRefreshSchemasStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { EndpointArn: 0 },
     output: { RefreshSchemasStatus: o_RefreshSchemasStatus },
   },
   errors: [InvalidResourceStateFault, ResourceNotFoundFault],
@@ -4851,6 +5215,7 @@ export const describeReplicationConfigs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Filters: D.list(i_Filter), MaxRecords: 0, Marker: 0 },
     output: { ReplicationConfigs: D.list(o_ReplicationConfig) },
   },
   errors: [ResourceNotFoundFault],
@@ -4880,6 +5245,7 @@ export const describeReplicationInstances: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Filters: D.list(i_Filter), MaxRecords: 0, Marker: 0 },
     output: { ReplicationInstances: D.list(o_ReplicationInstance) },
   },
   errors: [ResourceNotFoundFault],
@@ -4907,7 +5273,10 @@ export const describeReplicationInstanceTaskLogs: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ReplicationInstanceArn: 0, MaxRecords: 0, Marker: 0 },
+  },
   errors: [InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4931,7 +5300,11 @@ export const describeReplications: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Replications: D.list(o_Replication) } },
+  descriptor: {
+    service: svc,
+    input: { Filters: D.list(i_Filter), MaxRecords: 0, Marker: 0 },
+    output: { Replications: D.list(o_Replication) },
+  },
   errors: [ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4956,7 +5329,10 @@ export const describeReplicationSubnetGroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Filters: D.list(i_Filter), MaxRecords: 0, Marker: 0 },
+  },
   errors: [ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4985,6 +5361,12 @@ export const describeReplicationTableStatistics: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ReplicationConfigArn: 0,
+      MaxRecords: 0,
+      Marker: 0,
+      Filters: D.list(i_Filter),
+    },
     output: { ReplicationTableStatistics: D.list(o_TableStatistics) },
   },
   errors: [InvalidResourceStateFault, ResourceNotFoundFault],
@@ -5017,6 +5399,7 @@ export const describeReplicationTaskAssessmentResults: API.PaginatedOperationMet
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { ReplicationTaskArn: 0, MaxRecords: 0, Marker: 0 },
     output: {
       ReplicationTaskAssessmentResults: D.list({
         ReplicationTaskLastAssessmentDate: D.ts,
@@ -5058,6 +5441,7 @@ export const describeReplicationTaskAssessmentRuns: API.PaginatedOperationMethod
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Filters: D.list(i_Filter), MaxRecords: 0, Marker: 0 },
     output: {
       ReplicationTaskAssessmentRuns: D.list(o_ReplicationTaskAssessmentRun),
     },
@@ -5091,6 +5475,7 @@ export const describeReplicationTaskIndividualAssessments: API.PaginatedOperatio
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Filters: D.list(i_Filter), MaxRecords: 0, Marker: 0 },
     output: {
       ReplicationTaskIndividualAssessments: D.list({
         ReplicationTaskIndividualAssessmentStartDate: D.ts,
@@ -5124,6 +5509,12 @@ export const describeReplicationTasks: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Filters: D.list(i_Filter),
+      MaxRecords: 0,
+      Marker: 0,
+      WithoutSettings: 0,
+    },
     output: { ReplicationTasks: D.list(o_ReplicationTask) },
   },
   errors: [ResourceNotFoundFault],
@@ -5151,7 +5542,10 @@ export const describeSchemas: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { EndpointArn: 0, MaxRecords: 0, Marker: 0 },
+  },
   errors: [InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5185,6 +5579,12 @@ export const describeTableStatistics: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ReplicationTaskArn: 0,
+      MaxRecords: 0,
+      Marker: 0,
+      Filters: D.list(i_Filter),
+    },
     output: { TableStatistics: D.list(o_TableStatistics) },
   },
   errors: [AccessDeniedFault, InvalidResourceStateFault, ResourceNotFoundFault],
@@ -5215,7 +5615,15 @@ export const exportMetadataModelAssessment: API.OperationMethod<
   ExportMetadataModelAssessmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MigrationProjectIdentifier: 0,
+      SelectionRules: 0,
+      FileName: 0,
+      AssessmentReportTypes: 0,
+    },
+  },
   errors: [ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5240,7 +5648,10 @@ export const getTargetSelectionRules: API.OperationMethod<
   GetTargetSelectionRulesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MigrationProjectIdentifier: 0, SelectionRules: 0 },
+  },
   errors: [AccessDeniedFault, InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5262,7 +5673,17 @@ export const importCertificate: API.OperationMethod<
   ImportCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Certificate: o_Certificate } },
+  descriptor: {
+    service: svc,
+    input: {
+      CertificateIdentifier: 0,
+      CertificatePem: 0,
+      CertificateWallet: 0,
+      Tags: D.list(i_Tag),
+      KmsKeyId: 0,
+    },
+    output: { Certificate: o_Certificate },
+  },
   errors: [
     InvalidCertificateFault,
     KMSKeyNotAccessibleFault,
@@ -5291,7 +5712,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, ResourceArnList: 0 } },
   errors: [InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5315,7 +5736,10 @@ export const modifyConversionConfiguration: API.OperationMethod<
   ModifyConversionConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MigrationProjectIdentifier: 0, ConversionConfiguration: 0 },
+  },
   errors: [InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5338,7 +5762,17 @@ export const modifyDataMigration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { SourceDataSettings: D.list(i_SourceDataSetting) },
+    input: {
+      DataMigrationIdentifier: 0,
+      DataMigrationName: 0,
+      EnableCloudwatchLogs: 0,
+      ServiceAccessRoleArn: 0,
+      DataMigrationType: 0,
+      SourceDataSettings: D.list(i_SourceDataSetting),
+      TargetDataSettings: D.list(i_TargetDataSetting),
+      NumberOfJobs: 0,
+      SelectionRules: 0,
+    },
     output: { DataMigration: o_DataMigration },
   },
   errors: [
@@ -5373,7 +5807,19 @@ export const modifyDataProvider: API.OperationMethod<
   ModifyDataProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DataProvider: o_DataProvider } },
+  descriptor: {
+    service: svc,
+    input: {
+      DataProviderIdentifier: 0,
+      DataProviderName: 0,
+      Description: 0,
+      Engine: 0,
+      Virtual: 0,
+      ExactSettings: 0,
+      Settings: i_DataProviderSettings,
+    },
+    output: { DataProvider: o_DataProvider },
+  },
   errors: [
     AccessDeniedFault,
     FailedDependencyFault,
@@ -5408,7 +5854,46 @@ export const modifyEndpoint: API.OperationMethod<
   ModifyEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Endpoint: o_Endpoint } },
+  descriptor: {
+    service: svc,
+    input: {
+      EndpointArn: 0,
+      EndpointIdentifier: 0,
+      EndpointType: 0,
+      EngineName: 0,
+      Username: 0,
+      Password: 0,
+      ServerName: 0,
+      Port: 0,
+      DatabaseName: 0,
+      ExtraConnectionAttributes: 0,
+      CertificateArn: 0,
+      SslMode: 0,
+      ServiceAccessRoleArn: 0,
+      ExternalTableDefinition: 0,
+      DynamoDbSettings: i_DynamoDbSettings,
+      S3Settings: i_S3Settings,
+      DmsTransferSettings: i_DmsTransferSettings,
+      MongoDbSettings: i_MongoDbSettings,
+      KinesisSettings: i_KinesisSettings,
+      KafkaSettings: i_KafkaSettings,
+      ElasticsearchSettings: i_ElasticsearchSettings,
+      NeptuneSettings: i_NeptuneSettings,
+      RedshiftSettings: i_RedshiftSettings,
+      PostgreSQLSettings: i_PostgreSQLSettings,
+      MySQLSettings: i_MySQLSettings,
+      OracleSettings: i_OracleSettings,
+      SybaseSettings: i_SybaseSettings,
+      MicrosoftSQLServerSettings: i_MicrosoftSQLServerSettings,
+      IBMDb2Settings: i_IBMDb2Settings,
+      DocDbSettings: i_DocDbSettings,
+      RedisSettings: i_RedisSettings,
+      ExactSettings: 0,
+      GcpMySQLSettings: i_GcpMySQLSettings,
+      TimestreamSettings: i_TimestreamSettings,
+    },
+    output: { Endpoint: o_Endpoint },
+  },
   errors: [
     AccessDeniedFault,
     InvalidResourceStateFault,
@@ -5442,7 +5927,16 @@ export const modifyEventSubscription: API.OperationMethod<
   ModifyEventSubscriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SubscriptionName: 0,
+      SnsTopicArn: 0,
+      SourceType: 0,
+      EventCategories: 0,
+      Enabled: 0,
+    },
+  },
   errors: [
     AccessDeniedFault,
     KMSAccessDeniedFault,
@@ -5485,7 +5979,21 @@ export const modifyInstanceProfile: API.OperationMethod<
   ModifyInstanceProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { InstanceProfile: o_InstanceProfile } },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceProfileIdentifier: 0,
+      AvailabilityZone: 0,
+      KmsKeyArn: 0,
+      PubliclyAccessible: 0,
+      NetworkType: 0,
+      InstanceProfileName: 0,
+      Description: 0,
+      SubnetGroupIdentifier: 0,
+      VpcSecurityGroups: 0,
+    },
+    output: { InstanceProfile: o_InstanceProfile },
+  },
   errors: [
     AccessDeniedFault,
     FailedDependencyFault,
@@ -5525,6 +6033,16 @@ export const modifyMigrationProject: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MigrationProjectIdentifier: 0,
+      MigrationProjectName: 0,
+      SourceDataProviderDescriptors: D.list(i_DataProviderDescriptorDefinition),
+      TargetDataProviderDescriptors: D.list(i_DataProviderDescriptorDefinition),
+      InstanceProfileIdentifier: 0,
+      TransformationRules: 0,
+      Description: 0,
+      SchemaConversionApplicationAttributes: i_SCApplicationAttributes,
+    },
     output: { MigrationProject: o_MigrationProject },
   },
   errors: [
@@ -5567,6 +6085,17 @@ export const modifyReplicationConfig: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ReplicationConfigArn: 0,
+      ReplicationConfigIdentifier: 0,
+      ReplicationType: 0,
+      TableMappings: 0,
+      ReplicationSettings: 0,
+      SupplementalSettings: 0,
+      ComputeConfig: i_ComputeConfig,
+      SourceEndpointArn: 0,
+      TargetEndpointArn: 0,
+    },
     output: { ReplicationConfig: o_ReplicationConfig },
   },
   errors: [
@@ -5605,6 +6134,21 @@ export const modifyReplicationInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ReplicationInstanceArn: 0,
+      AllocatedStorage: 0,
+      ApplyImmediately: 0,
+      ReplicationInstanceClass: 0,
+      VpcSecurityGroupIds: 0,
+      PreferredMaintenanceWindow: 0,
+      MultiAZ: 0,
+      EngineVersion: 0,
+      AllowMajorVersionUpgrade: 0,
+      AutoMinorVersionUpgrade: 0,
+      ReplicationInstanceIdentifier: 0,
+      NetworkType: 0,
+      KerberosAuthenticationSettings: i_KerberosAuthenticationSettings,
+    },
     output: { ReplicationInstance: o_ReplicationInstance },
   },
   errors: [
@@ -5638,7 +6182,14 @@ export const modifyReplicationSubnetGroup: API.OperationMethod<
   ModifyReplicationSubnetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ReplicationSubnetGroupIdentifier: 0,
+      ReplicationSubnetGroupDescription: 0,
+      SubnetIds: 0,
+    },
+  },
   errors: [
     AccessDeniedFault,
     InvalidSubnet,
@@ -5672,7 +6223,21 @@ export const modifyReplicationTask: API.OperationMethod<
   ModifyReplicationTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ReplicationTask: o_ReplicationTask } },
+  descriptor: {
+    service: svc,
+    input: {
+      ReplicationTaskArn: 0,
+      ReplicationTaskIdentifier: 0,
+      MigrationType: 0,
+      TableMappings: 0,
+      ReplicationTaskSettings: 0,
+      CdcStartTime: 0,
+      CdcStartPosition: 0,
+      CdcStopPosition: 0,
+      TaskData: 0,
+    },
+    output: { ReplicationTask: o_ReplicationTask },
+  },
   errors: [
     InvalidResourceStateFault,
     KMSKeyNotAccessibleFault,
@@ -5702,7 +6267,11 @@ export const moveReplicationTask: API.OperationMethod<
   MoveReplicationTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ReplicationTask: o_ReplicationTask } },
+  descriptor: {
+    service: svc,
+    input: { ReplicationTaskArn: 0, TargetReplicationInstanceArn: 0 },
+    output: { ReplicationTask: o_ReplicationTask },
+  },
   errors: [
     AccessDeniedFault,
     InvalidResourceStateFault,
@@ -5731,6 +6300,11 @@ export const rebootReplicationInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ReplicationInstanceArn: 0,
+      ForceFailover: 0,
+      ForcePlannedFailover: 0,
+    },
     output: { ReplicationInstance: o_ReplicationInstance },
   },
   errors: [InvalidResourceStateFault, ResourceNotFoundFault],
@@ -5758,6 +6332,7 @@ export const refreshSchemas: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { EndpointArn: 0, ReplicationInstanceArn: 0 },
     output: { RefreshSchemasStatus: o_RefreshSchemasStatus },
   },
   errors: [
@@ -5788,7 +6363,14 @@ export const reloadReplicationTables: API.OperationMethod<
   ReloadReplicationTablesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ReplicationConfigArn: 0,
+      TablesToReload: D.list(i_TableToReload),
+      ReloadOption: 0,
+    },
+  },
   errors: [InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5811,7 +6393,14 @@ export const reloadTables: API.OperationMethod<
   ReloadTablesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ReplicationTaskArn: 0,
+      TablesToReload: D.list(i_TableToReload),
+      ReloadOption: 0,
+    },
+  },
   errors: [InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5835,7 +6424,7 @@ export const removeTagsFromResource: API.OperationMethod<
   RemoveTagsFromResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5880,7 +6469,11 @@ export const startDataMigration: API.OperationMethod<
   StartDataMigrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DataMigration: o_DataMigration } },
+  descriptor: {
+    service: svc,
+    input: { DataMigrationIdentifier: 0, StartType: 0 },
+    output: { DataMigration: o_DataMigration },
+  },
   errors: [
     FailedDependencyFault,
     InvalidOperationFault,
@@ -5928,7 +6521,7 @@ export const startExtensionPackAssociation: API.OperationMethod<
   StartExtensionPackAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MigrationProjectIdentifier: 0 } },
   errors: [
     AccessDeniedFault,
     InvalidResourceStateFault,
@@ -5982,7 +6575,10 @@ export const startMetadataModelAssessment: API.OperationMethod<
   StartMetadataModelAssessmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MigrationProjectIdentifier: 0, SelectionRules: 0 },
+  },
   errors: [
     AccessDeniedFault,
     InvalidResourceStateFault,
@@ -6058,7 +6654,10 @@ export const startMetadataModelConversion: API.OperationMethod<
   StartMetadataModelConversionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MigrationProjectIdentifier: 0, SelectionRules: 0 },
+  },
   errors: [
     AccessDeniedFault,
     InvalidResourceStateFault,
@@ -6118,7 +6717,15 @@ export const startMetadataModelCreation: API.OperationMethod<
   StartMetadataModelCreationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MigrationProjectIdentifier: 0,
+      SelectionRules: 0,
+      MetadataModelName: 0,
+      Properties: { StatementProperties: { Definition: 0 } },
+    },
+  },
   errors: [
     AccessDeniedFault,
     ResourceAlreadyExistsFault,
@@ -6165,7 +6772,15 @@ export const startMetadataModelExportAsScript: API.OperationMethod<
   StartMetadataModelExportAsScriptError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MigrationProjectIdentifier: 0,
+      SelectionRules: 0,
+      Origin: 0,
+      FileName: 0,
+    },
+  },
   errors: [
     AccessDeniedFault,
     InvalidResourceStateFault,
@@ -6222,7 +6837,14 @@ export const startMetadataModelExportToTarget: API.OperationMethod<
   StartMetadataModelExportToTargetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MigrationProjectIdentifier: 0,
+      SelectionRules: 0,
+      OverwriteExtensionPack: 0,
+    },
+  },
   errors: [
     AccessDeniedFault,
     InvalidResourceStateFault,
@@ -6268,7 +6890,15 @@ export const startMetadataModelImport: API.OperationMethod<
   StartMetadataModelImportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MigrationProjectIdentifier: 0,
+      SelectionRules: 0,
+      Origin: 0,
+      Refresh: 0,
+    },
+  },
   errors: [
     AccessDeniedFault,
     InvalidResourceStateFault,
@@ -6303,7 +6933,10 @@ export const startRecommendations: API.OperationMethod<
   StartRecommendationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DatabaseId: 0, Settings: i_RecommendationSettings },
+  },
   errors: [AccessDeniedFault, InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6328,7 +6961,18 @@ export const startReplication: API.OperationMethod<
   StartReplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Replication: o_Replication } },
+  descriptor: {
+    service: svc,
+    input: {
+      ReplicationConfigArn: 0,
+      StartReplicationType: 0,
+      PremigrationAssessmentSettings: 0,
+      CdcStartTime: 0,
+      CdcStartPosition: 0,
+      CdcStopPosition: 0,
+    },
+    output: { Replication: o_Replication },
+  },
   errors: [AccessDeniedFault, InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6352,7 +6996,17 @@ export const startReplicationTask: API.OperationMethod<
   StartReplicationTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ReplicationTask: o_ReplicationTask } },
+  descriptor: {
+    service: svc,
+    input: {
+      ReplicationTaskArn: 0,
+      StartReplicationTaskType: 0,
+      CdcStartTime: 0,
+      CdcStartPosition: 0,
+      CdcStopPosition: 0,
+    },
+    output: { ReplicationTask: o_ReplicationTask },
+  },
   errors: [AccessDeniedFault, InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6385,7 +7039,11 @@ export const startReplicationTaskAssessment: API.OperationMethod<
   StartReplicationTaskAssessmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ReplicationTask: o_ReplicationTask } },
+  descriptor: {
+    service: svc,
+    input: { ReplicationTaskArn: 0 },
+    output: { ReplicationTask: o_ReplicationTask },
+  },
   errors: [InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6424,6 +7082,18 @@ export const startReplicationTaskAssessmentRun: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ReplicationTaskArn: 0,
+      ServiceAccessRoleArn: 0,
+      ResultLocationBucket: 0,
+      ResultLocationFolder: 0,
+      ResultEncryptionMode: 0,
+      ResultKmsKeyArn: 0,
+      AssessmentRunName: 0,
+      IncludeOnly: 0,
+      Exclude: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { ReplicationTaskAssessmentRun: o_ReplicationTaskAssessmentRun },
   },
   errors: [
@@ -6459,7 +7129,11 @@ export const stopDataMigration: API.OperationMethod<
   StopDataMigrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DataMigration: o_DataMigration } },
+  descriptor: {
+    service: svc,
+    input: { DataMigrationIdentifier: 0 },
+    output: { DataMigration: o_DataMigration },
+  },
   errors: [
     FailedDependencyFault,
     InvalidResourceStateFault,
@@ -6486,7 +7160,11 @@ export const stopReplication: API.OperationMethod<
   StopReplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Replication: o_Replication } },
+  descriptor: {
+    service: svc,
+    input: { ReplicationConfigArn: 0 },
+    output: { Replication: o_Replication },
+  },
   errors: [AccessDeniedFault, InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6506,7 +7184,11 @@ export const stopReplicationTask: API.OperationMethod<
   StopReplicationTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ReplicationTask: o_ReplicationTask } },
+  descriptor: {
+    service: svc,
+    input: { ReplicationTaskArn: 0 },
+    output: { ReplicationTask: o_ReplicationTask },
+  },
   errors: [InvalidResourceStateFault, ResourceNotFoundFault],
   protocol: AwsProtocol,
   retry: Retry,
@@ -6529,7 +7211,10 @@ export const testConnection: API.OperationMethod<
   TestConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ReplicationInstanceArn: 0, EndpointArn: 0 },
+  },
   errors: [
     AccessDeniedFault,
     InvalidResourceStateFault,
@@ -6566,16 +7251,490 @@ export const updateSubscriptionsToEventBridge: API.OperationMethod<
   UpdateSubscriptionsToEventBridgeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ForceMove: 0 } },
   errors: [AccessDeniedFault, InvalidResourceStateFault],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "UpdateSubscriptionsToEventBridge",
 })) as any;
 
+const i_ComputeConfig: D.LazyStruct = () => ({
+  AvailabilityZone: 0,
+  DnsNameServers: 0,
+  KmsKeyId: 0,
+  MaxCapacityUnits: 0,
+  MinCapacityUnits: 0,
+  MultiAZ: 0,
+  PreferredMaintenanceWindow: 0,
+  ReplicationSubnetGroupId: 0,
+  VpcSecurityGroupIds: 0,
+});
+const i_DataProviderDescriptorDefinition: D.LazyStruct = () => ({
+  DataProviderIdentifier: 0,
+  SecretsManagerSecretId: 0,
+  SecretsManagerAccessRoleArn: 0,
+});
+const i_DataProviderSettings: D.LazyStruct = () => ({
+  RedshiftSettings: {
+    ServerName: 0,
+    Port: 0,
+    DatabaseName: 0,
+    S3Path: 0,
+    S3AccessRoleArn: 0,
+  },
+  PostgreSqlSettings: {
+    ServerName: 0,
+    Port: 0,
+    DatabaseName: 0,
+    SslMode: 0,
+    CertificateArn: 0,
+    S3Path: 0,
+    S3AccessRoleArn: 0,
+  },
+  MySqlSettings: {
+    ServerName: 0,
+    Port: 0,
+    SslMode: 0,
+    CertificateArn: 0,
+    S3Path: 0,
+    S3AccessRoleArn: 0,
+  },
+  OracleSettings: {
+    ServerName: 0,
+    Port: 0,
+    DatabaseName: 0,
+    SslMode: 0,
+    CertificateArn: 0,
+    AsmServer: 0,
+    SecretsManagerOracleAsmSecretId: 0,
+    SecretsManagerOracleAsmAccessRoleArn: 0,
+    SecretsManagerSecurityDbEncryptionSecretId: 0,
+    SecretsManagerSecurityDbEncryptionAccessRoleArn: 0,
+    S3Path: 0,
+    S3AccessRoleArn: 0,
+  },
+  SybaseAseSettings: {
+    ServerName: 0,
+    Port: 0,
+    DatabaseName: 0,
+    SslMode: 0,
+    EncryptPassword: 0,
+    CertificateArn: 0,
+  },
+  MicrosoftSqlServerSettings: {
+    ServerName: 0,
+    Port: 0,
+    DatabaseName: 0,
+    SslMode: 0,
+    CertificateArn: 0,
+    S3Path: 0,
+    S3AccessRoleArn: 0,
+  },
+  DocDbSettings: {
+    ServerName: 0,
+    Port: 0,
+    DatabaseName: 0,
+    SslMode: 0,
+    CertificateArn: 0,
+  },
+  MariaDbSettings: {
+    ServerName: 0,
+    Port: 0,
+    SslMode: 0,
+    CertificateArn: 0,
+    S3Path: 0,
+    S3AccessRoleArn: 0,
+  },
+  IbmDb2LuwSettings: {
+    ServerName: 0,
+    Port: 0,
+    DatabaseName: 0,
+    SslMode: 0,
+    CertificateArn: 0,
+    EncryptionAlgorithm: 0,
+    SecurityMechanism: 0,
+    S3Path: 0,
+    S3AccessRoleArn: 0,
+  },
+  IbmDb2zOsSettings: {
+    ServerName: 0,
+    Port: 0,
+    DatabaseName: 0,
+    SslMode: 0,
+    CertificateArn: 0,
+    S3Path: 0,
+    S3AccessRoleArn: 0,
+  },
+  MongoDbSettings: {
+    ServerName: 0,
+    Port: 0,
+    DatabaseName: 0,
+    SslMode: 0,
+    CertificateArn: 0,
+    AuthType: 0,
+    AuthSource: 0,
+    AuthMechanism: 0,
+  },
+});
+const i_DmsTransferSettings: D.LazyStruct = () => ({
+  ServiceAccessRoleArn: 0,
+  BucketName: 0,
+});
+const i_DocDbSettings: D.LazyStruct = () => ({
+  Username: 0,
+  Password: 0,
+  ServerName: 0,
+  Port: 0,
+  DatabaseName: 0,
+  NestingLevel: 0,
+  ExtractDocId: 0,
+  DocsToInvestigate: 0,
+  KmsKeyId: 0,
+  SecretsManagerAccessRoleArn: 0,
+  SecretsManagerSecretId: 0,
+  UseUpdateLookUp: 0,
+  ReplicateShardCollections: 0,
+});
+const i_DynamoDbSettings: D.LazyStruct = () => ({ ServiceAccessRoleArn: 0 });
+const i_ElasticsearchSettings: D.LazyStruct = () => ({
+  ServiceAccessRoleArn: 0,
+  EndpointUri: 0,
+  FullLoadErrorPercentage: 0,
+  ErrorRetryDuration: 0,
+  UseNewMappingType: 0,
+});
+const i_Filter: D.LazyStruct = () => ({ Name: 0, Values: 0 });
+const i_GcpMySQLSettings: D.LazyStruct = () => ({
+  AfterConnectScript: 0,
+  CleanSourceMetadataOnMismatch: 0,
+  DatabaseName: 0,
+  EventsPollInterval: 0,
+  TargetDbType: 0,
+  MaxFileSize: 0,
+  ParallelLoadThreads: 0,
+  Password: 0,
+  Port: 0,
+  ServerName: 0,
+  ServerTimezone: 0,
+  Username: 0,
+  SecretsManagerAccessRoleArn: 0,
+  SecretsManagerSecretId: 0,
+});
+const i_IBMDb2Settings: D.LazyStruct = () => ({
+  DatabaseName: 0,
+  Password: 0,
+  Port: 0,
+  ServerName: 0,
+  SetDataCaptureChanges: 0,
+  CurrentLsn: 0,
+  MaxKBytesPerRead: 0,
+  Username: 0,
+  SecretsManagerAccessRoleArn: 0,
+  SecretsManagerSecretId: 0,
+  LoadTimeout: 0,
+  WriteBufferSize: 0,
+  MaxFileSize: 0,
+  KeepCsvFiles: 0,
+});
+const i_KafkaSettings: D.LazyStruct = () => ({
+  Broker: 0,
+  Topic: 0,
+  MessageFormat: 0,
+  IncludeTransactionDetails: 0,
+  IncludePartitionValue: 0,
+  PartitionIncludeSchemaTable: 0,
+  IncludeTableAlterOperations: 0,
+  IncludeControlDetails: 0,
+  MessageMaxBytes: 0,
+  IncludeNullAndEmpty: 0,
+  SecurityProtocol: 0,
+  SslClientCertificateArn: 0,
+  SslClientKeyArn: 0,
+  SslClientKeyPassword: 0,
+  SslCaCertificateArn: 0,
+  SaslUsername: 0,
+  SaslPassword: 0,
+  NoHexPrefix: 0,
+  SaslMechanism: 0,
+  SslEndpointIdentificationAlgorithm: 0,
+  UseLargeIntegerValue: 0,
+});
+const i_KerberosAuthenticationSettings: D.LazyStruct = () => ({
+  KeyCacheSecretId: 0,
+  KeyCacheSecretIamArn: 0,
+  Krb5FileContents: 0,
+});
+const i_KinesisSettings: D.LazyStruct = () => ({
+  StreamArn: 0,
+  MessageFormat: 0,
+  ServiceAccessRoleArn: 0,
+  IncludeTransactionDetails: 0,
+  IncludePartitionValue: 0,
+  PartitionIncludeSchemaTable: 0,
+  IncludeTableAlterOperations: 0,
+  IncludeControlDetails: 0,
+  IncludeNullAndEmpty: 0,
+  NoHexPrefix: 0,
+  UseLargeIntegerValue: 0,
+});
+const i_MicrosoftSQLServerSettings: D.LazyStruct = () => ({
+  Port: 0,
+  BcpPacketSize: 0,
+  DatabaseName: 0,
+  ControlTablesFileGroup: 0,
+  Password: 0,
+  QuerySingleAlwaysOnNode: 0,
+  ReadBackupOnly: 0,
+  SafeguardPolicy: 0,
+  ServerName: 0,
+  Username: 0,
+  UseBcpFullLoad: 0,
+  UseThirdPartyBackupDevice: 0,
+  SecretsManagerAccessRoleArn: 0,
+  SecretsManagerSecretId: 0,
+  TrimSpaceInChar: 0,
+  TlogAccessMode: 0,
+  ForceLobLookup: 0,
+  AuthenticationMethod: 0,
+});
+const i_MongoDbSettings: D.LazyStruct = () => ({
+  Username: 0,
+  Password: 0,
+  ServerName: 0,
+  Port: 0,
+  DatabaseName: 0,
+  AuthType: 0,
+  AuthMechanism: 0,
+  NestingLevel: 0,
+  ExtractDocId: 0,
+  DocsToInvestigate: 0,
+  AuthSource: 0,
+  KmsKeyId: 0,
+  SecretsManagerAccessRoleArn: 0,
+  SecretsManagerSecretId: 0,
+  UseUpdateLookUp: 0,
+  ReplicateShardCollections: 0,
+});
+const i_MySQLSettings: D.LazyStruct = () => ({
+  AfterConnectScript: 0,
+  CleanSourceMetadataOnMismatch: 0,
+  DatabaseName: 0,
+  EventsPollInterval: 0,
+  TargetDbType: 0,
+  MaxFileSize: 0,
+  ParallelLoadThreads: 0,
+  Password: 0,
+  Port: 0,
+  ServerName: 0,
+  ServerTimezone: 0,
+  Username: 0,
+  SecretsManagerAccessRoleArn: 0,
+  SecretsManagerSecretId: 0,
+  ExecuteTimeout: 0,
+  ServiceAccessRoleArn: 0,
+  AuthenticationMethod: 0,
+});
+const i_NeptuneSettings: D.LazyStruct = () => ({
+  ServiceAccessRoleArn: 0,
+  S3BucketName: 0,
+  S3BucketFolder: 0,
+  ErrorRetryDuration: 0,
+  MaxFileSize: 0,
+  MaxRetryCount: 0,
+  IamAuthEnabled: 0,
+});
+const i_OracleSettings: D.LazyStruct = () => ({
+  AddSupplementalLogging: 0,
+  ArchivedLogDestId: 0,
+  AdditionalArchivedLogDestId: 0,
+  ExtraArchivedLogDestIds: 0,
+  AllowSelectNestedTables: 0,
+  ParallelAsmReadThreads: 0,
+  ReadAheadBlocks: 0,
+  AccessAlternateDirectly: 0,
+  UseAlternateFolderForOnline: 0,
+  OraclePathPrefix: 0,
+  UsePathPrefix: 0,
+  ReplacePathPrefix: 0,
+  EnableHomogenousTablespace: 0,
+  DirectPathNoLog: 0,
+  ArchivedLogsOnly: 0,
+  AsmPassword: 0,
+  AsmServer: 0,
+  AsmUser: 0,
+  CharLengthSemantics: 0,
+  DatabaseName: 0,
+  DirectPathParallelLoad: 0,
+  FailTasksOnLobTruncation: 0,
+  NumberDatatypeScale: 0,
+  Password: 0,
+  Port: 0,
+  ReadTableSpaceName: 0,
+  RetryInterval: 0,
+  SecurityDbEncryption: 0,
+  SecurityDbEncryptionName: 0,
+  ServerName: 0,
+  SpatialDataOptionToGeoJsonFunctionName: 0,
+  StandbyDelayTime: 0,
+  Username: 0,
+  UseBFile: 0,
+  UseDirectPathFullLoad: 0,
+  UseLogminerReader: 0,
+  SecretsManagerAccessRoleArn: 0,
+  SecretsManagerSecretId: 0,
+  SecretsManagerOracleAsmAccessRoleArn: 0,
+  SecretsManagerOracleAsmSecretId: 0,
+  TrimSpaceInChar: 0,
+  ConvertTimestampWithZoneToUTC: 0,
+  OpenTransactionWindow: 0,
+  AuthenticationMethod: 0,
+});
+const i_PostgreSQLSettings: D.LazyStruct = () => ({
+  AfterConnectScript: 0,
+  CaptureDdls: 0,
+  MaxFileSize: 0,
+  DatabaseName: 0,
+  DdlArtifactsSchema: 0,
+  ExecuteTimeout: 0,
+  FailTasksOnLobTruncation: 0,
+  HeartbeatEnable: 0,
+  HeartbeatSchema: 0,
+  HeartbeatFrequency: 0,
+  Password: 0,
+  Port: 0,
+  ServerName: 0,
+  Username: 0,
+  SlotName: 0,
+  PluginName: 0,
+  SecretsManagerAccessRoleArn: 0,
+  SecretsManagerSecretId: 0,
+  TrimSpaceInChar: 0,
+  MapBooleanAsBoolean: 0,
+  MapJsonbAsClob: 0,
+  MapLongVarcharAs: 0,
+  DatabaseMode: 0,
+  BabelfishDatabaseName: 0,
+  DisableUnicodeSourceFilter: 0,
+  ServiceAccessRoleArn: 0,
+  AuthenticationMethod: 0,
+});
+const i_RecommendationSettings: D.LazyStruct = () => ({
+  InstanceSizingType: 0,
+  WorkloadType: 0,
+});
+const i_RedisSettings: D.LazyStruct = () => ({
+  ServerName: 0,
+  Port: 0,
+  SslSecurityProtocol: 0,
+  AuthType: 0,
+  AuthUserName: 0,
+  AuthPassword: 0,
+  SslCaCertificateArn: 0,
+});
+const i_RedshiftSettings: D.LazyStruct = () => ({
+  AcceptAnyDate: 0,
+  AfterConnectScript: 0,
+  BucketFolder: 0,
+  BucketName: 0,
+  CaseSensitiveNames: 0,
+  CompUpdate: 0,
+  ConnectionTimeout: 0,
+  DatabaseName: 0,
+  DateFormat: 0,
+  EmptyAsNull: 0,
+  EncryptionMode: 0,
+  ExplicitIds: 0,
+  FileTransferUploadStreams: 0,
+  LoadTimeout: 0,
+  MaxFileSize: 0,
+  Password: 0,
+  Port: 0,
+  RemoveQuotes: 0,
+  ReplaceInvalidChars: 0,
+  ReplaceChars: 0,
+  ServerName: 0,
+  ServiceAccessRoleArn: 0,
+  ServerSideEncryptionKmsKeyId: 0,
+  TimeFormat: 0,
+  TrimBlanks: 0,
+  TruncateColumns: 0,
+  Username: 0,
+  WriteBufferSize: 0,
+  SecretsManagerAccessRoleArn: 0,
+  SecretsManagerSecretId: 0,
+  MapBooleanAsBoolean: 0,
+});
+const i_S3Settings: D.LazyStruct = () => ({
+  ServiceAccessRoleArn: 0,
+  ExternalTableDefinition: 0,
+  CsvRowDelimiter: 0,
+  CsvDelimiter: 0,
+  BucketFolder: 0,
+  BucketName: 0,
+  CompressionType: 0,
+  EncryptionMode: 0,
+  ServerSideEncryptionKmsKeyId: 0,
+  DataFormat: 0,
+  EncodingType: 0,
+  DictPageSizeLimit: 0,
+  RowGroupLength: 0,
+  DataPageSize: 0,
+  ParquetVersion: 0,
+  EnableStatistics: 0,
+  IncludeOpForFullLoad: 0,
+  CdcInsertsOnly: 0,
+  TimestampColumnName: 0,
+  ParquetTimestampInMillisecond: 0,
+  CdcInsertsAndUpdates: 0,
+  DatePartitionEnabled: 0,
+  DatePartitionSequence: 0,
+  DatePartitionDelimiter: 0,
+  UseCsvNoSupValue: 0,
+  CsvNoSupValue: 0,
+  PreserveTransactions: 0,
+  CdcPath: 0,
+  UseTaskStartTimeForFullLoadTimestamp: 0,
+  CannedAclForObjects: 0,
+  AddColumnName: 0,
+  CdcMaxBatchInterval: 0,
+  CdcMinFileSize: 0,
+  CsvNullValue: 0,
+  IgnoreHeaderRows: 0,
+  MaxFileSize: 0,
+  Rfc4180: 0,
+  DatePartitionTimezone: 0,
+  AddTrailingPaddingCharacter: 0,
+  ExpectedBucketOwner: 0,
+  GlueCatalogGeneration: 0,
+});
+const i_SCApplicationAttributes: D.LazyStruct = () => ({
+  S3BucketPath: 0,
+  S3BucketRoleArn: 0,
+});
 const i_SourceDataSetting: D.LazyStruct = () => ({
+  CDCStartPosition: 0,
   CDCStartTime: D.tsAs("date-time"),
   CDCStopTime: D.tsAs("date-time"),
+  SlotName: 0,
+});
+const i_SybaseSettings: D.LazyStruct = () => ({
+  DatabaseName: 0,
+  Password: 0,
+  Port: 0,
+  ServerName: 0,
+  Username: 0,
+  SecretsManagerAccessRoleArn: 0,
+  SecretsManagerSecretId: 0,
+});
+const i_TableToReload: D.LazyStruct = () => ({ SchemaName: 0, TableName: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0, ResourceArn: 0 });
+const i_TargetDataSetting: D.LazyStruct = () => ({ TablePreparationMode: 0 });
+const i_TimestreamSettings: D.LazyStruct = () => ({
+  DatabaseName: 0,
+  MemoryDuration: 0,
+  MagneticDuration: 0,
+  CdcInsertsAndUpdates: 0,
+  EnableMagneticStoreWrites: 0,
 });
 const o_Certificate: D.LazyStruct = () => ({
   CertificateCreationDate: D.ts,

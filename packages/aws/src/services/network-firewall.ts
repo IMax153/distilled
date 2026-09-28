@@ -1976,7 +1976,7 @@ export const acceptNetworkFirewallTransitGatewayAttachment: API.OperationMethod<
   AcceptNetworkFirewallTransitGatewayAttachmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TransitGatewayAttachmentId: 0 } },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -2008,7 +2008,15 @@ export const associateAvailabilityZones: API.OperationMethod<
   AssociateAvailabilityZonesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UpdateToken: 0,
+      FirewallArn: 0,
+      FirewallName: 0,
+      AvailabilityZoneMappings: D.list(i_AvailabilityZoneMapping),
+    },
+  },
   errors: [
     InsufficientCapacityException,
     InternalServerError,
@@ -2045,7 +2053,15 @@ export const associateFirewallPolicy: API.OperationMethod<
   AssociateFirewallPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UpdateToken: 0,
+      FirewallArn: 0,
+      FirewallName: 0,
+      FirewallPolicyArn: 0,
+    },
+  },
   errors: [
     InternalServerError,
     InvalidOperationException,
@@ -2083,7 +2099,15 @@ export const associateSubnets: API.OperationMethod<
   AssociateSubnetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UpdateToken: 0,
+      FirewallArn: 0,
+      FirewallName: 0,
+      SubnetMappings: D.list(i_SubnetMapping),
+    },
+  },
   errors: [
     InsufficientCapacityException,
     InternalServerError,
@@ -2117,6 +2141,12 @@ export const attachRuleGroupsToProxyConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ProxyConfigurationName: 0,
+      ProxyConfigurationArn: 0,
+      RuleGroups: D.list({ ProxyRuleGroupName: 0, InsertPosition: 0 }),
+      UpdateToken: 0,
+    },
     output: { ProxyConfiguration: o_ProxyConfiguration },
   },
   errors: [
@@ -2147,7 +2177,18 @@ export const createContainerAssociation: API.OperationMethod<
   CreateContainerAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ContainerAssociationName: 0,
+      Description: 0,
+      Type: 0,
+      ContainerMonitoringConfigurations: D.list(
+        i_ContainerMonitoringConfiguration,
+      ),
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InsufficientCapacityException,
     InternalServerError,
@@ -2190,7 +2231,29 @@ export const createFirewall: API.OperationMethod<
   CreateFirewallError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FirewallName: 0,
+      FirewallPolicyArn: 0,
+      VpcId: 0,
+      SubnetMappings: D.list(i_SubnetMapping),
+      DeleteProtection: 0,
+      SubnetChangeProtection: 0,
+      FirewallPolicyChangeProtection: 0,
+      Description: 0,
+      Tags: D.list(i_Tag),
+      EncryptionConfiguration: i_EncryptionConfiguration,
+      EnabledAnalysisTypes: 0,
+      TransitGatewayId: 0,
+      AvailabilityZoneMappings: D.list(i_AvailabilityZoneMapping),
+      AvailabilityZoneChangeProtection: 0,
+      NatGatewayMappings: D.list({ NatGatewayId: 0 }),
+      ProxySettings: i_ProxySettings,
+      NoSourcePreservation: 0,
+      VpcEndpoint: { VpcId: 0, SubnetMappings: D.list(i_SubnetMapping) },
+    },
+  },
   errors: [
     InsufficientCapacityException,
     InternalServerError,
@@ -2226,6 +2289,14 @@ export const createFirewallPolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      FirewallPolicyName: 0,
+      FirewallPolicy: i_FirewallPolicy,
+      Description: 0,
+      Tags: D.list(i_Tag),
+      DryRun: 0,
+      EncryptionConfiguration: i_EncryptionConfiguration,
+    },
     output: { FirewallPolicyResponse: o_FirewallPolicyResponse },
   },
   errors: [
@@ -2263,7 +2334,19 @@ export const createProxy: API.OperationMethod<
   CreateProxyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Proxy: o_Proxy } },
+  descriptor: {
+    service: svc,
+    input: {
+      ProxyName: 0,
+      NatGatewayId: 0,
+      ProxyConfigurationName: 0,
+      ProxyConfigurationArn: 0,
+      ListenerProperties: D.list(i_ListenerPropertyRequest),
+      TlsInterceptProperties: i_TlsInterceptPropertiesRequest,
+      Tags: D.list(i_Tag),
+    },
+    output: { Proxy: o_Proxy },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -2301,6 +2384,14 @@ export const createProxyConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ProxyConfigurationName: 0,
+      Description: 0,
+      RuleGroupNames: 0,
+      RuleGroupArns: 0,
+      DefaultRulePhaseActions: i_ProxyConfigDefaultRulePhaseActionsRequest,
+      Tags: D.list(i_Tag),
+    },
     output: { ProxyConfiguration: o_ProxyConfiguration },
   },
   errors: [
@@ -2338,7 +2429,20 @@ export const createProxyRuleGroup: API.OperationMethod<
   CreateProxyRuleGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ProxyRuleGroup: o_ProxyRuleGroup } },
+  descriptor: {
+    service: svc,
+    input: {
+      ProxyRuleGroupName: 0,
+      Description: 0,
+      Rules: {
+        PreDNS: D.list(i_ProxyRule),
+        PreREQUEST: D.list(i_ProxyRule),
+        PostRESPONSE: D.list(i_ProxyRule),
+      },
+      Tags: D.list(i_Tag),
+    },
+    output: { ProxyRuleGroup: o_ProxyRuleGroup },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -2368,7 +2472,19 @@ export const createProxyRules: API.OperationMethod<
   CreateProxyRulesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ProxyRuleGroup: o_ProxyRuleGroup } },
+  descriptor: {
+    service: svc,
+    input: {
+      ProxyRuleGroupArn: 0,
+      ProxyRuleGroupName: 0,
+      Rules: {
+        PreDNS: D.list(i_CreateProxyRule),
+        PreREQUEST: D.list(i_CreateProxyRule),
+        PostRESPONSE: D.list(i_CreateProxyRule),
+      },
+    },
+    output: { ProxyRuleGroup: o_ProxyRuleGroup },
+  },
   errors: [InternalServerError, InvalidRequestException, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2397,6 +2513,20 @@ export const createRuleGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      RuleGroupName: 0,
+      RuleGroup: i_RuleGroup,
+      Rules: 0,
+      Type: 0,
+      Description: 0,
+      Capacity: 0,
+      Tags: D.list(i_Tag),
+      DryRun: 0,
+      EncryptionConfiguration: i_EncryptionConfiguration,
+      SourceMetadata: i_SourceMetadata,
+      AnalyzeRuleGroup: 0,
+      SummaryConfiguration: i_SummaryConfiguration,
+    },
     output: { RuleGroupResponse: o_RuleGroupResponse },
   },
   errors: [
@@ -2438,6 +2568,13 @@ export const createTLSInspectionConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TLSInspectionConfigurationName: 0,
+      TLSInspectionConfiguration: i_TLSInspectionConfiguration,
+      Description: 0,
+      Tags: D.list(i_Tag),
+      EncryptionConfiguration: i_EncryptionConfiguration,
+    },
     output: {
       TLSInspectionConfigurationResponse: o_TLSInspectionConfigurationResponse,
     },
@@ -2472,7 +2609,16 @@ export const createVpcEndpointAssociation: API.OperationMethod<
   CreateVpcEndpointAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FirewallArn: 0,
+      VpcId: 0,
+      SubnetMapping: i_SubnetMapping,
+      Description: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InsufficientCapacityException,
     InternalServerError,
@@ -2505,7 +2651,10 @@ export const deleteContainerAssociation: API.OperationMethod<
   DeleteContainerAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ContainerAssociationName: 0, ContainerAssociationArn: 0 },
+  },
   errors: [
     InternalServerError,
     InvalidOperationException,
@@ -2547,7 +2696,7 @@ export const deleteFirewall: API.OperationMethod<
   DeleteFirewallError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FirewallName: 0, FirewallArn: 0 } },
   errors: [
     InternalServerError,
     InvalidOperationException,
@@ -2580,6 +2729,7 @@ export const deleteFirewallPolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { FirewallPolicyName: 0, FirewallPolicyArn: 0 },
     output: { FirewallPolicyResponse: o_FirewallPolicyResponse },
   },
   errors: [
@@ -2614,7 +2764,7 @@ export const deleteNetworkFirewallTransitGatewayAttachment: API.OperationMethod<
   DeleteNetworkFirewallTransitGatewayAttachmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TransitGatewayAttachmentId: 0 } },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -2644,7 +2794,10 @@ export const deleteProxy: API.OperationMethod<
   DeleteProxyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NatGatewayId: 0, ProxyName: 0, ProxyArn: 0 },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -2672,7 +2825,10 @@ export const deleteProxyConfiguration: API.OperationMethod<
   DeleteProxyConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ProxyConfigurationName: 0, ProxyConfigurationArn: 0 },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -2699,7 +2855,10 @@ export const deleteProxyRuleGroup: API.OperationMethod<
   DeleteProxyRuleGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ProxyRuleGroupName: 0, ProxyRuleGroupArn: 0 },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -2726,7 +2885,11 @@ export const deleteProxyRules: API.OperationMethod<
   DeleteProxyRulesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ProxyRuleGroup: o_ProxyRuleGroup } },
+  descriptor: {
+    service: svc,
+    input: { ProxyRuleGroupArn: 0, ProxyRuleGroupName: 0, Rules: 0 },
+    output: { ProxyRuleGroup: o_ProxyRuleGroup },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -2754,7 +2917,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -2786,6 +2949,7 @@ export const deleteRuleGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { RuleGroupName: 0, RuleGroupArn: 0, Type: 0 },
     output: { RuleGroupResponse: o_RuleGroupResponse },
   },
   errors: [
@@ -2819,6 +2983,10 @@ export const deleteTLSInspectionConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TLSInspectionConfigurationArn: 0,
+      TLSInspectionConfigurationName: 0,
+    },
     output: {
       TLSInspectionConfigurationResponse: o_TLSInspectionConfigurationResponse,
     },
@@ -2858,7 +3026,7 @@ export const deleteVpcEndpointAssociation: API.OperationMethod<
   DeleteVpcEndpointAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { VpcEndpointAssociationArn: 0 } },
   errors: [
     InternalServerError,
     InvalidOperationException,
@@ -2886,7 +3054,11 @@ export const describeContainerAssociation: API.OperationMethod<
   DescribeContainerAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LastUpdatedTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ContainerAssociationName: 0, ContainerAssociationArn: 0 },
+    output: { LastUpdatedTime: D.ts },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -2913,7 +3085,7 @@ export const describeFirewall: API.OperationMethod<
   DescribeFirewallError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FirewallName: 0, FirewallArn: 0 } },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -2941,7 +3113,7 @@ export const describeFirewallMetadata: API.OperationMethod<
   DescribeFirewallMetadataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FirewallArn: 0 } },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -2970,6 +3142,7 @@ export const describeFirewallPolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { FirewallPolicyName: 0, FirewallPolicyArn: 0 },
     output: { FirewallPolicyResponse: o_FirewallPolicyResponse },
   },
   errors: [
@@ -2998,7 +3171,17 @@ export const describeFlowOperation: API.OperationMethod<
   DescribeFlowOperationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { FlowRequestTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      FirewallArn: 0,
+      AvailabilityZone: 0,
+      VpcEndpointAssociationArn: 0,
+      VpcEndpointId: 0,
+      FlowOperationId: 0,
+    },
+    output: { FlowRequestTimestamp: D.ts },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -3025,7 +3208,7 @@ export const describeLoggingConfiguration: API.OperationMethod<
   DescribeLoggingConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FirewallArn: 0, FirewallName: 0 } },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -3054,6 +3237,7 @@ export const describeProxy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ProxyName: 0, ProxyArn: 0 },
     output: { Proxy: { CreateTime: D.ts, DeleteTime: D.ts, UpdateTime: D.ts } },
   },
   errors: [
@@ -3084,6 +3268,7 @@ export const describeProxyConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ProxyConfigurationName: 0, ProxyConfigurationArn: 0 },
     output: { ProxyConfiguration: o_ProxyConfiguration },
   },
   errors: [
@@ -3112,7 +3297,10 @@ export const describeProxyRule: API.OperationMethod<
   DescribeProxyRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ProxyRuleName: 0, ProxyRuleGroupName: 0, ProxyRuleGroupArn: 0 },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -3139,7 +3327,11 @@ export const describeProxyRuleGroup: API.OperationMethod<
   DescribeProxyRuleGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ProxyRuleGroup: o_ProxyRuleGroup } },
+  descriptor: {
+    service: svc,
+    input: { ProxyRuleGroupName: 0, ProxyRuleGroupArn: 0 },
+    output: { ProxyRuleGroup: o_ProxyRuleGroup },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -3166,7 +3358,7 @@ export const describeResourcePolicy: API.OperationMethod<
   DescribeResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -3195,6 +3387,7 @@ export const describeRuleGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { RuleGroupName: 0, RuleGroupArn: 0, Type: 0, AnalyzeRuleGroup: 0 },
     output: { RuleGroupResponse: o_RuleGroupResponse },
   },
   errors: [
@@ -3225,7 +3418,11 @@ export const describeRuleGroupMetadata: API.OperationMethod<
   DescribeRuleGroupMetadataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { LastModifiedTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { RuleGroupName: 0, RuleGroupArn: 0, Type: 0 },
+    output: { LastModifiedTime: D.ts },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -3256,7 +3453,10 @@ export const describeRuleGroupSummary: API.OperationMethod<
   DescribeRuleGroupSummaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { RuleGroupName: 0, RuleGroupArn: 0, Type: 0 },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -3285,6 +3485,10 @@ export const describeTLSInspectionConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TLSInspectionConfigurationArn: 0,
+      TLSInspectionConfigurationName: 0,
+    },
     output: {
       TLSInspectionConfigurationResponse: o_TLSInspectionConfigurationResponse,
     },
@@ -3315,7 +3519,7 @@ export const describeVpcEndpointAssociation: API.OperationMethod<
   DescribeVpcEndpointAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { VpcEndpointAssociationArn: 0 } },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -3346,6 +3550,13 @@ export const detachRuleGroupsFromProxyConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ProxyConfigurationName: 0,
+      ProxyConfigurationArn: 0,
+      RuleGroupNames: 0,
+      RuleGroupArns: 0,
+      UpdateToken: 0,
+    },
     output: { ProxyConfiguration: o_ProxyConfiguration },
   },
   errors: [
@@ -3380,7 +3591,15 @@ export const disassociateAvailabilityZones: API.OperationMethod<
   DisassociateAvailabilityZonesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UpdateToken: 0,
+      FirewallArn: 0,
+      FirewallName: 0,
+      AvailabilityZoneMappings: D.list(i_AvailabilityZoneMapping),
+    },
+  },
   errors: [
     InternalServerError,
     InvalidOperationException,
@@ -3413,7 +3632,10 @@ export const disassociateSubnets: API.OperationMethod<
   DisassociateSubnetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UpdateToken: 0, FirewallArn: 0, FirewallName: 0, SubnetIds: 0 },
+  },
   errors: [
     InternalServerError,
     InvalidOperationException,
@@ -3447,6 +3669,13 @@ export const getAnalysisReportResults: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      FirewallName: 0,
+      AnalysisReportId: 0,
+      FirewallArn: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       StartTime: D.ts,
       EndTime: D.ts,
@@ -3492,6 +3721,7 @@ export const listAnalysisReports: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { FirewallName: 0, FirewallArn: 0, NextToken: 0, MaxResults: 0 },
     output: { AnalysisReports: D.list({ ReportTime: D.ts }) },
   },
   errors: [
@@ -3527,7 +3757,7 @@ export const listContainerAssociations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ContainerAssociationSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [InternalServerError, InvalidRequestException, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3557,7 +3787,7 @@ export const listFirewallPolicies: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   FirewallPolicyMetadata
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [InternalServerError, InvalidRequestException, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3589,7 +3819,10 @@ export const listFirewalls: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   FirewallMetadata
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0, VpcIds: 0, MaxResults: 0 },
+  },
   errors: [InternalServerError, InvalidRequestException, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3623,7 +3856,19 @@ export const listFlowOperationResults: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Flow
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { FlowRequestTimestamp: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      FirewallArn: 0,
+      FlowOperationId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      AvailabilityZone: 0,
+      VpcEndpointId: 0,
+      VpcEndpointAssociationArn: 0,
+    },
+    output: { FlowRequestTimestamp: D.ts },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -3665,6 +3910,15 @@ export const listFlowOperations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      FirewallArn: 0,
+      AvailabilityZone: 0,
+      VpcEndpointAssociationArn: 0,
+      VpcEndpointId: 0,
+      FlowOperationType: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { FlowOperations: D.list({ FlowRequestTimestamp: D.ts }) },
   },
   errors: [
@@ -3701,7 +3955,7 @@ export const listProxies: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ProxyMetadata
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [InternalServerError, InvalidRequestException, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3732,7 +3986,7 @@ export const listProxyConfigurations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ProxyConfigurationMetadata
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -3768,7 +4022,7 @@ export const listProxyRuleGroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ProxyRuleGroupMetadata
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -3803,7 +4057,17 @@ export const listRuleGroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RuleGroupMetadata
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      Scope: 0,
+      ManagedType: 0,
+      SubscriptionStatus: 0,
+      Type: 0,
+    },
+  },
   errors: [InternalServerError, InvalidRequestException, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3839,7 +4103,10 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Tag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0, MaxResults: 0, ResourceArn: 0 },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -3872,7 +4139,7 @@ export const listTLSInspectionConfigurations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   TLSInspectionConfigurationMetadata
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NextToken: 0, MaxResults: 0 } },
   errors: [InternalServerError, InvalidRequestException, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3904,7 +4171,10 @@ export const listVpcEndpointAssociations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   VpcEndpointAssociationMetadata
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0, MaxResults: 0, FirewallArn: 0 },
+  },
   errors: [InternalServerError, InvalidRequestException, ThrottlingException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3946,7 +4216,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Policy: 0 } },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -3980,7 +4250,7 @@ export const rejectNetworkFirewallTransitGatewayAttachment: API.OperationMethod<
   RejectNetworkFirewallTransitGatewayAttachmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TransitGatewayAttachmentId: 0 } },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -4009,7 +4279,10 @@ export const startAnalysisReport: API.OperationMethod<
   StartAnalysisReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { FirewallName: 0, FirewallArn: 0, AnalysisType: 0 },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -4044,7 +4317,17 @@ export const startFlowCapture: API.OperationMethod<
   StartFlowCaptureError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FirewallArn: 0,
+      AvailabilityZone: 0,
+      VpcEndpointAssociationArn: 0,
+      VpcEndpointId: 0,
+      MinimumFlowAgeInSeconds: 0,
+      FlowFilters: D.list(i_FlowFilter),
+    },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -4077,7 +4360,17 @@ export const startFlowFlush: API.OperationMethod<
   StartFlowFlushError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FirewallArn: 0,
+      AvailabilityZone: 0,
+      VpcEndpointAssociationArn: 0,
+      VpcEndpointId: 0,
+      MinimumFlowAgeInSeconds: 0,
+      FlowFilters: D.list(i_FlowFilter),
+    },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -4110,7 +4403,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -4144,7 +4437,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -4175,7 +4468,15 @@ export const updateAvailabilityZoneChangeProtection: API.OperationMethod<
   UpdateAvailabilityZoneChangeProtectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UpdateToken: 0,
+      FirewallArn: 0,
+      FirewallName: 0,
+      AvailabilityZoneChangeProtection: 0,
+    },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -4206,7 +4507,20 @@ export const updateContainerAssociation: API.OperationMethod<
   UpdateContainerAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ContainerAssociationName: 0,
+      ContainerAssociationArn: 0,
+      Description: 0,
+      Type: 0,
+      ContainerMonitoringConfigurations: D.list(
+        i_ContainerMonitoringConfiguration,
+      ),
+      Tags: D.list(i_Tag),
+      UpdateToken: 0,
+    },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -4235,7 +4549,15 @@ export const updateFirewallAnalysisSettings: API.OperationMethod<
   UpdateFirewallAnalysisSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EnabledAnalysisTypes: 0,
+      FirewallArn: 0,
+      FirewallName: 0,
+      UpdateToken: 0,
+    },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -4268,7 +4590,15 @@ export const updateFirewallDeleteProtection: API.OperationMethod<
   UpdateFirewallDeleteProtectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UpdateToken: 0,
+      FirewallArn: 0,
+      FirewallName: 0,
+      DeleteProtection: 0,
+    },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -4299,7 +4629,10 @@ export const updateFirewallDescription: API.OperationMethod<
   UpdateFirewallDescriptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { UpdateToken: 0, FirewallArn: 0, FirewallName: 0, Description: 0 },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -4329,7 +4662,15 @@ export const updateFirewallEncryptionConfiguration: API.OperationMethod<
   UpdateFirewallEncryptionConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UpdateToken: 0,
+      FirewallArn: 0,
+      FirewallName: 0,
+      EncryptionConfiguration: i_EncryptionConfiguration,
+    },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -4361,6 +4702,15 @@ export const updateFirewallPolicy: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      UpdateToken: 0,
+      FirewallPolicyArn: 0,
+      FirewallPolicyName: 0,
+      FirewallPolicy: i_FirewallPolicy,
+      Description: 0,
+      DryRun: 0,
+      EncryptionConfiguration: i_EncryptionConfiguration,
+    },
     output: { FirewallPolicyResponse: o_FirewallPolicyResponse },
   },
   errors: [
@@ -4394,7 +4744,15 @@ export const updateFirewallPolicyChangeProtection: API.OperationMethod<
   UpdateFirewallPolicyChangeProtectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UpdateToken: 0,
+      FirewallArn: 0,
+      FirewallName: 0,
+      FirewallPolicyChangeProtection: 0,
+    },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -4448,7 +4806,21 @@ export const updateLoggingConfiguration: API.OperationMethod<
   UpdateLoggingConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FirewallArn: 0,
+      FirewallName: 0,
+      LoggingConfiguration: {
+        LogDestinationConfigs: D.list({
+          LogType: 0,
+          LogDestinationType: 0,
+          LogDestination: 0,
+        }),
+      },
+      EnableMonitoringDashboard: 0,
+    },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -4478,7 +4850,19 @@ export const updateProxy: API.OperationMethod<
   UpdateProxyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Proxy: o_Proxy } },
+  descriptor: {
+    service: svc,
+    input: {
+      NatGatewayId: 0,
+      ProxyName: 0,
+      ProxyArn: 0,
+      ListenerPropertiesToAdd: D.list(i_ListenerPropertyRequest),
+      ListenerPropertiesToRemove: D.list(i_ListenerPropertyRequest),
+      TlsInterceptProperties: i_TlsInterceptPropertiesRequest,
+      UpdateToken: 0,
+    },
+    output: { Proxy: o_Proxy },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -4508,6 +4892,12 @@ export const updateProxyConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ProxyConfigurationName: 0,
+      ProxyConfigurationArn: 0,
+      DefaultRulePhaseActions: i_ProxyConfigDefaultRulePhaseActionsRequest,
+      UpdateToken: 0,
+    },
     output: { ProxyConfiguration: o_ProxyConfiguration },
   },
   errors: [
@@ -4536,7 +4926,19 @@ export const updateProxyRule: API.OperationMethod<
   UpdateProxyRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProxyRuleGroupName: 0,
+      ProxyRuleGroupArn: 0,
+      ProxyRuleName: 0,
+      Description: 0,
+      Action: 0,
+      AddConditions: D.list(i_ProxyRuleCondition),
+      RemoveConditions: D.list(i_ProxyRuleCondition),
+      UpdateToken: 0,
+    },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -4563,7 +4965,15 @@ export const updateProxyRuleGroupPriorities: API.OperationMethod<
   UpdateProxyRuleGroupPrioritiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProxyConfigurationName: 0,
+      ProxyConfigurationArn: 0,
+      RuleGroups: D.list({ ProxyRuleGroupName: 0, NewPosition: 0 }),
+      UpdateToken: 0,
+    },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -4590,7 +5000,16 @@ export const updateProxyRulePriorities: API.OperationMethod<
   UpdateProxyRulePrioritiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProxyRuleGroupName: 0,
+      ProxyRuleGroupArn: 0,
+      RuleGroupRequestPhase: 0,
+      Rules: D.list({ ProxyRuleName: 0, NewPosition: 0 }),
+      UpdateToken: 0,
+    },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -4620,7 +5039,15 @@ export const updateProxySettings: API.OperationMethod<
   UpdateProxySettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FirewallArn: 0,
+      FirewallName: 0,
+      UpdateToken: 0,
+      ProxySettings: i_ProxySettings,
+    },
+  },
   errors: [
     InternalServerError,
     InvalidOperationException,
@@ -4659,6 +5086,20 @@ export const updateRuleGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      UpdateToken: 0,
+      RuleGroupArn: 0,
+      RuleGroupName: 0,
+      RuleGroup: i_RuleGroup,
+      Rules: 0,
+      Type: 0,
+      Description: 0,
+      DryRun: 0,
+      EncryptionConfiguration: i_EncryptionConfiguration,
+      SourceMetadata: i_SourceMetadata,
+      AnalyzeRuleGroup: 0,
+      SummaryConfiguration: i_SummaryConfiguration,
+    },
     output: { RuleGroupResponse: o_RuleGroupResponse },
   },
   errors: [
@@ -4690,7 +5131,15 @@ export const updateSubnetChangeProtection: API.OperationMethod<
   UpdateSubnetChangeProtectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UpdateToken: 0,
+      FirewallArn: 0,
+      FirewallName: 0,
+      SubnetChangeProtection: 0,
+    },
+  },
   errors: [
     InternalServerError,
     InvalidRequestException,
@@ -4728,6 +5177,14 @@ export const updateTLSInspectionConfiguration: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TLSInspectionConfigurationArn: 0,
+      TLSInspectionConfigurationName: 0,
+      TLSInspectionConfiguration: i_TLSInspectionConfiguration,
+      Description: 0,
+      EncryptionConfiguration: i_EncryptionConfiguration,
+      UpdateToken: 0,
+    },
     output: {
       TLSInspectionConfigurationResponse: o_TLSInspectionConfigurationResponse,
     },
@@ -4744,6 +5201,133 @@ export const updateTLSInspectionConfiguration: API.OperationMethod<
   operationName: "UpdateTLSInspectionConfiguration",
 })) as any;
 
+const i_AvailabilityZoneMapping: D.LazyStruct = () => ({ AvailabilityZone: 0 });
+const i_ContainerMonitoringConfiguration: D.LazyStruct = () => ({
+  ClusterArn: 0,
+  AttributeFilters: D.list({ Key: 0, Value: 0 }),
+});
+const i_CreateProxyRule: D.LazyStruct = () => ({
+  ProxyRuleName: 0,
+  Description: 0,
+  Action: 0,
+  Conditions: D.list(i_ProxyRuleCondition),
+  InsertPosition: 0,
+});
+const i_EncryptionConfiguration: D.LazyStruct = () => ({ KeyId: 0, Type: 0 });
+const i_FirewallPolicy: D.LazyStruct = () => ({
+  StatelessRuleGroupReferences: D.list({ ResourceArn: 0, Priority: 0 }),
+  StatelessDefaultActions: 0,
+  StatelessFragmentDefaultActions: 0,
+  StatelessCustomActions: D.list(i_CustomAction),
+  StatefulRuleGroupReferences: D.list({
+    ResourceArn: 0,
+    Priority: 0,
+    Override: { Action: 0 },
+    DeepThreatInspection: 0,
+  }),
+  StatefulDefaultActions: 0,
+  StatefulEngineOptions: {
+    RuleOrder: 0,
+    StreamExceptionPolicy: 0,
+    FlowTimeouts: { TcpIdleTimeoutSeconds: 0 },
+  },
+  TLSInspectionConfigurationArn: 0,
+  PolicyVariables: { RuleVariables: D.map(i_IPSet) },
+  EnableTLSSessionHolding: 0,
+});
+const i_FlowFilter: D.LazyStruct = () => ({
+  SourceAddress: i_Address,
+  DestinationAddress: i_Address,
+  SourcePort: 0,
+  DestinationPort: 0,
+  Protocols: 0,
+});
+const i_ListenerPropertyRequest: D.LazyStruct = () => ({ Port: 0, Type: 0 });
+const i_ProxyConfigDefaultRulePhaseActionsRequest: D.LazyStruct = () => ({
+  PreDNS: 0,
+  PreREQUEST: 0,
+  PostRESPONSE: 0,
+});
+const i_ProxyRule: D.LazyStruct = () => ({
+  ProxyRuleName: 0,
+  Description: 0,
+  Action: 0,
+  Conditions: D.list(i_ProxyRuleCondition),
+});
+const i_ProxyRuleCondition: D.LazyStruct = () => ({
+  ConditionOperator: 0,
+  ConditionKey: 0,
+  ConditionValues: 0,
+});
+const i_ProxySettings: D.LazyStruct = () => ({
+  ListenerProperties: D.list({ Port: 0, Type: 0 }),
+});
+const i_RuleGroup: D.LazyStruct = () => ({
+  RuleVariables: { IPSets: D.map(i_IPSet), PortSets: D.map({ Definition: 0 }) },
+  ReferenceSets: { IPSetReferences: D.map({ ReferenceArn: 0 }) },
+  RulesSource: {
+    RulesString: 0,
+    RulesSourceList: { Targets: 0, TargetTypes: 0, GeneratedRulesType: 0 },
+    StatefulRules: D.list({
+      Action: 0,
+      Header: {
+        Protocol: 0,
+        Source: 0,
+        SourcePort: 0,
+        Direction: 0,
+        Destination: 0,
+        DestinationPort: 0,
+      },
+      RuleOptions: D.list({ Keyword: 0, Settings: 0 }),
+    }),
+    StatelessRulesAndCustomActions: {
+      StatelessRules: D.list({
+        RuleDefinition: {
+          MatchAttributes: {
+            Sources: D.list(i_Address),
+            Destinations: D.list(i_Address),
+            SourcePorts: D.list(i_PortRange),
+            DestinationPorts: D.list(i_PortRange),
+            Protocols: 0,
+            TCPFlags: D.list({ Flags: 0, Masks: 0 }),
+          },
+          Actions: 0,
+        },
+        Priority: 0,
+      }),
+      CustomActions: D.list(i_CustomAction),
+    },
+  },
+  StatefulRuleOptions: { RuleOrder: 0 },
+});
+const i_SourceMetadata: D.LazyStruct = () => ({
+  SourceArn: 0,
+  SourceUpdateToken: 0,
+});
+const i_SubnetMapping: D.LazyStruct = () => ({ SubnetId: 0, IPAddressType: 0 });
+const i_SummaryConfiguration: D.LazyStruct = () => ({ RuleOptions: 0 });
+const i_TLSInspectionConfiguration: D.LazyStruct = () => ({
+  ServerCertificateConfigurations: D.list({
+    ServerCertificates: D.list({ ResourceArn: 0 }),
+    Scopes: D.list({
+      Sources: D.list(i_Address),
+      Destinations: D.list(i_Address),
+      SourcePorts: D.list(i_PortRange),
+      DestinationPorts: D.list(i_PortRange),
+      Protocols: 0,
+    }),
+    CertificateAuthorityArn: 0,
+    CheckCertificateRevocationStatus: {
+      RevokedStatusAction: 0,
+      UnknownStatusAction: 0,
+    },
+  }),
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_TlsInterceptPropertiesRequest: D.LazyStruct = () => ({
+  PcaArn: 0,
+  TlsInterceptMode: 0,
+});
 const o_FirewallPolicyResponse: D.LazyStruct = () => ({
   LastModifiedTime: D.ts,
 });
@@ -4764,3 +5348,12 @@ const o_RuleGroupResponse: D.LazyStruct = () => ({ LastModifiedTime: D.ts });
 const o_TLSInspectionConfigurationResponse: D.LazyStruct = () => ({
   LastModifiedTime: D.ts,
 });
+const i_Address: D.LazyStruct = () => ({ AddressDefinition: 0 });
+const i_CustomAction: D.LazyStruct = () => ({
+  ActionName: 0,
+  ActionDefinition: {
+    PublishMetricAction: { Dimensions: D.list({ Value: 0 }) },
+  },
+});
+const i_IPSet: D.LazyStruct = () => ({ Definition: 0 });
+const i_PortRange: D.LazyStruct = () => ({ FromPort: 0, ToPort: 0 });

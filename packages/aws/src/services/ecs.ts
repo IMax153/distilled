@@ -3012,7 +3012,10 @@ export const continueServiceDeployment: API.OperationMethod<
   ContinueServiceDeploymentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { serviceDeploymentArn: 0, hookId: 0, action: 0 },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3045,7 +3048,39 @@ export const createCapacityProvider: API.OperationMethod<
   CreateCapacityProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      cluster: 0,
+      autoScalingGroupProvider: {
+        autoScalingGroupArn: 0,
+        managedScaling: i_ManagedScaling,
+        managedTerminationProtection: 0,
+        managedDraining: 0,
+      },
+      managedInstancesProvider: {
+        infrastructureRoleArn: 0,
+        instanceLaunchTemplate: {
+          ec2InstanceProfileArn: 0,
+          networkConfiguration: i_ManagedInstancesNetworkConfiguration,
+          storageConfiguration: i_ManagedInstancesStorageConfiguration,
+          localStorageConfiguration:
+            i_ManagedInstancesLocalStorageConfiguration,
+          monitoring: 0,
+          capacityOptionType: 0,
+          instanceMetadataTagsPropagation: 0,
+          instanceRequirements: i_InstanceRequirementsRequest,
+          fipsEnabled: 0,
+          capacityReservations: i_CapacityReservationRequest,
+        },
+        propagateTags: 0,
+        infrastructureOptimization: i_InfrastructureOptimization,
+        autoRepairConfiguration: i_AutoRepairConfiguration,
+      },
+      tags: D.list(i_Tag),
+    },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3079,7 +3114,18 @@ export const createCluster: API.OperationMethod<
   CreateClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      clusterName: 0,
+      tags: D.list(i_Tag),
+      settings: D.list(i_ClusterSetting),
+      configuration: i_ClusterConfiguration,
+      capacityProviders: 0,
+      defaultCapacityProviderStrategy: D.list(i_CapacityProviderStrategyItem),
+      serviceConnectDefaults: i_ClusterServiceConnectDefaultsRequest,
+    },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3116,7 +3162,22 @@ export const createDaemon: API.OperationMethod<
   CreateDaemonError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createdAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      daemonName: 0,
+      clusterArn: 0,
+      daemonTaskDefinitionArn: 0,
+      capacityProviderArns: 0,
+      deploymentConfiguration: i_DaemonDeploymentConfiguration,
+      tags: D.list(i_Tag),
+      propagateTags: 0,
+      enableECSManagedTags: 0,
+      enableExecuteCommand: 0,
+      clientToken: 0,
+    },
+    output: { createdAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3154,7 +3215,25 @@ export const createExpressGatewayService: API.OperationMethod<
   CreateExpressGatewayServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { service: o_ECSExpressGatewayService } },
+  descriptor: {
+    service: svc,
+    input: {
+      executionRoleArn: 0,
+      infrastructureRoleArn: 0,
+      serviceName: 0,
+      cluster: 0,
+      healthCheckPath: 0,
+      primaryContainer: i_ExpressGatewayContainer,
+      taskRoleArn: 0,
+      networkConfiguration: i_ExpressGatewayServiceNetworkConfiguration,
+      cpu: 0,
+      memory: 0,
+      scalingTarget: i_ExpressGatewayScalingTarget,
+      tags: D.list(i_Tag),
+      taskDefinitionArn: 0,
+    },
+    output: { service: o_ECSExpressGatewayService },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3282,7 +3361,39 @@ export const createService: API.OperationMethod<
   CreateServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { service: o_Service } },
+  descriptor: {
+    service: svc,
+    input: {
+      cluster: 0,
+      serviceName: 0,
+      taskDefinition: 0,
+      availabilityZoneRebalancing: 0,
+      loadBalancers: D.list(i_LoadBalancer),
+      serviceRegistries: D.list(i_ServiceRegistry),
+      desiredCount: 0,
+      clientToken: 0,
+      launchType: 0,
+      capacityProviderStrategy: D.list(i_CapacityProviderStrategyItem),
+      platformVersion: 0,
+      role: 0,
+      deploymentConfiguration: i_DeploymentConfiguration,
+      placementConstraints: D.list(i_PlacementConstraint),
+      placementStrategy: D.list(i_PlacementStrategy),
+      networkConfiguration: i_NetworkConfiguration,
+      healthCheckGracePeriodSeconds: 0,
+      schedulingStrategy: 0,
+      deploymentController: i_DeploymentController,
+      tags: D.list(i_Tag),
+      enableECSManagedTags: 0,
+      propagateTags: 0,
+      enableExecuteCommand: 0,
+      serviceConnectConfiguration: i_ServiceConnectConfiguration,
+      volumeConfigurations: D.list(i_ServiceVolumeConfiguration),
+      vpcLatticeConfigurations: D.list(i_VpcLatticeConfiguration),
+      monitoring: i_MonitoringConfiguration,
+    },
+    output: { service: o_Service },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3326,7 +3437,25 @@ export const createTaskSet: API.OperationMethod<
   CreateTaskSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { taskSet: o_TaskSet } },
+  descriptor: {
+    service: svc,
+    input: {
+      service: 0,
+      cluster: 0,
+      externalId: 0,
+      taskDefinition: 0,
+      networkConfiguration: i_NetworkConfiguration,
+      loadBalancers: D.list(i_LoadBalancer),
+      serviceRegistries: D.list(i_ServiceRegistry),
+      launchType: 0,
+      capacityProviderStrategy: D.list(i_CapacityProviderStrategyItem),
+      platformVersion: 0,
+      scale: i_Scale,
+      clientToken: 0,
+      tags: D.list(i_Tag),
+    },
+    output: { taskSet: o_TaskSet },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3361,7 +3490,7 @@ export const deleteAccountSetting: API.OperationMethod<
   DeleteAccountSettingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0, principalArn: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3390,7 +3519,10 @@ export const deleteAttributes: API.OperationMethod<
   DeleteAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { cluster: 0, attributes: D.list(i_Attribute) },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3426,7 +3558,7 @@ export const deleteCapacityProvider: API.OperationMethod<
   DeleteCapacityProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { capacityProvider: 0, cluster: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3464,7 +3596,7 @@ export const deleteCluster: API.OperationMethod<
   DeleteClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { cluster: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3503,7 +3635,11 @@ export const deleteDaemon: API.OperationMethod<
   DeleteDaemonError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createdAt: D.ts, updatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { daemonArn: 0 },
+    output: { createdAt: D.ts, updatedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3536,7 +3672,7 @@ export const deleteDaemonTaskDefinition: API.OperationMethod<
   DeleteDaemonTaskDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { daemonTaskDefinition: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3571,7 +3707,11 @@ export const deleteExpressGatewayService: API.OperationMethod<
   DeleteExpressGatewayServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { service: o_ECSExpressGatewayService } },
+  descriptor: {
+    service: svc,
+    input: { serviceArn: 0 },
+    output: { service: o_ECSExpressGatewayService },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3608,7 +3748,11 @@ export const deleteService: API.OperationMethod<
   DeleteServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { service: o_Service } },
+  descriptor: {
+    service: svc,
+    input: { cluster: 0, service: 0, force: 0 },
+    output: { service: o_Service },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3649,6 +3793,7 @@ export const deleteTaskDefinitions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { taskDefinitions: 0 },
     output: { taskDefinitions: D.list(o_TaskDefinition) },
   },
   errors: [
@@ -3683,7 +3828,11 @@ export const deleteTaskSet: API.OperationMethod<
   DeleteTaskSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { taskSet: o_TaskSet } },
+  descriptor: {
+    service: svc,
+    input: { cluster: 0, service: 0, taskSet: 0, force: 0 },
+    output: { taskSet: o_TaskSet },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3725,6 +3874,7 @@ export const deregisterContainerInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { cluster: 0, containerInstance: 0, force: 0 },
     output: { containerInstance: o_ContainerInstance },
   },
   errors: [
@@ -3760,7 +3910,11 @@ export const deregisterTaskDefinition: API.OperationMethod<
   DeregisterTaskDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { taskDefinition: o_TaskDefinition } },
+  descriptor: {
+    service: svc,
+    input: { taskDefinition: 0 },
+    output: { taskDefinition: o_TaskDefinition },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3789,7 +3943,16 @@ export const describeCapacityProviders: API.OperationMethod<
   DescribeCapacityProvidersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      capacityProviders: 0,
+      cluster: 0,
+      include: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3820,7 +3983,7 @@ export const describeClusters: API.OperationMethod<
   DescribeClustersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { clusters: 0, include: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -3850,6 +4013,7 @@ export const describeContainerInstances: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { cluster: 0, containerInstances: 0, include: 0 },
     output: { containerInstances: D.list(o_ContainerInstance) },
   },
   errors: [
@@ -3884,6 +4048,7 @@ export const describeDaemon: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { daemonArn: 0 },
     output: { daemon: { createdAt: D.ts, updatedAt: D.ts } },
   },
   errors: [
@@ -3921,6 +4086,7 @@ export const describeDaemonDeployments: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { daemonDeploymentArns: 0 },
     output: {
       daemonDeployments: D.list({
         rollback: { startedAt: D.ts },
@@ -3965,6 +4131,7 @@ export const describeDaemonRevisions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { daemonRevisionArns: 0 },
     output: { daemonRevisions: D.list({ createdAt: D.ts }) },
   },
   errors: [
@@ -3997,6 +4164,7 @@ export const describeDaemonTaskDefinition: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { daemonTaskDefinition: 0 },
     output: {
       daemonTaskDefinition: { registeredAt: D.ts, deleteRequestedAt: D.ts },
     },
@@ -4034,7 +4202,11 @@ export const describeExpressGatewayService: API.OperationMethod<
   DescribeExpressGatewayServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { service: o_ECSExpressGatewayService } },
+  descriptor: {
+    service: svc,
+    input: { serviceArn: 0, include: 0 },
+    output: { service: o_ECSExpressGatewayService },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4071,6 +4243,7 @@ export const describeServiceDeployments: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { serviceDeploymentArns: 0 },
     output: {
       serviceDeployments: D.list({
         createdAt: D.ts,
@@ -4121,6 +4294,7 @@ export const describeServiceRevisions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { serviceRevisionArns: 0 },
     output: {
       serviceRevisions: D.list({
         createdAt: D.ts,
@@ -4174,7 +4348,11 @@ export const describeServices: API.OperationMethod<
   DescribeServicesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { services: D.list(o_Service) } },
+  descriptor: {
+    service: svc,
+    input: { cluster: 0, services: 0, include: 0 },
+    output: { services: D.list(o_Service) },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4204,7 +4382,11 @@ export const describeTaskDefinition: API.OperationMethod<
   DescribeTaskDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { taskDefinition: o_TaskDefinition } },
+  descriptor: {
+    service: svc,
+    input: { taskDefinition: 0, include: 0 },
+    output: { taskDefinition: o_TaskDefinition },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4236,7 +4418,11 @@ export const describeTasks: API.OperationMethod<
   DescribeTasksError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { tasks: D.list(o_Task) } },
+  descriptor: {
+    service: svc,
+    input: { cluster: 0, tasks: 0, include: 0 },
+    output: { tasks: D.list(o_Task) },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4268,7 +4454,11 @@ export const describeTaskSets: API.OperationMethod<
   DescribeTaskSetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { taskSets: D.list(o_TaskSet) } },
+  descriptor: {
+    service: svc,
+    input: { cluster: 0, service: 0, taskSets: 0, include: 0 },
+    output: { taskSets: D.list(o_TaskSet) },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4301,7 +4491,7 @@ export const discoverPollEndpoint: API.OperationMethod<
   DiscoverPollEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { containerInstance: 0, cluster: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4334,7 +4524,11 @@ export const executeCommand: API.OperationMethod<
   ExecuteCommandError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { session: { tokenValue: D.secret } } },
+  descriptor: {
+    service: svc,
+    input: { cluster: 0, container: 0, command: 0, interactive: 0, task: 0 },
+    output: { session: { tokenValue: D.secret } },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4368,6 +4562,7 @@ export const getTaskProtection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { cluster: 0, tasks: 0 },
     output: { protectedTasks: D.list(o_ProtectedTask) },
   },
   errors: [
@@ -4400,7 +4595,17 @@ export const listAccountSettings: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Setting
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      value: 0,
+      principalArn: 0,
+      effectiveSettings: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4435,7 +4640,17 @@ export const listAttributes: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Attribute
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      cluster: 0,
+      targetType: 0,
+      attributeName: 0,
+      attributeValue: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4470,7 +4685,7 @@ export const listClusters: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   string
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0, maxResults: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4505,7 +4720,10 @@ export const listContainerInstances: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   string
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { cluster: 0, filter: 0, nextToken: 0, maxResults: 0, status: 0 },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4543,6 +4761,13 @@ export const listDaemonDeployments: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      daemonArn: 0,
+      status: 0,
+      createdAt: i_CreatedAt,
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       daemonDeployments: D.list({
         createdAt: D.ts,
@@ -4584,6 +4809,12 @@ export const listDaemons: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      clusterArn: 0,
+      capacityProviderArns: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       daemonSummariesList: D.list({ createdAt: D.ts, updatedAt: D.ts }),
     },
@@ -4618,6 +4849,15 @@ export const listDaemonTaskDefinitions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      familyPrefix: 0,
+      family: 0,
+      revision: 0,
+      status: 0,
+      sort: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       daemonTaskDefinitions: D.list({
         registeredAt: D.ts,
@@ -4660,6 +4900,14 @@ export const listServiceDeployments: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      service: 0,
+      cluster: 0,
+      status: 0,
+      createdAt: i_CreatedAt,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: {
       serviceDeployments: D.list({
         startedAt: D.ts,
@@ -4699,7 +4947,17 @@ export const listServices: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   string
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      cluster: 0,
+      nextToken: 0,
+      maxResults: 0,
+      launchType: 0,
+      schedulingStrategy: 0,
+      resourceManagementType: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4735,7 +4993,10 @@ export const listServicesByNamespace: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   string
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { namespace: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4770,7 +5031,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4801,7 +5062,10 @@ export const listTaskDefinitionFamilies: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   string
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { familyPrefix: 0, status: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4835,7 +5099,10 @@ export const listTaskDefinitions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   string
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { familyPrefix: 0, status: 0, sort: 0, nextToken: 0, maxResults: 0 },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4873,7 +5140,21 @@ export const listTasks: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   string
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      cluster: 0,
+      containerInstance: 0,
+      family: 0,
+      nextToken: 0,
+      maxResults: 0,
+      startedBy: 0,
+      serviceName: 0,
+      desiredStatus: 0,
+      launchType: 0,
+      daemonName: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4910,7 +5191,7 @@ export const putAccountSetting: API.OperationMethod<
   PutAccountSettingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0, value: 0, principalArn: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4937,7 +5218,7 @@ export const putAccountSettingDefault: API.OperationMethod<
   PutAccountSettingDefaultError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0, value: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -4967,7 +5248,10 @@ export const putAttributes: API.OperationMethod<
   PutAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { cluster: 0, attributes: D.list(i_Attribute) },
+  },
   errors: [
     AccessDeniedException,
     AttributeLimitExceededException,
@@ -5006,7 +5290,14 @@ export const putClusterCapacityProviders: API.OperationMethod<
   PutClusterCapacityProvidersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      cluster: 0,
+      capacityProviders: 0,
+      defaultCapacityProviderStrategy: D.list(i_CapacityProviderStrategyItem),
+    },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -5041,6 +5332,24 @@ export const registerContainerInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      cluster: 0,
+      instanceIdentityDocument: 0,
+      instanceIdentityDocumentSignature: 0,
+      totalResources: D.list({
+        name: 0,
+        type: 0,
+        doubleValue: 0,
+        longValue: 0,
+        integerValue: 0,
+        stringSetValue: 0,
+      }),
+      versionInfo: { agentVersion: 0, agentHash: 0, dockerVersion: 0 },
+      containerInstanceArn: 0,
+      attributes: D.list(i_Attribute),
+      platformDevices: D.list({ id: 0, type: 0 }),
+      tags: D.list(i_Tag),
+    },
     output: { containerInstance: o_ContainerInstance },
   },
   errors: [
@@ -5075,7 +5384,56 @@ export const registerDaemonTaskDefinition: API.OperationMethod<
   RegisterDaemonTaskDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      family: 0,
+      taskRoleArn: 0,
+      executionRoleArn: 0,
+      containerDefinitions: D.list({
+        name: 0,
+        image: 0,
+        memory: 0,
+        memoryReservation: 0,
+        repositoryCredentials: i_RepositoryCredentials,
+        healthCheck: i_HealthCheck,
+        cpu: 0,
+        essential: 0,
+        entryPoint: 0,
+        command: 0,
+        workingDirectory: 0,
+        environmentFiles: D.list(i_EnvironmentFile),
+        environment: D.list(i_KeyValuePair),
+        secrets: D.list(i_Secret),
+        readonlyRootFilesystem: 0,
+        mountPoints: D.list(i_MountPoint),
+        logConfiguration: i_LogConfiguration,
+        firelensConfiguration: i_FirelensConfiguration,
+        privileged: 0,
+        user: 0,
+        ulimits: D.list(i_Ulimit),
+        linuxParameters: {
+          capabilities: i_KernelCapabilities,
+          devices: D.list(i_Device),
+          initProcessEnabled: 0,
+          tmpfs: D.list(i_Tmpfs),
+        },
+        dependsOn: D.list(i_ContainerDependency),
+        startTimeout: 0,
+        stopTimeout: 0,
+        systemControls: D.list(i_SystemControl),
+        interactive: 0,
+        pseudoTerminal: 0,
+        restartPolicy: i_ContainerRestartPolicy,
+      }),
+      cpu: 0,
+      memory: 0,
+      volumes: D.list({ name: 0, host: i_HostVolumeProperties }),
+      tags: D.list(i_Tag),
+      pidMode: 0,
+      ipcMode: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -5108,7 +5466,121 @@ export const registerTaskDefinition: API.OperationMethod<
   RegisterTaskDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { taskDefinition: o_TaskDefinition } },
+  descriptor: {
+    service: svc,
+    input: {
+      family: 0,
+      taskRoleArn: 0,
+      executionRoleArn: 0,
+      networkMode: 0,
+      containerDefinitions: D.list({
+        name: 0,
+        image: 0,
+        repositoryCredentials: i_RepositoryCredentials,
+        cpu: 0,
+        memory: 0,
+        memoryReservation: 0,
+        links: 0,
+        portMappings: D.list({
+          containerPort: 0,
+          hostPort: 0,
+          protocol: 0,
+          name: 0,
+          appProtocol: 0,
+          containerPortRange: 0,
+        }),
+        essential: 0,
+        restartPolicy: i_ContainerRestartPolicy,
+        entryPoint: 0,
+        command: 0,
+        environment: D.list(i_KeyValuePair),
+        environmentFiles: D.list(i_EnvironmentFile),
+        mountPoints: D.list(i_MountPoint),
+        volumesFrom: D.list({ sourceContainer: 0, readOnly: 0 }),
+        linuxParameters: {
+          capabilities: i_KernelCapabilities,
+          devices: D.list(i_Device),
+          initProcessEnabled: 0,
+          sharedMemorySize: 0,
+          tmpfs: D.list(i_Tmpfs),
+          maxSwap: 0,
+          swappiness: 0,
+        },
+        secrets: D.list(i_Secret),
+        dependsOn: D.list(i_ContainerDependency),
+        startTimeout: 0,
+        stopTimeout: 0,
+        versionConsistency: 0,
+        hostname: 0,
+        user: 0,
+        workingDirectory: 0,
+        disableNetworking: 0,
+        privileged: 0,
+        readonlyRootFilesystem: 0,
+        dnsServers: 0,
+        dnsSearchDomains: 0,
+        extraHosts: D.list({ hostname: 0, ipAddress: 0 }),
+        dockerSecurityOptions: 0,
+        interactive: 0,
+        pseudoTerminal: 0,
+        dockerLabels: 0,
+        ulimits: D.list(i_Ulimit),
+        logConfiguration: i_LogConfiguration,
+        healthCheck: i_HealthCheck,
+        systemControls: D.list(i_SystemControl),
+        resourceRequirements: D.list(i_ResourceRequirement),
+        firelensConfiguration: i_FirelensConfiguration,
+        credentialSpecs: 0,
+      }),
+      volumes: D.list({
+        name: 0,
+        host: i_HostVolumeProperties,
+        dockerVolumeConfiguration: {
+          scope: 0,
+          autoprovision: 0,
+          driver: 0,
+          driverOpts: 0,
+          labels: 0,
+        },
+        efsVolumeConfiguration: {
+          fileSystemId: 0,
+          rootDirectory: 0,
+          transitEncryption: 0,
+          transitEncryptionPort: 0,
+          authorizationConfig: { accessPointId: 0, iam: 0 },
+        },
+        s3filesVolumeConfiguration: {
+          fileSystemArn: 0,
+          rootDirectory: 0,
+          transitEncryptionPort: 0,
+          accessPointArn: 0,
+        },
+        fsxWindowsFileServerVolumeConfiguration: {
+          fileSystemId: 0,
+          rootDirectory: 0,
+          authorizationConfig: { credentialsParameter: 0, domain: 0 },
+        },
+        configuredAtLaunch: 0,
+      }),
+      placementConstraints: D.list({ type: 0, expression: 0 }),
+      requiresCompatibilities: 0,
+      cpu: 0,
+      memory: 0,
+      tags: D.list(i_Tag),
+      pidMode: 0,
+      ipcMode: 0,
+      proxyConfiguration: {
+        type: 0,
+        containerName: 0,
+        properties: D.list(i_KeyValuePair),
+      },
+      inferenceAccelerators: D.list({ deviceName: 0, deviceType: 0 }),
+      ephemeralStorage: i_EphemeralStorage,
+      runtimePlatform: { cpuArchitecture: 0, operatingSystemFamily: 0 },
+      enableFaultInjection: 0,
+    },
+    output: { taskDefinition: o_TaskDefinition },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -5172,7 +5644,27 @@ export const runTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      capacityProviderStrategy: D.list(i_CapacityProviderStrategyItem),
+      cluster: 0,
+      count: 0,
+      enableECSManagedTags: 0,
+      enableExecuteCommand: 0,
+      group: 0,
+      launchType: 0,
+      networkConfiguration: i_NetworkConfiguration,
+      overrides: i_TaskOverride,
+      placementConstraints: D.list(i_PlacementConstraint),
+      placementStrategy: D.list(i_PlacementStrategy),
+      platformVersion: 0,
+      propagateTags: 0,
+      referenceId: 0,
+      startedBy: 0,
+      tags: D.list(i_Tag),
+      taskDefinition: 0,
+      clientToken: D.m({ idempotency: true }),
+      volumeConfigurations: D.list(i_TaskVolumeConfiguration),
+    },
     output: { tasks: D.list(o_Task) },
   },
   errors: [
@@ -5218,7 +5710,25 @@ export const startTask: API.OperationMethod<
   StartTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { tasks: D.list(o_Task) } },
+  descriptor: {
+    service: svc,
+    input: {
+      cluster: 0,
+      containerInstances: 0,
+      enableECSManagedTags: 0,
+      enableExecuteCommand: 0,
+      group: 0,
+      networkConfiguration: i_NetworkConfiguration,
+      overrides: i_TaskOverride,
+      propagateTags: 0,
+      referenceId: 0,
+      startedBy: 0,
+      tags: D.list(i_Tag),
+      taskDefinition: 0,
+      volumeConfigurations: D.list(i_TaskVolumeConfiguration),
+    },
+    output: { tasks: D.list(o_Task) },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -5259,7 +5769,7 @@ export const stopServiceDeployment: API.OperationMethod<
   StopServiceDeploymentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { serviceDeploymentArn: 0, stopType: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -5296,7 +5806,11 @@ export const stopTask: API.OperationMethod<
   StopTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { task: o_Task } },
+  descriptor: {
+    service: svc,
+    input: { cluster: 0, task: 0, reason: 0 },
+    output: { task: o_Task },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -5327,7 +5841,10 @@ export const submitAttachmentStateChanges: API.OperationMethod<
   SubmitAttachmentStateChangesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { cluster: 0, attachments: D.list(i_AttachmentStateChange) },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -5358,7 +5875,19 @@ export const submitContainerStateChange: API.OperationMethod<
   SubmitContainerStateChangeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      cluster: 0,
+      task: 0,
+      containerName: 0,
+      runtimeId: 0,
+      status: 0,
+      exitCode: 0,
+      reason: 0,
+      networkBindings: D.list(i_NetworkBinding),
+    },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -5389,7 +5918,34 @@ export const submitTaskStateChange: API.OperationMethod<
   SubmitTaskStateChangeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      cluster: 0,
+      task: 0,
+      status: 0,
+      reason: 0,
+      containers: D.list({
+        containerName: 0,
+        imageDigest: 0,
+        runtimeId: 0,
+        exitCode: 0,
+        networkBindings: D.list(i_NetworkBinding),
+        reason: 0,
+        status: 0,
+      }),
+      attachments: D.list(i_AttachmentStateChange),
+      managedAgents: D.list({
+        containerName: 0,
+        managedAgentName: 0,
+        status: 0,
+        reason: 0,
+      }),
+      pullStartedAt: 0,
+      pullStoppedAt: 0,
+      executionStoppedAt: 0,
+    },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -5420,7 +5976,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -5452,7 +6008,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -5485,7 +6041,35 @@ export const updateCapacityProvider: API.OperationMethod<
   UpdateCapacityProviderError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      name: 0,
+      cluster: 0,
+      autoScalingGroupProvider: {
+        managedScaling: i_ManagedScaling,
+        managedTerminationProtection: 0,
+        managedDraining: 0,
+      },
+      managedInstancesProvider: {
+        infrastructureRoleArn: 0,
+        instanceLaunchTemplate: {
+          ec2InstanceProfileArn: 0,
+          networkConfiguration: i_ManagedInstancesNetworkConfiguration,
+          storageConfiguration: i_ManagedInstancesStorageConfiguration,
+          instanceMetadataTagsPropagation: 0,
+          localStorageConfiguration:
+            i_ManagedInstancesLocalStorageConfiguration,
+          monitoring: 0,
+          instanceRequirements: i_InstanceRequirementsRequest,
+          capacityReservations: i_CapacityReservationRequest,
+        },
+        propagateTags: 0,
+        infrastructureOptimization: i_InfrastructureOptimization,
+        autoRepairConfiguration: i_AutoRepairConfiguration,
+      },
+    },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -5516,7 +6100,15 @@ export const updateCluster: API.OperationMethod<
   UpdateClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      cluster: 0,
+      settings: D.list(i_ClusterSetting),
+      configuration: i_ClusterConfiguration,
+      serviceConnectDefaults: i_ClusterServiceConnectDefaultsRequest,
+    },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -5547,7 +6139,10 @@ export const updateClusterSettings: API.OperationMethod<
   UpdateClusterSettingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { cluster: 0, settings: D.list(i_ClusterSetting) },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -5588,6 +6183,7 @@ export const updateContainerAgent: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { cluster: 0, containerInstance: 0 },
     output: { containerInstance: o_ContainerInstance },
   },
   errors: [
@@ -5641,6 +6237,7 @@ export const updateContainerInstancesState: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { cluster: 0, containerInstances: 0, status: 0 },
     output: { containerInstances: D.list(o_ContainerInstance) },
   },
   errors: [
@@ -5681,7 +6278,19 @@ export const updateDaemon: API.OperationMethod<
   UpdateDaemonError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { createdAt: D.ts, updatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      daemonArn: 0,
+      daemonTaskDefinitionArn: 0,
+      capacityProviderArns: 0,
+      deploymentConfiguration: i_DaemonDeploymentConfiguration,
+      propagateTags: 0,
+      enableECSManagedTags: 0,
+      enableExecuteCommand: 0,
+    },
+    output: { createdAt: D.ts, updatedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -5723,6 +6332,18 @@ export const updateExpressGatewayService: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      serviceArn: 0,
+      executionRoleArn: 0,
+      healthCheckPath: 0,
+      primaryContainer: i_ExpressGatewayContainer,
+      taskRoleArn: 0,
+      networkConfiguration: i_ExpressGatewayServiceNetworkConfiguration,
+      cpu: 0,
+      memory: 0,
+      scalingTarget: i_ExpressGatewayScalingTarget,
+      taskDefinitionArn: 0,
+    },
     output: {
       service: {
         targetConfiguration: o_ExpressGatewayServiceConfiguration,
@@ -5810,7 +6431,35 @@ export const updateService: API.OperationMethod<
   UpdateServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { service: o_Service } },
+  descriptor: {
+    service: svc,
+    input: {
+      cluster: 0,
+      service: 0,
+      desiredCount: 0,
+      taskDefinition: 0,
+      capacityProviderStrategy: D.list(i_CapacityProviderStrategyItem),
+      deploymentConfiguration: i_DeploymentConfiguration,
+      availabilityZoneRebalancing: 0,
+      networkConfiguration: i_NetworkConfiguration,
+      placementConstraints: D.list(i_PlacementConstraint),
+      placementStrategy: D.list(i_PlacementStrategy),
+      platformVersion: 0,
+      forceNewDeployment: 0,
+      healthCheckGracePeriodSeconds: 0,
+      deploymentController: i_DeploymentController,
+      enableExecuteCommand: 0,
+      enableECSManagedTags: 0,
+      loadBalancers: D.list(i_LoadBalancer),
+      propagateTags: 0,
+      serviceRegistries: D.list(i_ServiceRegistry),
+      serviceConnectConfiguration: i_ServiceConnectConfiguration,
+      volumeConfigurations: D.list(i_ServiceVolumeConfiguration),
+      vpcLatticeConfigurations: D.list(i_VpcLatticeConfiguration),
+      monitoring: i_MonitoringConfiguration,
+    },
+    output: { service: o_Service },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -5849,7 +6498,11 @@ export const updateServicePrimaryTaskSet: API.OperationMethod<
   UpdateServicePrimaryTaskSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { taskSet: o_TaskSet } },
+  descriptor: {
+    service: svc,
+    input: { cluster: 0, service: 0, primaryTaskSet: 0 },
+    output: { taskSet: o_TaskSet },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -5896,6 +6549,7 @@ export const updateTaskProtection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { cluster: 0, tasks: 0, protectionEnabled: 0, expiresInMinutes: 0 },
     output: { protectedTasks: D.list(o_ProtectedTask) },
   },
   errors: [
@@ -5933,7 +6587,11 @@ export const updateTaskSet: API.OperationMethod<
   UpdateTaskSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { taskSet: o_TaskSet } },
+  descriptor: {
+    service: svc,
+    input: { cluster: 0, service: 0, taskSet: 0, scale: i_Scale },
+    output: { taskSet: o_TaskSet },
+  },
   errors: [
     AccessDeniedException,
     ClientException,
@@ -5951,6 +6609,308 @@ export const updateTaskSet: API.OperationMethod<
   operationName: "UpdateTaskSet",
 })) as any;
 
+const i_AttachmentStateChange: D.LazyStruct = () => ({
+  attachmentArn: 0,
+  status: 0,
+});
+const i_Attribute: D.LazyStruct = () => ({
+  name: 0,
+  value: 0,
+  targetType: 0,
+  targetId: 0,
+});
+const i_AutoRepairConfiguration: D.LazyStruct = () => ({ actionsStatus: 0 });
+const i_CapacityProviderStrategyItem: D.LazyStruct = () => ({
+  capacityProvider: 0,
+  weight: 0,
+  base: 0,
+});
+const i_CapacityReservationRequest: D.LazyStruct = () => ({
+  reservationGroupArn: 0,
+  reservationPreference: 0,
+});
+const i_ClusterConfiguration: D.LazyStruct = () => ({
+  executeCommandConfiguration: {
+    kmsKeyId: 0,
+    logging: 0,
+    logConfiguration: {
+      cloudWatchLogGroupName: 0,
+      cloudWatchEncryptionEnabled: 0,
+      s3BucketName: 0,
+      s3EncryptionEnabled: 0,
+      s3KeyPrefix: 0,
+    },
+  },
+  managedStorageConfiguration: {
+    kmsKeyId: 0,
+    fargateEphemeralStorageKmsKeyId: 0,
+  },
+});
+const i_ClusterServiceConnectDefaultsRequest: D.LazyStruct = () => ({
+  namespace: 0,
+});
+const i_ClusterSetting: D.LazyStruct = () => ({ name: 0, value: 0 });
+const i_ContainerDependency: D.LazyStruct = () => ({
+  containerName: 0,
+  condition: 0,
+});
+const i_ContainerRestartPolicy: D.LazyStruct = () => ({
+  enabled: 0,
+  ignoredExitCodes: 0,
+  restartAttemptPeriod: 0,
+});
+const i_CreatedAt: D.LazyStruct = () => ({ before: 0, after: 0 });
+const i_DaemonDeploymentConfiguration: D.LazyStruct = () => ({
+  drainPercent: 0,
+  alarms: { alarmNames: 0, enable: 0 },
+  bakeTimeInMinutes: 0,
+});
+const i_DeploymentConfiguration: D.LazyStruct = () => ({
+  deploymentCircuitBreaker: {
+    enable: 0,
+    rollback: 0,
+    resetOnHealthyTask: 0,
+    thresholdConfiguration: { type: 0, value: 0 },
+  },
+  maximumPercent: 0,
+  minimumHealthyPercent: 0,
+  alarms: { alarmNames: 0, rollback: 0, enable: 0 },
+  strategy: 0,
+  bakeTimeInMinutes: 0,
+  lifecycleHooks: D.list({
+    targetType: 0,
+    hookTargetArn: 0,
+    roleArn: 0,
+    lifecycleStages: 0,
+    hookDetails: 0,
+    timeoutConfiguration: { timeoutInMinutes: 0, action: 0 },
+  }),
+  linearConfiguration: { stepPercent: 0, stepBakeTimeInMinutes: 0 },
+  canaryConfiguration: { canaryPercent: 0, canaryBakeTimeInMinutes: 0 },
+  earlySuccessCriteria: {
+    enable: 0,
+    healthyPercent: 0,
+    sourceServiceRevisionCleanup: 0,
+  },
+});
+const i_DeploymentController: D.LazyStruct = () => ({ type: 0 });
+const i_Device: D.LazyStruct = () => ({
+  hostPath: 0,
+  containerPath: 0,
+  permissions: 0,
+});
+const i_EnvironmentFile: D.LazyStruct = () => ({ value: 0, type: 0 });
+const i_EphemeralStorage: D.LazyStruct = () => ({ sizeInGiB: 0 });
+const i_ExpressGatewayContainer: D.LazyStruct = () => ({
+  image: 0,
+  containerPort: 0,
+  awsLogsConfiguration: { logGroup: 0, logStreamPrefix: 0 },
+  repositoryCredentials: { credentialsParameter: 0 },
+  command: 0,
+  environment: D.list(i_KeyValuePair),
+  secrets: D.list(i_Secret),
+});
+const i_ExpressGatewayScalingTarget: D.LazyStruct = () => ({
+  minTaskCount: 0,
+  maxTaskCount: 0,
+  autoScalingMetric: 0,
+  autoScalingTargetValue: 0,
+});
+const i_ExpressGatewayServiceNetworkConfiguration: D.LazyStruct = () => ({
+  securityGroups: 0,
+  subnets: 0,
+});
+const i_FirelensConfiguration: D.LazyStruct = () => ({ type: 0, options: 0 });
+const i_HealthCheck: D.LazyStruct = () => ({
+  command: 0,
+  interval: 0,
+  timeout: 0,
+  retries: 0,
+  startPeriod: 0,
+});
+const i_HostVolumeProperties: D.LazyStruct = () => ({ sourcePath: 0 });
+const i_InfrastructureOptimization: D.LazyStruct = () => ({ scaleInAfter: 0 });
+const i_InstanceRequirementsRequest: D.LazyStruct = () => ({
+  vCpuCount: { min: 0, max: 0 },
+  memoryMiB: { min: 0, max: 0 },
+  cpuManufacturers: 0,
+  memoryGiBPerVCpu: { min: 0, max: 0 },
+  excludedInstanceTypes: 0,
+  instanceGenerations: 0,
+  spotMaxPricePercentageOverLowestPrice: 0,
+  onDemandMaxPricePercentageOverLowestPrice: 0,
+  bareMetal: 0,
+  burstablePerformance: 0,
+  requireHibernateSupport: 0,
+  networkInterfaceCount: { min: 0, max: 0 },
+  localStorage: 0,
+  localStorageTypes: 0,
+  totalLocalStorageGB: { min: 0, max: 0 },
+  baselineEbsBandwidthMbps: { min: 0, max: 0 },
+  acceleratorTypes: 0,
+  acceleratorCount: { min: 0, max: 0 },
+  acceleratorManufacturers: 0,
+  acceleratorNames: 0,
+  acceleratorTotalMemoryMiB: { min: 0, max: 0 },
+  networkBandwidthGbps: { min: 0, max: 0 },
+  allowedInstanceTypes: 0,
+  maxSpotPriceAsPercentageOfOptimalOnDemandPrice: 0,
+});
+const i_KernelCapabilities: D.LazyStruct = () => ({ add: 0, drop: 0 });
+const i_KeyValuePair: D.LazyStruct = () => ({ name: 0, value: 0 });
+const i_LoadBalancer: D.LazyStruct = () => ({
+  targetGroupArn: 0,
+  loadBalancerName: 0,
+  containerName: 0,
+  containerPort: 0,
+  advancedConfiguration: {
+    alternateTargetGroupArn: 0,
+    productionListenerRule: 0,
+    testListenerRule: 0,
+    roleArn: 0,
+  },
+});
+const i_LogConfiguration: D.LazyStruct = () => ({
+  logDriver: 0,
+  options: 0,
+  secretOptions: D.list(i_Secret),
+});
+const i_ManagedInstancesLocalStorageConfiguration: D.LazyStruct = () => ({
+  useLocalStorage: 0,
+});
+const i_ManagedInstancesNetworkConfiguration: D.LazyStruct = () => ({
+  subnets: 0,
+  securityGroups: 0,
+});
+const i_ManagedInstancesStorageConfiguration: D.LazyStruct = () => ({
+  storageSizeGiB: 0,
+});
+const i_ManagedScaling: D.LazyStruct = () => ({
+  status: 0,
+  targetCapacity: 0,
+  minimumScalingStepSize: 0,
+  maximumScalingStepSize: 0,
+  instanceWarmupPeriod: 0,
+});
+const i_MonitoringConfiguration: D.LazyStruct = () => ({
+  metricConfigurations: D.list({ metricNames: 0, resolutionSeconds: 0 }),
+});
+const i_MountPoint: D.LazyStruct = () => ({
+  sourceVolume: 0,
+  containerPath: 0,
+  readOnly: 0,
+});
+const i_NetworkBinding: D.LazyStruct = () => ({
+  bindIP: 0,
+  containerPort: 0,
+  hostPort: 0,
+  protocol: 0,
+  containerPortRange: 0,
+  hostPortRange: 0,
+});
+const i_NetworkConfiguration: D.LazyStruct = () => ({
+  awsvpcConfiguration: { subnets: 0, securityGroups: 0, assignPublicIp: 0 },
+});
+const i_PlacementConstraint: D.LazyStruct = () => ({ type: 0, expression: 0 });
+const i_PlacementStrategy: D.LazyStruct = () => ({ type: 0, field: 0 });
+const i_RepositoryCredentials: D.LazyStruct = () => ({
+  credentialsParameter: 0,
+});
+const i_ResourceRequirement: D.LazyStruct = () => ({ value: 0, type: 0 });
+const i_Scale: D.LazyStruct = () => ({ value: 0, unit: 0 });
+const i_Secret: D.LazyStruct = () => ({ name: 0, valueFrom: 0 });
+const i_ServiceConnectConfiguration: D.LazyStruct = () => ({
+  enabled: 0,
+  namespace: 0,
+  services: D.list({
+    portName: 0,
+    discoveryName: 0,
+    clientAliases: D.list({
+      port: 0,
+      dnsName: 0,
+      testTrafficRules: { header: { name: 0, value: { exact: 0 } } },
+    }),
+    ingressPortOverride: 0,
+    timeout: { idleTimeoutSeconds: 0, perRequestTimeoutSeconds: 0 },
+    tls: {
+      issuerCertificateAuthority: { awsPcaAuthorityArn: 0 },
+      kmsKey: 0,
+      roleArn: 0,
+    },
+  }),
+  logConfiguration: i_LogConfiguration,
+  accessLogConfiguration: { format: 0, includeQueryParameters: 0 },
+});
+const i_ServiceRegistry: D.LazyStruct = () => ({
+  registryArn: 0,
+  port: 0,
+  containerName: 0,
+  containerPort: 0,
+});
+const i_ServiceVolumeConfiguration: D.LazyStruct = () => ({
+  name: 0,
+  managedEBSVolume: {
+    encrypted: 0,
+    kmsKeyId: 0,
+    volumeType: 0,
+    sizeInGiB: 0,
+    snapshotId: 0,
+    volumeInitializationRate: 0,
+    iops: 0,
+    throughput: 0,
+    tagSpecifications: D.list(i_EBSTagSpecification),
+    roleArn: 0,
+    filesystemType: 0,
+  },
+});
+const i_SystemControl: D.LazyStruct = () => ({ namespace: 0, value: 0 });
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_TaskOverride: D.LazyStruct = () => ({
+  containerOverrides: D.list({
+    name: 0,
+    command: 0,
+    environment: D.list(i_KeyValuePair),
+    environmentFiles: D.list(i_EnvironmentFile),
+    cpu: 0,
+    memory: 0,
+    memoryReservation: 0,
+    resourceRequirements: D.list(i_ResourceRequirement),
+  }),
+  cpu: 0,
+  inferenceAcceleratorOverrides: D.list({ deviceName: 0, deviceType: 0 }),
+  executionRoleArn: 0,
+  memory: 0,
+  taskRoleArn: 0,
+  ephemeralStorage: i_EphemeralStorage,
+});
+const i_TaskVolumeConfiguration: D.LazyStruct = () => ({
+  name: 0,
+  managedEBSVolume: {
+    encrypted: 0,
+    kmsKeyId: 0,
+    volumeType: 0,
+    sizeInGiB: 0,
+    snapshotId: 0,
+    volumeInitializationRate: 0,
+    iops: 0,
+    throughput: 0,
+    tagSpecifications: D.list(i_EBSTagSpecification),
+    roleArn: 0,
+    terminationPolicy: { deleteOnTermination: 0 },
+    filesystemType: 0,
+  },
+});
+const i_Tmpfs: D.LazyStruct = () => ({
+  containerPath: 0,
+  size: 0,
+  mountOptions: 0,
+});
+const i_Ulimit: D.LazyStruct = () => ({ name: 0, softLimit: 0, hardLimit: 0 });
+const i_VpcLatticeConfiguration: D.LazyStruct = () => ({
+  roleArn: 0,
+  targetGroupArn: 0,
+  portName: 0,
+});
 const o_ContainerInstance: D.LazyStruct = () => ({
   registeredAt: D.ts,
   healthStatus: {
@@ -5993,4 +6953,9 @@ const o_TaskSet: D.LazyStruct = () => ({
   createdAt: D.ts,
   updatedAt: D.ts,
   stabilityStatusAt: D.ts,
+});
+const i_EBSTagSpecification: D.LazyStruct = () => ({
+  resourceType: 0,
+  tags: D.list(i_Tag),
+  propagateTags: 0,
 });

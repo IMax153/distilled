@@ -687,7 +687,18 @@ export const copyImageSet: API.OperationMethod<
     service: svc,
     http: "POST /datastore/{datastoreId}/imageSet/{sourceImageSetId}/copyImageSet",
     input: {
-      copyImageSetInformation: D.m({ payload: true }),
+      datastoreId: 0,
+      sourceImageSetId: 0,
+      copyImageSetInformation: D.m({
+        payload: true,
+        shape: {
+          sourceImageSet: {
+            latestVersionId: 0,
+            DICOMCopies: { copiableAttributes: 0 },
+          },
+          destinationImageSet: { imageSetId: 0, latestVersionId: 0 },
+        },
+      }),
       force: D.m({ query: "force" }),
       promoteToPrimary: D.m({ query: "promoteToPrimary" }),
     },
@@ -732,7 +743,14 @@ export const createDatastore: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datastore",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      datastoreName: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+      kmsKeyArn: 0,
+      lambdaAuthorizerArn: 0,
+      losslessStorageFormat: 0,
+    },
     body: true,
   },
   errors: [
@@ -768,7 +786,11 @@ export const deleteDatastore: API.OperationMethod<
   DeleteDatastoreError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /datastore/{datastoreId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /datastore/{datastoreId}",
+    input: { datastoreId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -802,6 +824,7 @@ export const deleteImageSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datastore/{datastoreId}/imageSet/{imageSetId}/deleteImageSet",
+    input: { datastoreId: 0, imageSetId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -836,6 +859,7 @@ export const getDatastore: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /datastore/{datastoreId}",
+    input: { datastoreId: 0 },
     output: { datastoreProperties: { createdAt: D.ts, updatedAt: D.ts } },
   },
   errors: [
@@ -872,6 +896,7 @@ export const getDICOMImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /getDICOMImportJob/datastore/{datastoreId}/job/{jobId}",
+    input: { datastoreId: 0, jobId: 0 },
     output: {
       jobProperties: {
         endedAt: D.ts,
@@ -922,7 +947,11 @@ export const getImageFrame: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datastore/{datastoreId}/imageSet/{imageSetId}/getImageFrame",
-    input: { imageFrameInformation: D.m({ payload: true }) },
+    input: {
+      datastoreId: 0,
+      imageSetId: 0,
+      imageFrameInformation: D.m({ payload: true, shape: { imageFrameId: 0 } }),
+    },
     output: {
       imageFrameBlob: D.m({ payload: true, shape: D.stream }),
       contentType: D.m({ header: "Content-Type" }),
@@ -964,7 +993,11 @@ export const getImageSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datastore/{datastoreId}/imageSet/{imageSetId}/getImageSet",
-    input: { versionId: D.m({ query: "version" }) },
+    input: {
+      datastoreId: 0,
+      imageSetId: 0,
+      versionId: D.m({ query: "version" }),
+    },
     output: {
       createdAt: D.ts,
       updatedAt: D.ts,
@@ -1006,7 +1039,11 @@ export const getImageSetMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /datastore/{datastoreId}/imageSet/{imageSetId}/getImageSetMetadata",
-    input: { versionId: D.m({ query: "version" }) },
+    input: {
+      datastoreId: 0,
+      imageSetId: 0,
+      versionId: D.m({ query: "version" }),
+    },
     output: {
       imageSetMetadataBlob: D.m({ payload: true, shape: D.stream }),
       contentType: D.m({ header: "Content-Type" }),
@@ -1094,6 +1131,7 @@ export const listDICOMImportJobs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /listDICOMImportJobs/datastore/{datastoreId}",
     input: {
+      datastoreId: 0,
       jobStatus: D.m({ query: "jobStatus" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -1141,6 +1179,8 @@ export const listImageSetVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /datastore/{datastoreId}/imageSet/{imageSetId}/listImageSetVersions",
     input: {
+      datastoreId: 0,
+      imageSetId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1188,7 +1228,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1227,7 +1271,27 @@ export const searchImageSets: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /datastore/{datastoreId}/searchImageSets",
     input: {
-      searchCriteria: D.m({ payload: true }),
+      datastoreId: 0,
+      searchCriteria: D.m({
+        payload: true,
+        shape: {
+          filters: D.list({
+            values: D.list({
+              DICOMPatientId: 0,
+              DICOMAccessionNumber: 0,
+              DICOMStudyId: 0,
+              DICOMStudyInstanceUID: 0,
+              DICOMSeriesInstanceUID: 0,
+              createdAt: 0,
+              updatedAt: 0,
+              DICOMStudyDateAndTime: { DICOMStudyDate: 0, DICOMStudyTime: 0 },
+              isPrimary: 0,
+            }),
+            operator: 0,
+          }),
+          sort: { sortOrder: 0, sortField: 0 },
+        },
+      }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -1295,7 +1359,24 @@ export const startDICOMImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /startDICOMImportJob/datastore/{datastoreId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      jobName: 0,
+      dataAccessRoleArn: 0,
+      clientToken: D.m({ idempotency: true }),
+      datastoreId: 0,
+      inputS3Uri: 0,
+      outputS3Uri: 0,
+      inputOwnerAccountId: 0,
+      importConfiguration: {
+        dicomJsonMetadataImportConfiguration: {
+          dicomMetadataMappings: D.list({
+            studyInstanceUID: 0,
+            seriesInstanceUID: 0,
+            metadataFilePath: 0,
+          }),
+        },
+      },
+    },
     output: { submittedAt: D.ts },
     body: true,
   },
@@ -1329,7 +1410,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1361,7 +1447,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1397,10 +1483,18 @@ export const updateImageSetMetadata: API.OperationMethod<
     service: svc,
     http: "POST /datastore/{datastoreId}/imageSet/{imageSetId}/updateImageSetMetadata",
     input: {
+      datastoreId: 0,
+      imageSetId: 0,
       latestVersionId: D.m({ query: "latestVersion" }),
       force: D.m({ query: "force" }),
       includeStudyImageSets: D.m({ query: "includeStudyImageSets" }),
-      updateImageSetMetadataUpdates: D.m({ payload: true }),
+      updateImageSetMetadataUpdates: D.m({
+        payload: true,
+        shape: {
+          DICOMUpdates: { removableAttributes: 0, updatableAttributes: 0 },
+          revertToVersionId: 0,
+        },
+      }),
     },
     output: { createdAt: D.ts, updatedAt: D.ts },
   },

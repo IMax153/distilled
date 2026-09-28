@@ -371,6 +371,17 @@ export const createToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /token",
+    input: {
+      clientId: 0,
+      clientSecret: 0,
+      grantType: 0,
+      deviceCode: 0,
+      code: 0,
+      refreshToken: 0,
+      scope: 0,
+      redirectUri: 0,
+      codeVerifier: 0,
+    },
     output: {
       accessToken: D.secret,
       refreshToken: D.secret,
@@ -428,6 +439,19 @@ export const createTokenWithIAM: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /token?aws_iam=t",
+    input: {
+      clientId: 0,
+      grantType: 0,
+      code: 0,
+      refreshToken: 0,
+      assertion: 0,
+      scope: 0,
+      redirectUri: 0,
+      subjectToken: 0,
+      subjectTokenType: 0,
+      requestedTokenType: 0,
+      codeVerifier: 0,
+    },
     output: {
       accessToken: D.secret,
       refreshToken: D.secret,
@@ -477,6 +501,15 @@ export const registerClient: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /client/register",
+    input: {
+      clientName: 0,
+      clientType: 0,
+      scopes: 0,
+      redirectUris: 0,
+      grantTypes: 0,
+      issuerUrl: 0,
+      entitledApplicationArn: 0,
+    },
     output: { clientSecret: D.secret },
     body: true,
   },
@@ -511,7 +544,12 @@ export const startDeviceAuthorization: API.OperationMethod<
   StartDeviceAuthorizationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /device_authorization", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /device_authorization",
+    input: { clientId: 0, clientSecret: 0, startUrl: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     InvalidClientException,

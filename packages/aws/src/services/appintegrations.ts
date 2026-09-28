@@ -554,7 +554,22 @@ export const createApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /applications",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Namespace: 0,
+      Description: 0,
+      ApplicationSourceConfig: i_ApplicationSourceConfig,
+      Subscriptions: D.list(i_Subscription),
+      Publications: D.list(i_Publication),
+      ClientToken: D.m({ idempotency: true }),
+      Tags: 0,
+      Permissions: 0,
+      IsService: 0,
+      InitializationTimeout: 0,
+      ApplicationConfig: i_ApplicationConfig,
+      IframeConfig: i_IframeConfig,
+      ApplicationType: 0,
+    },
     body: true,
   },
   errors: [
@@ -597,7 +612,17 @@ export const createDataIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /dataIntegrations",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Description: 0,
+      KmsKey: 0,
+      SourceURI: 0,
+      ScheduleConfig: i_ScheduleConfiguration,
+      Tags: 0,
+      ClientToken: D.m({ idempotency: true }),
+      FileConfiguration: { Folders: 0, Filters: 0 },
+      ObjectConfiguration: 0,
+    },
     body: true,
   },
   errors: [
@@ -635,7 +660,15 @@ export const createDataIntegrationAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /dataIntegrations/{DataIntegrationIdentifier}/associations",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      DataIntegrationIdentifier: 0,
+      ClientId: 0,
+      ObjectConfiguration: 0,
+      DestinationURI: 0,
+      ClientAssociationMetadata: 0,
+      ClientToken: D.m({ idempotency: true }),
+      ExecutionConfiguration: i_ExecutionConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -676,7 +709,14 @@ export const createEventIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /eventIntegrations",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Description: 0,
+      EventFilter: { Source: 0 },
+      EventBridgeBus: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -711,7 +751,11 @@ export const deleteApplication: API.OperationMethod<
   DeleteApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /applications/{Arn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /applications/{Arn}",
+    input: { Arn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceError,
@@ -751,6 +795,7 @@ export const deleteDataIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /dataIntegrations/{DataIntegrationIdentifier}",
+    input: { DataIntegrationIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -783,7 +828,11 @@ export const deleteEventIntegration: API.OperationMethod<
   DeleteEventIntegrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /eventIntegrations/{Name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /eventIntegrations/{Name}",
+    input: { Name: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceError,
@@ -817,6 +866,7 @@ export const getApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /applications/{Arn}",
+    input: { Arn: 0 },
     output: { CreatedTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [
@@ -853,7 +903,11 @@ export const getDataIntegration: API.OperationMethod<
   GetDataIntegrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /dataIntegrations/{Identifier}" },
+  descriptor: {
+    service: svc,
+    http: "GET /dataIntegrations/{Identifier}",
+    input: { Identifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceError,
@@ -884,7 +938,11 @@ export const getEventIntegration: API.OperationMethod<
   GetEventIntegrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /eventIntegrations/{Name}" },
+  descriptor: {
+    service: svc,
+    http: "GET /eventIntegrations/{Name}",
+    input: { Name: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServiceError,
@@ -920,6 +978,7 @@ export const listApplicationAssociations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /applications/{ApplicationId}/associations",
     input: {
+      ApplicationId: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -1016,6 +1075,7 @@ export const listDataIntegrationAssociations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /dataIntegrations/{DataIntegrationIdentifier}/associations",
     input: {
+      DataIntegrationIdentifier: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -1108,6 +1168,7 @@ export const listEventIntegrationAssociations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /eventIntegrations/{EventIntegrationName}/associations",
     input: {
+      EventIntegrationName: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -1190,7 +1251,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1219,7 +1284,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServiceError,
     InvalidRequestException,
@@ -1251,7 +1321,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServiceError,
@@ -1283,7 +1353,25 @@ export const updateApplication: API.OperationMethod<
   UpdateApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /applications/{Arn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /applications/{Arn}",
+    input: {
+      Arn: 0,
+      Name: 0,
+      Description: 0,
+      ApplicationSourceConfig: i_ApplicationSourceConfig,
+      Subscriptions: D.list(i_Subscription),
+      Publications: D.list(i_Publication),
+      Permissions: 0,
+      IsService: 0,
+      InitializationTimeout: 0,
+      ApplicationConfig: i_ApplicationConfig,
+      IframeConfig: i_IframeConfig,
+      ApplicationType: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServiceError,
@@ -1322,6 +1410,7 @@ export const updateDataIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /dataIntegrations/{Identifier}",
+    input: { Identifier: 0, Name: 0, Description: 0 },
     body: true,
   },
   errors: [
@@ -1359,6 +1448,11 @@ export const updateDataIntegrationAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /dataIntegrations/{DataIntegrationIdentifier}/associations/{DataIntegrationAssociationIdentifier}",
+    input: {
+      DataIntegrationIdentifier: 0,
+      DataIntegrationAssociationIdentifier: 0,
+      ExecutionConfiguration: i_ExecutionConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -1394,6 +1488,7 @@ export const updateEventIntegration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /eventIntegrations/{Name}",
+    input: { Name: 0, Description: 0 },
     body: true,
   },
   errors: [
@@ -1408,3 +1503,27 @@ export const updateEventIntegration: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateEventIntegration",
 })) as any;
+
+const i_ApplicationConfig: D.LazyStruct = () => ({
+  ContactHandling: { Scope: 0 },
+});
+const i_ApplicationSourceConfig: D.LazyStruct = () => ({
+  ExternalUrlConfig: { AccessUrl: 0, ApprovedOrigins: 0 },
+});
+const i_ExecutionConfiguration: D.LazyStruct = () => ({
+  ExecutionMode: 0,
+  OnDemandConfiguration: { StartTime: 0, EndTime: 0 },
+  ScheduleConfiguration: i_ScheduleConfiguration,
+});
+const i_IframeConfig: D.LazyStruct = () => ({ Allow: 0, Sandbox: 0 });
+const i_Publication: D.LazyStruct = () => ({
+  Event: 0,
+  Schema: 0,
+  Description: 0,
+});
+const i_ScheduleConfiguration: D.LazyStruct = () => ({
+  FirstExecutionFrom: 0,
+  Object: 0,
+  ScheduleExpression: 0,
+});
+const i_Subscription: D.LazyStruct = () => ({ Event: 0, Description: 0 });

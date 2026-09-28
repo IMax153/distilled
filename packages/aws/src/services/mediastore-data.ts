@@ -197,7 +197,7 @@ export const deleteObject: API.OperationMethod<
   DeleteObjectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /{Path+}" },
+  descriptor: { service: svc, http: "DELETE /{Path+}", input: { Path: 0 } },
   errors: [
     ContainerNotFoundException,
     InternalServerError,
@@ -225,6 +225,7 @@ export const describeObject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "HEAD /{Path+}",
+    input: { Path: 0 },
     output: {
       ETag: D.m({ header: "ETag" }),
       ContentType: D.m({ header: "Content-Type" }),
@@ -261,7 +262,7 @@ export const getObject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /{Path+}",
-    input: { Range: D.m({ header: "Range" }) },
+    input: { Path: 0, Range: D.m({ header: "Range" }) },
     output: {
       Body: D.m({ payload: true, shape: D.stream }),
       CacheControl: D.m({ header: "Cache-Control" }),
@@ -338,6 +339,7 @@ export const putObject: API.OperationMethod<
     http: "PUT /{Path+}",
     input: {
       Body: D.m({ payload: true, shape: D.stream }),
+      Path: 0,
       ContentType: D.m({ header: "Content-Type" }),
       CacheControl: D.m({ header: "Cache-Control" }),
       StorageClass: D.m({ header: "x-amz-storage-class" }),

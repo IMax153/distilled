@@ -2165,7 +2165,7 @@ export const batchAssociateScramSecret: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/clusters/{ClusterArn}/scram-secrets",
-    input: { SecretArnList: D.m({ wire: "secretArnList" }) },
+    input: { ClusterArn: 0, SecretArnList: D.m({ wire: "secretArnList" }) },
     output: {
       ClusterArn: D.m({ wire: "clusterArn" }),
       UnprocessedScramSecrets: D.m({
@@ -2210,7 +2210,7 @@ export const batchDisassociateScramSecret: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v1/clusters/{ClusterArn}/scram-secrets",
-    input: { SecretArnList: D.m({ wire: "secretArnList" }) },
+    input: { ClusterArn: 0, SecretArnList: D.m({ wire: "secretArnList" }) },
     output: {
       ClusterArn: D.m({ wire: "clusterArn" }),
       UnprocessedScramSecrets: D.m({
@@ -2258,6 +2258,7 @@ export const createChannel: API.OperationMethod<
     http: "POST /v1/clusters/{ClusterArn}/channels",
     input: {
       ChannelName: D.m({ wire: "channelName" }),
+      ClusterArn: 0,
       EncryptionConfiguration: D.m({
         wire: "encryptionConfiguration",
         shape: { KmsKeyArn: D.m({ wire: "kmsKeyArn" }) },
@@ -2819,6 +2820,7 @@ export const createTopic: API.OperationMethod<
     service: svc,
     http: "POST /v1/clusters/{ClusterArn}/topics",
     input: {
+      ClusterArn: 0,
       TopicName: D.m({ wire: "topicName" }),
       PartitionCount: D.m({ wire: "partitionCount" }),
       ReplicationFactor: D.m({ wire: "replicationFactor" }),
@@ -2928,6 +2930,7 @@ export const deleteChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/clusters/{ClusterArn}/channels/{ChannelArn}",
+    input: { ChannelArn: 0, ClusterArn: 0 },
     output: {
       ChannelArn: D.m({ wire: "channelArn" }),
       ClusterOperationArn: D.m({ wire: "clusterOperationArn" }),
@@ -2965,7 +2968,7 @@ export const deleteCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/clusters/{ClusterArn}",
-    input: { CurrentVersion: D.m({ query: "currentVersion" }) },
+    input: { ClusterArn: 0, CurrentVersion: D.m({ query: "currentVersion" }) },
     output: {
       ClusterArn: D.m({ wire: "clusterArn" }),
       State: D.m({ wire: "state" }),
@@ -2997,7 +3000,11 @@ export const deleteClusterPolicy: API.OperationMethod<
   DeleteClusterPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v1/clusters/{ClusterArn}/policy" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v1/clusters/{ClusterArn}/policy",
+    input: { ClusterArn: 0 },
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -3027,6 +3034,7 @@ export const deleteConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/configurations/{Arn}",
+    input: { Arn: 0 },
     output: { Arn: D.m({ wire: "arn" }), State: D.m({ wire: "state" }) },
   },
   errors: [
@@ -3061,7 +3069,10 @@ export const deleteReplicator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /replication/v1/replicators/{ReplicatorArn}",
-    input: { CurrentVersion: D.m({ query: "currentVersion" }) },
+    input: {
+      CurrentVersion: D.m({ query: "currentVersion" }),
+      ReplicatorArn: 0,
+    },
     output: {
       ReplicatorArn: D.m({ wire: "replicatorArn" }),
       ReplicatorState: D.m({ wire: "replicatorState" }),
@@ -3107,6 +3118,7 @@ export const deleteTopic: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/clusters/{ClusterArn}/topics/{TopicName}",
+    input: { ClusterArn: 0, TopicName: 0 },
     output: {
       TopicArn: D.m({ wire: "topicArn" }),
       TopicName: D.m({ wire: "topicName" }),
@@ -3150,6 +3162,7 @@ export const deleteVpcConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/vpc-connection/{Arn}",
+    input: { Arn: 0 },
     output: {
       VpcConnectionArn: D.m({ wire: "vpcConnectionArn" }),
       State: D.m({ wire: "state" }),
@@ -3187,6 +3200,7 @@ export const describeChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/clusters/{ClusterArn}/channels/{ChannelArn}",
+    input: { ChannelArn: 0, ClusterArn: 0 },
     output: {
       ChannelArn: D.m({ wire: "channelArn" }),
       ChannelName: D.m({ wire: "channelName" }),
@@ -3337,6 +3351,7 @@ export const describeCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/clusters/{ClusterArn}",
+    input: { ClusterArn: 0 },
     output: { ClusterInfo: D.m({ wire: "clusterInfo", shape: o_ClusterInfo }) },
   },
   errors: [
@@ -3370,6 +3385,7 @@ export const describeClusterOperation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/operations/{ClusterOperationArn}",
+    input: { ClusterOperationArn: 0 },
     output: {
       ClusterOperationInfo: D.m({
         wire: "clusterOperationInfo",
@@ -3410,6 +3426,7 @@ export const describeClusterOperationV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /api/v2/operations/{ClusterOperationArn}",
+    input: { ClusterOperationArn: 0 },
     output: {
       ClusterOperationInfo: D.m({
         wire: "clusterOperationInfo",
@@ -3505,6 +3522,7 @@ export const describeClusterV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /api/v2/clusters/{ClusterArn}",
+    input: { ClusterArn: 0 },
     output: { ClusterInfo: D.m({ wire: "clusterInfo", shape: o_Cluster }) },
   },
   errors: [
@@ -3539,6 +3557,7 @@ export const describeConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/configurations/{Arn}",
+    input: { Arn: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CreationTime: D.m({ wire: "creationTime", shape: D.ts }),
@@ -3585,6 +3604,7 @@ export const describeConfigurationRevision: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/configurations/{Arn}/revisions/{Revision}",
+    input: { Arn: 0, Revision: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       CreationTime: D.m({ wire: "creationTime", shape: D.ts }),
@@ -3627,6 +3647,7 @@ export const describeReplicator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /replication/v1/replicators/{ReplicatorArn}",
+    input: { ReplicatorArn: 0 },
     output: {
       CreationTime: D.m({ wire: "creationTime", shape: D.ts }),
       CurrentVersion: D.m({ wire: "currentVersion" }),
@@ -3843,6 +3864,7 @@ export const describeTopic: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/clusters/{ClusterArn}/topics/{TopicName}",
+    input: { ClusterArn: 0, TopicName: 0 },
     output: {
       TopicArn: D.m({ wire: "topicArn" }),
       TopicName: D.m({ wire: "topicName" }),
@@ -3885,6 +3907,8 @@ export const describeTopicPartitions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/clusters/{ClusterArn}/topics/{TopicName}/partitions",
     input: {
+      ClusterArn: 0,
+      TopicName: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -3939,6 +3963,7 @@ export const describeVpcConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/vpc-connection/{Arn}",
+    input: { Arn: 0 },
     output: {
       VpcConnectionArn: D.m({ wire: "vpcConnectionArn" }),
       TargetClusterArn: D.m({ wire: "targetClusterArn" }),
@@ -3984,6 +4009,7 @@ export const getBootstrapBrokers: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/clusters/{ClusterArn}/bootstrap-brokers",
+    input: { ClusterArn: 0 },
     output: {
       BootstrapBrokerString: D.m({ wire: "bootstrapBrokerString" }),
       BootstrapBrokerStringTls: D.m({ wire: "bootstrapBrokerStringTls" }),
@@ -4054,6 +4080,7 @@ export const getClusterPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/clusters/{ClusterArn}/policy",
+    input: { ClusterArn: 0 },
     output: {
       CurrentVersion: D.m({ wire: "currentVersion" }),
       Policy: D.m({ wire: "policy" }),
@@ -4138,6 +4165,7 @@ export const listChannels: API.OperationMethod<
     service: svc,
     http: "GET /v1/clusters/{ClusterArn}/channels",
     input: {
+      ClusterArn: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
       TopicNameFilter: D.m({ query: "topicNameFilter" }),
@@ -4192,6 +4220,7 @@ export const listClientVpcConnections: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/clusters/{ClusterArn}/client-vpc-connections",
     input: {
+      ClusterArn: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -4247,6 +4276,7 @@ export const listClusterOperations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/clusters/{ClusterArn}/operations",
     input: {
+      ClusterArn: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -4298,6 +4328,7 @@ export const listClusterOperationsV2: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /api/v2/clusters/{ClusterArn}/operations",
     input: {
+      ClusterArn: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -4458,6 +4489,7 @@ export const listConfigurationRevisions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/configurations/{Arn}/revisions",
     input: {
+      Arn: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -4620,6 +4652,7 @@ export const listNodes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/clusters/{ClusterArn}/nodes",
     input: {
+      ClusterArn: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -4788,6 +4821,7 @@ export const listScramSecrets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/clusters/{ClusterArn}/scram-secrets",
     input: {
+      ClusterArn: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -4833,6 +4867,7 @@ export const listTagsForResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
   },
   errors: [
@@ -4867,6 +4902,7 @@ export const listTopics: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/clusters/{ClusterArn}/topics",
     input: {
+      ClusterArn: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
       TopicNameFilter: D.m({ query: "topicNameFilter" }),
@@ -4979,6 +5015,7 @@ export const putClusterPolicy: API.OperationMethod<
     service: svc,
     http: "PUT /v1/clusters/{ClusterArn}/policy",
     input: {
+      ClusterArn: 0,
       CurrentVersion: D.m({ wire: "currentVersion" }),
       Policy: D.m({ wire: "policy" }),
     },
@@ -5016,7 +5053,7 @@ export const rebootBroker: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/clusters/{ClusterArn}/reboot-broker",
-    input: { BrokerIds: D.m({ wire: "brokerIds" }) },
+    input: { BrokerIds: D.m({ wire: "brokerIds" }), ClusterArn: 0 },
     output: {
       ClusterArn: D.m({ wire: "clusterArn" }),
       ClusterOperationArn: D.m({ wire: "clusterOperationArn" }),
@@ -5056,7 +5093,10 @@ export const rejectClientVpcConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/clusters/{ClusterArn}/client-vpc-connection",
-    input: { VpcConnectionArn: D.m({ wire: "vpcConnectionArn" }) },
+    input: {
+      ClusterArn: 0,
+      VpcConnectionArn: D.m({ wire: "vpcConnectionArn" }),
+    },
     body: true,
   },
   errors: [
@@ -5088,7 +5128,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/tags/{ResourceArn}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: { ResourceArn: 0, Tags: D.m({ wire: "tags" }) },
     body: true,
   },
   errors: [
@@ -5118,7 +5158,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     BadRequestException,
@@ -5150,6 +5190,7 @@ export const updateBrokerCount: API.OperationMethod<
     service: svc,
     http: "PUT /v1/clusters/{ClusterArn}/nodes/count",
     input: {
+      ClusterArn: 0,
       CurrentVersion: D.m({ wire: "currentVersion" }),
       TargetNumberOfBrokerNodes: D.m({ wire: "targetNumberOfBrokerNodes" }),
     },
@@ -5191,6 +5232,7 @@ export const updateBrokerStorage: API.OperationMethod<
     service: svc,
     http: "PUT /v1/clusters/{ClusterArn}/nodes/storage",
     input: {
+      ClusterArn: 0,
       CurrentVersion: D.m({ wire: "currentVersion" }),
       TargetBrokerEBSVolumeInfo: D.m({
         wire: "targetBrokerEBSVolumeInfo",
@@ -5244,6 +5286,7 @@ export const updateBrokerType: API.OperationMethod<
     service: svc,
     http: "PUT /v1/clusters/{ClusterArn}/nodes/type",
     input: {
+      ClusterArn: 0,
       CurrentVersion: D.m({ wire: "currentVersion" }),
       TargetInstanceType: D.m({ wire: "targetInstanceType" }),
     },
@@ -5289,6 +5332,8 @@ export const updateChannel: API.OperationMethod<
     service: svc,
     http: "PUT /v1/clusters/{ClusterArn}/channels/{ChannelArn}",
     input: {
+      ChannelArn: 0,
+      ClusterArn: 0,
       IcebergDestinationUpdate: D.m({
         wire: "icebergDestinationUpdate",
         shape: {
@@ -5343,6 +5388,7 @@ export const updateClusterConfiguration: API.OperationMethod<
     service: svc,
     http: "PUT /v1/clusters/{ClusterArn}/configuration",
     input: {
+      ClusterArn: 0,
       ConfigurationInfo: D.m({
         wire: "configurationInfo",
         shape: i_ConfigurationInfo,
@@ -5390,6 +5436,7 @@ export const updateClusterKafkaVersion: API.OperationMethod<
     service: svc,
     http: "PUT /v1/clusters/{ClusterArn}/version",
     input: {
+      ClusterArn: 0,
       ConfigurationInfo: D.m({
         wire: "configurationInfo",
         shape: i_ConfigurationInfo,
@@ -5438,6 +5485,7 @@ export const updateConfiguration: API.OperationMethod<
     service: svc,
     http: "PUT /v1/configurations/{Arn}",
     input: {
+      Arn: 0,
       Description: D.m({ wire: "description" }),
       ServerProperties: D.m({ wire: "serverProperties" }),
     },
@@ -5484,6 +5532,7 @@ export const updateConnectivity: API.OperationMethod<
     service: svc,
     http: "PUT /v1/clusters/{ClusterArn}/connectivity",
     input: {
+      ClusterArn: 0,
       ConnectivityInfo: D.m({
         wire: "connectivityInfo",
         shape: i_ConnectivityInfo,
@@ -5533,6 +5582,7 @@ export const updateMonitoring: API.OperationMethod<
     service: svc,
     http: "PUT /v1/clusters/{ClusterArn}/monitoring",
     input: {
+      ClusterArn: 0,
       CurrentVersion: D.m({ wire: "currentVersion" }),
       EnhancedMonitoring: D.m({ wire: "enhancedMonitoring" }),
       OpenMonitoring: D.m({
@@ -5581,6 +5631,7 @@ export const updateRebalancing: API.OperationMethod<
     service: svc,
     http: "PUT /v1/clusters/{ClusterArn}/rebalancing",
     input: {
+      ClusterArn: 0,
       CurrentVersion: D.m({ wire: "currentVersion" }),
       Rebalancing: D.m({ wire: "rebalancing", shape: i_Rebalancing }),
     },
@@ -5640,6 +5691,7 @@ export const updateReplicationInfo: API.OperationMethod<
         },
       }),
       CurrentVersion: D.m({ wire: "currentVersion" }),
+      ReplicatorArn: 0,
       SourceKafkaClusterArn: D.m({ wire: "sourceKafkaClusterArn" }),
       SourceKafkaClusterId: D.m({ wire: "sourceKafkaClusterId" }),
       TargetKafkaClusterArn: D.m({ wire: "targetKafkaClusterArn" }),
@@ -5704,6 +5756,7 @@ export const updateSecurity: API.OperationMethod<
         wire: "clientAuthentication",
         shape: i_ClientAuthentication,
       }),
+      ClusterArn: 0,
       CurrentVersion: D.m({ wire: "currentVersion" }),
       EncryptionInfo: D.m({ wire: "encryptionInfo", shape: i_EncryptionInfo }),
     },
@@ -5749,6 +5802,7 @@ export const updateStorage: API.OperationMethod<
     service: svc,
     http: "PUT /v1/clusters/{ClusterArn}/storage",
     input: {
+      ClusterArn: 0,
       CurrentVersion: D.m({ wire: "currentVersion" }),
       ProvisionedThroughput: D.m({
         wire: "provisionedThroughput",
@@ -5806,6 +5860,8 @@ export const updateTopic: API.OperationMethod<
     service: svc,
     http: "PUT /v1/clusters/{ClusterArn}/topics/{TopicName}",
     input: {
+      ClusterArn: 0,
+      TopicName: 0,
       Configs: D.m({ wire: "configs" }),
       PartitionCount: D.m({ wire: "partitionCount" }),
     },

@@ -634,7 +634,11 @@ export const buildSuggesters: API.OperationMethod<
   BuildSuggestersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { FieldNames: D.list() } },
+  descriptor: {
+    service: svc,
+    input: { DomainName: 0 },
+    output: { FieldNames: D.list() },
+  },
   errors: [
     BaseException,
     InternalException,
@@ -663,7 +667,11 @@ export const createDomain: API.OperationMethod<
   CreateDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DomainStatus: o_DomainStatus } },
+  descriptor: {
+    service: svc,
+    input: { DomainName: 0 },
+    output: { DomainStatus: o_DomainStatus },
+  },
   errors: [
     BaseException,
     InternalException,
@@ -695,6 +703,20 @@ export const defineAnalysisScheme: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DomainName: 0,
+      AnalysisScheme: {
+        AnalysisSchemeName: 0,
+        AnalysisSchemeLanguage: 0,
+        AnalysisOptions: {
+          Synonyms: 0,
+          Stopwords: 0,
+          StemmingDictionary: 0,
+          JapaneseTokenizationDictionary: 0,
+          AlgorithmicStemming: 0,
+        },
+      },
+    },
     output: { AnalysisScheme: o_AnalysisSchemeStatus },
   },
   errors: [
@@ -727,7 +749,14 @@ export const defineExpression: API.OperationMethod<
   DefineExpressionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Expression: o_ExpressionStatus } },
+  descriptor: {
+    service: svc,
+    input: {
+      DomainName: 0,
+      Expression: { ExpressionName: 0, ExpressionValue: 0 },
+    },
+    output: { Expression: o_ExpressionStatus },
+  },
   errors: [
     BaseException,
     InternalException,
@@ -758,7 +787,100 @@ export const defineIndexField: API.OperationMethod<
   DefineIndexFieldError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { IndexField: o_IndexFieldStatus } },
+  descriptor: {
+    service: svc,
+    input: {
+      DomainName: 0,
+      IndexField: {
+        IndexFieldName: 0,
+        IndexFieldType: 0,
+        IntOptions: {
+          DefaultValue: 0,
+          SourceField: 0,
+          FacetEnabled: 0,
+          SearchEnabled: 0,
+          ReturnEnabled: 0,
+          SortEnabled: 0,
+        },
+        DoubleOptions: {
+          DefaultValue: 0,
+          SourceField: 0,
+          FacetEnabled: 0,
+          SearchEnabled: 0,
+          ReturnEnabled: 0,
+          SortEnabled: 0,
+        },
+        LiteralOptions: {
+          DefaultValue: 0,
+          SourceField: 0,
+          FacetEnabled: 0,
+          SearchEnabled: 0,
+          ReturnEnabled: 0,
+          SortEnabled: 0,
+        },
+        TextOptions: {
+          DefaultValue: 0,
+          SourceField: 0,
+          ReturnEnabled: 0,
+          SortEnabled: 0,
+          HighlightEnabled: 0,
+          AnalysisScheme: 0,
+        },
+        DateOptions: {
+          DefaultValue: 0,
+          SourceField: 0,
+          FacetEnabled: 0,
+          SearchEnabled: 0,
+          ReturnEnabled: 0,
+          SortEnabled: 0,
+        },
+        LatLonOptions: {
+          DefaultValue: 0,
+          SourceField: 0,
+          FacetEnabled: 0,
+          SearchEnabled: 0,
+          ReturnEnabled: 0,
+          SortEnabled: 0,
+        },
+        IntArrayOptions: {
+          DefaultValue: 0,
+          SourceFields: 0,
+          FacetEnabled: 0,
+          SearchEnabled: 0,
+          ReturnEnabled: 0,
+        },
+        DoubleArrayOptions: {
+          DefaultValue: 0,
+          SourceFields: 0,
+          FacetEnabled: 0,
+          SearchEnabled: 0,
+          ReturnEnabled: 0,
+        },
+        LiteralArrayOptions: {
+          DefaultValue: 0,
+          SourceFields: 0,
+          FacetEnabled: 0,
+          SearchEnabled: 0,
+          ReturnEnabled: 0,
+        },
+        TextArrayOptions: {
+          DefaultValue: 0,
+          SourceFields: 0,
+          ReturnEnabled: 0,
+          HighlightEnabled: 0,
+          AnalysisScheme: 0,
+        },
+        DateArrayOptions: {
+          DefaultValue: 0,
+          SourceFields: 0,
+          FacetEnabled: 0,
+          SearchEnabled: 0,
+          ReturnEnabled: 0,
+        },
+      },
+    },
+    output: { IndexField: o_IndexFieldStatus },
+  },
   errors: [
     BaseException,
     InternalException,
@@ -789,7 +911,21 @@ export const defineSuggester: API.OperationMethod<
   DefineSuggesterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Suggester: o_SuggesterStatus } },
+  descriptor: {
+    service: svc,
+    input: {
+      DomainName: 0,
+      Suggester: {
+        SuggesterName: 0,
+        DocumentSuggesterOptions: {
+          SourceField: 0,
+          FuzzyMatching: 0,
+          SortExpression: 0,
+        },
+      },
+    },
+    output: { Suggester: o_SuggesterStatus },
+  },
   errors: [
     BaseException,
     InternalException,
@@ -821,6 +957,7 @@ export const deleteAnalysisScheme: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DomainName: 0, AnalysisSchemeName: 0 },
     output: { AnalysisScheme: o_AnalysisSchemeStatus },
   },
   errors: [
@@ -849,7 +986,11 @@ export const deleteDomain: API.OperationMethod<
   DeleteDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { DomainStatus: o_DomainStatus } },
+  descriptor: {
+    service: svc,
+    input: { DomainName: 0 },
+    output: { DomainStatus: o_DomainStatus },
+  },
   errors: [BaseException, InternalException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -872,7 +1013,11 @@ export const deleteExpression: API.OperationMethod<
   DeleteExpressionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Expression: o_ExpressionStatus } },
+  descriptor: {
+    service: svc,
+    input: { DomainName: 0, ExpressionName: 0 },
+    output: { Expression: o_ExpressionStatus },
+  },
   errors: [
     BaseException,
     InternalException,
@@ -901,7 +1046,11 @@ export const deleteIndexField: API.OperationMethod<
   DeleteIndexFieldError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { IndexField: o_IndexFieldStatus } },
+  descriptor: {
+    service: svc,
+    input: { DomainName: 0, IndexFieldName: 0 },
+    output: { IndexField: o_IndexFieldStatus },
+  },
   errors: [
     BaseException,
     InternalException,
@@ -930,7 +1079,11 @@ export const deleteSuggester: API.OperationMethod<
   DeleteSuggesterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Suggester: o_SuggesterStatus } },
+  descriptor: {
+    service: svc,
+    input: { DomainName: 0, SuggesterName: 0 },
+    output: { Suggester: o_SuggesterStatus },
+  },
   errors: [
     BaseException,
     InternalException,
@@ -959,6 +1112,7 @@ export const describeAnalysisSchemes: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DomainName: 0, AnalysisSchemeNames: 0, Deployed: 0 },
     output: { AnalysisSchemes: D.list(o_AnalysisSchemeStatus) },
   },
   errors: [BaseException, InternalException, ResourceNotFoundException],
@@ -986,6 +1140,7 @@ export const describeAvailabilityOptions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DomainName: 0, Deployed: 0 },
     output: { AvailabilityOptions: o_AvailabilityOptionsStatus },
   },
   errors: [
@@ -1019,6 +1174,7 @@ export const describeDomainEndpointOptions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DomainName: 0, Deployed: 0 },
     output: { DomainEndpointOptions: o_DomainEndpointOptionsStatus },
   },
   errors: [
@@ -1050,6 +1206,7 @@ export const describeDomains: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DomainNames: 0 },
     output: { DomainStatusList: D.list(o_DomainStatus) },
   },
   errors: [BaseException, InternalException],
@@ -1074,6 +1231,7 @@ export const describeExpressions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DomainName: 0, ExpressionNames: 0, Deployed: 0 },
     output: { Expressions: D.list(o_ExpressionStatus) },
   },
   errors: [BaseException, InternalException, ResourceNotFoundException],
@@ -1100,6 +1258,7 @@ export const describeIndexFields: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DomainName: 0, FieldNames: 0, Deployed: 0 },
     output: { IndexFields: D.list(o_IndexFieldStatus) },
   },
   errors: [BaseException, InternalException, ResourceNotFoundException],
@@ -1124,6 +1283,7 @@ export const describeScalingParameters: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DomainName: 0 },
     output: { ScalingParameters: o_ScalingParametersStatus },
   },
   errors: [BaseException, InternalException, ResourceNotFoundException],
@@ -1149,6 +1309,7 @@ export const describeServiceAccessPolicies: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DomainName: 0, Deployed: 0 },
     output: { AccessPolicies: o_AccessPoliciesStatus },
   },
   errors: [BaseException, InternalException, ResourceNotFoundException],
@@ -1173,6 +1334,7 @@ export const describeSuggesters: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DomainName: 0, SuggesterNames: 0, Deployed: 0 },
     output: { Suggesters: D.list(o_SuggesterStatus) },
   },
   errors: [BaseException, InternalException, ResourceNotFoundException],
@@ -1196,7 +1358,11 @@ export const indexDocuments: API.OperationMethod<
   IndexDocumentsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { FieldNames: D.list() } },
+  descriptor: {
+    service: svc,
+    input: { DomainName: 0 },
+    output: { FieldNames: D.list() },
+  },
   errors: [
     BaseException,
     InternalException,
@@ -1245,6 +1411,7 @@ export const updateAvailabilityOptions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DomainName: 0, MultiAZ: 0 },
     output: { AvailabilityOptions: o_AvailabilityOptionsStatus },
   },
   errors: [
@@ -1281,6 +1448,10 @@ export const updateDomainEndpointOptions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DomainName: 0,
+      DomainEndpointOptions: { EnforceHTTPS: 0, TLSSecurityPolicy: 0 },
+    },
     output: { DomainEndpointOptions: o_DomainEndpointOptionsStatus },
   },
   errors: [
@@ -1316,6 +1487,14 @@ export const updateScalingParameters: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DomainName: 0,
+      ScalingParameters: {
+        DesiredInstanceType: 0,
+        DesiredReplicationCount: 0,
+        DesiredPartitionCount: 0,
+      },
+    },
     output: { ScalingParameters: o_ScalingParametersStatus },
   },
   errors: [
@@ -1352,6 +1531,7 @@ export const updateServiceAccessPolicies: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DomainName: 0, AccessPolicies: 0 },
     output: { AccessPolicies: o_AccessPoliciesStatus },
   },
   errors: [

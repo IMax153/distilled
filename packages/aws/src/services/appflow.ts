@@ -1836,6 +1836,7 @@ export const cancelFlowExecutions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cancel-flow-executions",
+    input: { flowName: 0, executionIds: 0 },
     body: true,
   },
   errors: [
@@ -1874,7 +1875,15 @@ export const createConnectorProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /create-connector-profile",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      connectorProfileName: 0,
+      kmsArn: 0,
+      connectorType: 0,
+      connectorLabel: 0,
+      connectionMode: 0,
+      connectorProfileConfig: i_ConnectorProfileConfig,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1916,7 +1925,18 @@ export const createFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /create-flow",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      flowName: 0,
+      description: 0,
+      kmsArn: 0,
+      triggerConfig: i_TriggerConfig,
+      sourceFlowConfig: i_SourceFlowConfig,
+      destinationFlowConfigList: D.list(i_DestinationFlowConfig),
+      tasks: D.list(i_Task),
+      tags: 0,
+      metadataCatalogConfig: i_MetadataCatalogConfig,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1951,6 +1971,7 @@ export const deleteConnectorProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-connector-profile",
+    input: { connectorProfileName: 0, forceDelete: 0 },
     body: true,
   },
   errors: [
@@ -1978,7 +1999,12 @@ export const deleteFlow: API.OperationMethod<
   DeleteFlowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /delete-flow", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /delete-flow",
+    input: { flowName: 0, forceDelete: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -2008,6 +2034,7 @@ export const describeConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-connector",
+    input: { connectorType: 0, connectorLabel: 0 },
     output: { connectorConfiguration: o_ConnectorConfiguration },
     body: true,
   },
@@ -2041,6 +2068,12 @@ export const describeConnectorEntity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-connector-entity",
+    input: {
+      connectorEntityName: 0,
+      connectorType: 0,
+      connectorProfileName: 0,
+      apiVersion: 0,
+    },
     body: true,
   },
   errors: [
@@ -2077,6 +2110,13 @@ export const describeConnectorProfiles: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-connector-profiles",
+    input: {
+      connectorProfileNames: 0,
+      connectorType: 0,
+      connectorLabel: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       connectorProfileDetails: D.list({ createdAt: D.ts, lastUpdatedAt: D.ts }),
     },
@@ -2113,6 +2153,7 @@ export const describeConnectors: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-connectors",
+    input: { connectorTypes: 0, maxResults: 0, nextToken: 0 },
     output: {
       connectorConfigurations: D.map(o_ConnectorConfiguration),
       connectors: D.list(o_ConnectorDetail),
@@ -2146,6 +2187,7 @@ export const describeFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-flow",
+    input: { flowName: 0 },
     output: {
       lastRunExecutionDetails: o_ExecutionDetails,
       triggerConfig: {
@@ -2186,6 +2228,7 @@ export const describeFlowExecutionRecords: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /describe-flow-execution-records",
+    input: { flowName: 0, maxResults: 0, nextToken: 0 },
     output: {
       flowExecutions: D.list({
         startedAt: D.ts,
@@ -2233,6 +2276,14 @@ export const listConnectorEntities: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-connector-entities",
+    input: {
+      connectorProfileName: 0,
+      connectorType: 0,
+      entitiesPath: 0,
+      apiVersion: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -2266,6 +2317,7 @@ export const listConnectors: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-connectors",
+    input: { maxResults: 0, nextToken: 0 },
     output: { connectors: D.list(o_ConnectorDetail) },
     body: true,
   },
@@ -2297,6 +2349,7 @@ export const listFlows: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-flows",
+    input: { maxResults: 0, nextToken: 0 },
     output: {
       flows: D.list({
         createdAt: D.ts,
@@ -2331,7 +2384,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -2367,7 +2424,13 @@ export const registerConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /register-connector",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      connectorLabel: 0,
+      description: 0,
+      connectorProvisioningType: 0,
+      connectorProvisioningConfig: i_ConnectorProvisioningConfig,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2411,6 +2474,13 @@ export const resetConnectorMetadataCache: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /reset-connector-metadata-cache",
+    input: {
+      connectorProfileName: 0,
+      connectorType: 0,
+      connectorEntityName: 0,
+      entitiesPath: 0,
+      apiVersion: 0,
+    },
     body: true,
   },
   errors: [
@@ -2443,7 +2513,7 @@ export const startFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /start-flow",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { flowName: 0, clientToken: D.m({ idempotency: true }) },
     body: true,
   },
   errors: [
@@ -2474,7 +2544,12 @@ export const stopFlow: API.OperationMethod<
   StopFlowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /stop-flow", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /stop-flow",
+    input: { flowName: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -2500,7 +2575,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -2526,7 +2606,12 @@ export const unregisterConnector: API.OperationMethod<
   UnregisterConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /unregister-connector", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /unregister-connector",
+    input: { connectorLabel: 0, forceDelete: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -2554,7 +2639,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -2586,7 +2671,12 @@ export const updateConnectorProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /update-connector-profile",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      connectorProfileName: 0,
+      connectionMode: 0,
+      connectorProfileConfig: i_ConnectorProfileConfig,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2630,7 +2720,12 @@ export const updateConnectorRegistration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /update-connector-registration",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      connectorLabel: 0,
+      description: 0,
+      connectorProvisioningConfig: i_ConnectorProvisioningConfig,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2671,7 +2766,16 @@ export const updateFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /update-flow",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      flowName: 0,
+      description: 0,
+      triggerConfig: i_TriggerConfig,
+      sourceFlowConfig: i_SourceFlowConfig,
+      destinationFlowConfigList: D.list(i_DestinationFlowConfig),
+      tasks: D.list(i_Task),
+      metadataCatalogConfig: i_MetadataCatalogConfig,
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2689,8 +2793,339 @@ export const updateFlow: API.OperationMethod<
   operationName: "UpdateFlow",
 })) as any;
 
+const i_ConnectorProfileConfig: D.LazyStruct = () => ({
+  connectorProfileProperties: {
+    Amplitude: {},
+    Datadog: { instanceUrl: 0 },
+    Dynatrace: { instanceUrl: 0 },
+    GoogleAnalytics: {},
+    Honeycode: {},
+    InforNexus: { instanceUrl: 0 },
+    Marketo: { instanceUrl: 0 },
+    Redshift: {
+      databaseUrl: 0,
+      bucketName: 0,
+      bucketPrefix: 0,
+      roleArn: 0,
+      dataApiRoleArn: 0,
+      isRedshiftServerless: 0,
+      clusterIdentifier: 0,
+      workgroupName: 0,
+      databaseName: 0,
+    },
+    Salesforce: {
+      instanceUrl: 0,
+      isSandboxEnvironment: 0,
+      usePrivateLinkForMetadataAndAuthorization: 0,
+    },
+    ServiceNow: { instanceUrl: 0 },
+    Singular: {},
+    Slack: { instanceUrl: 0 },
+    Snowflake: {
+      warehouse: 0,
+      stage: 0,
+      bucketName: 0,
+      bucketPrefix: 0,
+      privateLinkServiceName: 0,
+      accountName: 0,
+      region: 0,
+    },
+    Trendmicro: {},
+    Veeva: { instanceUrl: 0 },
+    Zendesk: { instanceUrl: 0 },
+    SAPOData: {
+      applicationHostUrl: 0,
+      applicationServicePath: 0,
+      portNumber: 0,
+      clientNumber: 0,
+      logonLanguage: 0,
+      privateLinkServiceName: 0,
+      oAuthProperties: { tokenUrl: 0, authCodeUrl: 0, oAuthScopes: 0 },
+      disableSSO: 0,
+    },
+    CustomConnector: {
+      profileProperties: 0,
+      oAuth2Properties: {
+        tokenUrl: 0,
+        oAuth2GrantType: 0,
+        tokenUrlCustomProperties: 0,
+      },
+    },
+    Pardot: { instanceUrl: 0, isSandboxEnvironment: 0, businessUnitId: 0 },
+  },
+  connectorProfileCredentials: {
+    Amplitude: { apiKey: 0, secretKey: 0 },
+    Datadog: { apiKey: 0, applicationKey: 0 },
+    Dynatrace: { apiToken: 0 },
+    GoogleAnalytics: {
+      clientId: 0,
+      clientSecret: 0,
+      accessToken: 0,
+      refreshToken: 0,
+      oAuthRequest: i_ConnectorOAuthRequest,
+    },
+    Honeycode: {
+      accessToken: 0,
+      refreshToken: 0,
+      oAuthRequest: i_ConnectorOAuthRequest,
+    },
+    InforNexus: { accessKeyId: 0, userId: 0, secretAccessKey: 0, datakey: 0 },
+    Marketo: {
+      clientId: 0,
+      clientSecret: 0,
+      accessToken: 0,
+      oAuthRequest: i_ConnectorOAuthRequest,
+    },
+    Redshift: { username: 0, password: 0 },
+    Salesforce: {
+      accessToken: 0,
+      refreshToken: 0,
+      oAuthRequest: i_ConnectorOAuthRequest,
+      clientCredentialsArn: 0,
+      oAuth2GrantType: 0,
+      jwtToken: 0,
+    },
+    ServiceNow: {
+      username: 0,
+      password: 0,
+      oAuth2Credentials: i_OAuth2Credentials,
+    },
+    Singular: { apiKey: 0 },
+    Slack: {
+      clientId: 0,
+      clientSecret: 0,
+      accessToken: 0,
+      oAuthRequest: i_ConnectorOAuthRequest,
+    },
+    Snowflake: { username: 0, password: 0 },
+    Trendmicro: { apiSecretKey: 0 },
+    Veeva: { username: 0, password: 0 },
+    Zendesk: {
+      clientId: 0,
+      clientSecret: 0,
+      accessToken: 0,
+      oAuthRequest: i_ConnectorOAuthRequest,
+    },
+    SAPOData: {
+      basicAuthCredentials: i_BasicAuthCredentials,
+      oAuthCredentials: {
+        clientId: 0,
+        clientSecret: 0,
+        accessToken: 0,
+        refreshToken: 0,
+        oAuthRequest: i_ConnectorOAuthRequest,
+      },
+    },
+    CustomConnector: {
+      authenticationType: 0,
+      basic: i_BasicAuthCredentials,
+      oauth2: i_OAuth2Credentials,
+      apiKey: { apiKey: 0, apiSecretKey: 0 },
+      custom: { customAuthenticationType: 0, credentialsMap: 0 },
+    },
+    Pardot: {
+      accessToken: 0,
+      refreshToken: 0,
+      oAuthRequest: i_ConnectorOAuthRequest,
+      clientCredentialsArn: 0,
+    },
+  },
+});
+const i_ConnectorProvisioningConfig: D.LazyStruct = () => ({
+  lambda: { lambdaArn: 0 },
+});
+const i_DestinationFlowConfig: D.LazyStruct = () => ({
+  connectorType: 0,
+  apiVersion: 0,
+  connectorProfileName: 0,
+  destinationConnectorProperties: {
+    Redshift: {
+      object: 0,
+      intermediateBucketName: 0,
+      bucketPrefix: 0,
+      errorHandlingConfig: i_ErrorHandlingConfig,
+    },
+    S3: {
+      bucketName: 0,
+      bucketPrefix: 0,
+      s3OutputFormatConfig: {
+        fileType: 0,
+        prefixConfig: i_PrefixConfig,
+        aggregationConfig: i_AggregationConfig,
+        preserveSourceDataTyping: 0,
+      },
+    },
+    Salesforce: {
+      object: 0,
+      idFieldNames: 0,
+      errorHandlingConfig: i_ErrorHandlingConfig,
+      writeOperationType: 0,
+      dataTransferApi: 0,
+    },
+    Snowflake: {
+      object: 0,
+      intermediateBucketName: 0,
+      bucketPrefix: 0,
+      errorHandlingConfig: i_ErrorHandlingConfig,
+    },
+    EventBridge: { object: 0, errorHandlingConfig: i_ErrorHandlingConfig },
+    LookoutMetrics: {},
+    Upsolver: {
+      bucketName: 0,
+      bucketPrefix: 0,
+      s3OutputFormatConfig: {
+        fileType: 0,
+        prefixConfig: i_PrefixConfig,
+        aggregationConfig: i_AggregationConfig,
+      },
+    },
+    Honeycode: { object: 0, errorHandlingConfig: i_ErrorHandlingConfig },
+    CustomerProfiles: { domainName: 0, objectTypeName: 0 },
+    Zendesk: {
+      object: 0,
+      idFieldNames: 0,
+      errorHandlingConfig: i_ErrorHandlingConfig,
+      writeOperationType: 0,
+    },
+    Marketo: { object: 0, errorHandlingConfig: i_ErrorHandlingConfig },
+    CustomConnector: {
+      entityName: 0,
+      errorHandlingConfig: i_ErrorHandlingConfig,
+      writeOperationType: 0,
+      idFieldNames: 0,
+      customProperties: 0,
+    },
+    SAPOData: {
+      objectPath: 0,
+      successResponseHandlingConfig: { bucketPrefix: 0, bucketName: 0 },
+      idFieldNames: 0,
+      errorHandlingConfig: i_ErrorHandlingConfig,
+      writeOperationType: 0,
+    },
+  },
+});
+const i_MetadataCatalogConfig: D.LazyStruct = () => ({
+  glueDataCatalog: { roleArn: 0, databaseName: 0, tablePrefix: 0 },
+});
+const i_SourceFlowConfig: D.LazyStruct = () => ({
+  connectorType: 0,
+  apiVersion: 0,
+  connectorProfileName: 0,
+  sourceConnectorProperties: {
+    Amplitude: { object: 0 },
+    Datadog: { object: 0 },
+    Dynatrace: { object: 0 },
+    GoogleAnalytics: { object: 0 },
+    InforNexus: { object: 0 },
+    Marketo: { object: 0 },
+    S3: {
+      bucketName: 0,
+      bucketPrefix: 0,
+      s3InputFormatConfig: { s3InputFileType: 0 },
+    },
+    Salesforce: {
+      object: 0,
+      enableDynamicFieldUpdate: 0,
+      includeDeletedRecords: 0,
+      dataTransferApi: 0,
+    },
+    ServiceNow: { object: 0 },
+    Singular: { object: 0 },
+    Slack: { object: 0 },
+    Trendmicro: { object: 0 },
+    Veeva: {
+      object: 0,
+      documentType: 0,
+      includeSourceFiles: 0,
+      includeRenditions: 0,
+      includeAllVersions: 0,
+    },
+    Zendesk: { object: 0 },
+    SAPOData: {
+      objectPath: 0,
+      parallelismConfig: { maxParallelism: 0 },
+      paginationConfig: { maxPageSize: 0 },
+    },
+    CustomConnector: {
+      entityName: 0,
+      customProperties: 0,
+      dataTransferApi: { Name: 0, Type: 0 },
+    },
+    Pardot: { object: 0 },
+  },
+  incrementalPullConfig: { datetimeTypeFieldName: 0 },
+});
+const i_Task: D.LazyStruct = () => ({
+  sourceFields: 0,
+  connectorOperator: {
+    Amplitude: 0,
+    Datadog: 0,
+    Dynatrace: 0,
+    GoogleAnalytics: 0,
+    InforNexus: 0,
+    Marketo: 0,
+    S3: 0,
+    Salesforce: 0,
+    ServiceNow: 0,
+    Singular: 0,
+    Slack: 0,
+    Trendmicro: 0,
+    Veeva: 0,
+    Zendesk: 0,
+    SAPOData: 0,
+    CustomConnector: 0,
+    Pardot: 0,
+  },
+  destinationField: 0,
+  taskType: 0,
+  taskProperties: 0,
+});
+const i_TriggerConfig: D.LazyStruct = () => ({
+  triggerType: 0,
+  triggerProperties: {
+    Scheduled: {
+      scheduleExpression: 0,
+      dataPullMode: 0,
+      scheduleStartTime: 0,
+      scheduleEndTime: 0,
+      timezone: 0,
+      scheduleOffset: 0,
+      firstExecutionFrom: 0,
+      flowErrorDeactivationThreshold: 0,
+    },
+  },
+});
 const o_ConnectorConfiguration: D.LazyStruct = () => ({ registeredAt: D.ts });
 const o_ConnectorDetail: D.LazyStruct = () => ({ registeredAt: D.ts });
 const o_ExecutionDetails: D.LazyStruct = () => ({
   mostRecentExecutionTime: D.ts,
+});
+const i_AggregationConfig: D.LazyStruct = () => ({
+  aggregationType: 0,
+  targetFileSize: 0,
+});
+const i_BasicAuthCredentials: D.LazyStruct = () => ({
+  username: 0,
+  password: 0,
+});
+const i_ConnectorOAuthRequest: D.LazyStruct = () => ({
+  authCode: 0,
+  redirectUri: 0,
+});
+const i_ErrorHandlingConfig: D.LazyStruct = () => ({
+  failOnFirstDestinationError: 0,
+  bucketPrefix: 0,
+  bucketName: 0,
+});
+const i_OAuth2Credentials: D.LazyStruct = () => ({
+  clientId: 0,
+  clientSecret: 0,
+  accessToken: 0,
+  refreshToken: 0,
+  oAuthRequest: i_ConnectorOAuthRequest,
+});
+const i_PrefixConfig: D.LazyStruct = () => ({
+  prefixType: 0,
+  prefixFormat: 0,
+  pathPrefixHierarchy: 0,
 });

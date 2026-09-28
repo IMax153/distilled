@@ -795,6 +795,7 @@ export const createNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /namespaces/{tableBucketARN}",
+    input: { tableBucketARN: 0, namespace: 0 },
     body: true,
   },
   errors: [
@@ -845,15 +846,24 @@ export const createTable: API.OperationMethod<
     service: svc,
     http: "PUT /tables/{tableBucketARN}/{namespace}",
     input: {
+      tableBucketARN: 0,
+      namespace: 0,
+      name: 0,
+      format: 0,
       metadata: {
         iceberg: {
+          schema: { fields: D.list({ id: 0, name: 0, type: 0, required: 0 }) },
           schemaV2: {
+            type: 0,
+            fields: D.list({ id: 0, name: 0, type: 0, required: 0, doc: 0 }),
             schemaId: D.m({ wire: "schema-id" }),
             identifierFieldIds: D.m({ wire: "identifier-field-ids" }),
           },
           partitionSpec: {
             fields: D.list({
               sourceId: D.m({ wire: "source-id" }),
+              transform: 0,
+              name: 0,
               fieldId: D.m({ wire: "field-id" }),
             }),
             specId: D.m({ wire: "spec-id" }),
@@ -862,11 +872,17 @@ export const createTable: API.OperationMethod<
             orderId: D.m({ wire: "order-id" }),
             fields: D.list({
               sourceId: D.m({ wire: "source-id" }),
+              transform: 0,
+              direction: 0,
               nullOrder: D.m({ wire: "null-order" }),
             }),
           },
+          properties: 0,
         },
       },
+      encryptionConfiguration: i_EncryptionConfiguration,
+      storageClassConfiguration: i_StorageClassConfiguration,
+      tags: 0,
     },
     body: true,
   },
@@ -910,7 +926,17 @@ export const createTableBucket: API.OperationMethod<
   CreateTableBucketError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /buckets", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /buckets",
+    input: {
+      name: 0,
+      encryptionConfiguration: i_EncryptionConfiguration,
+      storageClassConfiguration: i_StorageClassConfiguration,
+      tags: 0,
+    },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -948,6 +974,7 @@ export const deleteNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /namespaces/{tableBucketARN}/{namespace}",
+    input: { tableBucketARN: 0, namespace: 0 },
   },
   errors: [
     BadRequestException,
@@ -986,7 +1013,12 @@ export const deleteTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tables/{tableBucketARN}/{namespace}/{name}",
-    input: { versionToken: D.m({ query: "versionToken" }) },
+    input: {
+      tableBucketARN: 0,
+      namespace: 0,
+      name: 0,
+      versionToken: D.m({ query: "versionToken" }),
+    },
   },
   errors: [
     BadRequestException,
@@ -1022,7 +1054,11 @@ export const deleteTableBucket: API.OperationMethod<
   DeleteTableBucketError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /buckets/{tableBucketARN}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /buckets/{tableBucketARN}",
+    input: { tableBucketARN: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -1060,6 +1096,7 @@ export const deleteTableBucketEncryption: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /buckets/{tableBucketARN}/encryption",
+    input: { tableBucketARN: 0 },
   },
   errors: [
     BadRequestException,
@@ -1098,6 +1135,7 @@ export const deleteTableBucketMetricsConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /buckets/{tableBucketARN}/metrics",
+    input: { tableBucketARN: 0 },
   },
   errors: [
     BadRequestException,
@@ -1133,7 +1171,11 @@ export const deleteTableBucketPolicy: API.OperationMethod<
   DeleteTableBucketPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /buckets/{tableBucketARN}/policy" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /buckets/{tableBucketARN}/policy",
+    input: { tableBucketARN: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -1215,6 +1257,7 @@ export const deleteTablePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tables/{tableBucketARN}/{namespace}/{name}/policy",
+    input: { tableBucketARN: 0, namespace: 0, name: 0 },
   },
   errors: [
     BadRequestException,
@@ -1298,6 +1341,7 @@ export const getNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /namespaces/{tableBucketARN}/{namespace}",
+    input: { tableBucketARN: 0, namespace: 0 },
     output: { createdAt: D.ts },
   },
   errors: [
@@ -1386,6 +1430,7 @@ export const getTableBucket: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /buckets/{tableBucketARN}",
+    input: { tableBucketARN: 0 },
     output: { createdAt: D.ts },
   },
   errors: [
@@ -1426,6 +1471,7 @@ export const getTableBucketEncryption: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /buckets/{tableBucketARN}/encryption",
+    input: { tableBucketARN: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1464,6 +1510,7 @@ export const getTableBucketMaintenanceConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /buckets/{tableBucketARN}/maintenance",
+    input: { tableBucketARN: 0 },
   },
   errors: [
     BadRequestException,
@@ -1499,7 +1546,11 @@ export const getTableBucketMetricsConfiguration: API.OperationMethod<
   GetTableBucketMetricsConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /buckets/{tableBucketARN}/metrics" },
+  descriptor: {
+    service: svc,
+    http: "GET /buckets/{tableBucketARN}/metrics",
+    input: { tableBucketARN: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -1534,7 +1585,11 @@ export const getTableBucketPolicy: API.OperationMethod<
   GetTableBucketPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /buckets/{tableBucketARN}/policy" },
+  descriptor: {
+    service: svc,
+    http: "GET /buckets/{tableBucketARN}/policy",
+    input: { tableBucketARN: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -1613,6 +1668,7 @@ export const getTableBucketStorageClass: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /buckets/{tableBucketARN}/storage-class",
+    input: { tableBucketARN: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1651,6 +1707,7 @@ export const getTableEncryption: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tables/{tableBucketARN}/{namespace}/{name}/encryption",
+    input: { tableBucketARN: 0, namespace: 0, name: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1691,6 +1748,7 @@ export const getTableMaintenanceConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tables/{tableBucketARN}/{namespace}/{name}/maintenance",
+    input: { tableBucketARN: 0, namespace: 0, name: 0 },
   },
   errors: [
     BadRequestException,
@@ -1729,6 +1787,7 @@ export const getTableMaintenanceJobStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tables/{tableBucketARN}/{namespace}/{name}/maintenance-job-status",
+    input: { tableBucketARN: 0, namespace: 0, name: 0 },
     output: { status: D.map({ lastRunTimestamp: D.ts }) },
   },
   errors: [
@@ -1768,6 +1827,7 @@ export const getTableMetadataLocation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tables/{tableBucketARN}/{namespace}/{name}/metadata-location",
+    input: { tableBucketARN: 0, namespace: 0, name: 0 },
   },
   errors: [
     BadRequestException,
@@ -1806,6 +1866,7 @@ export const getTablePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tables/{tableBucketARN}/{namespace}/{name}/policy",
+    input: { tableBucketARN: 0, namespace: 0, name: 0 },
   },
   errors: [
     BadRequestException,
@@ -2008,6 +2069,7 @@ export const getTableStorageClass: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tables/{tableBucketARN}/{namespace}/{name}/storage-class",
+    input: { tableBucketARN: 0, namespace: 0, name: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2049,6 +2111,7 @@ export const listNamespaces: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /namespaces/{tableBucketARN}",
     input: {
+      tableBucketARN: 0,
       prefix: D.m({ query: "prefix" }),
       continuationToken: D.m({ query: "continuationToken" }),
       maxNamespaces: D.m({ query: "maxNamespaces" }),
@@ -2155,6 +2218,7 @@ export const listTables: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /tables/{tableBucketARN}",
     input: {
+      tableBucketARN: 0,
       namespace: D.m({ query: "namespace" }),
       prefix: D.m({ query: "prefix" }),
       continuationToken: D.m({ query: "continuationToken" }),
@@ -2204,7 +2268,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tag/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tag/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -2244,6 +2312,10 @@ export const putTableBucketEncryption: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /buckets/{tableBucketARN}/encryption",
+    input: {
+      tableBucketARN: 0,
+      encryptionConfiguration: i_EncryptionConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -2283,6 +2355,19 @@ export const putTableBucketMaintenanceConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /buckets/{tableBucketARN}/maintenance/{type}",
+    input: {
+      tableBucketARN: 0,
+      type: 0,
+      value: {
+        status: 0,
+        settings: {
+          icebergUnreferencedFileRemoval: {
+            unreferencedDays: 0,
+            nonCurrentDays: 0,
+          },
+        },
+      },
+    },
     body: true,
   },
   errors: [
@@ -2319,7 +2404,11 @@ export const putTableBucketMetricsConfiguration: API.OperationMethod<
   PutTableBucketMetricsConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /buckets/{tableBucketARN}/metrics" },
+  descriptor: {
+    service: svc,
+    http: "PUT /buckets/{tableBucketARN}/metrics",
+    input: { tableBucketARN: 0 },
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -2357,6 +2446,7 @@ export const putTableBucketPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /buckets/{tableBucketARN}/policy",
+    input: { tableBucketARN: 0, resourcePolicy: 0 },
     body: true,
   },
   errors: [
@@ -2416,6 +2506,10 @@ export const putTableBucketReplication: API.OperationMethod<
     input: {
       tableBucketARN: D.m({ query: "tableBucketARN" }),
       versionToken: D.m({ query: "versionToken" }),
+      configuration: {
+        role: 0,
+        rules: D.list({ destinations: D.list(i_ReplicationDestination) }),
+      },
     },
     body: true,
   },
@@ -2457,6 +2551,10 @@ export const putTableBucketStorageClass: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /buckets/{tableBucketARN}/storage-class",
+    input: {
+      tableBucketARN: 0,
+      storageClassConfiguration: i_StorageClassConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -2496,6 +2594,22 @@ export const putTableMaintenanceConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /tables/{tableBucketARN}/{namespace}/{name}/maintenance/{type}",
+    input: {
+      tableBucketARN: 0,
+      namespace: 0,
+      name: 0,
+      type: 0,
+      value: {
+        status: 0,
+        settings: {
+          icebergCompaction: { targetFileSizeMB: 0, strategy: 0 },
+          icebergSnapshotManagement: {
+            minSnapshotsToKeep: 0,
+            maxSnapshotAgeHours: 0,
+          },
+        },
+      },
+    },
     body: true,
   },
   errors: [
@@ -2535,6 +2649,7 @@ export const putTablePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /tables/{tableBucketARN}/{namespace}/{name}/policy",
+    input: { tableBucketARN: 0, namespace: 0, name: 0, resourcePolicy: 0 },
     body: true,
   },
   errors: [
@@ -2574,7 +2689,10 @@ export const putTableRecordExpirationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /table-record-expiration",
-    input: { tableArn: D.m({ query: "tableArn" }) },
+    input: {
+      tableArn: D.m({ query: "tableArn" }),
+      value: { status: 0, settings: { days: 0 } },
+    },
     body: true,
   },
   errors: [
@@ -2632,6 +2750,10 @@ export const putTableReplication: API.OperationMethod<
     input: {
       tableArn: D.m({ query: "tableArn" }),
       versionToken: D.m({ query: "versionToken" }),
+      configuration: {
+        role: 0,
+        rules: D.list({ destinations: D.list(i_ReplicationDestination) }),
+      },
     },
     body: true,
   },
@@ -2673,6 +2795,14 @@ export const renameTable: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /tables/{tableBucketARN}/{namespace}/{name}/rename",
+    input: {
+      tableBucketARN: 0,
+      namespace: 0,
+      name: 0,
+      newNamespaceName: 0,
+      newName: 0,
+      versionToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -2711,7 +2841,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tag/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tag/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ConflictException,
@@ -2751,7 +2886,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tag/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     BadRequestException,
@@ -2790,6 +2925,13 @@ export const updateTableMetadataLocation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /tables/{tableBucketARN}/{namespace}/{name}/metadata-location",
+    input: {
+      tableBucketARN: 0,
+      namespace: 0,
+      name: 0,
+      versionToken: 0,
+      metadataLocation: 0,
+    },
     body: true,
   },
   errors: [
@@ -2804,3 +2946,12 @@ export const updateTableMetadataLocation: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateTableMetadataLocation",
 })) as any;
+
+const i_EncryptionConfiguration: D.LazyStruct = () => ({
+  sseAlgorithm: 0,
+  kmsKeyArn: 0,
+});
+const i_ReplicationDestination: D.LazyStruct = () => ({
+  destinationTableBucketARN: 0,
+});
+const i_StorageClassConfiguration: D.LazyStruct = () => ({ storageClass: 0 });

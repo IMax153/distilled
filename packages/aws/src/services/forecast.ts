@@ -1310,7 +1310,28 @@ export const createAutoPredictor: API.OperationMethod<
   CreateAutoPredictorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      PredictorName: 0,
+      ForecastHorizon: 0,
+      ForecastTypes: 0,
+      ForecastDimensions: 0,
+      ForecastFrequency: 0,
+      DataConfig: {
+        DatasetGroupArn: 0,
+        AttributeConfigs: D.list({ AttributeName: 0, Transformations: 0 }),
+        AdditionalDatasets: D.list({ Name: 0, Configuration: 0 }),
+      },
+      EncryptionConfig: i_EncryptionConfig,
+      ReferencePredictorArn: 0,
+      OptimizationMetric: 0,
+      ExplainPredictor: 0,
+      Tags: D.list(i_Tag),
+      MonitorConfig: { MonitorName: 0 },
+      TimeAlignmentBoundary: { Month: 0, DayOfMonth: 0, DayOfWeek: 0, Hour: 0 },
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1372,7 +1393,18 @@ export const createDataset: API.OperationMethod<
   CreateDatasetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DatasetName: 0,
+      Domain: 0,
+      DatasetType: 0,
+      DataFrequency: 0,
+      Schema: i_Schema,
+      EncryptionConfig: i_EncryptionConfig,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1409,7 +1441,15 @@ export const createDatasetGroup: API.OperationMethod<
   CreateDatasetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DatasetGroupName: 0,
+      Domain: 0,
+      DatasetArns: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1459,7 +1499,21 @@ export const createDatasetImportJob: API.OperationMethod<
   CreateDatasetImportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DatasetImportJobName: 0,
+      DatasetArn: 0,
+      DataSource: i_DataSource,
+      TimestampFormat: 0,
+      TimeZone: 0,
+      UseGeolocationForTimeZone: 0,
+      GeolocationFormat: 0,
+      Tags: D.list(i_Tag),
+      Format: 0,
+      ImportMode: 0,
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1567,7 +1621,23 @@ export const createExplainability: API.OperationMethod<
   CreateExplainabilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ExplainabilityName: 0,
+      ResourceArn: 0,
+      ExplainabilityConfig: {
+        TimeSeriesGranularity: 0,
+        TimePointGranularity: 0,
+      },
+      DataSource: i_DataSource,
+      Schema: i_Schema,
+      EnableVisualization: 0,
+      StartDateTime: 0,
+      EndDateTime: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1604,7 +1674,16 @@ export const createExplainabilityExport: API.OperationMethod<
   CreateExplainabilityExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ExplainabilityExportName: 0,
+      ExplainabilityArn: 0,
+      Destination: i_DataDestination,
+      Tags: D.list(i_Tag),
+      Format: 0,
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1655,7 +1734,16 @@ export const createForecast: API.OperationMethod<
   CreateForecastError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ForecastName: 0,
+      PredictorArn: 0,
+      ForecastTypes: 0,
+      Tags: D.list(i_Tag),
+      TimeSeriesSelector: i_TimeSeriesSelector,
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1701,7 +1789,16 @@ export const createForecastExportJob: API.OperationMethod<
   CreateForecastExportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ForecastExportJobName: 0,
+      ForecastArn: 0,
+      Destination: i_DataDestination,
+      Tags: D.list(i_Tag),
+      Format: 0,
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1731,7 +1828,10 @@ export const createMonitor: API.OperationMethod<
   CreateMonitorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MonitorName: 0, ResourceArn: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1811,7 +1911,58 @@ export const createPredictor: API.OperationMethod<
   CreatePredictorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      PredictorName: 0,
+      AlgorithmArn: 0,
+      ForecastHorizon: 0,
+      ForecastTypes: 0,
+      PerformAutoML: 0,
+      AutoMLOverrideStrategy: 0,
+      PerformHPO: 0,
+      TrainingParameters: 0,
+      EvaluationParameters: {
+        NumberOfBacktestWindows: 0,
+        BackTestWindowOffset: 0,
+      },
+      HPOConfig: {
+        ParameterRanges: {
+          CategoricalParameterRanges: D.list({ Name: 0, Values: 0 }),
+          ContinuousParameterRanges: D.list({
+            Name: 0,
+            MaxValue: 0,
+            MinValue: 0,
+            ScalingType: 0,
+          }),
+          IntegerParameterRanges: D.list({
+            Name: 0,
+            MaxValue: 0,
+            MinValue: 0,
+            ScalingType: 0,
+          }),
+        },
+      },
+      InputDataConfig: {
+        DatasetGroupArn: 0,
+        SupplementaryFeatures: D.list({ Name: 0, Value: 0 }),
+      },
+      FeaturizationConfig: {
+        ForecastFrequency: 0,
+        ForecastDimensions: 0,
+        Featurizations: D.list({
+          AttributeName: 0,
+          FeaturizationPipeline: D.list({
+            FeaturizationMethodName: 0,
+            FeaturizationMethodParameters: 0,
+          }),
+        }),
+      },
+      EncryptionConfig: i_EncryptionConfig,
+      Tags: D.list(i_Tag),
+      OptimizationMetric: 0,
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1855,7 +2006,16 @@ export const createPredictorBacktestExportJob: API.OperationMethod<
   CreatePredictorBacktestExportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      PredictorBacktestExportJobName: 0,
+      PredictorArn: 0,
+      Destination: i_DataDestination,
+      Tags: D.list(i_Tag),
+      Format: 0,
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1900,7 +2060,15 @@ export const createWhatIfAnalysis: API.OperationMethod<
   CreateWhatIfAnalysisError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      WhatIfAnalysisName: 0,
+      ForecastArn: 0,
+      TimeSeriesSelector: i_TimeSeriesSelector,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1930,7 +2098,28 @@ export const createWhatIfForecast: API.OperationMethod<
   CreateWhatIfForecastError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      WhatIfForecastName: 0,
+      WhatIfAnalysisArn: 0,
+      TimeSeriesTransformations: D.list({
+        Action: { AttributeName: 0, Operation: 0, Value: 0 },
+        TimeSeriesConditions: D.list({
+          AttributeName: 0,
+          AttributeValue: 0,
+          Condition: 0,
+        }),
+      }),
+      TimeSeriesReplacementsDataSource: {
+        S3Config: i_S3Config,
+        Schema: i_Schema,
+        Format: 0,
+        TimestampFormat: 0,
+      },
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -1977,7 +2166,16 @@ export const createWhatIfForecastExport: API.OperationMethod<
   CreateWhatIfForecastExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      WhatIfForecastExportName: 0,
+      WhatIfForecastArns: 0,
+      Destination: i_DataDestination,
+      Tags: D.list(i_Tag),
+      Format: 0,
+    },
+  },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -2010,7 +2208,7 @@ export const deleteDataset: API.OperationMethod<
   DeleteDatasetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DatasetArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2039,7 +2237,7 @@ export const deleteDatasetGroup: API.OperationMethod<
   DeleteDatasetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DatasetGroupArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2067,7 +2265,7 @@ export const deleteDatasetImportJob: API.OperationMethod<
   DeleteDatasetImportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DatasetImportJobArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2095,7 +2293,7 @@ export const deleteExplainability: API.OperationMethod<
   DeleteExplainabilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ExplainabilityArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2120,7 +2318,7 @@ export const deleteExplainabilityExport: API.OperationMethod<
   DeleteExplainabilityExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ExplainabilityExportArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2150,7 +2348,7 @@ export const deleteForecast: API.OperationMethod<
   DeleteForecastError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ForecastArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2177,7 +2375,7 @@ export const deleteForecastExportJob: API.OperationMethod<
   DeleteForecastExportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ForecastExportJobArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2202,7 +2400,7 @@ export const deleteMonitor: API.OperationMethod<
   DeleteMonitorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MonitorArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2228,7 +2426,7 @@ export const deletePredictor: API.OperationMethod<
   DeletePredictorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PredictorArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2253,7 +2451,7 @@ export const deletePredictorBacktestExportJob: API.OperationMethod<
   DeletePredictorBacktestExportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PredictorBacktestExportJobArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2298,7 +2496,7 @@ export const deleteResourceTree: API.OperationMethod<
   DeleteResourceTreeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2326,7 +2524,7 @@ export const deleteWhatIfAnalysis: API.OperationMethod<
   DeleteWhatIfAnalysisError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WhatIfAnalysisArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2354,7 +2552,7 @@ export const deleteWhatIfForecast: API.OperationMethod<
   DeleteWhatIfForecastError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WhatIfForecastArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2380,7 +2578,7 @@ export const deleteWhatIfForecastExport: API.OperationMethod<
   DeleteWhatIfForecastExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WhatIfForecastExportArn: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -2406,6 +2604,7 @@ export const describeAutoPredictor: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { PredictorArn: 0 },
     output: { CreationTime: D.ts, LastModificationTime: D.ts },
   },
   errors: [InvalidInputException, ResourceNotFoundException],
@@ -2438,6 +2637,7 @@ export const describeDataset: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DatasetArn: 0 },
     output: { CreationTime: D.ts, LastModificationTime: D.ts },
   },
   errors: [InvalidInputException, ResourceNotFoundException],
@@ -2473,6 +2673,7 @@ export const describeDatasetGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DatasetGroupArn: 0 },
     output: { CreationTime: D.ts, LastModificationTime: D.ts },
   },
   errors: [InvalidInputException, ResourceNotFoundException],
@@ -2512,6 +2713,7 @@ export const describeDatasetImportJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DatasetImportJobArn: 0 },
     output: { CreationTime: D.ts, LastModificationTime: D.ts },
   },
   errors: [InvalidInputException, ResourceNotFoundException],
@@ -2535,6 +2737,7 @@ export const describeExplainability: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ExplainabilityArn: 0 },
     output: { CreationTime: D.ts, LastModificationTime: D.ts },
   },
   errors: [InvalidInputException, ResourceNotFoundException],
@@ -2558,6 +2761,7 @@ export const describeExplainabilityExport: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ExplainabilityExportArn: 0 },
     output: { CreationTime: D.ts, LastModificationTime: D.ts },
   },
   errors: [InvalidInputException, ResourceNotFoundException],
@@ -2595,6 +2799,7 @@ export const describeForecast: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ForecastArn: 0 },
     output: { CreationTime: D.ts, LastModificationTime: D.ts },
   },
   errors: [InvalidInputException, ResourceNotFoundException],
@@ -2630,6 +2835,7 @@ export const describeForecastExportJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ForecastExportJobArn: 0 },
     output: { CreationTime: D.ts, LastModificationTime: D.ts },
   },
   errors: [InvalidInputException, ResourceNotFoundException],
@@ -2667,6 +2873,7 @@ export const describeMonitor: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { MonitorArn: 0 },
     output: {
       LastEvaluationTime: D.ts,
       CreationTime: D.ts,
@@ -2715,6 +2922,7 @@ export const describePredictor: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { PredictorArn: 0 },
     output: {
       PredictorExecutionDetails: {
         PredictorExecutions: D.list({
@@ -2758,6 +2966,7 @@ export const describePredictorBacktestExportJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { PredictorBacktestExportJobArn: 0 },
     output: { CreationTime: D.ts, LastModificationTime: D.ts },
   },
   errors: [InvalidInputException, ResourceNotFoundException],
@@ -2791,6 +3000,7 @@ export const describeWhatIfAnalysis: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { WhatIfAnalysisArn: 0 },
     output: { CreationTime: D.ts, LastModificationTime: D.ts },
   },
   errors: [InvalidInputException, ResourceNotFoundException],
@@ -2824,6 +3034,7 @@ export const describeWhatIfForecast: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { WhatIfForecastArn: 0 },
     output: { CreationTime: D.ts, LastModificationTime: D.ts },
   },
   errors: [InvalidInputException, ResourceNotFoundException],
@@ -2857,6 +3068,7 @@ export const describeWhatIfForecastExport: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { WhatIfForecastExportArn: 0 },
     output: { CreationTime: D.ts, LastModificationTime: D.ts },
   },
   errors: [InvalidInputException, ResourceNotFoundException],
@@ -2898,6 +3110,7 @@ export const getAccuracyMetrics: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { PredictorArn: 0 },
     output: {
       PredictorEvaluationResults: D.list({
         TestWindows: D.list({ TestWindowStart: D.ts, TestWindowEnd: D.ts }),
@@ -2931,6 +3144,7 @@ export const listDatasetGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: {
       DatasetGroups: D.list({ CreationTime: D.ts, LastModificationTime: D.ts }),
     },
@@ -2967,6 +3181,7 @@ export const listDatasetImportJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, Filters: D.list(i_Filter) },
     output: {
       DatasetImportJobs: D.list({
         CreationTime: D.ts,
@@ -3001,6 +3216,7 @@ export const listDatasets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: {
       Datasets: D.list({ CreationTime: D.ts, LastModificationTime: D.ts }),
     },
@@ -3038,6 +3254,7 @@ export const listExplainabilities: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, Filters: D.list(i_Filter) },
     output: {
       Explainabilities: D.list({
         CreationTime: D.ts,
@@ -3077,6 +3294,7 @@ export const listExplainabilityExports: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, Filters: D.list(i_Filter) },
     output: {
       ExplainabilityExports: D.list({
         CreationTime: D.ts,
@@ -3115,6 +3333,7 @@ export const listForecastExportJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, Filters: D.list(i_Filter) },
     output: {
       ForecastExportJobs: D.list({
         CreationTime: D.ts,
@@ -3154,6 +3373,7 @@ export const listForecasts: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, Filters: D.list(i_Filter) },
     output: {
       Forecasts: D.list({ CreationTime: D.ts, LastModificationTime: D.ts }),
     },
@@ -3191,6 +3411,12 @@ export const listMonitorEvaluations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      MonitorArn: 0,
+      Filters: D.list(i_Filter),
+    },
     output: {
       PredictorMonitorEvaluations: D.list({
         EvaluationTime: D.ts,
@@ -3233,6 +3459,7 @@ export const listMonitors: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, Filters: D.list(i_Filter) },
     output: {
       Monitors: D.list({ CreationTime: D.ts, LastModificationTime: D.ts }),
     },
@@ -3269,6 +3496,7 @@ export const listPredictorBacktestExportJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, Filters: D.list(i_Filter) },
     output: {
       PredictorBacktestExportJobs: D.list({
         CreationTime: D.ts,
@@ -3309,6 +3537,7 @@ export const listPredictors: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, Filters: D.list(i_Filter) },
     output: {
       Predictors: D.list({ CreationTime: D.ts, LastModificationTime: D.ts }),
     },
@@ -3340,6 +3569,7 @@ export const listTagsForResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResourceArn: 0 },
     output: { Tags: D.list({ Key: D.secret, Value: D.secret }) },
   },
   errors: [InvalidInputException, ResourceNotFoundException],
@@ -3364,6 +3594,7 @@ export const listWhatIfAnalyses: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, Filters: D.list(i_Filter) },
     output: {
       WhatIfAnalyses: D.list({
         CreationTime: D.ts,
@@ -3399,6 +3630,7 @@ export const listWhatIfForecastExports: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, Filters: D.list(i_Filter) },
     output: {
       WhatIfForecastExports: D.list({
         CreationTime: D.ts,
@@ -3434,6 +3666,7 @@ export const listWhatIfForecasts: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, Filters: D.list(i_Filter) },
     output: {
       WhatIfForecasts: D.list({
         CreationTime: D.ts,
@@ -3468,7 +3701,7 @@ export const resumeResource: API.OperationMethod<
   ResumeResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -3515,7 +3748,7 @@ export const stopResource: API.OperationMethod<
   StopResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -3543,7 +3776,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     InvalidInputException,
     LimitExceededException,
@@ -3567,7 +3800,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3592,7 +3825,7 @@ export const updateDatasetGroup: API.OperationMethod<
   UpdateDatasetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DatasetGroupArn: 0, DatasetArns: 0 } },
   errors: [
     InvalidInputException,
     ResourceInUseException,
@@ -3602,3 +3835,20 @@ export const updateDatasetGroup: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateDatasetGroup",
 })) as any;
+
+const i_DataDestination: D.LazyStruct = () => ({ S3Config: i_S3Config });
+const i_DataSource: D.LazyStruct = () => ({ S3Config: i_S3Config });
+const i_EncryptionConfig: D.LazyStruct = () => ({ RoleArn: 0, KMSKeyArn: 0 });
+const i_Filter: D.LazyStruct = () => ({ Key: 0, Value: 0, Condition: 0 });
+const i_S3Config: D.LazyStruct = () => ({ Path: 0, RoleArn: 0, KMSKeyArn: 0 });
+const i_Schema: D.LazyStruct = () => ({
+  Attributes: D.list({ AttributeName: 0, AttributeType: 0 }),
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_TimeSeriesSelector: D.LazyStruct = () => ({
+  TimeSeriesIdentifiers: {
+    DataSource: i_DataSource,
+    Schema: i_Schema,
+    Format: 0,
+  },
+});

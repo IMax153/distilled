@@ -930,6 +930,7 @@ export const cancelExportTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /exporttasks/{taskIdentifier}",
+    input: { taskIdentifier: 0 },
     staticContext: { ApiType: { value: "ControlPlane" } },
   },
   errors: [
@@ -963,6 +964,7 @@ export const cancelImportTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /importtasks/{taskIdentifier}",
+    input: { taskIdentifier: 0 },
     staticContext: { ApiType: { value: "ControlPlane" } },
   },
   errors: [
@@ -996,7 +998,7 @@ export const cancelQuery: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /queries/{queryId}",
-    input: { graphIdentifier: D.m({ header: "graphIdentifier" }) },
+    input: { graphIdentifier: D.m({ header: "graphIdentifier" }), queryId: 0 },
     staticContext: { ApiType: { value: "DataPlane" } },
   },
   errors: [
@@ -1031,6 +1033,16 @@ export const createGraph: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /graphs",
+    input: {
+      graphName: 0,
+      tags: 0,
+      publicConnectivity: 0,
+      kmsKeyIdentifier: 0,
+      vectorSearchConfiguration: i_VectorSearchConfiguration,
+      replicaCount: 0,
+      deletionProtection: 0,
+      provisionedMemory: 0,
+    },
     output: { createTime: D.ts },
     staticContext: { ApiType: { value: "ControlPlane" } },
     body: true,
@@ -1067,6 +1079,7 @@ export const createGraphSnapshot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /snapshots",
+    input: { graphIdentifier: 0, snapshotName: 0, tags: 0 },
     output: { snapshotCreateTime: D.ts },
     staticContext: { ApiType: { value: "ControlPlane" } },
     body: true,
@@ -1105,6 +1118,24 @@ export const createGraphUsingImportTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /importtasks",
+    input: {
+      graphName: 0,
+      tags: 0,
+      publicConnectivity: 0,
+      kmsKeyIdentifier: 0,
+      vectorSearchConfiguration: i_VectorSearchConfiguration,
+      replicaCount: 0,
+      deletionProtection: 0,
+      importOptions: i_ImportOptions,
+      maxProvisionedMemory: 0,
+      minProvisionedMemory: 0,
+      failOnError: 0,
+      source: 0,
+      format: 0,
+      parquetType: 0,
+      blankNodeHandling: 0,
+      roleArn: 0,
+    },
     staticContext: { ApiType: { value: "ControlPlane" } },
     body: true,
   },
@@ -1142,6 +1173,12 @@ export const createPrivateGraphEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /graphs/{graphIdentifier}/endpoints/",
+    input: {
+      graphIdentifier: 0,
+      vpcId: 0,
+      subnetIds: 0,
+      vpcSecurityGroupIds: 0,
+    },
     staticContext: { ApiType: { value: "ControlPlane" } },
     body: true,
   },
@@ -1177,7 +1214,7 @@ export const deleteGraph: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /graphs/{graphIdentifier}",
-    input: { skipSnapshot: D.m({ query: "skipSnapshot" }) },
+    input: { graphIdentifier: 0, skipSnapshot: D.m({ query: "skipSnapshot" }) },
     output: { createTime: D.ts },
     staticContext: { ApiType: { value: "ControlPlane" } },
   },
@@ -1212,6 +1249,7 @@ export const deleteGraphSnapshot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /snapshots/{snapshotIdentifier}",
+    input: { snapshotIdentifier: 0 },
     output: { snapshotCreateTime: D.ts },
     staticContext: { ApiType: { value: "ControlPlane" } },
   },
@@ -1246,6 +1284,7 @@ export const deletePrivateGraphEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /graphs/{graphIdentifier}/endpoints/{vpcId}",
+    input: { graphIdentifier: 0, vpcId: 0 },
     staticContext: { ApiType: { value: "ControlPlane" } },
   },
   errors: [
@@ -1291,7 +1330,11 @@ export const executeQuery: API.OperationMethod<
     input: {
       graphIdentifier: D.m({ header: "graphIdentifier" }),
       queryString: D.m({ wire: "query" }),
+      language: 0,
+      parameters: 0,
+      planCache: 0,
       explainMode: D.m({ wire: "explain" }),
+      queryTimeoutMilliseconds: 0,
     },
     output: { payload: D.m({ payload: true, shape: D.stream }) },
     staticContext: { ApiType: { value: "DataPlane" } },
@@ -1329,6 +1372,7 @@ export const getExportTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /exporttasks/{taskIdentifier}",
+    input: { taskIdentifier: 0 },
     output: { exportTaskDetails: { startTime: D.ts } },
     staticContext: { ApiType: { value: "ControlPlane" } },
   },
@@ -1361,6 +1405,7 @@ export const getGraph: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /graphs/{graphIdentifier}",
+    input: { graphIdentifier: 0 },
     output: { createTime: D.ts },
     staticContext: { ApiType: { value: "ControlPlane" } },
   },
@@ -1393,6 +1438,7 @@ export const getGraphSnapshot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /snapshots/{snapshotIdentifier}",
+    input: { snapshotIdentifier: 0 },
     output: { snapshotCreateTime: D.ts },
     staticContext: { ApiType: { value: "ControlPlane" } },
   },
@@ -1464,6 +1510,7 @@ export const getImportTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /importtasks/{taskIdentifier}",
+    input: { taskIdentifier: 0 },
     output: { importTaskDetails: { startTime: D.ts } },
     staticContext: { ApiType: { value: "ControlPlane" } },
   },
@@ -1496,6 +1543,7 @@ export const getPrivateGraphEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /graphs/{graphIdentifier}/endpoints/{vpcId}",
+    input: { graphIdentifier: 0, vpcId: 0 },
     staticContext: { ApiType: { value: "ControlPlane" } },
   },
   errors: [
@@ -1530,7 +1578,7 @@ export const getQuery: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /queries/{queryId}",
-    input: { graphIdentifier: D.m({ header: "graphIdentifier" }) },
+    input: { graphIdentifier: D.m({ header: "graphIdentifier" }), queryId: 0 },
     staticContext: { ApiType: { value: "DataPlane" } },
   },
   errors: [
@@ -1735,6 +1783,7 @@ export const listPrivateGraphEndpoints: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /graphs/{graphIdentifier}/endpoints/",
     input: {
+      graphIdentifier: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -1812,6 +1861,7 @@ export const listTagsForResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
     staticContext: { ApiType: { value: "ControlPlane" } },
   },
   errors: [
@@ -1844,6 +1894,7 @@ export const resetGraph: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /graphs/{graphIdentifier}",
+    input: { graphIdentifier: 0, skipSnapshot: 0 },
     output: { createTime: D.ts },
     staticContext: { ApiType: { value: "ControlPlane" } },
     body: true,
@@ -1880,6 +1931,15 @@ export const restoreGraphFromSnapshot: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /snapshots/{snapshotIdentifier}/restore",
+    input: {
+      snapshotIdentifier: 0,
+      graphName: 0,
+      provisionedMemory: 0,
+      deletionProtection: 0,
+      tags: 0,
+      replicaCount: 0,
+      publicConnectivity: 0,
+    },
     output: { createTime: D.ts },
     staticContext: { ApiType: { value: "ControlPlane" } },
     body: true,
@@ -1916,6 +1976,19 @@ export const startExportTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /exporttasks",
+    input: {
+      graphIdentifier: 0,
+      roleArn: 0,
+      format: 0,
+      destination: 0,
+      kmsKeyIdentifier: 0,
+      parquetType: 0,
+      exportFilter: {
+        vertexFilter: D.map(i_ExportFilterElement),
+        edgeFilter: D.map(i_ExportFilterElement),
+      },
+      tags: 0,
+    },
     staticContext: { ApiType: { value: "ControlPlane" } },
     body: true,
   },
@@ -1950,6 +2023,7 @@ export const startGraph: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /graphs/{graphIdentifier}/start",
+    input: { graphIdentifier: 0 },
     output: { createTime: D.ts },
     staticContext: { ApiType: { value: "ControlPlane" } },
   },
@@ -1984,6 +2058,16 @@ export const startImportTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /graphs/{graphIdentifier}/importtasks",
+    input: {
+      importOptions: i_ImportOptions,
+      failOnError: 0,
+      source: 0,
+      format: 0,
+      parquetType: 0,
+      blankNodeHandling: 0,
+      graphIdentifier: 0,
+      roleArn: 0,
+    },
     staticContext: { ApiType: { value: "ControlPlane" } },
     body: true,
   },
@@ -2018,6 +2102,7 @@ export const stopGraph: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /graphs/{graphIdentifier}/stop",
+    input: { graphIdentifier: 0 },
     output: { createTime: D.ts },
     staticContext: { ApiType: { value: "ControlPlane" } },
   },
@@ -2051,6 +2136,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
     staticContext: { ApiType: { value: "ControlPlane" } },
     body: true,
   },
@@ -2083,7 +2169,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
     staticContext: { ApiType: { value: "ControlPlane" } },
   },
   errors: [
@@ -2116,6 +2202,12 @@ export const updateGraph: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /graphs/{graphIdentifier}",
+    input: {
+      graphIdentifier: 0,
+      publicConnectivity: 0,
+      provisionedMemory: 0,
+      deletionProtection: 0,
+    },
     output: { createTime: D.ts },
     staticContext: { ApiType: { value: "ControlPlane" } },
     body: true,
@@ -2131,3 +2223,20 @@ export const updateGraph: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateGraph",
 })) as any;
+
+const i_ExportFilterElement: D.LazyStruct = () => ({
+  properties: D.map({
+    outputType: 0,
+    sourcePropertyName: 0,
+    multiValueHandling: 0,
+  }),
+});
+const i_ImportOptions: D.LazyStruct = () => ({
+  neptune: {
+    s3ExportPath: 0,
+    s3ExportKmsKeyId: 0,
+    preserveDefaultVertexLabels: 0,
+    preserveEdgeIds: 0,
+  },
+});
+const i_VectorSearchConfiguration: D.LazyStruct = () => ({ dimension: 0 });

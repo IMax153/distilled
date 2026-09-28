@@ -14117,6 +14117,21 @@ export const batchCreateTopicReviewedAnswer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/topics/{TopicId}/batch-create-reviewed-answers",
+    input: {
+      AwsAccountId: 0,
+      TopicId: 0,
+      Answers: D.list({
+        AnswerId: 0,
+        DatasetArn: 0,
+        Question: 0,
+        Mir: i_TopicIR,
+        PrimaryVisual: i_TopicVisual,
+        Template: {
+          TemplateType: 0,
+          Slots: D.list({ SlotId: 0, VisualId: 0 }),
+        },
+      }),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -14153,6 +14168,7 @@ export const batchDeleteKnowledgeBase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/accounts/{AwsAccountId}/knowledge-bases/batch-delete",
+    input: { AwsAccountId: 0, KnowledgeBaseIds: 0 },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -14190,6 +14206,7 @@ export const batchDeleteTopicReviewedAnswer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/topics/{TopicId}/batch-delete-reviewed-answers",
+    input: { AwsAccountId: 0, TopicId: 0, AnswerIds: 0 },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -14224,6 +14241,11 @@ export const batchDescribeUserLimits: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /governance/limits/accounts/{accountId}/user-limits",
+    input: {
+      accountId: 0,
+      users: D.list({ userName: 0, namespace: 0 }),
+      resourceTypes: 0,
+    },
     body: true,
   },
   errors: [
@@ -14257,6 +14279,7 @@ export const cancelIngestion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/data-sets/{DataSetId}/ingestions/{IngestionId}",
+    input: { AwsAccountId: 0, DataSetId: 0, IngestionId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -14317,7 +14340,12 @@ export const createAccountCustomization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/customizations",
-    input: { Namespace: D.m({ query: "namespace" }) },
+    input: {
+      AwsAccountId: 0,
+      Namespace: D.m({ query: "namespace" }),
+      AccountCustomization: i_AccountCustomization,
+      Tags: D.list(i_Tag),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -14385,6 +14413,27 @@ export const createAccountSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /account/{AwsAccountId}",
+    input: {
+      Edition: 0,
+      AuthenticationMethod: 0,
+      AwsAccountId: 0,
+      AccountName: 0,
+      NotificationEmail: 0,
+      ActiveDirectoryName: 0,
+      Realm: 0,
+      DirectoryId: 0,
+      AdminGroup: 0,
+      AuthorGroup: 0,
+      ReaderGroup: 0,
+      AdminProGroup: 0,
+      AuthorProGroup: 0,
+      ReaderProGroup: 0,
+      FirstName: 0,
+      LastName: 0,
+      EmailAddress: 0,
+      ContactNumber: 0,
+      IAMIdentityCenterInstanceArn: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -14426,6 +14475,17 @@ export const createActionConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/action-connectors",
+    input: {
+      AwsAccountId: 0,
+      ActionConnectorId: 0,
+      Name: 0,
+      Type: 0,
+      AuthenticationConfig: i_AuthConfig,
+      Description: 0,
+      Permissions: D.list(i_ResourcePermission),
+      VpcConnectionArn: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -14464,6 +14524,19 @@ export const createAgent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/agents",
+    input: {
+      Spaces: 0,
+      ActionConnectors: 0,
+      AwsAccountId: 0,
+      AgentId: 0,
+      Name: 0,
+      Description: 0,
+      IconId: 0,
+      StarterPrompts: 0,
+      WelcomeMessage: 0,
+      AgentLifecycle: 0,
+      CustomPromptInput: i_CustomPromptInput,
+    },
     body: true,
   },
   errors: [
@@ -14504,6 +14577,19 @@ export const createAnalysis: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/analyses/{AnalysisId}",
+    input: {
+      AwsAccountId: 0,
+      AnalysisId: 0,
+      Name: 0,
+      Parameters: i_Parameters,
+      Permissions: D.list(i_ResourcePermission),
+      SourceEntity: i_AnalysisSourceEntity,
+      ThemeArn: 0,
+      Tags: D.list(i_Tag),
+      Definition: i_AnalysisDefinition,
+      ValidationStrategy: i_ValidationStrategy,
+      FolderArns: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -14544,6 +14630,15 @@ export const createApprovalPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /governance/approvalworkflows/policies",
+    input: {
+      PolicyId: 0,
+      Name: 0,
+      Description: 0,
+      Actions: 0,
+      AssetTypes: 0,
+      ApplicableTo: i_ApplicableTo,
+      ApprovalGroups: 0,
+    },
     output: { Policy: o_ApprovalPolicy },
     body: true,
   },
@@ -14581,6 +14676,12 @@ export const createBrand: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/brands/{BrandId}",
+    input: {
+      AwsAccountId: 0,
+      BrandId: 0,
+      BrandDefinition: i_BrandDefinition,
+      Tags: D.list(i_Tag),
+    },
     output: { BrandDetail: o_BrandDetail },
     body: true,
   },
@@ -14621,6 +14722,13 @@ export const createCustomPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/custom-permissions",
+    input: {
+      AwsAccountId: 0,
+      CustomPermissionsName: 0,
+      Capabilities: i_Capabilities,
+      Governance: i_Governance,
+      Tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -14672,6 +14780,23 @@ export const createDashboard: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/dashboards/{DashboardId}",
+    input: {
+      AwsAccountId: 0,
+      DashboardId: 0,
+      Name: 0,
+      Parameters: i_Parameters,
+      Permissions: D.list(i_ResourcePermission),
+      SourceEntity: i_DashboardSourceEntity,
+      Tags: D.list(i_Tag),
+      VersionDescription: 0,
+      DashboardPublishOptions: i_DashboardPublishOptions,
+      ThemeArn: 0,
+      Definition: i_DashboardVersionDefinition,
+      ValidationStrategy: i_ValidationStrategy,
+      FolderArns: 0,
+      LinkSharingConfiguration: { Permissions: D.list(i_ResourcePermission) },
+      LinkEntities: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -14717,6 +14842,28 @@ export const createDataSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/data-sets",
+    input: {
+      AwsAccountId: 0,
+      DataSetId: 0,
+      Name: 0,
+      PhysicalTableMap: D.map(i_PhysicalTable),
+      LogicalTableMap: D.map(i_LogicalTable),
+      ImportMode: 0,
+      ColumnGroups: D.list(i_ColumnGroup),
+      FieldFolders: D.map(i_FieldFolder),
+      Permissions: D.list(i_ResourcePermission),
+      RowLevelPermissionDataSet: i_RowLevelPermissionDataSet,
+      RowLevelPermissionTagConfiguration: i_RowLevelPermissionTagConfiguration,
+      ColumnLevelPermissionRules: D.list(i_ColumnLevelPermissionRule),
+      Tags: D.list(i_Tag),
+      DataSetUsageConfiguration: i_DataSetUsageConfiguration,
+      DatasetParameters: D.list(i_DatasetParameter),
+      FolderArns: 0,
+      PerformanceConfiguration: i_PerformanceConfiguration,
+      UseAs: 0,
+      DataPrepConfiguration: i_DataPrepConfiguration,
+      SemanticModelConfiguration: i_SemanticModelConfiguration,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -14762,6 +14909,19 @@ export const createDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/data-sources",
+    input: {
+      AwsAccountId: 0,
+      DataSourceId: 0,
+      Name: 0,
+      Type: 0,
+      DataSourceParameters: i_DataSourceParameters,
+      Credentials: i_DataSourceCredentials,
+      Permissions: D.list(i_ResourcePermission),
+      VpcConnectionProperties: i_VpcConnectionProperties,
+      SslProperties: i_SslProperties,
+      Tags: D.list(i_Tag),
+      FolderArns: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -14803,6 +14963,16 @@ export const createDlpSetting: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/data-loss-prevention/settings/{DlpSettingId}",
+    input: {
+      AwsAccountId: 0,
+      DlpSettingId: 0,
+      Name: 0,
+      ProviderType: 0,
+      ProviderConfig: i_ProviderConfig,
+      ProviderOutageAction: 0,
+      Enabled: 0,
+      Tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -14843,7 +15013,14 @@ export const createFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/flows",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      AwsAccountId: 0,
+      Name: 0,
+      Description: 0,
+      FlowDefinition: 0,
+      Permissions: D.list(i_Permission),
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -14885,6 +15062,16 @@ export const createFolder: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/folders/{FolderId}",
+    input: {
+      AwsAccountId: 0,
+      FolderId: 0,
+      Name: 0,
+      FolderType: 0,
+      ParentFolderArn: 0,
+      Permissions: D.list(i_ResourcePermission),
+      Tags: D.list(i_Tag),
+      SharingModel: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -14926,6 +15113,7 @@ export const createFolderMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/folders/{FolderId}/members/{MemberType}/{MemberId}",
+    input: { AwsAccountId: 0, FolderId: 0, MemberId: 0, MemberType: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -14971,6 +15159,7 @@ export const createGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/namespaces/{Namespace}/groups",
+    input: { GroupName: 0, Description: 0, AwsAccountId: 0, Namespace: 0 },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -15011,6 +15200,7 @@ export const createGroupMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/namespaces/{Namespace}/groups/{GroupName}/members/{MemberName}",
+    input: { MemberName: 0, GroupName: 0, AwsAccountId: 0, Namespace: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -15052,6 +15242,14 @@ export const createIAMPolicyAssignment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/namespaces/{Namespace}/iam-policy-assignments",
+    input: {
+      AwsAccountId: 0,
+      AssignmentName: 0,
+      AssignmentStatus: 0,
+      PolicyArn: 0,
+      Identities: 0,
+      Namespace: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -15097,6 +15295,7 @@ export const createIngestion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/data-sets/{DataSetId}/ingestions/{IngestionId}",
+    input: { DataSetId: 0, IngestionId: 0, AwsAccountId: 0, IngestionType: 0 },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -15147,6 +15346,19 @@ export const createKnowledgeBase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/accounts/{AwsAccountId}/knowledge-bases",
+    input: {
+      AwsAccountId: 0,
+      KnowledgeBaseId: 0,
+      Name: 0,
+      DataSourceArn: 0,
+      KnowledgeBaseConfiguration: i_KnowledgeBaseConfiguration,
+      Description: 0,
+      Permissions: D.list(i_ResourcePermission),
+      MediaExtractionConfiguration: i_MediaExtractionConfiguration,
+      AccessControlConfiguration: i_AccessControlConfiguration,
+      PrimaryOwnerArn: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -15186,6 +15398,13 @@ export const createLimitsProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /governance/limits/accounts/{accountId}/profiles",
+    input: {
+      accountId: 0,
+      profileName: 0,
+      description: 0,
+      resourceLimits: D.map(i_ProfileLimitValue),
+      clientToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -15233,6 +15452,12 @@ export const createNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}",
+    input: {
+      AwsAccountId: 0,
+      Namespace: 0,
+      IdentityStore: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -15275,6 +15500,20 @@ export const createOAuthClientApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/oauth-client-applications",
+    input: {
+      AwsAccountId: 0,
+      OAuthClientApplicationId: 0,
+      Name: 0,
+      OAuthClientAuthenticationType: 0,
+      ClientId: 0,
+      ClientSecret: 0,
+      OAuthTokenEndpointUrl: 0,
+      OAuthAuthorizationEndpointUrl: 0,
+      OAuthScopes: 0,
+      DataSourceType: 0,
+      IdentityProviderVpcConnectionProperties: i_VpcConnectionProperties,
+      Tags: D.list(i_Tag),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -15315,6 +15554,7 @@ export const createRefreshSchedule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/data-sets/{DataSetId}/refresh-schedules",
+    input: { DataSetId: 0, AwsAccountId: 0, Schedule: i_RefreshSchedule },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -15354,6 +15594,7 @@ export const createRoleMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/namespaces/{Namespace}/roles/{Role}/members/{MemberName}",
+    input: { MemberName: 0, AwsAccountId: 0, Namespace: 0, Role: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -15391,6 +15632,7 @@ export const createSpace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/accounts/{AwsAccountId}/spaces",
+    input: { AwsAccountId: 0, SpaceId: 0, Name: 0, Description: 0 },
     body: true,
   },
   errors: [
@@ -15438,6 +15680,17 @@ export const createTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/templates/{TemplateId}",
+    input: {
+      AwsAccountId: 0,
+      TemplateId: 0,
+      Name: 0,
+      Permissions: D.list(i_ResourcePermission),
+      SourceEntity: i_TemplateSourceEntity,
+      Tags: D.list(i_Tag),
+      VersionDescription: 0,
+      Definition: i_TemplateVersionDefinition,
+      ValidationStrategy: i_ValidationStrategy,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -15478,6 +15731,12 @@ export const createTemplateAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/templates/{TemplateId}/aliases/{AliasName}",
+    input: {
+      AwsAccountId: 0,
+      TemplateId: 0,
+      AliasName: 0,
+      TemplateVersionNumber: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -15521,6 +15780,16 @@ export const createTheme: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/themes/{ThemeId}",
+    input: {
+      AwsAccountId: 0,
+      ThemeId: 0,
+      Name: 0,
+      BaseThemeId: 0,
+      VersionDescription: 0,
+      Configuration: i_ThemeConfiguration,
+      Permissions: D.list(i_ResourcePermission),
+      Tags: D.list(i_Tag),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -15561,6 +15830,7 @@ export const createThemeAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/themes/{ThemeId}/aliases/{AliasName}",
+    input: { AwsAccountId: 0, ThemeId: 0, AliasName: 0, ThemeVersionNumber: 0 },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -15601,6 +15871,14 @@ export const createTopic: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/topics",
+    input: {
+      AwsAccountId: 0,
+      TopicId: 0,
+      Topic: i_TopicDetails,
+      Tags: D.list(i_Tag),
+      FolderArns: 0,
+      CustomInstructions: i_CustomInstructions,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -15641,6 +15919,13 @@ export const createTopicRefreshSchedule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/topics/{TopicId}/schedules",
+    input: {
+      AwsAccountId: 0,
+      TopicId: 0,
+      DatasetArn: 0,
+      DatasetName: 0,
+      RefreshSchedule: i_TopicRefreshSchedule,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -15681,6 +15966,14 @@ export const createTopicV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/topicsV2",
+    input: {
+      AwsAccountId: 0,
+      TopicId: 0,
+      Topic: i_TopicV2Details,
+      Tags: D.list(i_Tag),
+      FolderArns: 0,
+      CustomInstructions: i_CustomInstructions,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -15721,6 +16014,16 @@ export const createVPCConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/vpc-connections",
+    input: {
+      AwsAccountId: 0,
+      VPCConnectionId: 0,
+      Name: 0,
+      SubnetIds: 0,
+      SecurityGroupIds: 0,
+      DnsResolvers: 0,
+      RoleArn: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -15772,7 +16075,7 @@ export const deleteAccountCustomization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/customizations",
-    input: { Namespace: D.m({ query: "namespace" }) },
+    input: { AwsAccountId: 0, Namespace: D.m({ query: "namespace" }) },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -15810,6 +16113,7 @@ export const deleteAccountCustomPermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/custom-permission",
+    input: { AwsAccountId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -15860,6 +16164,7 @@ export const deleteAccountSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /account/{AwsAccountId}",
+    input: { AwsAccountId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -15895,6 +16200,7 @@ export const deleteActionConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/action-connectors/{ActionConnectorId}",
+    input: { AwsAccountId: 0, ActionConnectorId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -15929,6 +16235,7 @@ export const deleteAgent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/agents/{AgentId}",
+    input: { AgentId: 0, AwsAccountId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -15977,6 +16284,8 @@ export const deleteAnalysis: API.OperationMethod<
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/analyses/{AnalysisId}",
     input: {
+      AwsAccountId: 0,
+      AnalysisId: 0,
       RecoveryWindowInDays: D.m({ query: "recovery-window-in-days" }),
       ForceDeleteWithoutRecovery: D.m({
         query: "force-delete-without-recovery",
@@ -16016,6 +16325,7 @@ export const deleteApprovalPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /governance/approvalworkflows/policies/{PolicyId}",
+    input: { PolicyId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -16059,6 +16369,7 @@ export const deleteBrand: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/brands/{BrandId}",
+    input: { AwsAccountId: 0, BrandId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -16093,6 +16404,7 @@ export const deleteBrandAssignment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/brandassignments",
+    input: { AwsAccountId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -16130,6 +16442,7 @@ export const deleteCustomPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/custom-permissions/{CustomPermissionsName}",
+    input: { AwsAccountId: 0, CustomPermissionsName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -16167,7 +16480,11 @@ export const deleteDashboard: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/dashboards/{DashboardId}",
-    input: { VersionNumber: D.m({ query: "version-number" }) },
+    input: {
+      AwsAccountId: 0,
+      DashboardId: 0,
+      VersionNumber: D.m({ query: "version-number" }),
+    },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -16202,6 +16519,7 @@ export const deleteDataSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/data-sets/{DataSetId}",
+    input: { AwsAccountId: 0, DataSetId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -16237,6 +16555,7 @@ export const deleteDataSetRefreshProperties: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/data-sets/{DataSetId}/refresh-properties",
+    input: { AwsAccountId: 0, DataSetId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -16273,6 +16592,7 @@ export const deleteDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/data-sources/{DataSourceId}",
+    input: { AwsAccountId: 0, DataSourceId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -16306,7 +16626,7 @@ export const deleteDefaultQBusinessApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/default-qbusiness-application",
-    input: { Namespace: D.m({ query: "namespace" }) },
+    input: { AwsAccountId: 0, Namespace: D.m({ query: "namespace" }) },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -16340,6 +16660,7 @@ export const deleteDlpSetting: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/data-loss-prevention/settings/{DlpSettingId}",
+    input: { AwsAccountId: 0, DlpSettingId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -16373,6 +16694,7 @@ export const deleteFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/flows/{FlowId}",
+    input: { AwsAccountId: 0, FlowId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -16410,6 +16732,7 @@ export const deleteFolder: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/folders/{FolderId}",
+    input: { AwsAccountId: 0, FolderId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -16447,6 +16770,7 @@ export const deleteFolderMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/folders/{FolderId}/members/{MemberType}/{MemberId}",
+    input: { AwsAccountId: 0, FolderId: 0, MemberId: 0, MemberType: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -16482,6 +16806,7 @@ export const deleteGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/namespaces/{Namespace}/groups/{GroupName}",
+    input: { GroupName: 0, AwsAccountId: 0, Namespace: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -16519,6 +16844,7 @@ export const deleteGroupMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/namespaces/{Namespace}/groups/{GroupName}/members/{MemberName}",
+    input: { MemberName: 0, GroupName: 0, AwsAccountId: 0, Namespace: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -16556,6 +16882,7 @@ export const deleteIAMPolicyAssignment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/namespace/{Namespace}/iam-policy-assignments/{AssignmentName}",
+    input: { AwsAccountId: 0, AssignmentName: 0, Namespace: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -16593,6 +16920,7 @@ export const deleteIdentityPropagationConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/identity-propagation-config/{Service}",
+    input: { AwsAccountId: 0, Service: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -16630,6 +16958,7 @@ export const deleteKnowledgeBase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/accounts/{AwsAccountId}/knowledge-bases/{KnowledgeBaseId}",
+    input: { AwsAccountId: 0, KnowledgeBaseId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -16668,6 +16997,7 @@ export const deleteLimitsProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /governance/limits/accounts/{accountId}/profiles/{profileId}",
+    input: { profileId: 0, accountId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -16705,6 +17035,7 @@ export const deleteNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/namespaces/{Namespace}",
+    input: { AwsAccountId: 0, Namespace: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -16741,6 +17072,7 @@ export const deleteOAuthClientApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/oauth-client-applications/{OAuthClientApplicationId}",
+    input: { AwsAccountId: 0, OAuthClientApplicationId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -16776,6 +17108,7 @@ export const deleteRefreshSchedule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/data-sets/{DataSetId}/refresh-schedules/{ScheduleId}",
+    input: { DataSetId: 0, AwsAccountId: 0, ScheduleId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -16812,6 +17145,7 @@ export const deleteRoleCustomPermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/namespaces/{Namespace}/roles/{Role}/custom-permission",
+    input: { Role: 0, AwsAccountId: 0, Namespace: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -16848,6 +17182,7 @@ export const deleteRoleMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/namespaces/{Namespace}/roles/{Role}/members/{MemberName}",
+    input: { MemberName: 0, Role: 0, AwsAccountId: 0, Namespace: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -16883,6 +17218,7 @@ export const deleteSpace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/accounts/{AwsAccountId}/spaces/{SpaceId}",
+    input: { AwsAccountId: 0, SpaceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -16917,7 +17253,11 @@ export const deleteTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/templates/{TemplateId}",
-    input: { VersionNumber: D.m({ query: "version-number" }) },
+    input: {
+      AwsAccountId: 0,
+      TemplateId: 0,
+      VersionNumber: D.m({ query: "version-number" }),
+    },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -16954,6 +17294,7 @@ export const deleteTemplateAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/templates/{TemplateId}/aliases/{AliasName}",
+    input: { AwsAccountId: 0, TemplateId: 0, AliasName: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -16989,7 +17330,11 @@ export const deleteTheme: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/themes/{ThemeId}",
-    input: { VersionNumber: D.m({ query: "version-number" }) },
+    input: {
+      AwsAccountId: 0,
+      ThemeId: 0,
+      VersionNumber: D.m({ query: "version-number" }),
+    },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -17028,6 +17373,7 @@ export const deleteThemeAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/themes/{ThemeId}/aliases/{AliasName}",
+    input: { AwsAccountId: 0, ThemeId: 0, AliasName: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -17063,6 +17409,7 @@ export const deleteTopic: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/topics/{TopicId}",
+    input: { AwsAccountId: 0, TopicId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -17100,6 +17447,7 @@ export const deleteTopicRefreshSchedule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/topics/{TopicId}/schedules/{DatasetId}",
+    input: { AwsAccountId: 0, TopicId: 0, DatasetId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -17137,6 +17485,7 @@ export const deleteTopicV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/topicsV2/{TopicId}",
+    input: { AwsAccountId: 0, TopicId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -17175,6 +17524,7 @@ export const deleteUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/namespaces/{Namespace}/users/{UserName}",
+    input: { UserName: 0, AwsAccountId: 0, Namespace: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -17212,6 +17562,7 @@ export const deleteUserByPrincipalId: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/namespaces/{Namespace}/user-principals/{PrincipalId}",
+    input: { PrincipalId: 0, AwsAccountId: 0, Namespace: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -17250,6 +17601,7 @@ export const deleteUserCustomPermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/namespaces/{Namespace}/users/{UserName}/custom-permission",
+    input: { UserName: 0, AwsAccountId: 0, Namespace: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -17288,6 +17640,7 @@ export const deleteVPCConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /accounts/{AwsAccountId}/vpc-connections/{VPCConnectionId}",
+    input: { AwsAccountId: 0, VPCConnectionId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -17364,6 +17717,7 @@ export const describeAccountCustomization: API.OperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/customizations",
     input: {
+      AwsAccountId: 0,
       Namespace: D.m({ query: "namespace" }),
       Resolved: D.m({ query: "resolved" }),
     },
@@ -17401,6 +17755,7 @@ export const describeAccountCustomPermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/custom-permission",
+    input: { AwsAccountId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -17435,6 +17790,7 @@ export const describeAccountSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/settings",
+    input: { AwsAccountId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -17470,6 +17826,7 @@ export const describeAccountSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /account/{AwsAccountId}",
+    input: { AwsAccountId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -17504,6 +17861,7 @@ export const describeActionConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/action-connectors/{ActionConnectorId}",
+    input: { AwsAccountId: 0, ActionConnectorId: 0 },
     output: {
       ActionConnector: {
         Name: D.secret,
@@ -17551,6 +17909,7 @@ export const describeActionConnectorPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/action-connectors/{ActionConnectorId}/permissions",
+    input: { AwsAccountId: 0, ActionConnectorId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -17585,6 +17944,7 @@ export const describeAgent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/agents/{AgentId}",
+    input: { AgentId: 0, AwsAccountId: 0 },
     output: {
       Agent: {
         WelcomeMessage: D.secret,
@@ -17634,6 +17994,7 @@ export const describeAgentPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/agents/{AgentId}/permissions",
+    input: { AgentId: 0, AwsAccountId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -17668,6 +18029,7 @@ export const describeAnalysis: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/analyses/{AnalysisId}",
+    input: { AwsAccountId: 0, AnalysisId: 0 },
     output: {
       Analysis: {
         CreatedTime: D.ts,
@@ -17718,6 +18080,7 @@ export const describeAnalysisDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/analyses/{AnalysisId}/definition",
+    input: { AwsAccountId: 0, AnalysisId: 0 },
     output: {
       Definition: {
         Sheets: D.list(o_SheetDefinition),
@@ -17764,6 +18127,7 @@ export const describeAnalysisPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/analyses/{AnalysisId}/permissions",
+    input: { AwsAccountId: 0, AnalysisId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -17797,6 +18161,7 @@ export const describeApprovalPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /governance/approvalworkflows/policies/{PolicyId}",
+    input: { PolicyId: 0 },
     output: { Policy: o_ApprovalPolicy },
   },
   errors: [
@@ -17835,6 +18200,7 @@ export const describeAssetBundleExportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/asset-bundle-export-jobs/{AssetBundleExportJobId}",
+    input: { AwsAccountId: 0, AssetBundleExportJobId: 0 },
     output: {
       DownloadUrl: D.secret,
       CreatedTime: D.ts,
@@ -17871,6 +18237,7 @@ export const describeAssetBundleImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/asset-bundle-import-jobs/{AssetBundleImportJobId}",
+    input: { AwsAccountId: 0, AssetBundleImportJobId: 0 },
     output: {
       CreatedTime: D.ts,
       AssetBundleImportSource: { Body: D.secret },
@@ -17913,8 +18280,12 @@ export const describeAutomationJob: API.OperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/automation-groups/{AutomationGroupId}/automations/{AutomationId}/jobs/{JobId}",
     input: {
+      AwsAccountId: 0,
+      AutomationGroupId: 0,
+      AutomationId: 0,
       IncludeInputPayload: D.m({ query: "includeInputPayload" }),
       IncludeOutputPayload: D.m({ query: "includeOutputPayload" }),
+      JobId: 0,
     },
     output: {
       CreatedAt: D.ts,
@@ -17956,7 +18327,11 @@ export const describeBrand: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/brands/{BrandId}",
-    input: { VersionId: D.m({ query: "versionId" }) },
+    input: {
+      AwsAccountId: 0,
+      BrandId: 0,
+      VersionId: D.m({ query: "versionId" }),
+    },
     output: { BrandDetail: o_BrandDetail },
   },
   errors: [
@@ -17992,6 +18367,7 @@ export const describeBrandAssignment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/brandassignments",
+    input: { AwsAccountId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -18026,6 +18402,7 @@ export const describeBrandPublishedVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/brands/{BrandId}/publishedversion",
+    input: { AwsAccountId: 0, BrandId: 0 },
     output: { BrandDetail: o_BrandDetail },
   },
   errors: [
@@ -18062,6 +18439,7 @@ export const describeCustomPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/custom-permissions/{CustomPermissionsName}",
+    input: { AwsAccountId: 0, CustomPermissionsName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -18098,6 +18476,8 @@ export const describeDashboard: API.OperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/dashboards/{DashboardId}",
     input: {
+      AwsAccountId: 0,
+      DashboardId: 0,
       VersionNumber: D.m({ query: "version-number" }),
       AliasName: D.m({ query: "alias-name" }),
     },
@@ -18153,6 +18533,8 @@ export const describeDashboardDefinition: API.OperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/dashboards/{DashboardId}/definition",
     input: {
+      AwsAccountId: 0,
+      DashboardId: 0,
       VersionNumber: D.m({ query: "version-number" }),
       AliasName: D.m({ query: "alias-name" }),
     },
@@ -18202,6 +18584,7 @@ export const describeDashboardPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/dashboards/{DashboardId}/permissions",
+    input: { AwsAccountId: 0, DashboardId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -18251,6 +18634,7 @@ export const describeDashboardSnapshotJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/dashboards/{DashboardId}/snapshot-jobs/{SnapshotJobId}",
+    input: { AwsAccountId: 0, DashboardId: 0, SnapshotJobId: 0 },
     output: {
       SnapshotConfiguration: {
         Parameters: {
@@ -18329,6 +18713,7 @@ export const describeDashboardSnapshotJobResult: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/dashboards/{DashboardId}/snapshot-jobs/{SnapshotJobId}/result",
+    input: { AwsAccountId: 0, DashboardId: 0, SnapshotJobId: 0 },
     output: {
       CreatedTime: D.ts,
       LastUpdatedTime: D.ts,
@@ -18377,6 +18762,7 @@ export const describeDashboardsQAConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/dashboards-qa-configuration",
+    input: { AwsAccountId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -18412,6 +18798,7 @@ export const describeDataSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/data-sets/{DataSetId}",
+    input: { AwsAccountId: 0, DataSetId: 0 },
     output: {
       DataSet: {
         CreatedTime: D.ts,
@@ -18503,6 +18890,7 @@ export const describeDataSetPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/data-sets/{DataSetId}/permissions",
+    input: { AwsAccountId: 0, DataSetId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -18538,6 +18926,7 @@ export const describeDataSetRefreshProperties: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/data-sets/{DataSetId}/refresh-properties",
+    input: { AwsAccountId: 0, DataSetId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -18573,6 +18962,7 @@ export const describeDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/data-sources/{DataSourceId}",
+    input: { AwsAccountId: 0, DataSourceId: 0 },
     output: { DataSource: o_DataSource, Status: D.m({ status: true }) },
   },
   errors: [
@@ -18606,6 +18996,7 @@ export const describeDataSourcePermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/data-sources/{DataSourceId}/permissions",
+    input: { AwsAccountId: 0, DataSourceId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -18639,7 +19030,7 @@ export const describeDefaultQBusinessApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/default-qbusiness-application",
-    input: { Namespace: D.m({ query: "namespace" }) },
+    input: { AwsAccountId: 0, Namespace: D.m({ query: "namespace" }) },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -18673,6 +19064,7 @@ export const describeDlpSetting: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/data-loss-prevention/settings/{DlpSettingId}",
+    input: { AwsAccountId: 0, DlpSettingId: 0 },
     output: { DlpSetting: { CreatedAt: D.ts, UpdatedAt: D.ts } },
   },
   errors: [
@@ -18706,7 +19098,11 @@ export const describeFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/flows/{FlowId}",
-    input: { PublishState: D.m({ query: "publish-state" }) },
+    input: {
+      AwsAccountId: 0,
+      FlowId: 0,
+      PublishState: D.m({ query: "publish-state" }),
+    },
     output: {
       Flow: { CreatedTime: D.ts, LastUpdatedTime: D.ts },
       Status: D.m({ status: true }),
@@ -18744,6 +19140,7 @@ export const describeFolder: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/folders/{FolderId}",
+    input: { AwsAccountId: 0, FolderId: 0 },
     output: {
       Status: D.m({ status: true }),
       Folder: { CreatedTime: D.ts, LastUpdatedTime: D.ts },
@@ -18785,6 +19182,8 @@ export const describeFolderPermissions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/folders/{FolderId}/permissions",
     input: {
+      AwsAccountId: 0,
+      FolderId: 0,
       Namespace: D.m({ query: "namespace" }),
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
@@ -18834,6 +19233,8 @@ export const describeFolderResolvedPermissions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/folders/{FolderId}/resolved-permissions",
     input: {
+      AwsAccountId: 0,
+      FolderId: 0,
       Namespace: D.m({ query: "namespace" }),
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
@@ -18881,6 +19282,7 @@ export const describeGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/namespaces/{Namespace}/groups/{GroupName}",
+    input: { GroupName: 0, AwsAccountId: 0, Namespace: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -18920,6 +19322,7 @@ export const describeGroupMembership: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/namespaces/{Namespace}/groups/{GroupName}/members/{MemberName}",
+    input: { MemberName: 0, GroupName: 0, AwsAccountId: 0, Namespace: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -18957,6 +19360,7 @@ export const describeIAMPolicyAssignment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/namespaces/{Namespace}/iam-policy-assignments/{AssignmentName}",
+    input: { AwsAccountId: 0, AssignmentName: 0, Namespace: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -18992,6 +19396,7 @@ export const describeIngestion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/data-sets/{DataSetId}/ingestions/{IngestionId}",
+    input: { AwsAccountId: 0, DataSetId: 0, IngestionId: 0 },
     output: { Ingestion: o_Ingestion, Status: D.m({ status: true }) },
   },
   errors: [
@@ -19026,6 +19431,7 @@ export const describeIpRestriction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/ip-restriction",
+    input: { AwsAccountId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -19058,7 +19464,10 @@ export const describeKeyRegistration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/key-registration",
-    input: { DefaultKeyOnly: D.m({ query: "default-key-only" }) },
+    input: {
+      AwsAccountId: 0,
+      DefaultKeyOnly: D.m({ query: "default-key-only" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -19093,6 +19502,7 @@ export const describeKnowledgeBase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/accounts/{AwsAccountId}/knowledge-bases/{KnowledgeBaseId}",
+    input: { AwsAccountId: 0, KnowledgeBaseId: 0 },
     output: {
       KnowledgeBase: {
         CreatedAt: D.ts,
@@ -19142,6 +19552,7 @@ export const describeKnowledgeBasePermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/accounts/{AwsAccountId}/knowledge-bases/{KnowledgeBaseId}/permissions",
+    input: { AwsAccountId: 0, KnowledgeBaseId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -19178,6 +19589,7 @@ export const describeLimitsProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /governance/limits/accounts/{accountId}/profiles/{profileId}",
+    input: { profileId: 0, accountId: 0 },
     output: { profile: o_LimitsProfile },
   },
   errors: [
@@ -19212,6 +19624,7 @@ export const describeNamespace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/namespaces/{Namespace}",
+    input: { AwsAccountId: 0, Namespace: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -19246,6 +19659,7 @@ export const describeOAuthClientApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/oauth-client-applications/{OAuthClientApplicationId}",
+    input: { AwsAccountId: 0, OAuthClientApplicationId: 0 },
     output: {
       OAuthClientApplication: {
         OAuthTokenEndpointUrl: D.secret,
@@ -19288,6 +19702,7 @@ export const describeQPersonalizationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/q-personalization-configuration",
+    input: { AwsAccountId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -19323,6 +19738,7 @@ export const describeQuickSightQSearchConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/quicksight-q-search-configuration",
+    input: { AwsAccountId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -19358,6 +19774,7 @@ export const describeRefreshSchedule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/data-sets/{DataSetId}/refresh-schedules/{ScheduleId}",
+    input: { AwsAccountId: 0, DataSetId: 0, ScheduleId: 0 },
     output: {
       RefreshSchedule: o_RefreshSchedule,
       Status: D.m({ status: true }),
@@ -19397,6 +19814,7 @@ export const describeRoleCustomPermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/namespaces/{Namespace}/roles/{Role}/custom-permission",
+    input: { Role: 0, AwsAccountId: 0, Namespace: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -19434,6 +19852,7 @@ export const describeSelfUpgradeConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/namespaces/{Namespace}/self-upgrade-configuration",
+    input: { AwsAccountId: 0, Namespace: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -19470,7 +19889,11 @@ export const describeSpace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/accounts/{AwsAccountId}/spaces/{SpaceId}",
-    input: { MaxContributors: D.m({ query: "maxContributors" }) },
+    input: {
+      AwsAccountId: 0,
+      SpaceId: 0,
+      MaxContributors: D.m({ query: "maxContributors" }),
+    },
     output: {
       Space: { description: D.secret, createdAt: D.ts, updatedAt: D.ts },
     },
@@ -19506,6 +19929,7 @@ export const describeSpacePermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/accounts/{AwsAccountId}/spaces/{SpaceId}/permissions",
+    input: { AwsAccountId: 0, SpaceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -19542,6 +19966,8 @@ export const describeTemplate: API.OperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/templates/{TemplateId}",
     input: {
+      AwsAccountId: 0,
+      TemplateId: 0,
       VersionNumber: D.m({ query: "version-number" }),
       AliasName: D.m({ query: "alias-name" }),
     },
@@ -19587,6 +20013,7 @@ export const describeTemplateAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/templates/{TemplateId}/aliases/{AliasName}",
+    input: { AwsAccountId: 0, TemplateId: 0, AliasName: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -19629,6 +20056,8 @@ export const describeTemplateDefinition: API.OperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/templates/{TemplateId}/definition",
     input: {
+      AwsAccountId: 0,
+      TemplateId: 0,
       VersionNumber: D.m({ query: "version-number" }),
       AliasName: D.m({ query: "alias-name" }),
     },
@@ -19679,6 +20108,7 @@ export const describeTemplatePermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/templates/{TemplateId}/permissions",
+    input: { AwsAccountId: 0, TemplateId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -19716,6 +20146,8 @@ export const describeTheme: API.OperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/themes/{ThemeId}",
     input: {
+      AwsAccountId: 0,
+      ThemeId: 0,
       VersionNumber: D.m({ query: "version-number" }),
       AliasName: D.m({ query: "alias-name" }),
     },
@@ -19762,6 +20194,7 @@ export const describeThemeAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/themes/{ThemeId}/aliases/{AliasName}",
+    input: { AwsAccountId: 0, ThemeId: 0, AliasName: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -19797,6 +20230,7 @@ export const describeThemePermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/themes/{ThemeId}/permissions",
+    input: { AwsAccountId: 0, ThemeId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -19831,6 +20265,7 @@ export const describeTopic: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/topics/{TopicId}",
+    input: { AwsAccountId: 0, TopicId: 0 },
     output: {
       Topic: {
         DataSets: D.list({
@@ -19900,6 +20335,7 @@ export const describeTopicPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/topics/{TopicId}/permissions",
+    input: { AwsAccountId: 0, TopicId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -19933,6 +20369,7 @@ export const describeTopicPermissionsV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/topicsV2/{TopicId}/permissions",
+    input: { AwsAccountId: 0, TopicId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -19966,6 +20403,7 @@ export const describeTopicRefresh: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/topics/{TopicId}/refresh/{RefreshId}",
+    input: { AwsAccountId: 0, TopicId: 0, RefreshId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -20002,6 +20440,7 @@ export const describeTopicRefreshSchedule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/topics/{TopicId}/schedules/{DatasetId}",
+    input: { AwsAccountId: 0, TopicId: 0, DatasetId: 0 },
     output: {
       RefreshSchedule: o_TopicRefreshSchedule,
       Status: D.m({ status: true }),
@@ -20041,6 +20480,7 @@ export const describeTopicV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/topicsV2/{TopicId}",
+    input: { AwsAccountId: 0, TopicId: 0 },
     output: {
       CustomInstructions: o_CustomInstructions,
       Status: D.m({ status: true }),
@@ -20079,6 +20519,7 @@ export const describeUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/namespaces/{Namespace}/users/{UserName}",
+    input: { UserName: 0, AwsAccountId: 0, Namespace: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -20115,6 +20556,7 @@ export const describeVPCConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/vpc-connections/{VPCConnectionId}",
+    input: { AwsAccountId: 0, VPCConnectionId: 0 },
     output: { VPCConnection: { CreatedTime: D.ts, LastUpdatedTime: D.ts } },
   },
   errors: [
@@ -20175,6 +20617,25 @@ export const generateEmbedUrlForAnonymousUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/embed-url/anonymous-user",
+    input: {
+      AwsAccountId: 0,
+      SessionLifetimeInMinutes: 0,
+      Namespace: 0,
+      SessionTags: D.list(i_SessionTag),
+      AuthorizedResourceArns: 0,
+      ExperienceConfiguration: {
+        Dashboard: {
+          InitialDashboardId: 0,
+          EnabledFeatures: 0,
+          DisabledFeatures: 0,
+          FeatureConfigurations: { SharedView: i_SharedViewConfigurations },
+        },
+        DashboardVisual: { InitialDashboardVisualId: i_DashboardVisualId },
+        QSearchBar: { InitialTopicId: 0 },
+        GenerativeQnA: { InitialTopicId: 0 },
+      },
+      AllowedDomains: 0,
+    },
     output: { EmbedUrl: D.secret, Status: D.m({ status: true }) },
     body: true,
   },
@@ -20240,6 +20701,13 @@ export const generateEmbedUrlForRegisteredUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/embed-url/registered-user",
+    input: {
+      AwsAccountId: 0,
+      SessionLifetimeInMinutes: 0,
+      UserArn: 0,
+      ExperienceConfiguration: i_RegisteredUserEmbeddingExperienceConfiguration,
+      AllowedDomains: 0,
+    },
     output: { EmbedUrl: D.secret, Status: D.m({ status: true }) },
     body: true,
   },
@@ -20293,6 +20761,12 @@ export const generateEmbedUrlForRegisteredUserWithIdentity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/embed-url/registered-user-with-identity",
+    input: {
+      AwsAccountId: 0,
+      SessionLifetimeInMinutes: 0,
+      ExperienceConfiguration: i_RegisteredUserEmbeddingExperienceConfiguration,
+      AllowedDomains: 0,
+    },
     output: { EmbedUrl: D.secret, Status: D.m({ status: true }) },
     body: true,
   },
@@ -20365,6 +20839,8 @@ export const getDashboardEmbedUrl: API.OperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/dashboards/{DashboardId}/embed-url",
     input: {
+      AwsAccountId: 0,
+      DashboardId: 0,
       IdentityType: D.m({ query: "creds-type" }),
       SessionLifetimeInMinutes: D.m({ query: "session-lifetime" }),
       UndoRedoDisabled: D.m({ query: "undo-redo-disabled" }),
@@ -20413,6 +20889,7 @@ export const getFlowMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/flows/{FlowId}/metadata",
+    input: { AwsAccountId: 0, FlowId: 0 },
     output: {
       CreatedTime: D.ts,
       LastUpdatedTime: D.ts,
@@ -20448,6 +20925,7 @@ export const getFlowPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/flows/{FlowId}/permissions",
+    input: { AwsAccountId: 0, FlowId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -20519,6 +20997,13 @@ export const getIdentityContext: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/identity-context",
+    input: {
+      AwsAccountId: 0,
+      UserIdentifier: { UserName: 0, Email: 0, UserArn: 0 },
+      Namespace: 0,
+      SessionExpiresAt: 0,
+      ContextRegion: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -20576,6 +21061,7 @@ export const getSessionEmbedUrl: API.OperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/session-embed-url",
     input: {
+      AwsAccountId: 0,
       EntryPoint: D.m({ query: "entry-point" }),
       SessionLifetimeInMinutes: D.m({ query: "session-lifetime" }),
       UserArn: D.m({ query: "user-arn" }),
@@ -20619,6 +21105,7 @@ export const listActionConnectors: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/action-connectors",
     input: {
+      AwsAccountId: 0,
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
     },
@@ -20667,6 +21154,7 @@ export const listAgents: API.OperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/agents",
     input: {
+      AwsAccountId: 0,
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
     },
@@ -20706,6 +21194,7 @@ export const listAnalyses: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/analyses",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -20801,6 +21290,7 @@ export const listAssetBundleExportJobs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/asset-bundle-export-jobs",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -20851,6 +21341,7 @@ export const listAssetBundleImportJobs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/asset-bundle-import-jobs",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -20897,6 +21388,7 @@ export const listBrands: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/brands",
     input: {
+      AwsAccountId: 0,
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
     },
@@ -20942,6 +21434,7 @@ export const listCustomPermissions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/custom-permissions",
     input: {
+      AwsAccountId: 0,
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
     },
@@ -20987,6 +21480,7 @@ export const listDashboards: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/dashboards",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -21034,6 +21528,8 @@ export const listDashboardVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/dashboards/{DashboardId}/versions",
     input: {
+      AwsAccountId: 0,
+      DashboardId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -21086,6 +21582,7 @@ export const listDataSets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/data-sets",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -21133,6 +21630,7 @@ export const listDataSources: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/data-sources",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -21179,6 +21677,7 @@ export const listDlpSettings: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/data-loss-prevention/settings",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -21223,6 +21722,7 @@ export const listFlows: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/flows",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -21271,6 +21771,8 @@ export const listFolderMembers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/folders/{FolderId}/members",
     input: {
+      AwsAccountId: 0,
+      FolderId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -21319,6 +21821,7 @@ export const listFolders: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/folders",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -21370,6 +21873,8 @@ export const listFoldersForResource: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/resource/{ResourceArn}/folders",
     input: {
+      AwsAccountId: 0,
+      ResourceArn: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -21419,8 +21924,11 @@ export const listGroupMemberships: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/namespaces/{Namespace}/groups/{GroupName}/members",
     input: {
+      GroupName: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
+      AwsAccountId: 0,
+      Namespace: 0,
     },
     output: { Status: D.m({ status: true }) },
   },
@@ -21469,8 +21977,10 @@ export const listGroups: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/namespaces/{Namespace}/groups",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
+      Namespace: 0,
     },
     output: { Status: D.m({ status: true }) },
   },
@@ -21519,7 +22029,9 @@ export const listIAMPolicyAssignments: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/namespaces/{Namespace}/v2/iam-policy-assignments",
     input: {
+      AwsAccountId: 0,
       AssignmentStatus: D.m({ query: "assignment-status" }),
+      Namespace: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -21573,8 +22085,11 @@ export const listIAMPolicyAssignmentsForUser: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/namespaces/{Namespace}/users/{UserName}/iam-policy-assignments",
     input: {
+      AwsAccountId: 0,
+      UserName: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
+      Namespace: 0,
     },
     output: { Status: D.m({ status: true }) },
   },
@@ -21620,6 +22135,7 @@ export const listIdentityPropagationConfigs: API.OperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/identity-propagation-config",
     input: {
+      AwsAccountId: 0,
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
     },
@@ -21660,7 +22176,9 @@ export const listIngestions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/data-sets/{DataSetId}/ingestions",
     input: {
+      DataSetId: 0,
       NextToken: D.m({ query: "next-token" }),
+      AwsAccountId: 0,
       MaxResults: D.m({ query: "max-results" }),
     },
     output: { Ingestions: D.list(o_Ingestion), Status: D.m({ status: true }) },
@@ -21707,6 +22225,7 @@ export const listKnowledgeBases: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v1/accounts/{AwsAccountId}/knowledge-bases",
     input: {
+      AwsAccountId: 0,
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
     },
@@ -21754,6 +22273,7 @@ export const listLimitsProfiles: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /governance/limits/accounts/{accountId}/profiles",
     input: {
+      accountId: 0,
       resourceType: D.m({ query: "resourceType" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -21801,6 +22321,7 @@ export const listNamespaces: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/namespaces",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -21849,6 +22370,7 @@ export const listOAuthClientApplications: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/oauth-client-applications",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -21899,6 +22421,7 @@ export const listRefreshSchedules: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/data-sets/{DataSetId}/refresh-schedules",
+    input: { AwsAccountId: 0, DataSetId: 0 },
     output: {
       RefreshSchedules: D.list(o_RefreshSchedule),
       Status: D.m({ status: true }),
@@ -21942,8 +22465,11 @@ export const listRoleMemberships: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/namespaces/{Namespace}/roles/{Role}/members",
     input: {
+      Role: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
+      AwsAccountId: 0,
+      Namespace: 0,
     },
     output: { Status: D.m({ status: true }) },
   },
@@ -21993,6 +22519,8 @@ export const listSelfUpgrades: API.OperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/namespaces/{Namespace}/self-upgrade-requests",
     input: {
+      AwsAccountId: 0,
+      Namespace: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -22033,6 +22561,7 @@ export const listSpaceResources: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/accounts/{AwsAccountId}/spaces/{SpaceId}/resources",
+    input: { AwsAccountId: 0, SpaceId: 0 },
     output: { SpaceResources: D.list({ UpdatedAt: D.ts }) },
   },
   errors: [
@@ -22067,6 +22596,7 @@ export const listSpaces: API.OperationMethod<
     service: svc,
     http: "GET /v1/accounts/{AwsAccountId}/spaces",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -22103,6 +22633,7 @@ export const listTagsForResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /resources/{ResourceArn}/tags",
+    input: { ResourceArn: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -22138,6 +22669,8 @@ export const listTemplateAliases: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/templates/{TemplateId}/aliases",
     input: {
+      AwsAccountId: 0,
+      TemplateId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-result" }),
     },
@@ -22183,6 +22716,7 @@ export const listTemplates: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/templates",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-result" }),
     },
@@ -22232,6 +22766,8 @@ export const listTemplateVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/templates/{TemplateId}/versions",
     input: {
+      AwsAccountId: 0,
+      TemplateId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -22281,6 +22817,8 @@ export const listThemeAliases: API.OperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/themes/{ThemeId}/aliases",
     input: {
+      AwsAccountId: 0,
+      ThemeId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-result" }),
     },
@@ -22323,6 +22861,7 @@ export const listThemes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/themes",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
       Type: D.m({ query: "type" }),
@@ -22375,6 +22914,8 @@ export const listThemeVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/themes/{ThemeId}/versions",
     input: {
+      AwsAccountId: 0,
+      ThemeId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -22425,6 +22966,7 @@ export const listTopicRefreshSchedules: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/topics/{TopicId}/schedules",
+    input: { AwsAccountId: 0, TopicId: 0 },
     output: {
       RefreshSchedules: D.list({ RefreshSchedule: o_TopicRefreshSchedule }),
       Status: D.m({ status: true }),
@@ -22464,6 +23006,7 @@ export const listTopicReviewedAnswers: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /accounts/{AwsAccountId}/topics/{TopicId}/reviewed-answers",
+    input: { AwsAccountId: 0, TopicId: 0 },
     output: {
       Answers: D.list({
         Question: D.secret,
@@ -22506,6 +23049,7 @@ export const listTopics: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/topics",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -22549,6 +23093,7 @@ export const listTopicsV2: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/topicsV2",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -22595,6 +23140,9 @@ export const listUserGroups: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/namespaces/{Namespace}/users/{UserName}/groups",
     input: {
+      UserName: 0,
+      AwsAccountId: 0,
+      Namespace: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -22644,8 +23192,10 @@ export const listUsers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/namespaces/{Namespace}/users",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
+      Namespace: 0,
     },
     output: { Status: D.m({ status: true }) },
   },
@@ -22690,6 +23240,18 @@ export const listUsersIndexCapacity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{awsAccountId}/quick-index/user-capacity",
+    input: {
+      awsAccountId: 0,
+      namespace: 0,
+      filters: D.list({
+        userNameOrEmail: { prefix: 0 },
+        totalCapacityBytes: { minBytes: 0, maxBytes: 0 },
+      }),
+      sortBy: 0,
+      sortOrder: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -22728,6 +23290,7 @@ export const listVPCConnections: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /accounts/{AwsAccountId}/vpc-connections",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -22779,6 +23342,13 @@ export const predictQAResults: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/qa/predict",
+    input: {
+      AwsAccountId: 0,
+      QueryText: 0,
+      IncludeQuickSightQIndex: 0,
+      IncludeGeneratedAnswer: 0,
+      MaxTopicsToConsider: 0,
+    },
     output: {
       PrimaryResult: o_QAResult,
       AdditionalResults: D.list(o_QAResult),
@@ -22819,6 +23389,11 @@ export const putDataSetRefreshProperties: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/data-sets/{DataSetId}/refresh-properties",
+    input: {
+      AwsAccountId: 0,
+      DataSetId: 0,
+      DataSetRefreshProperties: i_DataSetRefreshProperties,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -22860,6 +23435,21 @@ export const registerUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/namespaces/{Namespace}/users",
+    input: {
+      IdentityType: 0,
+      Email: 0,
+      UserRole: 0,
+      IamArn: 0,
+      SessionName: 0,
+      AwsAccountId: 0,
+      Namespace: 0,
+      UserName: 0,
+      CustomPermissionsName: 0,
+      ExternalLoginFederationProviderType: 0,
+      CustomFederationProviderUrl: 0,
+      ExternalLoginId: 0,
+      Tags: D.list(i_Tag),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -22901,7 +23491,11 @@ export const restoreAnalysis: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/restore/analyses/{AnalysisId}",
-    input: { RestoreToFolders: D.m({ query: "restore-to-folders" }) },
+    input: {
+      AwsAccountId: 0,
+      AnalysisId: 0,
+      RestoreToFolders: D.m({ query: "restore-to-folders" }),
+    },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -22939,8 +23533,10 @@ export const searchActionConnectors: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /accounts/{AwsAccountId}/search/action-connectors",
     input: {
+      AwsAccountId: 0,
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
+      Filters: D.list({ Name: 0, Operator: 0, Value: 0 }),
     },
     output: {
       Status: D.m({ status: true }),
@@ -22986,6 +23582,8 @@ export const searchAgents: API.OperationMethod<
     service: svc,
     http: "POST /accounts/{AwsAccountId}/search/agents",
     input: {
+      AwsAccountId: 0,
+      Filters: D.list({ Name: 0, Operator: 0, Value: 0 }),
       MaxResults: D.m({ query: "max-results" }),
       NextToken: D.m({ query: "next-token" }),
     },
@@ -23028,6 +23626,12 @@ export const searchAnalyses: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/search/analyses",
+    input: {
+      AwsAccountId: 0,
+      Filters: D.list({ Operator: 0, Name: 0, Value: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       AnalysisSummaryList: D.list(o_AnalysisSummary),
       Status: D.m({ status: true }),
@@ -23077,6 +23681,12 @@ export const searchDashboards: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/search/dashboards",
+    input: {
+      AwsAccountId: 0,
+      Filters: D.list({ Operator: 0, Name: 0, Value: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       DashboardSummaryList: D.list(o_DashboardSummary),
       Status: D.m({ status: true }),
@@ -23124,6 +23734,12 @@ export const searchDataSets: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/search/data-sets",
+    input: {
+      AwsAccountId: 0,
+      Filters: D.list({ Operator: 0, Name: 0, Value: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       DataSetSummaries: D.list(o_DataSetSummary),
       Status: D.m({ status: true }),
@@ -23171,6 +23787,12 @@ export const searchDataSources: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/search/data-sources",
+    input: {
+      AwsAccountId: 0,
+      Filters: D.list({ Operator: 0, Name: 0, Value: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       DataSourceSummaries: D.list({ CreatedTime: D.ts, LastUpdatedTime: D.ts }),
       Status: D.m({ status: true }),
@@ -23215,6 +23837,12 @@ export const searchFlows: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/flows/searchFlows",
+    input: {
+      AwsAccountId: 0,
+      Filters: D.list({ Name: 0, Operator: 0, Value: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       FlowSummaryList: D.list(o_FlowSummary),
       Status: D.m({ status: true }),
@@ -23261,6 +23889,12 @@ export const searchFolders: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/search/folders",
+    input: {
+      AwsAccountId: 0,
+      Filters: D.list({ Operator: 0, Name: 0, Value: 0 }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       Status: D.m({ status: true }),
       FolderSummaryList: D.list(o_FolderSummary),
@@ -23312,8 +23946,11 @@ export const searchGroups: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /accounts/{AwsAccountId}/namespaces/{Namespace}/groups-search",
     input: {
+      AwsAccountId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
+      Namespace: 0,
+      Filters: D.list({ Operator: 0, Name: 0, Value: 0 }),
     },
     output: { Status: D.m({ status: true }) },
     body: true,
@@ -23361,6 +23998,13 @@ export const searchKnowledgeBases: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/accounts/{AwsAccountId}/search/knowledge-bases",
+    input: {
+      AwsAccountId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      Filters: D.list({ name: 0, operator: 0, value: 0 }),
+      SortBy: { sortByField: 0, sortOrder: 0 },
+    },
     output: {
       KnowledgeBaseSummaries: D.list(o_KnowledgeBaseSummary),
       Status: D.m({ status: true }),
@@ -23406,6 +24050,12 @@ export const searchSpaces: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/accounts/{AwsAccountId}/search/spaces",
+    input: {
+      AwsAccountId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      Filters: D.list({ name: 0, operator: 0, value: 0 }),
+    },
     output: { SpaceSummaries: D.list(o_SpaceSummary) },
     body: true,
   },
@@ -23443,6 +24093,12 @@ export const searchTopics: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/search/topics",
+    input: {
+      AwsAccountId: 0,
+      Filters: D.list(i_TopicSearchFilter),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -23487,6 +24143,12 @@ export const searchTopicsV2: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/search/topicsV2",
+    input: {
+      AwsAccountId: 0,
+      Filters: D.list(i_TopicSearchFilter),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -23541,6 +24203,30 @@ export const startAssetBundleExportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/asset-bundle-export-jobs/export",
+    input: {
+      AwsAccountId: 0,
+      AssetBundleExportJobId: 0,
+      ResourceArns: 0,
+      IncludeAllDependencies: 0,
+      ExportFormat: 0,
+      CloudFormationOverridePropertyConfiguration: {
+        ResourceIdOverrideConfiguration: { PrefixForAllResources: 0 },
+        VPCConnections: D.list({ Arn: 0, Properties: 0 }),
+        RefreshSchedules: D.list({ Arn: 0, Properties: 0 }),
+        DataSources: D.list({ Arn: 0, Properties: 0 }),
+        DataSets: D.list({ Arn: 0, Properties: 0 }),
+        Themes: D.list({ Arn: 0, Properties: 0 }),
+        Analyses: D.list({ Arn: 0, Properties: 0 }),
+        Dashboards: D.list({ Arn: 0, Properties: 0 }),
+        Folders: D.list({ Arn: 0, Properties: 0 }),
+        TopicsV2: D.list({ Arn: 0, Properties: 0 }),
+      },
+      IncludePermissions: 0,
+      IncludeTags: 0,
+      ValidationStrategy: { StrictModeForAllResources: 0 },
+      IncludeFolderMemberships: 0,
+      IncludeFolderMembers: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -23590,6 +24276,93 @@ export const startAssetBundleImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/asset-bundle-import-jobs/import",
+    input: {
+      AwsAccountId: 0,
+      AssetBundleImportJobId: 0,
+      AssetBundleImportSource: { Body: 0, S3Uri: 0 },
+      OverrideParameters: {
+        ResourceIdOverrideConfiguration: { PrefixForAllResources: 0 },
+        VPCConnections: D.list({
+          VPCConnectionId: 0,
+          Name: 0,
+          SubnetIds: 0,
+          SecurityGroupIds: 0,
+          DnsResolvers: 0,
+          RoleArn: 0,
+        }),
+        RefreshSchedules: D.list({
+          DataSetId: 0,
+          ScheduleId: 0,
+          StartAfterDateTime: 0,
+        }),
+        DataSources: D.list({
+          DataSourceId: 0,
+          Name: 0,
+          DataSourceParameters: i_DataSourceParameters,
+          VpcConnectionProperties: i_VpcConnectionProperties,
+          SslProperties: i_SslProperties,
+          Credentials: {
+            CredentialPair: { Username: 0, Password: 0 },
+            SecretArn: 0,
+          },
+        }),
+        DataSets: D.list({
+          DataSetId: 0,
+          Name: 0,
+          DataSetRefreshProperties: i_DataSetRefreshProperties,
+        }),
+        Themes: D.list({ ThemeId: 0, Name: 0 }),
+        Analyses: D.list({ AnalysisId: 0, Name: 0 }),
+        Dashboards: D.list({ DashboardId: 0, Name: 0 }),
+        Folders: D.list({ FolderId: 0, Name: 0, ParentFolderArn: 0 }),
+        TopicsV2: D.list({ TopicId: 0, Name: 0, Description: 0 }),
+      },
+      FailureAction: 0,
+      OverridePermissions: {
+        DataSources: D.list({
+          DataSourceIds: 0,
+          Permissions: i_AssetBundleResourcePermissions,
+        }),
+        DataSets: D.list({
+          DataSetIds: 0,
+          Permissions: i_AssetBundleResourcePermissions,
+        }),
+        Themes: D.list({
+          ThemeIds: 0,
+          Permissions: i_AssetBundleResourcePermissions,
+        }),
+        Analyses: D.list({
+          AnalysisIds: 0,
+          Permissions: i_AssetBundleResourcePermissions,
+        }),
+        Dashboards: D.list({
+          DashboardIds: 0,
+          Permissions: i_AssetBundleResourcePermissions,
+          LinkSharingConfiguration: {
+            Permissions: i_AssetBundleResourcePermissions,
+          },
+        }),
+        Folders: D.list({
+          FolderIds: 0,
+          Permissions: i_AssetBundleResourcePermissions,
+        }),
+        TopicsV2: D.list({
+          TopicIds: 0,
+          Permissions: i_AssetBundleResourcePermissions,
+        }),
+      },
+      OverrideTags: {
+        VPCConnections: D.list({ VPCConnectionIds: 0, Tags: D.list(i_Tag) }),
+        DataSources: D.list({ DataSourceIds: 0, Tags: D.list(i_Tag) }),
+        DataSets: D.list({ DataSetIds: 0, Tags: D.list(i_Tag) }),
+        Themes: D.list({ ThemeIds: 0, Tags: D.list(i_Tag) }),
+        Analyses: D.list({ AnalysisIds: 0, Tags: D.list(i_Tag) }),
+        Dashboards: D.list({ DashboardIds: 0, Tags: D.list(i_Tag) }),
+        Folders: D.list({ FolderIds: 0, Tags: D.list(i_Tag) }),
+        TopicsV2: D.list({ TopicIds: 0, Tags: D.list(i_Tag) }),
+      },
+      OverrideValidationStrategy: { StrictModeForAllResources: 0 },
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -23627,6 +24400,12 @@ export const startAutomationJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/automation-groups/{AutomationGroupId}/automations/{AutomationId}/jobs",
+    input: {
+      AwsAccountId: 0,
+      AutomationGroupId: 0,
+      AutomationId: 0,
+      InputPayload: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -23752,6 +24531,38 @@ export const startDashboardSnapshotJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/dashboards/{DashboardId}/snapshot-jobs",
+    input: {
+      AwsAccountId: 0,
+      DashboardId: 0,
+      SnapshotJobId: 0,
+      UserConfiguration: {
+        AnonymousUsers: D.list({
+          RowLevelPermissionTags: D.list(i_SessionTag),
+        }),
+      },
+      SnapshotConfiguration: {
+        FileGroups: D.list({
+          Files: D.list({
+            SheetSelections: D.list({
+              SheetId: 0,
+              SelectionScope: 0,
+              VisualIds: 0,
+            }),
+            FormatType: 0,
+          }),
+        }),
+        DestinationConfiguration: {
+          S3Destinations: D.list({
+            BucketConfiguration: {
+              BucketName: 0,
+              BucketPrefix: 0,
+              BucketRegion: 0,
+            },
+          }),
+        },
+        Parameters: i_Parameters,
+      },
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -23796,6 +24607,7 @@ export const startDashboardSnapshotJobSchedule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/dashboards/{DashboardId}/schedules/{ScheduleId}",
+    input: { AwsAccountId: 0, DashboardId: 0, ScheduleId: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -23852,6 +24664,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /resources/{ResourceArn}/tags",
+    input: { ResourceArn: 0, Tags: D.list(i_Tag) },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -23887,7 +24700,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /resources/{ResourceArn}/tags",
-    input: { TagKeys: D.m({ query: "keys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "keys" }) },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -23928,7 +24741,11 @@ export const updateAccountCustomization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/customizations",
-    input: { Namespace: D.m({ query: "namespace" }) },
+    input: {
+      AwsAccountId: 0,
+      Namespace: D.m({ query: "namespace" }),
+      AccountCustomization: i_AccountCustomization,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -23965,6 +24782,7 @@ export const updateAccountCustomPermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/custom-permission",
+    input: { CustomPermissionsName: 0, AwsAccountId: 0 },
     body: true,
   },
   errors: [
@@ -23999,6 +24817,12 @@ export const updateAccountSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/settings",
+    input: {
+      AwsAccountId: 0,
+      DefaultNamespace: 0,
+      NotificationEmail: 0,
+      TerminationProtectionEnabled: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -24037,6 +24861,14 @@ export const updateActionConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/action-connectors/{ActionConnectorId}",
+    input: {
+      AwsAccountId: 0,
+      ActionConnectorId: 0,
+      Name: 0,
+      AuthenticationConfig: i_AuthConfig,
+      Description: 0,
+      VpcConnectionArn: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -24075,6 +24907,12 @@ export const updateActionConnectorPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/action-connectors/{ActionConnectorId}/permissions",
+    input: {
+      AwsAccountId: 0,
+      ActionConnectorId: 0,
+      GrantPermissions: D.list(i_ResourcePermission),
+      RevokePermissions: D.list(i_ResourcePermission),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -24115,6 +24953,20 @@ export const updateAgent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/agents/{AgentId}",
+    input: {
+      AgentId: 0,
+      AwsAccountId: 0,
+      Name: 0,
+      Description: 0,
+      IconId: 0,
+      StarterPrompts: 0,
+      WelcomeMessage: 0,
+      CustomPromptInput: i_CustomPromptInput,
+      SpacesToAdd: 0,
+      SpacesToRemove: 0,
+      ActionConnectorsToAdd: 0,
+      ActionConnectorsToRemove: 0,
+    },
     body: true,
   },
   errors: [
@@ -24155,6 +25007,12 @@ export const updateAgentPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/agents/{AgentId}/permissions",
+    input: {
+      AgentId: 0,
+      AwsAccountId: 0,
+      GrantPermissions: D.list(i_ResourcePermission),
+      RevokePermissions: D.list(i_ResourcePermission),
+    },
     body: true,
   },
   errors: [
@@ -24194,6 +25052,16 @@ export const updateAnalysis: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/analyses/{AnalysisId}",
+    input: {
+      AwsAccountId: 0,
+      AnalysisId: 0,
+      Name: 0,
+      Parameters: i_Parameters,
+      SourceEntity: i_AnalysisSourceEntity,
+      ThemeArn: 0,
+      Definition: i_AnalysisDefinition,
+      ValidationStrategy: i_ValidationStrategy,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -24232,6 +25100,12 @@ export const updateAnalysisPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/analyses/{AnalysisId}/permissions",
+    input: {
+      AwsAccountId: 0,
+      AnalysisId: 0,
+      GrantPermissions: D.list(i_ResourcePermission),
+      RevokePermissions: D.list(i_ResourcePermission),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -24270,7 +25144,7 @@ export const updateApplicationWithTokenExchangeGrant: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/application-with-token-exchange-grant",
-    input: { Namespace: D.m({ query: "namespace" }) },
+    input: { AwsAccountId: 0, Namespace: D.m({ query: "namespace" }) },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -24307,6 +25181,15 @@ export const updateApprovalPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /governance/approvalworkflows/policies/{PolicyId}",
+    input: {
+      PolicyId: 0,
+      Name: 0,
+      Description: 0,
+      Actions: 0,
+      AssetTypes: 0,
+      ApplicableTo: i_ApplicableTo,
+      ApprovalGroups: 0,
+    },
     output: { Policy: o_ApprovalPolicy },
     body: true,
   },
@@ -24343,6 +25226,7 @@ export const updateBrand: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/brands/{BrandId}",
+    input: { AwsAccountId: 0, BrandId: 0, BrandDefinition: i_BrandDefinition },
     output: { BrandDetail: o_BrandDetail },
     body: true,
   },
@@ -24379,6 +25263,7 @@ export const updateBrandAssignment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/brandassignments",
+    input: { AwsAccountId: 0, BrandArn: 0 },
     body: true,
   },
   errors: [
@@ -24414,6 +25299,7 @@ export const updateBrandPublishedVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/brands/{BrandId}/publishedversion",
+    input: { AwsAccountId: 0, BrandId: 0, VersionId: 0 },
     body: true,
   },
   errors: [
@@ -24451,6 +25337,12 @@ export const updateCustomPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/custom-permissions/{CustomPermissionsName}",
+    input: {
+      AwsAccountId: 0,
+      CustomPermissionsName: 0,
+      Capabilities: i_Capabilities,
+      Governance: i_Governance,
+    },
     body: true,
   },
   errors: [
@@ -24495,6 +25387,18 @@ export const updateDashboard: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/dashboards/{DashboardId}",
+    input: {
+      AwsAccountId: 0,
+      DashboardId: 0,
+      Name: 0,
+      SourceEntity: i_DashboardSourceEntity,
+      Parameters: i_Parameters,
+      VersionDescription: 0,
+      DashboardPublishOptions: i_DashboardPublishOptions,
+      ThemeArn: 0,
+      Definition: i_DashboardVersionDefinition,
+      ValidationStrategy: i_ValidationStrategy,
+    },
     body: true,
   },
   errors: [
@@ -24532,6 +25436,7 @@ export const updateDashboardLinks: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/dashboards/{DashboardId}/linked-entities",
+    input: { AwsAccountId: 0, DashboardId: 0, LinkEntities: 0 },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -24570,6 +25475,14 @@ export const updateDashboardPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/dashboards/{DashboardId}/permissions",
+    input: {
+      AwsAccountId: 0,
+      DashboardId: 0,
+      GrantPermissions: D.list(i_ResourcePermission),
+      RevokePermissions: D.list(i_ResourcePermission),
+      GrantLinkPermissions: D.list(i_ResourcePermission),
+      RevokeLinkPermissions: D.list(i_ResourcePermission),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -24607,6 +25520,7 @@ export const updateDashboardPublishedVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/dashboards/{DashboardId}/versions/{VersionNumber}",
+    input: { AwsAccountId: 0, DashboardId: 0, VersionNumber: 0 },
     output: { Status: D.m({ status: true }) },
   },
   errors: [
@@ -24642,6 +25556,7 @@ export const updateDashboardsQAConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/dashboards-qa-configuration",
+    input: { AwsAccountId: 0, DashboardsQAStatus: 0 },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -24682,6 +25597,24 @@ export const updateDataSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/data-sets/{DataSetId}",
+    input: {
+      AwsAccountId: 0,
+      DataSetId: 0,
+      Name: 0,
+      PhysicalTableMap: D.map(i_PhysicalTable),
+      LogicalTableMap: D.map(i_LogicalTable),
+      ImportMode: 0,
+      ColumnGroups: D.list(i_ColumnGroup),
+      FieldFolders: D.map(i_FieldFolder),
+      RowLevelPermissionDataSet: i_RowLevelPermissionDataSet,
+      RowLevelPermissionTagConfiguration: i_RowLevelPermissionTagConfiguration,
+      ColumnLevelPermissionRules: D.list(i_ColumnLevelPermissionRule),
+      DataSetUsageConfiguration: i_DataSetUsageConfiguration,
+      DatasetParameters: D.list(i_DatasetParameter),
+      PerformanceConfiguration: i_PerformanceConfiguration,
+      DataPrepConfiguration: i_DataPrepConfiguration,
+      SemanticModelConfiguration: i_SemanticModelConfiguration,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -24724,6 +25657,12 @@ export const updateDataSetPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/data-sets/{DataSetId}/permissions",
+    input: {
+      AwsAccountId: 0,
+      DataSetId: 0,
+      GrantPermissions: D.list(i_ResourcePermission),
+      RevokePermissions: D.list(i_ResourcePermission),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -24761,6 +25700,15 @@ export const updateDataSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/data-sources/{DataSourceId}",
+    input: {
+      AwsAccountId: 0,
+      DataSourceId: 0,
+      Name: 0,
+      DataSourceParameters: i_DataSourceParameters,
+      Credentials: i_DataSourceCredentials,
+      VpcConnectionProperties: i_VpcConnectionProperties,
+      SslProperties: i_SslProperties,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -24798,6 +25746,12 @@ export const updateDataSourcePermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/data-sources/{DataSourceId}/permissions",
+    input: {
+      AwsAccountId: 0,
+      DataSourceId: 0,
+      GrantPermissions: D.list(i_ResourcePermission),
+      RevokePermissions: D.list(i_ResourcePermission),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -24834,7 +25788,11 @@ export const updateDefaultQBusinessApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/default-qbusiness-application",
-    input: { Namespace: D.m({ query: "namespace" }) },
+    input: {
+      AwsAccountId: 0,
+      Namespace: D.m({ query: "namespace" }),
+      ApplicationId: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -24871,6 +25829,15 @@ export const updateDlpSetting: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/data-loss-prevention/settings/{DlpSettingId}",
+    input: {
+      AwsAccountId: 0,
+      DlpSettingId: 0,
+      Name: 0,
+      ProviderType: 0,
+      ProviderConfig: i_ProviderConfig,
+      ProviderOutageAction: 0,
+      Enabled: 0,
+    },
     body: true,
   },
   errors: [
@@ -24907,7 +25874,14 @@ export const updateFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/flows/{FlowId}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      AwsAccountId: 0,
+      FlowId: 0,
+      Name: 0,
+      Description: 0,
+      FlowDefinition: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -24943,6 +25917,12 @@ export const updateFlowPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/flows/{FlowId}/permissions",
+    input: {
+      AwsAccountId: 0,
+      FlowId: 0,
+      GrantPermissions: D.list(i_Permission),
+      RevokePermissions: D.list(i_Permission),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -24979,6 +25959,7 @@ export const updateFolder: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/folders/{FolderId}",
+    input: { AwsAccountId: 0, FolderId: 0, Name: 0 },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -25018,6 +25999,12 @@ export const updateFolderPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/folders/{FolderId}/permissions",
+    input: {
+      AwsAccountId: 0,
+      FolderId: 0,
+      GrantPermissions: D.list(i_ResourcePermission),
+      RevokePermissions: D.list(i_ResourcePermission),
+    },
     body: true,
   },
   errors: [
@@ -25055,6 +26042,7 @@ export const updateGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/namespaces/{Namespace}/groups/{GroupName}",
+    input: { GroupName: 0, Description: 0, AwsAccountId: 0, Namespace: 0 },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -25095,6 +26083,14 @@ export const updateIAMPolicyAssignment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/namespaces/{Namespace}/iam-policy-assignments/{AssignmentName}",
+    input: {
+      AwsAccountId: 0,
+      AssignmentName: 0,
+      Namespace: 0,
+      AssignmentStatus: 0,
+      PolicyArn: 0,
+      Identities: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -25133,6 +26129,7 @@ export const updateIdentityPropagationConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/identity-propagation-config/{Service}",
+    input: { AwsAccountId: 0, Service: 0, AuthorizedTargets: 0 },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -25168,6 +26165,13 @@ export const updateIpRestriction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/ip-restriction",
+    input: {
+      AwsAccountId: 0,
+      IpRestrictionRuleMap: 0,
+      VpcIdRestrictionRuleMap: 0,
+      VpcEndpointIdRestrictionRuleMap: 0,
+      Enabled: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -25202,6 +26206,10 @@ export const updateKeyRegistration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/key-registration",
+    input: {
+      AwsAccountId: 0,
+      KeyRegistration: D.list({ KeyArn: 0, DefaultKey: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -25238,6 +26246,16 @@ export const updateKnowledgeBase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/accounts/{AwsAccountId}/knowledge-bases/{KnowledgeBaseId}",
+    input: {
+      AwsAccountId: 0,
+      KnowledgeBaseId: 0,
+      Name: 0,
+      Description: 0,
+      KnowledgeBaseConfiguration: i_KnowledgeBaseConfiguration,
+      MediaExtractionConfiguration: i_MediaExtractionConfiguration,
+      IsEmailNotificationOptedForIngestionFailures: 0,
+      AccessControlConfiguration: i_AccessControlConfiguration,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -25280,6 +26298,12 @@ export const updateKnowledgeBasePermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/accounts/{AwsAccountId}/knowledge-bases/{KnowledgeBaseId}/permissions",
+    input: {
+      AwsAccountId: 0,
+      KnowledgeBaseId: 0,
+      GrantPermissions: D.list(i_ResourcePermission),
+      RevokePermissions: D.list(i_ResourcePermission),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -25319,6 +26343,13 @@ export const updateLimitsProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /governance/limits/accounts/{accountId}/profiles/{profileId}",
+    input: {
+      profileId: 0,
+      accountId: 0,
+      profileName: 0,
+      description: 0,
+      resourceLimits: D.map(i_ProfileLimitValue),
+    },
     body: true,
   },
   errors: [
@@ -25355,6 +26386,18 @@ export const updateOAuthClientApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/oauth-client-applications/{OAuthClientApplicationId}",
+    input: {
+      AwsAccountId: 0,
+      OAuthClientApplicationId: 0,
+      Name: 0,
+      ClientId: 0,
+      ClientSecret: 0,
+      OAuthTokenEndpointUrl: 0,
+      OAuthAuthorizationEndpointUrl: 0,
+      OAuthScopes: 0,
+      DataSourceType: 0,
+      IdentityProviderVpcConnectionProperties: i_VpcConnectionProperties,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -25413,6 +26456,7 @@ export const updatePublicSharingSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/public-sharing-settings",
+    input: { AwsAccountId: 0, PublicSharingEnabled: 0 },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -25450,6 +26494,7 @@ export const updateQPersonalizationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/q-personalization-configuration",
+    input: { AwsAccountId: 0, PersonalizationMode: 0 },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -25487,6 +26532,7 @@ export const updateQuickSightQSearchConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/quicksight-q-search-configuration",
+    input: { AwsAccountId: 0, QSearchStatus: 0 },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -25524,6 +26570,7 @@ export const updateRefreshSchedule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/data-sets/{DataSetId}/refresh-schedules",
+    input: { DataSetId: 0, AwsAccountId: 0, Schedule: i_RefreshSchedule },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -25562,6 +26609,7 @@ export const updateRoleCustomPermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/namespaces/{Namespace}/roles/{Role}/custom-permission",
+    input: { CustomPermissionsName: 0, Role: 0, AwsAccountId: 0, Namespace: 0 },
     body: true,
   },
   errors: [
@@ -25601,6 +26649,7 @@ export const updateSelfUpgrade: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/namespaces/{Namespace}/update-self-upgrade-request",
+    input: { AwsAccountId: 0, Namespace: 0, UpgradeRequestId: 0, Action: 0 },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -25642,6 +26691,7 @@ export const updateSelfUpgradeConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/namespaces/{Namespace}/self-upgrade-configuration",
+    input: { AwsAccountId: 0, Namespace: 0, SelfUpgradeStatus: 0 },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -25680,6 +26730,7 @@ export const updateSpace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/accounts/{AwsAccountId}/spaces/{SpaceId}",
+    input: { AwsAccountId: 0, SpaceId: 0, Name: 0, Description: 0 },
     body: true,
   },
   errors: [
@@ -25717,6 +26768,12 @@ export const updateSpacePermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/accounts/{AwsAccountId}/spaces/{SpaceId}/permissions",
+    input: {
+      AwsAccountId: 0,
+      SpaceId: 0,
+      GrantPermissions: D.list(i_ResourcePermission),
+      RevokePermissions: D.list(i_ResourcePermission),
+    },
     body: true,
   },
   errors: [
@@ -25756,6 +26813,12 @@ export const updateSpaceResources: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/accounts/{AwsAccountId}/spaces/{SpaceId}/resources",
+    input: {
+      AwsAccountId: 0,
+      SpaceId: 0,
+      AddResources: D.list(i_SpaceResourceOperation),
+      RemoveResources: D.list(i_SpaceResourceOperation),
+    },
     body: true,
   },
   errors: [
@@ -25792,6 +26855,7 @@ export const updateSPICECapacityConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /accounts/{AwsAccountId}/spice-capacity-configuration",
+    input: { AwsAccountId: 0, PurchaseMode: 0 },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -25829,6 +26893,15 @@ export const updateTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/templates/{TemplateId}",
+    input: {
+      AwsAccountId: 0,
+      TemplateId: 0,
+      SourceEntity: i_TemplateSourceEntity,
+      VersionDescription: 0,
+      Name: 0,
+      Definition: i_TemplateVersionDefinition,
+      ValidationStrategy: i_ValidationStrategy,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -25866,6 +26939,12 @@ export const updateTemplateAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/templates/{TemplateId}/aliases/{AliasName}",
+    input: {
+      AwsAccountId: 0,
+      TemplateId: 0,
+      AliasName: 0,
+      TemplateVersionNumber: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -25902,6 +26981,12 @@ export const updateTemplatePermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/templates/{TemplateId}/permissions",
+    input: {
+      AwsAccountId: 0,
+      TemplateId: 0,
+      GrantPermissions: D.list(i_ResourcePermission),
+      RevokePermissions: D.list(i_ResourcePermission),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -25941,6 +27026,14 @@ export const updateTheme: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/themes/{ThemeId}",
+    input: {
+      AwsAccountId: 0,
+      ThemeId: 0,
+      Name: 0,
+      BaseThemeId: 0,
+      VersionDescription: 0,
+      Configuration: i_ThemeConfiguration,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -25980,6 +27073,7 @@ export const updateThemeAlias: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/themes/{ThemeId}/aliases/{AliasName}",
+    input: { AwsAccountId: 0, ThemeId: 0, AliasName: 0, ThemeVersionNumber: 0 },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -26058,6 +27152,12 @@ export const updateThemePermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/themes/{ThemeId}/permissions",
+    input: {
+      AwsAccountId: 0,
+      ThemeId: 0,
+      GrantPermissions: D.list(i_ResourcePermission),
+      RevokePermissions: D.list(i_ResourcePermission),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -26097,6 +27197,12 @@ export const updateTopic: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/topics/{TopicId}",
+    input: {
+      AwsAccountId: 0,
+      TopicId: 0,
+      Topic: i_TopicDetails,
+      CustomInstructions: i_CustomInstructions,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -26137,6 +27243,12 @@ export const updateTopicPermissions: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/topics/{TopicId}/permissions",
+    input: {
+      AwsAccountId: 0,
+      TopicId: 0,
+      GrantPermissions: D.list(i_ResourcePermission),
+      RevokePermissions: D.list(i_ResourcePermission),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -26177,6 +27289,12 @@ export const updateTopicPermissionsV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/topicsV2/{TopicId}/permissions",
+    input: {
+      AwsAccountId: 0,
+      TopicId: 0,
+      GrantPermissions: D.list(i_ResourcePermission),
+      RevokePermissions: D.list(i_ResourcePermission),
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -26217,6 +27335,12 @@ export const updateTopicRefreshSchedule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/topics/{TopicId}/schedules/{DatasetId}",
+    input: {
+      AwsAccountId: 0,
+      TopicId: 0,
+      DatasetId: 0,
+      RefreshSchedule: i_TopicRefreshSchedule,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -26257,6 +27381,13 @@ export const updateTopicV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/topicsV2/{TopicId}",
+    input: {
+      AwsAccountId: 0,
+      TopicId: 0,
+      Topic: i_TopicV2Details,
+      CustomInstructions: i_CustomInstructions,
+      PublishOption: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -26296,6 +27427,18 @@ export const updateUser: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/namespaces/{Namespace}/users/{UserName}",
+    input: {
+      UserName: 0,
+      AwsAccountId: 0,
+      Namespace: 0,
+      Email: 0,
+      Role: 0,
+      CustomPermissionsName: 0,
+      UnapplyCustomPermissions: 0,
+      ExternalLoginFederationProviderType: 0,
+      CustomFederationProviderUrl: 0,
+      ExternalLoginId: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -26335,6 +27478,12 @@ export const updateUserCustomPermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/namespaces/{Namespace}/users/{UserName}/custom-permission",
+    input: {
+      UserName: 0,
+      AwsAccountId: 0,
+      Namespace: 0,
+      CustomPermissionsName: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -26375,6 +27524,15 @@ export const updateVPCConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /accounts/{AwsAccountId}/vpc-connections/{VPCConnectionId}",
+    input: {
+      AwsAccountId: 0,
+      VPCConnectionId: 0,
+      Name: 0,
+      SubnetIds: 0,
+      SecurityGroupIds: 0,
+      DnsResolvers: 0,
+      RoleArn: 0,
+    },
     output: { Status: D.m({ status: true }) },
     body: true,
   },
@@ -26393,6 +27551,1150 @@ export const updateVPCConnection: API.OperationMethod<
   operationName: "UpdateVPCConnection",
 })) as any;
 
+const i_AccessControlConfiguration: D.LazyStruct = () => ({ isACLEnabled: 0 });
+const i_AccountCustomization: D.LazyStruct = () => ({
+  DefaultTheme: 0,
+  DefaultEmailCustomizationTemplate: 0,
+});
+const i_AnalysisDefinition: D.LazyStruct = () => ({
+  DataSetIdentifierDeclarations: D.list(i_DataSetIdentifierDeclaration),
+  TopicIdentifierDeclarations: D.list(i_TopicIdentifierDeclaration),
+  Sheets: D.list(i_SheetDefinition),
+  TooltipSheets: D.list(i_TooltipSheetDefinition),
+  CalculatedFields: D.list(i_CalculatedField),
+  ParameterDeclarations: D.list(i_ParameterDeclaration),
+  FilterGroups: D.list(i_FilterGroup),
+  ColumnConfigurations: D.list(i_ColumnConfiguration),
+  AnalysisDefaults: i_AnalysisDefaults,
+  Options: i_AssetOptions,
+  QueryExecutionOptions: i_QueryExecutionOptions,
+  StaticFiles: D.list(i_StaticFile),
+});
+const i_AnalysisSourceEntity: D.LazyStruct = () => ({
+  SourceTemplate: {
+    DataSetReferences: D.list(i_DataSetReference),
+    TopicReferences: D.list(i_TopicReference),
+    Arn: 0,
+  },
+});
+const i_ApplicableTo: D.LazyStruct = () => ({ Type: 0, GroupArns: 0 });
+const i_AssetBundleResourcePermissions: D.LazyStruct = () => ({
+  Principals: 0,
+  Actions: 0,
+});
+const i_AuthConfig: D.LazyStruct = () => ({
+  AuthenticationType: 0,
+  AuthenticationMetadata: {
+    AuthorizationCodeGrantMetadata: {
+      BaseEndpoint: 0,
+      RedirectUrl: 0,
+      AuthorizationCodeGrantCredentialsSource: 0,
+      AuthorizationCodeGrantCredentialsDetails: {
+        AuthorizationCodeGrantDetails: {
+          ClientId: 0,
+          ClientSecret: 0,
+          TokenEndpoint: 0,
+          AuthorizationEndpoint: 0,
+        },
+      },
+    },
+    ClientCredentialsGrantMetadata: {
+      BaseEndpoint: 0,
+      ClientCredentialsSource: 0,
+      ClientCredentialsDetails: {
+        ClientCredentialsGrantDetails: {
+          ClientId: 0,
+          ClientSecret: 0,
+          TokenEndpoint: 0,
+        },
+      },
+    },
+    BasicAuthConnectionMetadata: { BaseEndpoint: 0, Username: 0, Password: 0 },
+    ApiKeyConnectionMetadata: { BaseEndpoint: 0, ApiKey: 0, Email: 0 },
+    NoneConnectionMetadata: { BaseEndpoint: 0 },
+    IamConnectionMetadata: { RoleArn: 0 },
+  },
+});
+const i_BrandDefinition: D.LazyStruct = () => ({
+  BrandName: 0,
+  Description: 0,
+  ApplicationTheme: {
+    BrandColorPalette: {
+      Primary: i_Palette,
+      Secondary: i_Palette,
+      Accent: i_Palette,
+      Measure: i_Palette,
+      Dimension: i_Palette,
+      Success: i_Palette,
+      Info: i_Palette,
+      Warning: i_Palette,
+      Danger: i_Palette,
+    },
+    ContextualAccentPalette: {
+      Connection: i_Palette,
+      Visualization: i_Palette,
+      Insight: i_Palette,
+      Automation: i_Palette,
+    },
+    BrandElementStyle: {
+      NavbarStyle: { GlobalNavbar: i_Palette, ContextualNavbar: i_Palette },
+    },
+  },
+  LogoConfiguration: {
+    AltText: 0,
+    LogoSet: {
+      Primary: i_ImageSetConfiguration,
+      Favicon: i_ImageSetConfiguration,
+    },
+  },
+});
+const i_Capabilities: D.LazyStruct = () => ({
+  ExportToCsv: 0,
+  ExportToExcel: 0,
+  ExportToPdf: 0,
+  PrintReports: 0,
+  CreateAndUpdateThemes: 0,
+  AddOrRunAnomalyDetectionForAnalyses: 0,
+  ShareAnalyses: 0,
+  CreateAndUpdateDatasets: 0,
+  ShareDatasets: 0,
+  SubscribeDashboardEmailReports: 0,
+  CreateAndUpdateDashboardEmailReports: 0,
+  ShareDashboards: 0,
+  CreateAndUpdateThresholdAlerts: 0,
+  RenameSharedFolders: 0,
+  CreateSharedFolders: 0,
+  CreateAndUpdateDataSources: 0,
+  ShareDataSources: 0,
+  ViewAccountSPICECapacity: 0,
+  CreateSPICEDataset: 0,
+  ExportToPdfInScheduledReports: 0,
+  ExportToCsvInScheduledReports: 0,
+  ExportToExcelInScheduledReports: 0,
+  IncludeContentInScheduledReportsEmail: 0,
+  Dashboard: 0,
+  Analysis: 0,
+  Automate: 0,
+  Flow: 0,
+  Apps: 0,
+  CreateAndUpdateApps: 0,
+  ShareApps: 0,
+  InvokeAppsAIInference: 0,
+  AccessAppsNativeDataStore: 0,
+  PublishWithoutApproval: 0,
+  UseBedrockModels: 0,
+  PerformFlowUiTask: 0,
+  ApproveFlowShareRequests: 0,
+  UseAgentWebSearch: 0,
+  KnowledgeBase: 0,
+  CreateAndUpdateKnowledgeBases: 0,
+  ShareKnowledgeBases: 0,
+  SharePointKnowledgeBase: 0,
+  CreateAndUpdateSharePointKnowledgeBase: 0,
+  ShareSharePointKnowledgeBase: 0,
+  UseSharePointKnowledgeBase: 0,
+  GoogleDriveKnowledgeBase: 0,
+  CreateAndUpdateGoogleDriveKnowledgeBase: 0,
+  ShareGoogleDriveKnowledgeBase: 0,
+  UseGoogleDriveKnowledgeBase: 0,
+  WebCrawlerKnowledgeBase: 0,
+  CreateAndUpdateWebCrawlerKnowledgeBase: 0,
+  ShareWebCrawlerKnowledgeBase: 0,
+  UseWebCrawlerKnowledgeBase: 0,
+  S3KnowledgeBase: 0,
+  CreateAndUpdateS3KnowledgeBase: 0,
+  ShareS3KnowledgeBase: 0,
+  UseS3KnowledgeBase: 0,
+  ConfluenceKnowledgeBase: 0,
+  CreateAndUpdateConfluenceKnowledgeBase: 0,
+  ShareConfluenceKnowledgeBase: 0,
+  UseConfluenceKnowledgeBase: 0,
+  OneDriveKnowledgeBase: 0,
+  CreateAndUpdateOneDriveKnowledgeBase: 0,
+  ShareOneDriveKnowledgeBase: 0,
+  UseOneDriveKnowledgeBase: 0,
+  QBusinessKnowledgeBase: 0,
+  CreateAndUpdateQBusinessKnowledgeBase: 0,
+  ShareQBusinessKnowledgeBase: 0,
+  UseQBusinessKnowledgeBase: 0,
+  BedrockManagedKnowledgeBase: 0,
+  CreateAndUpdateBedrockManagedKnowledgeBase: 0,
+  ShareBedrockManagedKnowledgeBase: 0,
+  UseBedrockManagedKnowledgeBase: 0,
+  BoxKnowledgeBase: 0,
+  CreateAndUpdateBoxKnowledgeBase: 0,
+  ShareBoxKnowledgeBase: 0,
+  UseBoxKnowledgeBase: 0,
+  IDCKnowledgeBase: 0,
+  CreateAndUpdateIDCKnowledgeBase: 0,
+  ShareIDCKnowledgeBase: 0,
+  UseIDCKnowledgeBase: 0,
+  Action: 0,
+  GenericHTTPAction: 0,
+  CreateAndUpdateGenericHTTPAction: 0,
+  ShareGenericHTTPAction: 0,
+  UseGenericHTTPAction: 0,
+  AsanaAction: 0,
+  CreateAndUpdateAsanaAction: 0,
+  ShareAsanaAction: 0,
+  UseAsanaAction: 0,
+  SlackAction: 0,
+  CreateAndUpdateSlackAction: 0,
+  ShareSlackAction: 0,
+  UseSlackAction: 0,
+  ServiceNowAction: 0,
+  CreateAndUpdateServiceNowAction: 0,
+  ShareServiceNowAction: 0,
+  UseServiceNowAction: 0,
+  SalesforceAction: 0,
+  CreateAndUpdateSalesforceAction: 0,
+  ShareSalesforceAction: 0,
+  UseSalesforceAction: 0,
+  MSExchangeAction: 0,
+  CreateAndUpdateMSExchangeAction: 0,
+  ShareMSExchangeAction: 0,
+  UseMSExchangeAction: 0,
+  PagerDutyAction: 0,
+  CreateAndUpdatePagerDutyAction: 0,
+  SharePagerDutyAction: 0,
+  UsePagerDutyAction: 0,
+  JiraAction: 0,
+  CreateAndUpdateJiraAction: 0,
+  ShareJiraAction: 0,
+  UseJiraAction: 0,
+  ConfluenceAction: 0,
+  CreateAndUpdateConfluenceAction: 0,
+  ShareConfluenceAction: 0,
+  UseConfluenceAction: 0,
+  OneDriveAction: 0,
+  CreateAndUpdateOneDriveAction: 0,
+  ShareOneDriveAction: 0,
+  UseOneDriveAction: 0,
+  SharePointAction: 0,
+  CreateAndUpdateSharePointAction: 0,
+  ShareSharePointAction: 0,
+  UseSharePointAction: 0,
+  MSTeamsAction: 0,
+  CreateAndUpdateMSTeamsAction: 0,
+  ShareMSTeamsAction: 0,
+  UseMSTeamsAction: 0,
+  GoogleCalendarAction: 0,
+  CreateAndUpdateGoogleCalendarAction: 0,
+  ShareGoogleCalendarAction: 0,
+  UseGoogleCalendarAction: 0,
+  ZendeskAction: 0,
+  CreateAndUpdateZendeskAction: 0,
+  ShareZendeskAction: 0,
+  UseZendeskAction: 0,
+  SmartsheetAction: 0,
+  CreateAndUpdateSmartsheetAction: 0,
+  ShareSmartsheetAction: 0,
+  UseSmartsheetAction: 0,
+  SAPBusinessPartnerAction: 0,
+  CreateAndUpdateSAPBusinessPartnerAction: 0,
+  ShareSAPBusinessPartnerAction: 0,
+  UseSAPBusinessPartnerAction: 0,
+  SAPProductMasterDataAction: 0,
+  CreateAndUpdateSAPProductMasterDataAction: 0,
+  ShareSAPProductMasterDataAction: 0,
+  UseSAPProductMasterDataAction: 0,
+  SAPPhysicalInventoryAction: 0,
+  CreateAndUpdateSAPPhysicalInventoryAction: 0,
+  ShareSAPPhysicalInventoryAction: 0,
+  UseSAPPhysicalInventoryAction: 0,
+  SAPBillOfMaterialAction: 0,
+  CreateAndUpdateSAPBillOfMaterialAction: 0,
+  ShareSAPBillOfMaterialAction: 0,
+  UseSAPBillOfMaterialAction: 0,
+  SAPMaterialStockAction: 0,
+  CreateAndUpdateSAPMaterialStockAction: 0,
+  ShareSAPMaterialStockAction: 0,
+  UseSAPMaterialStockAction: 0,
+  FactSetAction: 0,
+  CreateAndUpdateFactSetAction: 0,
+  ShareFactSetAction: 0,
+  UseFactSetAction: 0,
+  AmazonSThreeAction: 0,
+  CreateAndUpdateAmazonSThreeAction: 0,
+  ShareAmazonSThreeAction: 0,
+  UseAmazonSThreeAction: 0,
+  TextractAction: 0,
+  CreateAndUpdateTextractAction: 0,
+  ShareTextractAction: 0,
+  UseTextractAction: 0,
+  ComprehendAction: 0,
+  CreateAndUpdateComprehendAction: 0,
+  ShareComprehendAction: 0,
+  UseComprehendAction: 0,
+  ComprehendMedicalAction: 0,
+  CreateAndUpdateComprehendMedicalAction: 0,
+  ShareComprehendMedicalAction: 0,
+  UseComprehendMedicalAction: 0,
+  AmazonBedrockARSAction: 0,
+  CreateAndUpdateAmazonBedrockARSAction: 0,
+  ShareAmazonBedrockARSAction: 0,
+  UseAmazonBedrockARSAction: 0,
+  AmazonBedrockFSAction: 0,
+  CreateAndUpdateAmazonBedrockFSAction: 0,
+  ShareAmazonBedrockFSAction: 0,
+  UseAmazonBedrockFSAction: 0,
+  AmazonBedrockKRSAction: 0,
+  CreateAndUpdateAmazonBedrockKRSAction: 0,
+  ShareAmazonBedrockKRSAction: 0,
+  UseAmazonBedrockKRSAction: 0,
+  MCPAction: 0,
+  CreateAndUpdateMCPAction: 0,
+  ShareMCPAction: 0,
+  UseMCPAction: 0,
+  OpenAPIAction: 0,
+  CreateAndUpdateOpenAPIAction: 0,
+  ShareOpenAPIAction: 0,
+  UseOpenAPIAction: 0,
+  SandPGMIAction: 0,
+  CreateAndUpdateSandPGMIAction: 0,
+  ShareSandPGMIAction: 0,
+  UseSandPGMIAction: 0,
+  SandPGlobalEnergyAction: 0,
+  CreateAndUpdateSandPGlobalEnergyAction: 0,
+  ShareSandPGlobalEnergyAction: 0,
+  UseSandPGlobalEnergyAction: 0,
+  BambooHRAction: 0,
+  CreateAndUpdateBambooHRAction: 0,
+  ShareBambooHRAction: 0,
+  UseBambooHRAction: 0,
+  BoxAgentAction: 0,
+  CreateAndUpdateBoxAgentAction: 0,
+  ShareBoxAgentAction: 0,
+  UseBoxAgentAction: 0,
+  CanvaAgentAction: 0,
+  CreateAndUpdateCanvaAgentAction: 0,
+  ShareCanvaAgentAction: 0,
+  UseCanvaAgentAction: 0,
+  GithubAction: 0,
+  CreateAndUpdateGithubAction: 0,
+  ShareGithubAction: 0,
+  UseGithubAction: 0,
+  NotionAction: 0,
+  CreateAndUpdateNotionAction: 0,
+  ShareNotionAction: 0,
+  UseNotionAction: 0,
+  LinearAction: 0,
+  CreateAndUpdateLinearAction: 0,
+  ShareLinearAction: 0,
+  UseLinearAction: 0,
+  HuggingFaceAction: 0,
+  CreateAndUpdateHuggingFaceAction: 0,
+  ShareHuggingFaceAction: 0,
+  UseHuggingFaceAction: 0,
+  MondayAction: 0,
+  CreateAndUpdateMondayAction: 0,
+  ShareMondayAction: 0,
+  UseMondayAction: 0,
+  HubspotAction: 0,
+  CreateAndUpdateHubspotAction: 0,
+  ShareHubspotAction: 0,
+  UseHubspotAction: 0,
+  IntercomAction: 0,
+  CreateAndUpdateIntercomAction: 0,
+  ShareIntercomAction: 0,
+  UseIntercomAction: 0,
+  NewRelicAction: 0,
+  CreateAndUpdateNewRelicAction: 0,
+  ShareNewRelicAction: 0,
+  UseNewRelicAction: 0,
+  Topic: 0,
+  EditVisualWithQ: 0,
+  BuildCalculatedFieldWithQ: 0,
+  CreateDashboardExecutiveSummaryWithQ: 0,
+  Space: 0,
+  CreateSpaces: 0,
+  ShareSpaces: 0,
+  ChatAgent: 0,
+  CreateChatAgents: 0,
+  ShareChatAgents: 0,
+  Research: 0,
+  SelfUpgradeUserRole: 0,
+  Extension: 0,
+  UseBrowserExtension: 0,
+  UseWordAddInExtension: 0,
+  UseOutlookAddInExtension: 0,
+  UseExcelAddInExtension: 0,
+  UsePowerpointAddInExtension: 0,
+  ManageSharedFolders: 0,
+  GenerateAnalyses: 0,
+  Story: 0,
+  Scenario: 0,
+  Trigger: 0,
+  ScheduleTrigger: 0,
+  InboundEmailTrigger: 0,
+  QuickEventTrigger: 0,
+});
+const i_ColumnGroup: D.LazyStruct = () => ({
+  GeoSpatialColumnGroup: { Name: 0, CountryCode: 0, Columns: 0 },
+});
+const i_ColumnLevelPermissionRule: D.LazyStruct = () => ({
+  Principals: 0,
+  ColumnNames: 0,
+});
+const i_CustomInstructions: D.LazyStruct = () => ({
+  CustomInstructionsString: 0,
+});
+const i_CustomPromptInput: D.LazyStruct = () => ({
+  ExistingPrompt: { ModelProfileId: 0, SubscriptionId: 0, QbsAwsAccountId: 0 },
+  NewPrompt: {
+    ResponseLength: 0,
+    OutputStyle: 0,
+    Identity: 0,
+    Tone: 0,
+    CustomInstructions: 0,
+  },
+});
+const i_DashboardPublishOptions: D.LazyStruct = () => ({
+  AdHocFilteringOption: { AvailabilityStatus: 0 },
+  ExportToCSVOption: { AvailabilityStatus: 0 },
+  SheetControlsOption: { VisibilityState: 0 },
+  VisualPublishOptions: { ExportHiddenFieldsOption: { AvailabilityStatus: 0 } },
+  SheetLayoutElementMaximizationOption: { AvailabilityStatus: 0 },
+  VisualMenuOption: i_VisualMenuOption,
+  VisualAxisSortOption: { AvailabilityStatus: 0 },
+  ExportWithHiddenFieldsOption: { AvailabilityStatus: 0 },
+  DataPointDrillUpDownOption: { AvailabilityStatus: 0 },
+  DataPointMenuLabelOption: { AvailabilityStatus: 0 },
+  DataPointTooltipOption: { AvailabilityStatus: 0 },
+  DataQAEnabledOption: { AvailabilityStatus: 0 },
+  QuickSuiteActionsOption: { AvailabilityStatus: 0 },
+  ExecutiveSummaryOption: { AvailabilityStatus: 0 },
+  DataStoriesSharingOption: { AvailabilityStatus: 0 },
+});
+const i_DashboardSourceEntity: D.LazyStruct = () => ({
+  SourceTemplate: {
+    DataSetReferences: D.list(i_DataSetReference),
+    TopicReferences: D.list(i_TopicReference),
+    Arn: 0,
+  },
+});
+const i_DashboardVersionDefinition: D.LazyStruct = () => ({
+  DataSetIdentifierDeclarations: D.list(i_DataSetIdentifierDeclaration),
+  TopicIdentifierDeclarations: D.list(i_TopicIdentifierDeclaration),
+  Sheets: D.list(i_SheetDefinition),
+  TooltipSheets: D.list(i_TooltipSheetDefinition),
+  CalculatedFields: D.list(i_CalculatedField),
+  ParameterDeclarations: D.list(i_ParameterDeclaration),
+  FilterGroups: D.list(i_FilterGroup),
+  ColumnConfigurations: D.list(i_ColumnConfiguration),
+  AnalysisDefaults: i_AnalysisDefaults,
+  Options: i_AssetOptions,
+  StaticFiles: D.list(i_StaticFile),
+});
+const i_DashboardVisualId: D.LazyStruct = () => ({
+  DashboardId: 0,
+  SheetId: 0,
+  VisualId: 0,
+});
+const i_DataPrepConfiguration: D.LazyStruct = () => ({
+  SourceTableMap: D.map({
+    PhysicalTableId: 0,
+    DataSet: { DataSetArn: 0, InputColumns: D.list(i_InputColumn) },
+  }),
+  TransformStepMap: D.map({
+    ImportTableStep: {
+      Alias: 0,
+      Source: {
+        SourceTableId: 0,
+        ColumnIdMappings: D.list(i_DataSetColumnIdMapping),
+      },
+    },
+    ProjectStep: i_ProjectOperation,
+    FiltersStep: {
+      Alias: 0,
+      Source: i_TransformOperationSource,
+      FilterOperations: D.list(i_FilterOperation),
+    },
+    CreateColumnsStep: i_CreateColumnsOperation,
+    RenameColumnsStep: {
+      Alias: 0,
+      Source: i_TransformOperationSource,
+      RenameColumnOperations: D.list(i_RenameColumnOperation),
+    },
+    CastColumnTypesStep: {
+      Alias: 0,
+      Source: i_TransformOperationSource,
+      CastColumnTypeOperations: D.list(i_CastColumnTypeOperation),
+    },
+    JoinStep: {
+      Alias: 0,
+      LeftOperand: i_TransformOperationSource,
+      RightOperand: i_TransformOperationSource,
+      Type: 0,
+      OnClause: 0,
+      LeftOperandProperties: i_JoinOperandProperties,
+      RightOperandProperties: i_JoinOperandProperties,
+    },
+    AggregateStep: {
+      Alias: 0,
+      Source: i_TransformOperationSource,
+      GroupByColumnNames: 0,
+      Aggregations: D.list({
+        AggregationFunction: i_DataPrepAggregationFunction,
+        NewColumnName: 0,
+        NewColumnId: 0,
+      }),
+    },
+    PivotStep: {
+      Alias: 0,
+      Source: i_TransformOperationSource,
+      GroupByColumnNames: 0,
+      ValueColumnConfiguration: {
+        AggregationFunction: i_DataPrepAggregationFunction,
+      },
+      PivotConfiguration: {
+        LabelColumnName: 0,
+        PivotedLabels: D.list({
+          LabelName: 0,
+          NewColumnName: 0,
+          NewColumnId: 0,
+        }),
+      },
+    },
+    UnpivotStep: {
+      Alias: 0,
+      Source: i_TransformOperationSource,
+      ColumnsToUnpivot: D.list({ ColumnName: 0, NewValue: 0 }),
+      UnpivotedLabelColumnName: 0,
+      UnpivotedLabelColumnId: 0,
+      UnpivotedValueColumnName: 0,
+      UnpivotedValueColumnId: 0,
+    },
+    AppendStep: {
+      Alias: 0,
+      FirstSource: i_TransformOperationSource,
+      SecondSource: i_TransformOperationSource,
+      AppendedColumns: D.list({ ColumnName: 0, NewColumnId: 0 }),
+    },
+  }),
+  DestinationTableMap: D.map({ Alias: 0, Source: { TransformOperationId: 0 } }),
+});
+const i_DataSetRefreshProperties: D.LazyStruct = () => ({
+  RefreshConfiguration: {
+    IncrementalRefresh: {
+      LookbackWindow: { ColumnName: 0, Size: 0, SizeUnit: 0 },
+    },
+  },
+  FailureConfiguration: { EmailAlert: { AlertStatus: 0 } },
+});
+const i_DataSetUsageConfiguration: D.LazyStruct = () => ({
+  DisableUseAsDirectQuerySource: 0,
+  DisableUseAsImportedSource: 0,
+});
+const i_DataSourceCredentials: D.LazyStruct = () => ({
+  CredentialPair: {
+    Username: 0,
+    Password: 0,
+    AlternateDataSourceParameters: D.list(i_DataSourceParameters),
+  },
+  CopySourceArn: 0,
+  SecretArn: 0,
+  KeyPairCredentials: {
+    KeyPairUsername: 0,
+    PrivateKey: 0,
+    PrivateKeyPassphrase: 0,
+  },
+  WebProxyCredentials: { WebProxyUsername: 0, WebProxyPassword: 0 },
+  OAuthClientCredentials: { ClientId: 0, ClientSecret: 0, Username: 0 },
+});
+const i_DataSourceParameters: D.LazyStruct = () => ({
+  AmazonElasticsearchParameters: { Domain: 0 },
+  AthenaParameters: {
+    WorkGroup: 0,
+    RoleArn: 0,
+    ConsumerAccountRoleArn: 0,
+    IdentityCenterConfiguration: i_IdentityCenterConfiguration,
+  },
+  AuroraParameters: { Host: 0, Port: 0, Database: 0 },
+  AuroraPostgreSqlParameters: { Host: 0, Port: 0, Database: 0 },
+  AwsIotAnalyticsParameters: { DataSetName: 0 },
+  JiraParameters: { SiteBaseUrl: 0 },
+  MariaDbParameters: { Host: 0, Port: 0, Database: 0 },
+  MySqlParameters: { Host: 0, Port: 0, Database: 0 },
+  OracleParameters: { Host: 0, Port: 0, Database: 0, UseServiceName: 0 },
+  PostgreSqlParameters: { Host: 0, Port: 0, Database: 0 },
+  PrestoParameters: { Host: 0, Port: 0, Catalog: 0 },
+  RdsParameters: { InstanceId: 0, Database: 0 },
+  RedshiftParameters: {
+    Host: 0,
+    Port: 0,
+    Database: 0,
+    ClusterId: 0,
+    IAMParameters: {
+      RoleArn: 0,
+      DatabaseUser: 0,
+      DatabaseGroups: 0,
+      AutoCreateDatabaseUser: 0,
+    },
+    IdentityCenterConfiguration: i_IdentityCenterConfiguration,
+  },
+  S3Parameters: { ManifestFileLocation: { Bucket: 0, Key: 0 }, RoleArn: 0 },
+  S3TablesParameters: { TableBucketArn: 0 },
+  S3KnowledgeBaseParameters: {
+    RoleArn: 0,
+    BucketUrl: 0,
+    MetadataFilesLocation: 0,
+  },
+  ServiceNowParameters: { SiteBaseUrl: 0 },
+  SnowflakeParameters: {
+    Host: 0,
+    Database: 0,
+    Warehouse: 0,
+    AuthenticationType: 0,
+    DatabaseAccessControlRole: 0,
+    OAuthParameters: i_OAuthParameters,
+  },
+  SparkParameters: { Host: 0, Port: 0 },
+  SqlServerParameters: { Host: 0, Port: 0, Database: 0 },
+  TeradataParameters: { Host: 0, Port: 0, Database: 0 },
+  TwitterParameters: { Query: 0, MaxRows: 0 },
+  AmazonOpenSearchParameters: { Domain: 0 },
+  ExasolParameters: { Host: 0, Port: 0 },
+  DatabricksParameters: { Host: 0, Port: 0, SqlEndpointPath: 0 },
+  StarburstParameters: {
+    Host: 0,
+    Port: 0,
+    Catalog: 0,
+    ProductType: 0,
+    DatabaseAccessControlRole: 0,
+    AuthenticationType: 0,
+    OAuthParameters: i_OAuthParameters,
+  },
+  TrinoParameters: { Host: 0, Port: 0, Catalog: 0 },
+  BigQueryParameters: { ProjectId: 0, DataSetRegion: 0 },
+  ImpalaParameters: { Host: 0, Port: 0, Database: 0, SqlEndpointPath: 0 },
+  CustomConnectionParameters: { ConnectionType: 0 },
+  WebCrawlerParameters: {
+    WebCrawlerAuthType: 0,
+    UsernameFieldXpath: 0,
+    PasswordFieldXpath: 0,
+    UsernameButtonXpath: 0,
+    PasswordButtonXpath: 0,
+    LoginPageUrl: 0,
+    WebProxyHostName: 0,
+    WebProxyPortNumber: 0,
+  },
+  ConfluenceParameters: { ConfluenceUrl: 0 },
+  QBusinessParameters: { ApplicationArn: 0 },
+  SharePointParameters: {
+    SharePointDomain: 0,
+    TenantId: 0,
+    ClientId: 0,
+    AuthType: 0,
+  },
+  GoogleDriveParameters: { AuthType: 0 },
+  OneDriveParameters: { TenantId: 0, ClientId: 0, AuthType: 0 },
+  FMKBParameters: { KnowledgeBaseArn: 0, LinkedDataSourceIds: 0 },
+});
+const i_DatasetParameter: D.LazyStruct = () => ({
+  StringDatasetParameter: {
+    Id: 0,
+    Name: 0,
+    ValueType: 0,
+    DefaultValues: { StaticValues: 0 },
+  },
+  DecimalDatasetParameter: {
+    Id: 0,
+    Name: 0,
+    ValueType: 0,
+    DefaultValues: { StaticValues: 0 },
+  },
+  IntegerDatasetParameter: {
+    Id: 0,
+    Name: 0,
+    ValueType: 0,
+    DefaultValues: { StaticValues: 0 },
+  },
+  DateTimeDatasetParameter: {
+    Id: 0,
+    Name: 0,
+    ValueType: 0,
+    TimeGranularity: 0,
+    DefaultValues: { StaticValues: 0 },
+  },
+});
+const i_FieldFolder: D.LazyStruct = () => ({ description: 0, columns: 0 });
+const i_Governance: D.LazyStruct = () => ({ DefaultCategoryEffects: 0 });
+const i_KnowledgeBaseConfiguration: D.LazyStruct = () => ({
+  templateConfiguration: { template: 0 },
+});
+const i_LogicalTable: D.LazyStruct = () => ({
+  Alias: 0,
+  DataTransforms: D.list({
+    ProjectOperation: i_ProjectOperation,
+    FilterOperation: i_FilterOperation,
+    CreateColumnsOperation: i_CreateColumnsOperation,
+    RenameColumnOperation: i_RenameColumnOperation,
+    CastColumnTypeOperation: i_CastColumnTypeOperation,
+    TagColumnOperation: {
+      ColumnName: 0,
+      Tags: D.list({
+        ColumnGeographicRole: 0,
+        ColumnDescription: i_ColumnDescription,
+      }),
+    },
+    UntagColumnOperation: { ColumnName: 0, TagNames: 0 },
+    OverrideDatasetParameterOperation: {
+      ParameterName: 0,
+      NewParameterName: 0,
+      NewDefaultValues: {
+        StringStaticValues: 0,
+        DecimalStaticValues: 0,
+        DateTimeStaticValues: 0,
+        IntegerStaticValues: 0,
+      },
+    },
+  }),
+  Source: {
+    JoinInstruction: {
+      LeftOperand: 0,
+      RightOperand: 0,
+      LeftJoinKeyProperties: i_JoinKeyProperties,
+      RightJoinKeyProperties: i_JoinKeyProperties,
+      Type: 0,
+      OnClause: 0,
+    },
+    PhysicalTableId: 0,
+    DataSetArn: 0,
+  },
+});
+const i_MediaExtractionConfiguration: D.LazyStruct = () => ({
+  imageExtractionConfiguration: { imageExtractionStatus: 0 },
+  audioExtractionConfiguration: { audioExtractionStatus: 0 },
+  videoExtractionConfiguration: {
+    videoExtractionStatus: 0,
+    videoExtractionType: 0,
+  },
+});
+const i_Parameters: D.LazyStruct = () => ({
+  StringParameters: D.list({ Name: 0, Values: 0 }),
+  IntegerParameters: D.list({ Name: 0, Values: 0 }),
+  DecimalParameters: D.list({ Name: 0, Values: 0 }),
+  DateTimeParameters: D.list({ Name: 0, Values: 0 }),
+});
+const i_PerformanceConfiguration: D.LazyStruct = () => ({
+  UniqueKeys: D.list({ ColumnNames: 0 }),
+});
+const i_Permission: D.LazyStruct = () => ({ Actions: 0, Principal: 0 });
+const i_PhysicalTable: D.LazyStruct = () => ({
+  RelationalTable: {
+    DataSourceArn: 0,
+    Catalog: 0,
+    Schema: 0,
+    Name: 0,
+    InputColumns: D.list(i_InputColumn),
+  },
+  CustomSql: {
+    DataSourceArn: 0,
+    Name: 0,
+    SqlQuery: 0,
+    Columns: D.list(i_InputColumn),
+  },
+  S3Source: {
+    DataSourceArn: 0,
+    UploadSettings: i_UploadSettings,
+    InputColumns: D.list(i_InputColumn),
+  },
+  SaaSTable: {
+    DataSourceArn: 0,
+    TablePath: D.list({ Name: 0, Id: 0 }),
+    InputColumns: D.list(i_InputColumn),
+  },
+  FileSource: {
+    DataSourceArn: 0,
+    UploadSettings: i_UploadSettings,
+    SheetIndex: 0,
+    InputColumns: D.list(i_InputColumn),
+  },
+});
+const i_ProfileLimitValue: D.LazyStruct = () => ({ maxValue: 0, unit: 0 });
+const i_ProviderConfig: D.LazyStruct = () => ({
+  MicrosoftPurview: {
+    Credentials: { SecretArn: 0 },
+    LabelActionMappings: D.list({ LabelId: 0, LabelName: 0, Action: 0 }),
+    UnmappedAction: 0,
+  },
+});
+const i_RefreshSchedule: D.LazyStruct = () => ({
+  ScheduleId: 0,
+  ScheduleFrequency: {
+    Interval: 0,
+    RefreshOnDay: { DayOfWeek: 0, DayOfMonth: 0 },
+    Timezone: 0,
+    TimeOfTheDay: 0,
+  },
+  StartAfterDateTime: 0,
+  RefreshType: 0,
+  Arn: 0,
+});
+const i_RegisteredUserEmbeddingExperienceConfiguration: D.LazyStruct = () => ({
+  Dashboard: {
+    InitialDashboardId: 0,
+    FeatureConfigurations: {
+      StatePersistence: i_StatePersistenceConfigurations,
+      Bookmarks: { Enabled: 0 },
+      SharedView: i_SharedViewConfigurations,
+      AmazonQInQuickSight: {
+        ExecutiveSummary: i_ExecutiveSummaryConfigurations,
+      },
+      Schedules: i_SchedulesConfigurations,
+      RecentSnapshots: i_RecentSnapshotsConfigurations,
+      ThresholdAlerts: i_ThresholdAlertsConfigurations,
+      DashboardCustomizationSummary:
+        i_DashboardCustomizationSummaryConfigurations,
+    },
+  },
+  QuickSightConsole: {
+    InitialPath: 0,
+    FeatureConfigurations: {
+      StatePersistence: i_StatePersistenceConfigurations,
+      SharedView: i_SharedViewConfigurations,
+      AmazonQInQuickSight: {
+        DataQnA: { Enabled: 0 },
+        GenerativeAuthoring: { Enabled: 0 },
+        ExecutiveSummary: i_ExecutiveSummaryConfigurations,
+        DataStories: { Enabled: 0 },
+      },
+      Schedules: i_SchedulesConfigurations,
+      RecentSnapshots: i_RecentSnapshotsConfigurations,
+      ThresholdAlerts: i_ThresholdAlertsConfigurations,
+      DashboardCustomizationSummary:
+        i_DashboardCustomizationSummaryConfigurations,
+    },
+  },
+  QSearchBar: { InitialTopicId: 0 },
+  DashboardVisual: { InitialDashboardVisualId: i_DashboardVisualId },
+  GenerativeQnA: { InitialTopicId: 0 },
+  QuickChat: {},
+});
+const i_ResourcePermission: D.LazyStruct = () => ({ Principal: 0, Actions: 0 });
+const i_RowLevelPermissionDataSet: D.LazyStruct = () => ({
+  Namespace: 0,
+  Arn: 0,
+  PermissionPolicy: 0,
+  FormatVersion: 0,
+  Status: 0,
+});
+const i_RowLevelPermissionTagConfiguration: D.LazyStruct = () => ({
+  Status: 0,
+  TagRules: D.list({
+    TagKey: 0,
+    ColumnName: 0,
+    TagMultiValueDelimiter: 0,
+    MatchAllValue: 0,
+  }),
+  TagRuleConfigurations: 0,
+});
+const i_SemanticModelConfiguration: D.LazyStruct = () => ({
+  TableMap: D.map({
+    Alias: 0,
+    DestinationTableId: 0,
+    RowLevelPermissionConfiguration: {
+      TagConfiguration: i_RowLevelPermissionTagConfiguration,
+      RowLevelPermissionDataSet: i_RowLevelPermissionDataSet,
+    },
+    SemanticMetadata: {
+      ColumnMetadata: D.list({
+        ColumnNames: 0,
+        ColumnProperties: D.list({
+          Description: i_ColumnDescription,
+          AdditionalNotes: { Text: 0 },
+          SemanticType: { GeographicalRole: 0 },
+        }),
+      }),
+    },
+  }),
+  SemanticMetadata: D.list({
+    Description: { Text: 0 },
+    CustomInstructions: D.list({
+      InlineCustomInstruction: {
+        InstructionText: 0,
+        UploadedDocumentMetadata: { Name: 0 },
+      },
+    }),
+  }),
+});
+const i_SessionTag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_SharedViewConfigurations: D.LazyStruct = () => ({ Enabled: 0 });
+const i_SpaceResourceOperation: D.LazyStruct = () => ({
+  ResourceType: 0,
+  ResourceDetails: { resourceArn: 0 },
+});
+const i_SslProperties: D.LazyStruct = () => ({ DisableSsl: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_TemplateSourceEntity: D.LazyStruct = () => ({
+  SourceAnalysis: {
+    Arn: 0,
+    DataSetReferences: D.list(i_DataSetReference),
+    TopicReferences: D.list(i_TopicReference),
+  },
+  SourceTemplate: { Arn: 0 },
+});
+const i_TemplateVersionDefinition: D.LazyStruct = () => ({
+  DataSetConfigurations: D.list({
+    Placeholder: 0,
+    DataSetSchema: i_DataSetSchema,
+    ColumnGroupSchemaList: D.list(i_ColumnGroupSchema),
+  }),
+  TopicConfigurations: D.list({
+    Placeholder: 0,
+    DataSetSchema: i_DataSetSchema,
+    ColumnGroupSchemaList: D.list(i_ColumnGroupSchema),
+  }),
+  Sheets: D.list(i_SheetDefinition),
+  TooltipSheets: D.list(i_TooltipSheetDefinition),
+  CalculatedFields: D.list(i_CalculatedField),
+  ParameterDeclarations: D.list(i_ParameterDeclaration),
+  FilterGroups: D.list(i_FilterGroup),
+  ColumnConfigurations: D.list(i_ColumnConfiguration),
+  AnalysisDefaults: i_AnalysisDefaults,
+  Options: i_AssetOptions,
+  QueryExecutionOptions: i_QueryExecutionOptions,
+  StaticFiles: D.list(i_StaticFile),
+});
+const i_ThemeConfiguration: D.LazyStruct = () => ({
+  DataColorPalette: { Colors: 0, MinMaxGradient: 0, EmptyFillColor: 0 },
+  UIColorPalette: {
+    PrimaryForeground: 0,
+    PrimaryBackground: 0,
+    SecondaryForeground: 0,
+    SecondaryBackground: 0,
+    Accent: 0,
+    AccentForeground: 0,
+    Danger: 0,
+    DangerForeground: 0,
+    Warning: 0,
+    WarningForeground: 0,
+    Success: 0,
+    SuccessForeground: 0,
+    Dimension: 0,
+    DimensionForeground: 0,
+    Measure: 0,
+    MeasureForeground: 0,
+  },
+  Sheet: {
+    Tile: {
+      BackgroundColor: 0,
+      Border: { Color: 0, Show: 0, Width: 0 },
+      BorderRadius: 0,
+      Padding: 0,
+    },
+    TileLayout: { Gutter: { Show: 0 }, Margin: { Show: 0 } },
+    Background: { Color: 0, Gradient: 0 },
+  },
+  Typography: {
+    FontFamilies: D.list({ FontFamily: 0 }),
+    AxisTitleFontConfiguration: i_FontConfiguration,
+    AxisLabelFontConfiguration: i_FontConfiguration,
+    LegendTitleFontConfiguration: i_FontConfiguration,
+    LegendValueFontConfiguration: i_FontConfiguration,
+    DataLabelFontConfiguration: i_FontConfiguration,
+    VisualTitleFontConfiguration: {
+      FontConfiguration: i_FontConfiguration,
+      TextAlignment: 0,
+      TextTransform: 0,
+    },
+    VisualSubtitleFontConfiguration: {
+      FontConfiguration: i_FontConfiguration,
+      TextAlignment: 0,
+      TextTransform: 0,
+    },
+    ControlTitleFontConfiguration: {
+      FontConfiguration: i_FontConfiguration,
+      TextAlignment: 0,
+    },
+  },
+});
+const i_TopicDetails: D.LazyStruct = () => ({
+  Name: 0,
+  Description: 0,
+  UserExperienceVersion: 0,
+  DataSets: D.list({
+    DatasetArn: 0,
+    DatasetName: 0,
+    DatasetDescription: 0,
+    DataAggregation: { DatasetRowDateGranularity: 0, DefaultDateColumnName: 0 },
+    Filters: D.list({
+      FilterDescription: 0,
+      FilterClass: 0,
+      FilterName: 0,
+      FilterSynonyms: 0,
+      OperandFieldName: 0,
+      FilterType: 0,
+      CategoryFilter: {
+        CategoryFilterFunction: 0,
+        CategoryFilterType: 0,
+        Constant: {
+          ConstantType: 0,
+          SingularConstant: 0,
+          CollectiveConstant: { ValueList: 0 },
+        },
+        Inverse: 0,
+        NullFilter: 0,
+      },
+      NumericEqualityFilter: {
+        Constant: i_TopicSingularFilterConstant,
+        Aggregation: 0,
+        Inverse: 0,
+        NullFilter: 0,
+      },
+      NumericRangeFilter: {
+        Inclusive: 0,
+        Constant: i_TopicRangeFilterConstant,
+        Aggregation: 0,
+        Inverse: 0,
+        NullFilter: 0,
+      },
+      DateRangeFilter: {
+        Inclusive: 0,
+        Constant: i_TopicRangeFilterConstant,
+        NullFilter: 0,
+      },
+      RelativeDateFilter: {
+        TimeGranularity: 0,
+        RelativeDateFilterFunction: 0,
+        Constant: i_TopicSingularFilterConstant,
+        NullFilter: 0,
+      },
+      NullFilter: {
+        NullFilterType: 0,
+        Constant: i_TopicSingularFilterConstant,
+        Inverse: 0,
+      },
+    }),
+    Columns: D.list({
+      ColumnName: 0,
+      ColumnFriendlyName: 0,
+      ColumnDescription: 0,
+      ColumnSynonyms: 0,
+      ColumnDataRole: 0,
+      Aggregation: 0,
+      IsIncludedInTopic: 0,
+      DisableIndexing: 0,
+      ComparativeOrder: i_ComparativeOrder,
+      SemanticType: i_SemanticType,
+      TimeGranularity: 0,
+      AllowedAggregations: 0,
+      NotAllowedAggregations: 0,
+      DefaultFormatting: i_DefaultFormatting,
+      NeverAggregateInFilter: 0,
+      CellValueSynonyms: D.list(i_CellValueSynonym),
+      NonAdditive: 0,
+    }),
+    CalculatedFields: D.list({
+      CalculatedFieldName: 0,
+      CalculatedFieldDescription: 0,
+      Expression: 0,
+      CalculatedFieldSynonyms: 0,
+      IsIncludedInTopic: 0,
+      DisableIndexing: 0,
+      ColumnDataRole: 0,
+      TimeGranularity: 0,
+      DefaultFormatting: i_DefaultFormatting,
+      Aggregation: 0,
+      ComparativeOrder: i_ComparativeOrder,
+      SemanticType: i_SemanticType,
+      AllowedAggregations: 0,
+      NotAllowedAggregations: 0,
+      NeverAggregateInFilter: 0,
+      CellValueSynonyms: D.list(i_CellValueSynonym),
+      NonAdditive: 0,
+    }),
+    NamedEntities: D.list({
+      EntityName: 0,
+      EntityDescription: 0,
+      EntitySynonyms: 0,
+      SemanticEntityType: { TypeName: 0, SubTypeName: 0, TypeParameters: 0 },
+      Definition: D.list({
+        FieldName: 0,
+        PropertyName: 0,
+        PropertyRole: 0,
+        PropertyUsage: 0,
+        Metric: { Aggregation: 0, AggregationFunctionParameters: 0 },
+        RankOrder: 0,
+        PresentationOrder: 0,
+        IsHidden: 0,
+      }),
+      Sort: D.list({ FieldName: 0, Direction: 0 }),
+      RankOrder: 0,
+      PresentationOrder: 0,
+    }),
+  }),
+  ConfigOptions: { QBusinessInsightsEnabled: 0 },
+});
+const i_TopicIR: D.LazyStruct = () => ({
+  Metrics: D.list({
+    MetricId: i_Identifier,
+    Function: {
+      Aggregation: 0,
+      AggregationFunctionParameters: 0,
+      Period: 0,
+      PeriodField: 0,
+    },
+    Operands: D.list(i_Identifier),
+    ComparisonMethod: { Type: 0, Period: 0, WindowSize: 0 },
+    Expression: 0,
+    CalculatedFieldReferences: D.list(i_Identifier),
+    DisplayFormat: 0,
+    DisplayFormatOptions: i_DisplayFormatOptions,
+    NamedEntity: i_NamedEntityRef,
+  }),
+  GroupByList: D.list({
+    FieldName: i_Identifier,
+    TimeGranularity: 0,
+    Sort: i_TopicSortClause,
+    DisplayFormat: 0,
+    DisplayFormatOptions: i_DisplayFormatOptions,
+    NamedEntity: i_NamedEntityRef,
+  }),
+  Filters: D.list(D.list(i_TopicIRFilterOption)),
+  Sort: i_TopicSortClause,
+  ContributionAnalysis: {
+    Factors: D.list({ FieldName: 0 }),
+    TimeRanges: {
+      StartRange: i_TopicIRFilterOption,
+      EndRange: i_TopicIRFilterOption,
+    },
+    Direction: 0,
+    SortType: 0,
+  },
+  Visual: { type: 0 },
+});
+const i_TopicRefreshSchedule: D.LazyStruct = () => ({
+  IsEnabled: 0,
+  BasedOnSpiceSchedule: 0,
+  StartingAt: 0,
+  Timezone: 0,
+  RepeatAt: 0,
+  TopicScheduleType: 0,
+});
+const i_TopicSearchFilter: D.LazyStruct = () => ({
+  Operator: 0,
+  Name: 0,
+  Value: 0,
+});
+const i_TopicV2Details: D.LazyStruct = () => ({
+  Name: 0,
+  Description: 0,
+  DataSets: D.list({ DataSetArn: 0, DataSetName: 0 }),
+  DataSetRelations: D.list({
+    Left: i_TopicV2DataSetRelationEndpoint,
+    Right: i_TopicV2DataSetRelationEndpoint,
+  }),
+});
+const i_TopicVisual: D.LazyStruct = () => ({
+  VisualId: 0,
+  Role: 0,
+  Ir: i_TopicIR,
+  SupportingVisuals: D.list(i_TopicVisual),
+});
+const i_ValidationStrategy: D.LazyStruct = () => ({ Mode: 0 });
+const i_VpcConnectionProperties: D.LazyStruct = () => ({ VpcConnectionArn: 0 });
 const o_ActionConnectorSummary: D.LazyStruct = () => ({
   Name: D.secret,
   CreatedTime: D.ts,
@@ -26552,6 +28854,562 @@ const o_TopicVisual: D.LazyStruct = () => ({
   Ir: o_TopicIR,
   SupportingVisuals: D.list(o_TopicVisual),
 });
+const i_AnalysisDefaults: D.LazyStruct = () => ({
+  DefaultNewSheetConfiguration: {
+    InteractiveLayoutConfiguration: {
+      Grid: { CanvasSizeOptions: i_GridLayoutCanvasSizeOptions },
+      FreeForm: { CanvasSizeOptions: i_FreeFormLayoutCanvasSizeOptions },
+    },
+    PaginatedLayoutConfiguration: {
+      SectionBased: {
+        CanvasSizeOptions: i_SectionBasedLayoutCanvasSizeOptions,
+      },
+    },
+    SheetContentType: 0,
+  },
+});
+const i_AssetOptions: D.LazyStruct = () => ({
+  Timezone: 0,
+  WeekStart: 0,
+  QBusinessInsightsStatus: 0,
+  ExcludedDataSetArns: 0,
+  CustomActionDefaults: i_VisualCustomActionDefaults,
+  VisualMessages: {
+    NoDataMessage: {
+      Enabled: 0,
+      Title: 0,
+      TitleVisibility: 0,
+      Description: 0,
+      DescriptionVisibility: 0,
+      LinkText: 0,
+      LinkUrl: 0,
+      LinkVisibility: 0,
+    },
+  },
+});
+const i_CalculatedField: D.LazyStruct = () => ({
+  DataSetIdentifier: 0,
+  TopicIdentifier: 0,
+  Name: 0,
+  Expression: 0,
+});
+const i_CastColumnTypeOperation: D.LazyStruct = () => ({
+  ColumnName: 0,
+  NewColumnType: 0,
+  SubType: 0,
+  Format: 0,
+});
+const i_CellValueSynonym: D.LazyStruct = () => ({ CellValue: 0, Synonyms: 0 });
+const i_ColumnConfiguration: D.LazyStruct = () => ({
+  Column: i_ColumnIdentifier,
+  FormatConfiguration: i_FormatConfiguration,
+  Role: 0,
+  ColorsConfiguration: {
+    CustomColors: D.list({ FieldValue: 0, Color: 0, SpecialValue: 0 }),
+  },
+  DecalSettingsConfiguration: { CustomDecalSettings: D.list(i_DecalSettings) },
+});
+const i_ColumnDescription: D.LazyStruct = () => ({ Text: 0 });
+const i_ColumnGroupSchema: D.LazyStruct = () => ({
+  Name: 0,
+  ColumnGroupColumnSchemaList: D.list({ Name: 0 }),
+});
+const i_ComparativeOrder: D.LazyStruct = () => ({
+  UseOrdering: 0,
+  SpecifedOrder: 0,
+  TreatUndefinedSpecifiedValues: 0,
+});
+const i_CreateColumnsOperation: D.LazyStruct = () => ({
+  Alias: 0,
+  Source: i_TransformOperationSource,
+  Columns: D.list({ ColumnName: 0, ColumnId: 0, Expression: 0 }),
+});
+const i_DashboardCustomizationSummaryConfigurations: D.LazyStruct = () => ({
+  Enabled: 0,
+});
+const i_DataPrepAggregationFunction: D.LazyStruct = () => ({
+  SimpleAggregation: { InputColumnName: 0, FunctionType: 0 },
+  ListAggregation: { InputColumnName: 0, Separator: 0, Distinct: 0 },
+});
+const i_DataSetColumnIdMapping: D.LazyStruct = () => ({
+  SourceColumnId: 0,
+  TargetColumnId: 0,
+});
+const i_DataSetIdentifierDeclaration: D.LazyStruct = () => ({
+  Identifier: 0,
+  DataSetArn: 0,
+});
+const i_DataSetReference: D.LazyStruct = () => ({
+  DataSetPlaceholder: 0,
+  DataSetArn: 0,
+});
+const i_DataSetSchema: D.LazyStruct = () => ({
+  ColumnSchemaList: D.list({ Name: 0, DataType: 0, GeographicRole: 0 }),
+});
+const i_DefaultFormatting: D.LazyStruct = () => ({
+  DisplayFormat: 0,
+  DisplayFormatOptions: i_DisplayFormatOptions,
+});
+const i_DisplayFormatOptions: D.LazyStruct = () => ({
+  UseBlankCellFormat: 0,
+  BlankCellFormat: 0,
+  DateFormat: 0,
+  DecimalSeparator: 0,
+  GroupingSeparator: 0,
+  UseGrouping: 0,
+  FractionDigits: 0,
+  Prefix: 0,
+  Suffix: 0,
+  UnitScaler: 0,
+  NegativeFormat: { Prefix: 0, Suffix: 0 },
+  CurrencySymbol: 0,
+});
+const i_ExecutiveSummaryConfigurations: D.LazyStruct = () => ({ Enabled: 0 });
+const i_FilterGroup: D.LazyStruct = () => ({
+  FilterGroupId: 0,
+  Filters: D.list({
+    CategoryFilter: {
+      FilterId: 0,
+      Column: i_ColumnIdentifier,
+      Configuration: i_CategoryFilterConfiguration,
+      DefaultFilterControlConfiguration: i_DefaultFilterControlConfiguration,
+    },
+    NumericRangeFilter: {
+      FilterId: 0,
+      Column: i_ColumnIdentifier,
+      IncludeMinimum: 0,
+      IncludeMaximum: 0,
+      RangeMinimum: i_NumericRangeFilterValue,
+      RangeMaximum: i_NumericRangeFilterValue,
+      SelectAllOptions: 0,
+      AggregationFunction: i_AggregationFunction,
+      NullOption: 0,
+      DefaultFilterControlConfiguration: i_DefaultFilterControlConfiguration,
+    },
+    NumericEqualityFilter: {
+      FilterId: 0,
+      Column: i_ColumnIdentifier,
+      Value: 0,
+      SelectAllOptions: 0,
+      MatchOperator: 0,
+      AggregationFunction: i_AggregationFunction,
+      ParameterName: 0,
+      NullOption: 0,
+      DefaultFilterControlConfiguration: i_DefaultFilterControlConfiguration,
+    },
+    TimeEqualityFilter: {
+      FilterId: 0,
+      Column: i_ColumnIdentifier,
+      Value: 0,
+      ParameterName: 0,
+      TimeGranularity: 0,
+      RollingDate: i_RollingDateConfiguration,
+      DefaultFilterControlConfiguration: i_DefaultFilterControlConfiguration,
+    },
+    TimeRangeFilter: {
+      FilterId: 0,
+      Column: i_ColumnIdentifier,
+      IncludeMinimum: 0,
+      IncludeMaximum: 0,
+      RangeMinimumValue: i_TimeRangeFilterValue,
+      RangeMaximumValue: i_TimeRangeFilterValue,
+      NullOption: 0,
+      ExcludePeriodConfiguration: i_ExcludePeriodConfiguration,
+      TimeGranularity: 0,
+      DefaultFilterControlConfiguration: i_DefaultFilterControlConfiguration,
+    },
+    RelativeDatesFilter: {
+      FilterId: 0,
+      Column: i_ColumnIdentifier,
+      AnchorDateConfiguration: { AnchorOption: 0, ParameterName: 0 },
+      MinimumGranularity: 0,
+      TimeGranularity: 0,
+      RelativeDateType: 0,
+      RelativeDateValue: 0,
+      ParameterName: 0,
+      NullOption: 0,
+      ExcludePeriodConfiguration: i_ExcludePeriodConfiguration,
+      DefaultFilterControlConfiguration: i_DefaultFilterControlConfiguration,
+    },
+    TopBottomFilter: {
+      FilterId: 0,
+      Column: i_ColumnIdentifier,
+      Limit: 0,
+      AggregationSortConfigurations: D.list(i_AggregationSortConfiguration),
+      TimeGranularity: 0,
+      ParameterName: 0,
+      DefaultFilterControlConfiguration: i_DefaultFilterControlConfiguration,
+    },
+    NestedFilter: {
+      FilterId: 0,
+      Column: i_ColumnIdentifier,
+      IncludeInnerSet: 0,
+      InnerFilter: {
+        CategoryInnerFilter: {
+          Column: i_ColumnIdentifier,
+          Configuration: i_CategoryFilterConfiguration,
+          DefaultFilterControlConfiguration:
+            i_DefaultFilterControlConfiguration,
+        },
+      },
+    },
+  }),
+  ScopeConfiguration: {
+    SelectedSheets: {
+      SheetVisualScopingConfigurations: D.list({
+        SheetId: 0,
+        Scope: 0,
+        VisualIds: 0,
+      }),
+    },
+    AllSheets: {},
+  },
+  Status: 0,
+  CrossDataset: 0,
+});
+const i_FilterOperation: D.LazyStruct = () => ({
+  ConditionExpression: 0,
+  StringFilterCondition: {
+    ColumnName: 0,
+    ComparisonFilterCondition: { Operator: 0, Value: { StaticValue: 0 } },
+    ListFilterCondition: { Operator: 0, Values: { StaticValues: 0 } },
+  },
+  NumericFilterCondition: {
+    ColumnName: 0,
+    ComparisonFilterCondition: {
+      Operator: 0,
+      Value: i_DataSetNumericFilterValue,
+    },
+    RangeFilterCondition: {
+      RangeMinimum: i_DataSetNumericFilterValue,
+      RangeMaximum: i_DataSetNumericFilterValue,
+      IncludeMinimum: 0,
+      IncludeMaximum: 0,
+    },
+  },
+  DateFilterCondition: {
+    ColumnName: 0,
+    ComparisonFilterCondition: { Operator: 0, Value: i_DataSetDateFilterValue },
+    RangeFilterCondition: {
+      RangeMinimum: i_DataSetDateFilterValue,
+      RangeMaximum: i_DataSetDateFilterValue,
+      IncludeMinimum: 0,
+      IncludeMaximum: 0,
+    },
+  },
+});
+const i_FontConfiguration: D.LazyStruct = () => ({
+  FontSize: { Relative: 0, Absolute: 0 },
+  FontDecoration: 0,
+  FontColor: 0,
+  FontWeight: { Name: 0 },
+  FontStyle: 0,
+  FontFamily: 0,
+});
+const i_Identifier: D.LazyStruct = () => ({ Identity: 0 });
+const i_IdentityCenterConfiguration: D.LazyStruct = () => ({
+  EnableIdentityPropagation: 0,
+});
+const i_ImageSetConfiguration: D.LazyStruct = () => ({
+  Original: { Source: { PublicUrl: 0, S3Uri: 0 } },
+});
+const i_InputColumn: D.LazyStruct = () => ({
+  Name: 0,
+  Id: 0,
+  Type: 0,
+  SubType: 0,
+});
+const i_JoinKeyProperties: D.LazyStruct = () => ({ UniqueKey: 0 });
+const i_JoinOperandProperties: D.LazyStruct = () => ({
+  OutputColumnNameOverrides: D.list({
+    SourceColumnName: 0,
+    OutputColumnName: 0,
+  }),
+});
+const i_NamedEntityRef: D.LazyStruct = () => ({ NamedEntityName: 0 });
+const i_OAuthParameters: D.LazyStruct = () => ({
+  TokenProviderUrl: 0,
+  OAuthScope: 0,
+  IdentityProviderVpcConnectionProperties: i_VpcConnectionProperties,
+  IdentityProviderResourceUri: 0,
+  IdentityProviderCACertificatesBundleS3Uri: 0,
+});
+const i_Palette: D.LazyStruct = () => ({ Foreground: 0, Background: 0 });
+const i_ParameterDeclaration: D.LazyStruct = () => ({
+  StringParameterDeclaration: {
+    ParameterValueType: 0,
+    Name: 0,
+    DefaultValues: { DynamicValue: i_DynamicDefaultValue, StaticValues: 0 },
+    ValueWhenUnset: { ValueWhenUnsetOption: 0, CustomValue: 0 },
+    MappedDataSetParameters: D.list(i_MappedDataSetParameter),
+  },
+  DecimalParameterDeclaration: {
+    ParameterValueType: 0,
+    Name: 0,
+    DefaultValues: { DynamicValue: i_DynamicDefaultValue, StaticValues: 0 },
+    ValueWhenUnset: { ValueWhenUnsetOption: 0, CustomValue: 0 },
+    MappedDataSetParameters: D.list(i_MappedDataSetParameter),
+  },
+  IntegerParameterDeclaration: {
+    ParameterValueType: 0,
+    Name: 0,
+    DefaultValues: { DynamicValue: i_DynamicDefaultValue, StaticValues: 0 },
+    ValueWhenUnset: { ValueWhenUnsetOption: 0, CustomValue: 0 },
+    MappedDataSetParameters: D.list(i_MappedDataSetParameter),
+  },
+  DateTimeParameterDeclaration: {
+    Name: 0,
+    DefaultValues: {
+      DynamicValue: i_DynamicDefaultValue,
+      StaticValues: 0,
+      RollingDate: i_RollingDateConfiguration,
+    },
+    TimeGranularity: 0,
+    ValueWhenUnset: { ValueWhenUnsetOption: 0, CustomValue: 0 },
+    MappedDataSetParameters: D.list(i_MappedDataSetParameter),
+  },
+});
+const i_ProjectOperation: D.LazyStruct = () => ({
+  Alias: 0,
+  Source: i_TransformOperationSource,
+  ProjectedColumns: 0,
+});
+const i_QueryExecutionOptions: D.LazyStruct = () => ({ QueryExecutionMode: 0 });
+const i_RecentSnapshotsConfigurations: D.LazyStruct = () => ({ Enabled: 0 });
+const i_RenameColumnOperation: D.LazyStruct = () => ({
+  ColumnName: 0,
+  NewColumnName: 0,
+});
+const i_SchedulesConfigurations: D.LazyStruct = () => ({ Enabled: 0 });
+const i_SemanticType: D.LazyStruct = () => ({
+  TypeName: 0,
+  SubTypeName: 0,
+  TypeParameters: 0,
+  TruthyCellValue: 0,
+  TruthyCellValueSynonyms: 0,
+  FalseyCellValue: 0,
+  FalseyCellValueSynonyms: 0,
+});
+const i_SheetDefinition: D.LazyStruct = () => ({
+  SheetId: 0,
+  Title: 0,
+  Description: 0,
+  Name: 0,
+  ParameterControls: D.list({
+    DateTimePicker: {
+      ParameterControlId: 0,
+      Title: 0,
+      SourceParameterName: 0,
+      DisplayOptions: i_DateTimePickerControlDisplayOptions,
+      ControlTitleFormatText: i_ControlTitleFormatText,
+    },
+    List: {
+      ParameterControlId: 0,
+      Title: 0,
+      SourceParameterName: 0,
+      DisplayOptions: i_ListControlDisplayOptions,
+      Type: 0,
+      SelectableValues: i_ParameterSelectableValues,
+      CascadingControlConfiguration: i_CascadingControlConfiguration,
+      ControlSortConfigurations: D.list(i_ControlSortConfiguration),
+      ControlTitleFormatText: i_ControlTitleFormatText,
+    },
+    Dropdown: {
+      ParameterControlId: 0,
+      Title: 0,
+      SourceParameterName: 0,
+      DisplayOptions: i_DropDownControlDisplayOptions,
+      Type: 0,
+      SelectableValues: i_ParameterSelectableValues,
+      CascadingControlConfiguration: i_CascadingControlConfiguration,
+      CommitMode: 0,
+      ControlSortConfigurations: D.list(i_ControlSortConfiguration),
+      ControlTitleFormatText: i_ControlTitleFormatText,
+    },
+    TextField: {
+      ParameterControlId: 0,
+      Title: 0,
+      SourceParameterName: 0,
+      DisplayOptions: i_TextFieldControlDisplayOptions,
+      ControlTitleFormatText: i_ControlTitleFormatText,
+    },
+    TextArea: {
+      ParameterControlId: 0,
+      Title: 0,
+      SourceParameterName: 0,
+      Delimiter: 0,
+      DisplayOptions: i_TextAreaControlDisplayOptions,
+      ControlTitleFormatText: i_ControlTitleFormatText,
+    },
+    Slider: {
+      ParameterControlId: 0,
+      Title: 0,
+      SourceParameterName: 0,
+      DisplayOptions: i_SliderControlDisplayOptions,
+      MaximumValue: 0,
+      MinimumValue: 0,
+      StepSize: 0,
+      ControlTitleFormatText: i_ControlTitleFormatText,
+    },
+  }),
+  FilterControls: D.list({
+    DateTimePicker: {
+      FilterControlId: 0,
+      Title: 0,
+      SourceFilterId: 0,
+      DisplayOptions: i_DateTimePickerControlDisplayOptions,
+      Type: 0,
+      CommitMode: 0,
+      ControlTitleFormatText: i_ControlTitleFormatText,
+    },
+    List: {
+      FilterControlId: 0,
+      Title: 0,
+      SourceFilterId: 0,
+      DisplayOptions: i_ListControlDisplayOptions,
+      Type: 0,
+      SelectableValues: i_FilterSelectableValues,
+      CascadingControlConfiguration: i_CascadingControlConfiguration,
+      ControlSortConfigurations: D.list(i_ControlSortConfiguration),
+      ControlTitleFormatText: i_ControlTitleFormatText,
+    },
+    Dropdown: {
+      FilterControlId: 0,
+      Title: 0,
+      SourceFilterId: 0,
+      DisplayOptions: i_DropDownControlDisplayOptions,
+      Type: 0,
+      SelectableValues: i_FilterSelectableValues,
+      CascadingControlConfiguration: i_CascadingControlConfiguration,
+      CommitMode: 0,
+      ControlSortConfigurations: D.list(i_ControlSortConfiguration),
+      ControlTitleFormatText: i_ControlTitleFormatText,
+    },
+    TextField: {
+      FilterControlId: 0,
+      Title: 0,
+      SourceFilterId: 0,
+      DisplayOptions: i_TextFieldControlDisplayOptions,
+      ControlTitleFormatText: i_ControlTitleFormatText,
+    },
+    TextArea: {
+      FilterControlId: 0,
+      Title: 0,
+      SourceFilterId: 0,
+      Delimiter: 0,
+      DisplayOptions: i_TextAreaControlDisplayOptions,
+      ControlTitleFormatText: i_ControlTitleFormatText,
+    },
+    Slider: {
+      FilterControlId: 0,
+      Title: 0,
+      SourceFilterId: 0,
+      DisplayOptions: i_SliderControlDisplayOptions,
+      Type: 0,
+      MaximumValue: 0,
+      MinimumValue: 0,
+      StepSize: 0,
+      ControlTitleFormatText: i_ControlTitleFormatText,
+    },
+    RelativeDateTime: {
+      FilterControlId: 0,
+      Title: 0,
+      SourceFilterId: 0,
+      DisplayOptions: i_RelativeDateTimeControlDisplayOptions,
+      CommitMode: 0,
+      ControlTitleFormatText: i_ControlTitleFormatText,
+    },
+    CrossSheet: {
+      FilterControlId: 0,
+      SourceFilterId: 0,
+      CascadingControlConfiguration: i_CascadingControlConfiguration,
+    },
+  }),
+  Visuals: D.list(i_Visual),
+  TextBoxes: D.list(i_SheetTextBox),
+  Images: D.list(i_SheetImage),
+  Layouts: D.list(i_Layout),
+  SheetControlLayouts: D.list({
+    Configuration: { GridLayout: i_GridLayoutConfiguration },
+  }),
+  ContentType: 0,
+  CustomActionDefaults: i_VisualCustomActionDefaults,
+});
+const i_StatePersistenceConfigurations: D.LazyStruct = () => ({ Enabled: 0 });
+const i_StaticFile: D.LazyStruct = () => ({
+  ImageStaticFile: { StaticFileId: 0, Source: i_StaticFileSource },
+  SpatialStaticFile: { StaticFileId: 0, Source: i_StaticFileSource },
+});
+const i_ThresholdAlertsConfigurations: D.LazyStruct = () => ({ Enabled: 0 });
+const i_TooltipSheetDefinition: D.LazyStruct = () => ({
+  SheetId: 0,
+  Name: 0,
+  Visuals: D.list(i_Visual),
+  TextBoxes: D.list(i_SheetTextBox),
+  Images: D.list(i_SheetImage),
+  Layouts: D.list(i_Layout),
+});
+const i_TopicIRFilterOption: D.LazyStruct = () => ({
+  FilterType: 0,
+  FilterClass: 0,
+  OperandField: i_Identifier,
+  Function: 0,
+  Constant: i_TopicConstantValue,
+  Inverse: 0,
+  NullFilter: 0,
+  Aggregation: 0,
+  AggregationFunctionParameters: 0,
+  AggregationPartitionBy: D.list({ FieldName: 0, TimeGranularity: 0 }),
+  Range: i_TopicConstantValue,
+  Inclusive: 0,
+  TimeGranularity: 0,
+  LastNextOffset: i_TopicConstantValue,
+  AggMetrics: D.list({
+    MetricOperand: i_Identifier,
+    Function: 0,
+    SortDirection: 0,
+  }),
+  TopBottomLimit: i_TopicConstantValue,
+  SortDirection: 0,
+  Anchor: { AnchorType: 0, TimeGranularity: 0, Offset: 0 },
+});
+const i_TopicIdentifierDeclaration: D.LazyStruct = () => ({
+  Identifier: 0,
+  TopicArn: 0,
+});
+const i_TopicRangeFilterConstant: D.LazyStruct = () => ({
+  ConstantType: 0,
+  RangeConstant: { Minimum: 0, Maximum: 0 },
+});
+const i_TopicReference: D.LazyStruct = () => ({
+  TopicPlaceholder: 0,
+  TopicArn: 0,
+});
+const i_TopicSingularFilterConstant: D.LazyStruct = () => ({
+  ConstantType: 0,
+  SingularConstant: 0,
+});
+const i_TopicSortClause: D.LazyStruct = () => ({
+  Operand: i_Identifier,
+  SortDirection: 0,
+});
+const i_TopicV2DataSetRelationEndpoint: D.LazyStruct = () => ({
+  DataSetArn: 0,
+  ColumnNames: 0,
+});
+const i_TransformOperationSource: D.LazyStruct = () => ({
+  TransformOperationId: 0,
+  ColumnIdMappings: D.list(i_DataSetColumnIdMapping),
+});
+const i_UploadSettings: D.LazyStruct = () => ({
+  Format: 0,
+  StartFromRow: 0,
+  ContainsHeader: 0,
+  TextQualifier: 0,
+  Delimiter: 0,
+  CustomCellAddressRange: 0,
+});
+const i_VisualMenuOption: D.LazyStruct = () => ({ AvailabilityStatus: 0 });
 const o_DataSetDateFilterValue: D.LazyStruct = () => ({ StaticValue: D.ts });
 const o_FormatConfiguration: D.LazyStruct = () => ({
   StringFormatConfiguration: o_StringFormatConfiguration,
@@ -26993,6 +29851,1346 @@ const o_Visual: D.LazyStruct = () => ({
     Actions: D.list(o_VisualCustomAction),
   },
 });
+const i_AggregationFunction: D.LazyStruct = () => ({
+  NumericalAggregationFunction: i_NumericalAggregationFunction,
+  CategoricalAggregationFunction: 0,
+  DateAggregationFunction: 0,
+  AttributeAggregationFunction: {
+    SimpleAttributeAggregation: 0,
+    ValueForMultipleValues: 0,
+  },
+});
+const i_AggregationSortConfiguration: D.LazyStruct = () => ({
+  Column: i_ColumnIdentifier,
+  SortDirection: 0,
+  AggregationFunction: i_AggregationFunction,
+});
+const i_CascadingControlConfiguration: D.LazyStruct = () => ({
+  SourceControls: D.list({
+    SourceSheetControlId: 0,
+    ColumnToMatch: i_ColumnIdentifier,
+  }),
+});
+const i_CategoryFilterConfiguration: D.LazyStruct = () => ({
+  FilterListConfiguration: {
+    MatchOperator: 0,
+    CategoryValues: 0,
+    SelectAllOptions: 0,
+    NullOption: 0,
+  },
+  CustomFilterListConfiguration: {
+    MatchOperator: 0,
+    CategoryValues: 0,
+    SelectAllOptions: 0,
+    NullOption: 0,
+  },
+  CustomFilterConfiguration: {
+    MatchOperator: 0,
+    CategoryValue: 0,
+    SelectAllOptions: 0,
+    ParameterName: 0,
+    NullOption: 0,
+  },
+});
+const i_ColumnIdentifier: D.LazyStruct = () => ({
+  DataSetIdentifier: 0,
+  TopicIdentifier: 0,
+  ColumnName: 0,
+});
+const i_ControlSortConfiguration: D.LazyStruct = () => ({
+  SelectableValuesSort: { Direction: 0 },
+  ControlColumnSort: i_AggregationSortConfiguration,
+});
+const i_ControlTitleFormatText: D.LazyStruct = () => ({
+  PlainText: 0,
+  RichText: 0,
+});
+const i_DataSetDateFilterValue: D.LazyStruct = () => ({ StaticValue: 0 });
+const i_DataSetNumericFilterValue: D.LazyStruct = () => ({ StaticValue: 0 });
+const i_DateTimePickerControlDisplayOptions: D.LazyStruct = () => ({
+  TitleOptions: i_LabelOptions,
+  DateTimeFormat: 0,
+  InfoIconLabelOptions: i_SheetControlInfoIconLabelOptions,
+  HelperTextVisibility: 0,
+  DateIconVisibility: 0,
+});
+const i_DecalSettings: D.LazyStruct = () => ({
+  ElementValue: 0,
+  DecalVisibility: 0,
+  DecalColor: 0,
+  DecalPatternType: 0,
+  DecalStyleType: 0,
+});
+const i_DefaultFilterControlConfiguration: D.LazyStruct = () => ({
+  Title: 0,
+  ControlOptions: {
+    DefaultDateTimePickerOptions: {
+      Type: 0,
+      DisplayOptions: i_DateTimePickerControlDisplayOptions,
+      CommitMode: 0,
+    },
+    DefaultListOptions: {
+      DisplayOptions: i_ListControlDisplayOptions,
+      Type: 0,
+      SelectableValues: i_FilterSelectableValues,
+      ControlSortConfigurations: D.list(i_ControlSortConfiguration),
+    },
+    DefaultDropdownOptions: {
+      DisplayOptions: i_DropDownControlDisplayOptions,
+      Type: 0,
+      SelectableValues: i_FilterSelectableValues,
+      CommitMode: 0,
+      ControlSortConfigurations: D.list(i_ControlSortConfiguration),
+    },
+    DefaultTextFieldOptions: {
+      DisplayOptions: i_TextFieldControlDisplayOptions,
+    },
+    DefaultTextAreaOptions: {
+      Delimiter: 0,
+      DisplayOptions: i_TextAreaControlDisplayOptions,
+    },
+    DefaultSliderOptions: {
+      DisplayOptions: i_SliderControlDisplayOptions,
+      Type: 0,
+      MaximumValue: 0,
+      MinimumValue: 0,
+      StepSize: 0,
+    },
+    DefaultRelativeDateTimeOptions: {
+      DisplayOptions: i_RelativeDateTimeControlDisplayOptions,
+      CommitMode: 0,
+    },
+  },
+  ControlTitleFormatText: i_ControlTitleFormatText,
+});
+const i_DropDownControlDisplayOptions: D.LazyStruct = () => ({
+  SelectAllOptions: i_ListControlSelectAllOptions,
+  TitleOptions: i_LabelOptions,
+  InfoIconLabelOptions: i_SheetControlInfoIconLabelOptions,
+});
+const i_DynamicDefaultValue: D.LazyStruct = () => ({
+  UserNameColumn: i_ColumnIdentifier,
+  GroupNameColumn: i_ColumnIdentifier,
+  DefaultValueColumn: i_ColumnIdentifier,
+});
+const i_ExcludePeriodConfiguration: D.LazyStruct = () => ({
+  Amount: 0,
+  Granularity: 0,
+  Status: 0,
+});
+const i_FilterSelectableValues: D.LazyStruct = () => ({ Values: 0 });
+const i_FormatConfiguration: D.LazyStruct = () => ({
+  StringFormatConfiguration: i_StringFormatConfiguration,
+  NumberFormatConfiguration: i_NumberFormatConfiguration,
+  DateTimeFormatConfiguration: i_DateTimeFormatConfiguration,
+});
+const i_FreeFormLayoutCanvasSizeOptions: D.LazyStruct = () => ({
+  ScreenCanvasSizeOptions: { OptimizedViewPortWidth: 0 },
+});
+const i_GridLayoutCanvasSizeOptions: D.LazyStruct = () => ({
+  ScreenCanvasSizeOptions: { ResizeOption: 0, OptimizedViewPortWidth: 0 },
+});
+const i_GridLayoutConfiguration: D.LazyStruct = () => ({
+  Elements: D.list({
+    ElementId: 0,
+    ElementType: 0,
+    ColumnIndex: 0,
+    ColumnSpan: 0,
+    RowIndex: 0,
+    RowSpan: 0,
+    BorderStyle: i_GridLayoutElementBorderStyle,
+    SelectedBorderStyle: i_GridLayoutElementBorderStyle,
+    BackgroundStyle: { Visibility: 0, Color: 0 },
+    LoadingAnimation: i_LoadingAnimation,
+    BorderRadius: 0,
+    Padding: 0,
+  }),
+  CanvasSizeOptions: i_GridLayoutCanvasSizeOptions,
+});
+const i_Layout: D.LazyStruct = () => ({
+  Configuration: {
+    GridLayout: i_GridLayoutConfiguration,
+    FreeFormLayout: {
+      Elements: D.list(i_FreeFormLayoutElement),
+      CanvasSizeOptions: i_FreeFormLayoutCanvasSizeOptions,
+      Groups: D.list({ Id: 0, Members: D.list({ Id: 0, Type: 0 }) }),
+    },
+    SectionBasedLayout: {
+      HeaderSections: D.list(i_HeaderFooterSectionConfiguration),
+      BodySections: D.list({
+        SectionId: 0,
+        Content: { Layout: i_SectionLayoutConfiguration },
+        Style: i_SectionStyle,
+        PageBreakConfiguration: { After: i_SectionAfterPageBreak },
+        RepeatConfiguration: {
+          DimensionConfigurations: D.list({
+            DynamicCategoryDimensionConfiguration: {
+              Column: i_ColumnIdentifier,
+              Limit: 0,
+              SortByMetrics: D.list(i_ColumnSort),
+            },
+            DynamicNumericDimensionConfiguration: {
+              Column: i_ColumnIdentifier,
+              Limit: 0,
+              SortByMetrics: D.list(i_ColumnSort),
+            },
+          }),
+          PageBreakConfiguration: { After: i_SectionAfterPageBreak },
+          NonRepeatingVisuals: 0,
+        },
+      }),
+      FooterSections: D.list(i_HeaderFooterSectionConfiguration),
+      CanvasSizeOptions: i_SectionBasedLayoutCanvasSizeOptions,
+    },
+  },
+});
+const i_ListControlDisplayOptions: D.LazyStruct = () => ({
+  SearchOptions: { Visibility: 0 },
+  SelectAllOptions: i_ListControlSelectAllOptions,
+  TitleOptions: i_LabelOptions,
+  InfoIconLabelOptions: i_SheetControlInfoIconLabelOptions,
+});
+const i_MappedDataSetParameter: D.LazyStruct = () => ({
+  DataSetIdentifier: 0,
+  DataSetParameterName: 0,
+});
+const i_NumericRangeFilterValue: D.LazyStruct = () => ({
+  StaticValue: 0,
+  Parameter: 0,
+});
+const i_ParameterSelectableValues: D.LazyStruct = () => ({
+  Values: 0,
+  LinkToDataSetColumn: i_ColumnIdentifier,
+});
+const i_RelativeDateTimeControlDisplayOptions: D.LazyStruct = () => ({
+  TitleOptions: i_LabelOptions,
+  DateTimeFormat: 0,
+  InfoIconLabelOptions: i_SheetControlInfoIconLabelOptions,
+});
+const i_RollingDateConfiguration: D.LazyStruct = () => ({
+  DataSetIdentifier: 0,
+  Expression: 0,
+});
+const i_SectionBasedLayoutCanvasSizeOptions: D.LazyStruct = () => ({
+  PaperCanvasSizeOptions: {
+    PaperSize: 0,
+    PaperOrientation: 0,
+    PaperMargin: i_Spacing,
+  },
+});
+const i_SheetImage: D.LazyStruct = () => ({
+  SheetImageId: 0,
+  Source: { SheetImageStaticFileSource: { StaticFileId: 0 } },
+  Scaling: { ScalingType: 0 },
+  Tooltip: { TooltipText: { PlainText: 0 }, Visibility: 0 },
+  ImageContentAltText: 0,
+  Interactions: { ImageMenuOption: { AvailabilityStatus: 0 } },
+  Actions: D.list({
+    CustomActionId: 0,
+    Name: 0,
+    Status: 0,
+    Trigger: 0,
+    ActionOperations: D.list({
+      NavigationOperation: i_CustomActionNavigationOperation,
+      URLOperation: i_CustomActionURLOperation,
+      SetParametersOperation: i_CustomActionSetParametersOperation,
+    }),
+  }),
+});
+const i_SheetTextBox: D.LazyStruct = () => ({
+  SheetTextBoxId: 0,
+  Content: 0,
+  Interactions: { TextBoxMenuOption: { AvailabilityStatus: 0 } },
+});
+const i_SliderControlDisplayOptions: D.LazyStruct = () => ({
+  TitleOptions: i_LabelOptions,
+  InfoIconLabelOptions: i_SheetControlInfoIconLabelOptions,
+});
+const i_StaticFileSource: D.LazyStruct = () => ({
+  UrlOptions: { Url: 0 },
+  S3Options: { BucketName: 0, ObjectKey: 0, Region: 0 },
+});
+const i_TextAreaControlDisplayOptions: D.LazyStruct = () => ({
+  TitleOptions: i_LabelOptions,
+  PlaceholderOptions: i_TextControlPlaceholderOptions,
+  InfoIconLabelOptions: i_SheetControlInfoIconLabelOptions,
+});
+const i_TextFieldControlDisplayOptions: D.LazyStruct = () => ({
+  TitleOptions: i_LabelOptions,
+  PlaceholderOptions: i_TextControlPlaceholderOptions,
+  InfoIconLabelOptions: i_SheetControlInfoIconLabelOptions,
+});
+const i_TimeRangeFilterValue: D.LazyStruct = () => ({
+  StaticValue: 0,
+  RollingDate: i_RollingDateConfiguration,
+  Parameter: 0,
+});
+const i_TopicConstantValue: D.LazyStruct = () => ({
+  ConstantType: 0,
+  Value: 0,
+  Minimum: 0,
+  Maximum: 0,
+  ValueList: D.list({ ConstantType: 0, Value: 0 }),
+});
+const i_Visual: D.LazyStruct = () => ({
+  TableVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        TableAggregatedFieldWells: {
+          GroupBy: D.list(i_DimensionField),
+          Values: D.list(i_MeasureField),
+        },
+        TableUnaggregatedFieldWells: { Values: D.list(i_UnaggregatedField) },
+      },
+      SortConfiguration: {
+        RowSort: D.list(i_FieldSortOptions),
+        PaginationConfiguration: i_PaginationConfiguration,
+      },
+      TableOptions: {
+        Orientation: 0,
+        HeaderStyle: i_TableCellStyle,
+        CellStyle: i_TableCellStyle,
+        RowAlternateColorOptions: i_RowAlternateColorOptions,
+      },
+      TotalOptions: {
+        TotalsVisibility: 0,
+        Placement: 0,
+        ScrollStatus: 0,
+        CustomLabel: 0,
+        TotalCellStyle: i_TableCellStyle,
+        TotalAggregationOptions: D.list(i_TotalAggregationOption),
+      },
+      FieldOptions: {
+        SelectedFieldOptions: D.list({
+          FieldId: 0,
+          Width: 0,
+          CustomLabel: 0,
+          Visibility: 0,
+          URLStyling: {
+            LinkConfiguration: {
+              Target: 0,
+              Content: {
+                CustomTextContent: {
+                  Value: 0,
+                  FontConfiguration: i_FontConfiguration,
+                },
+                CustomIconContent: { Icon: 0 },
+              },
+            },
+            ImageConfiguration: {
+              SizingOptions: { TableCellImageScalingConfiguration: 0 },
+            },
+          },
+        }),
+        Order: 0,
+        PinnedFieldOptions: { PinnedLeftFields: 0 },
+        TransposedTableOptions: D.list({
+          ColumnIndex: 0,
+          ColumnWidth: 0,
+          ColumnType: 0,
+        }),
+      },
+      PaginatedReportOptions: {
+        VerticalOverflowVisibility: 0,
+        OverflowColumnHeaderVisibility: 0,
+      },
+      TableInlineVisualizations: D.list({
+        DataBars: { FieldId: 0, PositiveColor: 0, NegativeColor: 0 },
+        Sparklines: {
+          FieldId: 0,
+          XAxisField: i_DimensionField,
+          YAxisBehavior: 0,
+          VisualType: 0,
+          LineColor: 0,
+          LineInterpolation: 0,
+          AllPointsMarker: i_LineChartMarkerStyleSettings,
+          MaxValueMarker: i_LineChartMarkerStyleSettings,
+          MinValueMarker: i_LineChartMarkerStyleSettings,
+        },
+      }),
+      Tooltip: i_TooltipOptions,
+      DashboardCustomizationVisualOptions:
+        i_DashboardCustomizationVisualOptions,
+      Interactions: i_VisualInteractionOptions,
+    },
+    ConditionalFormatting: {
+      ConditionalFormattingOptions: D.list({
+        Cell: { FieldId: 0, TextFormat: i_TextConditionalFormat },
+        Row: {
+          BackgroundColor: i_ConditionalFormattingColor,
+          TextColor: i_ConditionalFormattingColor,
+        },
+      }),
+    },
+    Actions: D.list(i_VisualCustomAction),
+    VisualContentAltText: 0,
+  },
+  PivotTableVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        PivotTableAggregatedFieldWells: {
+          Rows: D.list(i_DimensionField),
+          Columns: D.list(i_DimensionField),
+          Values: D.list(i_MeasureField),
+        },
+      },
+      SortConfiguration: {
+        FieldSortOptions: D.list({
+          FieldId: 0,
+          SortBy: {
+            Field: i_FieldSort,
+            Column: i_ColumnSort,
+            DataPath: { Direction: 0, SortPaths: D.list(i_DataPathValue) },
+          },
+        }),
+      },
+      TableOptions: {
+        MetricPlacement: 0,
+        SingleMetricVisibility: 0,
+        ColumnNamesVisibility: 0,
+        ToggleButtonsVisibility: 0,
+        ColumnHeaderStyle: i_TableCellStyle,
+        RowHeaderStyle: i_TableCellStyle,
+        CellStyle: i_TableCellStyle,
+        RowFieldNamesStyle: i_TableCellStyle,
+        RowAlternateColorOptions: i_RowAlternateColorOptions,
+        CollapsedRowDimensionsVisibility: 0,
+        RowsLayout: 0,
+        RowsLabelOptions: { Visibility: 0, CustomLabel: 0 },
+        DefaultCellWidth: 0,
+      },
+      TotalOptions: {
+        RowSubtotalOptions: i_SubtotalOptions,
+        ColumnSubtotalOptions: i_SubtotalOptions,
+        RowTotalOptions: i_PivotTotalOptions,
+        ColumnTotalOptions: i_PivotTotalOptions,
+      },
+      FieldOptions: {
+        SelectedFieldOptions: D.list({
+          FieldId: 0,
+          CustomLabel: 0,
+          Visibility: 0,
+        }),
+        DataPathOptions: D.list({
+          DataPathList: D.list(i_DataPathValue),
+          Width: 0,
+        }),
+        CollapseStateOptions: D.list({
+          Target: { FieldId: 0, FieldDataPathValues: D.list(i_DataPathValue) },
+          State: 0,
+        }),
+      },
+      PaginatedReportOptions: {
+        VerticalOverflowVisibility: 0,
+        OverflowColumnHeaderVisibility: 0,
+      },
+      Tooltip: i_TooltipOptions,
+      DashboardCustomizationVisualOptions:
+        i_DashboardCustomizationVisualOptions,
+      Interactions: i_VisualInteractionOptions,
+    },
+    ConditionalFormatting: {
+      ConditionalFormattingOptions: D.list({
+        Cell: {
+          FieldId: 0,
+          TextFormat: i_TextConditionalFormat,
+          Scope: i_PivotTableConditionalFormattingScope,
+          Scopes: D.list(i_PivotTableConditionalFormattingScope),
+        },
+      }),
+    },
+    Actions: D.list(i_VisualCustomAction),
+    VisualContentAltText: 0,
+  },
+  BarChartVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        BarChartAggregatedFieldWells: {
+          Category: D.list(i_DimensionField),
+          Values: D.list(i_MeasureField),
+          Colors: D.list(i_DimensionField),
+          SmallMultiples: D.list(i_DimensionField),
+        },
+      },
+      SortConfiguration: {
+        CategorySort: D.list(i_FieldSortOptions),
+        CategoryItemsLimit: i_ItemsLimitConfiguration,
+        ColorSort: D.list(i_FieldSortOptions),
+        ColorItemsLimit: i_ItemsLimitConfiguration,
+        SmallMultiplesSort: D.list(i_FieldSortOptions),
+        SmallMultiplesLimitConfiguration: i_ItemsLimitConfiguration,
+      },
+      Orientation: 0,
+      BarsArrangement: 0,
+      VisualPalette: i_VisualPalette,
+      SmallMultiplesOptions: i_SmallMultiplesOptions,
+      CategoryAxis: i_AxisDisplayOptions,
+      CategoryLabelOptions: i_ChartAxisLabelOptions,
+      ValueAxis: i_AxisDisplayOptions,
+      ValueLabelOptions: i_ChartAxisLabelOptions,
+      ColorLabelOptions: i_ChartAxisLabelOptions,
+      DefaultSeriesSettings: {
+        DecalSettings: i_DecalSettings,
+        BorderSettings: i_BorderSettings,
+      },
+      Series: D.list({
+        FieldBarSeriesItem: { FieldId: 0, Settings: i_BarChartSeriesSettings },
+        DataFieldBarSeriesItem: {
+          FieldId: 0,
+          FieldValue: 0,
+          Settings: i_BarChartSeriesSettings,
+        },
+      }),
+      Legend: i_LegendOptions,
+      DataLabels: i_DataLabelOptions,
+      Tooltip: i_TooltipOptions,
+      ReferenceLines: D.list(i_ReferenceLine),
+      ContributionAnalysisDefaults: D.list(i_ContributionAnalysisDefault),
+      Interactions: i_VisualInteractionOptions,
+    },
+    Actions: D.list(i_VisualCustomAction),
+    ColumnHierarchies: D.list(i_ColumnHierarchy),
+    VisualContentAltText: 0,
+  },
+  KPIVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        Values: D.list(i_MeasureField),
+        TargetValues: D.list(i_MeasureField),
+        TrendGroups: D.list(i_DimensionField),
+      },
+      SortConfiguration: { TrendGroupSort: D.list(i_FieldSortOptions) },
+      KPIOptions: {
+        ProgressBar: { Visibility: 0 },
+        TrendArrows: { Visibility: 0 },
+        SecondaryValue: { Visibility: 0 },
+        Comparison: i_ComparisonConfiguration,
+        PrimaryValueDisplayType: 0,
+        PrimaryValueFontConfiguration: i_FontConfiguration,
+        SecondaryValueFontConfiguration: i_FontConfiguration,
+        Sparkline: { Visibility: 0, Type: 0, Color: 0, TooltipVisibility: 0 },
+        VisualLayoutOptions: { StandardLayout: { Type: 0 } },
+      },
+      Interactions: i_VisualInteractionOptions,
+    },
+    ConditionalFormatting: {
+      ConditionalFormattingOptions: D.list({
+        PrimaryValue: {
+          TextColor: i_ConditionalFormattingColor,
+          Icon: i_ConditionalFormattingIcon,
+        },
+        ProgressBar: { ForegroundColor: i_ConditionalFormattingColor },
+        ActualValue: {
+          TextColor: i_ConditionalFormattingColor,
+          Icon: i_ConditionalFormattingIcon,
+        },
+        ComparisonValue: {
+          TextColor: i_ConditionalFormattingColor,
+          Icon: i_ConditionalFormattingIcon,
+        },
+      }),
+    },
+    Actions: D.list(i_VisualCustomAction),
+    ColumnHierarchies: D.list(i_ColumnHierarchy),
+    VisualContentAltText: 0,
+  },
+  PieChartVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        PieChartAggregatedFieldWells: {
+          Category: D.list(i_DimensionField),
+          Values: D.list(i_MeasureField),
+          SmallMultiples: D.list(i_DimensionField),
+        },
+      },
+      SortConfiguration: {
+        CategorySort: D.list(i_FieldSortOptions),
+        CategoryItemsLimit: i_ItemsLimitConfiguration,
+        SmallMultiplesSort: D.list(i_FieldSortOptions),
+        SmallMultiplesLimitConfiguration: i_ItemsLimitConfiguration,
+      },
+      DonutOptions: {
+        ArcOptions: { ArcThickness: 0 },
+        DonutCenterOptions: { LabelVisibility: 0 },
+      },
+      SmallMultiplesOptions: i_SmallMultiplesOptions,
+      CategoryLabelOptions: i_ChartAxisLabelOptions,
+      ValueLabelOptions: i_ChartAxisLabelOptions,
+      Legend: i_LegendOptions,
+      DataLabels: i_DataLabelOptions,
+      Tooltip: i_TooltipOptions,
+      VisualPalette: i_VisualPalette,
+      ContributionAnalysisDefaults: D.list(i_ContributionAnalysisDefault),
+      Interactions: i_VisualInteractionOptions,
+    },
+    Actions: D.list(i_VisualCustomAction),
+    ColumnHierarchies: D.list(i_ColumnHierarchy),
+    VisualContentAltText: 0,
+  },
+  GaugeChartVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        Values: D.list(i_MeasureField),
+        TargetValues: D.list(i_MeasureField),
+      },
+      GaugeChartOptions: {
+        PrimaryValueDisplayType: 0,
+        Comparison: i_ComparisonConfiguration,
+        ArcAxis: { Range: { Min: 0, Max: 0 }, ReserveRange: 0 },
+        Arc: { ArcAngle: 0, ArcThickness: 0 },
+        PrimaryValueFontConfiguration: i_FontConfiguration,
+      },
+      DataLabels: i_DataLabelOptions,
+      TooltipOptions: i_TooltipOptions,
+      VisualPalette: i_VisualPalette,
+      ColorConfiguration: { ForegroundColor: 0, BackgroundColor: 0 },
+      Interactions: i_VisualInteractionOptions,
+    },
+    ConditionalFormatting: {
+      ConditionalFormattingOptions: D.list({
+        PrimaryValue: {
+          TextColor: i_ConditionalFormattingColor,
+          Icon: i_ConditionalFormattingIcon,
+        },
+        Arc: { ForegroundColor: i_ConditionalFormattingColor },
+      }),
+    },
+    Actions: D.list(i_VisualCustomAction),
+    VisualContentAltText: 0,
+  },
+  LineChartVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        LineChartAggregatedFieldWells: {
+          Category: D.list(i_DimensionField),
+          Values: D.list(i_MeasureField),
+          Colors: D.list(i_DimensionField),
+          SmallMultiples: D.list(i_DimensionField),
+        },
+      },
+      SortConfiguration: {
+        CategorySort: D.list(i_FieldSortOptions),
+        CategoryItemsLimitConfiguration: i_ItemsLimitConfiguration,
+        ColorItemsLimitConfiguration: i_ItemsLimitConfiguration,
+        SmallMultiplesSort: D.list(i_FieldSortOptions),
+        SmallMultiplesLimitConfiguration: i_ItemsLimitConfiguration,
+      },
+      ForecastConfigurations: D.list({
+        ForecastProperties: {
+          PeriodsForward: 0,
+          PeriodsBackward: 0,
+          UpperBoundary: 0,
+          LowerBoundary: 0,
+          PredictionInterval: 0,
+          Seasonality: 0,
+        },
+        Scenario: {
+          WhatIfPointScenario: { Date: 0, Value: 0 },
+          WhatIfRangeScenario: { StartDate: 0, EndDate: 0, Value: 0 },
+        },
+      }),
+      Type: 0,
+      SmallMultiplesOptions: i_SmallMultiplesOptions,
+      XAxisDisplayOptions: i_AxisDisplayOptions,
+      XAxisLabelOptions: i_ChartAxisLabelOptions,
+      PrimaryYAxisDisplayOptions: i_LineSeriesAxisDisplayOptions,
+      PrimaryYAxisLabelOptions: i_ChartAxisLabelOptions,
+      SecondaryYAxisDisplayOptions: i_LineSeriesAxisDisplayOptions,
+      SecondaryYAxisLabelOptions: i_ChartAxisLabelOptions,
+      SingleAxisOptions: i_SingleAxisOptions,
+      DefaultSeriesSettings: {
+        AxisBinding: 0,
+        LineStyleSettings: i_LineChartLineStyleSettings,
+        MarkerStyleSettings: i_LineChartMarkerStyleSettings,
+        DecalSettings: i_DecalSettings,
+      },
+      Series: D.list({
+        FieldSeriesItem: {
+          FieldId: 0,
+          AxisBinding: 0,
+          Settings: i_LineChartSeriesSettings,
+        },
+        DataFieldSeriesItem: {
+          FieldId: 0,
+          FieldValue: 0,
+          AxisBinding: 0,
+          Settings: i_LineChartSeriesSettings,
+        },
+      }),
+      Legend: i_LegendOptions,
+      DataLabels: i_DataLabelOptions,
+      ReferenceLines: D.list(i_ReferenceLine),
+      Tooltip: i_TooltipOptions,
+      ContributionAnalysisDefaults: D.list(i_ContributionAnalysisDefault),
+      VisualPalette: i_VisualPalette,
+      Interactions: i_VisualInteractionOptions,
+    },
+    Actions: D.list(i_VisualCustomAction),
+    ColumnHierarchies: D.list(i_ColumnHierarchy),
+    VisualContentAltText: 0,
+  },
+  HeatMapVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        HeatMapAggregatedFieldWells: {
+          Rows: D.list(i_DimensionField),
+          Columns: D.list(i_DimensionField),
+          Values: D.list(i_MeasureField),
+        },
+      },
+      SortConfiguration: {
+        HeatMapRowSort: D.list(i_FieldSortOptions),
+        HeatMapColumnSort: D.list(i_FieldSortOptions),
+        HeatMapRowItemsLimitConfiguration: i_ItemsLimitConfiguration,
+        HeatMapColumnItemsLimitConfiguration: i_ItemsLimitConfiguration,
+      },
+      RowAxisDisplayOptions: i_AxisDisplayOptions,
+      RowLabelOptions: i_ChartAxisLabelOptions,
+      ColumnAxisDisplayOptions: i_AxisDisplayOptions,
+      ColumnLabelOptions: i_ChartAxisLabelOptions,
+      ColorScale: i_ColorScale,
+      Legend: i_LegendOptions,
+      DataLabels: i_DataLabelOptions,
+      Tooltip: i_TooltipOptions,
+      Interactions: i_VisualInteractionOptions,
+    },
+    ColumnHierarchies: D.list(i_ColumnHierarchy),
+    Actions: D.list(i_VisualCustomAction),
+    VisualContentAltText: 0,
+  },
+  TreeMapVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        TreeMapAggregatedFieldWells: {
+          Groups: D.list(i_DimensionField),
+          Sizes: D.list(i_MeasureField),
+          Colors: D.list(i_MeasureField),
+        },
+      },
+      SortConfiguration: {
+        TreeMapSort: D.list(i_FieldSortOptions),
+        TreeMapGroupItemsLimitConfiguration: i_ItemsLimitConfiguration,
+      },
+      GroupLabelOptions: i_ChartAxisLabelOptions,
+      SizeLabelOptions: i_ChartAxisLabelOptions,
+      ColorLabelOptions: i_ChartAxisLabelOptions,
+      ColorScale: i_ColorScale,
+      Legend: i_LegendOptions,
+      DataLabels: i_DataLabelOptions,
+      Tooltip: i_TooltipOptions,
+      Interactions: i_VisualInteractionOptions,
+    },
+    Actions: D.list(i_VisualCustomAction),
+    ColumnHierarchies: D.list(i_ColumnHierarchy),
+    VisualContentAltText: 0,
+  },
+  GeospatialMapVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        GeospatialMapAggregatedFieldWells: {
+          Geospatial: D.list(i_DimensionField),
+          Values: D.list(i_MeasureField),
+          Colors: D.list(i_DimensionField),
+        },
+      },
+      Legend: i_LegendOptions,
+      Tooltip: i_TooltipOptions,
+      WindowOptions: i_GeospatialWindowOptions,
+      MapStyleOptions: i_GeospatialMapStyleOptions,
+      PointStyleOptions: {
+        SelectedPointStyle: 0,
+        ClusterMarkerConfiguration: {
+          ClusterMarker: { SimpleClusterMarker: { Color: 0 } },
+        },
+        HeatmapConfiguration: {
+          HeatmapColor: { Colors: D.list({ Color: 0 }) },
+        },
+      },
+      VisualPalette: i_VisualPalette,
+      Interactions: i_VisualInteractionOptions,
+    },
+    ColumnHierarchies: D.list(i_ColumnHierarchy),
+    Actions: D.list(i_VisualCustomAction),
+    VisualContentAltText: 0,
+    GeocodingPreferences: D.list(i_GeocodePreference),
+  },
+  FilledMapVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        FilledMapAggregatedFieldWells: {
+          Geospatial: D.list(i_DimensionField),
+          Values: D.list(i_MeasureField),
+        },
+      },
+      SortConfiguration: { CategorySort: D.list(i_FieldSortOptions) },
+      Legend: i_LegendOptions,
+      Tooltip: i_TooltipOptions,
+      WindowOptions: i_GeospatialWindowOptions,
+      MapStyleOptions: i_GeospatialMapStyleOptions,
+      Interactions: i_VisualInteractionOptions,
+    },
+    ConditionalFormatting: {
+      ConditionalFormattingOptions: D.list({
+        Shape: {
+          FieldId: 0,
+          Format: { BackgroundColor: i_ConditionalFormattingColor },
+        },
+      }),
+    },
+    ColumnHierarchies: D.list(i_ColumnHierarchy),
+    Actions: D.list(i_VisualCustomAction),
+    VisualContentAltText: 0,
+    GeocodingPreferences: D.list(i_GeocodePreference),
+  },
+  LayerMapVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      Legend: i_LegendOptions,
+      MapLayers: D.list({
+        LayerId: 0,
+        LayerType: 0,
+        DataSource: { StaticFileDataSource: { StaticFileId: 0 } },
+        Label: 0,
+        Visibility: 0,
+        LayerDefinition: {
+          PointLayer: {
+            Style: {
+              CircleSymbolStyle: {
+                FillColor: i_GeospatialColor,
+                StrokeColor: i_GeospatialColor,
+                StrokeWidth: i_GeospatialLineWidth,
+                CircleRadius: { Radius: 0 },
+              },
+            },
+          },
+          LineLayer: {
+            Style: {
+              LineSymbolStyle: {
+                FillColor: i_GeospatialColor,
+                LineWidth: i_GeospatialLineWidth,
+              },
+            },
+          },
+          PolygonLayer: {
+            Style: {
+              PolygonSymbolStyle: {
+                FillColor: i_GeospatialColor,
+                StrokeColor: i_GeospatialColor,
+                StrokeWidth: i_GeospatialLineWidth,
+              },
+            },
+          },
+        },
+        Tooltip: i_TooltipOptions,
+        JoinDefinition: {
+          ShapeKeyField: 0,
+          DatasetKeyField: i_UnaggregatedField,
+          ColorField: {
+            ColorDimensionsFields: D.list(i_DimensionField),
+            ColorValuesFields: D.list(i_MeasureField),
+          },
+        },
+        Actions: D.list({
+          CustomActionId: 0,
+          Name: 0,
+          Status: 0,
+          Trigger: 0,
+          ActionOperations: D.list({
+            FilterOperation: i_CustomActionFilterOperation,
+            NavigationOperation: i_CustomActionNavigationOperation,
+            URLOperation: i_CustomActionURLOperation,
+            SetParametersOperation: i_CustomActionSetParametersOperation,
+          }),
+        }),
+      }),
+      MapState: { Bounds: i_GeospatialCoordinateBounds, MapNavigation: 0 },
+      MapStyle: { BaseMapStyle: 0, BackgroundColor: 0, BaseMapVisibility: 0 },
+      Interactions: i_VisualInteractionOptions,
+    },
+    DataSetIdentifier: 0,
+    TopicIdentifier: 0,
+    VisualContentAltText: 0,
+  },
+  FunnelChartVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        FunnelChartAggregatedFieldWells: {
+          Category: D.list(i_DimensionField),
+          Values: D.list(i_MeasureField),
+        },
+      },
+      SortConfiguration: {
+        CategorySort: D.list(i_FieldSortOptions),
+        CategoryItemsLimit: i_ItemsLimitConfiguration,
+      },
+      CategoryLabelOptions: i_ChartAxisLabelOptions,
+      ValueLabelOptions: i_ChartAxisLabelOptions,
+      Tooltip: i_TooltipOptions,
+      DataLabelOptions: {
+        Visibility: 0,
+        CategoryLabelVisibility: 0,
+        MeasureLabelVisibility: 0,
+        Position: 0,
+        LabelFontConfiguration: i_FontConfiguration,
+        LabelColor: 0,
+        MeasureDataLabelStyle: 0,
+      },
+      VisualPalette: i_VisualPalette,
+      Interactions: i_VisualInteractionOptions,
+    },
+    Actions: D.list(i_VisualCustomAction),
+    ColumnHierarchies: D.list(i_ColumnHierarchy),
+    VisualContentAltText: 0,
+  },
+  ScatterPlotVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        ScatterPlotCategoricallyAggregatedFieldWells: {
+          XAxis: D.list(i_MeasureField),
+          YAxis: D.list(i_MeasureField),
+          Category: D.list(i_DimensionField),
+          Size: D.list(i_MeasureField),
+          Label: D.list(i_DimensionField),
+        },
+        ScatterPlotUnaggregatedFieldWells: {
+          XAxis: D.list(i_DimensionField),
+          YAxis: D.list(i_DimensionField),
+          Size: D.list(i_MeasureField),
+          Category: D.list(i_DimensionField),
+          Label: D.list(i_DimensionField),
+        },
+      },
+      SortConfiguration: {
+        ScatterPlotLimitConfiguration: i_ItemsLimitConfiguration,
+      },
+      XAxisLabelOptions: i_ChartAxisLabelOptions,
+      XAxisDisplayOptions: i_AxisDisplayOptions,
+      YAxisLabelOptions: i_ChartAxisLabelOptions,
+      YAxisDisplayOptions: i_AxisDisplayOptions,
+      Legend: i_LegendOptions,
+      DataLabels: i_DataLabelOptions,
+      Tooltip: i_TooltipOptions,
+      VisualPalette: i_VisualPalette,
+      Interactions: i_VisualInteractionOptions,
+    },
+    Actions: D.list(i_VisualCustomAction),
+    ColumnHierarchies: D.list(i_ColumnHierarchy),
+    VisualContentAltText: 0,
+  },
+  ComboChartVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        ComboChartAggregatedFieldWells: {
+          Category: D.list(i_DimensionField),
+          BarValues: D.list(i_MeasureField),
+          Colors: D.list(i_DimensionField),
+          LineValues: D.list(i_MeasureField),
+        },
+      },
+      SortConfiguration: {
+        CategorySort: D.list(i_FieldSortOptions),
+        CategoryItemsLimit: i_ItemsLimitConfiguration,
+        ColorSort: D.list(i_FieldSortOptions),
+        ColorItemsLimit: i_ItemsLimitConfiguration,
+      },
+      BarsArrangement: 0,
+      CategoryAxis: i_AxisDisplayOptions,
+      CategoryLabelOptions: i_ChartAxisLabelOptions,
+      PrimaryYAxisDisplayOptions: i_AxisDisplayOptions,
+      PrimaryYAxisLabelOptions: i_ChartAxisLabelOptions,
+      SecondaryYAxisDisplayOptions: i_AxisDisplayOptions,
+      SecondaryYAxisLabelOptions: i_ChartAxisLabelOptions,
+      SingleAxisOptions: i_SingleAxisOptions,
+      ColorLabelOptions: i_ChartAxisLabelOptions,
+      DefaultSeriesSettings: {
+        LineStyleSettings: i_LineChartLineStyleSettings,
+        MarkerStyleSettings: i_LineChartMarkerStyleSettings,
+        DecalSettings: i_DecalSettings,
+        BorderSettings: i_BorderSettings,
+      },
+      Series: D.list({
+        FieldComboSeriesItem: {
+          FieldId: 0,
+          Settings: i_ComboChartSeriesSettings,
+        },
+        DataFieldComboSeriesItem: {
+          FieldId: 0,
+          FieldValue: 0,
+          Settings: i_ComboChartSeriesSettings,
+        },
+      }),
+      Legend: i_LegendOptions,
+      BarDataLabels: i_DataLabelOptions,
+      LineDataLabels: i_DataLabelOptions,
+      Tooltip: i_TooltipOptions,
+      ReferenceLines: D.list(i_ReferenceLine),
+      VisualPalette: i_VisualPalette,
+      Interactions: i_VisualInteractionOptions,
+    },
+    Actions: D.list(i_VisualCustomAction),
+    ColumnHierarchies: D.list(i_ColumnHierarchy),
+    VisualContentAltText: 0,
+  },
+  BoxPlotVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        BoxPlotAggregatedFieldWells: {
+          GroupBy: D.list(i_DimensionField),
+          Values: D.list(i_MeasureField),
+        },
+      },
+      SortConfiguration: {
+        CategorySort: D.list(i_FieldSortOptions),
+        PaginationConfiguration: i_PaginationConfiguration,
+      },
+      BoxPlotOptions: {
+        StyleOptions: { FillStyle: 0 },
+        OutlierVisibility: 0,
+        AllDataPointsVisibility: 0,
+      },
+      CategoryAxis: i_AxisDisplayOptions,
+      CategoryLabelOptions: i_ChartAxisLabelOptions,
+      PrimaryYAxisDisplayOptions: i_AxisDisplayOptions,
+      PrimaryYAxisLabelOptions: i_ChartAxisLabelOptions,
+      Legend: i_LegendOptions,
+      Tooltip: i_TooltipOptions,
+      ReferenceLines: D.list(i_ReferenceLine),
+      VisualPalette: i_VisualPalette,
+      Interactions: i_VisualInteractionOptions,
+    },
+    Actions: D.list(i_VisualCustomAction),
+    ColumnHierarchies: D.list(i_ColumnHierarchy),
+    VisualContentAltText: 0,
+  },
+  WaterfallVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        WaterfallChartAggregatedFieldWells: {
+          Categories: D.list(i_DimensionField),
+          Values: D.list(i_MeasureField),
+          Breakdowns: D.list(i_DimensionField),
+        },
+      },
+      SortConfiguration: {
+        CategorySort: D.list(i_FieldSortOptions),
+        BreakdownItemsLimit: i_ItemsLimitConfiguration,
+      },
+      WaterfallChartOptions: { TotalBarLabel: 0 },
+      CategoryAxisLabelOptions: i_ChartAxisLabelOptions,
+      CategoryAxisDisplayOptions: i_AxisDisplayOptions,
+      PrimaryYAxisLabelOptions: i_ChartAxisLabelOptions,
+      PrimaryYAxisDisplayOptions: i_AxisDisplayOptions,
+      Legend: i_LegendOptions,
+      DataLabels: i_DataLabelOptions,
+      VisualPalette: i_VisualPalette,
+      ColorConfiguration: {
+        GroupColorConfiguration: {
+          PositiveBarColor: 0,
+          NegativeBarColor: 0,
+          TotalBarColor: 0,
+        },
+      },
+      Interactions: i_VisualInteractionOptions,
+    },
+    Actions: D.list(i_VisualCustomAction),
+    ColumnHierarchies: D.list(i_ColumnHierarchy),
+    VisualContentAltText: 0,
+  },
+  HistogramVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        HistogramAggregatedFieldWells: { Values: D.list(i_MeasureField) },
+      },
+      XAxisDisplayOptions: i_AxisDisplayOptions,
+      XAxisLabelOptions: i_ChartAxisLabelOptions,
+      YAxisDisplayOptions: i_AxisDisplayOptions,
+      BinOptions: {
+        SelectedBinType: 0,
+        BinCount: { Value: 0 },
+        BinWidth: { Value: 0, BinCountLimit: 0 },
+        StartValue: 0,
+      },
+      DataLabels: i_DataLabelOptions,
+      Tooltip: i_TooltipOptions,
+      VisualPalette: i_VisualPalette,
+      Interactions: i_VisualInteractionOptions,
+    },
+    Actions: D.list(i_VisualCustomAction),
+    VisualContentAltText: 0,
+  },
+  WordCloudVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        WordCloudAggregatedFieldWells: {
+          GroupBy: D.list(i_DimensionField),
+          Size: D.list(i_MeasureField),
+        },
+      },
+      SortConfiguration: {
+        CategoryItemsLimit: i_ItemsLimitConfiguration,
+        CategorySort: D.list(i_FieldSortOptions),
+      },
+      CategoryLabelOptions: i_ChartAxisLabelOptions,
+      WordCloudOptions: {
+        WordOrientation: 0,
+        WordScaling: 0,
+        CloudLayout: 0,
+        WordCasing: 0,
+        WordPadding: 0,
+        MaximumStringLength: 0,
+      },
+      Interactions: i_VisualInteractionOptions,
+    },
+    Actions: D.list(i_VisualCustomAction),
+    ColumnHierarchies: D.list(i_ColumnHierarchy),
+    VisualContentAltText: 0,
+  },
+  InsightVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    InsightConfiguration: {
+      Computations: D.list({
+        TopBottomRanked: {
+          ComputationId: 0,
+          Name: 0,
+          Category: i_DimensionField,
+          Value: i_MeasureField,
+          ResultSize: 0,
+          Type: 0,
+        },
+        TopBottomMovers: {
+          ComputationId: 0,
+          Name: 0,
+          Time: i_DimensionField,
+          Category: i_DimensionField,
+          Value: i_MeasureField,
+          MoverSize: 0,
+          SortOrder: 0,
+          Type: 0,
+        },
+        TotalAggregation: { ComputationId: 0, Name: 0, Value: i_MeasureField },
+        MaximumMinimum: {
+          ComputationId: 0,
+          Name: 0,
+          Time: i_DimensionField,
+          Value: i_MeasureField,
+          Type: 0,
+        },
+        MetricComparison: {
+          ComputationId: 0,
+          Name: 0,
+          Time: i_DimensionField,
+          FromValue: i_MeasureField,
+          TargetValue: i_MeasureField,
+        },
+        PeriodOverPeriod: {
+          ComputationId: 0,
+          Name: 0,
+          Time: i_DimensionField,
+          Value: i_MeasureField,
+        },
+        PeriodToDate: {
+          ComputationId: 0,
+          Name: 0,
+          Time: i_DimensionField,
+          Value: i_MeasureField,
+          PeriodTimeGranularity: 0,
+        },
+        GrowthRate: {
+          ComputationId: 0,
+          Name: 0,
+          Time: i_DimensionField,
+          Value: i_MeasureField,
+          PeriodSize: 0,
+        },
+        UniqueValues: { ComputationId: 0, Name: 0, Category: i_DimensionField },
+        Forecast: {
+          ComputationId: 0,
+          Name: 0,
+          Time: i_DimensionField,
+          Value: i_MeasureField,
+          PeriodsForward: 0,
+          PeriodsBackward: 0,
+          UpperBoundary: 0,
+          LowerBoundary: 0,
+          PredictionInterval: 0,
+          Seasonality: 0,
+          CustomSeasonalityValue: 0,
+        },
+      }),
+      CustomNarrative: { Narrative: 0 },
+      Interactions: i_VisualInteractionOptions,
+    },
+    Actions: D.list(i_VisualCustomAction),
+    DataSetIdentifier: 0,
+    TopicIdentifier: 0,
+    VisualContentAltText: 0,
+  },
+  SankeyDiagramVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        SankeyDiagramAggregatedFieldWells: {
+          Source: D.list(i_DimensionField),
+          Destination: D.list(i_DimensionField),
+          Weight: D.list(i_MeasureField),
+        },
+      },
+      SortConfiguration: {
+        WeightSort: D.list(i_FieldSortOptions),
+        SourceItemsLimit: i_ItemsLimitConfiguration,
+        DestinationItemsLimit: i_ItemsLimitConfiguration,
+      },
+      DataLabels: i_DataLabelOptions,
+      Interactions: i_VisualInteractionOptions,
+    },
+    Actions: D.list(i_VisualCustomAction),
+    VisualContentAltText: 0,
+  },
+  CustomContentVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      ContentUrl: 0,
+      ContentType: 0,
+      ImageScaling: 0,
+      Interactions: i_VisualInteractionOptions,
+    },
+    Actions: D.list(i_VisualCustomAction),
+    DataSetIdentifier: 0,
+    TopicIdentifier: 0,
+    VisualContentAltText: 0,
+  },
+  EmptyVisual: {
+    VisualId: 0,
+    DataSetIdentifier: 0,
+    TopicIdentifier: 0,
+    Actions: D.list(i_VisualCustomAction),
+  },
+  RadarChartVisual: {
+    VisualId: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: {
+        RadarChartAggregatedFieldWells: {
+          Category: D.list(i_DimensionField),
+          Color: D.list(i_DimensionField),
+          Values: D.list(i_MeasureField),
+        },
+      },
+      SortConfiguration: {
+        CategorySort: D.list(i_FieldSortOptions),
+        CategoryItemsLimit: i_ItemsLimitConfiguration,
+        ColorSort: D.list(i_FieldSortOptions),
+        ColorItemsLimit: i_ItemsLimitConfiguration,
+      },
+      Shape: 0,
+      BaseSeriesSettings: { AreaStyleSettings: { Visibility: 0 } },
+      StartAngle: 0,
+      VisualPalette: i_VisualPalette,
+      AlternateBandColorsVisibility: 0,
+      AlternateBandEvenColor: 0,
+      AlternateBandOddColor: 0,
+      CategoryAxis: i_AxisDisplayOptions,
+      CategoryLabelOptions: i_ChartAxisLabelOptions,
+      ColorAxis: i_AxisDisplayOptions,
+      ColorLabelOptions: i_ChartAxisLabelOptions,
+      Legend: i_LegendOptions,
+      AxesRangeScale: 0,
+      Interactions: i_VisualInteractionOptions,
+    },
+    Actions: D.list(i_VisualCustomAction),
+    ColumnHierarchies: D.list(i_ColumnHierarchy),
+    VisualContentAltText: 0,
+  },
+  PluginVisual: {
+    VisualId: 0,
+    PluginArn: 0,
+    Title: i_VisualTitleLabelOptions,
+    Subtitle: i_VisualSubtitleLabelOptions,
+    ChartConfiguration: {
+      FieldWells: D.list({
+        AxisName: 0,
+        Dimensions: D.list(i_DimensionField),
+        Measures: D.list(i_MeasureField),
+        Unaggregated: D.list(i_UnaggregatedField),
+      }),
+      VisualOptions: { VisualProperties: D.list({ Name: 0, Value: 0 }) },
+      SortConfiguration: {
+        PluginVisualTableQuerySort: {
+          RowSort: D.list(i_FieldSortOptions),
+          ItemsLimitConfiguration: { ItemsLimit: 0 },
+        },
+      },
+    },
+    Actions: D.list(i_VisualCustomAction),
+    VisualContentAltText: 0,
+  },
+});
+const i_VisualCustomActionDefaults: D.LazyStruct = () => ({
+  highlightOperation: { Trigger: 0 },
+});
 const o_ColumnHierarchy: D.LazyStruct = () => ({
   ExplicitHierarchy: { DrillDownFilters: D.list(o_DrillDownFilter) },
   DateTimeHierarchy: { DrillDownFilters: D.list(o_DrillDownFilter) },
@@ -27085,6 +31283,522 @@ const o_VisualCustomAction: D.LazyStruct = () => ({
 const o_VisualPalette: D.LazyStruct = () => ({
   ColorMap: D.list({ Element: o_DataPathValue }),
 });
+const i_AxisDisplayOptions: D.LazyStruct = () => ({
+  TickLabelOptions: { LabelOptions: i_LabelOptions, RotationAngle: 0 },
+  AxisLineVisibility: 0,
+  GridLineVisibility: 0,
+  DataOptions: {
+    NumericAxisOptions: {
+      Scale: {
+        Linear: { StepCount: 0, StepSize: 0 },
+        Logarithmic: { Base: 0 },
+      },
+      Range: { MinMax: { Minimum: 0, Maximum: 0 }, DataDriven: {} },
+    },
+    DateAxisOptions: { MissingDateVisibility: 0 },
+  },
+  ScrollbarOptions: {
+    Visibility: 0,
+    VisibleRange: { PercentRange: { From: 0, To: 0 } },
+  },
+  AxisOffset: 0,
+});
+const i_BarChartSeriesSettings: D.LazyStruct = () => ({
+  DecalSettings: i_DecalSettings,
+  BorderSettings: i_BorderSettings,
+});
+const i_BorderSettings: D.LazyStruct = () => ({
+  BorderVisibility: 0,
+  BorderWidth: 0,
+  BorderColor: 0,
+});
+const i_ChartAxisLabelOptions: D.LazyStruct = () => ({
+  Visibility: 0,
+  SortIconVisibility: 0,
+  AxisLabelOptions: D.list({
+    FontConfiguration: i_FontConfiguration,
+    CustomLabel: 0,
+    ApplyTo: { FieldId: 0, Column: i_ColumnIdentifier },
+  }),
+});
+const i_ColorScale: D.LazyStruct = () => ({
+  Colors: D.list(i_DataColor),
+  ColorFillType: 0,
+  NullValueColor: i_DataColor,
+});
+const i_ColumnHierarchy: D.LazyStruct = () => ({
+  ExplicitHierarchy: {
+    HierarchyId: 0,
+    Columns: D.list(i_ColumnIdentifier),
+    DrillDownFilters: D.list(i_DrillDownFilter),
+  },
+  DateTimeHierarchy: {
+    HierarchyId: 0,
+    DrillDownFilters: D.list(i_DrillDownFilter),
+  },
+  PredefinedHierarchy: {
+    HierarchyId: 0,
+    Columns: D.list(i_ColumnIdentifier),
+    DrillDownFilters: D.list(i_DrillDownFilter),
+  },
+});
+const i_ColumnSort: D.LazyStruct = () => ({
+  SortBy: i_ColumnIdentifier,
+  Direction: 0,
+  AggregationFunction: i_AggregationFunction,
+});
+const i_ComboChartSeriesSettings: D.LazyStruct = () => ({
+  LineStyleSettings: i_LineChartLineStyleSettings,
+  MarkerStyleSettings: i_LineChartMarkerStyleSettings,
+  DecalSettings: i_DecalSettings,
+  BorderSettings: i_BorderSettings,
+});
+const i_ComparisonConfiguration: D.LazyStruct = () => ({
+  ComparisonMethod: 0,
+  ComparisonFormat: {
+    NumberDisplayFormatConfiguration: i_NumberDisplayFormatConfiguration,
+    PercentageDisplayFormatConfiguration:
+      i_PercentageDisplayFormatConfiguration,
+  },
+});
+const i_ConditionalFormattingColor: D.LazyStruct = () => ({
+  Solid: { Expression: 0, Color: 0 },
+  Gradient: {
+    Expression: 0,
+    Color: { Stops: D.list({ GradientOffset: 0, DataValue: 0, Color: 0 }) },
+  },
+});
+const i_ConditionalFormattingIcon: D.LazyStruct = () => ({
+  IconSet: { Expression: 0, IconSetType: 0 },
+  CustomCondition: {
+    Expression: 0,
+    IconOptions: { Icon: 0, UnicodeIcon: 0 },
+    Color: 0,
+    DisplayConfiguration: { IconDisplayOption: 0 },
+  },
+});
+const i_ContributionAnalysisDefault: D.LazyStruct = () => ({
+  MeasureFieldId: 0,
+  ContributorDimensions: D.list(i_ColumnIdentifier),
+});
+const i_CustomActionFilterOperation: D.LazyStruct = () => ({
+  SelectedFieldsConfiguration: {
+    SelectedFields: 0,
+    SelectedFieldOptions: 0,
+    SelectedColumns: D.list(i_ColumnIdentifier),
+  },
+  TargetVisualsConfiguration: {
+    SameSheetTargetVisualConfiguration: {
+      TargetVisuals: 0,
+      TargetVisualOptions: 0,
+    },
+  },
+});
+const i_CustomActionNavigationOperation: D.LazyStruct = () => ({
+  LocalNavigationConfiguration: { TargetSheetId: 0 },
+});
+const i_CustomActionSetParametersOperation: D.LazyStruct = () => ({
+  ParameterValueConfigurations: D.list({
+    DestinationParameterName: 0,
+    Value: {
+      CustomValuesConfiguration: {
+        IncludeNullValue: 0,
+        CustomValues: {
+          StringValues: 0,
+          IntegerValues: 0,
+          DecimalValues: 0,
+          DateTimeValues: 0,
+        },
+      },
+      SelectAllValueOptions: 0,
+      SourceParameterName: 0,
+      SourceField: 0,
+      SourceColumn: i_ColumnIdentifier,
+    },
+  }),
+});
+const i_CustomActionURLOperation: D.LazyStruct = () => ({
+  URLTemplate: 0,
+  URLTarget: 0,
+});
+const i_DashboardCustomizationVisualOptions: D.LazyStruct = () => ({
+  FieldsConfiguration: {
+    Status: 0,
+    AdditionalFields: D.list(i_ColumnIdentifier),
+  },
+});
+const i_DataLabelOptions: D.LazyStruct = () => ({
+  Visibility: 0,
+  CategoryLabelVisibility: 0,
+  MeasureLabelVisibility: 0,
+  DataLabelTypes: D.list({
+    FieldLabelType: { FieldId: 0, Visibility: 0 },
+    DataPathLabelType: { FieldId: 0, FieldValue: 0, Visibility: 0 },
+    RangeEndsLabelType: { Visibility: 0 },
+    MinimumLabelType: { Visibility: 0 },
+    MaximumLabelType: { Visibility: 0 },
+  }),
+  Position: 0,
+  LabelContent: 0,
+  LabelFontConfiguration: i_FontConfiguration,
+  LabelColor: 0,
+  Overlap: 0,
+  TotalsVisibility: 0,
+});
+const i_DataPathValue: D.LazyStruct = () => ({
+  FieldId: 0,
+  FieldValue: 0,
+  DataPathType: { PivotTableDataPathType: 0 },
+});
+const i_DateTimeFormatConfiguration: D.LazyStruct = () => ({
+  DateTimeFormat: 0,
+  NullValueFormatConfiguration: i_NullValueFormatConfiguration,
+  NumericFormatConfiguration: i_NumericFormatConfiguration,
+});
+const i_DimensionField: D.LazyStruct = () => ({
+  NumericalDimensionField: {
+    FieldId: 0,
+    Column: i_ColumnIdentifier,
+    HierarchyId: 0,
+    FormatConfiguration: i_NumberFormatConfiguration,
+  },
+  CategoricalDimensionField: {
+    FieldId: 0,
+    Column: i_ColumnIdentifier,
+    HierarchyId: 0,
+    FormatConfiguration: i_StringFormatConfiguration,
+  },
+  DateDimensionField: {
+    FieldId: 0,
+    Column: i_ColumnIdentifier,
+    DateGranularity: 0,
+    HierarchyId: 0,
+    FormatConfiguration: i_DateTimeFormatConfiguration,
+  },
+});
+const i_FieldSort: D.LazyStruct = () => ({ FieldId: 0, Direction: 0 });
+const i_FieldSortOptions: D.LazyStruct = () => ({
+  FieldSort: i_FieldSort,
+  ColumnSort: i_ColumnSort,
+});
+const i_FreeFormLayoutElement: D.LazyStruct = () => ({
+  ElementId: 0,
+  ElementType: 0,
+  XAxisLocation: 0,
+  YAxisLocation: 0,
+  Width: 0,
+  Height: 0,
+  Visibility: 0,
+  RenderingRules: D.list({
+    Expression: 0,
+    ConfigurationOverrides: { Visibility: 0 },
+  }),
+  BorderStyle: i_FreeFormLayoutElementBorderStyle,
+  SelectedBorderStyle: i_FreeFormLayoutElementBorderStyle,
+  BackgroundStyle: { Visibility: 0, Color: 0 },
+  LoadingAnimation: i_LoadingAnimation,
+  BorderRadius: 0,
+  Padding: 0,
+});
+const i_GeocodePreference: D.LazyStruct = () => ({
+  RequestKey: i_GeocoderHierarchy,
+  Preference: {
+    GeocoderHierarchy: i_GeocoderHierarchy,
+    Coordinate: { Latitude: 0, Longitude: 0 },
+  },
+});
+const i_GeospatialColor: D.LazyStruct = () => ({
+  Solid: { Color: 0, State: 0 },
+  Gradient: {
+    StepColors: D.list({ Color: 0, DataValue: 0 }),
+    NullDataVisibility: 0,
+    NullDataSettings: i_GeospatialNullDataSettings,
+    DefaultOpacity: 0,
+  },
+  Categorical: {
+    CategoryDataColors: D.list({ Color: 0, DataValue: 0 }),
+    NullDataVisibility: 0,
+    NullDataSettings: i_GeospatialNullDataSettings,
+    DefaultOpacity: 0,
+  },
+});
+const i_GeospatialCoordinateBounds: D.LazyStruct = () => ({
+  North: 0,
+  South: 0,
+  West: 0,
+  East: 0,
+});
+const i_GeospatialLineWidth: D.LazyStruct = () => ({ LineWidth: 0 });
+const i_GeospatialMapStyleOptions: D.LazyStruct = () => ({ BaseMapStyle: 0 });
+const i_GeospatialWindowOptions: D.LazyStruct = () => ({
+  Bounds: i_GeospatialCoordinateBounds,
+  MapZoomMode: 0,
+});
+const i_GridLayoutElementBorderStyle: D.LazyStruct = () => ({
+  Visibility: 0,
+  Color: 0,
+  Width: 0,
+});
+const i_HeaderFooterSectionConfiguration: D.LazyStruct = () => ({
+  SectionId: 0,
+  Layout: i_SectionLayoutConfiguration,
+  Style: i_SectionStyle,
+});
+const i_ItemsLimitConfiguration: D.LazyStruct = () => ({
+  ItemsLimit: 0,
+  OtherCategories: 0,
+});
+const i_LabelOptions: D.LazyStruct = () => ({
+  Visibility: 0,
+  FontConfiguration: i_FontConfiguration,
+  CustomLabel: 0,
+});
+const i_LegendOptions: D.LazyStruct = () => ({
+  Visibility: 0,
+  Title: i_LabelOptions,
+  Position: 0,
+  Width: 0,
+  Height: 0,
+  ValueFontConfiguration: i_FontConfiguration,
+});
+const i_LineChartLineStyleSettings: D.LazyStruct = () => ({
+  LineVisibility: 0,
+  LineInterpolation: 0,
+  LineStyle: 0,
+  LineWidth: 0,
+});
+const i_LineChartMarkerStyleSettings: D.LazyStruct = () => ({
+  MarkerVisibility: 0,
+  MarkerShape: 0,
+  MarkerSize: 0,
+  MarkerColor: 0,
+});
+const i_LineChartSeriesSettings: D.LazyStruct = () => ({
+  LineStyleSettings: i_LineChartLineStyleSettings,
+  MarkerStyleSettings: i_LineChartMarkerStyleSettings,
+  DecalSettings: i_DecalSettings,
+});
+const i_LineSeriesAxisDisplayOptions: D.LazyStruct = () => ({
+  AxisOptions: i_AxisDisplayOptions,
+  MissingDataConfigurations: D.list({ TreatmentOption: 0 }),
+});
+const i_ListControlSelectAllOptions: D.LazyStruct = () => ({ Visibility: 0 });
+const i_LoadingAnimation: D.LazyStruct = () => ({ Visibility: 0 });
+const i_MeasureField: D.LazyStruct = () => ({
+  NumericalMeasureField: {
+    FieldId: 0,
+    Column: i_ColumnIdentifier,
+    AggregationFunction: i_NumericalAggregationFunction,
+    FormatConfiguration: i_NumberFormatConfiguration,
+  },
+  CategoricalMeasureField: {
+    FieldId: 0,
+    Column: i_ColumnIdentifier,
+    AggregationFunction: 0,
+    FormatConfiguration: i_StringFormatConfiguration,
+  },
+  DateMeasureField: {
+    FieldId: 0,
+    Column: i_ColumnIdentifier,
+    AggregationFunction: 0,
+    FormatConfiguration: i_DateTimeFormatConfiguration,
+  },
+  CalculatedMeasureField: { FieldId: 0, Expression: 0 },
+});
+const i_NumberFormatConfiguration: D.LazyStruct = () => ({
+  FormatConfiguration: i_NumericFormatConfiguration,
+});
+const i_NumericalAggregationFunction: D.LazyStruct = () => ({
+  SimpleNumericalAggregation: 0,
+  PercentileAggregation: { PercentileValue: 0 },
+});
+const i_PaginationConfiguration: D.LazyStruct = () => ({
+  PageSize: 0,
+  PageNumber: 0,
+});
+const i_PivotTableConditionalFormattingScope: D.LazyStruct = () => ({
+  Role: 0,
+});
+const i_PivotTotalOptions: D.LazyStruct = () => ({
+  TotalsVisibility: 0,
+  Placement: 0,
+  ScrollStatus: 0,
+  CustomLabel: 0,
+  TotalCellStyle: i_TableCellStyle,
+  ValueCellStyle: i_TableCellStyle,
+  MetricHeaderCellStyle: i_TableCellStyle,
+  TotalAggregationOptions: D.list(i_TotalAggregationOption),
+});
+const i_ReferenceLine: D.LazyStruct = () => ({
+  Status: 0,
+  DataConfiguration: {
+    StaticConfiguration: { Value: 0 },
+    DynamicConfiguration: {
+      Column: i_ColumnIdentifier,
+      MeasureAggregationFunction: i_AggregationFunction,
+      Calculation: i_NumericalAggregationFunction,
+    },
+    AxisBinding: 0,
+    SeriesType: 0,
+  },
+  StyleConfiguration: { Pattern: 0, Color: 0 },
+  LabelConfiguration: {
+    ValueLabelConfiguration: {
+      RelativePosition: 0,
+      FormatConfiguration: i_NumericFormatConfiguration,
+    },
+    CustomLabelConfiguration: { CustomLabel: 0 },
+    FontConfiguration: i_FontConfiguration,
+    FontColor: 0,
+    HorizontalPosition: 0,
+    VerticalPosition: 0,
+  },
+});
+const i_RowAlternateColorOptions: D.LazyStruct = () => ({
+  Status: 0,
+  RowAlternateColors: 0,
+  UsePrimaryBackgroundColor: 0,
+});
+const i_SectionAfterPageBreak: D.LazyStruct = () => ({ Status: 0 });
+const i_SectionLayoutConfiguration: D.LazyStruct = () => ({
+  FreeFormLayout: { Elements: D.list(i_FreeFormLayoutElement) },
+});
+const i_SectionStyle: D.LazyStruct = () => ({ Height: 0, Padding: i_Spacing });
+const i_SheetControlInfoIconLabelOptions: D.LazyStruct = () => ({
+  Visibility: 0,
+  InfoIconText: 0,
+});
+const i_SingleAxisOptions: D.LazyStruct = () => ({
+  YAxisOptions: { YAxis: 0 },
+});
+const i_SmallMultiplesOptions: D.LazyStruct = () => ({
+  MaxVisibleRows: 0,
+  MaxVisibleColumns: 0,
+  PanelConfiguration: {
+    Title: {
+      Visibility: 0,
+      FontConfiguration: i_FontConfiguration,
+      HorizontalTextAlignment: 0,
+    },
+    BorderVisibility: 0,
+    BorderThickness: 0,
+    BorderStyle: 0,
+    BorderColor: 0,
+    GutterVisibility: 0,
+    GutterSpacing: 0,
+    BackgroundVisibility: 0,
+    BackgroundColor: 0,
+  },
+  XAxis: i_SmallMultiplesAxisProperties,
+  YAxis: i_SmallMultiplesAxisProperties,
+});
+const i_Spacing: D.LazyStruct = () => ({
+  Top: 0,
+  Bottom: 0,
+  Left: 0,
+  Right: 0,
+});
+const i_StringFormatConfiguration: D.LazyStruct = () => ({
+  NullValueFormatConfiguration: i_NullValueFormatConfiguration,
+  NumericFormatConfiguration: i_NumericFormatConfiguration,
+});
+const i_SubtotalOptions: D.LazyStruct = () => ({
+  TotalsVisibility: 0,
+  CustomLabel: 0,
+  FieldLevel: 0,
+  FieldLevelOptions: D.list({ FieldId: 0 }),
+  TotalCellStyle: i_TableCellStyle,
+  ValueCellStyle: i_TableCellStyle,
+  MetricHeaderCellStyle: i_TableCellStyle,
+  StyleTargets: D.list({ CellType: 0 }),
+});
+const i_TableCellStyle: D.LazyStruct = () => ({
+  Visibility: 0,
+  FontConfiguration: i_FontConfiguration,
+  TextWrap: 0,
+  HorizontalTextAlignment: 0,
+  VerticalTextAlignment: 0,
+  BackgroundColor: 0,
+  Height: 0,
+  Border: {
+    UniformBorder: i_TableBorderOptions,
+    SideSpecificBorder: {
+      InnerVertical: i_TableBorderOptions,
+      InnerHorizontal: i_TableBorderOptions,
+      Left: i_TableBorderOptions,
+      Right: i_TableBorderOptions,
+      Top: i_TableBorderOptions,
+      Bottom: i_TableBorderOptions,
+    },
+  },
+});
+const i_TextConditionalFormat: D.LazyStruct = () => ({
+  BackgroundColor: i_ConditionalFormattingColor,
+  TextColor: i_ConditionalFormattingColor,
+  Icon: i_ConditionalFormattingIcon,
+});
+const i_TextControlPlaceholderOptions: D.LazyStruct = () => ({ Visibility: 0 });
+const i_TooltipOptions: D.LazyStruct = () => ({
+  TooltipVisibility: 0,
+  SelectedTooltipType: 0,
+  FieldBasedTooltip: {
+    AggregationVisibility: 0,
+    TooltipTitleType: 0,
+    TooltipFields: D.list({
+      FieldTooltipItem: {
+        FieldId: 0,
+        Label: 0,
+        Visibility: 0,
+        TooltipTarget: 0,
+      },
+      ColumnTooltipItem: {
+        Column: i_ColumnIdentifier,
+        Label: 0,
+        Visibility: 0,
+        Aggregation: i_AggregationFunction,
+        TooltipTarget: 0,
+      },
+    }),
+  },
+  SheetTooltip: { SheetId: 0 },
+});
+const i_TotalAggregationOption: D.LazyStruct = () => ({
+  FieldId: 0,
+  TotalAggregationFunction: { SimpleTotalAggregationFunction: 0 },
+});
+const i_UnaggregatedField: D.LazyStruct = () => ({
+  FieldId: 0,
+  Column: i_ColumnIdentifier,
+  FormatConfiguration: i_FormatConfiguration,
+});
+const i_VisualCustomAction: D.LazyStruct = () => ({
+  CustomActionId: 0,
+  Name: 0,
+  Status: 0,
+  Trigger: 0,
+  ActionOperations: D.list({
+    FilterOperation: i_CustomActionFilterOperation,
+    NavigationOperation: i_CustomActionNavigationOperation,
+    URLOperation: i_CustomActionURLOperation,
+    SetParametersOperation: i_CustomActionSetParametersOperation,
+  }),
+});
+const i_VisualInteractionOptions: D.LazyStruct = () => ({
+  VisualMenuOption: i_VisualMenuOption,
+  ContextMenuOption: { AvailabilityStatus: 0 },
+});
+const i_VisualPalette: D.LazyStruct = () => ({
+  ChartColor: 0,
+  ColorMap: D.list({ Element: i_DataPathValue, Color: 0, TimeGranularity: 0 }),
+});
+const i_VisualSubtitleLabelOptions: D.LazyStruct = () => ({
+  Visibility: 0,
+  FormatText: { PlainText: 0, RichText: 0 },
+});
+const i_VisualTitleLabelOptions: D.LazyStruct = () => ({
+  Visibility: 0,
+  FormatText: { PlainText: 0, RichText: 0 },
+});
 const o_DrillDownFilter: D.LazyStruct = () => ({
   TimeRangeFilter: { RangeMinimum: D.ts, RangeMaximum: D.ts },
 });
@@ -27109,4 +31823,77 @@ const o_PercentageDisplayFormatConfiguration: D.LazyStruct = () => ({
   Prefix: D.secret,
   Suffix: D.secret,
   NullValueFormatConfiguration: o_NullValueFormatConfiguration,
+});
+const i_DataColor: D.LazyStruct = () => ({ Color: 0, DataValue: 0 });
+const i_DrillDownFilter: D.LazyStruct = () => ({
+  NumericEqualityFilter: { Column: i_ColumnIdentifier, Value: 0 },
+  CategoryFilter: { Column: i_ColumnIdentifier, CategoryValues: 0 },
+  TimeRangeFilter: {
+    Column: i_ColumnIdentifier,
+    RangeMinimum: 0,
+    RangeMaximum: 0,
+    TimeGranularity: 0,
+  },
+});
+const i_FreeFormLayoutElementBorderStyle: D.LazyStruct = () => ({
+  Visibility: 0,
+  Color: 0,
+  Width: 0,
+});
+const i_GeocoderHierarchy: D.LazyStruct = () => ({
+  Country: 0,
+  State: 0,
+  County: 0,
+  City: 0,
+  PostCode: 0,
+});
+const i_GeospatialNullDataSettings: D.LazyStruct = () => ({
+  SymbolStyle: { FillColor: 0, StrokeColor: 0, StrokeWidth: 0 },
+});
+const i_NullValueFormatConfiguration: D.LazyStruct = () => ({ NullString: 0 });
+const i_NumberDisplayFormatConfiguration: D.LazyStruct = () => ({
+  Prefix: 0,
+  Suffix: 0,
+  SeparatorConfiguration: i_NumericSeparatorConfiguration,
+  DecimalPlacesConfiguration: i_DecimalPlacesConfiguration,
+  NumberScale: 0,
+  NegativeValueConfiguration: i_NegativeValueConfiguration,
+  NullValueFormatConfiguration: i_NullValueFormatConfiguration,
+});
+const i_NumericFormatConfiguration: D.LazyStruct = () => ({
+  NumberDisplayFormatConfiguration: i_NumberDisplayFormatConfiguration,
+  CurrencyDisplayFormatConfiguration: {
+    Prefix: 0,
+    Suffix: 0,
+    SeparatorConfiguration: i_NumericSeparatorConfiguration,
+    Symbol: 0,
+    DecimalPlacesConfiguration: i_DecimalPlacesConfiguration,
+    NumberScale: 0,
+    NegativeValueConfiguration: i_NegativeValueConfiguration,
+    NullValueFormatConfiguration: i_NullValueFormatConfiguration,
+  },
+  PercentageDisplayFormatConfiguration: i_PercentageDisplayFormatConfiguration,
+});
+const i_PercentageDisplayFormatConfiguration: D.LazyStruct = () => ({
+  Prefix: 0,
+  Suffix: 0,
+  SeparatorConfiguration: i_NumericSeparatorConfiguration,
+  DecimalPlacesConfiguration: i_DecimalPlacesConfiguration,
+  NegativeValueConfiguration: i_NegativeValueConfiguration,
+  NullValueFormatConfiguration: i_NullValueFormatConfiguration,
+});
+const i_SmallMultiplesAxisProperties: D.LazyStruct = () => ({
+  Scale: 0,
+  Placement: 0,
+});
+const i_TableBorderOptions: D.LazyStruct = () => ({
+  Color: 0,
+  Thickness: 0,
+  Style: 0,
+});
+const i_DecimalPlacesConfiguration: D.LazyStruct = () => ({ DecimalPlaces: 0 });
+const i_NegativeValueConfiguration: D.LazyStruct = () => ({ DisplayMode: 0 });
+const i_NumericSeparatorConfiguration: D.LazyStruct = () => ({
+  DecimalSeparator: 0,
+  ThousandsSeparator: { Symbol: 0, Visibility: 0, GroupingStyle: 0 },
 });

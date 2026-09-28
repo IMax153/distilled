@@ -205,7 +205,10 @@ export const sendSerialConsoleSSHPublicKey: API.OperationMethod<
   SendSerialConsoleSSHPublicKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { InstanceId: 0, SerialPort: 0, SSHPublicKey: 0 },
+  },
   errors: [
     AuthException,
     EC2InstanceNotFoundException,
@@ -246,7 +249,15 @@ export const sendSSHPublicKey: API.OperationMethod<
   SendSSHPublicKeyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InstanceId: 0,
+      InstanceOSUser: 0,
+      SSHPublicKey: 0,
+      AvailabilityZone: 0,
+    },
+  },
   errors: [
     AuthException,
     EC2InstanceNotFoundException,

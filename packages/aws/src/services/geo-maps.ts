@@ -368,8 +368,9 @@ export const getGlyphs: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/glyphs/{FontStack}/{FontUnicodeRange}",
+    input: { FontStack: 0, FontUnicodeRange: 0 },
     output: {
-      Blob: D.m({ payload: true, shape: D.stream }),
+      Blob: D.m({ payload: true, shape: D.blob }),
       ContentType: D.m({ header: "Content-Type" }),
       CacheControl: D.m({ header: "Cache-Control" }),
       ETag: D.m({ header: "ETag" }),
@@ -396,8 +397,9 @@ export const getSprites: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/styles/{Style}/{ColorScheme}/{Variant}/sprites/{FileName}",
+    input: { FileName: 0, Style: 0, ColorScheme: 0, Variant: 0 },
     output: {
-      Blob: D.m({ payload: true, shape: D.stream }),
+      Blob: D.m({ payload: true, shape: D.blob }),
       ContentType: D.m({ header: "Content-Type" }),
       CacheControl: D.m({ header: "Cache-Control" }),
       ETag: D.m({ header: "ETag" }),
@@ -451,13 +453,14 @@ export const getStaticMap: API.OperationMethod<
       PoliticalView: D.m({ query: "political-view" }),
       PointsOfInterests: D.m({ query: "pois" }),
       Radius: D.m({ query: "radius" }),
+      FileName: 0,
       ScaleBarUnit: D.m({ query: "scale-unit" }),
       Style: D.m({ query: "style" }),
       Width: D.m({ query: "width" }),
       Zoom: D.m({ query: "zoom" }),
     },
     output: {
-      Blob: D.m({ payload: true, shape: D.stream }),
+      Blob: D.m({ payload: true, shape: D.blob }),
       ContentType: D.m({ header: "Content-Type" }),
       CacheControl: D.m({ header: "Cache-Control" }),
       ETag: D.m({ header: "ETag" }),
@@ -491,6 +494,7 @@ export const getStyleDescriptor: API.OperationMethod<
     service: svc,
     http: "GET /v2/styles/{Style}/descriptor",
     input: {
+      Style: 0,
       ColorScheme: D.m({ query: "color-scheme" }),
       PoliticalView: D.m({ query: "political-view" }),
       Terrain: D.m({ query: "terrain" }),
@@ -503,7 +507,7 @@ export const getStyleDescriptor: API.OperationMethod<
       Key: D.m({ query: "key" }),
     },
     output: {
-      Blob: D.m({ payload: true, shape: D.stream }),
+      Blob: D.m({ payload: true, shape: D.blob }),
       ContentType: D.m({ header: "Content-Type" }),
       CacheControl: D.m({ header: "Cache-Control" }),
       ETag: D.m({ header: "ETag" }),
@@ -538,10 +542,14 @@ export const getTile: API.OperationMethod<
     http: "GET /v2/tiles/{Tileset}/{Z}/{X}/{Y}",
     input: {
       AdditionalFeatures: D.m({ query: "additional-features" }),
+      Tileset: 0,
+      Z: 0,
+      X: 0,
+      Y: 0,
       Key: D.m({ query: "key" }),
     },
     output: {
-      Blob: D.m({ payload: true, shape: D.stream }),
+      Blob: D.m({ payload: true, shape: D.blob }),
       ContentType: D.m({ header: "Content-Type" }),
       CacheControl: D.m({ header: "Cache-Control" }),
       ETag: D.m({ header: "ETag" }),

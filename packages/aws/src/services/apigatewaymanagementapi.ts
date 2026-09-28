@@ -140,7 +140,11 @@ export const deleteConnection: API.OperationMethod<
   DeleteConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /@connections/{ConnectionId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /@connections/{ConnectionId}",
+    input: { ConnectionId: 0 },
+  },
   errors: [ForbiddenException, GoneException, LimitExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -164,6 +168,7 @@ export const getConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /@connections/{ConnectionId}",
+    input: { ConnectionId: 0 },
     output: {
       ConnectedAt: D.m({ wire: "connectedAt", shape: D.ts }),
       Identity: D.m({
@@ -200,7 +205,7 @@ export const postToConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /@connections/{ConnectionId}",
-    input: { Data: D.m({ payload: true, shape: D.stream }) },
+    input: { Data: D.m({ payload: true, shape: D.blob }), ConnectionId: 0 },
   },
   errors: [
     ForbiddenException,

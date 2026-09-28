@@ -553,6 +553,7 @@ export const batchCreateAttendee: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /meetings/{MeetingId}/attendees?operation=batch-create",
+    input: { MeetingId: 0, Attendees: D.list(i_CreateAttendeeRequestItem) },
     output: {
       Attendees: D.list(o_Attendee),
       Errors: D.list(o_CreateAttendeeError),
@@ -626,6 +627,11 @@ export const batchUpdateAttendeeCapabilitiesExcept: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /meetings/{MeetingId}/attendees/capabilities?operation=batch-update-except",
+    input: {
+      MeetingId: 0,
+      ExcludedAttendeeIds: D.list({ AttendeeId: 0 }),
+      Capabilities: i_AttendeeCapabilities,
+    },
     body: true,
   },
   errors: [
@@ -669,6 +675,11 @@ export const createAttendee: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /meetings/{MeetingId}/attendees",
+    input: {
+      MeetingId: 0,
+      ExternalUserId: 0,
+      Capabilities: i_AttendeeCapabilities,
+    },
     output: { Attendee: o_Attendee },
     body: true,
   },
@@ -723,7 +734,18 @@ export const createMeeting: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /meetings",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      MediaRegion: 0,
+      MeetingHostId: 0,
+      ExternalMeetingId: 0,
+      NotificationsConfiguration: i_NotificationsConfiguration,
+      MeetingFeatures: i_MeetingFeaturesConfiguration,
+      PrimaryMeetingId: 0,
+      TenantIds: 0,
+      Tags: D.list(i_Tag),
+      MediaPlacementNetworkType: 0,
+    },
     output: { Meeting: o_Meeting },
     body: true,
   },
@@ -777,7 +799,19 @@ export const createMeetingWithAttendees: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /meetings?operation=create-attendees",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      ClientRequestToken: D.m({ idempotency: true }),
+      MediaRegion: 0,
+      MeetingHostId: 0,
+      ExternalMeetingId: 0,
+      MeetingFeatures: i_MeetingFeaturesConfiguration,
+      NotificationsConfiguration: i_NotificationsConfiguration,
+      Attendees: D.list(i_CreateAttendeeRequestItem),
+      PrimaryMeetingId: 0,
+      TenantIds: 0,
+      Tags: D.list(i_Tag),
+      MediaPlacementNetworkType: 0,
+    },
     output: {
       Meeting: o_Meeting,
       Attendees: D.list(o_Attendee),
@@ -824,6 +858,7 @@ export const deleteAttendee: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /meetings/{MeetingId}/attendees/{AttendeeId}",
+    input: { MeetingId: 0, AttendeeId: 0 },
   },
   errors: [
     BadRequestException,
@@ -860,7 +895,11 @@ export const deleteMeeting: API.OperationMethod<
   DeleteMeetingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /meetings/{MeetingId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /meetings/{MeetingId}",
+    input: { MeetingId: 0 },
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -898,6 +937,7 @@ export const getAttendee: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /meetings/{MeetingId}/attendees/{AttendeeId}",
+    input: { MeetingId: 0, AttendeeId: 0 },
     output: { Attendee: o_Attendee },
   },
   errors: [
@@ -937,6 +977,7 @@ export const getMeeting: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /meetings/{MeetingId}",
+    input: { MeetingId: 0 },
     output: { Meeting: o_Meeting },
   },
   errors: [
@@ -978,6 +1019,7 @@ export const listAttendees: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /meetings/{MeetingId}/attendees",
     input: {
+      MeetingId: 0,
       NextToken: D.m({ query: "next-token" }),
       MaxResults: D.m({ query: "max-results" }),
     },
@@ -1078,6 +1120,37 @@ export const startMeetingTranscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /meetings/{MeetingId}/transcription?operation=start",
+    input: {
+      MeetingId: 0,
+      TranscriptionConfiguration: {
+        EngineTranscribeSettings: {
+          LanguageCode: 0,
+          VocabularyFilterMethod: 0,
+          VocabularyFilterName: 0,
+          VocabularyName: 0,
+          Region: 0,
+          EnablePartialResultsStabilization: 0,
+          PartialResultsStability: 0,
+          ContentIdentificationType: 0,
+          ContentRedactionType: 0,
+          PiiEntityTypes: 0,
+          LanguageModelName: 0,
+          IdentifyLanguage: 0,
+          LanguageOptions: 0,
+          PreferredLanguage: 0,
+          VocabularyNames: 0,
+          VocabularyFilterNames: 0,
+        },
+        EngineTranscribeMedicalSettings: {
+          LanguageCode: 0,
+          Specialty: 0,
+          Type: 0,
+          VocabularyName: 0,
+          Region: 0,
+          ContentIdentificationType: 0,
+        },
+      },
+    },
     body: true,
   },
   errors: [
@@ -1127,6 +1200,7 @@ export const stopMeetingTranscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /meetings/{MeetingId}/transcription?operation=stop",
+    input: { MeetingId: 0 },
   },
   errors: [
     BadRequestException,
@@ -1166,6 +1240,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags?operation=tag-resource",
+    input: { ResourceARN: 0, Tags: D.list(i_Tag) },
     body: true,
   },
   errors: [
@@ -1221,6 +1296,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags?operation=untag-resource",
+    input: { ResourceARN: 0, TagKeys: 0 },
     body: true,
   },
   errors: [
@@ -1289,6 +1365,11 @@ export const updateAttendeeCapabilities: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /meetings/{MeetingId}/attendees/{AttendeeId}/capabilities",
+    input: {
+      MeetingId: 0,
+      AttendeeId: 0,
+      Capabilities: i_AttendeeCapabilities,
+    },
     output: { Attendee: o_Attendee },
     body: true,
   },
@@ -1307,6 +1388,27 @@ export const updateAttendeeCapabilities: API.OperationMethod<
   operationName: "UpdateAttendeeCapabilities",
 })) as any;
 
+const i_AttendeeCapabilities: D.LazyStruct = () => ({
+  Audio: 0,
+  Video: 0,
+  Content: 0,
+});
+const i_CreateAttendeeRequestItem: D.LazyStruct = () => ({
+  ExternalUserId: 0,
+  Capabilities: i_AttendeeCapabilities,
+});
+const i_MeetingFeaturesConfiguration: D.LazyStruct = () => ({
+  Audio: { EchoReduction: 0 },
+  Video: { MaxResolution: 0 },
+  Content: { MaxResolution: 0 },
+  Attendee: { MaxCount: 0 },
+});
+const i_NotificationsConfiguration: D.LazyStruct = () => ({
+  LambdaFunctionArn: 0,
+  SnsTopicArn: 0,
+  SqsQueueArn: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Attendee: D.LazyStruct = () => ({
   ExternalUserId: D.secret,
   JoinToken: D.secret,

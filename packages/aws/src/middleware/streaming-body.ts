@@ -148,7 +148,7 @@ const getStreamingPayloadInfo = (
       const spec = specOf(member);
       if (spec?.payload !== true) continue;
       const shape = shapeOf(member);
-      if (shape === "stream" || shape instanceof Events) {
+      if (shape === "stream" || shape === "blob" || shape instanceof Events) {
         return {
           hasStreamingPayload: true,
           isEventStream: shape instanceof Events,

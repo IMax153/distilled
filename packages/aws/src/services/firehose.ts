@@ -1358,7 +1358,178 @@ export const createDeliveryStream: API.OperationMethod<
   CreateDeliveryStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DeliveryStreamName: 0,
+      DeliveryStreamType: 0,
+      DirectPutSourceConfiguration: { ThroughputHintInMBs: 0 },
+      KinesisStreamSourceConfiguration: { KinesisStreamARN: 0, RoleARN: 0 },
+      DeliveryStreamEncryptionConfigurationInput:
+        i_DeliveryStreamEncryptionConfigurationInput,
+      S3DestinationConfiguration: i_S3DestinationConfiguration,
+      ExtendedS3DestinationConfiguration: {
+        RoleARN: 0,
+        BucketARN: 0,
+        Prefix: 0,
+        ErrorOutputPrefix: 0,
+        BufferingHints: i_BufferingHints,
+        CompressionFormat: 0,
+        EncryptionConfiguration: i_EncryptionConfiguration,
+        CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+        ProcessingConfiguration: i_ProcessingConfiguration,
+        S3BackupMode: 0,
+        S3BackupConfiguration: i_S3DestinationConfiguration,
+        DataFormatConversionConfiguration: i_DataFormatConversionConfiguration,
+        DynamicPartitioningConfiguration: i_DynamicPartitioningConfiguration,
+        FileExtension: 0,
+        CustomTimeZone: 0,
+      },
+      RedshiftDestinationConfiguration: {
+        RoleARN: 0,
+        ClusterJDBCURL: 0,
+        CopyCommand: i_CopyCommand,
+        Username: 0,
+        Password: 0,
+        RetryOptions: i_RedshiftRetryOptions,
+        S3Configuration: i_S3DestinationConfiguration,
+        ProcessingConfiguration: i_ProcessingConfiguration,
+        S3BackupMode: 0,
+        S3BackupConfiguration: i_S3DestinationConfiguration,
+        CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+        SecretsManagerConfiguration: i_SecretsManagerConfiguration,
+      },
+      ElasticsearchDestinationConfiguration: {
+        RoleARN: 0,
+        DomainARN: 0,
+        ClusterEndpoint: 0,
+        IndexName: 0,
+        TypeName: 0,
+        IndexRotationPeriod: 0,
+        BufferingHints: i_ElasticsearchBufferingHints,
+        RetryOptions: i_ElasticsearchRetryOptions,
+        S3BackupMode: 0,
+        S3Configuration: i_S3DestinationConfiguration,
+        ProcessingConfiguration: i_ProcessingConfiguration,
+        CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+        VpcConfiguration: i_VpcConfiguration,
+        DocumentIdOptions: i_DocumentIdOptions,
+      },
+      AmazonopensearchserviceDestinationConfiguration: {
+        RoleARN: 0,
+        DomainARN: 0,
+        ClusterEndpoint: 0,
+        IndexName: 0,
+        TypeName: 0,
+        IndexRotationPeriod: 0,
+        BufferingHints: i_AmazonopensearchserviceBufferingHints,
+        RetryOptions: i_AmazonopensearchserviceRetryOptions,
+        S3BackupMode: 0,
+        S3Configuration: i_S3DestinationConfiguration,
+        ProcessingConfiguration: i_ProcessingConfiguration,
+        CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+        VpcConfiguration: i_VpcConfiguration,
+        DocumentIdOptions: i_DocumentIdOptions,
+      },
+      SplunkDestinationConfiguration: {
+        HECEndpoint: 0,
+        HECEndpointType: 0,
+        HECToken: 0,
+        HECAcknowledgmentTimeoutInSeconds: 0,
+        RetryOptions: i_SplunkRetryOptions,
+        S3BackupMode: 0,
+        S3Configuration: i_S3DestinationConfiguration,
+        ProcessingConfiguration: i_ProcessingConfiguration,
+        CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+        BufferingHints: i_SplunkBufferingHints,
+        SecretsManagerConfiguration: i_SecretsManagerConfiguration,
+      },
+      HttpEndpointDestinationConfiguration: {
+        EndpointConfiguration: i_HttpEndpointConfiguration,
+        BufferingHints: i_HttpEndpointBufferingHints,
+        CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+        RequestConfiguration: i_HttpEndpointRequestConfiguration,
+        ProcessingConfiguration: i_ProcessingConfiguration,
+        RoleARN: 0,
+        RetryOptions: i_HttpEndpointRetryOptions,
+        S3BackupMode: 0,
+        S3Configuration: i_S3DestinationConfiguration,
+        SecretsManagerConfiguration: i_SecretsManagerConfiguration,
+      },
+      Tags: D.list(i_Tag),
+      AmazonOpenSearchServerlessDestinationConfiguration: {
+        RoleARN: 0,
+        CollectionEndpoint: 0,
+        IndexName: 0,
+        BufferingHints: i_AmazonOpenSearchServerlessBufferingHints,
+        RetryOptions: i_AmazonOpenSearchServerlessRetryOptions,
+        S3BackupMode: 0,
+        S3Configuration: i_S3DestinationConfiguration,
+        ProcessingConfiguration: i_ProcessingConfiguration,
+        CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+        VpcConfiguration: i_VpcConfiguration,
+      },
+      MSKSourceConfiguration: {
+        MSKClusterARN: 0,
+        TopicName: 0,
+        AuthenticationConfiguration: { RoleARN: 0, Connectivity: 0 },
+        ReadFromTimestamp: 0,
+      },
+      SnowflakeDestinationConfiguration: {
+        AccountUrl: 0,
+        PrivateKey: 0,
+        KeyPassphrase: 0,
+        User: 0,
+        Database: 0,
+        Schema: 0,
+        Table: 0,
+        SnowflakeRoleConfiguration: i_SnowflakeRoleConfiguration,
+        DataLoadingOption: 0,
+        MetaDataColumnName: 0,
+        ContentColumnName: 0,
+        SnowflakeVpcConfiguration: { PrivateLinkVpceId: 0 },
+        CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+        ProcessingConfiguration: i_ProcessingConfiguration,
+        RoleARN: 0,
+        RetryOptions: i_SnowflakeRetryOptions,
+        S3BackupMode: 0,
+        S3Configuration: i_S3DestinationConfiguration,
+        SecretsManagerConfiguration: i_SecretsManagerConfiguration,
+        BufferingHints: i_SnowflakeBufferingHints,
+      },
+      IcebergDestinationConfiguration: {
+        DestinationTableConfigurationList: D.list(
+          i_DestinationTableConfiguration,
+        ),
+        SchemaEvolutionConfiguration: i_SchemaEvolutionConfiguration,
+        TableCreationConfiguration: i_TableCreationConfiguration,
+        BufferingHints: i_BufferingHints,
+        CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+        ProcessingConfiguration: i_ProcessingConfiguration,
+        S3BackupMode: 0,
+        RetryOptions: i_RetryOptions,
+        RoleARN: 0,
+        AppendOnly: 0,
+        CatalogConfiguration: i_CatalogConfiguration,
+        S3Configuration: i_S3DestinationConfiguration,
+      },
+      DatabaseSourceConfiguration: {
+        Type: 0,
+        Endpoint: 0,
+        Port: 0,
+        SSLMode: 0,
+        Databases: { Include: 0, Exclude: 0 },
+        Tables: { Include: 0, Exclude: 0 },
+        Columns: { Include: 0, Exclude: 0 },
+        SurrogateKeys: 0,
+        SnapshotWatermarkTable: 0,
+        DatabaseSourceAuthenticationConfiguration: {
+          SecretsManagerConfiguration: i_SecretsManagerConfiguration,
+        },
+        DatabaseSourceVPCConfiguration: { VpcEndpointServiceName: 0 },
+      },
+    },
+  },
   errors: [
     InvalidArgumentException,
     InvalidKMSResourceException,
@@ -1398,7 +1569,10 @@ export const deleteDeliveryStream: API.OperationMethod<
   DeleteDeliveryStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DeliveryStreamName: 0, AllowForceDelete: 0 },
+  },
   errors: [ResourceInUseException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1426,6 +1600,7 @@ export const describeDeliveryStream: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DeliveryStreamName: 0, Limit: 0, ExclusiveStartDestinationId: 0 },
     output: {
       DeliveryStreamDescription: {
         CreateTimestamp: D.ts,
@@ -1491,7 +1666,14 @@ export const listDeliveryStreams: API.OperationMethod<
   ListDeliveryStreamsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Limit: 0,
+      DeliveryStreamType: 0,
+      ExclusiveStartDeliveryStreamName: 0,
+    },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1513,7 +1695,10 @@ export const listTagsForDeliveryStream: API.OperationMethod<
   ListTagsForDeliveryStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DeliveryStreamName: 0, ExclusiveStartTagKey: 0, Limit: 0 },
+  },
   errors: [
     InvalidArgumentException,
     LimitExceededException,
@@ -1588,7 +1773,10 @@ export const putRecord: API.OperationMethod<
   PutRecordError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DeliveryStreamName: 0, Record: i_Record },
+  },
   errors: [
     InvalidArgumentException,
     InvalidKMSResourceException,
@@ -1686,7 +1874,10 @@ export const putRecordBatch: API.OperationMethod<
   PutRecordBatchError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DeliveryStreamName: 0, Records: D.list(i_Record) },
+  },
   errors: [
     InvalidArgumentException,
     InvalidKMSResourceException,
@@ -1760,7 +1951,14 @@ export const startDeliveryStreamEncryption: API.OperationMethod<
   StartDeliveryStreamEncryptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DeliveryStreamName: 0,
+      DeliveryStreamEncryptionConfigurationInput:
+        i_DeliveryStreamEncryptionConfigurationInput,
+    },
+  },
   errors: [
     InvalidArgumentException,
     InvalidKMSResourceException,
@@ -1810,7 +2008,7 @@ export const stopDeliveryStreamEncryption: API.OperationMethod<
   StopDeliveryStreamEncryptionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DeliveryStreamName: 0 } },
   errors: [
     InvalidArgumentException,
     LimitExceededException,
@@ -1848,7 +2046,10 @@ export const tagDeliveryStream: API.OperationMethod<
   TagDeliveryStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DeliveryStreamName: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     InvalidArgumentException,
     LimitExceededException,
@@ -1880,7 +2081,7 @@ export const untagDeliveryStream: API.OperationMethod<
   UntagDeliveryStreamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DeliveryStreamName: 0, TagKeys: 0 } },
   errors: [
     InvalidArgumentException,
     LimitExceededException,
@@ -1934,7 +2135,146 @@ export const updateDestination: API.OperationMethod<
   UpdateDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DeliveryStreamName: 0,
+      CurrentDeliveryStreamVersionId: 0,
+      DestinationId: 0,
+      S3DestinationUpdate: i_S3DestinationUpdate,
+      ExtendedS3DestinationUpdate: {
+        RoleARN: 0,
+        BucketARN: 0,
+        Prefix: 0,
+        ErrorOutputPrefix: 0,
+        BufferingHints: i_BufferingHints,
+        CompressionFormat: 0,
+        EncryptionConfiguration: i_EncryptionConfiguration,
+        CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+        ProcessingConfiguration: i_ProcessingConfiguration,
+        S3BackupMode: 0,
+        S3BackupUpdate: i_S3DestinationUpdate,
+        DataFormatConversionConfiguration: i_DataFormatConversionConfiguration,
+        DynamicPartitioningConfiguration: i_DynamicPartitioningConfiguration,
+        FileExtension: 0,
+        CustomTimeZone: 0,
+      },
+      RedshiftDestinationUpdate: {
+        RoleARN: 0,
+        ClusterJDBCURL: 0,
+        CopyCommand: i_CopyCommand,
+        Username: 0,
+        Password: 0,
+        RetryOptions: i_RedshiftRetryOptions,
+        S3Update: i_S3DestinationUpdate,
+        ProcessingConfiguration: i_ProcessingConfiguration,
+        S3BackupMode: 0,
+        S3BackupUpdate: i_S3DestinationUpdate,
+        CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+        SecretsManagerConfiguration: i_SecretsManagerConfiguration,
+      },
+      ElasticsearchDestinationUpdate: {
+        RoleARN: 0,
+        DomainARN: 0,
+        ClusterEndpoint: 0,
+        IndexName: 0,
+        TypeName: 0,
+        IndexRotationPeriod: 0,
+        BufferingHints: i_ElasticsearchBufferingHints,
+        RetryOptions: i_ElasticsearchRetryOptions,
+        S3Update: i_S3DestinationUpdate,
+        ProcessingConfiguration: i_ProcessingConfiguration,
+        CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+        DocumentIdOptions: i_DocumentIdOptions,
+      },
+      AmazonopensearchserviceDestinationUpdate: {
+        RoleARN: 0,
+        DomainARN: 0,
+        ClusterEndpoint: 0,
+        IndexName: 0,
+        TypeName: 0,
+        IndexRotationPeriod: 0,
+        BufferingHints: i_AmazonopensearchserviceBufferingHints,
+        RetryOptions: i_AmazonopensearchserviceRetryOptions,
+        S3Update: i_S3DestinationUpdate,
+        ProcessingConfiguration: i_ProcessingConfiguration,
+        CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+        DocumentIdOptions: i_DocumentIdOptions,
+      },
+      SplunkDestinationUpdate: {
+        HECEndpoint: 0,
+        HECEndpointType: 0,
+        HECToken: 0,
+        HECAcknowledgmentTimeoutInSeconds: 0,
+        RetryOptions: i_SplunkRetryOptions,
+        S3BackupMode: 0,
+        S3Update: i_S3DestinationUpdate,
+        ProcessingConfiguration: i_ProcessingConfiguration,
+        CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+        BufferingHints: i_SplunkBufferingHints,
+        SecretsManagerConfiguration: i_SecretsManagerConfiguration,
+      },
+      HttpEndpointDestinationUpdate: {
+        EndpointConfiguration: i_HttpEndpointConfiguration,
+        BufferingHints: i_HttpEndpointBufferingHints,
+        CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+        RequestConfiguration: i_HttpEndpointRequestConfiguration,
+        ProcessingConfiguration: i_ProcessingConfiguration,
+        RoleARN: 0,
+        RetryOptions: i_HttpEndpointRetryOptions,
+        S3BackupMode: 0,
+        S3Update: i_S3DestinationUpdate,
+        SecretsManagerConfiguration: i_SecretsManagerConfiguration,
+      },
+      AmazonOpenSearchServerlessDestinationUpdate: {
+        RoleARN: 0,
+        CollectionEndpoint: 0,
+        IndexName: 0,
+        BufferingHints: i_AmazonOpenSearchServerlessBufferingHints,
+        RetryOptions: i_AmazonOpenSearchServerlessRetryOptions,
+        S3Update: i_S3DestinationUpdate,
+        ProcessingConfiguration: i_ProcessingConfiguration,
+        CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+      },
+      SnowflakeDestinationUpdate: {
+        AccountUrl: 0,
+        PrivateKey: 0,
+        KeyPassphrase: 0,
+        User: 0,
+        Database: 0,
+        Schema: 0,
+        Table: 0,
+        SnowflakeRoleConfiguration: i_SnowflakeRoleConfiguration,
+        DataLoadingOption: 0,
+        MetaDataColumnName: 0,
+        ContentColumnName: 0,
+        CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+        ProcessingConfiguration: i_ProcessingConfiguration,
+        RoleARN: 0,
+        RetryOptions: i_SnowflakeRetryOptions,
+        S3BackupMode: 0,
+        S3Update: i_S3DestinationUpdate,
+        SecretsManagerConfiguration: i_SecretsManagerConfiguration,
+        BufferingHints: i_SnowflakeBufferingHints,
+      },
+      IcebergDestinationUpdate: {
+        DestinationTableConfigurationList: D.list(
+          i_DestinationTableConfiguration,
+        ),
+        SchemaEvolutionConfiguration: i_SchemaEvolutionConfiguration,
+        TableCreationConfiguration: i_TableCreationConfiguration,
+        BufferingHints: i_BufferingHints,
+        CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+        ProcessingConfiguration: i_ProcessingConfiguration,
+        S3BackupMode: 0,
+        RetryOptions: i_RetryOptions,
+        RoleARN: 0,
+        AppendOnly: 0,
+        CatalogConfiguration: i_CatalogConfiguration,
+        S3Configuration: i_S3DestinationConfiguration,
+      },
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidArgumentException,
@@ -1945,3 +2285,183 @@ export const updateDestination: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateDestination",
 })) as any;
+
+const i_AmazonOpenSearchServerlessBufferingHints: D.LazyStruct = () => ({
+  IntervalInSeconds: 0,
+  SizeInMBs: 0,
+});
+const i_AmazonOpenSearchServerlessRetryOptions: D.LazyStruct = () => ({
+  DurationInSeconds: 0,
+});
+const i_AmazonopensearchserviceBufferingHints: D.LazyStruct = () => ({
+  IntervalInSeconds: 0,
+  SizeInMBs: 0,
+});
+const i_AmazonopensearchserviceRetryOptions: D.LazyStruct = () => ({
+  DurationInSeconds: 0,
+});
+const i_BufferingHints: D.LazyStruct = () => ({
+  SizeInMBs: 0,
+  IntervalInSeconds: 0,
+});
+const i_CatalogConfiguration: D.LazyStruct = () => ({
+  CatalogARN: 0,
+  WarehouseLocation: 0,
+});
+const i_CloudWatchLoggingOptions: D.LazyStruct = () => ({
+  Enabled: 0,
+  LogGroupName: 0,
+  LogStreamName: 0,
+});
+const i_CopyCommand: D.LazyStruct = () => ({
+  DataTableName: 0,
+  DataTableColumns: 0,
+  CopyOptions: 0,
+});
+const i_DataFormatConversionConfiguration: D.LazyStruct = () => ({
+  SchemaConfiguration: {
+    RoleARN: 0,
+    CatalogId: 0,
+    DatabaseName: 0,
+    TableName: 0,
+    Region: 0,
+    VersionId: 0,
+  },
+  InputFormatConfiguration: {
+    Deserializer: {
+      OpenXJsonSerDe: {
+        ConvertDotsInJsonKeysToUnderscores: 0,
+        CaseInsensitive: 0,
+        ColumnToJsonKeyMappings: 0,
+      },
+      HiveJsonSerDe: { TimestampFormats: 0 },
+    },
+  },
+  OutputFormatConfiguration: {
+    Serializer: {
+      ParquetSerDe: {
+        BlockSizeBytes: 0,
+        PageSizeBytes: 0,
+        Compression: 0,
+        EnableDictionaryCompression: 0,
+        MaxPaddingBytes: 0,
+        WriterVersion: 0,
+      },
+      OrcSerDe: {
+        StripeSizeBytes: 0,
+        BlockSizeBytes: 0,
+        RowIndexStride: 0,
+        EnablePadding: 0,
+        PaddingTolerance: 0,
+        Compression: 0,
+        BloomFilterColumns: 0,
+        BloomFilterFalsePositiveProbability: 0,
+        DictionaryKeyThreshold: 0,
+        FormatVersion: 0,
+      },
+    },
+  },
+  Enabled: 0,
+});
+const i_DeliveryStreamEncryptionConfigurationInput: D.LazyStruct = () => ({
+  KeyARN: 0,
+  KeyType: 0,
+});
+const i_DestinationTableConfiguration: D.LazyStruct = () => ({
+  DestinationTableName: 0,
+  DestinationDatabaseName: 0,
+  UniqueKeys: 0,
+  PartitionSpec: { Identity: D.list({ SourceName: 0 }) },
+  S3ErrorOutputPrefix: 0,
+});
+const i_DocumentIdOptions: D.LazyStruct = () => ({
+  DefaultDocumentIdFormat: 0,
+});
+const i_DynamicPartitioningConfiguration: D.LazyStruct = () => ({
+  RetryOptions: i_RetryOptions,
+  Enabled: 0,
+});
+const i_ElasticsearchBufferingHints: D.LazyStruct = () => ({
+  IntervalInSeconds: 0,
+  SizeInMBs: 0,
+});
+const i_ElasticsearchRetryOptions: D.LazyStruct = () => ({
+  DurationInSeconds: 0,
+});
+const i_EncryptionConfiguration: D.LazyStruct = () => ({
+  NoEncryptionConfig: 0,
+  KMSEncryptionConfig: { AWSKMSKeyARN: 0 },
+});
+const i_HttpEndpointBufferingHints: D.LazyStruct = () => ({
+  SizeInMBs: 0,
+  IntervalInSeconds: 0,
+});
+const i_HttpEndpointConfiguration: D.LazyStruct = () => ({
+  Url: 0,
+  Name: 0,
+  AccessKey: 0,
+});
+const i_HttpEndpointRequestConfiguration: D.LazyStruct = () => ({
+  ContentEncoding: 0,
+  CommonAttributes: D.list({ AttributeName: 0, AttributeValue: 0 }),
+});
+const i_HttpEndpointRetryOptions: D.LazyStruct = () => ({
+  DurationInSeconds: 0,
+});
+const i_ProcessingConfiguration: D.LazyStruct = () => ({
+  Enabled: 0,
+  Processors: D.list({
+    Type: 0,
+    Parameters: D.list({ ParameterName: 0, ParameterValue: 0 }),
+  }),
+});
+const i_Record: D.LazyStruct = () => ({ Data: 0 });
+const i_RedshiftRetryOptions: D.LazyStruct = () => ({ DurationInSeconds: 0 });
+const i_RetryOptions: D.LazyStruct = () => ({ DurationInSeconds: 0 });
+const i_S3DestinationConfiguration: D.LazyStruct = () => ({
+  RoleARN: 0,
+  BucketARN: 0,
+  Prefix: 0,
+  ErrorOutputPrefix: 0,
+  BufferingHints: i_BufferingHints,
+  CompressionFormat: 0,
+  EncryptionConfiguration: i_EncryptionConfiguration,
+  CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+});
+const i_S3DestinationUpdate: D.LazyStruct = () => ({
+  RoleARN: 0,
+  BucketARN: 0,
+  Prefix: 0,
+  ErrorOutputPrefix: 0,
+  BufferingHints: i_BufferingHints,
+  CompressionFormat: 0,
+  EncryptionConfiguration: i_EncryptionConfiguration,
+  CloudWatchLoggingOptions: i_CloudWatchLoggingOptions,
+});
+const i_SchemaEvolutionConfiguration: D.LazyStruct = () => ({ Enabled: 0 });
+const i_SecretsManagerConfiguration: D.LazyStruct = () => ({
+  SecretARN: 0,
+  RoleARN: 0,
+  Enabled: 0,
+});
+const i_SnowflakeBufferingHints: D.LazyStruct = () => ({
+  SizeInMBs: 0,
+  IntervalInSeconds: 0,
+});
+const i_SnowflakeRetryOptions: D.LazyStruct = () => ({ DurationInSeconds: 0 });
+const i_SnowflakeRoleConfiguration: D.LazyStruct = () => ({
+  Enabled: 0,
+  SnowflakeRole: 0,
+});
+const i_SplunkBufferingHints: D.LazyStruct = () => ({
+  IntervalInSeconds: 0,
+  SizeInMBs: 0,
+});
+const i_SplunkRetryOptions: D.LazyStruct = () => ({ DurationInSeconds: 0 });
+const i_TableCreationConfiguration: D.LazyStruct = () => ({ Enabled: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_VpcConfiguration: D.LazyStruct = () => ({
+  SubnetIds: 0,
+  RoleARN: 0,
+  SecurityGroupIds: 0,
+});

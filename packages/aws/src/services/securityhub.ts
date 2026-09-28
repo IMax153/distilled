@@ -7593,7 +7593,12 @@ export const acceptAdministratorInvitation: API.OperationMethod<
   AcceptAdministratorInvitationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /administrator", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /administrator",
+    input: { AdministratorId: 0, InvitationId: 0 },
+    body: true,
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -7633,7 +7638,12 @@ export const acceptInvitation: API.OperationMethod<
   AcceptInvitationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /master", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /master",
+    input: { MasterId: 0, InvitationId: 0 },
+    body: true,
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -7665,6 +7675,7 @@ export const batchDeleteAutomationRules: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /automationrules/delete",
+    input: { AutomationRulesArns: 0 },
     body: true,
   },
   errors: [
@@ -7699,7 +7710,12 @@ export const batchDisableStandards: API.OperationMethod<
   BatchDisableStandardsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /standards/deregister", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /standards/deregister",
+    input: { StandardsSubscriptionArns: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -7733,7 +7749,17 @@ export const batchEnableStandards: API.OperationMethod<
   BatchEnableStandardsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /standards/register", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /standards/register",
+    input: {
+      StandardsSubscriptionRequests: D.list({
+        StandardsArn: 0,
+        StandardsInput: 0,
+      }),
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -7767,6 +7793,7 @@ export const batchGetAutomationRules: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /automationrules/get",
+    input: { AutomationRulesArns: 0 },
     output: { Rules: D.list({ CreatedAt: D.ts, UpdatedAt: D.ts }) },
     body: true,
   },
@@ -7805,6 +7832,9 @@ export const batchGetConfigurationPolicyAssociations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /configurationPolicyAssociation/batchget",
+    input: {
+      ConfigurationPolicyAssociationIdentifiers: D.list({ Target: i_Target }),
+    },
     output: {
       ConfigurationPolicyAssociations: D.list(
         o_ConfigurationPolicyAssociationSummary,
@@ -7843,6 +7873,7 @@ export const batchGetSecurityControls: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /securityControls/batchGet",
+    input: { SecurityControlIds: 0 },
     body: true,
   },
   errors: [
@@ -7876,6 +7907,12 @@ export const batchGetStandardsControlAssociations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /associations/batchGet",
+    input: {
+      StandardsControlAssociationIds: D.list({
+        SecurityControlId: 0,
+        StandardsArn: 0,
+      }),
+    },
     output: { StandardsControlAssociationDetails: D.list({ UpdatedAt: D.ts }) },
     body: true,
   },
@@ -7948,7 +7985,2592 @@ export const batchImportFindings: API.OperationMethod<
   BatchImportFindingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /findings/import", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /findings/import",
+    input: {
+      Findings: D.list({
+        SchemaVersion: 0,
+        Id: 0,
+        ProductArn: 0,
+        ProductName: 0,
+        CompanyName: 0,
+        Region: 0,
+        GeneratorId: 0,
+        AwsAccountId: 0,
+        Types: 0,
+        FirstObservedAt: 0,
+        LastObservedAt: 0,
+        CreatedAt: 0,
+        UpdatedAt: 0,
+        Severity: { Product: 0, Label: 0, Normalized: 0, Original: 0 },
+        Confidence: 0,
+        Criticality: 0,
+        Title: 0,
+        Description: 0,
+        Remediation: { Recommendation: { Text: 0, Url: 0 } },
+        SourceUrl: 0,
+        ProductFields: 0,
+        UserDefinedFields: 0,
+        Malware: D.list({ Name: 0, Type: 0, Path: 0, State: 0 }),
+        Network: {
+          Direction: 0,
+          Protocol: 0,
+          OpenPortRange: i_PortRange,
+          SourceIpV4: 0,
+          SourceIpV6: 0,
+          SourcePort: 0,
+          SourceDomain: 0,
+          SourceMac: 0,
+          DestinationIpV4: 0,
+          DestinationIpV6: 0,
+          DestinationPort: 0,
+          DestinationDomain: 0,
+        },
+        NetworkPath: D.list({
+          ComponentId: 0,
+          ComponentType: 0,
+          Egress: i_NetworkHeader,
+          Ingress: i_NetworkHeader,
+        }),
+        Process: {
+          Name: 0,
+          Path: 0,
+          Pid: 0,
+          ParentPid: 0,
+          LaunchedAt: 0,
+          TerminatedAt: 0,
+        },
+        Threats: D.list({
+          Name: 0,
+          Severity: 0,
+          ItemCount: 0,
+          FilePaths: D.list({
+            FilePath: 0,
+            FileName: 0,
+            ResourceId: 0,
+            Hash: 0,
+          }),
+        }),
+        ThreatIntelIndicators: D.list({
+          Type: 0,
+          Value: 0,
+          Category: 0,
+          LastObservedAt: 0,
+          Source: 0,
+          SourceUrl: 0,
+        }),
+        Resources: D.list({
+          Type: 0,
+          Id: 0,
+          Partition: 0,
+          Region: 0,
+          Provider: 0,
+          Owner: { Account: { Id: 0 }, Org: { Id: 0 } },
+          ResourceRole: 0,
+          Tags: 0,
+          DataClassification: {
+            DetailedResultsLocation: 0,
+            Result: {
+              MimeType: 0,
+              SizeClassified: 0,
+              AdditionalOccurrences: 0,
+              Status: { Code: 0, Reason: 0 },
+              SensitiveData: D.list({
+                Category: 0,
+                Detections: D.list({
+                  Count: 0,
+                  Type: 0,
+                  Occurrences: i_Occurrences,
+                }),
+                TotalCount: 0,
+              }),
+              CustomDataIdentifiers: {
+                Detections: D.list({
+                  Count: 0,
+                  Arn: 0,
+                  Name: 0,
+                  Occurrences: i_Occurrences,
+                }),
+                TotalCount: 0,
+              },
+            },
+          },
+          Details: {
+            AwsAutoScalingAutoScalingGroup: {
+              LaunchConfigurationName: 0,
+              LoadBalancerNames: 0,
+              HealthCheckType: 0,
+              HealthCheckGracePeriod: 0,
+              CreatedTime: 0,
+              MixedInstancesPolicy: {
+                InstancesDistribution: {
+                  OnDemandAllocationStrategy: 0,
+                  OnDemandBaseCapacity: 0,
+                  OnDemandPercentageAboveBaseCapacity: 0,
+                  SpotAllocationStrategy: 0,
+                  SpotInstancePools: 0,
+                  SpotMaxPrice: 0,
+                },
+                LaunchTemplate: {
+                  LaunchTemplateSpecification: {
+                    LaunchTemplateId: 0,
+                    LaunchTemplateName: 0,
+                    Version: 0,
+                  },
+                  Overrides: D.list({ InstanceType: 0, WeightedCapacity: 0 }),
+                },
+              },
+              AvailabilityZones: D.list({ Value: 0 }),
+              LaunchTemplate: {
+                LaunchTemplateId: 0,
+                LaunchTemplateName: 0,
+                Version: 0,
+              },
+              CapacityRebalance: 0,
+            },
+            AwsCodeBuildProject: {
+              EncryptionKey: 0,
+              Artifacts: D.list(i_AwsCodeBuildProjectArtifactsDetails),
+              Environment: {
+                Certificate: 0,
+                EnvironmentVariables: D.list({ Name: 0, Type: 0, Value: 0 }),
+                PrivilegedMode: 0,
+                ImagePullCredentialsType: 0,
+                RegistryCredential: { Credential: 0, CredentialProvider: 0 },
+                Type: 0,
+              },
+              Name: 0,
+              Source: {
+                Type: 0,
+                Location: 0,
+                GitCloneDepth: 0,
+                InsecureSsl: 0,
+              },
+              ServiceRole: 0,
+              LogsConfig: {
+                CloudWatchLogs: { GroupName: 0, Status: 0, StreamName: 0 },
+                S3Logs: { EncryptionDisabled: 0, Location: 0, Status: 0 },
+              },
+              VpcConfig: { VpcId: 0, Subnets: 0, SecurityGroupIds: 0 },
+              SecondaryArtifacts: D.list(i_AwsCodeBuildProjectArtifactsDetails),
+            },
+            AwsCloudFrontDistribution: {
+              CacheBehaviors: { Items: D.list({ ViewerProtocolPolicy: 0 }) },
+              DefaultCacheBehavior: { ViewerProtocolPolicy: 0 },
+              DefaultRootObject: 0,
+              DomainName: 0,
+              ETag: 0,
+              LastModifiedTime: 0,
+              Logging: { Bucket: 0, Enabled: 0, IncludeCookies: 0, Prefix: 0 },
+              Origins: {
+                Items: D.list({
+                  DomainName: 0,
+                  Id: 0,
+                  OriginPath: 0,
+                  S3OriginConfig: { OriginAccessIdentity: 0 },
+                  CustomOriginConfig: {
+                    HttpPort: 0,
+                    HttpsPort: 0,
+                    OriginKeepaliveTimeout: 0,
+                    OriginProtocolPolicy: 0,
+                    OriginReadTimeout: 0,
+                    OriginSslProtocols: { Items: 0, Quantity: 0 },
+                  },
+                }),
+              },
+              OriginGroups: {
+                Items: D.list({
+                  FailoverCriteria: { StatusCodes: { Items: 0, Quantity: 0 } },
+                }),
+              },
+              ViewerCertificate: {
+                AcmCertificateArn: 0,
+                Certificate: 0,
+                CertificateSource: 0,
+                CloudFrontDefaultCertificate: 0,
+                IamCertificateId: 0,
+                MinimumProtocolVersion: 0,
+                SslSupportMethod: 0,
+              },
+              Status: 0,
+              WebAclId: 0,
+            },
+            AwsEc2Instance: {
+              Type: 0,
+              ImageId: 0,
+              IpV4Addresses: 0,
+              IpV6Addresses: 0,
+              KeyName: 0,
+              IamInstanceProfileArn: 0,
+              VpcId: 0,
+              SubnetId: 0,
+              LaunchedAt: 0,
+              NetworkInterfaces: D.list({ NetworkInterfaceId: 0 }),
+              VirtualizationType: 0,
+              MetadataOptions: {
+                HttpEndpoint: 0,
+                HttpProtocolIpv6: 0,
+                HttpPutResponseHopLimit: 0,
+                HttpTokens: 0,
+                InstanceMetadataTags: 0,
+              },
+              Monitoring: { State: 0 },
+            },
+            AwsEc2NetworkInterface: {
+              Attachment: {
+                AttachTime: 0,
+                AttachmentId: 0,
+                DeleteOnTermination: 0,
+                DeviceIndex: 0,
+                InstanceId: 0,
+                InstanceOwnerId: 0,
+                Status: 0,
+              },
+              NetworkInterfaceId: 0,
+              SecurityGroups: D.list({ GroupName: 0, GroupId: 0 }),
+              SourceDestCheck: 0,
+              IpV6Addresses: D.list({ IpV6Address: 0 }),
+              PrivateIpAddresses: D.list({
+                PrivateIpAddress: 0,
+                PrivateDnsName: 0,
+              }),
+              PublicDnsName: 0,
+              PublicIp: 0,
+            },
+            AwsEc2SecurityGroup: {
+              GroupName: 0,
+              GroupId: 0,
+              OwnerId: 0,
+              VpcId: 0,
+              IpPermissions: D.list(i_AwsEc2SecurityGroupIpPermission),
+              IpPermissionsEgress: D.list(i_AwsEc2SecurityGroupIpPermission),
+            },
+            AwsEc2Volume: {
+              CreateTime: 0,
+              DeviceName: 0,
+              Encrypted: 0,
+              Size: 0,
+              SnapshotId: 0,
+              Status: 0,
+              KmsKeyId: 0,
+              Attachments: D.list({
+                AttachTime: 0,
+                DeleteOnTermination: 0,
+                InstanceId: 0,
+                Status: 0,
+              }),
+              VolumeId: 0,
+              VolumeType: 0,
+              VolumeScanStatus: 0,
+            },
+            AwsEc2Vpc: {
+              CidrBlockAssociationSet: D.list({
+                AssociationId: 0,
+                CidrBlock: 0,
+                CidrBlockState: 0,
+              }),
+              Ipv6CidrBlockAssociationSet: D.list(i_Ipv6CidrBlockAssociation),
+              DhcpOptionsId: 0,
+              State: 0,
+            },
+            AwsEc2Eip: {
+              InstanceId: 0,
+              PublicIp: 0,
+              AllocationId: 0,
+              AssociationId: 0,
+              Domain: 0,
+              PublicIpv4Pool: 0,
+              NetworkBorderGroup: 0,
+              NetworkInterfaceId: 0,
+              NetworkInterfaceOwnerId: 0,
+              PrivateIpAddress: 0,
+            },
+            AwsEc2Subnet: {
+              AssignIpv6AddressOnCreation: 0,
+              AvailabilityZone: 0,
+              AvailabilityZoneId: 0,
+              AvailableIpAddressCount: 0,
+              CidrBlock: 0,
+              DefaultForAz: 0,
+              MapPublicIpOnLaunch: 0,
+              OwnerId: 0,
+              State: 0,
+              SubnetArn: 0,
+              SubnetId: 0,
+              VpcId: 0,
+              Ipv6CidrBlockAssociationSet: D.list(i_Ipv6CidrBlockAssociation),
+            },
+            AwsEc2NetworkAcl: {
+              IsDefault: 0,
+              NetworkAclId: 0,
+              OwnerId: 0,
+              VpcId: 0,
+              Associations: D.list({
+                NetworkAclAssociationId: 0,
+                NetworkAclId: 0,
+                SubnetId: 0,
+              }),
+              Entries: D.list({
+                CidrBlock: 0,
+                Egress: 0,
+                IcmpTypeCode: { Code: 0, Type: 0 },
+                Ipv6CidrBlock: 0,
+                PortRange: { From: 0, To: 0 },
+                Protocol: 0,
+                RuleAction: 0,
+                RuleNumber: 0,
+              }),
+            },
+            AwsElbv2LoadBalancer: {
+              AvailabilityZones: D.list({ ZoneName: 0, SubnetId: 0 }),
+              CanonicalHostedZoneId: 0,
+              CreatedTime: 0,
+              DNSName: 0,
+              IpAddressType: 0,
+              Scheme: 0,
+              SecurityGroups: 0,
+              State: { Code: 0, Reason: 0 },
+              Type: 0,
+              VpcId: 0,
+              LoadBalancerAttributes: D.list({ Key: 0, Value: 0 }),
+            },
+            AwsElasticBeanstalkEnvironment: {
+              ApplicationName: 0,
+              Cname: 0,
+              DateCreated: 0,
+              DateUpdated: 0,
+              Description: 0,
+              EndpointUrl: 0,
+              EnvironmentArn: 0,
+              EnvironmentId: 0,
+              EnvironmentLinks: D.list({ EnvironmentName: 0, LinkName: 0 }),
+              EnvironmentName: 0,
+              OptionSettings: D.list({
+                Namespace: 0,
+                OptionName: 0,
+                ResourceName: 0,
+                Value: 0,
+              }),
+              PlatformArn: 0,
+              SolutionStackName: 0,
+              Status: 0,
+              Tier: { Name: 0, Type: 0, Version: 0 },
+              VersionLabel: 0,
+            },
+            AwsElasticsearchDomain: {
+              AccessPolicies: 0,
+              DomainEndpointOptions: { EnforceHTTPS: 0, TLSSecurityPolicy: 0 },
+              DomainId: 0,
+              DomainName: 0,
+              Endpoint: 0,
+              Endpoints: 0,
+              ElasticsearchVersion: 0,
+              ElasticsearchClusterConfig: {
+                DedicatedMasterCount: 0,
+                DedicatedMasterEnabled: 0,
+                DedicatedMasterType: 0,
+                InstanceCount: 0,
+                InstanceType: 0,
+                ZoneAwarenessConfig: { AvailabilityZoneCount: 0 },
+                ZoneAwarenessEnabled: 0,
+              },
+              EncryptionAtRestOptions: { Enabled: 0, KmsKeyId: 0 },
+              LogPublishingOptions: {
+                IndexSlowLogs:
+                  i_AwsElasticsearchDomainLogPublishingOptionsLogConfig,
+                SearchSlowLogs:
+                  i_AwsElasticsearchDomainLogPublishingOptionsLogConfig,
+                AuditLogs:
+                  i_AwsElasticsearchDomainLogPublishingOptionsLogConfig,
+              },
+              NodeToNodeEncryptionOptions: { Enabled: 0 },
+              ServiceSoftwareOptions: {
+                AutomatedUpdateDate: 0,
+                Cancellable: 0,
+                CurrentVersion: 0,
+                Description: 0,
+                NewVersion: 0,
+                UpdateAvailable: 0,
+                UpdateStatus: 0,
+              },
+              VPCOptions: {
+                AvailabilityZones: 0,
+                SecurityGroupIds: 0,
+                SubnetIds: 0,
+                VPCId: 0,
+              },
+            },
+            AwsS3Bucket: {
+              OwnerId: 0,
+              OwnerName: 0,
+              OwnerAccountId: 0,
+              CreatedAt: 0,
+              ServerSideEncryptionConfiguration: {
+                Rules: D.list({
+                  ApplyServerSideEncryptionByDefault: {
+                    SSEAlgorithm: 0,
+                    KMSMasterKeyID: 0,
+                  },
+                }),
+              },
+              BucketLifecycleConfiguration: {
+                Rules: D.list({
+                  AbortIncompleteMultipartUpload: { DaysAfterInitiation: 0 },
+                  ExpirationDate: 0,
+                  ExpirationInDays: 0,
+                  ExpiredObjectDeleteMarker: 0,
+                  Filter: {
+                    Predicate: {
+                      Operands: D.list({
+                        Prefix: 0,
+                        Tag: { Key: 0, Value: 0 },
+                        Type: 0,
+                      }),
+                      Prefix: 0,
+                      Tag: { Key: 0, Value: 0 },
+                      Type: 0,
+                    },
+                  },
+                  ID: 0,
+                  NoncurrentVersionExpirationInDays: 0,
+                  NoncurrentVersionTransitions: D.list({
+                    Days: 0,
+                    StorageClass: 0,
+                  }),
+                  Prefix: 0,
+                  Status: 0,
+                  Transitions: D.list({ Date: 0, Days: 0, StorageClass: 0 }),
+                }),
+              },
+              PublicAccessBlockConfiguration:
+                i_AwsS3AccountPublicAccessBlockDetails,
+              AccessControlList: 0,
+              BucketLoggingConfiguration: {
+                DestinationBucketName: 0,
+                LogFilePrefix: 0,
+              },
+              BucketWebsiteConfiguration: {
+                ErrorDocument: 0,
+                IndexDocumentSuffix: 0,
+                RedirectAllRequestsTo: { Hostname: 0, Protocol: 0 },
+                RoutingRules: D.list({
+                  Condition: {
+                    HttpErrorCodeReturnedEquals: 0,
+                    KeyPrefixEquals: 0,
+                  },
+                  Redirect: {
+                    Hostname: 0,
+                    HttpRedirectCode: 0,
+                    Protocol: 0,
+                    ReplaceKeyPrefixWith: 0,
+                    ReplaceKeyWith: 0,
+                  },
+                }),
+              },
+              BucketNotificationConfiguration: {
+                Configurations: D.list({
+                  Events: 0,
+                  Filter: {
+                    S3KeyFilter: { FilterRules: D.list({ Name: 0, Value: 0 }) },
+                  },
+                  Destination: 0,
+                  Type: 0,
+                }),
+              },
+              BucketVersioningConfiguration: {
+                IsMfaDeleteEnabled: 0,
+                Status: 0,
+              },
+              ObjectLockConfiguration: {
+                ObjectLockEnabled: 0,
+                Rule: { DefaultRetention: { Days: 0, Mode: 0, Years: 0 } },
+              },
+              Name: 0,
+            },
+            AwsS3AccountPublicAccessBlock:
+              i_AwsS3AccountPublicAccessBlockDetails,
+            AwsS3Object: {
+              LastModified: 0,
+              ETag: 0,
+              VersionId: 0,
+              ContentType: 0,
+              ServerSideEncryption: 0,
+              SSEKMSKeyId: 0,
+            },
+            AwsSecretsManagerSecret: {
+              RotationRules: { AutomaticallyAfterDays: 0 },
+              RotationOccurredWithinFrequency: 0,
+              KmsKeyId: 0,
+              RotationEnabled: 0,
+              RotationLambdaArn: 0,
+              Deleted: 0,
+              Name: 0,
+              Description: 0,
+            },
+            AwsIamAccessKey: {
+              UserName: 0,
+              Status: 0,
+              CreatedAt: 0,
+              PrincipalId: 0,
+              PrincipalType: 0,
+              PrincipalName: 0,
+              AccountId: 0,
+              AccessKeyId: 0,
+              SessionContext: {
+                Attributes: { MfaAuthenticated: 0, CreationDate: 0 },
+                SessionIssuer: {
+                  Type: 0,
+                  PrincipalId: 0,
+                  Arn: 0,
+                  AccountId: 0,
+                  UserName: 0,
+                },
+              },
+            },
+            AwsIamUser: {
+              AttachedManagedPolicies: D.list(i_AwsIamAttachedManagedPolicy),
+              CreateDate: 0,
+              GroupList: 0,
+              Path: 0,
+              PermissionsBoundary: i_AwsIamPermissionsBoundary,
+              UserId: 0,
+              UserName: 0,
+              UserPolicyList: D.list({ PolicyName: 0 }),
+            },
+            AwsIamPolicy: {
+              AttachmentCount: 0,
+              CreateDate: 0,
+              DefaultVersionId: 0,
+              Description: 0,
+              IsAttachable: 0,
+              Path: 0,
+              PermissionsBoundaryUsageCount: 0,
+              PolicyId: 0,
+              PolicyName: 0,
+              PolicyVersionList: D.list({
+                VersionId: 0,
+                IsDefaultVersion: 0,
+                CreateDate: 0,
+              }),
+              UpdateDate: 0,
+            },
+            AwsApiGatewayV2Stage: {
+              ClientCertificateId: 0,
+              CreatedDate: 0,
+              Description: 0,
+              DefaultRouteSettings: i_AwsApiGatewayV2RouteSettings,
+              DeploymentId: 0,
+              LastUpdatedDate: 0,
+              RouteSettings: i_AwsApiGatewayV2RouteSettings,
+              StageName: 0,
+              StageVariables: 0,
+              AccessLogSettings: i_AwsApiGatewayAccessLogSettings,
+              AutoDeploy: 0,
+              LastDeploymentStatusMessage: 0,
+              ApiGatewayManaged: 0,
+            },
+            AwsApiGatewayV2Api: {
+              ApiEndpoint: 0,
+              ApiId: 0,
+              ApiKeySelectionExpression: 0,
+              CreatedDate: 0,
+              Description: 0,
+              Version: 0,
+              Name: 0,
+              ProtocolType: 0,
+              RouteSelectionExpression: 0,
+              CorsConfiguration: {
+                AllowOrigins: 0,
+                AllowCredentials: 0,
+                ExposeHeaders: 0,
+                MaxAge: 0,
+                AllowMethods: 0,
+                AllowHeaders: 0,
+              },
+            },
+            AwsDynamoDbTable: {
+              AttributeDefinitions: D.list({
+                AttributeName: 0,
+                AttributeType: 0,
+              }),
+              BillingModeSummary: {
+                BillingMode: 0,
+                LastUpdateToPayPerRequestDateTime: 0,
+              },
+              CreationDateTime: 0,
+              GlobalSecondaryIndexes: D.list({
+                Backfilling: 0,
+                IndexArn: 0,
+                IndexName: 0,
+                IndexSizeBytes: 0,
+                IndexStatus: 0,
+                ItemCount: 0,
+                KeySchema: D.list(i_AwsDynamoDbTableKeySchema),
+                Projection: i_AwsDynamoDbTableProjection,
+                ProvisionedThroughput: i_AwsDynamoDbTableProvisionedThroughput,
+              }),
+              GlobalTableVersion: 0,
+              ItemCount: 0,
+              KeySchema: D.list(i_AwsDynamoDbTableKeySchema),
+              LatestStreamArn: 0,
+              LatestStreamLabel: 0,
+              LocalSecondaryIndexes: D.list({
+                IndexArn: 0,
+                IndexName: 0,
+                KeySchema: D.list(i_AwsDynamoDbTableKeySchema),
+                Projection: i_AwsDynamoDbTableProjection,
+              }),
+              ProvisionedThroughput: i_AwsDynamoDbTableProvisionedThroughput,
+              Replicas: D.list({
+                GlobalSecondaryIndexes: D.list({
+                  IndexName: 0,
+                  ProvisionedThroughputOverride:
+                    i_AwsDynamoDbTableProvisionedThroughputOverride,
+                }),
+                KmsMasterKeyId: 0,
+                ProvisionedThroughputOverride:
+                  i_AwsDynamoDbTableProvisionedThroughputOverride,
+                RegionName: 0,
+                ReplicaStatus: 0,
+                ReplicaStatusDescription: 0,
+              }),
+              RestoreSummary: {
+                SourceBackupArn: 0,
+                SourceTableArn: 0,
+                RestoreDateTime: 0,
+                RestoreInProgress: 0,
+              },
+              SseDescription: {
+                InaccessibleEncryptionDateTime: 0,
+                Status: 0,
+                SseType: 0,
+                KmsMasterKeyArn: 0,
+              },
+              StreamSpecification: { StreamEnabled: 0, StreamViewType: 0 },
+              TableId: 0,
+              TableName: 0,
+              TableSizeBytes: 0,
+              TableStatus: 0,
+              DeletionProtectionEnabled: 0,
+            },
+            AwsApiGatewayStage: {
+              DeploymentId: 0,
+              ClientCertificateId: 0,
+              StageName: 0,
+              Description: 0,
+              CacheClusterEnabled: 0,
+              CacheClusterSize: 0,
+              CacheClusterStatus: 0,
+              MethodSettings: D.list({
+                MetricsEnabled: 0,
+                LoggingLevel: 0,
+                DataTraceEnabled: 0,
+                ThrottlingBurstLimit: 0,
+                ThrottlingRateLimit: 0,
+                CachingEnabled: 0,
+                CacheTtlInSeconds: 0,
+                CacheDataEncrypted: 0,
+                RequireAuthorizationForCacheControl: 0,
+                UnauthorizedCacheControlHeaderStrategy: 0,
+                HttpMethod: 0,
+                ResourcePath: 0,
+              }),
+              Variables: 0,
+              DocumentationVersion: 0,
+              AccessLogSettings: i_AwsApiGatewayAccessLogSettings,
+              CanarySettings: {
+                PercentTraffic: 0,
+                DeploymentId: 0,
+                StageVariableOverrides: 0,
+                UseStageCache: 0,
+              },
+              TracingEnabled: 0,
+              CreatedDate: 0,
+              LastUpdatedDate: 0,
+              WebAclArn: 0,
+            },
+            AwsApiGatewayRestApi: {
+              Id: 0,
+              Name: 0,
+              Description: 0,
+              CreatedDate: 0,
+              Version: 0,
+              BinaryMediaTypes: 0,
+              MinimumCompressionSize: 0,
+              ApiKeySource: 0,
+              EndpointConfiguration: { Types: 0 },
+            },
+            AwsCloudTrailTrail: {
+              CloudWatchLogsLogGroupArn: 0,
+              CloudWatchLogsRoleArn: 0,
+              HasCustomEventSelectors: 0,
+              HomeRegion: 0,
+              IncludeGlobalServiceEvents: 0,
+              IsMultiRegionTrail: 0,
+              IsOrganizationTrail: 0,
+              KmsKeyId: 0,
+              LogFileValidationEnabled: 0,
+              Name: 0,
+              S3BucketName: 0,
+              S3KeyPrefix: 0,
+              SnsTopicArn: 0,
+              SnsTopicName: 0,
+              TrailArn: 0,
+            },
+            AwsSsmPatchCompliance: {
+              Patch: {
+                ComplianceSummary: {
+                  Status: 0,
+                  CompliantCriticalCount: 0,
+                  CompliantHighCount: 0,
+                  CompliantMediumCount: 0,
+                  ExecutionType: 0,
+                  NonCompliantCriticalCount: 0,
+                  CompliantInformationalCount: 0,
+                  NonCompliantInformationalCount: 0,
+                  CompliantUnspecifiedCount: 0,
+                  NonCompliantLowCount: 0,
+                  NonCompliantHighCount: 0,
+                  CompliantLowCount: 0,
+                  ComplianceType: 0,
+                  PatchBaselineId: 0,
+                  OverallSeverity: 0,
+                  NonCompliantMediumCount: 0,
+                  NonCompliantUnspecifiedCount: 0,
+                  PatchGroup: 0,
+                },
+              },
+            },
+            AwsCertificateManagerCertificate: {
+              CertificateAuthorityArn: 0,
+              CreatedAt: 0,
+              DomainName: 0,
+              DomainValidationOptions: D.list(
+                i_AwsCertificateManagerCertificateDomainValidationOption,
+              ),
+              ExtendedKeyUsages: D.list({ Name: 0, OId: 0 }),
+              FailureReason: 0,
+              ImportedAt: 0,
+              InUseBy: 0,
+              IssuedAt: 0,
+              Issuer: 0,
+              KeyAlgorithm: 0,
+              KeyUsages: D.list({ Name: 0 }),
+              NotAfter: 0,
+              NotBefore: 0,
+              Options: { CertificateTransparencyLoggingPreference: 0 },
+              RenewalEligibility: 0,
+              RenewalSummary: {
+                DomainValidationOptions: D.list(
+                  i_AwsCertificateManagerCertificateDomainValidationOption,
+                ),
+                RenewalStatus: 0,
+                RenewalStatusReason: 0,
+                UpdatedAt: 0,
+              },
+              Serial: 0,
+              SignatureAlgorithm: 0,
+              Status: 0,
+              Subject: 0,
+              SubjectAlternativeNames: 0,
+              Type: 0,
+            },
+            AwsRedshiftCluster: {
+              AllowVersionUpgrade: 0,
+              AutomatedSnapshotRetentionPeriod: 0,
+              AvailabilityZone: 0,
+              ClusterAvailabilityStatus: 0,
+              ClusterCreateTime: 0,
+              ClusterIdentifier: 0,
+              ClusterNodes: D.list({
+                NodeRole: 0,
+                PrivateIpAddress: 0,
+                PublicIpAddress: 0,
+              }),
+              ClusterParameterGroups: D.list({
+                ClusterParameterStatusList: D.list({
+                  ParameterName: 0,
+                  ParameterApplyStatus: 0,
+                  ParameterApplyErrorDescription: 0,
+                }),
+                ParameterApplyStatus: 0,
+                ParameterGroupName: 0,
+              }),
+              ClusterPublicKey: 0,
+              ClusterRevisionNumber: 0,
+              ClusterSecurityGroups: D.list({
+                ClusterSecurityGroupName: 0,
+                Status: 0,
+              }),
+              ClusterSnapshotCopyStatus: {
+                DestinationRegion: 0,
+                ManualSnapshotRetentionPeriod: 0,
+                RetentionPeriod: 0,
+                SnapshotCopyGrantName: 0,
+              },
+              ClusterStatus: 0,
+              ClusterSubnetGroupName: 0,
+              ClusterVersion: 0,
+              DBName: 0,
+              DeferredMaintenanceWindows: D.list({
+                DeferMaintenanceEndTime: 0,
+                DeferMaintenanceIdentifier: 0,
+                DeferMaintenanceStartTime: 0,
+              }),
+              ElasticIpStatus: { ElasticIp: 0, Status: 0 },
+              ElasticResizeNumberOfNodeOptions: 0,
+              Encrypted: 0,
+              Endpoint: { Address: 0, Port: 0 },
+              EnhancedVpcRouting: 0,
+              ExpectedNextSnapshotScheduleTime: 0,
+              ExpectedNextSnapshotScheduleTimeStatus: 0,
+              HsmStatus: {
+                HsmClientCertificateIdentifier: 0,
+                HsmConfigurationIdentifier: 0,
+                Status: 0,
+              },
+              IamRoles: D.list({ ApplyStatus: 0, IamRoleArn: 0 }),
+              KmsKeyId: 0,
+              MaintenanceTrackName: 0,
+              ManualSnapshotRetentionPeriod: 0,
+              MasterUsername: 0,
+              NextMaintenanceWindowStartTime: 0,
+              NodeType: 0,
+              NumberOfNodes: 0,
+              PendingActions: 0,
+              PendingModifiedValues: {
+                AutomatedSnapshotRetentionPeriod: 0,
+                ClusterIdentifier: 0,
+                ClusterType: 0,
+                ClusterVersion: 0,
+                EncryptionType: 0,
+                EnhancedVpcRouting: 0,
+                MaintenanceTrackName: 0,
+                MasterUserPassword: 0,
+                NodeType: 0,
+                NumberOfNodes: 0,
+                PubliclyAccessible: 0,
+              },
+              PreferredMaintenanceWindow: 0,
+              PubliclyAccessible: 0,
+              ResizeInfo: { AllowCancelResize: 0, ResizeType: 0 },
+              RestoreStatus: {
+                CurrentRestoreRateInMegaBytesPerSecond: 0,
+                ElapsedTimeInSeconds: 0,
+                EstimatedTimeToCompletionInSeconds: 0,
+                ProgressInMegaBytes: 0,
+                SnapshotSizeInMegaBytes: 0,
+                Status: 0,
+              },
+              SnapshotScheduleIdentifier: 0,
+              SnapshotScheduleState: 0,
+              VpcId: 0,
+              VpcSecurityGroups: D.list({ Status: 0, VpcSecurityGroupId: 0 }),
+              LoggingStatus: {
+                BucketName: 0,
+                LastFailureMessage: 0,
+                LastFailureTime: 0,
+                LastSuccessfulDeliveryTime: 0,
+                LoggingEnabled: 0,
+                S3KeyPrefix: 0,
+              },
+            },
+            AwsElbLoadBalancer: {
+              AvailabilityZones: 0,
+              BackendServerDescriptions: D.list({
+                InstancePort: 0,
+                PolicyNames: 0,
+              }),
+              CanonicalHostedZoneName: 0,
+              CanonicalHostedZoneNameID: 0,
+              CreatedTime: 0,
+              DnsName: 0,
+              HealthCheck: {
+                HealthyThreshold: 0,
+                Interval: 0,
+                Target: 0,
+                Timeout: 0,
+                UnhealthyThreshold: 0,
+              },
+              Instances: D.list({ InstanceId: 0 }),
+              ListenerDescriptions: D.list({
+                Listener: {
+                  InstancePort: 0,
+                  InstanceProtocol: 0,
+                  LoadBalancerPort: 0,
+                  Protocol: 0,
+                  SslCertificateId: 0,
+                },
+                PolicyNames: 0,
+              }),
+              LoadBalancerAttributes: {
+                AccessLog: {
+                  EmitInterval: 0,
+                  Enabled: 0,
+                  S3BucketName: 0,
+                  S3BucketPrefix: 0,
+                },
+                ConnectionDraining: { Enabled: 0, Timeout: 0 },
+                ConnectionSettings: { IdleTimeout: 0 },
+                CrossZoneLoadBalancing: { Enabled: 0 },
+                AdditionalAttributes: D.list({ Key: 0, Value: 0 }),
+              },
+              LoadBalancerName: 0,
+              Policies: {
+                AppCookieStickinessPolicies: D.list({
+                  CookieName: 0,
+                  PolicyName: 0,
+                }),
+                LbCookieStickinessPolicies: D.list({
+                  CookieExpirationPeriod: 0,
+                  PolicyName: 0,
+                }),
+                OtherPolicies: 0,
+              },
+              Scheme: 0,
+              SecurityGroups: 0,
+              SourceSecurityGroup: { GroupName: 0, OwnerAlias: 0 },
+              Subnets: 0,
+              VpcId: 0,
+            },
+            AwsIamGroup: {
+              AttachedManagedPolicies: D.list(i_AwsIamAttachedManagedPolicy),
+              CreateDate: 0,
+              GroupId: 0,
+              GroupName: 0,
+              GroupPolicyList: D.list({ PolicyName: 0 }),
+              Path: 0,
+            },
+            AwsIamRole: {
+              AssumeRolePolicyDocument: 0,
+              AttachedManagedPolicies: D.list(i_AwsIamAttachedManagedPolicy),
+              CreateDate: 0,
+              InstanceProfileList: D.list({
+                Arn: 0,
+                CreateDate: 0,
+                InstanceProfileId: 0,
+                InstanceProfileName: 0,
+                Path: 0,
+                Roles: D.list({
+                  Arn: 0,
+                  AssumeRolePolicyDocument: 0,
+                  CreateDate: 0,
+                  Path: 0,
+                  RoleId: 0,
+                  RoleName: 0,
+                }),
+              }),
+              PermissionsBoundary: i_AwsIamPermissionsBoundary,
+              RoleId: 0,
+              RoleName: 0,
+              RolePolicyList: D.list({ PolicyName: 0 }),
+              MaxSessionDuration: 0,
+              Path: 0,
+            },
+            AwsKmsKey: {
+              AWSAccountId: 0,
+              CreationDate: 0,
+              KeyId: 0,
+              KeyManager: 0,
+              KeyState: 0,
+              Origin: 0,
+              Description: 0,
+              KeyRotationStatus: 0,
+            },
+            AwsLambdaFunction: {
+              Code: { S3Bucket: 0, S3Key: 0, S3ObjectVersion: 0, ZipFile: 0 },
+              CodeSha256: 0,
+              DeadLetterConfig: { TargetArn: 0 },
+              Environment: {
+                Variables: 0,
+                Error: { ErrorCode: 0, Message: 0 },
+              },
+              FunctionName: 0,
+              Handler: 0,
+              KmsKeyArn: 0,
+              LastModified: 0,
+              Layers: D.list({ Arn: 0, CodeSize: 0 }),
+              MasterArn: 0,
+              MemorySize: 0,
+              RevisionId: 0,
+              Role: 0,
+              Runtime: 0,
+              Timeout: 0,
+              TracingConfig: { Mode: 0 },
+              VpcConfig: { SecurityGroupIds: 0, SubnetIds: 0, VpcId: 0 },
+              Version: 0,
+              Architectures: 0,
+              PackageType: 0,
+            },
+            AwsLambdaLayerVersion: {
+              Version: 0,
+              CompatibleRuntimes: 0,
+              CreatedDate: 0,
+            },
+            AwsRdsDbInstance: {
+              AssociatedRoles: D.list({
+                RoleArn: 0,
+                FeatureName: 0,
+                Status: 0,
+              }),
+              CACertificateIdentifier: 0,
+              DBClusterIdentifier: 0,
+              DBInstanceIdentifier: 0,
+              DBInstanceClass: 0,
+              DbInstancePort: 0,
+              DbiResourceId: 0,
+              DBName: 0,
+              DeletionProtection: 0,
+              Endpoint: i_AwsRdsDbInstanceEndpoint,
+              Engine: 0,
+              EngineVersion: 0,
+              IAMDatabaseAuthenticationEnabled: 0,
+              InstanceCreateTime: 0,
+              KmsKeyId: 0,
+              PubliclyAccessible: 0,
+              StorageEncrypted: 0,
+              TdeCredentialArn: 0,
+              VpcSecurityGroups: D.list(i_AwsRdsDbInstanceVpcSecurityGroup),
+              MultiAz: 0,
+              EnhancedMonitoringResourceArn: 0,
+              DbInstanceStatus: 0,
+              MasterUsername: 0,
+              AllocatedStorage: 0,
+              PreferredBackupWindow: 0,
+              BackupRetentionPeriod: 0,
+              DbSecurityGroups: 0,
+              DbParameterGroups: D.list({
+                DbParameterGroupName: 0,
+                ParameterApplyStatus: 0,
+              }),
+              AvailabilityZone: 0,
+              DbSubnetGroup: {
+                DbSubnetGroupName: 0,
+                DbSubnetGroupDescription: 0,
+                VpcId: 0,
+                SubnetGroupStatus: 0,
+                Subnets: D.list({
+                  SubnetIdentifier: 0,
+                  SubnetAvailabilityZone: { Name: 0 },
+                  SubnetStatus: 0,
+                }),
+                DbSubnetGroupArn: 0,
+              },
+              PreferredMaintenanceWindow: 0,
+              PendingModifiedValues: {
+                DbInstanceClass: 0,
+                AllocatedStorage: 0,
+                MasterUserPassword: 0,
+                Port: 0,
+                BackupRetentionPeriod: 0,
+                MultiAZ: 0,
+                EngineVersion: 0,
+                LicenseModel: 0,
+                Iops: 0,
+                DbInstanceIdentifier: 0,
+                StorageType: 0,
+                CaCertificateIdentifier: 0,
+                DbSubnetGroupName: 0,
+                PendingCloudWatchLogsExports: {
+                  LogTypesToEnable: 0,
+                  LogTypesToDisable: 0,
+                },
+                ProcessorFeatures: D.list(i_AwsRdsDbProcessorFeature),
+              },
+              LatestRestorableTime: 0,
+              AutoMinorVersionUpgrade: 0,
+              ReadReplicaSourceDBInstanceIdentifier: 0,
+              ReadReplicaDBInstanceIdentifiers: 0,
+              ReadReplicaDBClusterIdentifiers: 0,
+              LicenseModel: 0,
+              Iops: 0,
+              OptionGroupMemberships: D.list({ OptionGroupName: 0, Status: 0 }),
+              CharacterSetName: 0,
+              SecondaryAvailabilityZone: 0,
+              StatusInfos: D.list({
+                StatusType: 0,
+                Normal: 0,
+                Status: 0,
+                Message: 0,
+              }),
+              StorageType: 0,
+              DomainMemberships: D.list(i_AwsRdsDbDomainMembership),
+              CopyTagsToSnapshot: 0,
+              MonitoringInterval: 0,
+              MonitoringRoleArn: 0,
+              PromotionTier: 0,
+              Timezone: 0,
+              PerformanceInsightsEnabled: 0,
+              PerformanceInsightsKmsKeyId: 0,
+              PerformanceInsightsRetentionPeriod: 0,
+              EnabledCloudWatchLogsExports: 0,
+              ProcessorFeatures: D.list(i_AwsRdsDbProcessorFeature),
+              ListenerEndpoint: i_AwsRdsDbInstanceEndpoint,
+              MaxAllocatedStorage: 0,
+            },
+            AwsSnsTopic: {
+              KmsMasterKeyId: 0,
+              Subscription: D.list({ Endpoint: 0, Protocol: 0 }),
+              TopicName: 0,
+              Owner: 0,
+              SqsSuccessFeedbackRoleArn: 0,
+              SqsFailureFeedbackRoleArn: 0,
+              ApplicationSuccessFeedbackRoleArn: 0,
+              FirehoseSuccessFeedbackRoleArn: 0,
+              FirehoseFailureFeedbackRoleArn: 0,
+              HttpSuccessFeedbackRoleArn: 0,
+              HttpFailureFeedbackRoleArn: 0,
+            },
+            AwsSqsQueue: {
+              KmsDataKeyReusePeriodSeconds: 0,
+              KmsMasterKeyId: 0,
+              QueueName: 0,
+              DeadLetterTargetArn: 0,
+            },
+            AwsWafWebAcl: {
+              Name: 0,
+              DefaultAction: 0,
+              Rules: D.list({
+                Action: { Type: 0 },
+                ExcludedRules: D.list({ RuleId: 0 }),
+                OverrideAction: { Type: 0 },
+                Priority: 0,
+                RuleId: 0,
+                Type: 0,
+              }),
+              WebAclId: 0,
+            },
+            AwsRdsDbSnapshot: {
+              DbSnapshotIdentifier: 0,
+              DbInstanceIdentifier: 0,
+              SnapshotCreateTime: 0,
+              Engine: 0,
+              AllocatedStorage: 0,
+              Status: 0,
+              Port: 0,
+              AvailabilityZone: 0,
+              VpcId: 0,
+              InstanceCreateTime: 0,
+              MasterUsername: 0,
+              EngineVersion: 0,
+              LicenseModel: 0,
+              SnapshotType: 0,
+              Iops: 0,
+              OptionGroupName: 0,
+              PercentProgress: 0,
+              SourceRegion: 0,
+              SourceDbSnapshotIdentifier: 0,
+              StorageType: 0,
+              TdeCredentialArn: 0,
+              Encrypted: 0,
+              KmsKeyId: 0,
+              Timezone: 0,
+              IamDatabaseAuthenticationEnabled: 0,
+              ProcessorFeatures: D.list(i_AwsRdsDbProcessorFeature),
+              DbiResourceId: 0,
+            },
+            AwsRdsDbClusterSnapshot: {
+              AvailabilityZones: 0,
+              SnapshotCreateTime: 0,
+              Engine: 0,
+              AllocatedStorage: 0,
+              Status: 0,
+              Port: 0,
+              VpcId: 0,
+              ClusterCreateTime: 0,
+              MasterUsername: 0,
+              EngineVersion: 0,
+              LicenseModel: 0,
+              SnapshotType: 0,
+              PercentProgress: 0,
+              StorageEncrypted: 0,
+              KmsKeyId: 0,
+              DbClusterIdentifier: 0,
+              DbClusterSnapshotIdentifier: 0,
+              IamDatabaseAuthenticationEnabled: 0,
+              DbClusterSnapshotAttributes: D.list({
+                AttributeName: 0,
+                AttributeValues: 0,
+              }),
+            },
+            AwsRdsDbCluster: {
+              AllocatedStorage: 0,
+              AvailabilityZones: 0,
+              BackupRetentionPeriod: 0,
+              DatabaseName: 0,
+              Status: 0,
+              Endpoint: 0,
+              ReaderEndpoint: 0,
+              CustomEndpoints: 0,
+              MultiAz: 0,
+              Engine: 0,
+              EngineVersion: 0,
+              Port: 0,
+              MasterUsername: 0,
+              PreferredBackupWindow: 0,
+              PreferredMaintenanceWindow: 0,
+              ReadReplicaIdentifiers: 0,
+              VpcSecurityGroups: D.list(i_AwsRdsDbInstanceVpcSecurityGroup),
+              HostedZoneId: 0,
+              StorageEncrypted: 0,
+              KmsKeyId: 0,
+              DbClusterResourceId: 0,
+              AssociatedRoles: D.list({ RoleArn: 0, Status: 0 }),
+              ClusterCreateTime: 0,
+              EnabledCloudWatchLogsExports: 0,
+              EngineMode: 0,
+              DeletionProtection: 0,
+              HttpEndpointEnabled: 0,
+              ActivityStreamStatus: 0,
+              CopyTagsToSnapshot: 0,
+              CrossAccountClone: 0,
+              DomainMemberships: D.list(i_AwsRdsDbDomainMembership),
+              DbClusterParameterGroup: 0,
+              DbSubnetGroup: 0,
+              DbClusterOptionGroupMemberships: D.list({
+                DbClusterOptionGroupName: 0,
+                Status: 0,
+              }),
+              DbClusterIdentifier: 0,
+              DbClusterMembers: D.list({
+                IsClusterWriter: 0,
+                PromotionTier: 0,
+                DbInstanceIdentifier: 0,
+                DbClusterParameterGroupStatus: 0,
+              }),
+              IamDatabaseAuthenticationEnabled: 0,
+              AutoMinorVersionUpgrade: 0,
+            },
+            AwsEcsCluster: {
+              ClusterArn: 0,
+              ActiveServicesCount: 0,
+              CapacityProviders: 0,
+              ClusterSettings: D.list({ Name: 0, Value: 0 }),
+              Configuration: {
+                ExecuteCommandConfiguration: {
+                  KmsKeyId: 0,
+                  LogConfiguration: {
+                    CloudWatchEncryptionEnabled: 0,
+                    CloudWatchLogGroupName: 0,
+                    S3BucketName: 0,
+                    S3EncryptionEnabled: 0,
+                    S3KeyPrefix: 0,
+                  },
+                  Logging: 0,
+                },
+              },
+              DefaultCapacityProviderStrategy: D.list({
+                Base: 0,
+                CapacityProvider: 0,
+                Weight: 0,
+              }),
+              ClusterName: 0,
+              RegisteredContainerInstancesCount: 0,
+              RunningTasksCount: 0,
+              Status: 0,
+            },
+            AwsEcsContainer: i_AwsEcsContainerDetails,
+            AwsEcsTaskDefinition: {
+              ContainerDefinitions: D.list({
+                Command: 0,
+                Cpu: 0,
+                DependsOn: D.list({ Condition: 0, ContainerName: 0 }),
+                DisableNetworking: 0,
+                DnsSearchDomains: 0,
+                DnsServers: 0,
+                DockerLabels: 0,
+                DockerSecurityOptions: 0,
+                EntryPoint: 0,
+                Environment: D.list({ Name: 0, Value: 0 }),
+                EnvironmentFiles: D.list({ Type: 0, Value: 0 }),
+                Essential: 0,
+                ExtraHosts: D.list({ Hostname: 0, IpAddress: 0 }),
+                FirelensConfiguration: { Options: 0, Type: 0 },
+                HealthCheck: {
+                  Command: 0,
+                  Interval: 0,
+                  Retries: 0,
+                  StartPeriod: 0,
+                  Timeout: 0,
+                },
+                Hostname: 0,
+                Image: 0,
+                Interactive: 0,
+                Links: 0,
+                LinuxParameters: {
+                  Capabilities: { Add: 0, Drop: 0 },
+                  Devices: D.list({
+                    ContainerPath: 0,
+                    HostPath: 0,
+                    Permissions: 0,
+                  }),
+                  InitProcessEnabled: 0,
+                  MaxSwap: 0,
+                  SharedMemorySize: 0,
+                  Swappiness: 0,
+                  Tmpfs: D.list({ ContainerPath: 0, MountOptions: 0, Size: 0 }),
+                },
+                LogConfiguration: {
+                  LogDriver: 0,
+                  Options: 0,
+                  SecretOptions: D.list({ Name: 0, ValueFrom: 0 }),
+                },
+                Memory: 0,
+                MemoryReservation: 0,
+                MountPoints: D.list({
+                  ContainerPath: 0,
+                  ReadOnly: 0,
+                  SourceVolume: 0,
+                }),
+                Name: 0,
+                PortMappings: D.list({
+                  ContainerPort: 0,
+                  HostPort: 0,
+                  Protocol: 0,
+                }),
+                Privileged: 0,
+                PseudoTerminal: 0,
+                ReadonlyRootFilesystem: 0,
+                RepositoryCredentials: { CredentialsParameter: 0 },
+                ResourceRequirements: D.list({ Type: 0, Value: 0 }),
+                Secrets: D.list({ Name: 0, ValueFrom: 0 }),
+                StartTimeout: 0,
+                StopTimeout: 0,
+                SystemControls: D.list({ Namespace: 0, Value: 0 }),
+                Ulimits: D.list({ HardLimit: 0, Name: 0, SoftLimit: 0 }),
+                User: 0,
+                VolumesFrom: D.list({ ReadOnly: 0, SourceContainer: 0 }),
+                WorkingDirectory: 0,
+              }),
+              Cpu: 0,
+              ExecutionRoleArn: 0,
+              Family: 0,
+              InferenceAccelerators: D.list({ DeviceName: 0, DeviceType: 0 }),
+              IpcMode: 0,
+              Memory: 0,
+              NetworkMode: 0,
+              PidMode: 0,
+              PlacementConstraints: D.list({ Expression: 0, Type: 0 }),
+              ProxyConfiguration: {
+                ContainerName: 0,
+                ProxyConfigurationProperties: D.list({ Name: 0, Value: 0 }),
+                Type: 0,
+              },
+              RequiresCompatibilities: 0,
+              TaskRoleArn: 0,
+              Volumes: D.list({
+                DockerVolumeConfiguration: {
+                  Autoprovision: 0,
+                  Driver: 0,
+                  DriverOpts: 0,
+                  Labels: 0,
+                  Scope: 0,
+                },
+                EfsVolumeConfiguration: {
+                  AuthorizationConfig: { AccessPointId: 0, Iam: 0 },
+                  FilesystemId: 0,
+                  RootDirectory: 0,
+                  TransitEncryption: 0,
+                  TransitEncryptionPort: 0,
+                },
+                Host: { SourcePath: 0 },
+                Name: 0,
+              }),
+              Status: 0,
+            },
+            Container: {
+              ContainerRuntime: 0,
+              Name: 0,
+              ImageId: 0,
+              ImageName: 0,
+              LaunchedAt: 0,
+              VolumeMounts: D.list({ Name: 0, MountPath: 0 }),
+              Privileged: 0,
+            },
+            Other: 0,
+            AwsRdsEventSubscription: {
+              CustSubscriptionId: 0,
+              CustomerAwsId: 0,
+              Enabled: 0,
+              EventCategoriesList: 0,
+              EventSubscriptionArn: 0,
+              SnsTopicArn: 0,
+              SourceIdsList: 0,
+              SourceType: 0,
+              Status: 0,
+              SubscriptionCreationTime: 0,
+            },
+            AwsEcsService: {
+              CapacityProviderStrategy: D.list({
+                Base: 0,
+                CapacityProvider: 0,
+                Weight: 0,
+              }),
+              Cluster: 0,
+              DeploymentConfiguration: {
+                DeploymentCircuitBreaker: { Enable: 0, Rollback: 0 },
+                MaximumPercent: 0,
+                MinimumHealthyPercent: 0,
+              },
+              DeploymentController: { Type: 0 },
+              DesiredCount: 0,
+              EnableEcsManagedTags: 0,
+              EnableExecuteCommand: 0,
+              HealthCheckGracePeriodSeconds: 0,
+              LaunchType: 0,
+              LoadBalancers: D.list({
+                ContainerName: 0,
+                ContainerPort: 0,
+                LoadBalancerName: 0,
+                TargetGroupArn: 0,
+              }),
+              Name: 0,
+              NetworkConfiguration: {
+                AwsVpcConfiguration: {
+                  AssignPublicIp: 0,
+                  SecurityGroups: 0,
+                  Subnets: 0,
+                },
+              },
+              PlacementConstraints: D.list({ Expression: 0, Type: 0 }),
+              PlacementStrategies: D.list({ Field: 0, Type: 0 }),
+              PlatformVersion: 0,
+              PropagateTags: 0,
+              Role: 0,
+              SchedulingStrategy: 0,
+              ServiceArn: 0,
+              ServiceName: 0,
+              ServiceRegistries: D.list({
+                ContainerName: 0,
+                ContainerPort: 0,
+                Port: 0,
+                RegistryArn: 0,
+              }),
+              TaskDefinition: 0,
+            },
+            AwsAutoScalingLaunchConfiguration: {
+              AssociatePublicIpAddress: 0,
+              BlockDeviceMappings: D.list({
+                DeviceName: 0,
+                Ebs: {
+                  DeleteOnTermination: 0,
+                  Encrypted: 0,
+                  Iops: 0,
+                  SnapshotId: 0,
+                  VolumeSize: 0,
+                  VolumeType: 0,
+                },
+                NoDevice: 0,
+                VirtualName: 0,
+              }),
+              ClassicLinkVpcId: 0,
+              ClassicLinkVpcSecurityGroups: 0,
+              CreatedTime: 0,
+              EbsOptimized: 0,
+              IamInstanceProfile: 0,
+              ImageId: 0,
+              InstanceMonitoring: { Enabled: 0 },
+              InstanceType: 0,
+              KernelId: 0,
+              KeyName: 0,
+              LaunchConfigurationName: 0,
+              PlacementTenancy: 0,
+              RamdiskId: 0,
+              SecurityGroups: 0,
+              SpotPrice: 0,
+              UserData: 0,
+              MetadataOptions: {
+                HttpEndpoint: 0,
+                HttpPutResponseHopLimit: 0,
+                HttpTokens: 0,
+              },
+            },
+            AwsEc2VpnConnection: {
+              VpnConnectionId: 0,
+              State: 0,
+              CustomerGatewayId: 0,
+              CustomerGatewayConfiguration: 0,
+              Type: 0,
+              VpnGatewayId: 0,
+              Category: 0,
+              VgwTelemetry: D.list({
+                AcceptedRouteCount: 0,
+                CertificateArn: 0,
+                LastStatusChange: 0,
+                OutsideIpAddress: 0,
+                Status: 0,
+                StatusMessage: 0,
+              }),
+              Options: {
+                StaticRoutesOnly: 0,
+                TunnelOptions: D.list({
+                  DpdTimeoutSeconds: 0,
+                  IkeVersions: 0,
+                  OutsideIpAddress: 0,
+                  Phase1DhGroupNumbers: 0,
+                  Phase1EncryptionAlgorithms: 0,
+                  Phase1IntegrityAlgorithms: 0,
+                  Phase1LifetimeSeconds: 0,
+                  Phase2DhGroupNumbers: 0,
+                  Phase2EncryptionAlgorithms: 0,
+                  Phase2IntegrityAlgorithms: 0,
+                  Phase2LifetimeSeconds: 0,
+                  PreSharedKey: 0,
+                  RekeyFuzzPercentage: 0,
+                  RekeyMarginTimeSeconds: 0,
+                  ReplayWindowSize: 0,
+                  TunnelInsideCidr: 0,
+                }),
+              },
+              Routes: D.list({ DestinationCidrBlock: 0, State: 0 }),
+              TransitGatewayId: 0,
+            },
+            AwsEcrContainerImage: {
+              RegistryId: 0,
+              RepositoryName: 0,
+              Architecture: 0,
+              ImageDigest: 0,
+              ImageTags: 0,
+              ImagePublishedAt: 0,
+            },
+            AwsOpenSearchServiceDomain: {
+              Arn: 0,
+              AccessPolicies: 0,
+              DomainName: 0,
+              Id: 0,
+              DomainEndpoint: 0,
+              EngineVersion: 0,
+              EncryptionAtRestOptions: { Enabled: 0, KmsKeyId: 0 },
+              NodeToNodeEncryptionOptions: { Enabled: 0 },
+              ServiceSoftwareOptions: {
+                AutomatedUpdateDate: 0,
+                Cancellable: 0,
+                CurrentVersion: 0,
+                Description: 0,
+                NewVersion: 0,
+                UpdateAvailable: 0,
+                UpdateStatus: 0,
+                OptionalDeployment: 0,
+              },
+              ClusterConfig: {
+                InstanceCount: 0,
+                WarmEnabled: 0,
+                WarmCount: 0,
+                DedicatedMasterEnabled: 0,
+                ZoneAwarenessConfig: { AvailabilityZoneCount: 0 },
+                DedicatedMasterCount: 0,
+                InstanceType: 0,
+                WarmType: 0,
+                ZoneAwarenessEnabled: 0,
+                DedicatedMasterType: 0,
+              },
+              DomainEndpointOptions: {
+                CustomEndpointCertificateArn: 0,
+                CustomEndpointEnabled: 0,
+                EnforceHTTPS: 0,
+                CustomEndpoint: 0,
+                TLSSecurityPolicy: 0,
+              },
+              VpcOptions: { SecurityGroupIds: 0, SubnetIds: 0 },
+              LogPublishingOptions: {
+                IndexSlowLogs: i_AwsOpenSearchServiceDomainLogPublishingOption,
+                SearchSlowLogs: i_AwsOpenSearchServiceDomainLogPublishingOption,
+                AuditLogs: i_AwsOpenSearchServiceDomainLogPublishingOption,
+              },
+              DomainEndpoints: 0,
+              AdvancedSecurityOptions: {
+                Enabled: 0,
+                InternalUserDatabaseEnabled: 0,
+                MasterUserOptions: {
+                  MasterUserArn: 0,
+                  MasterUserName: 0,
+                  MasterUserPassword: 0,
+                },
+              },
+            },
+            AwsEc2VpcEndpointService: {
+              AcceptanceRequired: 0,
+              AvailabilityZones: 0,
+              BaseEndpointDnsNames: 0,
+              ManagesVpcEndpoints: 0,
+              GatewayLoadBalancerArns: 0,
+              NetworkLoadBalancerArns: 0,
+              PrivateDnsName: 0,
+              ServiceId: 0,
+              ServiceName: 0,
+              ServiceState: 0,
+              ServiceType: D.list({ ServiceType: 0 }),
+            },
+            AwsXrayEncryptionConfig: { KeyId: 0, Status: 0, Type: 0 },
+            AwsWafRateBasedRule: {
+              MetricName: 0,
+              Name: 0,
+              RateKey: 0,
+              RateLimit: 0,
+              RuleId: 0,
+              MatchPredicates: D.list({ DataId: 0, Negated: 0, Type: 0 }),
+            },
+            AwsWafRegionalRateBasedRule: {
+              MetricName: 0,
+              Name: 0,
+              RateKey: 0,
+              RateLimit: 0,
+              RuleId: 0,
+              MatchPredicates: D.list({ DataId: 0, Negated: 0, Type: 0 }),
+            },
+            AwsEcrRepository: {
+              Arn: 0,
+              ImageScanningConfiguration: { ScanOnPush: 0 },
+              ImageTagMutability: 0,
+              LifecyclePolicy: { LifecyclePolicyText: 0, RegistryId: 0 },
+              RepositoryName: 0,
+              RepositoryPolicyText: 0,
+            },
+            AwsEksCluster: {
+              Arn: 0,
+              CertificateAuthorityData: 0,
+              ClusterStatus: 0,
+              Endpoint: 0,
+              Name: 0,
+              ResourcesVpcConfig: {
+                SecurityGroupIds: 0,
+                SubnetIds: 0,
+                EndpointPublicAccess: 0,
+              },
+              RoleArn: 0,
+              Version: 0,
+              Logging: { ClusterLogging: D.list({ Enabled: 0, Types: 0 }) },
+            },
+            AwsNetworkFirewallFirewallPolicy: {
+              FirewallPolicy: {
+                StatefulRuleGroupReferences: D.list({ ResourceArn: 0 }),
+                StatelessCustomActions: D.list({
+                  ActionDefinition: i_StatelessCustomActionDefinition,
+                  ActionName: 0,
+                }),
+                StatelessDefaultActions: 0,
+                StatelessFragmentDefaultActions: 0,
+                StatelessRuleGroupReferences: D.list({
+                  Priority: 0,
+                  ResourceArn: 0,
+                }),
+              },
+              FirewallPolicyArn: 0,
+              FirewallPolicyId: 0,
+              FirewallPolicyName: 0,
+              Description: 0,
+            },
+            AwsNetworkFirewallFirewall: {
+              DeleteProtection: 0,
+              Description: 0,
+              FirewallArn: 0,
+              FirewallId: 0,
+              FirewallName: 0,
+              FirewallPolicyArn: 0,
+              FirewallPolicyChangeProtection: 0,
+              SubnetChangeProtection: 0,
+              SubnetMappings: D.list({ SubnetId: 0 }),
+              VpcId: 0,
+            },
+            AwsNetworkFirewallRuleGroup: {
+              Capacity: 0,
+              Description: 0,
+              RuleGroup: {
+                RuleVariables: {
+                  IpSets: { Definition: 0 },
+                  PortSets: { Definition: 0 },
+                },
+                RulesSource: {
+                  RulesSourceList: {
+                    GeneratedRulesType: 0,
+                    TargetTypes: 0,
+                    Targets: 0,
+                  },
+                  RulesString: 0,
+                  StatefulRules: D.list({
+                    Action: 0,
+                    Header: {
+                      Destination: 0,
+                      DestinationPort: 0,
+                      Direction: 0,
+                      Protocol: 0,
+                      Source: 0,
+                      SourcePort: 0,
+                    },
+                    RuleOptions: D.list({ Keyword: 0, Settings: 0 }),
+                  }),
+                  StatelessRulesAndCustomActions: {
+                    CustomActions: D.list({
+                      ActionDefinition: i_StatelessCustomActionDefinition,
+                      ActionName: 0,
+                    }),
+                    StatelessRules: D.list({
+                      Priority: 0,
+                      RuleDefinition: {
+                        Actions: 0,
+                        MatchAttributes: {
+                          DestinationPorts: D.list({ FromPort: 0, ToPort: 0 }),
+                          Destinations: D.list({ AddressDefinition: 0 }),
+                          Protocols: 0,
+                          SourcePorts: D.list({ FromPort: 0, ToPort: 0 }),
+                          Sources: D.list({ AddressDefinition: 0 }),
+                          TcpFlags: D.list({ Flags: 0, Masks: 0 }),
+                        },
+                      },
+                    }),
+                  },
+                },
+              },
+              RuleGroupArn: 0,
+              RuleGroupId: 0,
+              RuleGroupName: 0,
+              Type: 0,
+            },
+            AwsRdsDbSecurityGroup: {
+              DbSecurityGroupArn: 0,
+              DbSecurityGroupDescription: 0,
+              DbSecurityGroupName: 0,
+              Ec2SecurityGroups: D.list({
+                Ec2SecurityGroupId: 0,
+                Ec2SecurityGroupName: 0,
+                Ec2SecurityGroupOwnerId: 0,
+                Status: 0,
+              }),
+              IpRanges: D.list({ CidrIp: 0, Status: 0 }),
+              OwnerId: 0,
+              VpcId: 0,
+            },
+            AwsKinesisStream: {
+              Name: 0,
+              Arn: 0,
+              StreamEncryption: { EncryptionType: 0, KeyId: 0 },
+              ShardCount: 0,
+              RetentionPeriodHours: 0,
+            },
+            AwsEc2TransitGateway: {
+              Id: 0,
+              Description: 0,
+              DefaultRouteTablePropagation: 0,
+              AutoAcceptSharedAttachments: 0,
+              DefaultRouteTableAssociation: 0,
+              TransitGatewayCidrBlocks: 0,
+              AssociationDefaultRouteTableId: 0,
+              PropagationDefaultRouteTableId: 0,
+              VpnEcmpSupport: 0,
+              DnsSupport: 0,
+              MulticastSupport: 0,
+              AmazonSideAsn: 0,
+            },
+            AwsEfsAccessPoint: {
+              AccessPointId: 0,
+              Arn: 0,
+              ClientToken: 0,
+              FileSystemId: 0,
+              PosixUser: { Gid: 0, SecondaryGids: 0, Uid: 0 },
+              RootDirectory: {
+                CreationInfo: { OwnerGid: 0, OwnerUid: 0, Permissions: 0 },
+                Path: 0,
+              },
+            },
+            AwsCloudFormationStack: {
+              Capabilities: 0,
+              CreationTime: 0,
+              Description: 0,
+              DisableRollback: 0,
+              DriftInformation: { StackDriftStatus: 0 },
+              EnableTerminationProtection: 0,
+              LastUpdatedTime: 0,
+              NotificationArns: 0,
+              Outputs: D.list({ Description: 0, OutputKey: 0, OutputValue: 0 }),
+              RoleArn: 0,
+              StackId: 0,
+              StackName: 0,
+              StackStatus: 0,
+              StackStatusReason: 0,
+              TimeoutInMinutes: 0,
+            },
+            AwsCloudWatchAlarm: {
+              ActionsEnabled: 0,
+              AlarmActions: 0,
+              AlarmArn: 0,
+              AlarmConfigurationUpdatedTimestamp: 0,
+              AlarmDescription: 0,
+              AlarmName: 0,
+              ComparisonOperator: 0,
+              DatapointsToAlarm: 0,
+              Dimensions: D.list({ Name: 0, Value: 0 }),
+              EvaluateLowSampleCountPercentile: 0,
+              EvaluationPeriods: 0,
+              ExtendedStatistic: 0,
+              InsufficientDataActions: 0,
+              MetricName: 0,
+              Namespace: 0,
+              OkActions: 0,
+              Period: 0,
+              Statistic: 0,
+              Threshold: 0,
+              ThresholdMetricId: 0,
+              TreatMissingData: 0,
+              Unit: 0,
+            },
+            AwsEc2VpcPeeringConnection: {
+              AccepterVpcInfo: i_AwsEc2VpcPeeringConnectionVpcInfoDetails,
+              ExpirationTime: 0,
+              RequesterVpcInfo: i_AwsEc2VpcPeeringConnectionVpcInfoDetails,
+              Status: { Code: 0, Message: 0 },
+              VpcPeeringConnectionId: 0,
+            },
+            AwsWafRegionalRuleGroup: {
+              MetricName: 0,
+              Name: 0,
+              RuleGroupId: 0,
+              Rules: D.list({
+                Action: { Type: 0 },
+                Priority: 0,
+                RuleId: 0,
+                Type: 0,
+              }),
+            },
+            AwsWafRegionalRule: {
+              MetricName: 0,
+              Name: 0,
+              PredicateList: D.list({ DataId: 0, Negated: 0, Type: 0 }),
+              RuleId: 0,
+            },
+            AwsWafRegionalWebAcl: {
+              DefaultAction: 0,
+              MetricName: 0,
+              Name: 0,
+              RulesList: D.list({
+                Action: { Type: 0 },
+                OverrideAction: { Type: 0 },
+                Priority: 0,
+                RuleId: 0,
+                Type: 0,
+              }),
+              WebAclId: 0,
+            },
+            AwsWafRule: {
+              MetricName: 0,
+              Name: 0,
+              PredicateList: D.list({ DataId: 0, Negated: 0, Type: 0 }),
+              RuleId: 0,
+            },
+            AwsWafRuleGroup: {
+              MetricName: 0,
+              Name: 0,
+              RuleGroupId: 0,
+              Rules: D.list({
+                Action: { Type: 0 },
+                Priority: 0,
+                RuleId: 0,
+                Type: 0,
+              }),
+            },
+            AwsEcsTask: {
+              ClusterArn: 0,
+              TaskDefinitionArn: 0,
+              Version: 0,
+              CreatedAt: 0,
+              StartedAt: 0,
+              StartedBy: 0,
+              Group: 0,
+              Volumes: D.list({ Name: 0, Host: { SourcePath: 0 } }),
+              Containers: D.list(i_AwsEcsContainerDetails),
+            },
+            AwsBackupBackupVault: {
+              BackupVaultArn: 0,
+              BackupVaultName: 0,
+              EncryptionKeyArn: 0,
+              Notifications: { BackupVaultEvents: 0, SnsTopicArn: 0 },
+              AccessPolicy: 0,
+            },
+            AwsBackupBackupPlan: {
+              BackupPlan: {
+                BackupPlanName: 0,
+                AdvancedBackupSettings: D.list({
+                  BackupOptions: 0,
+                  ResourceType: 0,
+                }),
+                BackupPlanRule: D.list({
+                  TargetBackupVault: 0,
+                  StartWindowMinutes: 0,
+                  ScheduleExpression: 0,
+                  RuleName: 0,
+                  RuleId: 0,
+                  EnableContinuousBackup: 0,
+                  CompletionWindowMinutes: 0,
+                  CopyActions: D.list({
+                    DestinationBackupVaultArn: 0,
+                    Lifecycle: i_AwsBackupBackupPlanLifecycleDetails,
+                  }),
+                  Lifecycle: i_AwsBackupBackupPlanLifecycleDetails,
+                }),
+              },
+              BackupPlanArn: 0,
+              BackupPlanId: 0,
+              VersionId: 0,
+            },
+            AwsBackupRecoveryPoint: {
+              BackupSizeInBytes: 0,
+              BackupVaultArn: 0,
+              BackupVaultName: 0,
+              CalculatedLifecycle: { DeleteAt: 0, MoveToColdStorageAt: 0 },
+              CompletionDate: 0,
+              CreatedBy: {
+                BackupPlanArn: 0,
+                BackupPlanId: 0,
+                BackupPlanVersion: 0,
+                BackupRuleId: 0,
+              },
+              CreationDate: 0,
+              EncryptionKeyArn: 0,
+              IamRoleArn: 0,
+              IsEncrypted: 0,
+              LastRestoreTime: 0,
+              Lifecycle: { DeleteAfterDays: 0, MoveToColdStorageAfterDays: 0 },
+              RecoveryPointArn: 0,
+              ResourceArn: 0,
+              ResourceType: 0,
+              SourceBackupVaultArn: 0,
+              Status: 0,
+              StatusMessage: 0,
+              StorageClass: 0,
+            },
+            AwsEc2LaunchTemplate: {
+              LaunchTemplateName: 0,
+              Id: 0,
+              LaunchTemplateData: {
+                BlockDeviceMappingSet: D.list({
+                  DeviceName: 0,
+                  Ebs: {
+                    DeleteOnTermination: 0,
+                    Encrypted: 0,
+                    Iops: 0,
+                    KmsKeyId: 0,
+                    SnapshotId: 0,
+                    Throughput: 0,
+                    VolumeSize: 0,
+                    VolumeType: 0,
+                  },
+                  NoDevice: 0,
+                  VirtualName: 0,
+                }),
+                CapacityReservationSpecification: {
+                  CapacityReservationPreference: 0,
+                  CapacityReservationTarget: {
+                    CapacityReservationId: 0,
+                    CapacityReservationResourceGroupArn: 0,
+                  },
+                },
+                CpuOptions: { CoreCount: 0, ThreadsPerCore: 0 },
+                CreditSpecification: { CpuCredits: 0 },
+                DisableApiStop: 0,
+                DisableApiTermination: 0,
+                EbsOptimized: 0,
+                ElasticGpuSpecificationSet: D.list({ Type: 0 }),
+                ElasticInferenceAcceleratorSet: D.list({ Count: 0, Type: 0 }),
+                EnclaveOptions: { Enabled: 0 },
+                HibernationOptions: { Configured: 0 },
+                IamInstanceProfile: { Arn: 0, Name: 0 },
+                ImageId: 0,
+                InstanceInitiatedShutdownBehavior: 0,
+                InstanceMarketOptions: {
+                  MarketType: 0,
+                  SpotOptions: {
+                    BlockDurationMinutes: 0,
+                    InstanceInterruptionBehavior: 0,
+                    MaxPrice: 0,
+                    SpotInstanceType: 0,
+                    ValidUntil: 0,
+                  },
+                },
+                InstanceRequirements: {
+                  AcceleratorCount: { Max: 0, Min: 0 },
+                  AcceleratorManufacturers: 0,
+                  AcceleratorNames: 0,
+                  AcceleratorTotalMemoryMiB: { Max: 0, Min: 0 },
+                  AcceleratorTypes: 0,
+                  BareMetal: 0,
+                  BaselineEbsBandwidthMbps: { Max: 0, Min: 0 },
+                  BurstablePerformance: 0,
+                  CpuManufacturers: 0,
+                  ExcludedInstanceTypes: 0,
+                  InstanceGenerations: 0,
+                  LocalStorage: 0,
+                  LocalStorageTypes: 0,
+                  MemoryGiBPerVCpu: { Max: 0, Min: 0 },
+                  MemoryMiB: { Max: 0, Min: 0 },
+                  NetworkInterfaceCount: { Max: 0, Min: 0 },
+                  OnDemandMaxPricePercentageOverLowestPrice: 0,
+                  RequireHibernateSupport: 0,
+                  SpotMaxPricePercentageOverLowestPrice: 0,
+                  TotalLocalStorageGB: { Max: 0, Min: 0 },
+                  VCpuCount: { Max: 0, Min: 0 },
+                },
+                InstanceType: 0,
+                KernelId: 0,
+                KeyName: 0,
+                LicenseSet: D.list({ LicenseConfigurationArn: 0 }),
+                MaintenanceOptions: { AutoRecovery: 0 },
+                MetadataOptions: {
+                  HttpEndpoint: 0,
+                  HttpProtocolIpv6: 0,
+                  HttpTokens: 0,
+                  HttpPutResponseHopLimit: 0,
+                  InstanceMetadataTags: 0,
+                },
+                Monitoring: { Enabled: 0 },
+                NetworkInterfaceSet: D.list({
+                  AssociateCarrierIpAddress: 0,
+                  AssociatePublicIpAddress: 0,
+                  DeleteOnTermination: 0,
+                  Description: 0,
+                  DeviceIndex: 0,
+                  Groups: 0,
+                  InterfaceType: 0,
+                  Ipv4PrefixCount: 0,
+                  Ipv4Prefixes: D.list({ Ipv4Prefix: 0 }),
+                  Ipv6AddressCount: 0,
+                  Ipv6Addresses: D.list({ Ipv6Address: 0 }),
+                  Ipv6PrefixCount: 0,
+                  Ipv6Prefixes: D.list({ Ipv6Prefix: 0 }),
+                  NetworkCardIndex: 0,
+                  NetworkInterfaceId: 0,
+                  PrivateIpAddress: 0,
+                  PrivateIpAddresses: D.list({
+                    Primary: 0,
+                    PrivateIpAddress: 0,
+                  }),
+                  SecondaryPrivateIpAddressCount: 0,
+                  SubnetId: 0,
+                }),
+                Placement: {
+                  Affinity: 0,
+                  AvailabilityZone: 0,
+                  GroupName: 0,
+                  HostId: 0,
+                  HostResourceGroupArn: 0,
+                  PartitionNumber: 0,
+                  SpreadDomain: 0,
+                  Tenancy: 0,
+                },
+                PrivateDnsNameOptions: {
+                  EnableResourceNameDnsAAAARecord: 0,
+                  EnableResourceNameDnsARecord: 0,
+                  HostnameType: 0,
+                },
+                RamDiskId: 0,
+                SecurityGroupIdSet: 0,
+                SecurityGroupSet: 0,
+                UserData: 0,
+              },
+              DefaultVersionNumber: 0,
+              LatestVersionNumber: 0,
+            },
+            AwsSageMakerNotebookInstance: {
+              AcceleratorTypes: 0,
+              AdditionalCodeRepositories: 0,
+              DefaultCodeRepository: 0,
+              DirectInternetAccess: 0,
+              FailureReason: 0,
+              InstanceMetadataServiceConfiguration: {
+                MinimumInstanceMetadataServiceVersion: 0,
+              },
+              InstanceType: 0,
+              KmsKeyId: 0,
+              NetworkInterfaceId: 0,
+              NotebookInstanceArn: 0,
+              NotebookInstanceLifecycleConfigName: 0,
+              NotebookInstanceName: 0,
+              NotebookInstanceStatus: 0,
+              PlatformIdentifier: 0,
+              RoleArn: 0,
+              RootAccess: 0,
+              SecurityGroups: 0,
+              SubnetId: 0,
+              Url: 0,
+              VolumeSizeInGB: 0,
+            },
+            AwsWafv2WebAcl: {
+              Name: 0,
+              Arn: 0,
+              ManagedbyFirewallManager: 0,
+              Id: 0,
+              Capacity: 0,
+              CaptchaConfig: { ImmunityTimeProperty: { ImmunityTime: 0 } },
+              DefaultAction: {
+                Allow: i_AwsWafv2ActionAllowDetails,
+                Block: i_AwsWafv2ActionBlockDetails,
+              },
+              Description: 0,
+              Rules: D.list(i_AwsWafv2RulesDetails),
+              VisibilityConfig: i_AwsWafv2VisibilityConfigDetails,
+            },
+            AwsWafv2RuleGroup: {
+              Capacity: 0,
+              Description: 0,
+              Id: 0,
+              Name: 0,
+              Arn: 0,
+              Rules: D.list(i_AwsWafv2RulesDetails),
+              Scope: 0,
+              VisibilityConfig: i_AwsWafv2VisibilityConfigDetails,
+            },
+            AwsEc2RouteTable: {
+              AssociationSet: D.list({
+                AssociationState: { State: 0, StatusMessage: 0 },
+                GatewayId: 0,
+                Main: 0,
+                RouteTableAssociationId: 0,
+                RouteTableId: 0,
+                SubnetId: 0,
+              }),
+              OwnerId: 0,
+              PropagatingVgwSet: D.list({ GatewayId: 0 }),
+              RouteTableId: 0,
+              RouteSet: D.list({
+                CarrierGatewayId: 0,
+                CoreNetworkArn: 0,
+                DestinationCidrBlock: 0,
+                DestinationIpv6CidrBlock: 0,
+                DestinationPrefixListId: 0,
+                EgressOnlyInternetGatewayId: 0,
+                GatewayId: 0,
+                InstanceId: 0,
+                InstanceOwnerId: 0,
+                LocalGatewayId: 0,
+                NatGatewayId: 0,
+                NetworkInterfaceId: 0,
+                Origin: 0,
+                State: 0,
+                TransitGatewayId: 0,
+                VpcPeeringConnectionId: 0,
+              }),
+              VpcId: 0,
+            },
+            AwsAmazonMqBroker: {
+              AuthenticationStrategy: 0,
+              AutoMinorVersionUpgrade: 0,
+              BrokerArn: 0,
+              BrokerName: 0,
+              DeploymentMode: 0,
+              EncryptionOptions: { KmsKeyId: 0, UseAwsOwnedKey: 0 },
+              EngineType: 0,
+              EngineVersion: 0,
+              HostInstanceType: 0,
+              BrokerId: 0,
+              LdapServerMetadata: {
+                Hosts: 0,
+                RoleBase: 0,
+                RoleName: 0,
+                RoleSearchMatching: 0,
+                RoleSearchSubtree: 0,
+                ServiceAccountUsername: 0,
+                UserBase: 0,
+                UserRoleName: 0,
+                UserSearchMatching: 0,
+                UserSearchSubtree: 0,
+              },
+              Logs: {
+                Audit: 0,
+                General: 0,
+                AuditLogGroup: 0,
+                GeneralLogGroup: 0,
+                Pending: { Audit: 0, General: 0 },
+              },
+              MaintenanceWindowStartTime: {
+                DayOfWeek: 0,
+                TimeOfDay: 0,
+                TimeZone: 0,
+              },
+              PubliclyAccessible: 0,
+              SecurityGroups: 0,
+              StorageType: 0,
+              SubnetIds: 0,
+              Users: D.list({ PendingChange: 0, Username: 0 }),
+            },
+            AwsAppSyncGraphQlApi: {
+              ApiId: 0,
+              Id: 0,
+              OpenIdConnectConfig:
+                i_AwsAppSyncGraphQlApiOpenIdConnectConfigDetails,
+              Name: 0,
+              LambdaAuthorizerConfig:
+                i_AwsAppSyncGraphQlApiLambdaAuthorizerConfigDetails,
+              XrayEnabled: 0,
+              Arn: 0,
+              UserPoolConfig: i_AwsAppSyncGraphQlApiUserPoolConfigDetails,
+              AuthenticationType: 0,
+              LogConfig: {
+                CloudWatchLogsRoleArn: 0,
+                ExcludeVerboseContent: 0,
+                FieldLogLevel: 0,
+              },
+              AdditionalAuthenticationProviders: D.list({
+                AuthenticationType: 0,
+                LambdaAuthorizerConfig:
+                  i_AwsAppSyncGraphQlApiLambdaAuthorizerConfigDetails,
+                OpenIdConnectConfig:
+                  i_AwsAppSyncGraphQlApiOpenIdConnectConfigDetails,
+                UserPoolConfig: i_AwsAppSyncGraphQlApiUserPoolConfigDetails,
+              }),
+              WafWebAclArn: 0,
+            },
+            AwsEventSchemasRegistry: {
+              Description: 0,
+              RegistryArn: 0,
+              RegistryName: 0,
+            },
+            AwsGuardDutyDetector: {
+              DataSources: {
+                CloudTrail: { Status: 0 },
+                DnsLogs: { Status: 0 },
+                FlowLogs: { Status: 0 },
+                Kubernetes: { AuditLogs: { Status: 0 } },
+                MalwareProtection: {
+                  ScanEc2InstanceWithFindings: {
+                    EbsVolumes: { Reason: 0, Status: 0 },
+                  },
+                  ServiceRole: 0,
+                },
+                S3Logs: { Status: 0 },
+              },
+              Features: D.list({ Name: 0, Status: 0 }),
+              FindingPublishingFrequency: 0,
+              ServiceRole: 0,
+              Status: 0,
+            },
+            AwsStepFunctionStateMachine: {
+              Label: 0,
+              LoggingConfiguration: {
+                Destinations: D.list({
+                  CloudWatchLogsLogGroup: { LogGroupArn: 0 },
+                }),
+                IncludeExecutionData: 0,
+                Level: 0,
+              },
+              Name: 0,
+              RoleArn: 0,
+              StateMachineArn: 0,
+              Status: 0,
+              TracingConfiguration: { Enabled: 0 },
+              Type: 0,
+            },
+            AwsAthenaWorkGroup: {
+              Name: 0,
+              Description: 0,
+              State: 0,
+              Configuration: {
+                ResultConfiguration: {
+                  EncryptionConfiguration: { EncryptionOption: 0, KmsKey: 0 },
+                },
+              },
+            },
+            AwsEventsEventbus: { Arn: 0, Name: 0, Policy: 0 },
+            AwsDmsEndpoint: {
+              CertificateArn: 0,
+              DatabaseName: 0,
+              EndpointArn: 0,
+              EndpointIdentifier: 0,
+              EndpointType: 0,
+              EngineName: 0,
+              ExternalId: 0,
+              ExtraConnectionAttributes: 0,
+              KmsKeyId: 0,
+              Port: 0,
+              ServerName: 0,
+              SslMode: 0,
+              Username: 0,
+            },
+            AwsEventsEndpoint: {
+              Arn: 0,
+              Description: 0,
+              EndpointId: 0,
+              EndpointUrl: 0,
+              EventBuses: D.list({ EventBusArn: 0 }),
+              Name: 0,
+              ReplicationConfig: { State: 0 },
+              RoleArn: 0,
+              RoutingConfig: {
+                FailoverConfig: {
+                  Primary: { HealthCheck: 0 },
+                  Secondary: { Route: 0 },
+                },
+              },
+              State: 0,
+              StateReason: 0,
+            },
+            AwsDmsReplicationTask: {
+              CdcStartPosition: 0,
+              CdcStartTime: 0,
+              CdcStopPosition: 0,
+              MigrationType: 0,
+              Id: 0,
+              ResourceIdentifier: 0,
+              ReplicationInstanceArn: 0,
+              ReplicationTaskIdentifier: 0,
+              ReplicationTaskSettings: 0,
+              SourceEndpointArn: 0,
+              TableMappings: 0,
+              TargetEndpointArn: 0,
+              TaskData: 0,
+            },
+            AwsDmsReplicationInstance: {
+              AllocatedStorage: 0,
+              AutoMinorVersionUpgrade: 0,
+              AvailabilityZone: 0,
+              EngineVersion: 0,
+              KmsKeyId: 0,
+              MultiAZ: 0,
+              PreferredMaintenanceWindow: 0,
+              PubliclyAccessible: 0,
+              ReplicationInstanceClass: 0,
+              ReplicationInstanceIdentifier: 0,
+              ReplicationSubnetGroup: { ReplicationSubnetGroupIdentifier: 0 },
+              VpcSecurityGroups: D.list({ VpcSecurityGroupId: 0 }),
+            },
+            AwsRoute53HostedZone: {
+              HostedZone: { Id: 0, Name: 0, Config: { Comment: 0 } },
+              Vpcs: D.list({ Id: 0, Region: 0 }),
+              NameServers: 0,
+              QueryLoggingConfig: {
+                CloudWatchLogsLogGroupArn: {
+                  CloudWatchLogsLogGroupArn: 0,
+                  HostedZoneId: 0,
+                  Id: 0,
+                },
+              },
+            },
+            AwsMskCluster: {
+              ClusterInfo: {
+                EncryptionInfo: {
+                  EncryptionInTransit: { InCluster: 0, ClientBroker: 0 },
+                  EncryptionAtRest: { DataVolumeKMSKeyId: 0 },
+                },
+                CurrentVersion: 0,
+                NumberOfBrokerNodes: 0,
+                ClusterName: 0,
+                ClientAuthentication: {
+                  Sasl: { Iam: { Enabled: 0 }, Scram: { Enabled: 0 } },
+                  Unauthenticated: { Enabled: 0 },
+                  Tls: { CertificateAuthorityArnList: 0, Enabled: 0 },
+                },
+                EnhancedMonitoring: 0,
+              },
+            },
+            AwsS3AccessPoint: {
+              AccessPointArn: 0,
+              Alias: 0,
+              Bucket: 0,
+              BucketAccountId: 0,
+              Name: 0,
+              NetworkOrigin: 0,
+              PublicAccessBlockConfiguration:
+                i_AwsS3AccountPublicAccessBlockDetails,
+              VpcConfiguration: { VpcId: 0 },
+            },
+            AwsEc2ClientVpnEndpoint: {
+              ClientVpnEndpointId: 0,
+              Description: 0,
+              ClientCidrBlock: 0,
+              DnsServer: 0,
+              SplitTunnel: 0,
+              TransportProtocol: 0,
+              VpnPort: 0,
+              ServerCertificateArn: 0,
+              AuthenticationOptions: D.list({
+                Type: 0,
+                ActiveDirectory: { DirectoryId: 0 },
+                MutualAuthentication: { ClientRootCertificateChain: 0 },
+                FederatedAuthentication: {
+                  SamlProviderArn: 0,
+                  SelfServiceSamlProviderArn: 0,
+                },
+              }),
+              ConnectionLogOptions: {
+                Enabled: 0,
+                CloudwatchLogGroup: 0,
+                CloudwatchLogStream: 0,
+              },
+              SecurityGroupIdSet: 0,
+              VpcId: 0,
+              SelfServicePortalUrl: 0,
+              ClientConnectOptions: {
+                Enabled: 0,
+                LambdaFunctionArn: 0,
+                Status: { Code: 0, Message: 0 },
+              },
+              SessionTimeoutHours: 0,
+              ClientLoginBannerOptions: { Enabled: 0, BannerText: 0 },
+            },
+            CodeRepository: {
+              ProviderType: 0,
+              ProjectName: 0,
+              CodeSecurityIntegrationArn: 0,
+            },
+            AzureResource: 0,
+          },
+          ApplicationName: 0,
+          ApplicationArn: 0,
+        }),
+        Compliance: {
+          Status: 0,
+          RelatedRequirements: 0,
+          StatusReasons: D.list({ ReasonCode: 0, Description: 0 }),
+          SecurityControlId: 0,
+          AssociatedStandards: D.list({ StandardsId: 0 }),
+          SecurityControlParameters: D.list({ Name: 0, Value: 0 }),
+        },
+        VerificationState: 0,
+        WorkflowState: 0,
+        Workflow: { Status: 0 },
+        RecordState: 0,
+        RelatedFindings: D.list(i_RelatedFinding),
+        Note: { Text: 0, UpdatedBy: 0, UpdatedAt: 0 },
+        Vulnerabilities: D.list({
+          Id: 0,
+          VulnerablePackages: D.list({
+            Name: 0,
+            Version: 0,
+            Epoch: 0,
+            Release: 0,
+            Architecture: 0,
+            PackageManager: 0,
+            FilePath: 0,
+            FixedInVersion: 0,
+            Remediation: 0,
+            SourceLayerHash: 0,
+            SourceLayerArn: 0,
+          }),
+          Cvss: D.list({
+            Version: 0,
+            BaseScore: 0,
+            BaseVector: 0,
+            Source: 0,
+            Adjustments: D.list({ Metric: 0, Reason: 0 }),
+          }),
+          RelatedVulnerabilities: 0,
+          Vendor: {
+            Name: 0,
+            Url: 0,
+            VendorSeverity: 0,
+            VendorCreatedAt: 0,
+            VendorUpdatedAt: 0,
+          },
+          ReferenceUrls: 0,
+          FixAvailable: 0,
+          EpssScore: 0,
+          ExploitAvailable: 0,
+          LastKnownExploitAt: 0,
+          CodeVulnerabilities: D.list({
+            Cwes: 0,
+            FilePath: { EndLine: 0, FileName: 0, FilePath: 0, StartLine: 0 },
+            SourceArn: 0,
+          }),
+        }),
+        PatchSummary: {
+          Id: 0,
+          InstalledCount: 0,
+          MissingCount: 0,
+          FailedCount: 0,
+          InstalledOtherCount: 0,
+          InstalledRejectedCount: 0,
+          InstalledPendingReboot: 0,
+          OperationStartTime: 0,
+          OperationEndTime: 0,
+          RebootOption: 0,
+          Operation: 0,
+        },
+        Action: {
+          ActionType: 0,
+          NetworkConnectionAction: {
+            ConnectionDirection: 0,
+            RemoteIpDetails: i_ActionRemoteIpDetails,
+            RemotePortDetails: { Port: 0, PortName: 0 },
+            LocalPortDetails: i_ActionLocalPortDetails,
+            Protocol: 0,
+            Blocked: 0,
+          },
+          AwsApiCallAction: {
+            Api: 0,
+            ServiceName: 0,
+            CallerType: 0,
+            RemoteIpDetails: i_ActionRemoteIpDetails,
+            DomainDetails: { Domain: 0 },
+            AffectedResources: 0,
+            FirstSeen: 0,
+            LastSeen: 0,
+          },
+          DnsRequestAction: { Domain: 0, Protocol: 0, Blocked: 0 },
+          PortProbeAction: {
+            PortProbeDetails: D.list({
+              LocalPortDetails: i_ActionLocalPortDetails,
+              LocalIpDetails: { IpAddressV4: 0 },
+              RemoteIpDetails: i_ActionRemoteIpDetails,
+            }),
+            Blocked: 0,
+          },
+        },
+        FindingProviderFields: {
+          Confidence: 0,
+          Criticality: 0,
+          RelatedFindings: D.list(i_RelatedFinding),
+          Severity: { Label: 0, Original: 0 },
+          Types: 0,
+        },
+        Sample: 0,
+        GeneratorDetails: { Name: 0, Description: 0, Labels: 0 },
+        ProcessedAt: 0,
+        AwsAccountName: 0,
+        Detection: {
+          Sequence: {
+            Uid: 0,
+            Actors: D.list({
+              Id: 0,
+              User: {
+                Name: 0,
+                Uid: 0,
+                Type: 0,
+                CredentialUid: 0,
+                Account: { Uid: 0, Name: 0 },
+              },
+              Session: { Uid: 0, MfaStatus: 0, CreatedTime: 0, Issuer: 0 },
+            }),
+            Endpoints: D.list({
+              Id: 0,
+              Ip: 0,
+              Domain: 0,
+              Port: 0,
+              Location: { City: 0, Country: 0, Lat: 0, Lon: 0 },
+              AutonomousSystem: { Name: 0, Number: 0 },
+              Connection: { Direction: 0 },
+            }),
+            Signals: D.list({
+              Type: 0,
+              Id: 0,
+              Title: 0,
+              ProductArn: 0,
+              ResourceIds: 0,
+              SignalIndicators: D.list(i_Indicator),
+              Name: 0,
+              CreatedAt: 0,
+              UpdatedAt: 0,
+              FirstSeenAt: 0,
+              LastSeenAt: 0,
+              Severity: 0,
+              Count: 0,
+              ActorIds: 0,
+              EndpointIds: 0,
+            }),
+            SequenceIndicators: D.list(i_Indicator),
+          },
+        },
+      }),
+    },
+    body: true,
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -7980,6 +10602,18 @@ export const batchUpdateAutomationRules: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /automationrules/update",
+    input: {
+      UpdateAutomationRulesRequestItems: D.list({
+        RuleArn: 0,
+        RuleStatus: 0,
+        RuleOrder: 0,
+        Description: 0,
+        RuleName: 0,
+        IsTerminal: 0,
+        Criteria: i_AutomationRulesFindingFilters,
+        Actions: D.list(i_AutomationRulesAction),
+      }),
+    },
     body: true,
   },
   errors: [
@@ -8038,7 +10672,23 @@ export const batchUpdateFindings: API.OperationMethod<
   BatchUpdateFindingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /findings/batchupdate", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /findings/batchupdate",
+    input: {
+      FindingIdentifiers: D.list(i_AwsSecurityFindingIdentifier),
+      Note: i_NoteUpdate,
+      Severity: i_SeverityUpdate,
+      VerificationState: 0,
+      Confidence: 0,
+      Criticality: 0,
+      Types: 0,
+      UserDefinedFields: 0,
+      Workflow: i_WorkflowUpdate,
+      RelatedFindings: D.list(i_RelatedFinding),
+    },
+    body: true,
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -8078,6 +10728,17 @@ export const batchUpdateFindingsV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /findingsv2/batchupdatev2",
+    input: {
+      MetadataUids: 0,
+      FindingIdentifiers: D.list({
+        CloudAccountUid: 0,
+        FindingInfoUid: 0,
+        MetadataProductUid: 0,
+      }),
+      Comment: 0,
+      SeverityId: 0,
+      StatusId: 0,
+    },
     body: true,
   },
   errors: [
@@ -8108,7 +10769,19 @@ export const batchUpdateStandardsControlAssociations: API.OperationMethod<
   BatchUpdateStandardsControlAssociationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /associations", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /associations",
+    input: {
+      StandardsControlAssociationUpdates: D.list({
+        StandardsArn: 0,
+        SecurityControlId: 0,
+        AssociationStatus: 0,
+        UpdatedReason: 0,
+      }),
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -8140,7 +10813,12 @@ export const createActionTarget: API.OperationMethod<
   CreateActionTargetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /actionTargets", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /actionTargets",
+    input: { Name: 0, Description: 0, Id: 0 },
+    body: true,
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -8174,7 +10852,12 @@ export const createAggregatorV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /aggregatorv2/create",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      RegionLinkingMode: 0,
+      LinkedRegions: 0,
+      Tags: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -8210,6 +10893,16 @@ export const createAutomationRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /automationrules/create",
+    input: {
+      Tags: 0,
+      RuleStatus: 0,
+      RuleOrder: 0,
+      RuleName: 0,
+      Description: 0,
+      IsTerminal: 0,
+      Criteria: i_AutomationRulesFindingFilters,
+      Actions: D.list(i_AutomationRulesAction),
+    },
     body: true,
   },
   errors: [
@@ -8244,7 +10937,16 @@ export const createAutomationRuleV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /automationrulesv2/create",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      RuleName: 0,
+      RuleStatus: 0,
+      Description: 0,
+      RuleOrder: 0,
+      Criteria: i_Criteria,
+      Actions: D.list(i_AutomationRulesActionV2),
+      Tags: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -8281,6 +10983,7 @@ export const createConfigurationPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /configurationPolicy/create",
+    input: { Name: 0, Description: 0, ConfigurationPolicy: i_Policy, Tags: 0 },
     output: { UpdatedAt: D.ts, CreatedAt: D.ts },
     body: true,
   },
@@ -8319,7 +11022,13 @@ export const createConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /connectors",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Description: 0,
+      Provider: { Azure: i_AzureProviderConfiguration },
+      Tags: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -8358,7 +11067,18 @@ export const createConnectorV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /connectorsv2",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Description: 0,
+      Provider: {
+        JiraCloud: { ProjectKey: 0 },
+        ServiceNow: { InstanceName: 0, SecretArn: 0 },
+        Azure: i_AzureProviderConfiguration,
+      },
+      KmsKeyArn: 0,
+      Tags: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -8398,6 +11118,7 @@ export const createFindingAggregator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /findingAggregator/create",
+    input: { RegionLinkingMode: 0, Regions: 0 },
     body: true,
   },
   errors: [
@@ -8432,7 +11153,16 @@ export const createInsight: API.OperationMethod<
   CreateInsightError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /insights", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /insights",
+    input: {
+      Name: 0,
+      Filters: i_AwsSecurityFindingFilters,
+      GroupByAttribute: 0,
+    },
+    body: true,
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -8494,7 +11224,12 @@ export const createMembers: API.OperationMethod<
   CreateMembersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /members", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /members",
+    input: { AccountDetails: D.list({ AccountId: 0, Email: 0 }) },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -8528,7 +11263,12 @@ export const createTicketV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ticketsv2",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ConnectorId: 0,
+      FindingMetadataUid: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Mode: 0,
+    },
     body: true,
   },
   errors: [
@@ -8568,7 +11308,12 @@ export const declineInvitations: API.OperationMethod<
   DeclineInvitationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /invitations/decline", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /invitations/decline",
+    input: { AccountIds: 0 },
+    body: true,
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -8601,6 +11346,7 @@ export const deleteActionTarget: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /actionTargets/{ActionTargetArn+}",
+    input: { ActionTargetArn: 0 },
   },
   errors: [
     InternalException,
@@ -8633,6 +11379,7 @@ export const deleteAggregatorV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /aggregatorv2/delete/{AggregatorV2Arn+}",
+    input: { AggregatorV2Arn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -8664,7 +11411,11 @@ export const deleteAutomationRuleV2: API.OperationMethod<
   DeleteAutomationRuleV2Error,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /automationrulesv2/{Identifier}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /automationrulesv2/{Identifier}",
+    input: { Identifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -8701,6 +11452,7 @@ export const deleteConfigurationPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /configurationPolicy/{Identifier}",
+    input: { Identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -8734,7 +11486,11 @@ export const deleteConnector: API.OperationMethod<
   DeleteConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /connectors/{ConnectorId+}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /connectors/{ConnectorId+}",
+    input: { ConnectorId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -8766,7 +11522,11 @@ export const deleteConnectorV2: API.OperationMethod<
   DeleteConnectorV2Error,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /connectorsv2/{ConnectorId+}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /connectorsv2/{ConnectorId+}",
+    input: { ConnectorId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -8806,6 +11566,7 @@ export const deleteFindingAggregator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /findingAggregator/delete/{FindingAggregatorArn+}",
+    input: { FindingAggregatorArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -8836,7 +11597,11 @@ export const deleteInsight: API.OperationMethod<
   DeleteInsightError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /insights/{InsightArn+}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /insights/{InsightArn+}",
+    input: { InsightArn: 0 },
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -8874,7 +11639,12 @@ export const deleteInvitations: API.OperationMethod<
   DeleteInvitationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /invitations/delete", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /invitations/delete",
+    input: { AccountIds: 0 },
+    body: true,
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -8906,7 +11676,12 @@ export const deleteMembers: API.OperationMethod<
   DeleteMembersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /members/delete", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /members/delete",
+    input: { AccountIds: 0 },
+    body: true,
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -8935,7 +11710,12 @@ export const describeActionTargets: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ActionTarget
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /actionTargets/get", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /actionTargets/get",
+    input: { ActionTargetArns: 0, NextToken: 0, MaxResults: 0 },
+    body: true,
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -9003,7 +11783,11 @@ export const describeOrganizationConfiguration: API.OperationMethod<
   DescribeOrganizationConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /organization/configuration" },
+  descriptor: {
+    service: svc,
+    http: "GET /organization/configuration",
+    input: {},
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -9124,6 +11908,7 @@ export const describeSecurityHubV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /hubv2",
+    input: {},
     output: { Features: D.map({ UpdatedAt: D.ts }) },
   },
   errors: [
@@ -9200,6 +11985,7 @@ export const describeStandardsControls: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /standards/controls/{StandardsSubscriptionArn+}",
     input: {
+      StandardsSubscriptionArn: 0,
       NextToken: D.m({ query: "NextToken" }),
       MaxResults: D.m({ query: "MaxResults" }),
     },
@@ -9242,6 +12028,7 @@ export const disableImportFindingsForProduct: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /productSubscriptions/{ProductSubscriptionArn+}",
+    input: { ProductSubscriptionArn: 0 },
   },
   errors: [
     InternalException,
@@ -9275,6 +12062,7 @@ export const disableOrganizationAdminAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /organization/admin/disable",
+    input: { AdminAccountId: 0, Feature: 0 },
     body: true,
   },
   errors: [
@@ -9315,7 +12103,7 @@ export const disableSecurityHub: API.OperationMethod<
   DisableSecurityHubError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /accounts" },
+  descriptor: { service: svc, http: "DELETE /accounts", input: {} },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -9344,7 +12132,11 @@ export const disableSecurityHubFeatureV2: API.OperationMethod<
   DisableSecurityHubFeatureV2Error,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /hubv2/feature/{FeatureName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /hubv2/feature/{FeatureName}",
+    input: { FeatureName: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -9372,7 +12164,7 @@ export const disableSecurityHubV2: API.OperationMethod<
   DisableSecurityHubV2Error,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /hubv2" },
+  descriptor: { service: svc, http: "DELETE /hubv2", input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -9405,7 +12197,11 @@ export const disassociateFromAdministratorAccount: API.OperationMethod<
   DisassociateFromAdministratorAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /administrator/disassociate" },
+  descriptor: {
+    service: svc,
+    http: "POST /administrator/disassociate",
+    input: {},
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -9443,7 +12239,7 @@ export const disassociateFromMasterAccount: API.OperationMethod<
   DisassociateFromMasterAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /master/disassociate" },
+  descriptor: { service: svc, http: "POST /master/disassociate", input: {} },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -9476,7 +12272,12 @@ export const disassociateMembers: API.OperationMethod<
   DisassociateMembersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /members/disassociate", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /members/disassociate",
+    input: { AccountIds: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -9510,7 +12311,12 @@ export const enableImportFindingsForProduct: API.OperationMethod<
   EnableImportFindingsForProductError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /productSubscriptions", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /productSubscriptions",
+    input: { ProductArn: 0 },
+    body: true,
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -9543,6 +12349,7 @@ export const enableOrganizationAdminAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /organization/admin/enable",
+    input: { AdminAccountId: 0, Feature: 0 },
     body: true,
   },
   errors: [
@@ -9594,7 +12401,12 @@ export const enableSecurityHub: API.OperationMethod<
   EnableSecurityHubError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /accounts", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /accounts",
+    input: { Tags: 0, EnableDefaultStandards: 0, ControlFindingGenerator: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -9623,7 +12435,11 @@ export const enableSecurityHubFeatureV2: API.OperationMethod<
   EnableSecurityHubFeatureV2Error,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /hubv2/feature/{FeatureName}" },
+  descriptor: {
+    service: svc,
+    http: "POST /hubv2/feature/{FeatureName}",
+    input: { FeatureName: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -9651,7 +12467,12 @@ export const enableSecurityHubV2: API.OperationMethod<
   EnableSecurityHubV2Error,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /hubv2", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /hubv2",
+    input: { Tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -9681,7 +12502,11 @@ export const generateRecommendedPolicyV2: API.OperationMethod<
   GenerateRecommendedPolicyV2Error,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /recommendedPolicyV2/{MetadataUid}" },
+  descriptor: {
+    service: svc,
+    http: "POST /recommendedPolicyV2/{MetadataUid}",
+    input: { MetadataUid: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -9717,6 +12542,7 @@ export const getAdministratorAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /administrator",
+    input: {},
     output: { Administrator: o_Invitation },
   },
   errors: [
@@ -9751,6 +12577,7 @@ export const getAggregatorV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /aggregatorv2/get/{AggregatorV2Arn+}",
+    input: { AggregatorV2Arn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -9785,6 +12612,7 @@ export const getAutomationRuleV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /automationrulesv2/{Identifier}",
+    input: { Identifier: 0 },
     output: { CreatedAt: D.ts, UpdatedAt: D.ts },
   },
   errors: [
@@ -9821,6 +12649,7 @@ export const getConfigurationPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /configurationPolicy/get/{Identifier}",
+    input: { Identifier: 0 },
     output: { UpdatedAt: D.ts, CreatedAt: D.ts },
   },
   errors: [
@@ -9858,6 +12687,7 @@ export const getConfigurationPolicyAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /configurationPolicyAssociation/get",
+    input: { Target: i_Target },
     output: { UpdatedAt: D.ts },
     body: true,
   },
@@ -9895,6 +12725,7 @@ export const getConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /connectors/{ConnectorId+}",
+    input: { ConnectorId: 0 },
     output: {
       CreatedAt: D.ts,
       LastUpdatedAt: D.ts,
@@ -9935,6 +12766,7 @@ export const getConnectorV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /connectorsv2/{ConnectorId+}",
+    input: { ConnectorId: 0 },
     output: {
       CreatedAt: D.ts,
       LastUpdatedAt: D.ts,
@@ -9970,7 +12802,17 @@ export const getEnabledStandards: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   StandardsSubscription
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /standards/get", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /standards/get",
+    input: {
+      StandardsSubscriptionArns: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      Providers: 0,
+    },
+    body: true,
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -10011,6 +12853,7 @@ export const getFindingAggregator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /findingAggregator/get/{FindingAggregatorArn+}",
+    input: { FindingAggregatorArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -10052,7 +12895,13 @@ export const getFindingHistory: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /findingHistory/get",
-    input: { StartTime: D.tsAs("date-time"), EndTime: D.tsAs("date-time") },
+    input: {
+      FindingIdentifier: i_AwsSecurityFindingIdentifier,
+      StartTime: D.tsAs("date-time"),
+      EndTime: D.tsAs("date-time"),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { Records: D.list({ UpdateTime: D.ts }) },
     body: true,
   },
@@ -10091,7 +12940,17 @@ export const getFindings: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AwsSecurityFinding
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /findings", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /findings",
+    input: {
+      Filters: i_AwsSecurityFindingFilters,
+      SortCriteria: D.list(i_SortCriterion),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+    body: true,
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -10132,7 +12991,17 @@ export const getFindingStatisticsV2: API.OperationMethod<
   GetFindingStatisticsV2Error,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /findingsv2/statistics", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /findingsv2/statistics",
+    input: {
+      GroupByRules: D.list({ Filters: i_OcsfFindingFilters, GroupByField: 0 }),
+      Scopes: i_FindingScopes,
+      SortOrder: 0,
+      MaxStatisticResults: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -10166,7 +13035,16 @@ export const getFindingsTrendsV2: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /findingsTrendsv2",
-    input: { StartTime: D.tsAs("date-time"), EndTime: D.tsAs("date-time") },
+    input: {
+      Filters: {
+        CompositeFilters: D.list(i_FindingsTrendsCompositeFilter),
+        CompositeOperator: 0,
+      },
+      StartTime: D.tsAs("date-time"),
+      EndTime: D.tsAs("date-time"),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { TrendsMetrics: D.list({ Timestamp: D.ts }) },
     body: true,
   },
@@ -10213,7 +13091,18 @@ export const getFindingsV2: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /findingsv2", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /findingsv2",
+    input: {
+      Filters: i_OcsfFindingFilters,
+      Scopes: i_FindingScopes,
+      SortCriteria: D.list(i_SortCriterion),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -10250,7 +13139,11 @@ export const getInsightResults: API.OperationMethod<
   GetInsightResultsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /insights/results/{InsightArn+}" },
+  descriptor: {
+    service: svc,
+    http: "GET /insights/results/{InsightArn+}",
+    input: { InsightArn: 0 },
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -10280,7 +13173,12 @@ export const getInsights: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Insight
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /insights/get", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /insights/get",
+    input: { InsightArns: 0, NextToken: 0, MaxResults: 0 },
+    body: true,
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -10319,7 +13217,7 @@ export const getInvitationsCount: API.OperationMethod<
   GetInvitationsCountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /invitations/count" },
+  descriptor: { service: svc, http: "GET /invitations/count", input: {} },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -10357,6 +13255,7 @@ export const getMasterAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /master",
+    input: {},
     output: { Master: o_Invitation },
   },
   errors: [
@@ -10396,6 +13295,7 @@ export const getMembers: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /members/get",
+    input: { AccountIds: 0 },
     output: { Members: D.list(o_Member) },
     body: true,
   },
@@ -10434,6 +13334,7 @@ export const getRecommendedPolicyV2: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /recommendedPolicyV2/{MetadataUid}",
     input: {
+      MetadataUid: 0,
       NextToken: D.m({ query: "NextToken" }),
       MaxResults: D.m({ query: "MaxResults" }),
     },
@@ -10488,6 +13389,12 @@ export const getResourcesStatisticsV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /resourcesv2/statistics",
+    input: {
+      GroupByRules: D.list({ GroupByField: 0, Filters: i_ResourcesFilters }),
+      Scopes: i_ResourceScopes,
+      SortOrder: 0,
+      MaxStatisticResults: 0,
+    },
     body: true,
   },
   errors: [
@@ -10524,7 +13431,16 @@ export const getResourcesTrendsV2: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /resourcesTrendsv2",
-    input: { StartTime: D.tsAs("date-time"), EndTime: D.tsAs("date-time") },
+    input: {
+      Filters: {
+        CompositeFilters: D.list(i_ResourcesTrendsCompositeFilter),
+        CompositeOperator: 0,
+      },
+      StartTime: D.tsAs("date-time"),
+      EndTime: D.tsAs("date-time"),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { TrendsMetrics: D.list({ Timestamp: D.ts }) },
     body: true,
   },
@@ -10573,7 +13489,18 @@ export const getResourcesV2: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ResourceResult
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /resourcesv2", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /resourcesv2",
+    input: {
+      Filters: i_ResourcesFilters,
+      Scopes: i_ResourceScopes,
+      SortCriteria: D.list(i_SortCriterion),
+      NextToken: 0,
+      MaxResults: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -10657,7 +13584,12 @@ export const inviteMembers: API.OperationMethod<
   InviteMembersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /members/invite", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /members/invite",
+    input: { AccountIds: 0 },
+    body: true,
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -10857,6 +13789,15 @@ export const listConfigurationPolicyAssociations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /configurationPolicyAssociation/list",
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      Filters: {
+        ConfigurationPolicyId: 0,
+        AssociationType: 0,
+        AssociationStatus: 0,
+      },
+    },
     output: {
       ConfigurationPolicyAssociationSummaries: D.list(
         o_ConfigurationPolicyAssociationSummary,
@@ -11068,6 +14009,7 @@ export const listFreeTrialStatusesV2: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /freetrial/statusv2/list",
+    input: { AccountIds: 0, Statuses: 0, MaxResults: 0, NextToken: 0 },
     output: {
       AccountFreeTrialStatuses: D.list({
         EvaluatedAt: D.ts,
@@ -11337,7 +14279,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [InternalException, InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -11361,7 +14307,12 @@ export const registerConnectorV2: API.OperationMethod<
   RegisterConnectorV2Error,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /connectorsv2/register", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /connectorsv2/register",
+    input: { AuthCode: 0, AuthState: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -11397,6 +14348,7 @@ export const startConfigurationPolicyAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /configurationPolicyAssociation/associate",
+    input: { ConfigurationPolicyIdentifier: 0, Target: i_Target },
     output: { UpdatedAt: D.ts },
     body: true,
   },
@@ -11437,6 +14389,7 @@ export const startConfigurationPolicyDisassociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /configurationPolicyAssociation/disassociate",
+    input: { Target: i_Target, ConfigurationPolicyIdentifier: 0 },
     body: true,
   },
   errors: [
@@ -11466,7 +14419,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [InternalException, InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -11490,7 +14448,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [InternalException, InvalidInputException, ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -11516,6 +14474,7 @@ export const updateActionTarget: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /actionTargets/{ActionTargetArn+}",
+    input: { ActionTargetArn: 0, Name: 0, Description: 0 },
     body: true,
   },
   errors: [
@@ -11549,6 +14508,7 @@ export const updateAggregatorV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /aggregatorv2/update/{AggregatorV2Arn+}",
+    input: { AggregatorV2Arn: 0, RegionLinkingMode: 0, LinkedRegions: 0 },
     body: true,
   },
   errors: [
@@ -11584,6 +14544,15 @@ export const updateAutomationRuleV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /automationrulesv2/{Identifier}",
+    input: {
+      Identifier: 0,
+      RuleStatus: 0,
+      RuleOrder: 0,
+      Description: 0,
+      RuleName: 0,
+      Criteria: i_Criteria,
+      Actions: D.list(i_AutomationRulesActionV2),
+    },
     body: true,
   },
   errors: [
@@ -11621,6 +14590,13 @@ export const updateConfigurationPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /configurationPolicy/{Identifier}",
+    input: {
+      Identifier: 0,
+      Name: 0,
+      Description: 0,
+      UpdatedReason: 0,
+      ConfigurationPolicy: i_Policy,
+    },
     output: { UpdatedAt: D.ts, CreatedAt: D.ts },
     body: true,
   },
@@ -11659,6 +14635,11 @@ export const updateConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /connectors/{ConnectorId+}",
+    input: {
+      ConnectorId: 0,
+      Description: 0,
+      Provider: { Azure: i_AzureUpdateConfiguration },
+    },
     body: true,
   },
   errors: [
@@ -11695,6 +14676,15 @@ export const updateConnectorV2: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /connectorsv2/{ConnectorId+}",
+    input: {
+      ConnectorId: 0,
+      Description: 0,
+      Provider: {
+        JiraCloud: { ProjectKey: 0 },
+        ServiceNow: { SecretArn: 0 },
+        Azure: i_AzureUpdateConfiguration,
+      },
+    },
     body: true,
   },
   errors: [
@@ -11735,6 +14725,7 @@ export const updateFindingAggregator: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /findingAggregator/update",
+    input: { FindingAggregatorArn: 0, RegionLinkingMode: 0, Regions: 0 },
     body: true,
   },
   errors: [
@@ -11775,7 +14766,16 @@ export const updateFindings: API.OperationMethod<
   UpdateFindingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /findings", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /findings",
+    input: {
+      Filters: i_AwsSecurityFindingFilters,
+      Note: i_NoteUpdate,
+      RecordState: 0,
+    },
+    body: true,
+  },
   errors: [
     InternalException,
     InvalidAccessException,
@@ -11807,6 +14807,12 @@ export const updateInsight: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /insights/{InsightArn+}",
+    input: {
+      InsightArn: 0,
+      Name: 0,
+      Filters: i_AwsSecurityFindingFilters,
+      GroupByAttribute: 0,
+    },
     body: true,
   },
   errors: [
@@ -11843,6 +14849,15 @@ export const updateOrganizationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /organization/configuration",
+    input: {
+      AutoEnable: 0,
+      AutoEnableStandards: 0,
+      OrganizationConfiguration: {
+        ConfigurationType: 0,
+        Status: 0,
+        StatusMessage: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -11880,6 +14895,11 @@ export const updateSecurityControl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /securityControl/update",
+    input: {
+      SecurityControlId: 0,
+      Parameters: D.map(i_ParameterConfiguration),
+      LastUpdateReason: 0,
+    },
     body: true,
   },
   errors: [
@@ -11913,7 +14933,12 @@ export const updateSecurityHubConfiguration: API.OperationMethod<
   UpdateSecurityHubConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /accounts", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /accounts",
+    input: { AutoEnableControls: 0, ControlFindingGenerator: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalException,
@@ -11949,6 +14974,7 @@ export const updateStandardsControl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /standards/control/{StandardsControlArn+}",
+    input: { StandardsControlArn: 0, ControlStatus: 0, DisabledReason: 0 },
     body: true,
   },
   errors: [
@@ -11963,8 +14989,515 @@ export const updateStandardsControl: API.OperationMethod<
   operationName: "UpdateStandardsControl",
 })) as any;
 
+const i_ActionLocalPortDetails: D.LazyStruct = () => ({ Port: 0, PortName: 0 });
+const i_ActionRemoteIpDetails: D.LazyStruct = () => ({
+  IpAddressV4: 0,
+  Organization: { Asn: 0, AsnOrg: 0, Isp: 0, Org: 0 },
+  Country: { CountryCode: 0, CountryName: 0 },
+  City: { CityName: 0 },
+  GeoLocation: { Lon: 0, Lat: 0 },
+});
+const i_AutomationRulesAction: D.LazyStruct = () => ({
+  Type: 0,
+  FindingFieldsUpdate: {
+    Note: i_NoteUpdate,
+    Severity: i_SeverityUpdate,
+    VerificationState: 0,
+    Confidence: 0,
+    Criticality: 0,
+    Types: 0,
+    UserDefinedFields: 0,
+    Workflow: i_WorkflowUpdate,
+    RelatedFindings: D.list(i_RelatedFinding),
+  },
+});
+const i_AutomationRulesActionV2: D.LazyStruct = () => ({
+  Type: 0,
+  FindingFieldsUpdate: { SeverityId: 0, Comment: 0, StatusId: 0 },
+  ExternalIntegrationConfiguration: { ConnectorArn: 0 },
+});
+const i_AutomationRulesFindingFilters: D.LazyStruct = () => ({
+  ProductArn: D.list(i_StringFilter),
+  AwsAccountId: D.list(i_StringFilter),
+  Id: D.list(i_StringFilter),
+  GeneratorId: D.list(i_StringFilter),
+  Type: D.list(i_StringFilter),
+  FirstObservedAt: D.list(i_DateFilter),
+  LastObservedAt: D.list(i_DateFilter),
+  CreatedAt: D.list(i_DateFilter),
+  UpdatedAt: D.list(i_DateFilter),
+  Confidence: D.list(i_NumberFilter),
+  Criticality: D.list(i_NumberFilter),
+  Title: D.list(i_StringFilter),
+  Description: D.list(i_StringFilter),
+  SourceUrl: D.list(i_StringFilter),
+  ProductName: D.list(i_StringFilter),
+  CompanyName: D.list(i_StringFilter),
+  SeverityLabel: D.list(i_StringFilter),
+  ResourceType: D.list(i_StringFilter),
+  ResourceId: D.list(i_StringFilter),
+  ResourcePartition: D.list(i_StringFilter),
+  ResourceRegion: D.list(i_StringFilter),
+  ResourceTags: D.list(i_MapFilter),
+  ResourceDetailsOther: D.list(i_MapFilter),
+  ComplianceStatus: D.list(i_StringFilter),
+  ComplianceSecurityControlId: D.list(i_StringFilter),
+  ComplianceAssociatedStandardsId: D.list(i_StringFilter),
+  VerificationState: D.list(i_StringFilter),
+  WorkflowStatus: D.list(i_StringFilter),
+  RecordState: D.list(i_StringFilter),
+  RelatedFindingsProductArn: D.list(i_StringFilter),
+  RelatedFindingsId: D.list(i_StringFilter),
+  NoteText: D.list(i_StringFilter),
+  NoteUpdatedAt: D.list(i_DateFilter),
+  NoteUpdatedBy: D.list(i_StringFilter),
+  UserDefinedFields: D.list(i_MapFilter),
+  ResourceApplicationArn: D.list(i_StringFilter),
+  ResourceApplicationName: D.list(i_StringFilter),
+  AwsAccountName: D.list(i_StringFilter),
+  ResourceProvider: D.list(i_StringFilter),
+  ResourceOwnerAccountId: D.list(i_StringFilter),
+  ResourceOwnerOrgId: D.list(i_StringFilter),
+});
+const i_AwsApiGatewayAccessLogSettings: D.LazyStruct = () => ({
+  Format: 0,
+  DestinationArn: 0,
+});
+const i_AwsApiGatewayV2RouteSettings: D.LazyStruct = () => ({
+  DetailedMetricsEnabled: 0,
+  LoggingLevel: 0,
+  DataTraceEnabled: 0,
+  ThrottlingBurstLimit: 0,
+  ThrottlingRateLimit: 0,
+});
+const i_AwsAppSyncGraphQlApiLambdaAuthorizerConfigDetails: D.LazyStruct =
+  () => ({
+    AuthorizerResultTtlInSeconds: 0,
+    AuthorizerUri: 0,
+    IdentityValidationExpression: 0,
+  });
+const i_AwsAppSyncGraphQlApiOpenIdConnectConfigDetails: D.LazyStruct = () => ({
+  AuthTtL: 0,
+  ClientId: 0,
+  IatTtL: 0,
+  Issuer: 0,
+});
+const i_AwsAppSyncGraphQlApiUserPoolConfigDetails: D.LazyStruct = () => ({
+  AppIdClientRegex: 0,
+  AwsRegion: 0,
+  DefaultAction: 0,
+  UserPoolId: 0,
+});
+const i_AwsBackupBackupPlanLifecycleDetails: D.LazyStruct = () => ({
+  DeleteAfterDays: 0,
+  MoveToColdStorageAfterDays: 0,
+});
+const i_AwsCertificateManagerCertificateDomainValidationOption: D.LazyStruct =
+  () => ({
+    DomainName: 0,
+    ResourceRecord: { Name: 0, Type: 0, Value: 0 },
+    ValidationDomain: 0,
+    ValidationEmails: 0,
+    ValidationMethod: 0,
+    ValidationStatus: 0,
+  });
+const i_AwsCodeBuildProjectArtifactsDetails: D.LazyStruct = () => ({
+  ArtifactIdentifier: 0,
+  EncryptionDisabled: 0,
+  Location: 0,
+  Name: 0,
+  NamespaceType: 0,
+  OverrideArtifactName: 0,
+  Packaging: 0,
+  Path: 0,
+  Type: 0,
+});
+const i_AwsDynamoDbTableKeySchema: D.LazyStruct = () => ({
+  AttributeName: 0,
+  KeyType: 0,
+});
+const i_AwsDynamoDbTableProjection: D.LazyStruct = () => ({
+  NonKeyAttributes: 0,
+  ProjectionType: 0,
+});
+const i_AwsDynamoDbTableProvisionedThroughput: D.LazyStruct = () => ({
+  LastDecreaseDateTime: 0,
+  LastIncreaseDateTime: 0,
+  NumberOfDecreasesToday: 0,
+  ReadCapacityUnits: 0,
+  WriteCapacityUnits: 0,
+});
+const i_AwsDynamoDbTableProvisionedThroughputOverride: D.LazyStruct = () => ({
+  ReadCapacityUnits: 0,
+});
+const i_AwsEc2SecurityGroupIpPermission: D.LazyStruct = () => ({
+  IpProtocol: 0,
+  FromPort: 0,
+  ToPort: 0,
+  UserIdGroupPairs: D.list({
+    GroupId: 0,
+    GroupName: 0,
+    PeeringStatus: 0,
+    UserId: 0,
+    VpcId: 0,
+    VpcPeeringConnectionId: 0,
+  }),
+  IpRanges: D.list({ CidrIp: 0 }),
+  Ipv6Ranges: D.list({ CidrIpv6: 0 }),
+  PrefixListIds: D.list({ PrefixListId: 0 }),
+});
+const i_AwsEc2VpcPeeringConnectionVpcInfoDetails: D.LazyStruct = () => ({
+  CidrBlock: 0,
+  CidrBlockSet: D.list({ CidrBlock: 0 }),
+  Ipv6CidrBlockSet: D.list({ Ipv6CidrBlock: 0 }),
+  OwnerId: 0,
+  PeeringOptions: {
+    AllowDnsResolutionFromRemoteVpc: 0,
+    AllowEgressFromLocalClassicLinkToRemoteVpc: 0,
+    AllowEgressFromLocalVpcToRemoteClassicLink: 0,
+  },
+  Region: 0,
+  VpcId: 0,
+});
+const i_AwsEcsContainerDetails: D.LazyStruct = () => ({
+  Name: 0,
+  Image: 0,
+  MountPoints: D.list({ SourceVolume: 0, ContainerPath: 0 }),
+  Privileged: 0,
+});
+const i_AwsElasticsearchDomainLogPublishingOptionsLogConfig: D.LazyStruct =
+  () => ({ CloudWatchLogsLogGroupArn: 0, Enabled: 0 });
+const i_AwsIamAttachedManagedPolicy: D.LazyStruct = () => ({
+  PolicyName: 0,
+  PolicyArn: 0,
+});
+const i_AwsIamPermissionsBoundary: D.LazyStruct = () => ({
+  PermissionsBoundaryArn: 0,
+  PermissionsBoundaryType: 0,
+});
+const i_AwsOpenSearchServiceDomainLogPublishingOption: D.LazyStruct = () => ({
+  CloudWatchLogsLogGroupArn: 0,
+  Enabled: 0,
+});
+const i_AwsRdsDbDomainMembership: D.LazyStruct = () => ({
+  Domain: 0,
+  Status: 0,
+  Fqdn: 0,
+  IamRoleName: 0,
+});
+const i_AwsRdsDbInstanceEndpoint: D.LazyStruct = () => ({
+  Address: 0,
+  Port: 0,
+  HostedZoneId: 0,
+});
+const i_AwsRdsDbInstanceVpcSecurityGroup: D.LazyStruct = () => ({
+  VpcSecurityGroupId: 0,
+  Status: 0,
+});
+const i_AwsRdsDbProcessorFeature: D.LazyStruct = () => ({ Name: 0, Value: 0 });
+const i_AwsS3AccountPublicAccessBlockDetails: D.LazyStruct = () => ({
+  BlockPublicAcls: 0,
+  BlockPublicPolicy: 0,
+  IgnorePublicAcls: 0,
+  RestrictPublicBuckets: 0,
+});
+const i_AwsSecurityFindingFilters: D.LazyStruct = () => ({
+  ProductArn: D.list(i_StringFilter),
+  AwsAccountId: D.list(i_StringFilter),
+  Id: D.list(i_StringFilter),
+  GeneratorId: D.list(i_StringFilter),
+  Region: D.list(i_StringFilter),
+  Type: D.list(i_StringFilter),
+  FirstObservedAt: D.list(i_DateFilter),
+  LastObservedAt: D.list(i_DateFilter),
+  CreatedAt: D.list(i_DateFilter),
+  UpdatedAt: D.list(i_DateFilter),
+  SeverityProduct: D.list(i_NumberFilter),
+  SeverityNormalized: D.list(i_NumberFilter),
+  SeverityLabel: D.list(i_StringFilter),
+  Confidence: D.list(i_NumberFilter),
+  Criticality: D.list(i_NumberFilter),
+  Title: D.list(i_StringFilter),
+  Description: D.list(i_StringFilter),
+  RecommendationText: D.list(i_StringFilter),
+  SourceUrl: D.list(i_StringFilter),
+  ProductFields: D.list(i_MapFilter),
+  ProductName: D.list(i_StringFilter),
+  CompanyName: D.list(i_StringFilter),
+  UserDefinedFields: D.list(i_MapFilter),
+  MalwareName: D.list(i_StringFilter),
+  MalwareType: D.list(i_StringFilter),
+  MalwarePath: D.list(i_StringFilter),
+  MalwareState: D.list(i_StringFilter),
+  NetworkDirection: D.list(i_StringFilter),
+  NetworkProtocol: D.list(i_StringFilter),
+  NetworkSourceIpV4: D.list(i_IpFilter),
+  NetworkSourceIpV6: D.list(i_IpFilter),
+  NetworkSourcePort: D.list(i_NumberFilter),
+  NetworkSourceDomain: D.list(i_StringFilter),
+  NetworkSourceMac: D.list(i_StringFilter),
+  NetworkDestinationIpV4: D.list(i_IpFilter),
+  NetworkDestinationIpV6: D.list(i_IpFilter),
+  NetworkDestinationPort: D.list(i_NumberFilter),
+  NetworkDestinationDomain: D.list(i_StringFilter),
+  ProcessName: D.list(i_StringFilter),
+  ProcessPath: D.list(i_StringFilter),
+  ProcessPid: D.list(i_NumberFilter),
+  ProcessParentPid: D.list(i_NumberFilter),
+  ProcessLaunchedAt: D.list(i_DateFilter),
+  ProcessTerminatedAt: D.list(i_DateFilter),
+  ThreatIntelIndicatorType: D.list(i_StringFilter),
+  ThreatIntelIndicatorValue: D.list(i_StringFilter),
+  ThreatIntelIndicatorCategory: D.list(i_StringFilter),
+  ThreatIntelIndicatorLastObservedAt: D.list(i_DateFilter),
+  ThreatIntelIndicatorSource: D.list(i_StringFilter),
+  ThreatIntelIndicatorSourceUrl: D.list(i_StringFilter),
+  ResourceType: D.list(i_StringFilter),
+  ResourceId: D.list(i_StringFilter),
+  ResourcePartition: D.list(i_StringFilter),
+  ResourceRegion: D.list(i_StringFilter),
+  ResourceTags: D.list(i_MapFilter),
+  ResourceAwsEc2InstanceType: D.list(i_StringFilter),
+  ResourceAwsEc2InstanceImageId: D.list(i_StringFilter),
+  ResourceAwsEc2InstanceIpV4Addresses: D.list(i_IpFilter),
+  ResourceAwsEc2InstanceIpV6Addresses: D.list(i_IpFilter),
+  ResourceAwsEc2InstanceKeyName: D.list(i_StringFilter),
+  ResourceAwsEc2InstanceIamInstanceProfileArn: D.list(i_StringFilter),
+  ResourceAwsEc2InstanceVpcId: D.list(i_StringFilter),
+  ResourceAwsEc2InstanceSubnetId: D.list(i_StringFilter),
+  ResourceAwsEc2InstanceLaunchedAt: D.list(i_DateFilter),
+  ResourceAwsS3BucketOwnerId: D.list(i_StringFilter),
+  ResourceAwsS3BucketOwnerName: D.list(i_StringFilter),
+  ResourceAwsIamAccessKeyUserName: D.list(i_StringFilter),
+  ResourceAwsIamAccessKeyPrincipalName: D.list(i_StringFilter),
+  ResourceAwsIamAccessKeyStatus: D.list(i_StringFilter),
+  ResourceAwsIamAccessKeyCreatedAt: D.list(i_DateFilter),
+  ResourceAwsIamUserUserName: D.list(i_StringFilter),
+  ResourceContainerName: D.list(i_StringFilter),
+  ResourceContainerImageId: D.list(i_StringFilter),
+  ResourceContainerImageName: D.list(i_StringFilter),
+  ResourceContainerLaunchedAt: D.list(i_DateFilter),
+  ResourceDetailsOther: D.list(i_MapFilter),
+  ComplianceStatus: D.list(i_StringFilter),
+  VerificationState: D.list(i_StringFilter),
+  WorkflowState: D.list(i_StringFilter),
+  WorkflowStatus: D.list(i_StringFilter),
+  RecordState: D.list(i_StringFilter),
+  RelatedFindingsProductArn: D.list(i_StringFilter),
+  RelatedFindingsId: D.list(i_StringFilter),
+  NoteText: D.list(i_StringFilter),
+  NoteUpdatedAt: D.list(i_DateFilter),
+  NoteUpdatedBy: D.list(i_StringFilter),
+  Keyword: D.list({ Value: 0 }),
+  FindingProviderFieldsConfidence: D.list(i_NumberFilter),
+  FindingProviderFieldsCriticality: D.list(i_NumberFilter),
+  FindingProviderFieldsRelatedFindingsId: D.list(i_StringFilter),
+  FindingProviderFieldsRelatedFindingsProductArn: D.list(i_StringFilter),
+  FindingProviderFieldsSeverityLabel: D.list(i_StringFilter),
+  FindingProviderFieldsSeverityOriginal: D.list(i_StringFilter),
+  FindingProviderFieldsTypes: D.list(i_StringFilter),
+  Sample: D.list(i_BooleanFilter),
+  ComplianceSecurityControlId: D.list(i_StringFilter),
+  ComplianceAssociatedStandardsId: D.list(i_StringFilter),
+  VulnerabilitiesExploitAvailable: D.list(i_StringFilter),
+  VulnerabilitiesFixAvailable: D.list(i_StringFilter),
+  ComplianceSecurityControlParametersName: D.list(i_StringFilter),
+  ComplianceSecurityControlParametersValue: D.list(i_StringFilter),
+  AwsAccountName: D.list(i_StringFilter),
+  ResourceApplicationName: D.list(i_StringFilter),
+  ResourceApplicationArn: D.list(i_StringFilter),
+  ResourceOwnerAccountId: D.list(i_StringFilter),
+  ResourceOwnerOrgId: D.list(i_StringFilter),
+  ResourceProvider: D.list(i_StringFilter),
+});
+const i_AwsSecurityFindingIdentifier: D.LazyStruct = () => ({
+  Id: 0,
+  ProductArn: 0,
+});
+const i_AwsWafv2ActionAllowDetails: D.LazyStruct = () => ({
+  CustomRequestHandling: i_AwsWafv2CustomRequestHandlingDetails,
+});
+const i_AwsWafv2ActionBlockDetails: D.LazyStruct = () => ({
+  CustomResponse: {
+    CustomResponseBodyKey: 0,
+    ResponseCode: 0,
+    ResponseHeaders: D.list(i_AwsWafv2CustomHttpHeader),
+  },
+});
+const i_AwsWafv2RulesDetails: D.LazyStruct = () => ({
+  Action: {
+    Allow: i_AwsWafv2ActionAllowDetails,
+    Block: i_AwsWafv2ActionBlockDetails,
+    Captcha: { CustomRequestHandling: i_AwsWafv2CustomRequestHandlingDetails },
+    Count: { CustomRequestHandling: i_AwsWafv2CustomRequestHandlingDetails },
+  },
+  Name: 0,
+  OverrideAction: 0,
+  Priority: 0,
+  VisibilityConfig: i_AwsWafv2VisibilityConfigDetails,
+});
+const i_AwsWafv2VisibilityConfigDetails: D.LazyStruct = () => ({
+  CloudWatchMetricsEnabled: 0,
+  MetricName: 0,
+  SampledRequestsEnabled: 0,
+});
+const i_AzureProviderConfiguration: D.LazyStruct = () => ({
+  AWSConfigConnectorArn: 0,
+  ScopeConfiguration: i_AzureScopeConfiguration,
+  AzureRegions: 0,
+});
+const i_AzureUpdateConfiguration: D.LazyStruct = () => ({
+  ScopeConfiguration: i_AzureScopeConfiguration,
+  AzureRegions: 0,
+});
+const i_Criteria: D.LazyStruct = () => ({
+  OcsfFindingCriteria: i_OcsfFindingFilters,
+});
+const i_FindingScopes: D.LazyStruct = () => ({
+  AwsOrganizations: D.list(i_AwsOrganizationScope),
+});
+const i_FindingsTrendsCompositeFilter: D.LazyStruct = () => ({
+  StringFilters: D.list({ FieldName: 0, Filter: i_StringFilter }),
+  NestedCompositeFilters: D.list(i_FindingsTrendsCompositeFilter),
+  Operator: 0,
+});
+const i_Indicator: D.LazyStruct = () => ({
+  Key: 0,
+  Values: 0,
+  Title: 0,
+  Type: 0,
+});
+const i_Ipv6CidrBlockAssociation: D.LazyStruct = () => ({
+  AssociationId: 0,
+  Ipv6CidrBlock: 0,
+  CidrBlockState: 0,
+});
+const i_NetworkHeader: D.LazyStruct = () => ({
+  Protocol: 0,
+  Destination: i_NetworkPathComponentDetails,
+  Source: i_NetworkPathComponentDetails,
+});
+const i_NoteUpdate: D.LazyStruct = () => ({ Text: 0, UpdatedBy: 0 });
+const i_Occurrences: D.LazyStruct = () => ({
+  LineRanges: D.list(i_Range),
+  OffsetRanges: D.list(i_Range),
+  Pages: D.list({ PageNumber: 0, LineRange: i_Range, OffsetRange: i_Range }),
+  Records: D.list({ JsonPath: 0, RecordIndex: 0 }),
+  Cells: D.list({ Column: 0, Row: 0, ColumnName: 0, CellReference: 0 }),
+});
+const i_OcsfFindingFilters: D.LazyStruct = () => ({
+  CompositeFilters: D.list(i_CompositeFilter),
+  CompositeOperator: 0,
+});
+const i_ParameterConfiguration: D.LazyStruct = () => ({
+  ValueType: 0,
+  Value: {
+    Integer: 0,
+    IntegerList: 0,
+    Double: 0,
+    String: 0,
+    StringList: 0,
+    Boolean: 0,
+    Enum: 0,
+    EnumList: 0,
+  },
+});
+const i_Policy: D.LazyStruct = () => ({
+  SecurityHub: {
+    ServiceEnabled: 0,
+    EnabledStandardIdentifiers: 0,
+    SecurityControlsConfiguration: {
+      EnabledSecurityControlIdentifiers: 0,
+      DisabledSecurityControlIdentifiers: 0,
+      SecurityControlCustomParameters: D.list({
+        SecurityControlId: 0,
+        Parameters: D.map(i_ParameterConfiguration),
+      }),
+    },
+  },
+});
+const i_PortRange: D.LazyStruct = () => ({ Begin: 0, End: 0 });
+const i_RelatedFinding: D.LazyStruct = () => ({ ProductArn: 0, Id: 0 });
+const i_ResourceScopes: D.LazyStruct = () => ({
+  AwsOrganizations: D.list(i_AwsOrganizationScope),
+});
+const i_ResourcesFilters: D.LazyStruct = () => ({
+  CompositeFilters: D.list(i_ResourcesCompositeFilter),
+  CompositeOperator: 0,
+});
+const i_ResourcesTrendsCompositeFilter: D.LazyStruct = () => ({
+  StringFilters: D.list({ FieldName: 0, Filter: i_StringFilter }),
+  NestedCompositeFilters: D.list(i_ResourcesTrendsCompositeFilter),
+  Operator: 0,
+});
+const i_SeverityUpdate: D.LazyStruct = () => ({
+  Normalized: 0,
+  Product: 0,
+  Label: 0,
+});
+const i_SortCriterion: D.LazyStruct = () => ({ Field: 0, SortOrder: 0 });
+const i_StatelessCustomActionDefinition: D.LazyStruct = () => ({
+  PublishMetricAction: { Dimensions: D.list({ Value: 0 }) },
+});
+const i_Target: D.LazyStruct = () => ({
+  AccountId: 0,
+  OrganizationalUnitId: 0,
+  RootId: 0,
+});
+const i_WorkflowUpdate: D.LazyStruct = () => ({ Status: 0 });
 const o_ConfigurationPolicyAssociationSummary: D.LazyStruct = () => ({
   UpdatedAt: D.ts,
 });
 const o_Invitation: D.LazyStruct = () => ({ InvitedAt: D.ts });
 const o_Member: D.LazyStruct = () => ({ InvitedAt: D.ts, UpdatedAt: D.ts });
+const i_AwsOrganizationScope: D.LazyStruct = () => ({
+  OrganizationId: 0,
+  OrganizationalUnitId: 0,
+});
+const i_AwsWafv2CustomHttpHeader: D.LazyStruct = () => ({ Name: 0, Value: 0 });
+const i_AwsWafv2CustomRequestHandlingDetails: D.LazyStruct = () => ({
+  InsertHeaders: D.list(i_AwsWafv2CustomHttpHeader),
+});
+const i_AzureScopeConfiguration: D.LazyStruct = () => ({
+  ScopeType: 0,
+  ScopeValues: 0,
+});
+const i_BooleanFilter: D.LazyStruct = () => ({ Value: 0 });
+const i_CompositeFilter: D.LazyStruct = () => ({
+  StringFilters: D.list({ FieldName: 0, Filter: i_StringFilter }),
+  DateFilters: D.list({ FieldName: 0, Filter: i_DateFilter }),
+  BooleanFilters: D.list({ FieldName: 0, Filter: i_BooleanFilter }),
+  NumberFilters: D.list({ FieldName: 0, Filter: i_NumberFilter }),
+  MapFilters: D.list({ FieldName: 0, Filter: i_MapFilter }),
+  IpFilters: D.list({ FieldName: 0, Filter: i_IpFilter }),
+  NestedCompositeFilters: D.list(i_CompositeFilter),
+  Operator: 0,
+});
+const i_DateFilter: D.LazyStruct = () => ({
+  Start: 0,
+  End: 0,
+  DateRange: { Value: 0, Unit: 0, Comparison: 0 },
+});
+const i_IpFilter: D.LazyStruct = () => ({ Cidr: 0 });
+const i_MapFilter: D.LazyStruct = () => ({ Key: 0, Value: 0, Comparison: 0 });
+const i_NetworkPathComponentDetails: D.LazyStruct = () => ({
+  Address: 0,
+  PortRanges: D.list(i_PortRange),
+});
+const i_NumberFilter: D.LazyStruct = () => ({
+  Gte: 0,
+  Lte: 0,
+  Eq: 0,
+  Gt: 0,
+  Lt: 0,
+});
+const i_Range: D.LazyStruct = () => ({ Start: 0, End: 0, StartColumn: 0 });
+const i_ResourcesCompositeFilter: D.LazyStruct = () => ({
+  StringFilters: D.list({ FieldName: 0, Filter: i_StringFilter }),
+  DateFilters: D.list({ FieldName: 0, Filter: i_DateFilter }),
+  NumberFilters: D.list({ FieldName: 0, Filter: i_NumberFilter }),
+  MapFilters: D.list({ FieldName: 0, Filter: i_MapFilter }),
+  NestedCompositeFilters: D.list(i_ResourcesCompositeFilter),
+  Operator: 0,
+});
+const i_StringFilter: D.LazyStruct = () => ({ Value: 0, Comparison: 0 });

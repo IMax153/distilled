@@ -340,7 +340,20 @@ export const createRule: API.OperationMethod<
   CreateRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /rules", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /rules",
+    input: {
+      RetentionPeriod: i_RetentionPeriod,
+      Description: 0,
+      Tags: D.list(i_Tag),
+      ResourceType: 0,
+      ResourceTags: D.list(i_ResourceTag),
+      LockConfiguration: i_LockConfiguration,
+      ExcludeResourceTags: D.list(i_ResourceTag),
+    },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ServiceQuotaExceededException,
@@ -367,7 +380,11 @@ export const deleteRule: API.OperationMethod<
   DeleteRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /rules/{Identifier}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /rules/{Identifier}",
+    input: { Identifier: 0 },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -396,6 +413,7 @@ export const getRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /rules/{Identifier}",
+    input: { Identifier: 0 },
     output: { LockEndTime: D.ts },
   },
   errors: [
@@ -422,7 +440,19 @@ export const listRules: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   RuleSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /list-rules", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /list-rules",
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      ResourceType: 0,
+      ResourceTags: D.list(i_ResourceTag),
+      LockState: 0,
+      ExcludeResourceTags: D.list(i_ResourceTag),
+    },
+    body: true,
+  },
   errors: [InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -449,7 +479,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -482,6 +516,7 @@ export const lockRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /rules/{Identifier}/lock",
+    input: { Identifier: 0, LockConfiguration: i_LockConfiguration },
     body: true,
   },
   errors: [
@@ -510,7 +545,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -541,6 +581,7 @@ export const unlockRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /rules/{Identifier}/unlock",
+    input: { Identifier: 0 },
     output: { LockEndTime: D.ts },
   },
   errors: [
@@ -571,7 +612,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -605,6 +646,14 @@ export const updateRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /rules/{Identifier}",
+    input: {
+      Identifier: 0,
+      RetentionPeriod: i_RetentionPeriod,
+      Description: 0,
+      ResourceType: 0,
+      ResourceTags: D.list(i_ResourceTag),
+      ExcludeResourceTags: D.list(i_ResourceTag),
+    },
     output: { LockEndTime: D.ts },
     body: true,
   },
@@ -619,3 +668,16 @@ export const updateRule: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateRule",
 })) as any;
+
+const i_LockConfiguration: D.LazyStruct = () => ({
+  UnlockDelay: { UnlockDelayValue: 0, UnlockDelayUnit: 0 },
+});
+const i_ResourceTag: D.LazyStruct = () => ({
+  ResourceTagKey: 0,
+  ResourceTagValue: 0,
+});
+const i_RetentionPeriod: D.LazyStruct = () => ({
+  RetentionPeriodValue: 0,
+  RetentionPeriodUnit: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });

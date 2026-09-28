@@ -415,7 +415,7 @@ export const associateGatewayToServer: API.OperationMethod<
   AssociateGatewayToServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayArn: 0, ServerArn: 0 } },
   errors: [ConflictException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -432,7 +432,15 @@ export const createGateway: API.OperationMethod<
   CreateGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ActivationKey: 0,
+      GatewayDisplayName: 0,
+      GatewayType: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -449,7 +457,7 @@ export const deleteGateway: API.OperationMethod<
   DeleteGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayArn: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -470,7 +478,7 @@ export const deleteHypervisor: API.OperationMethod<
   DeleteHypervisorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { HypervisorArn: 0 } },
   errors: [AccessDeniedException, ConflictException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -490,7 +498,7 @@ export const disassociateGatewayFromServer: API.OperationMethod<
   DisassociateGatewayFromServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayArn: 0 } },
   errors: [ConflictException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -509,7 +517,7 @@ export const getBandwidthRateLimitSchedule: API.OperationMethod<
   GetBandwidthRateLimitScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayArn: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -528,6 +536,7 @@ export const getGateway: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { GatewayArn: 0 },
     output: {
       Gateway: {
         LastSeenTime: D.ts,
@@ -554,6 +563,7 @@ export const getHypervisor: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { HypervisorArn: 0 },
     output: { Hypervisor: { LastSuccessfulMetadataSyncTime: D.ts } },
   },
   errors: [ResourceNotFoundException],
@@ -574,7 +584,7 @@ export const getHypervisorPropertyMappings: API.OperationMethod<
   GetHypervisorPropertyMappingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { HypervisorArn: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -593,6 +603,7 @@ export const getVirtualMachine: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResourceArn: 0 },
     output: { VirtualMachine: { LastBackupDate: D.ts } },
   },
   errors: [ResourceNotFoundException],
@@ -614,7 +625,17 @@ export const importHypervisorConfiguration: API.OperationMethod<
   ImportHypervisorConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Host: 0,
+      Username: 0,
+      Password: 0,
+      KmsKeyArn: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [AccessDeniedException, ConflictException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -634,6 +655,7 @@ export const listGateways: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
     output: { Gateways: D.list({ LastSeenTime: D.ts }) },
   },
   errors: [],
@@ -659,7 +681,7 @@ export const listHypervisors: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Hypervisor
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -682,7 +704,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -702,6 +724,7 @@ export const listVirtualMachines: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { HypervisorArn: 0, MaxResults: 0, NextToken: 0 },
     output: { VirtualMachines: D.list({ LastBackupDate: D.ts }) },
   },
   errors: [],
@@ -728,7 +751,20 @@ export const putBandwidthRateLimitSchedule: API.OperationMethod<
   PutBandwidthRateLimitScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      GatewayArn: 0,
+      BandwidthRateLimitIntervals: D.list({
+        AverageUploadRateLimitInBitsPerSec: 0,
+        StartHourOfDay: 0,
+        EndHourOfDay: 0,
+        StartMinuteOfHour: 0,
+        EndMinuteOfHour: 0,
+        DaysOfWeek: 0,
+      }),
+    },
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -749,7 +785,19 @@ export const putHypervisorPropertyMappings: API.OperationMethod<
   PutHypervisorPropertyMappingsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      HypervisorArn: 0,
+      VmwareToAwsTagMappings: D.list({
+        VmwareCategory: 0,
+        VmwareTagName: 0,
+        AwsTagKey: 0,
+        AwsTagValue: 0,
+      }),
+      IamRoleArn: 0,
+    },
+  },
   errors: [AccessDeniedException, ConflictException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -769,7 +817,16 @@ export const putMaintenanceStartTime: API.OperationMethod<
   PutMaintenanceStartTimeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      GatewayArn: 0,
+      HourOfDay: 0,
+      MinuteOfHour: 0,
+      DayOfWeek: 0,
+      DayOfMonth: 0,
+    },
+  },
   errors: [ConflictException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -789,7 +846,7 @@ export const startVirtualMachinesMetadataSync: API.OperationMethod<
   StartVirtualMachinesMetadataSyncError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { HypervisorArn: 0 } },
   errors: [AccessDeniedException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -806,7 +863,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, Tags: D.list(i_Tag) } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -826,7 +883,10 @@ export const testHypervisorConfiguration: API.OperationMethod<
   TestHypervisorConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { GatewayArn: 0, Host: 0, Username: 0, Password: 0 },
+  },
   errors: [ConflictException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -843,7 +903,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceARN: 0, TagKeys: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -863,7 +923,7 @@ export const updateGatewayInformation: API.OperationMethod<
   UpdateGatewayInformationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayArn: 0, GatewayDisplayName: 0 } },
   errors: [ConflictException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -884,7 +944,7 @@ export const updateGatewaySoftwareNow: API.OperationMethod<
   UpdateGatewaySoftwareNowError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GatewayArn: 0 } },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -905,9 +965,21 @@ export const updateHypervisor: API.OperationMethod<
   UpdateHypervisorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      HypervisorArn: 0,
+      Host: 0,
+      Username: 0,
+      Password: 0,
+      Name: 0,
+      LogGroupArn: 0,
+    },
+  },
   errors: [AccessDeniedException, ConflictException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "UpdateHypervisor",
 })) as any;
+
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });

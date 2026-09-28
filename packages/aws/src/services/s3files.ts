@@ -443,7 +443,16 @@ export const createAccessPoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /access-points",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      tags: D.list(i_Tag),
+      fileSystemId: 0,
+      posixUser: { uid: 0, gid: 0, secondaryGids: 0 },
+      rootDirectory: {
+        path: 0,
+        creationPermissions: { ownerUid: 0, ownerGid: 0, permissions: 0 },
+      },
+    },
     body: true,
   },
   errors: [
@@ -477,7 +486,15 @@ export const createFileSystem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /file-systems",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      bucket: 0,
+      prefix: 0,
+      clientToken: D.m({ idempotency: true }),
+      kmsKeyId: 0,
+      roleArn: 0,
+      tags: D.list(i_Tag),
+      acceptBucketWarning: 0,
+    },
     output: { creationTime: D.ts },
     body: true,
   },
@@ -509,7 +526,19 @@ export const createMountTarget: API.OperationMethod<
   CreateMountTargetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /mount-targets", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /mount-targets",
+    input: {
+      fileSystemId: 0,
+      subnetId: 0,
+      ipv4Address: 0,
+      ipv6Address: 0,
+      ipAddressType: 0,
+      securityGroups: 0,
+    },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -537,7 +566,11 @@ export const deleteAccessPoint: API.OperationMethod<
   DeleteAccessPointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /access-points/{accessPointId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /access-points/{accessPointId}",
+    input: { accessPointId: 0 },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -567,7 +600,7 @@ export const deleteFileSystem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /file-systems/{fileSystemId}",
-    input: { forceDelete: D.m({ query: "forceDelete" }) },
+    input: { fileSystemId: 0, forceDelete: D.m({ query: "forceDelete" }) },
   },
   errors: [
     ConflictException,
@@ -597,6 +630,7 @@ export const deleteFileSystemPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /file-systems/{fileSystemId}/policy",
+    input: { fileSystemId: 0 },
   },
   errors: [
     InternalServerException,
@@ -623,7 +657,11 @@ export const deleteMountTarget: API.OperationMethod<
   DeleteMountTargetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /mount-targets/{mountTargetId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /mount-targets/{mountTargetId}",
+    input: { mountTargetId: 0 },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -649,7 +687,11 @@ export const getAccessPoint: API.OperationMethod<
   GetAccessPointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /access-points/{accessPointId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /access-points/{accessPointId}",
+    input: { accessPointId: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -677,6 +719,7 @@ export const getFileSystem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /file-systems/{fileSystemId}",
+    input: { fileSystemId: 0 },
     output: { creationTime: D.ts },
   },
   errors: [
@@ -703,7 +746,11 @@ export const getFileSystemPolicy: API.OperationMethod<
   GetFileSystemPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /file-systems/{fileSystemId}/policy" },
+  descriptor: {
+    service: svc,
+    http: "GET /file-systems/{fileSystemId}/policy",
+    input: { fileSystemId: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -728,7 +775,11 @@ export const getMountTarget: API.OperationMethod<
   GetMountTargetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /mount-targets/{mountTargetId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /mount-targets/{mountTargetId}",
+    input: { mountTargetId: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -756,6 +807,7 @@ export const getSynchronizationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /file-systems/{fileSystemId}/synchronization-configuration",
+    input: { fileSystemId: 0 },
   },
   errors: [
     InternalServerException,
@@ -903,6 +955,7 @@ export const listTagsForResource: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /resource-tags/{resourceId}",
     input: {
+      resourceId: 0,
       maxResults: D.m({ query: "MaxResults" }),
       nextToken: D.m({ query: "NextToken" }),
     },
@@ -940,6 +993,7 @@ export const putFileSystemPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /file-systems/{fileSystemId}/policy",
+    input: { fileSystemId: 0, policy: 0 },
     body: true,
   },
   errors: [
@@ -970,6 +1024,12 @@ export const putSynchronizationConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /file-systems/{fileSystemId}/synchronization-configuration",
+    input: {
+      fileSystemId: 0,
+      latestVersionNumber: 0,
+      importDataRules: D.list({ prefix: 0, trigger: 0, sizeLessThan: 0 }),
+      expirationDataRules: D.list({ daysAfterLastAccess: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -1000,6 +1060,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /resource-tags/{resourceId}",
+    input: { resourceId: 0, tags: D.list(i_Tag) },
     body: true,
   },
   errors: [
@@ -1029,7 +1090,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /resource-tags/{resourceId}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceId: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -1058,6 +1119,7 @@ export const updateMountTarget: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /mount-targets/{mountTargetId}",
+    input: { mountTargetId: 0, securityGroups: 0 },
     body: true,
   },
   errors: [
@@ -1069,3 +1131,5 @@ export const updateMountTarget: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateMountTarget",
 })) as any;
+
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });

@@ -649,7 +649,29 @@ export const createCertificateAuthority: API.OperationMethod<
   CreateCertificateAuthorityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CertificateAuthorityConfiguration: {
+        KeyAlgorithm: 0,
+        SigningAlgorithm: 0,
+        Subject: i_ASN1Subject,
+        CsrExtensions: {
+          KeyUsage: i_KeyUsage,
+          SubjectInformationAccess: D.list({
+            AccessMethod: { CustomObjectIdentifier: 0, AccessMethodType: 0 },
+            AccessLocation: i_GeneralName,
+          }),
+        },
+      },
+      RevocationConfiguration: i_RevocationConfiguration,
+      CertificateAuthorityType: 0,
+      IdempotencyToken: 0,
+      KeyStorageSecurityStandard: 0,
+      Tags: D.list(i_Tag),
+      UsageMode: 0,
+    },
+  },
   errors: [
     InvalidArgsException,
     InvalidPolicyException,
@@ -684,7 +706,14 @@ export const createCertificateAuthorityAuditReport: API.OperationMethod<
   CreateCertificateAuthorityAuditReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CertificateAuthorityArn: 0,
+      S3BucketName: 0,
+      AuditReportResponseFormat: 0,
+    },
+  },
   errors: [
     InvalidArgsException,
     InvalidArnException,
@@ -724,7 +753,15 @@ export const createPermission: API.OperationMethod<
   CreatePermissionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CertificateAuthorityArn: 0,
+      Principal: 0,
+      SourceAccount: 0,
+      Actions: 0,
+    },
+  },
   errors: [
     InvalidArnException,
     InvalidStateException,
@@ -763,7 +800,10 @@ export const deleteCertificateAuthority: API.OperationMethod<
   DeleteCertificateAuthorityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CertificateAuthorityArn: 0, PermanentDeletionTimeInDays: 0 },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidArnException,
@@ -801,7 +841,10 @@ export const deletePermission: API.OperationMethod<
   DeletePermissionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CertificateAuthorityArn: 0, Principal: 0, SourceAccount: 0 },
+  },
   errors: [
     InvalidArnException,
     InvalidStateException,
@@ -845,7 +888,7 @@ export const deletePolicy: API.OperationMethod<
   DeletePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     ConcurrentModificationException,
     InvalidArnException,
@@ -888,6 +931,7 @@ export const describeCertificateAuthority: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CertificateAuthorityArn: 0 },
     output: { CertificateAuthority: o_CertificateAuthority },
   },
   errors: [InvalidArnException, ResourceNotFoundException],
@@ -910,7 +954,11 @@ export const describeCertificateAuthorityAuditReport: API.OperationMethod<
   DescribeCertificateAuthorityAuditReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { CertificateAuthorityArn: 0, AuditReportId: 0 },
+    output: { CreatedAt: D.ts },
+  },
   errors: [
     InvalidArgsException,
     InvalidArnException,
@@ -937,7 +985,10 @@ export const getCertificate: API.OperationMethod<
   GetCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CertificateAuthorityArn: 0, CertificateArn: 0 },
+  },
   errors: [
     InvalidArnException,
     InvalidStateException,
@@ -964,7 +1015,7 @@ export const getCertificateAuthorityCertificate: API.OperationMethod<
   GetCertificateAuthorityCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CertificateAuthorityArn: 0 } },
   errors: [
     InvalidArnException,
     InvalidStateException,
@@ -991,7 +1042,7 @@ export const getCertificateAuthorityCsr: API.OperationMethod<
   GetCertificateAuthorityCsrError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CertificateAuthorityArn: 0 } },
   errors: [
     InvalidArnException,
     InvalidStateException,
@@ -1030,7 +1081,7 @@ export const getPolicy: API.OperationMethod<
   GetPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     InvalidArnException,
     InvalidStateException,
@@ -1136,7 +1187,10 @@ export const importCertificateAuthorityCertificate: API.OperationMethod<
   ImportCertificateAuthorityCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CertificateAuthorityArn: 0, Certificate: 0, CertificateChain: 0 },
+  },
   errors: [
     CertificateMismatchException,
     ConcurrentModificationException,
@@ -1172,7 +1226,41 @@ export const issueCertificate: API.OperationMethod<
   IssueCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ApiPassthrough: {
+        Extensions: {
+          CertificatePolicies: D.list({
+            CertPolicyId: 0,
+            PolicyQualifiers: D.list({
+              PolicyQualifierId: 0,
+              Qualifier: { CpsUri: 0 },
+            }),
+          }),
+          ExtendedKeyUsage: D.list({
+            ExtendedKeyUsageType: 0,
+            ExtendedKeyUsageObjectIdentifier: 0,
+          }),
+          KeyUsage: i_KeyUsage,
+          SubjectAlternativeNames: D.list(i_GeneralName),
+          CustomExtensions: D.list({
+            ObjectIdentifier: 0,
+            Value: 0,
+            Critical: 0,
+          }),
+        },
+        Subject: i_ASN1Subject,
+      },
+      CertificateAuthorityArn: 0,
+      Csr: 0,
+      SigningAlgorithm: 0,
+      TemplateArn: 0,
+      Validity: i_Validity,
+      ValidityNotBefore: i_Validity,
+      IdempotencyToken: 0,
+    },
+  },
   errors: [
     InvalidArgsException,
     InvalidArnException,
@@ -1201,6 +1289,7 @@ export const listCertificateAuthorities: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0, ResourceOwner: 0 },
     output: { CertificateAuthorities: D.list(o_CertificateAuthority) },
   },
   errors: [InvalidNextTokenException],
@@ -1245,6 +1334,7 @@ export const listPermissions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0, CertificateAuthorityArn: 0 },
     output: { Permissions: D.list({ CreatedAt: D.ts }) },
   },
   errors: [
@@ -1281,7 +1371,10 @@ export const listTags: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Tag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { MaxResults: 0, NextToken: 0, CertificateAuthorityArn: 0 },
+  },
   errors: [
     InvalidArnException,
     InvalidStateException,
@@ -1330,7 +1423,7 @@ export const putPolicy: API.OperationMethod<
   PutPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Policy: 0 } },
   errors: [
     ConcurrentModificationException,
     InvalidArnException,
@@ -1359,7 +1452,7 @@ export const restoreCertificateAuthority: API.OperationMethod<
   RestoreCertificateAuthorityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CertificateAuthorityArn: 0 } },
   errors: [
     InvalidArnException,
     InvalidStateException,
@@ -1396,7 +1489,14 @@ export const revokeCertificate: API.OperationMethod<
   RevokeCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CertificateAuthorityArn: 0,
+      CertificateSerial: 0,
+      RevocationReason: 0,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidArnException,
@@ -1431,7 +1531,10 @@ export const tagCertificateAuthority: API.OperationMethod<
   TagCertificateAuthorityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CertificateAuthorityArn: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     InvalidArnException,
     InvalidStateException,
@@ -1459,7 +1562,10 @@ export const untagCertificateAuthority: API.OperationMethod<
   UntagCertificateAuthorityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CertificateAuthorityArn: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     InvalidArnException,
     InvalidStateException,
@@ -1490,7 +1596,14 @@ export const updateCertificateAuthority: API.OperationMethod<
   UpdateCertificateAuthorityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CertificateAuthorityArn: 0,
+      RevocationConfiguration: i_RevocationConfiguration,
+      Status: 0,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InvalidArgsException,
@@ -1504,6 +1617,59 @@ export const updateCertificateAuthority: API.OperationMethod<
   operationName: "UpdateCertificateAuthority",
 })) as any;
 
+const i_ASN1Subject: D.LazyStruct = () => ({
+  Country: 0,
+  Organization: 0,
+  OrganizationalUnit: 0,
+  DistinguishedNameQualifier: 0,
+  State: 0,
+  CommonName: 0,
+  SerialNumber: 0,
+  Locality: 0,
+  Title: 0,
+  Surname: 0,
+  GivenName: 0,
+  Initials: 0,
+  Pseudonym: 0,
+  GenerationQualifier: 0,
+  CustomAttributes: D.list({ ObjectIdentifier: 0, Value: 0 }),
+});
+const i_GeneralName: D.LazyStruct = () => ({
+  OtherName: { TypeId: 0, Value: 0 },
+  Rfc822Name: 0,
+  DnsName: 0,
+  DirectoryName: i_ASN1Subject,
+  EdiPartyName: { PartyName: 0, NameAssigner: 0 },
+  UniformResourceIdentifier: 0,
+  IpAddress: 0,
+  RegisteredId: 0,
+});
+const i_KeyUsage: D.LazyStruct = () => ({
+  DigitalSignature: 0,
+  NonRepudiation: 0,
+  KeyEncipherment: 0,
+  DataEncipherment: 0,
+  KeyAgreement: 0,
+  KeyCertSign: 0,
+  CRLSign: 0,
+  EncipherOnly: 0,
+  DecipherOnly: 0,
+});
+const i_RevocationConfiguration: D.LazyStruct = () => ({
+  CrlConfiguration: {
+    Enabled: 0,
+    ExpirationInDays: 0,
+    CustomCname: 0,
+    S3BucketName: 0,
+    S3ObjectAcl: 0,
+    CrlDistributionPointExtensionConfiguration: { OmitExtension: 0 },
+    CrlType: 0,
+    CustomPath: 0,
+  },
+  OcspConfiguration: { Enabled: 0, OcspCustomCname: 0 },
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_Validity: D.LazyStruct = () => ({ Value: 0, Type: 0 });
 const o_CertificateAuthority: D.LazyStruct = () => ({
   CreatedAt: D.ts,
   LastStateChangeAt: D.ts,

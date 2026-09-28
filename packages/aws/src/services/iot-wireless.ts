@@ -2274,7 +2274,11 @@ export const associateAwsAccountWithPartnerAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /partner-accounts",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Sidewalk: { AmazonId: 0, AppServerPrivateKey: 0 },
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
     output: { Sidewalk: { AppServerPrivateKey: D.secret } },
     body: true,
   },
@@ -2311,6 +2315,7 @@ export const associateMulticastGroupWithFuotaTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /fuota-tasks/{Id}/multicast-group",
+    input: { Id: 0, MulticastGroupId: 0 },
     body: true,
   },
   errors: [
@@ -2346,6 +2351,7 @@ export const associateWirelessDeviceWithFuotaTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /fuota-tasks/{Id}/wireless-device",
+    input: { Id: 0, WirelessDeviceId: 0 },
     body: true,
   },
   errors: [
@@ -2381,6 +2387,7 @@ export const associateWirelessDeviceWithMulticastGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /multicast-groups/{Id}/wireless-device",
+    input: { Id: 0, WirelessDeviceId: 0 },
     body: true,
   },
   errors: [
@@ -2416,6 +2423,7 @@ export const associateWirelessDeviceWithThing: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /wireless-devices/{Id}/thing",
+    input: { Id: 0, ThingArn: 0 },
     body: true,
   },
   errors: [
@@ -2451,6 +2459,7 @@ export const associateWirelessGatewayWithCertificate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /wireless-gateways/{Id}/certificate",
+    input: { Id: 0, IotCertificateId: 0 },
     body: true,
   },
   errors: [
@@ -2486,6 +2495,7 @@ export const associateWirelessGatewayWithThing: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /wireless-gateways/{Id}/thing",
+    input: { Id: 0, ThingArn: 0 },
     body: true,
   },
   errors: [
@@ -2518,7 +2528,11 @@ export const cancelMulticastGroupSession: API.OperationMethod<
   CancelMulticastGroupSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /multicast-groups/{Id}/session" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /multicast-groups/{Id}/session",
+    input: { Id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2552,7 +2566,15 @@ export const createDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /destinations",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      ExpressionType: 0,
+      Expression: 0,
+      Description: 0,
+      RoleArn: 0,
+      Tags: D.list(i_Tag),
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2587,7 +2609,33 @@ export const createDeviceProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /device-profiles",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      LoRaWAN: {
+        SupportsClassB: 0,
+        ClassBTimeout: 0,
+        PingSlotPeriod: 0,
+        PingSlotDr: 0,
+        PingSlotFreq: 0,
+        SupportsClassC: 0,
+        ClassCTimeout: 0,
+        MacVersion: 0,
+        RegParamsRevision: 0,
+        RxDelay1: 0,
+        RxDrOffset1: 0,
+        RxDataRate2: 0,
+        RxFreq2: 0,
+        FactoryPresetFreqsList: 0,
+        MaxEirp: 0,
+        MaxDutyCycle: 0,
+        RfRegion: 0,
+        SupportsJoin: 0,
+        Supports32BitFCnt: 0,
+      },
+      Tags: D.list(i_Tag),
+      ClientRequestToken: D.m({ idempotency: true }),
+      Sidewalk: {},
+    },
     body: true,
   },
   errors: [
@@ -2622,7 +2670,19 @@ export const createFuotaTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /fuota-tasks",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Description: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      LoRaWAN: i_LoRaWANFuotaTask,
+      FirmwareUpdateImage: 0,
+      FirmwareUpdateRole: 0,
+      Tags: D.list(i_Tag),
+      RedundancyPercent: 0,
+      FragmentSizeBytes: 0,
+      FragmentIntervalMS: 0,
+      Descriptor: 0,
+    },
     body: true,
   },
   errors: [
@@ -2658,7 +2718,13 @@ export const createMulticastGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /multicast-groups",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Description: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      LoRaWAN: i_LoRaWANMulticast,
+      Tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -2694,7 +2760,16 @@ export const createNetworkAnalyzerConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /network-analyzer-configurations",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      TraceContent: i_TraceContent,
+      WirelessDevices: 0,
+      WirelessGateways: 0,
+      Description: 0,
+      Tags: D.list(i_Tag),
+      ClientRequestToken: D.m({ idempotency: true }),
+      MulticastGroups: 0,
+    },
     body: true,
   },
   errors: [
@@ -2729,7 +2804,22 @@ export const createServiceProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /service-profiles",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      LoRaWAN: {
+        AddGwMetadata: 0,
+        DrMin: 0,
+        DrMax: 0,
+        PrAllowed: 0,
+        RaAllowed: 0,
+        TxPowerIndexMin: 0,
+        TxPowerIndexMax: 0,
+        NbTransMin: 0,
+        NbTransMax: 0,
+      },
+      Tags: D.list(i_Tag),
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2764,7 +2854,49 @@ export const createWirelessDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /wireless-devices",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Type: 0,
+      Name: 0,
+      Description: 0,
+      DestinationName: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      LoRaWAN: {
+        DevEui: 0,
+        DeviceProfileId: 0,
+        ServiceProfileId: 0,
+        OtaaV1_1: { AppKey: 0, NwkKey: 0, JoinEui: 0 },
+        OtaaV1_0_x: { AppKey: 0, AppEui: 0, JoinEui: 0, GenAppKey: 0 },
+        AbpV1_1: {
+          DevAddr: 0,
+          SessionKeys: {
+            FNwkSIntKey: 0,
+            SNwkSIntKey: 0,
+            NwkSEncKey: 0,
+            AppSKey: 0,
+          },
+          FCntStart: 0,
+        },
+        AbpV1_0_x: {
+          DevAddr: 0,
+          SessionKeys: { NwkSKey: 0, AppSKey: 0 },
+          FCntStart: 0,
+        },
+        FPorts: {
+          Fuota: 0,
+          Multicast: 0,
+          ClockSync: 0,
+          Positioning: i_Positioning,
+          Applications: D.list(i_ApplicationConfig),
+        },
+      },
+      Tags: D.list(i_Tag),
+      Positioning: 0,
+      Sidewalk: {
+        DeviceProfileId: 0,
+        Positioning: i_SidewalkPositioning,
+        SidewalkManufacturingSn: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -2810,7 +2942,21 @@ export const createWirelessGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /wireless-gateways",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Description: 0,
+      LoRaWAN: {
+        GatewayEui: 0,
+        RfRegion: 0,
+        JoinEuiFilters: 0,
+        NetIdFilters: 0,
+        SubBands: 0,
+        Beaconing: { DataRate: 0, Frequencies: 0 },
+        MaxEirp: 0,
+      },
+      Tags: D.list(i_Tag),
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2845,6 +2991,7 @@ export const createWirelessGatewayTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /wireless-gateways/{Id}/tasks",
+    input: { Id: 0, WirelessGatewayTaskDefinitionId: 0 },
     body: true,
   },
   errors: [
@@ -2880,7 +3027,22 @@ export const createWirelessGatewayTaskDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /wireless-gateway-task-definitions",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      AutoCreateTasks: 0,
+      Name: 0,
+      Update: {
+        UpdateDataSource: 0,
+        UpdateDataRole: 0,
+        LoRaWAN: {
+          UpdateSignature: 0,
+          SigKeyCrc: 0,
+          CurrentVersion: i_LoRaWANGatewayVersion,
+          UpdateVersion: i_LoRaWANGatewayVersion,
+        },
+      },
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
     body: true,
   },
   errors: [
@@ -2913,7 +3075,11 @@ export const deleteDestination: API.OperationMethod<
   DeleteDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /destinations/{Name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /destinations/{Name}",
+    input: { Name: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2944,7 +3110,11 @@ export const deleteDeviceProfile: API.OperationMethod<
   DeleteDeviceProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /device-profiles/{Id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /device-profiles/{Id}",
+    input: { Id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2974,7 +3144,11 @@ export const deleteFuotaTask: API.OperationMethod<
   DeleteFuotaTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /fuota-tasks/{Id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /fuota-tasks/{Id}",
+    input: { Id: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3004,7 +3178,11 @@ export const deleteMulticastGroup: API.OperationMethod<
   DeleteMulticastGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /multicast-groups/{Id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /multicast-groups/{Id}",
+    input: { Id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3038,6 +3216,7 @@ export const deleteNetworkAnalyzerConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /network-analyzer-configurations/{ConfigurationName}",
+    input: { ConfigurationName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3072,6 +3251,7 @@ export const deleteQueuedMessages: API.OperationMethod<
     service: svc,
     http: "DELETE /wireless-devices/{Id}/data",
     input: {
+      Id: 0,
       MessageId: D.m({ query: "messageId" }),
       WirelessDeviceType: D.m({ query: "WirelessDeviceType" }),
     },
@@ -3105,7 +3285,11 @@ export const deleteServiceProfile: API.OperationMethod<
   DeleteServiceProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /service-profiles/{Id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /service-profiles/{Id}",
+    input: { Id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3135,7 +3319,11 @@ export const deleteWirelessDevice: API.OperationMethod<
   DeleteWirelessDeviceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /wireless-devices/{Id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /wireless-devices/{Id}",
+    input: { Id: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3168,6 +3356,7 @@ export const deleteWirelessDeviceImportTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /wireless_device_import_task/{Id}",
+    input: { Id: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3209,7 +3398,11 @@ export const deleteWirelessGateway: API.OperationMethod<
   DeleteWirelessGatewayError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /wireless-gateways/{Id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /wireless-gateways/{Id}",
+    input: { Id: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3238,7 +3431,11 @@ export const deleteWirelessGatewayTask: API.OperationMethod<
   DeleteWirelessGatewayTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /wireless-gateways/{Id}/tasks" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /wireless-gateways/{Id}/tasks",
+    input: { Id: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3271,6 +3468,7 @@ export const deleteWirelessGatewayTaskDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /wireless-gateway-task-definitions/{Id}",
+    input: { Id: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3302,7 +3500,10 @@ export const deregisterWirelessDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /wireless-devices/{Identifier}/deregister",
-    input: { WirelessDeviceType: D.m({ query: "WirelessDeviceType" }) },
+    input: {
+      Identifier: 0,
+      WirelessDeviceType: D.m({ query: "WirelessDeviceType" }),
+    },
   },
   errors: [
     InternalServerException,
@@ -3335,7 +3536,7 @@ export const disassociateAwsAccountFromPartnerAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /partner-accounts/{PartnerAccountId}",
-    input: { PartnerType: D.m({ query: "partnerType" }) },
+    input: { PartnerAccountId: 0, PartnerType: D.m({ query: "partnerType" }) },
   },
   errors: [
     InternalServerException,
@@ -3367,6 +3568,7 @@ export const disassociateMulticastGroupFromFuotaTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /fuota-tasks/{Id}/multicast-groups/{MulticastGroupId}",
+    input: { Id: 0, MulticastGroupId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3400,6 +3602,7 @@ export const disassociateWirelessDeviceFromFuotaTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /fuota-tasks/{Id}/wireless-devices/{WirelessDeviceId}",
+    input: { Id: 0, WirelessDeviceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3433,6 +3636,7 @@ export const disassociateWirelessDeviceFromMulticastGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /multicast-groups/{Id}/wireless-devices/{WirelessDeviceId}",
+    input: { Id: 0, WirelessDeviceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3463,7 +3667,11 @@ export const disassociateWirelessDeviceFromThing: API.OperationMethod<
   DisassociateWirelessDeviceFromThingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /wireless-devices/{Id}/thing" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /wireless-devices/{Id}/thing",
+    input: { Id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3496,6 +3704,7 @@ export const disassociateWirelessGatewayFromCertificate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /wireless-gateways/{Id}/certificate",
+    input: { Id: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3526,7 +3735,11 @@ export const disassociateWirelessGatewayFromThing: API.OperationMethod<
   DisassociateWirelessGatewayFromThingError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /wireless-gateways/{Id}/thing" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /wireless-gateways/{Id}/thing",
+    input: { Id: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3556,7 +3769,11 @@ export const getDestination: API.OperationMethod<
   GetDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /destinations/{Name}" },
+  descriptor: {
+    service: svc,
+    http: "GET /destinations/{Name}",
+    input: { Name: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3588,6 +3805,7 @@ export const getDeviceProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /device-profiles/{Id}",
+    input: { Id: 0 },
     output: { Sidewalk: { ApplicationServerPublicKey: D.secret } },
   },
   errors: [
@@ -3619,6 +3837,7 @@ export const getEventConfigurationByResourceTypes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /event-configurations-resource-types",
+    input: {},
   },
   errors: [AccessDeniedException, InternalServerException, ThrottlingException],
   protocol: AwsProtocol,
@@ -3645,6 +3864,7 @@ export const getFuotaTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /fuota-tasks/{Id}",
+    input: { Id: 0 },
     output: { LoRaWAN: { StartTime: D.ts }, CreatedAt: D.ts },
   },
   errors: [
@@ -3677,7 +3897,7 @@ export const getLogLevelsByResourceTypes: API.OperationMethod<
   GetLogLevelsByResourceTypesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /log-levels" },
+  descriptor: { service: svc, http: "GET /log-levels", input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3707,7 +3927,7 @@ export const getMetricConfiguration: API.OperationMethod<
   GetMetricConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /metric-configuration" },
+  descriptor: { service: svc, http: "GET /metric-configuration", input: {} },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -3741,6 +3961,16 @@ export const getMetrics: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /metrics",
+    input: {
+      SummaryMetricQueries: D.list({
+        QueryId: 0,
+        MetricName: 0,
+        Dimensions: D.list({ name: 0, value: 0 }),
+        AggregationPeriod: 0,
+        StartTimestamp: 0,
+        EndTimestamp: 0,
+      }),
+    },
     output: {
       SummaryMetricQueryResults: D.list({
         StartTimestamp: D.ts,
@@ -3782,6 +4012,7 @@ export const getMulticastGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /multicast-groups/{Id}",
+    input: { Id: 0 },
     output: { CreatedAt: D.ts },
   },
   errors: [
@@ -3815,6 +4046,7 @@ export const getMulticastGroupSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /multicast-groups/{Id}/session",
+    input: { Id: 0 },
     output: { LoRaWAN: { SessionStartTime: D.ts } },
   },
   errors: [
@@ -3848,6 +4080,7 @@ export const getNetworkAnalyzerConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /network-analyzer-configurations/{ConfigurationName}",
+    input: { ConfigurationName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3880,7 +4113,7 @@ export const getPartnerAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /partner-accounts/{PartnerAccountId}",
-    input: { PartnerType: D.m({ query: "partnerType" }) },
+    input: { PartnerAccountId: 0, PartnerType: D.m({ query: "partnerType" }) },
     output: { Sidewalk: o_SidewalkAccountInfoWithFingerprint },
   },
   errors: [
@@ -3916,7 +4149,10 @@ export const getPosition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /positions/{ResourceIdentifier}",
-    input: { ResourceType: D.m({ query: "resourceType" }) },
+    input: {
+      ResourceIdentifier: 0,
+      ResourceType: D.m({ query: "resourceType" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -3952,7 +4188,10 @@ export const getPositionConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /position-configurations/{ResourceIdentifier}",
-    input: { ResourceType: D.m({ query: "resourceType" }) },
+    input: {
+      ResourceIdentifier: 0,
+      ResourceType: D.m({ query: "resourceType" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -3987,7 +4226,99 @@ export const getPositionEstimate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /position-estimate",
-    output: { GeoJsonPayload: D.m({ payload: true, shape: D.stream }) },
+    input: {
+      WiFiAccessPoints: D.list({ MacAddress: 0, Rss: 0 }),
+      CellTowers: {
+        Gsm: D.list({
+          Mcc: 0,
+          Mnc: 0,
+          Lac: 0,
+          GeranCid: 0,
+          GsmLocalId: { Bsic: 0, Bcch: 0 },
+          GsmTimingAdvance: 0,
+          RxLevel: 0,
+          GsmNmr: D.list({
+            Bsic: 0,
+            Bcch: 0,
+            RxLevel: 0,
+            GlobalIdentity: { Lac: 0, GeranCid: 0 },
+          }),
+        }),
+        Wcdma: D.list({
+          Mcc: 0,
+          Mnc: 0,
+          Lac: 0,
+          UtranCid: 0,
+          WcdmaLocalId: { Uarfcndl: 0, Psc: 0 },
+          Rscp: 0,
+          PathLoss: 0,
+          WcdmaNmr: D.list({
+            Uarfcndl: 0,
+            Psc: 0,
+            UtranCid: 0,
+            Rscp: 0,
+            PathLoss: 0,
+          }),
+        }),
+        Tdscdma: D.list({
+          Mcc: 0,
+          Mnc: 0,
+          Lac: 0,
+          UtranCid: 0,
+          TdscdmaLocalId: { Uarfcn: 0, CellParams: 0 },
+          TdscdmaTimingAdvance: 0,
+          Rscp: 0,
+          PathLoss: 0,
+          TdscdmaNmr: D.list({
+            Uarfcn: 0,
+            CellParams: 0,
+            UtranCid: 0,
+            Rscp: 0,
+            PathLoss: 0,
+          }),
+        }),
+        Lte: D.list({
+          Mcc: 0,
+          Mnc: 0,
+          EutranCid: 0,
+          Tac: 0,
+          LteLocalId: { Pci: 0, Earfcn: 0 },
+          LteTimingAdvance: 0,
+          Rsrp: 0,
+          Rsrq: 0,
+          NrCapable: 0,
+          LteNmr: D.list({ Pci: 0, Earfcn: 0, EutranCid: 0, Rsrp: 0, Rsrq: 0 }),
+        }),
+        Cdma: D.list({
+          SystemId: 0,
+          NetworkId: 0,
+          BaseStationId: 0,
+          RegistrationZone: 0,
+          CdmaLocalId: { PnOffset: 0, CdmaChannel: 0 },
+          PilotPower: 0,
+          BaseLat: 0,
+          BaseLng: 0,
+          CdmaNmr: D.list({
+            PnOffset: 0,
+            CdmaChannel: 0,
+            PilotPower: 0,
+            BaseStationId: 0,
+          }),
+        }),
+      },
+      Ip: { IpAddress: 0 },
+      Gnss: {
+        Payload: 0,
+        CaptureTime: 0,
+        CaptureTimeAccuracy: 0,
+        AssistPosition: 0,
+        AssistAltitude: 0,
+        Use2DSolver: 0,
+      },
+      Timestamp: 0,
+      AdvancedConfiguration: { WiFiCellular: { ConfidencePercent: 0 } },
+    },
+    output: { GeoJsonPayload: D.m({ payload: true, shape: D.blob }) },
     body: true,
   },
   errors: [
@@ -4022,6 +4353,7 @@ export const getResourceEventConfiguration: API.OperationMethod<
     service: svc,
     http: "GET /event-configurations/{Identifier}",
     input: {
+      Identifier: 0,
       IdentifierType: D.m({ query: "identifierType" }),
       PartnerType: D.m({ query: "partnerType" }),
     },
@@ -4058,7 +4390,10 @@ export const getResourceLogLevel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /log-levels/{ResourceIdentifier}",
-    input: { ResourceType: D.m({ query: "resourceType" }) },
+    input: {
+      ResourceIdentifier: 0,
+      ResourceType: D.m({ query: "resourceType" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -4093,8 +4428,11 @@ export const getResourcePosition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /resource-positions/{ResourceIdentifier}",
-    input: { ResourceType: D.m({ query: "resourceType" }) },
-    output: { GeoJsonPayload: D.m({ payload: true, shape: D.stream }) },
+    input: {
+      ResourceIdentifier: 0,
+      ResourceType: D.m({ query: "resourceType" }),
+    },
+    output: { GeoJsonPayload: D.m({ payload: true, shape: D.blob }) },
   },
   errors: [
     AccessDeniedException,
@@ -4156,7 +4494,11 @@ export const getServiceProfile: API.OperationMethod<
   GetServiceProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /service-profiles/{Id}" },
+  descriptor: {
+    service: svc,
+    http: "GET /service-profiles/{Id}",
+    input: { Id: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4188,7 +4530,7 @@ export const getWirelessDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /wireless-devices/{Identifier}",
-    input: { IdentifierType: D.m({ query: "identifierType" }) },
+    input: { Identifier: 0, IdentifierType: D.m({ query: "identifierType" }) },
     output: {
       LoRaWAN: {
         OtaaV1_1: { AppKey: D.secret, NwkKey: D.secret },
@@ -4238,6 +4580,7 @@ export const getWirelessDeviceImportTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /wireless_device_import_task/{Id}",
+    input: { Id: 0 },
     output: { CreationTime: D.ts },
   },
   errors: [
@@ -4272,6 +4615,7 @@ export const getWirelessDeviceStatistics: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /wireless-devices/{WirelessDeviceId}/statistics",
+    input: { WirelessDeviceId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4304,7 +4648,7 @@ export const getWirelessGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /wireless-gateways/{Identifier}",
-    input: { IdentifierType: D.m({ query: "identifierType" }) },
+    input: { Identifier: 0, IdentifierType: D.m({ query: "identifierType" }) },
   },
   errors: [
     AccessDeniedException,
@@ -4335,7 +4679,11 @@ export const getWirelessGatewayCertificate: API.OperationMethod<
   GetWirelessGatewayCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /wireless-gateways/{Id}/certificate" },
+  descriptor: {
+    service: svc,
+    http: "GET /wireless-gateways/{Id}/certificate",
+    input: { Id: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4367,6 +4715,7 @@ export const getWirelessGatewayFirmwareInformation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /wireless-gateways/{Id}/firmware-information",
+    input: { Id: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4399,6 +4748,7 @@ export const getWirelessGatewayStatistics: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /wireless-gateways/{WirelessGatewayId}/statistics",
+    input: { WirelessGatewayId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4428,7 +4778,11 @@ export const getWirelessGatewayTask: API.OperationMethod<
   GetWirelessGatewayTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /wireless-gateways/{Id}/tasks" },
+  descriptor: {
+    service: svc,
+    http: "GET /wireless-gateways/{Id}/tasks",
+    input: { Id: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4460,6 +4814,7 @@ export const getWirelessGatewayTaskDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /wireless-gateway-task-definitions/{Id}",
+    input: { Id: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -4735,6 +5090,7 @@ export const listMulticastGroupsByFuotaTask: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /fuota-tasks/{Id}/multicast-groups",
     input: {
+      Id: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -4896,6 +5252,7 @@ export const listQueuedMessages: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /wireless-devices/{Id}/data",
     input: {
+      Id: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
       WirelessDeviceType: D.m({ query: "WirelessDeviceType" }),
@@ -5174,7 +5531,12 @@ export const putPositionConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /position-configurations/{ResourceIdentifier}",
-    input: { ResourceType: D.m({ query: "resourceType" }) },
+    input: {
+      ResourceIdentifier: 0,
+      ResourceType: D.m({ query: "resourceType" }),
+      Solvers: { SemtechGnss: { Status: 0, Fec: 0 } },
+      Destination: 0,
+    },
     body: true,
   },
   errors: [
@@ -5209,7 +5571,11 @@ export const putResourceLogLevel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /log-levels/{ResourceIdentifier}",
-    input: { ResourceType: D.m({ query: "resourceType" }) },
+    input: {
+      ResourceIdentifier: 0,
+      ResourceType: D.m({ query: "resourceType" }),
+      LogLevel: 0,
+    },
     body: true,
   },
   errors: [
@@ -5241,7 +5607,7 @@ export const resetAllResourceLogLevels: API.OperationMethod<
   ResetAllResourceLogLevelsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /log-levels" },
+  descriptor: { service: svc, http: "DELETE /log-levels", input: {} },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5274,7 +5640,10 @@ export const resetResourceLogLevel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /log-levels/{ResourceIdentifier}",
-    input: { ResourceType: D.m({ query: "resourceType" }) },
+    input: {
+      ResourceIdentifier: 0,
+      ResourceType: D.m({ query: "resourceType" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -5308,6 +5677,11 @@ export const sendDataToMulticastGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /multicast-groups/{Id}/data",
+    input: {
+      Id: 0,
+      PayloadData: 0,
+      WirelessMetadata: { LoRaWAN: { FPort: 0 } },
+    },
     body: true,
   },
   errors: [
@@ -5341,6 +5715,22 @@ export const sendDataToWirelessDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /wireless-devices/{Id}/data",
+    input: {
+      Id: 0,
+      TransmitMode: 0,
+      PayloadData: 0,
+      WirelessMetadata: {
+        LoRaWAN: {
+          FPort: 0,
+          ParticipatingGateways: {
+            DownlinkMode: 0,
+            GatewayList: D.list({ GatewayId: 0, DownlinkFrequency: 0 }),
+            TransmissionInterval: 0,
+          },
+        },
+        Sidewalk: { Seq: 0, MessageType: 0, AckModeRetryDurationSecs: 0 },
+      },
+    },
     body: true,
   },
   errors: [
@@ -5374,6 +5764,7 @@ export const startBulkAssociateWirelessDeviceWithMulticastGroup: API.OperationMe
   descriptor: {
     service: svc,
     http: "PATCH /multicast-groups/{Id}/bulk",
+    input: { Id: 0, QueryString: 0, Tags: D.list(i_Tag) },
     body: true,
   },
   errors: [
@@ -5408,6 +5799,7 @@ export const startBulkDisassociateWirelessDeviceFromMulticastGroup: API.Operatio
   descriptor: {
     service: svc,
     http: "POST /multicast-groups/{Id}/bulk",
+    input: { Id: 0, QueryString: 0, Tags: D.list(i_Tag) },
     body: true,
   },
   errors: [
@@ -5442,7 +5834,7 @@ export const startFuotaTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /fuota-tasks/{Id}",
-    input: { LoRaWAN: { StartTime: D.tsAs("date-time") } },
+    input: { Id: 0, LoRaWAN: { StartTime: D.tsAs("date-time") } },
     body: true,
   },
   errors: [
@@ -5478,7 +5870,16 @@ export const startMulticastGroupSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /multicast-groups/{Id}/session",
-    input: { LoRaWAN: { SessionStartTime: D.tsAs("date-time") } },
+    input: {
+      Id: 0,
+      LoRaWAN: {
+        DlDr: 0,
+        DlFreq: 0,
+        SessionStartTime: D.tsAs("date-time"),
+        SessionTimeout: 0,
+        PingSlotPeriod: 0,
+      },
+    },
     body: true,
   },
   errors: [
@@ -5514,7 +5915,17 @@ export const startSingleWirelessDeviceImportTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /wireless_single_device_import_task",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      DestinationName: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      DeviceName: 0,
+      Tags: D.list(i_Tag),
+      Positioning: 0,
+      Sidewalk: {
+        SidewalkManufacturingSn: 0,
+        Positioning: i_SidewalkPositioning,
+      },
+    },
     body: true,
   },
   errors: [
@@ -5551,7 +5962,17 @@ export const startWirelessDeviceImportTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /wireless_device_import_task",
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      DestinationName: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+      Positioning: 0,
+      Sidewalk: {
+        DeviceCreationFile: 0,
+        Role: 0,
+        Positioning: i_SidewalkPositioning,
+      },
+    },
     body: true,
   },
   errors: [
@@ -5587,7 +6008,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags",
-    input: { ResourceArn: D.m({ query: "resourceArn" }) },
+    input: { ResourceArn: D.m({ query: "resourceArn" }), Tags: D.list(i_Tag) },
     body: true,
   },
   errors: [
@@ -5619,7 +6040,11 @@ export const testWirelessDevice: API.OperationMethod<
   TestWirelessDeviceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /wireless-devices/{Id}/test" },
+  descriptor: {
+    service: svc,
+    http: "POST /wireless-devices/{Id}/test",
+    input: { Id: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -5683,7 +6108,18 @@ export const updateDestination: API.OperationMethod<
   UpdateDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /destinations/{Name}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /destinations/{Name}",
+    input: {
+      Name: 0,
+      ExpressionType: 0,
+      Expression: 0,
+      Description: 0,
+      RoleArn: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -5714,6 +6150,17 @@ export const updateEventConfigurationByResourceTypes: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /event-configurations-resource-types",
+    input: {
+      DeviceRegistrationState: {
+        Sidewalk: i_SidewalkResourceTypeEventConfiguration,
+      },
+      Proximity: { Sidewalk: i_SidewalkResourceTypeEventConfiguration },
+      Join: { LoRaWAN: { WirelessDeviceEventTopic: 0 } },
+      ConnectionStatus: { LoRaWAN: { WirelessGatewayEventTopic: 0 } },
+      MessageDeliveryStatus: {
+        Sidewalk: i_SidewalkResourceTypeEventConfiguration,
+      },
+    },
     body: true,
   },
   errors: [
@@ -5744,7 +6191,23 @@ export const updateFuotaTask: API.OperationMethod<
   UpdateFuotaTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /fuota-tasks/{Id}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /fuota-tasks/{Id}",
+    input: {
+      Id: 0,
+      Name: 0,
+      Description: 0,
+      LoRaWAN: i_LoRaWANFuotaTask,
+      FirmwareUpdateImage: 0,
+      FirmwareUpdateRole: 0,
+      RedundancyPercent: 0,
+      FragmentSizeBytes: 0,
+      FragmentIntervalMS: 0,
+      Descriptor: 0,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5777,7 +6240,29 @@ export const updateLogLevelsByResourceTypes: API.OperationMethod<
   UpdateLogLevelsByResourceTypesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /log-levels", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /log-levels",
+    input: {
+      DefaultLogLevel: 0,
+      FuotaTaskLogOptions: D.list({
+        Type: 0,
+        LogLevel: 0,
+        Events: D.list({ Event: 0, LogLevel: 0 }),
+      }),
+      WirelessDeviceLogOptions: D.list({
+        Type: 0,
+        LogLevel: 0,
+        Events: D.list({ Event: 0, LogLevel: 0 }),
+      }),
+      WirelessGatewayLogOptions: D.list({
+        Type: 0,
+        LogLevel: 0,
+        Events: D.list({ Event: 0, LogLevel: 0 }),
+      }),
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5808,7 +6293,12 @@ export const updateMetricConfiguration: API.OperationMethod<
   UpdateMetricConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /metric-configuration", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /metric-configuration",
+    input: { SummaryMetric: { Status: 0 } },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -5842,6 +6332,7 @@ export const updateMulticastGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /multicast-groups/{Id}",
+    input: { Id: 0, Name: 0, Description: 0, LoRaWAN: i_LoRaWANMulticast },
     body: true,
   },
   errors: [
@@ -5876,6 +6367,17 @@ export const updateNetworkAnalyzerConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /network-analyzer-configurations/{ConfigurationName}",
+    input: {
+      ConfigurationName: 0,
+      TraceContent: i_TraceContent,
+      WirelessDevicesToAdd: 0,
+      WirelessDevicesToRemove: 0,
+      WirelessGatewaysToAdd: 0,
+      WirelessGatewaysToRemove: 0,
+      Description: 0,
+      MulticastGroupsToAdd: 0,
+      MulticastGroupsToRemove: 0,
+    },
     body: true,
   },
   errors: [
@@ -5908,7 +6410,11 @@ export const updatePartnerAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /partner-accounts/{PartnerAccountId}",
-    input: { PartnerType: D.m({ query: "partnerType" }) },
+    input: {
+      Sidewalk: { AppServerPrivateKey: 0 },
+      PartnerAccountId: 0,
+      PartnerType: D.m({ query: "partnerType" }),
+    },
     body: true,
   },
   errors: [
@@ -5944,7 +6450,11 @@ export const updatePosition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /positions/{ResourceIdentifier}",
-    input: { ResourceType: D.m({ query: "resourceType" }) },
+    input: {
+      ResourceIdentifier: 0,
+      ResourceType: D.m({ query: "resourceType" }),
+      Position: 0,
+    },
     body: true,
   },
   errors: [
@@ -5980,8 +6490,26 @@ export const updateResourceEventConfiguration: API.OperationMethod<
     service: svc,
     http: "PATCH /event-configurations/{Identifier}",
     input: {
+      Identifier: 0,
       IdentifierType: D.m({ query: "identifierType" }),
       PartnerType: D.m({ query: "partnerType" }),
+      DeviceRegistrationState: {
+        Sidewalk: i_SidewalkEventNotificationConfigurations,
+        WirelessDeviceIdEventTopic: 0,
+      },
+      Proximity: {
+        Sidewalk: i_SidewalkEventNotificationConfigurations,
+        WirelessDeviceIdEventTopic: 0,
+      },
+      Join: { LoRaWAN: { DevEuiEventTopic: 0 }, WirelessDeviceIdEventTopic: 0 },
+      ConnectionStatus: {
+        LoRaWAN: { GatewayEuiEventTopic: 0 },
+        WirelessGatewayIdEventTopic: 0,
+      },
+      MessageDeliveryStatus: {
+        Sidewalk: i_SidewalkEventNotificationConfigurations,
+        WirelessDeviceIdEventTopic: 0,
+      },
     },
     body: true,
   },
@@ -6020,8 +6548,9 @@ export const updateResourcePosition: API.OperationMethod<
     service: svc,
     http: "PATCH /resource-positions/{ResourceIdentifier}",
     input: {
+      ResourceIdentifier: 0,
       ResourceType: D.m({ query: "resourceType" }),
-      GeoJsonPayload: D.m({ payload: true, shape: D.stream }),
+      GeoJsonPayload: D.m({ payload: true, shape: D.blob }),
     },
   },
   errors: [
@@ -6055,6 +6584,24 @@ export const updateWirelessDevice: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /wireless-devices/{Id}",
+    input: {
+      Id: 0,
+      DestinationName: 0,
+      Name: 0,
+      Description: 0,
+      LoRaWAN: {
+        DeviceProfileId: 0,
+        ServiceProfileId: 0,
+        AbpV1_1: { FCntStart: 0 },
+        AbpV1_0_x: { FCntStart: 0 },
+        FPorts: {
+          Positioning: i_Positioning,
+          Applications: D.list(i_ApplicationConfig),
+        },
+      },
+      Positioning: 0,
+      Sidewalk: { Positioning: i_SidewalkPositioning },
+    },
     body: true,
   },
   errors: [
@@ -6089,6 +6636,7 @@ export const updateWirelessDeviceImportTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /wireless_device_import_task/{Id}",
+    input: { Id: 0, Sidewalk: { DeviceCreationFile: 0 } },
     body: true,
   },
   errors: [
@@ -6123,6 +6671,14 @@ export const updateWirelessGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /wireless-gateways/{Id}",
+    input: {
+      Id: 0,
+      Name: 0,
+      Description: 0,
+      JoinEuiFilters: 0,
+      NetIdFilters: 0,
+      MaxEirp: 0,
+    },
     body: true,
   },
   errors: [
@@ -6137,6 +6693,41 @@ export const updateWirelessGateway: API.OperationMethod<
   operationName: "UpdateWirelessGateway",
 })) as any;
 
+const i_ApplicationConfig: D.LazyStruct = () => ({
+  FPort: 0,
+  Type: 0,
+  DestinationName: 0,
+});
+const i_LoRaWANFuotaTask: D.LazyStruct = () => ({ RfRegion: 0 });
+const i_LoRaWANGatewayVersion: D.LazyStruct = () => ({
+  PackageVersion: 0,
+  Model: 0,
+  Station: 0,
+});
+const i_LoRaWANMulticast: D.LazyStruct = () => ({
+  RfRegion: 0,
+  DlClass: 0,
+  ParticipatingGateways: { GatewayList: 0, TransmissionInterval: 0 },
+  DefaultSessionParameters: { DlDr: 0, DlFreq: 0 },
+});
+const i_Positioning: D.LazyStruct = () => ({
+  ClockSync: 0,
+  Stream: 0,
+  Gnss: 0,
+});
+const i_SidewalkEventNotificationConfigurations: D.LazyStruct = () => ({
+  AmazonIdEventTopic: 0,
+});
+const i_SidewalkPositioning: D.LazyStruct = () => ({ DestinationName: 0 });
+const i_SidewalkResourceTypeEventConfiguration: D.LazyStruct = () => ({
+  WirelessDeviceEventTopic: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_TraceContent: D.LazyStruct = () => ({
+  WirelessDeviceFrameInfo: 0,
+  LogLevel: 0,
+  MulticastFrameInfo: 0,
+});
 const o_SidewalkAccountInfoWithFingerprint: D.LazyStruct = () => ({
   Fingerprint: D.secret,
 });

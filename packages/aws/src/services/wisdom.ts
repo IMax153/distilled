@@ -900,7 +900,14 @@ export const createAssistant: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      name: 0,
+      type: 0,
+      description: 0,
+      tags: 0,
+      serverSideEncryptionConfiguration: i_ServerSideEncryptionConfiguration,
+    },
     body: true,
   },
   errors: [
@@ -935,7 +942,13 @@ export const createAssistantAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/associations",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      assistantId: 0,
+      associationType: 0,
+      association: { knowledgeBaseId: 0 },
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -970,7 +983,16 @@ export const createContent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/contents",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      knowledgeBaseId: 0,
+      name: 0,
+      title: 0,
+      overrideLinkOutUri: 0,
+      metadata: 0,
+      uploadId: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { content: o_ContentData },
     body: true,
   },
@@ -1021,7 +1043,18 @@ export const createKnowledgeBase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      name: 0,
+      knowledgeBaseType: 0,
+      sourceConfiguration: {
+        appIntegrations: { appIntegrationArn: 0, objectFields: 0 },
+      },
+      renderingConfiguration: { templateUri: 0 },
+      serverSideEncryptionConfiguration: i_ServerSideEncryptionConfiguration,
+      description: 0,
+      tags: 0,
+    },
     output: { knowledgeBase: o_KnowledgeBaseData },
     body: true,
   },
@@ -1055,7 +1088,20 @@ export const createQuickResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/quickResponses",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      knowledgeBaseId: 0,
+      name: 0,
+      content: i_QuickResponseDataProvider,
+      contentType: 0,
+      groupingConfiguration: i_GroupingConfiguration,
+      description: 0,
+      shortcutKey: 0,
+      isActive: 0,
+      channels: 0,
+      language: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { quickResponse: o_QuickResponseData },
     body: true,
   },
@@ -1090,7 +1136,13 @@ export const createSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/sessions",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      clientToken: D.m({ idempotency: true }),
+      assistantId: 0,
+      name: 0,
+      description: 0,
+      tags: 0,
+    },
     body: true,
   },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
@@ -1113,7 +1165,11 @@ export const deleteAssistant: API.OperationMethod<
   DeleteAssistantError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /assistants/{assistantId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /assistants/{assistantId}",
+    input: { assistantId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -1141,6 +1197,7 @@ export const deleteAssistantAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /assistants/{assistantId}/associations/{assistantAssociationId}",
+    input: { assistantAssociationId: 0, assistantId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1169,6 +1226,7 @@ export const deleteContent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /knowledgeBases/{knowledgeBaseId}/contents/{contentId}",
+    input: { knowledgeBaseId: 0, contentId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1198,6 +1256,7 @@ export const deleteImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /knowledgeBases/{knowledgeBaseId}/importJobs/{importJobId}",
+    input: { knowledgeBaseId: 0, importJobId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1235,6 +1294,7 @@ export const deleteKnowledgeBase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /knowledgeBases/{knowledgeBaseId}",
+    input: { knowledgeBaseId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1264,6 +1324,7 @@ export const deleteQuickResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /knowledgeBases/{knowledgeBaseId}/quickResponses/{quickResponseId}",
+    input: { knowledgeBaseId: 0, quickResponseId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1289,7 +1350,11 @@ export const getAssistant: API.OperationMethod<
   GetAssistantError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /assistants/{assistantId}" },
+  descriptor: {
+    service: svc,
+    http: "GET /assistants/{assistantId}",
+    input: { assistantId: 0 },
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -1317,6 +1382,7 @@ export const getAssistantAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /assistants/{assistantId}/associations/{assistantAssociationId}",
+    input: { assistantAssociationId: 0, assistantId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1345,6 +1411,7 @@ export const getContent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /knowledgeBases/{knowledgeBaseId}/contents/{contentId}",
+    input: { contentId: 0, knowledgeBaseId: 0 },
     output: { content: o_ContentData },
   },
   errors: [
@@ -1374,6 +1441,7 @@ export const getContentSummary: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /knowledgeBases/{knowledgeBaseId}/contents/{contentId}/summary",
+    input: { contentId: 0, knowledgeBaseId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1402,6 +1470,7 @@ export const getImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /knowledgeBases/{knowledgeBaseId}/importJobs/{importJobId}",
+    input: { importJobId: 0, knowledgeBaseId: 0 },
     output: { importJob: o_ImportJobData },
   },
   errors: [
@@ -1431,6 +1500,7 @@ export const getKnowledgeBase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /knowledgeBases/{knowledgeBaseId}",
+    input: { knowledgeBaseId: 0 },
     output: { knowledgeBase: o_KnowledgeBaseData },
   },
   errors: [
@@ -1460,6 +1530,7 @@ export const getQuickResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /knowledgeBases/{knowledgeBaseId}/quickResponses/{quickResponseId}",
+    input: { quickResponseId: 0, knowledgeBaseId: 0 },
     output: { quickResponse: o_QuickResponseData },
   },
   errors: [
@@ -1493,6 +1564,8 @@ export const getRecommendations: API.OperationMethod<
     service: svc,
     http: "GET /assistants/{assistantId}/sessions/{sessionId}/recommendations",
     input: {
+      assistantId: 0,
+      sessionId: 0,
       maxResults: D.m({ query: "maxResults" }),
       waitTimeSeconds: D.m({ query: "waitTimeSeconds" }),
     },
@@ -1528,6 +1601,7 @@ export const getSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /assistants/{assistantId}/sessions/{sessionId}",
+    input: { assistantId: 0, sessionId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1560,6 +1634,7 @@ export const listAssistantAssociations: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      assistantId: 0,
     },
   },
   errors: [
@@ -1633,6 +1708,7 @@ export const listContents: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      knowledgeBaseId: 0,
     },
   },
   errors: [
@@ -1671,6 +1747,7 @@ export const listImportJobs: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      knowledgeBaseId: 0,
     },
     output: {
       importJobSummaries: D.list({ createdTime: D.ts, lastModifiedTime: D.ts }),
@@ -1743,6 +1820,7 @@ export const listQuickResponses: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      knowledgeBaseId: 0,
     },
     output: {
       quickResponseSummaries: D.list({
@@ -1778,7 +1856,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1804,6 +1886,7 @@ export const notifyRecommendationsReceived: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/sessions/{sessionId}/recommendations/notify",
+    input: { assistantId: 0, sessionId: 0, recommendationIds: 0 },
     body: true,
   },
   errors: [
@@ -1836,6 +1919,7 @@ export const queryAssistant: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assistants/{assistantId}/query",
+    input: { assistantId: 0, queryText: 0, nextToken: 0, maxResults: 0 },
     output: { results: D.list({ document: o_Document }) },
     body: true,
   },
@@ -1873,6 +1957,7 @@ export const removeKnowledgeBaseTemplateUri: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /knowledgeBases/{knowledgeBaseId}/templateUri",
+    input: { knowledgeBaseId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1906,6 +1991,8 @@ export const searchContent: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      knowledgeBaseId: 0,
+      searchExpression: i_SearchExpression,
     },
     body: true,
   },
@@ -1945,8 +2032,26 @@ export const searchQuickResponses: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/search/quickResponses",
     input: {
+      knowledgeBaseId: 0,
+      searchExpression: {
+        queries: D.list({
+          name: 0,
+          values: 0,
+          operator: 0,
+          allowFuzziness: 0,
+          priority: 0,
+        }),
+        filters: D.list({
+          name: 0,
+          values: 0,
+          operator: 0,
+          includeNoExistence: 0,
+        }),
+        orderOnField: { name: 0, order: 0 },
+      },
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      attributes: 0,
     },
     output: {
       results: D.list({
@@ -1997,6 +2102,8 @@ export const searchSessions: API.PaginatedOperationMethod<
     input: {
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      assistantId: 0,
+      searchExpression: i_SearchExpression,
     },
     body: true,
   },
@@ -2036,6 +2143,7 @@ export const startContentUpload: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/upload",
+    input: { knowledgeBaseId: 0, contentType: 0, presignedUrlTimeToLive: 0 },
     output: { url: D.secret, urlExpiry: D.ts },
     body: true,
   },
@@ -2071,7 +2179,17 @@ export const startImportJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/importJobs",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      knowledgeBaseId: 0,
+      importJobType: 0,
+      uploadId: 0,
+      clientToken: D.m({ idempotency: true }),
+      metadata: 0,
+      externalSourceConfiguration: {
+        source: 0,
+        configuration: { connectConfiguration: { instanceId: 0 } },
+      },
+    },
     output: { importJob: o_ImportJobData },
     body: true,
   },
@@ -2100,7 +2218,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [ResourceNotFoundException, TooManyTagsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2120,7 +2243,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [ResourceNotFoundException],
   protocol: AwsProtocol,
@@ -2146,6 +2269,16 @@ export const updateContent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/contents/{contentId}",
+    input: {
+      knowledgeBaseId: 0,
+      contentId: 0,
+      revisionId: 0,
+      title: 0,
+      overrideLinkOutUri: 0,
+      removeOverrideLinkOutUri: 0,
+      metadata: 0,
+      uploadId: 0,
+    },
     output: { content: o_ContentData },
     body: true,
   },
@@ -2181,6 +2314,7 @@ export const updateKnowledgeBaseTemplateUri: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/templateUri",
+    input: { knowledgeBaseId: 0, templateUri: 0 },
     output: { knowledgeBase: o_KnowledgeBaseData },
     body: true,
   },
@@ -2213,6 +2347,22 @@ export const updateQuickResponse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /knowledgeBases/{knowledgeBaseId}/quickResponses/{quickResponseId}",
+    input: {
+      knowledgeBaseId: 0,
+      quickResponseId: 0,
+      name: 0,
+      content: i_QuickResponseDataProvider,
+      contentType: 0,
+      groupingConfiguration: i_GroupingConfiguration,
+      removeGroupingConfiguration: 0,
+      description: 0,
+      removeDescription: 0,
+      shortcutKey: 0,
+      removeShortcutKey: 0,
+      isActive: 0,
+      channels: 0,
+      language: 0,
+    },
     output: { quickResponse: o_QuickResponseData },
     body: true,
   },
@@ -2228,6 +2378,17 @@ export const updateQuickResponse: API.OperationMethod<
   operationName: "UpdateQuickResponse",
 })) as any;
 
+const i_GroupingConfiguration: D.LazyStruct = () => ({
+  criteria: 0,
+  values: 0,
+});
+const i_QuickResponseDataProvider: D.LazyStruct = () => ({ content: 0 });
+const i_SearchExpression: D.LazyStruct = () => ({
+  filters: D.list({ field: 0, operator: 0, value: 0 }),
+});
+const i_ServerSideEncryptionConfiguration: D.LazyStruct = () => ({
+  kmsKeyId: 0,
+});
 const o_ContentData: D.LazyStruct = () => ({ url: D.secret, urlExpiry: D.ts });
 const o_Document: D.LazyStruct = () => ({
   title: o_DocumentText,

@@ -1149,7 +1149,13 @@ export const cancelHarvestJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /channelGroup/{ChannelGroupName}/channel/{ChannelName}/originEndpoint/{OriginEndpointName}/harvestJob/{HarvestJobName}",
-    input: { ETag: D.m({ header: "x-amzn-update-if-match" }) },
+    input: {
+      ChannelGroupName: 0,
+      ChannelName: 0,
+      OriginEndpointName: 0,
+      HarvestJobName: 0,
+      ETag: D.m({ header: "x-amzn-update-if-match" }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1186,7 +1192,14 @@ export const createChannel: API.OperationMethod<
     service: svc,
     http: "POST /channelGroup/{ChannelGroupName}/channel",
     input: {
+      ChannelGroupName: 0,
+      ChannelName: 0,
       ClientToken: D.m({ header: "x-amzn-client-token", idempotency: true }),
+      InputType: 0,
+      Description: 0,
+      InputSwitchConfiguration: i_InputSwitchConfiguration,
+      OutputHeaderConfiguration: i_OutputHeaderConfiguration,
+      OutputLockingMode: 0,
       Tags: D.m({ wire: "tags" }),
     },
     output: { CreatedAt: D.ts, ModifiedAt: D.ts },
@@ -1228,7 +1241,9 @@ export const createChannelGroup: API.OperationMethod<
     service: svc,
     http: "POST /channelGroup",
     input: {
+      ChannelGroupName: 0,
       ClientToken: D.m({ header: "x-amzn-client-token", idempotency: true }),
+      Description: 0,
       Tags: D.m({ wire: "tags" }),
     },
     output: { CreatedAt: D.ts, ModifiedAt: D.ts },
@@ -1270,7 +1285,20 @@ export const createHarvestJob: API.OperationMethod<
     service: svc,
     http: "POST /channelGroup/{ChannelGroupName}/channel/{ChannelName}/originEndpoint/{OriginEndpointName}/harvestJob",
     input: {
+      ChannelGroupName: 0,
+      ChannelName: 0,
+      OriginEndpointName: 0,
+      Description: 0,
+      HarvestedManifests: {
+        HlsManifests: D.list({ ManifestName: 0 }),
+        DashManifests: D.list({ ManifestName: 0 }),
+        LowLatencyHlsManifests: D.list({ ManifestName: 0 }),
+      },
+      ScheduleConfiguration: { StartTime: 0, EndTime: 0 },
+      Destination: { S3Destination: { BucketName: 0, DestinationPath: 0 } },
       ClientToken: D.m({ header: "x-amzn-client-token", idempotency: true }),
+      HarvestJobName: 0,
+      Tags: 0,
     },
     output: {
       ScheduleConfiguration: o_HarvesterScheduleConfiguration,
@@ -1315,8 +1343,24 @@ export const createOriginEndpoint: API.OperationMethod<
     service: svc,
     http: "POST /channelGroup/{ChannelGroupName}/channel/{ChannelName}/originEndpoint",
     input: {
+      ChannelGroupName: 0,
+      ChannelName: 0,
+      OriginEndpointName: 0,
+      ContainerType: 0,
+      Segment: i_Segment,
       ClientToken: D.m({ header: "x-amzn-client-token", idempotency: true }),
+      Description: 0,
+      StartoverWindowSeconds: 0,
+      HlsManifests: D.list(i_CreateHlsManifestConfiguration),
+      LowLatencyHlsManifests: D.list(
+        i_CreateLowLatencyHlsManifestConfiguration,
+      ),
       DashManifests: D.list(i_CreateDashManifestConfiguration),
+      MssManifests: D.list(i_CreateMssManifestConfiguration),
+      ForceEndpointErrorConfiguration: i_ForceEndpointErrorConfiguration,
+      UriSeparator: 0,
+      StreamNameOutputMode: 0,
+      Tags: 0,
     },
     output: {
       CreatedAt: D.ts,
@@ -1361,6 +1405,7 @@ export const deleteChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /channelGroup/{ChannelGroupName}/channel/{ChannelName}/",
+    input: { ChannelGroupName: 0, ChannelName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1390,7 +1435,11 @@ export const deleteChannelGroup: API.OperationMethod<
   DeleteChannelGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /channelGroup/{ChannelGroupName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /channelGroup/{ChannelGroupName}",
+    input: { ChannelGroupName: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1422,6 +1471,7 @@ export const deleteChannelPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /channelGroup/{ChannelGroupName}/channel/{ChannelName}/policy",
+    input: { ChannelGroupName: 0, ChannelName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1453,6 +1503,7 @@ export const deleteOriginEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /channelGroup/{ChannelGroupName}/channel/{ChannelName}/originEndpoint/{OriginEndpointName}",
+    input: { ChannelGroupName: 0, ChannelName: 0, OriginEndpointName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1484,6 +1535,7 @@ export const deleteOriginEndpointPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /channelGroup/{ChannelGroupName}/channel/{ChannelName}/originEndpoint/{OriginEndpointName}/policy",
+    input: { ChannelGroupName: 0, ChannelName: 0, OriginEndpointName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1516,6 +1568,7 @@ export const getChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /channelGroup/{ChannelGroupName}/channel/{ChannelName}/",
+    input: { ChannelGroupName: 0, ChannelName: 0 },
     output: { CreatedAt: D.ts, ModifiedAt: D.ts, ResetAt: D.ts },
   },
   errors: [
@@ -1549,6 +1602,7 @@ export const getChannelGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /channelGroup/{ChannelGroupName}",
+    input: { ChannelGroupName: 0 },
     output: { CreatedAt: D.ts, ModifiedAt: D.ts, Tags: D.m({ wire: "tags" }) },
   },
   errors: [
@@ -1582,6 +1636,7 @@ export const getChannelPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /channelGroup/{ChannelGroupName}/channel/{ChannelName}/policy",
+    input: { ChannelGroupName: 0, ChannelName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1614,6 +1669,12 @@ export const getHarvestJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /channelGroup/{ChannelGroupName}/channel/{ChannelName}/originEndpoint/{OriginEndpointName}/harvestJob/{HarvestJobName}",
+    input: {
+      ChannelGroupName: 0,
+      ChannelName: 0,
+      OriginEndpointName: 0,
+      HarvestJobName: 0,
+    },
     output: {
       ScheduleConfiguration: o_HarvesterScheduleConfiguration,
       CreatedAt: D.ts,
@@ -1651,6 +1712,7 @@ export const getOriginEndpoint: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /channelGroup/{ChannelGroupName}/channel/{ChannelName}/originEndpoint/{OriginEndpointName}",
+    input: { ChannelGroupName: 0, ChannelName: 0, OriginEndpointName: 0 },
     output: {
       CreatedAt: D.ts,
       ModifiedAt: D.ts,
@@ -1692,6 +1754,7 @@ export const getOriginEndpointPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /channelGroup/{ChannelGroupName}/channel/{ChannelName}/originEndpoint/{OriginEndpointName}/policy",
+    input: { ChannelGroupName: 0, ChannelName: 0, OriginEndpointName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1768,6 +1831,7 @@ export const listChannels: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /channelGroup/{ChannelGroupName}/channel",
     input: {
+      ChannelGroupName: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -1812,6 +1876,7 @@ export const listHarvestJobs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /channelGroup/{ChannelGroupName}/harvestJob",
     input: {
+      ChannelGroupName: 0,
       ChannelName: D.m({ query: "channelName" }),
       OriginEndpointName: D.m({ query: "originEndpointName" }),
       Status: D.m({ query: "includeStatus" }),
@@ -1865,6 +1930,8 @@ export const listOriginEndpoints: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /channelGroup/{ChannelGroupName}/channel/{ChannelName}/originEndpoint",
     input: {
+      ChannelGroupName: 0,
+      ChannelName: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -1901,6 +1968,7 @@ export const listTagsForResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
   },
   errors: [ValidationException],
@@ -1929,6 +1997,7 @@ export const putChannelPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /channelGroup/{ChannelGroupName}/channel/{ChannelName}/policy",
+    input: { ChannelGroupName: 0, ChannelName: 0, Policy: 0 },
     body: true,
   },
   errors: [
@@ -1964,6 +2033,13 @@ export const putOriginEndpointPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /channelGroup/{ChannelGroupName}/channel/{ChannelName}/originEndpoint/{OriginEndpointName}/policy",
+    input: {
+      ChannelGroupName: 0,
+      ChannelName: 0,
+      OriginEndpointName: 0,
+      Policy: 0,
+      CdnAuthConfiguration: { CdnIdentifierSecretArns: 0, SecretsRoleArn: 0 },
+    },
     body: true,
   },
   errors: [
@@ -2001,6 +2077,7 @@ export const resetChannelState: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /channelGroup/{ChannelGroupName}/channel/{ChannelName}/reset",
+    input: { ChannelGroupName: 0, ChannelName: 0 },
     output: { ResetAt: D.ts },
   },
   errors: [
@@ -2038,6 +2115,7 @@ export const resetOriginEndpointState: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /channelGroup/{ChannelGroupName}/channel/{ChannelName}/originEndpoint/{OriginEndpointName}/reset",
+    input: { ChannelGroupName: 0, ChannelName: 0, OriginEndpointName: 0 },
     output: { ResetAt: D.ts },
   },
   errors: [
@@ -2068,7 +2146,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags/{ResourceArn}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: { ResourceArn: 0, Tags: D.m({ wire: "tags" }) },
     body: true,
   },
   errors: [ValidationException],
@@ -2090,7 +2168,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [ValidationException],
   protocol: AwsProtocol,
@@ -2120,7 +2198,14 @@ export const updateChannel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /channelGroup/{ChannelGroupName}/channel/{ChannelName}/",
-    input: { ETag: D.m({ header: "x-amzn-update-if-match" }) },
+    input: {
+      ChannelGroupName: 0,
+      ChannelName: 0,
+      ETag: D.m({ header: "x-amzn-update-if-match" }),
+      Description: 0,
+      InputSwitchConfiguration: i_InputSwitchConfiguration,
+      OutputHeaderConfiguration: i_OutputHeaderConfiguration,
+    },
     output: { CreatedAt: D.ts, ModifiedAt: D.ts, Tags: D.m({ wire: "tags" }) },
     body: true,
   },
@@ -2159,7 +2244,11 @@ export const updateChannelGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /channelGroup/{ChannelGroupName}",
-    input: { ETag: D.m({ header: "x-amzn-update-if-match" }) },
+    input: {
+      ChannelGroupName: 0,
+      ETag: D.m({ header: "x-amzn-update-if-match" }),
+      Description: 0,
+    },
     output: { CreatedAt: D.ts, ModifiedAt: D.ts, Tags: D.m({ wire: "tags" }) },
     body: true,
   },
@@ -2200,7 +2289,22 @@ export const updateOriginEndpoint: API.OperationMethod<
     service: svc,
     http: "PUT /channelGroup/{ChannelGroupName}/channel/{ChannelName}/originEndpoint/{OriginEndpointName}",
     input: {
+      ChannelGroupName: 0,
+      ChannelName: 0,
+      OriginEndpointName: 0,
+      ContainerType: 0,
+      Segment: i_Segment,
+      Description: 0,
+      StartoverWindowSeconds: 0,
+      HlsManifests: D.list(i_CreateHlsManifestConfiguration),
+      LowLatencyHlsManifests: D.list(
+        i_CreateLowLatencyHlsManifestConfiguration,
+      ),
       DashManifests: D.list(i_CreateDashManifestConfiguration),
+      MssManifests: D.list(i_CreateMssManifestConfiguration),
+      ForceEndpointErrorConfiguration: i_ForceEndpointErrorConfiguration,
+      UriSeparator: 0,
+      StreamNameOutputMode: 0,
       ETag: D.m({ header: "x-amzn-update-if-match" }),
     },
     output: {
@@ -2229,9 +2333,108 @@ export const updateOriginEndpoint: API.OperationMethod<
 })) as any;
 
 const i_CreateDashManifestConfiguration: D.LazyStruct = () => ({
+  ManifestName: 0,
+  ManifestWindowSeconds: 0,
+  FilterConfiguration: i_FilterConfiguration,
+  MinUpdatePeriodSeconds: 0,
+  MinBufferTimeSeconds: 0,
+  SuggestedPresentationDelaySeconds: 0,
+  SegmentTemplateFormat: 0,
+  PeriodTriggers: 0,
+  ScteDash: { AdMarkerDash: 0, ScteInManifests: 0 },
+  DrmSignaling: 0,
+  UtcTiming: { TimingMode: 0, TimingSource: 0 },
+  Profiles: 0,
+  BaseUrls: D.list({
+    Url: 0,
+    ServiceLocation: 0,
+    DvbPriority: 0,
+    DvbWeight: 0,
+  }),
+  ProgramInformation: {
+    Title: 0,
+    Source: 0,
+    Copyright: 0,
+    LanguageCode: 0,
+    MoreInformationUrl: 0,
+  },
+  DvbSettings: {
+    FontDownload: { Url: 0, MimeType: 0, FontFamily: 0 },
+    ErrorMetrics: D.list({ ReportingUrl: 0, Probability: 0 }),
+  },
+  Compactness: 0,
+  AudioTimelinePattern: 0,
+  SubtitleConfiguration: { TtmlConfiguration: { TtmlProfile: 0 } },
+  UriPathType: 0,
   AvailabilityStartTimeConfiguration: {
     FixedAvailabilityStartTime: D.tsAs("date-time"),
   },
+});
+const i_CreateHlsManifestConfiguration: D.LazyStruct = () => ({
+  ManifestName: 0,
+  ChildManifestName: 0,
+  ScteHls: i_ScteHls,
+  StartTag: i_StartTag,
+  ManifestWindowSeconds: 0,
+  ProgramDateTimeIntervalSeconds: 0,
+  FilterConfiguration: i_FilterConfiguration,
+  UrlEncodeChildManifest: 0,
+  UriPathType: 0,
+});
+const i_CreateLowLatencyHlsManifestConfiguration: D.LazyStruct = () => ({
+  ManifestName: 0,
+  ChildManifestName: 0,
+  ScteHls: i_ScteHls,
+  StartTag: i_StartTag,
+  ManifestWindowSeconds: 0,
+  ProgramDateTimeIntervalSeconds: 0,
+  FilterConfiguration: i_FilterConfiguration,
+  UrlEncodeChildManifest: 0,
+  UriPathType: 0,
+});
+const i_CreateMssManifestConfiguration: D.LazyStruct = () => ({
+  ManifestName: 0,
+  ManifestWindowSeconds: 0,
+  FilterConfiguration: i_FilterConfiguration,
+  ManifestLayout: 0,
+});
+const i_ForceEndpointErrorConfiguration: D.LazyStruct = () => ({
+  EndpointErrorConditions: 0,
+});
+const i_InputSwitchConfiguration: D.LazyStruct = () => ({
+  MQCSInputSwitching: 0,
+  PreferredInput: 0,
+});
+const i_OutputHeaderConfiguration: D.LazyStruct = () => ({ PublishMQCS: 0 });
+const i_Segment: D.LazyStruct = () => ({
+  SegmentDurationSeconds: 0,
+  SegmentName: 0,
+  TsUseAudioRenditionGroup: 0,
+  IncludeIframeOnlyStreams: 0,
+  TsIncludeDvbSubtitles: 0,
+  Scte: { ScteFilter: 0, ScteInSegments: 0, CustomAdTypes: 0 },
+  Encryption: {
+    ConstantInitializationVector: 0,
+    EncryptionMethod: {
+      TsEncryptionMethod: 0,
+      CmafEncryptionMethod: 0,
+      IsmEncryptionMethod: 0,
+    },
+    KeyRotationIntervalSeconds: 0,
+    CmafExcludeSegmentDrmMetadata: 0,
+    SpekeKeyProvider: {
+      EncryptionContractConfiguration: {
+        PresetSpeke20Audio: 0,
+        PresetSpeke20Video: 0,
+      },
+      ResourceId: 0,
+      DrmSystems: 0,
+      RoleArn: 0,
+      Url: 0,
+      CertificateArn: 0,
+    },
+  },
+  OutputTimestampMode: 0,
 });
 const o_GetDashManifestConfiguration: D.LazyStruct = () => ({
   FilterConfiguration: o_FilterConfiguration,
@@ -2250,6 +2453,16 @@ const o_HarvesterScheduleConfiguration: D.LazyStruct = () => ({
   StartTime: D.ts,
   EndTime: D.ts,
 });
+const i_FilterConfiguration: D.LazyStruct = () => ({
+  ManifestFilter: 0,
+  DrmSettings: 0,
+  Start: 0,
+  End: 0,
+  TimeDelaySeconds: 0,
+  ClipStartTime: 0,
+});
+const i_ScteHls: D.LazyStruct = () => ({ AdMarkerHls: 0, ScteInManifests: 0 });
+const i_StartTag: D.LazyStruct = () => ({ TimeOffset: 0, Precise: 0 });
 const o_FilterConfiguration: D.LazyStruct = () => ({
   Start: D.ts,
   End: D.ts,

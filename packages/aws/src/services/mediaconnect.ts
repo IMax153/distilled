@@ -3202,6 +3202,7 @@ export const addBridgeOutputs: API.OperationMethod<
     service: svc,
     http: "POST /v1/bridges/{BridgeArn}/outputs",
     input: {
+      BridgeArn: 0,
       Outputs: D.m({
         wire: "outputs",
         shape: D.list(i_AddBridgeOutputRequest),
@@ -3249,6 +3250,7 @@ export const addBridgeSources: API.OperationMethod<
     service: svc,
     http: "POST /v1/bridges/{BridgeArn}/sources",
     input: {
+      BridgeArn: 0,
       Sources: D.m({
         wire: "sources",
         shape: D.list(i_AddBridgeSourceRequest),
@@ -3295,6 +3297,7 @@ export const addFlowMediaStreams: API.OperationMethod<
     service: svc,
     http: "POST /v1/flows/{FlowArn}/mediaStreams",
     input: {
+      FlowArn: 0,
       MediaStreams: D.m({
         wire: "mediaStreams",
         shape: D.list(i_AddMediaStreamRequest),
@@ -3341,6 +3344,7 @@ export const addFlowOutputs: API.OperationMethod<
     service: svc,
     http: "POST /v1/flows/{FlowArn}/outputs",
     input: {
+      FlowArn: 0,
       Outputs: D.m({ wire: "outputs", shape: D.list(i_AddOutputRequest) }),
     },
     output: {
@@ -3384,6 +3388,7 @@ export const addFlowSources: API.OperationMethod<
     service: svc,
     http: "POST /v1/flows/{FlowArn}/source",
     input: {
+      FlowArn: 0,
       Sources: D.m({ wire: "sources", shape: D.list(i_SetSourceRequest) }),
     },
     output: {
@@ -3426,6 +3431,7 @@ export const addFlowVpcInterfaces: API.OperationMethod<
     service: svc,
     http: "POST /v1/flows/{FlowArn}/vpcInterfaces",
     input: {
+      FlowArn: 0,
       VpcInterfaces: D.m({
         wire: "vpcInterfaces",
         shape: D.list(i_VpcInterfaceRequest),
@@ -3979,6 +3985,7 @@ export const deleteBridge: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/bridges/{BridgeArn}",
+    input: { BridgeArn: 0 },
     output: { BridgeArn: D.m({ wire: "bridgeArn" }) },
   },
   errors: [
@@ -4015,6 +4022,7 @@ export const deleteFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/flows/{FlowArn}",
+    input: { FlowArn: 0 },
     output: {
       FlowArn: D.m({ wire: "flowArn" }),
       Status: D.m({ wire: "status" }),
@@ -4054,6 +4062,7 @@ export const deleteGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/gateways/{GatewayArn}",
+    input: { GatewayArn: 0 },
     output: { GatewayArn: D.m({ wire: "gatewayArn" }) },
   },
   errors: [
@@ -4091,6 +4100,7 @@ export const deleteRouterInput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/routerInput/{Arn}",
+    input: { Arn: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       Name: D.m({ wire: "name" }),
@@ -4132,6 +4142,7 @@ export const deleteRouterNetworkInterface: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/routerNetworkInterface/{Arn}",
+    input: { Arn: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       Name: D.m({ wire: "name" }),
@@ -4173,6 +4184,7 @@ export const deleteRouterOutput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/routerOutput/{Arn}",
+    input: { Arn: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       Name: D.m({ wire: "name" }),
@@ -4214,7 +4226,7 @@ export const deregisterGatewayInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/gateway-instances/{GatewayInstanceArn}",
-    input: { Force: D.m({ query: "force" }) },
+    input: { Force: D.m({ query: "force" }), GatewayInstanceArn: 0 },
     output: {
       GatewayInstanceArn: D.m({ wire: "gatewayInstanceArn" }),
       InstanceState: D.m({ wire: "instanceState" }),
@@ -4255,6 +4267,7 @@ export const describeBridge: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/bridges/{BridgeArn}",
+    input: { BridgeArn: 0 },
     output: { Bridge: D.m({ wire: "bridge", shape: o_Bridge }) },
   },
   errors: [
@@ -4291,6 +4304,7 @@ export const describeFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/flows/{FlowArn}",
+    input: { FlowArn: 0 },
     output: {
       Flow: D.m({ wire: "flow", shape: o_Flow }),
       Messages: D.m({
@@ -4332,6 +4346,7 @@ export const describeFlowSourceMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/flows/{FlowArn}/source-metadata",
+    input: { FlowArn: 0 },
     output: {
       FlowArn: D.m({ wire: "flowArn" }),
       Messages: D.m({ wire: "messages", shape: D.list(o_MessageDetail) }),
@@ -4407,6 +4422,7 @@ export const describeFlowSourceThumbnail: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/flows/{FlowArn}/source-thumbnail",
+    input: { FlowArn: 0 },
     output: {
       ThumbnailDetails: D.m({
         wire: "thumbnailDetails",
@@ -4457,6 +4473,7 @@ export const describeGateway: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/gateways/{GatewayArn}",
+    input: { GatewayArn: 0 },
     output: { Gateway: D.m({ wire: "gateway", shape: o_Gateway }) },
   },
   errors: [
@@ -4494,6 +4511,7 @@ export const describeGatewayInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/gateway-instances/{GatewayInstanceArn}",
+    input: { GatewayInstanceArn: 0 },
     output: {
       GatewayInstance: D.m({
         wire: "gatewayInstance",
@@ -4546,6 +4564,7 @@ export const describeOffering: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/offerings/{OfferingArn}",
+    input: { OfferingArn: 0 },
     output: { Offering: D.m({ wire: "offering", shape: o_Offering }) },
   },
   errors: [
@@ -4579,6 +4598,7 @@ export const describeReservation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/reservations/{ReservationArn}",
+    input: { ReservationArn: 0 },
     output: { Reservation: D.m({ wire: "reservation", shape: o_Reservation }) },
   },
   errors: [
@@ -4614,6 +4634,7 @@ export const getRouterInput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/routerInput/{Arn}",
+    input: { Arn: 0 },
     output: { RouterInput: D.m({ wire: "routerInput", shape: o_RouterInput }) },
   },
   errors: [
@@ -4650,6 +4671,7 @@ export const getRouterInputSourceMetadata: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/routerInput/{Arn}/source-metadata",
+    input: { Arn: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       Name: D.m({ wire: "name" }),
@@ -4707,6 +4729,7 @@ export const getRouterInputThumbnail: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/routerInput/{Arn}/thumbnail",
+    input: { Arn: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       Name: D.m({ wire: "name" }),
@@ -4758,6 +4781,7 @@ export const getRouterNetworkInterface: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/routerNetworkInterface/{Arn}",
+    input: { Arn: 0 },
     output: {
       RouterNetworkInterface: D.m({
         wire: "routerNetworkInterface",
@@ -4800,6 +4824,7 @@ export const getRouterOutput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/routerOutput/{Arn}",
+    input: { Arn: 0 },
     output: {
       RouterOutput: D.m({ wire: "routerOutput", shape: o_RouterOutput }),
     },
@@ -4844,6 +4869,7 @@ export const grantFlowEntitlements: API.OperationMethod<
         wire: "entitlements",
         shape: D.list(i_GrantEntitlementRequest),
       }),
+      FlowArn: 0,
     },
     output: {
       Entitlements: D.m({ wire: "entitlements", shape: D.list(o_Entitlement) }),
@@ -5483,6 +5509,7 @@ export const listTagsForGlobalResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tags/global/{ResourceArn}",
+    input: { ResourceArn: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
   },
   errors: [
@@ -5512,6 +5539,7 @@ export const listTagsForResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
   },
   errors: [
@@ -5545,6 +5573,7 @@ export const purchaseOffering: API.OperationMethod<
     service: svc,
     http: "POST /v1/offerings/{OfferingArn}",
     input: {
+      OfferingArn: 0,
       ReservationName: D.m({ wire: "reservationName" }),
       Start: D.m({ wire: "start" }),
     },
@@ -5585,6 +5614,7 @@ export const removeBridgeOutput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/bridges/{BridgeArn}/outputs/{OutputName}",
+    input: { BridgeArn: 0, OutputName: 0 },
     output: {
       BridgeArn: D.m({ wire: "bridgeArn" }),
       OutputName: D.m({ wire: "outputName" }),
@@ -5625,6 +5655,7 @@ export const removeBridgeSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/bridges/{BridgeArn}/sources/{SourceName}",
+    input: { BridgeArn: 0, SourceName: 0 },
     output: {
       BridgeArn: D.m({ wire: "bridgeArn" }),
       SourceName: D.m({ wire: "sourceName" }),
@@ -5664,6 +5695,7 @@ export const removeFlowMediaStream: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/flows/{FlowArn}/mediaStreams/{MediaStreamName}",
+    input: { FlowArn: 0, MediaStreamName: 0 },
     output: {
       FlowArn: D.m({ wire: "flowArn" }),
       MediaStreamName: D.m({ wire: "mediaStreamName" }),
@@ -5702,6 +5734,7 @@ export const removeFlowOutput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/flows/{FlowArn}/outputs/{OutputArn}",
+    input: { FlowArn: 0, OutputArn: 0 },
     output: {
       FlowArn: D.m({ wire: "flowArn" }),
       OutputArn: D.m({ wire: "outputArn" }),
@@ -5740,6 +5773,7 @@ export const removeFlowSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/flows/{FlowArn}/source/{SourceArn}",
+    input: { FlowArn: 0, SourceArn: 0 },
     output: {
       FlowArn: D.m({ wire: "flowArn" }),
       SourceArn: D.m({ wire: "sourceArn" }),
@@ -5778,6 +5812,7 @@ export const removeFlowVpcInterface: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/flows/{FlowArn}/vpcInterfaces/{VpcInterfaceName}",
+    input: { FlowArn: 0, VpcInterfaceName: 0 },
     output: {
       FlowArn: D.m({ wire: "flowArn" }),
       NonDeletedNetworkInterfaceIds: D.m({
@@ -5820,6 +5855,7 @@ export const restartRouterInput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/routerInput/restart/{Arn}",
+    input: { Arn: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       Name: D.m({ wire: "name" }),
@@ -5861,6 +5897,7 @@ export const restartRouterOutput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/routerOutput/restart/{Arn}",
+    input: { Arn: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       Name: D.m({ wire: "name" }),
@@ -5901,6 +5938,7 @@ export const revokeFlowEntitlement: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/flows/{FlowArn}/entitlements/{EntitlementArn}",
+    input: { EntitlementArn: 0, FlowArn: 0 },
     output: {
       EntitlementArn: D.m({ wire: "entitlementArn" }),
       FlowArn: D.m({ wire: "flowArn" }),
@@ -5939,6 +5977,7 @@ export const startFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/flows/start/{FlowArn}",
+    input: { FlowArn: 0 },
     output: {
       FlowArn: D.m({ wire: "flowArn" }),
       Status: D.m({ wire: "status" }),
@@ -5978,6 +6017,7 @@ export const startRouterInput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/routerInput/start/{Arn}",
+    input: { Arn: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       Name: D.m({ wire: "name" }),
@@ -6024,6 +6064,7 @@ export const startRouterOutput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/routerOutput/start/{Arn}",
+    input: { Arn: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       Name: D.m({ wire: "name" }),
@@ -6069,6 +6110,7 @@ export const stopFlow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/flows/stop/{FlowArn}",
+    input: { FlowArn: 0 },
     output: {
       FlowArn: D.m({ wire: "flowArn" }),
       Status: D.m({ wire: "status" }),
@@ -6108,6 +6150,7 @@ export const stopRouterInput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/routerInput/stop/{Arn}",
+    input: { Arn: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       Name: D.m({ wire: "name" }),
@@ -6149,6 +6192,7 @@ export const stopRouterOutput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/routerOutput/stop/{Arn}",
+    input: { Arn: 0 },
     output: {
       Arn: D.m({ wire: "arn" }),
       Name: D.m({ wire: "name" }),
@@ -6186,7 +6230,7 @@ export const tagGlobalResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags/global/{ResourceArn}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: { ResourceArn: 0, Tags: D.m({ wire: "tags" }) },
     body: true,
   },
   errors: [
@@ -6216,7 +6260,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags/{ResourceArn}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: { ResourceArn: 0, Tags: D.m({ wire: "tags" }) },
     body: true,
   },
   errors: [
@@ -6250,7 +6294,10 @@ export const takeRouterInput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/routerOutput/takeRouterInput/{RouterOutputArn}",
-    input: { RouterInputArn: D.m({ wire: "routerInputArn" }) },
+    input: {
+      RouterOutputArn: 0,
+      RouterInputArn: D.m({ wire: "routerInputArn" }),
+    },
     output: {
       RoutedState: D.m({ wire: "routedState" }),
       RouterOutputArn: D.m({ wire: "routerOutputArn" }),
@@ -6291,7 +6338,7 @@ export const untagGlobalResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/global/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     BadRequestException,
@@ -6320,7 +6367,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     BadRequestException,
@@ -6354,6 +6401,7 @@ export const updateBridge: API.OperationMethod<
     service: svc,
     http: "PUT /v1/bridges/{BridgeArn}",
     input: {
+      BridgeArn: 0,
       EgressGatewayBridge: D.m({
         wire: "egressGatewayBridge",
         shape: { MaxBitrate: D.m({ wire: "maxBitrate" }) },
@@ -6409,6 +6457,7 @@ export const updateBridgeOutput: API.OperationMethod<
     service: svc,
     http: "PUT /v1/bridges/{BridgeArn}/outputs/{OutputName}",
     input: {
+      BridgeArn: 0,
       NetworkOutput: D.m({
         wire: "networkOutput",
         shape: {
@@ -6419,6 +6468,7 @@ export const updateBridgeOutput: API.OperationMethod<
           Ttl: D.m({ wire: "ttl" }),
         },
       }),
+      OutputName: 0,
     },
     output: {
       BridgeArn: D.m({ wire: "bridgeArn" }),
@@ -6462,6 +6512,7 @@ export const updateBridgeSource: API.OperationMethod<
     service: svc,
     http: "PUT /v1/bridges/{BridgeArn}/sources/{SourceName}",
     input: {
+      BridgeArn: 0,
       FlowSource: D.m({
         wire: "flowSource",
         shape: {
@@ -6485,6 +6536,7 @@ export const updateBridgeSource: API.OperationMethod<
           Protocol: D.m({ wire: "protocol" }),
         },
       }),
+      SourceName: 0,
     },
     output: {
       BridgeArn: D.m({ wire: "bridgeArn" }),
@@ -6527,7 +6579,7 @@ export const updateBridgeState: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/bridges/{BridgeArn}/state",
-    input: { DesiredState: D.m({ wire: "desiredState" }) },
+    input: { BridgeArn: 0, DesiredState: D.m({ wire: "desiredState" }) },
     output: {
       BridgeArn: D.m({ wire: "bridgeArn" }),
       DesiredState: D.m({ wire: "desiredState" }),
@@ -6583,6 +6635,7 @@ export const updateFlow: API.OperationMethod<
     service: svc,
     http: "PUT /v1/flows/{FlowArn}",
     input: {
+      FlowArn: 0,
       SourceFailoverConfig: D.m({
         wire: "sourceFailoverConfig",
         shape: i_UpdateFailoverConfig,
@@ -6642,7 +6695,9 @@ export const updateFlowEntitlement: API.OperationMethod<
     input: {
       Description: D.m({ wire: "description" }),
       Encryption: D.m({ wire: "encryption", shape: i_UpdateEncryption }),
+      EntitlementArn: 0,
       EntitlementStatus: D.m({ wire: "entitlementStatus" }),
+      FlowArn: 0,
       Subscribers: D.m({ wire: "subscribers" }),
     },
     output: {
@@ -6691,6 +6746,8 @@ export const updateFlowMediaStream: API.OperationMethod<
       }),
       ClockRate: D.m({ wire: "clockRate" }),
       Description: D.m({ wire: "description" }),
+      FlowArn: 0,
+      MediaStreamName: 0,
       MediaStreamType: D.m({ wire: "mediaStreamType" }),
       VideoFormat: D.m({ wire: "videoFormat" }),
     },
@@ -6738,12 +6795,14 @@ export const updateFlowOutput: API.OperationMethod<
       Description: D.m({ wire: "description" }),
       Destination: D.m({ wire: "destination" }),
       Encryption: D.m({ wire: "encryption", shape: i_UpdateEncryption }),
+      FlowArn: 0,
       MaxLatency: D.m({ wire: "maxLatency" }),
       MediaStreamOutputConfigurations: D.m({
         wire: "mediaStreamOutputConfigurations",
         shape: D.list(i_MediaStreamOutputConfigurationRequest),
       }),
       MinLatency: D.m({ wire: "minLatency" }),
+      OutputArn: 0,
       Port: D.m({ wire: "port" }),
       Protocol: D.m({ wire: "protocol" }),
       RemoteId: D.m({ wire: "remoteId" }),
@@ -6822,6 +6881,7 @@ export const updateFlowSource: API.OperationMethod<
       Decryption: D.m({ wire: "decryption", shape: i_UpdateEncryption }),
       Description: D.m({ wire: "description" }),
       EntitlementArn: D.m({ wire: "entitlementArn" }),
+      FlowArn: 0,
       IngestPort: D.m({ wire: "ingestPort" }),
       MaxBitrate: D.m({ wire: "maxBitrate" }),
       MaxLatency: D.m({ wire: "maxLatency" }),
@@ -6834,6 +6894,7 @@ export const updateFlowSource: API.OperationMethod<
       Protocol: D.m({ wire: "protocol" }),
       SenderControlPort: D.m({ wire: "senderControlPort" }),
       SenderIpAddress: D.m({ wire: "senderIpAddress" }),
+      SourceArn: 0,
       SourceListenerAddress: D.m({ wire: "sourceListenerAddress" }),
       SourceListenerPort: D.m({ wire: "sourceListenerPort" }),
       StreamId: D.m({ wire: "streamId" }),
@@ -6899,7 +6960,10 @@ export const updateGatewayInstance: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/gateway-instances/{GatewayInstanceArn}",
-    input: { BridgePlacement: D.m({ wire: "bridgePlacement" }) },
+    input: {
+      BridgePlacement: D.m({ wire: "bridgePlacement" }),
+      GatewayInstanceArn: 0,
+    },
     output: {
       BridgePlacement: D.m({ wire: "bridgePlacement" }),
       GatewayInstanceArn: D.m({ wire: "gatewayInstanceArn" }),
@@ -6942,6 +7006,7 @@ export const updateRouterInput: API.OperationMethod<
     service: svc,
     http: "PUT /v1/routerInput/{Arn}",
     input: {
+      Arn: 0,
       Name: D.m({ wire: "name" }),
       Configuration: D.m({
         wire: "configuration",
@@ -7001,6 +7066,7 @@ export const updateRouterNetworkInterface: API.OperationMethod<
     service: svc,
     http: "PUT /v1/routerNetworkInterface/{Arn}",
     input: {
+      Arn: 0,
       Name: D.m({ wire: "name" }),
       Configuration: D.m({
         wire: "configuration",
@@ -7050,6 +7116,7 @@ export const updateRouterOutput: API.OperationMethod<
     service: svc,
     http: "PUT /v1/routerOutput/{Arn}",
     input: {
+      Arn: 0,
       Name: D.m({ wire: "name" }),
       Configuration: D.m({
         wire: "configuration",
@@ -7194,7 +7261,10 @@ const i_FlowTransitEncryption: D.LazyStruct = () => ({
         wire: "secretsManager",
         shape: i_SecretsManagerEncryptionKeyConfiguration,
       }),
-      Automatic: D.m({ wire: "automatic" }),
+      Automatic: D.m({
+        wire: "automatic",
+        shape: i_AutomaticEncryptionKeyConfiguration,
+      }),
     },
   }),
 });
@@ -7214,7 +7284,7 @@ const i_MaintenanceConfiguration: D.LazyStruct = () => ({
     wire: "preferredDayTime",
     shape: { Day: D.m({ wire: "day" }), Time: D.m({ wire: "time" }) },
   }),
-  Default: D.m({ wire: "default" }),
+  Default: D.m({ wire: "default", shape: {} }),
 });
 const i_MediaStreamAttributesRequest: D.LazyStruct = () => ({
   Fmtp: D.m({
@@ -7437,7 +7507,10 @@ const i_RouterInputTransitEncryption: D.LazyStruct = () => ({
         wire: "secretsManager",
         shape: i_SecretsManagerEncryptionKeyConfiguration,
       }),
-      Automatic: D.m({ wire: "automatic" }),
+      Automatic: D.m({
+        wire: "automatic",
+        shape: i_AutomaticEncryptionKeyConfiguration,
+      }),
     },
   }),
 });
@@ -8405,6 +8478,7 @@ const o_VpcInterface: D.LazyStruct = () => ({
   SecurityGroupIds: D.m({ wire: "securityGroupIds" }),
   SubnetId: D.m({ wire: "subnetId" }),
 });
+const i_AutomaticEncryptionKeyConfiguration: D.LazyStruct = () => ({});
 const i_Encryption: D.LazyStruct = () => ({
   Algorithm: D.m({ wire: "algorithm" }),
   ConstantInitializationVector: D.m({ wire: "constantInitializationVector" }),
@@ -8428,7 +8502,10 @@ const i_MediaLiveTransitEncryption: D.LazyStruct = () => ({
         wire: "secretsManager",
         shape: i_SecretsManagerEncryptionKeyConfiguration,
       }),
-      Automatic: D.m({ wire: "automatic" }),
+      Automatic: D.m({
+        wire: "automatic",
+        shape: i_AutomaticEncryptionKeyConfiguration,
+      }),
     },
   }),
 });

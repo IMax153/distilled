@@ -191,6 +191,7 @@ export const getIceServerConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/get-ice-server-config",
+    input: { ChannelARN: 0, ClientId: 0, Service: 0, Username: 0 },
     output: { IceServerList: D.list({ Password: D.secret }) },
     body: true,
   },
@@ -230,6 +231,7 @@ export const sendAlexaOfferToMaster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/send-alexa-offer-to-master",
+    input: { ChannelARN: 0, SenderClientId: 0, MessagePayload: 0 },
     body: true,
   },
   errors: [

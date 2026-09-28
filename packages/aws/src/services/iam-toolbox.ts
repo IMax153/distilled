@@ -186,7 +186,7 @@ export const getRequestAuthorizationDetails: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "GET /authorization-details/{authorizationId}",
-    input: { nextToken: D.m({ query: "nextToken" }) },
+    input: { authorizationId: 0, nextToken: D.m({ query: "nextToken" }) },
   },
   errors: [
     AccessDeniedException,

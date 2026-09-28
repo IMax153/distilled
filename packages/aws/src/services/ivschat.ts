@@ -452,6 +452,13 @@ export const createChatToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateChatToken",
+    input: {
+      roomIdentifier: 0,
+      userId: 0,
+      capabilities: 0,
+      sessionDurationInMinutes: 0,
+      attributes: 0,
+    },
     output: {
       token: D.secret,
       tokenExpirationTime: D.ts,
@@ -492,6 +499,11 @@ export const createLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateLoggingConfiguration",
+    input: {
+      name: 0,
+      destinationConfiguration: i_DestinationConfiguration,
+      tags: 0,
+    },
     output: { createTime: D.ts, updateTime: D.ts },
     body: true,
   },
@@ -530,6 +542,14 @@ export const createRoom: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateRoom",
+    input: {
+      name: 0,
+      maximumMessageRatePerSecond: 0,
+      maximumMessageLength: 0,
+      messageReviewHandler: i_MessageReviewHandler,
+      tags: 0,
+      loggingConfigurationIdentifiers: 0,
+    },
     output: { createTime: D.ts, updateTime: D.ts },
     body: true,
   },
@@ -567,6 +587,7 @@ export const deleteLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteLoggingConfiguration",
+    input: { identifier: 0 },
     body: true,
   },
   errors: [
@@ -601,7 +622,12 @@ export const deleteMessage: API.OperationMethod<
   DeleteMessageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteMessage", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteMessage",
+    input: { roomIdentifier: 0, id: 0, reason: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     PendingVerification,
@@ -630,7 +656,12 @@ export const deleteRoom: API.OperationMethod<
   DeleteRoomError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteRoom", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteRoom",
+    input: { identifier: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     PendingVerification,
@@ -661,7 +692,12 @@ export const disconnectUser: API.OperationMethod<
   DisconnectUserError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DisconnectUser", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DisconnectUser",
+    input: { roomIdentifier: 0, userId: 0, reason: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     PendingVerification,
@@ -692,6 +728,7 @@ export const getLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetLoggingConfiguration",
+    input: { identifier: 0 },
     output: { createTime: D.ts, updateTime: D.ts },
     body: true,
   },
@@ -724,6 +761,7 @@ export const getRoom: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetRoom",
+    input: { identifier: 0 },
     output: { createTime: D.ts, updateTime: D.ts },
     body: true,
   },
@@ -757,6 +795,7 @@ export const listLoggingConfigurations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListLoggingConfigurations",
+    input: { nextToken: 0, maxResults: 0 },
     output: {
       loggingConfigurations: D.list({ createTime: D.ts, updateTime: D.ts }),
     },
@@ -793,6 +832,13 @@ export const listRooms: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListRooms",
+    input: {
+      name: 0,
+      nextToken: 0,
+      maxResults: 0,
+      messageReviewHandlerUri: 0,
+      loggingConfigurationIdentifier: 0,
+    },
     output: { rooms: D.list({ createTime: D.ts, updateTime: D.ts }) },
     body: true,
   },
@@ -827,7 +873,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -857,7 +907,12 @@ export const sendEvent: API.OperationMethod<
   SendEventError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /SendEvent", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /SendEvent",
+    input: { roomIdentifier: 0, eventName: 0, attributes: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     PendingVerification,
@@ -885,7 +940,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -915,7 +975,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -948,6 +1008,11 @@ export const updateLoggingConfiguration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateLoggingConfiguration",
+    input: {
+      identifier: 0,
+      name: 0,
+      destinationConfiguration: i_DestinationConfiguration,
+    },
     output: { createTime: D.ts, updateTime: D.ts },
     body: true,
   },
@@ -983,6 +1048,14 @@ export const updateRoom: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateRoom",
+    input: {
+      identifier: 0,
+      name: 0,
+      maximumMessageRatePerSecond: 0,
+      maximumMessageLength: 0,
+      messageReviewHandler: i_MessageReviewHandler,
+      loggingConfigurationIdentifiers: 0,
+    },
     output: { createTime: D.ts, updateTime: D.ts },
     body: true,
   },
@@ -997,3 +1070,13 @@ export const updateRoom: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateRoom",
 })) as any;
+
+const i_DestinationConfiguration: D.LazyStruct = () => ({
+  s3: { bucketName: 0 },
+  cloudWatchLogs: { logGroupName: 0 },
+  firehose: { deliveryStreamName: 0 },
+});
+const i_MessageReviewHandler: D.LazyStruct = () => ({
+  uri: 0,
+  fallbackResult: 0,
+});

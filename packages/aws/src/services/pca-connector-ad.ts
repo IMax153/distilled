@@ -818,7 +818,13 @@ export const createConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /connectors",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      DirectoryId: 0,
+      CertificateAuthorityArn: 0,
+      VpcInformation: { IpAddressType: 0, SecurityGroupIds: 0 },
+      ClientToken: D.m({ idempotency: true }),
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -856,7 +862,7 @@ export const createDirectoryRegistration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /directoryRegistrations",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: { DirectoryId: 0, ClientToken: D.m({ idempotency: true }), Tags: 0 },
     body: true,
   },
   errors: [
@@ -894,7 +900,11 @@ export const createServicePrincipalName: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /directoryRegistrations/{DirectoryRegistrationArn}/servicePrincipalNames/{ConnectorArn}",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      DirectoryRegistrationArn: 0,
+      ConnectorArn: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -932,7 +942,13 @@ export const createTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /templates",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ConnectorArn: 0,
+      Name: 0,
+      Definition: i_TemplateDefinition,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -971,7 +987,13 @@ export const createTemplateGroupAccessControlEntry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /templates/{TemplateArn}/accessControlEntries",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      TemplateArn: 0,
+      GroupSecurityIdentifier: 0,
+      GroupDisplayName: 0,
+      AccessRights: i_AccessRights,
+      ClientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -1009,7 +1031,11 @@ export const deleteConnector: API.OperationMethod<
   DeleteConnectorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /connectors/{ConnectorArn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /connectors/{ConnectorArn}",
+    input: { ConnectorArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1043,6 +1069,7 @@ export const deleteDirectoryRegistration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /directoryRegistrations/{DirectoryRegistrationArn}",
+    input: { DirectoryRegistrationArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1076,6 +1103,7 @@ export const deleteServicePrincipalName: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /directoryRegistrations/{DirectoryRegistrationArn}/servicePrincipalNames/{ConnectorArn}",
+    input: { DirectoryRegistrationArn: 0, ConnectorArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1107,7 +1135,11 @@ export const deleteTemplate: API.OperationMethod<
   DeleteTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /templates/{TemplateArn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /templates/{TemplateArn}",
+    input: { TemplateArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1141,6 +1173,7 @@ export const deleteTemplateGroupAccessControlEntry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /templates/{TemplateArn}/accessControlEntries/{GroupSecurityIdentifier}",
+    input: { TemplateArn: 0, GroupSecurityIdentifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1175,6 +1208,7 @@ export const getConnector: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /connectors/{ConnectorArn}",
+    input: { ConnectorArn: 0 },
     output: { Connector: { CreatedAt: D.ts, UpdatedAt: D.ts } },
   },
   errors: [
@@ -1208,6 +1242,7 @@ export const getDirectoryRegistration: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /directoryRegistrations/{DirectoryRegistrationArn}",
+    input: { DirectoryRegistrationArn: 0 },
     output: { DirectoryRegistration: { CreatedAt: D.ts, UpdatedAt: D.ts } },
   },
   errors: [
@@ -1242,6 +1277,7 @@ export const getServicePrincipalName: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /directoryRegistrations/{DirectoryRegistrationArn}/servicePrincipalNames/{ConnectorArn}",
+    input: { DirectoryRegistrationArn: 0, ConnectorArn: 0 },
     output: { ServicePrincipalName: { CreatedAt: D.ts, UpdatedAt: D.ts } },
   },
   errors: [
@@ -1276,6 +1312,7 @@ export const getTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /templates/{TemplateArn}",
+    input: { TemplateArn: 0 },
     output: { Template: { CreatedAt: D.ts, UpdatedAt: D.ts } },
   },
   errors: [
@@ -1309,6 +1346,7 @@ export const getTemplateGroupAccessControlEntry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /templates/{TemplateArn}/accessControlEntries/{GroupSecurityIdentifier}",
+    input: { TemplateArn: 0, GroupSecurityIdentifier: 0 },
     output: { AccessControlEntry: { CreatedAt: D.ts, UpdatedAt: D.ts } },
   },
   errors: [
@@ -1434,6 +1472,7 @@ export const listServicePrincipalNames: API.PaginatedOperationMethod<
     input: {
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
+      DirectoryRegistrationArn: 0,
     },
     output: {
       ServicePrincipalNames: D.list({ CreatedAt: D.ts, UpdatedAt: D.ts }),
@@ -1473,7 +1512,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1509,6 +1552,7 @@ export const listTemplateGroupAccessControlEntries: API.PaginatedOperationMethod
     input: {
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
+      TemplateArn: 0,
     },
     output: {
       AccessControlEntries: D.list({ CreatedAt: D.ts, UpdatedAt: D.ts }),
@@ -1593,7 +1637,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1625,7 +1674,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1659,6 +1708,11 @@ export const updateTemplate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /templates/{TemplateArn}",
+    input: {
+      TemplateArn: 0,
+      Definition: i_TemplateDefinition,
+      ReenrollAllCertificateHolders: 0,
+    },
     body: true,
   },
   errors: [
@@ -1694,6 +1748,12 @@ export const updateTemplateGroupAccessControlEntry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /templates/{TemplateArn}/accessControlEntries/{GroupSecurityIdentifier}",
+    input: {
+      TemplateArn: 0,
+      GroupSecurityIdentifier: 0,
+      GroupDisplayName: 0,
+      AccessRights: i_AccessRights,
+    },
     body: true,
   },
   errors: [
@@ -1708,3 +1768,154 @@ export const updateTemplateGroupAccessControlEntry: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateTemplateGroupAccessControlEntry",
 })) as any;
+
+const i_AccessRights: D.LazyStruct = () => ({ Enroll: 0, AutoEnroll: 0 });
+const i_TemplateDefinition: D.LazyStruct = () => ({
+  TemplateV2: {
+    CertificateValidity: i_CertificateValidity,
+    SupersededTemplates: 0,
+    PrivateKeyAttributes: {
+      MinimalKeyLength: 0,
+      KeySpec: 0,
+      CryptoProviders: 0,
+    },
+    PrivateKeyFlags: {
+      ExportableKey: 0,
+      StrongKeyProtectionRequired: 0,
+      ClientVersion: 0,
+    },
+    EnrollmentFlags: {
+      IncludeSymmetricAlgorithms: 0,
+      UserInteractionRequired: 0,
+      RemoveInvalidCertificateFromPersonalStore: 0,
+      NoSecurityExtension: 0,
+      EnableKeyReuseOnNtTokenKeysetStorageFull: 0,
+    },
+    SubjectNameFlags: {
+      SanRequireDomainDns: 0,
+      SanRequireSpn: 0,
+      SanRequireDirectoryGuid: 0,
+      SanRequireUpn: 0,
+      SanRequireEmail: 0,
+      SanRequireDns: 0,
+      RequireDnsAsCn: 0,
+      RequireEmail: 0,
+      RequireCommonName: 0,
+      RequireDirectoryPath: 0,
+    },
+    GeneralFlags: { AutoEnrollment: 0, MachineType: 0 },
+    Extensions: {
+      KeyUsage: i_KeyUsage,
+      ApplicationPolicies: i_ApplicationPolicies,
+    },
+  },
+  TemplateV3: {
+    CertificateValidity: i_CertificateValidity,
+    SupersededTemplates: 0,
+    PrivateKeyAttributes: {
+      MinimalKeyLength: 0,
+      KeySpec: 0,
+      CryptoProviders: 0,
+      KeyUsageProperty: i_KeyUsageProperty,
+      Algorithm: 0,
+    },
+    PrivateKeyFlags: {
+      ExportableKey: 0,
+      StrongKeyProtectionRequired: 0,
+      RequireAlternateSignatureAlgorithm: 0,
+      ClientVersion: 0,
+    },
+    EnrollmentFlags: {
+      IncludeSymmetricAlgorithms: 0,
+      UserInteractionRequired: 0,
+      RemoveInvalidCertificateFromPersonalStore: 0,
+      NoSecurityExtension: 0,
+      EnableKeyReuseOnNtTokenKeysetStorageFull: 0,
+    },
+    SubjectNameFlags: {
+      SanRequireDomainDns: 0,
+      SanRequireSpn: 0,
+      SanRequireDirectoryGuid: 0,
+      SanRequireUpn: 0,
+      SanRequireEmail: 0,
+      SanRequireDns: 0,
+      RequireDnsAsCn: 0,
+      RequireEmail: 0,
+      RequireCommonName: 0,
+      RequireDirectoryPath: 0,
+    },
+    GeneralFlags: { AutoEnrollment: 0, MachineType: 0 },
+    HashAlgorithm: 0,
+    Extensions: {
+      KeyUsage: i_KeyUsage,
+      ApplicationPolicies: i_ApplicationPolicies,
+    },
+  },
+  TemplateV4: {
+    CertificateValidity: i_CertificateValidity,
+    SupersededTemplates: 0,
+    PrivateKeyAttributes: {
+      MinimalKeyLength: 0,
+      KeySpec: 0,
+      CryptoProviders: 0,
+      KeyUsageProperty: i_KeyUsageProperty,
+      Algorithm: 0,
+    },
+    PrivateKeyFlags: {
+      ExportableKey: 0,
+      StrongKeyProtectionRequired: 0,
+      RequireAlternateSignatureAlgorithm: 0,
+      RequireSameKeyRenewal: 0,
+      UseLegacyProvider: 0,
+      ClientVersion: 0,
+    },
+    EnrollmentFlags: {
+      IncludeSymmetricAlgorithms: 0,
+      UserInteractionRequired: 0,
+      RemoveInvalidCertificateFromPersonalStore: 0,
+      NoSecurityExtension: 0,
+      EnableKeyReuseOnNtTokenKeysetStorageFull: 0,
+    },
+    SubjectNameFlags: {
+      SanRequireDomainDns: 0,
+      SanRequireSpn: 0,
+      SanRequireDirectoryGuid: 0,
+      SanRequireUpn: 0,
+      SanRequireEmail: 0,
+      SanRequireDns: 0,
+      RequireDnsAsCn: 0,
+      RequireEmail: 0,
+      RequireCommonName: 0,
+      RequireDirectoryPath: 0,
+    },
+    GeneralFlags: { AutoEnrollment: 0, MachineType: 0 },
+    HashAlgorithm: 0,
+    Extensions: {
+      KeyUsage: i_KeyUsage,
+      ApplicationPolicies: i_ApplicationPolicies,
+    },
+  },
+});
+const i_ApplicationPolicies: D.LazyStruct = () => ({
+  Critical: 0,
+  Policies: D.list({ PolicyType: 0, PolicyObjectIdentifier: 0 }),
+});
+const i_CertificateValidity: D.LazyStruct = () => ({
+  ValidityPeriod: i_ValidityPeriod,
+  RenewalPeriod: i_ValidityPeriod,
+});
+const i_KeyUsage: D.LazyStruct = () => ({
+  Critical: 0,
+  UsageFlags: {
+    DigitalSignature: 0,
+    NonRepudiation: 0,
+    KeyEncipherment: 0,
+    DataEncipherment: 0,
+    KeyAgreement: 0,
+  },
+});
+const i_KeyUsageProperty: D.LazyStruct = () => ({
+  PropertyType: 0,
+  PropertyFlags: { Decrypt: 0, KeyAgreement: 0, Sign: 0 },
+});
+const i_ValidityPeriod: D.LazyStruct = () => ({ PeriodType: 0, Period: 0 });

@@ -294,7 +294,22 @@ export const createInvestigationGroup: API.OperationMethod<
   CreateInvestigationGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /investigationGroups", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /investigationGroups",
+    input: {
+      name: 0,
+      roleArn: 0,
+      encryptionConfiguration: i_EncryptionConfiguration,
+      retentionInDays: 0,
+      tags: 0,
+      tagKeyBoundaries: 0,
+      chatbotNotificationChannel: 0,
+      isCloudTrailEventHistoryEnabled: 0,
+      crossAccountConfigurations: D.list(i_CrossAccountConfiguration),
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -328,6 +343,7 @@ export const deleteInvestigationGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /investigationGroups/{identifier}",
+    input: { identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -361,6 +377,7 @@ export const deleteInvestigationGroupPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /investigationGroups/{identifier}/policy",
+    input: { identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -391,7 +408,11 @@ export const getInvestigationGroup: API.OperationMethod<
   GetInvestigationGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /investigationGroups/{identifier}" },
+  descriptor: {
+    service: svc,
+    http: "GET /investigationGroups/{identifier}",
+    input: { identifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -424,6 +445,7 @@ export const getInvestigationGroupPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /investigationGroups/{identifier}/policy",
+    input: { identifier: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -491,7 +513,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -530,6 +556,7 @@ export const putInvestigationGroupPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /investigationGroups/{identifier}/policy",
+    input: { identifier: 0, policy: 0 },
     body: true,
   },
   errors: [
@@ -569,7 +596,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -603,7 +635,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -639,6 +671,15 @@ export const updateInvestigationGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /investigationGroups/{identifier}",
+    input: {
+      identifier: 0,
+      roleArn: 0,
+      encryptionConfiguration: i_EncryptionConfiguration,
+      tagKeyBoundaries: 0,
+      chatbotNotificationChannel: 0,
+      isCloudTrailEventHistoryEnabled: 0,
+      crossAccountConfigurations: D.list(i_CrossAccountConfiguration),
+    },
     body: true,
   },
   errors: [
@@ -654,3 +695,9 @@ export const updateInvestigationGroup: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateInvestigationGroup",
 })) as any;
+
+const i_CrossAccountConfiguration: D.LazyStruct = () => ({ sourceRoleArn: 0 });
+const i_EncryptionConfiguration: D.LazyStruct = () => ({
+  type: 0,
+  kmsKeyId: 0,
+});

@@ -414,6 +414,7 @@ export const copyBackupToRegion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DestinationRegion: 0, BackupId: 0, TagList: D.list(i_Tag) },
     output: { DestinationBackup: { CreateTimestamp: D.ts } },
   },
   errors: [
@@ -449,7 +450,19 @@ export const createCluster: API.OperationMethod<
   CreateClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: {
+      BackupRetentionPolicy: i_BackupRetentionPolicy,
+      HsmType: 0,
+      SourceBackupId: 0,
+      SubnetIds: 0,
+      NetworkType: 0,
+      TagList: D.list(i_Tag),
+      Mode: 0,
+    },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     CloudHsmAccessDeniedException,
     CloudHsmInternalFailureException,
@@ -482,7 +495,10 @@ export const createHsm: API.OperationMethod<
   CreateHsmError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ClusterId: 0, AvailabilityZone: 0, IpAddress: 0 },
+  },
   errors: [
     CloudHsmAccessDeniedException,
     CloudHsmInternalFailureException,
@@ -515,7 +531,11 @@ export const deleteBackup: API.OperationMethod<
   DeleteBackupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Backup: o_Backup } },
+  descriptor: {
+    service: svc,
+    input: { BackupId: 0 },
+    output: { Backup: o_Backup },
+  },
   errors: [
     CloudHsmAccessDeniedException,
     CloudHsmInternalFailureException,
@@ -548,7 +568,11 @@ export const deleteCluster: API.OperationMethod<
   DeleteClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: { ClusterId: 0 },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     CloudHsmAccessDeniedException,
     CloudHsmInternalFailureException,
@@ -582,7 +606,10 @@ export const deleteHsm: API.OperationMethod<
   DeleteHsmError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ClusterId: 0, HsmId: 0, EniId: 0, EniIp: 0 },
+  },
   errors: [
     CloudHsmAccessDeniedException,
     CloudHsmInternalFailureException,
@@ -615,7 +642,7 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     CloudHsmAccessDeniedException,
     CloudHsmInternalFailureException,
@@ -654,7 +681,17 @@ export const describeBackups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Backups: D.list(o_Backup) } },
+  descriptor: {
+    service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      Filters: 0,
+      Shared: 0,
+      SortAscending: 0,
+    },
+    output: { Backups: D.list(o_Backup) },
+  },
   errors: [
     CloudHsmAccessDeniedException,
     CloudHsmInternalFailureException,
@@ -698,7 +735,11 @@ export const describeClusters: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Clusters: D.list(o_Cluster) } },
+  descriptor: {
+    service: svc,
+    input: { Filters: 0, NextToken: 0, MaxResults: 0 },
+    output: { Clusters: D.list(o_Cluster) },
+  },
   errors: [
     CloudHsmAccessDeniedException,
     CloudHsmInternalFailureException,
@@ -734,7 +775,7 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     CloudHsmAccessDeniedException,
     CloudHsmInternalFailureException,
@@ -768,7 +809,10 @@ export const initializeCluster: API.OperationMethod<
   InitializeClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ClusterId: 0, SignedCert: 0, TrustAnchor: 0 },
+  },
   errors: [
     CloudHsmAccessDeniedException,
     CloudHsmInternalFailureException,
@@ -807,7 +851,10 @@ export const listTags: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceId: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [
     CloudHsmAccessDeniedException,
     CloudHsmInternalFailureException,
@@ -844,7 +891,11 @@ export const modifyBackupAttributes: API.OperationMethod<
   ModifyBackupAttributesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Backup: o_Backup } },
+  descriptor: {
+    service: svc,
+    input: { BackupId: 0, NeverExpires: 0 },
+    output: { Backup: o_Backup },
+  },
   errors: [
     CloudHsmAccessDeniedException,
     CloudHsmInternalFailureException,
@@ -875,7 +926,15 @@ export const modifyCluster: API.OperationMethod<
   ModifyClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Cluster: o_Cluster } },
+  descriptor: {
+    service: svc,
+    input: {
+      HsmType: 0,
+      BackupRetentionPolicy: i_BackupRetentionPolicy,
+      ClusterId: 0,
+    },
+    output: { Cluster: o_Cluster },
+  },
   errors: [
     CloudHsmAccessDeniedException,
     CloudHsmInternalFailureException,
@@ -920,7 +979,7 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Policy: 0 } },
   errors: [
     CloudHsmAccessDeniedException,
     CloudHsmInternalFailureException,
@@ -953,7 +1012,11 @@ export const restoreBackup: API.OperationMethod<
   RestoreBackupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Backup: o_Backup } },
+  descriptor: {
+    service: svc,
+    input: { BackupId: 0 },
+    output: { Backup: o_Backup },
+  },
   errors: [
     CloudHsmAccessDeniedException,
     CloudHsmInternalFailureException,
@@ -986,7 +1049,10 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceId: 0, TagList: D.list(i_Tag) },
+  },
   errors: [
     CloudHsmAccessDeniedException,
     CloudHsmInternalFailureException,
@@ -1020,7 +1086,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceId: 0, TagKeyList: 0 } },
   errors: [
     CloudHsmAccessDeniedException,
     CloudHsmInternalFailureException,
@@ -1034,6 +1100,8 @@ export const untagResource: API.OperationMethod<
   operationName: "UntagResource",
 })) as any;
 
+const i_BackupRetentionPolicy: D.LazyStruct = () => ({ Type: 0, Value: 0 });
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Backup: D.LazyStruct = () => ({
   CreateTimestamp: D.ts,
   CopyTimestamp: D.ts,

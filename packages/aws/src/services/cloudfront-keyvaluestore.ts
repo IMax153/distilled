@@ -276,6 +276,7 @@ export const deleteKey: API.OperationMethod<
     http: "DELETE /key-value-stores/{KvsARN}/keys/{Key}",
     input: {
       KvsARN: D.m({ context: "KvsARN" }),
+      Key: 0,
       IfMatch: D.m({ header: "If-Match" }),
     },
     output: { ETag: D.m({ header: "ETag" }) },
@@ -347,7 +348,7 @@ export const getKey: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /key-value-stores/{KvsARN}/keys/{Key}",
-    input: { KvsARN: D.m({ context: "KvsARN" }) },
+    input: { KvsARN: D.m({ context: "KvsARN" }), Key: 0 },
     output: { Value: D.secret },
   },
   errors: [
@@ -427,6 +428,8 @@ export const putKey: API.OperationMethod<
     service: svc,
     http: "PUT /key-value-stores/{KvsARN}/keys/{Key}",
     input: {
+      Key: 0,
+      Value: 0,
       KvsARN: D.m({ context: "KvsARN" }),
       IfMatch: D.m({ header: "If-Match" }),
     },
@@ -469,6 +472,8 @@ export const updateKeys: API.OperationMethod<
     input: {
       KvsARN: D.m({ context: "KvsARN" }),
       IfMatch: D.m({ header: "If-Match" }),
+      Puts: D.list({ Key: 0, Value: 0 }),
+      Deletes: D.list({ Key: 0 }),
     },
     output: { ETag: D.m({ header: "ETag" }) },
     body: true,

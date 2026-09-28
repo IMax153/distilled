@@ -722,7 +722,10 @@ export const associateConfigurationItemsToApplication: API.OperationMethod<
   AssociateConfigurationItemsToApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { applicationConfigurationId: 0, configurationIds: 0 },
+  },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -752,7 +755,10 @@ export const batchDeleteAgents: API.OperationMethod<
   BatchDeleteAgentsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { deleteAgents: D.list({ agentId: 0, force: 0 }) },
+  },
   errors: [
     AuthorizationErrorException,
     InvalidParameterException,
@@ -787,7 +793,7 @@ export const batchDeleteImportData: API.OperationMethod<
   BatchDeleteImportDataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { importTaskIds: 0, deleteHistory: 0 } },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -816,7 +822,7 @@ export const createApplication: API.OperationMethod<
   CreateApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { name: 0, description: 0, wave: 0 } },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -849,7 +855,10 @@ export const createTags: API.OperationMethod<
   CreateTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { configurationIds: 0, tags: D.list(i_Tag) },
+  },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -880,7 +889,7 @@ export const deleteApplications: API.OperationMethod<
   DeleteApplicationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { configurationIds: 0 } },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -911,7 +920,10 @@ export const deleteTags: API.OperationMethod<
   DeleteTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { configurationIds: 0, tags: D.list(i_Tag) },
+  },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -944,7 +956,15 @@ export const describeAgents: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AgentInfo
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      agentIds: 0,
+      filters: D.list(i_Filter),
+      maxResults: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -980,6 +1000,7 @@ export const describeBatchDeleteConfigurationTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { taskId: 0 },
     output: { task: { startTime: D.ts, endTime: D.ts } },
   },
   errors: [
@@ -1027,7 +1048,7 @@ export const describeConfigurations: API.OperationMethod<
   DescribeConfigurationsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { configurationIds: 0 } },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -1063,6 +1084,7 @@ export const describeContinuousExports: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { exportIds: 0, maxResults: 0, nextToken: 0 },
     output: { descriptions: D.list({ startTime: D.ts, stopTime: D.ts }) },
   },
   errors: [
@@ -1103,7 +1125,11 @@ export const describeExportConfigurations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ExportInfo
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { exportsInfo: D.list(o_ExportInfo) } },
+  descriptor: {
+    service: svc,
+    input: { exportIds: 0, maxResults: 0, nextToken: 0 },
+    output: { exportsInfo: D.list(o_ExportInfo) },
+  },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -1141,7 +1167,16 @@ export const describeExportTasks: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ExportInfo
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { exportsInfo: D.list(o_ExportInfo) } },
+  descriptor: {
+    service: svc,
+    input: {
+      exportIds: 0,
+      filters: D.list(i_ExportFilter),
+      maxResults: 0,
+      nextToken: 0,
+    },
+    output: { exportsInfo: D.list(o_ExportInfo) },
+  },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -1178,7 +1213,15 @@ export const describeImportTasks: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ImportTask
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { tasks: D.list(o_ImportTask) } },
+  descriptor: {
+    service: svc,
+    input: {
+      filters: D.list({ name: 0, values: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+    },
+    output: { tasks: D.list(o_ImportTask) },
+  },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -1229,6 +1272,11 @@ export const describeTags: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      filters: D.list({ name: 0, values: 0 }),
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: { tags: D.list({ timeOfCreation: D.ts }) },
   },
   errors: [
@@ -1266,7 +1314,10 @@ export const disassociateConfigurationItemsFromApplication: API.OperationMethod<
   DisassociateConfigurationItemsFromApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { applicationConfigurationId: 0, configurationIds: 0 },
+  },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -1335,7 +1386,7 @@ export const getDiscoverySummary: API.OperationMethod<
   GetDiscoverySummaryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -1368,7 +1419,16 @@ export const listConfigurations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   { [key: string]: string | undefined }
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      configurationType: 0,
+      filters: D.list(i_Filter),
+      maxResults: 0,
+      nextToken: 0,
+      orderBy: D.list({ fieldName: 0, sortOrder: 0 }),
+    },
+  },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -1405,7 +1465,16 @@ export const listServerNeighbors: API.OperationMethod<
   ListServerNeighborsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      configurationId: 0,
+      portInformationNeeded: 0,
+      neighborConfigurationIds: 0,
+      maxResults: 0,
+      nextToken: 0,
+    },
+  },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -1437,7 +1506,10 @@ export const startBatchDeleteConfigurationTask: API.OperationMethod<
   StartBatchDeleteConfigurationTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { configurationType: 0, configurationIds: 0 },
+  },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -1471,7 +1543,7 @@ export const startContinuousExport: API.OperationMethod<
   StartContinuousExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { startTime: D.ts } },
+  descriptor: { service: svc, input: {}, output: { startTime: D.ts } },
   errors: [
     AuthorizationErrorException,
     ConflictErrorException,
@@ -1503,7 +1575,7 @@ export const startDataCollectionByAgentIds: API.OperationMethod<
   StartDataCollectionByAgentIdsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { agentIds: 0 } },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -1556,7 +1628,30 @@ export const startExportTask: API.OperationMethod<
   StartExportTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      exportDataFormat: 0,
+      filters: D.list(i_ExportFilter),
+      startTime: 0,
+      endTime: 0,
+      preferences: {
+        ec2RecommendationsPreferences: {
+          enabled: 0,
+          cpuPerformanceMetricBasis: i_UsageMetricBasis,
+          ramPerformanceMetricBasis: i_UsageMetricBasis,
+          tenancy: 0,
+          excludedInstanceTypes: 0,
+          preferredRegion: 0,
+          reservedInstanceOptions: {
+            purchasingOption: 0,
+            offeringClass: 0,
+            termLength: 0,
+          },
+        },
+      },
+    },
+  },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -1616,7 +1711,11 @@ export const startImportTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      clientRequestToken: D.m({ idempotency: true }),
+      name: 0,
+      importUrl: 0,
+    },
     output: { task: o_ImportTask },
   },
   errors: [
@@ -1651,7 +1750,11 @@ export const stopContinuousExport: API.OperationMethod<
   StopContinuousExportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { startTime: D.ts, stopTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { exportId: 0 },
+    output: { startTime: D.ts, stopTime: D.ts },
+  },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -1683,7 +1786,7 @@ export const stopDataCollectionByAgentIds: API.OperationMethod<
   StopDataCollectionByAgentIdsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { agentIds: 0 } },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -1712,7 +1815,10 @@ export const updateApplication: API.OperationMethod<
   UpdateApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { configurationId: 0, name: 0, description: 0, wave: 0 },
+  },
   errors: [
     AuthorizationErrorException,
     HomeRegionNotSetException,
@@ -1725,6 +1831,17 @@ export const updateApplication: API.OperationMethod<
   operationName: "UpdateApplication",
 })) as any;
 
+const i_ExportFilter: D.LazyStruct = () => ({
+  name: 0,
+  values: 0,
+  condition: 0,
+});
+const i_Filter: D.LazyStruct = () => ({ name: 0, values: 0, condition: 0 });
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
+const i_UsageMetricBasis: D.LazyStruct = () => ({
+  name: 0,
+  percentageAdjust: 0,
+});
 const o_ExportInfo: D.LazyStruct = () => ({
   exportRequestTime: D.ts,
   requestedStartTime: D.ts,

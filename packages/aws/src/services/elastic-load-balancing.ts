@@ -642,7 +642,10 @@ export const addTags: API.OperationMethod<
   AddTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerNames: 0, Tags: D.list(i_Tag) },
+  },
   errors: [
     AccessPointNotFoundException,
     DuplicateTagKeysException,
@@ -670,7 +673,11 @@ export const applySecurityGroupsToLoadBalancer: API.OperationMethod<
   ApplySecurityGroupsToLoadBalancerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { SecurityGroups: D.list() } },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerName: 0, SecurityGroups: 0 },
+    output: { SecurityGroups: D.list() },
+  },
   errors: [
     AccessPointNotFoundException,
     InvalidConfigurationRequestException,
@@ -700,7 +707,11 @@ export const attachLoadBalancerToSubnets: API.OperationMethod<
   AttachLoadBalancerToSubnetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Subnets: D.list() } },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerName: 0, Subnets: 0 },
+    output: { Subnets: D.list() },
+  },
   errors: [
     AccessPointNotFoundException,
     InvalidConfigurationRequestException,
@@ -727,7 +738,20 @@ export const configureHealthCheck: API.OperationMethod<
   ConfigureHealthCheckError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { HealthCheck: o_HealthCheck } },
+  descriptor: {
+    service: svc,
+    input: {
+      LoadBalancerName: 0,
+      HealthCheck: {
+        Target: 0,
+        Interval: 0,
+        Timeout: 0,
+        UnhealthyThreshold: 0,
+        HealthyThreshold: 0,
+      },
+    },
+    output: { HealthCheck: o_HealthCheck },
+  },
   errors: [AccessPointNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -760,7 +784,10 @@ export const createAppCookieStickinessPolicy: API.OperationMethod<
   CreateAppCookieStickinessPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerName: 0, PolicyName: 0, CookieName: 0 },
+  },
   errors: [
     AccessPointNotFoundException,
     DuplicatePolicyNameException,
@@ -795,7 +822,10 @@ export const createLBCookieStickinessPolicy: API.OperationMethod<
   CreateLBCookieStickinessPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerName: 0, PolicyName: 0, CookieExpirationPeriod: 0 },
+  },
   errors: [
     AccessPointNotFoundException,
     DuplicatePolicyNameException,
@@ -844,7 +874,18 @@ export const createLoadBalancer: API.OperationMethod<
   CreateLoadBalancerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LoadBalancerName: 0,
+      Listeners: D.list(i_Listener),
+      AvailabilityZones: 0,
+      Subnets: 0,
+      SecurityGroups: 0,
+      Scheme: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     CertificateNotFoundException,
     DuplicateAccessPointNameException,
@@ -883,7 +924,10 @@ export const createLoadBalancerListeners: API.OperationMethod<
   CreateLoadBalancerListenersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerName: 0, Listeners: D.list(i_Listener) },
+  },
   errors: [
     AccessPointNotFoundException,
     CertificateNotFoundException,
@@ -914,7 +958,15 @@ export const createLoadBalancerPolicy: API.OperationMethod<
   CreateLoadBalancerPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LoadBalancerName: 0,
+      PolicyName: 0,
+      PolicyTypeName: 0,
+      PolicyAttributes: D.list({ AttributeName: 0, AttributeValue: 0 }),
+    },
+  },
   errors: [
     AccessPointNotFoundException,
     DuplicatePolicyNameException,
@@ -942,7 +994,7 @@ export const deleteLoadBalancer: API.OperationMethod<
   DeleteLoadBalancerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LoadBalancerName: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -961,7 +1013,10 @@ export const deleteLoadBalancerListeners: API.OperationMethod<
   DeleteLoadBalancerListenersError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerName: 0, LoadBalancerPorts: 0 },
+  },
   errors: [AccessPointNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -981,7 +1036,7 @@ export const deleteLoadBalancerPolicy: API.OperationMethod<
   DeleteLoadBalancerPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LoadBalancerName: 0, PolicyName: 0 } },
   errors: [AccessPointNotFoundException, InvalidConfigurationRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1006,7 +1061,11 @@ export const deregisterInstancesFromLoadBalancer: API.OperationMethod<
   DeregisterInstancesFromLoadBalancerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Instances: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerName: 0, Instances: D.list(i_Instance) },
+    output: { Instances: D.list({}) },
+  },
   errors: [AccessPointNotFoundException, InvalidEndPointException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1026,7 +1085,11 @@ export const describeAccountLimits: API.OperationMethod<
   DescribeAccountLimitsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Limits: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { Marker: 0, PageSize: 0 },
+    output: { Limits: D.list({}) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1046,7 +1109,11 @@ export const describeInstanceHealth: API.OperationMethod<
   DescribeInstanceHealthError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { InstanceStates: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerName: 0, Instances: D.list(i_Instance) },
+    output: { InstanceStates: D.list({}) },
+  },
   errors: [AccessPointNotFoundException, InvalidEndPointException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1068,6 +1135,7 @@ export const describeLoadBalancerAttributes: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { LoadBalancerName: 0 },
     output: { LoadBalancerAttributes: o_LoadBalancerAttributes },
   },
   errors: [
@@ -1099,6 +1167,7 @@ export const describeLoadBalancerPolicies: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { LoadBalancerName: 0, PolicyNames: 0 },
     output: {
       PolicyDescriptions: D.list({ PolicyAttributeDescriptions: D.list({}) }),
     },
@@ -1132,6 +1201,7 @@ export const describeLoadBalancerPolicyTypes: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { PolicyTypeNames: 0 },
     output: {
       PolicyTypeDescriptions: D.list({
         PolicyAttributeTypeDescriptions: D.list({}),
@@ -1160,6 +1230,7 @@ export const describeLoadBalancers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { LoadBalancerNames: 0, Marker: 0, PageSize: 0 },
     output: {
       LoadBalancerDescriptions: D.list({
         ListenerDescriptions: D.list({
@@ -1208,6 +1279,7 @@ export const describeTags: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { LoadBalancerNames: 0 },
     output: { TagDescriptions: D.list({ Tags: D.list({}) }) },
   },
   errors: [AccessPointNotFoundException],
@@ -1233,7 +1305,11 @@ export const detachLoadBalancerFromSubnets: API.OperationMethod<
   DetachLoadBalancerFromSubnetsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Subnets: D.list() } },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerName: 0, Subnets: 0 },
+    output: { Subnets: D.list() },
+  },
   errors: [AccessPointNotFoundException, InvalidConfigurationRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1264,7 +1340,11 @@ export const disableAvailabilityZonesForLoadBalancer: API.OperationMethod<
   DisableAvailabilityZonesForLoadBalancerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AvailabilityZones: D.list() } },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerName: 0, AvailabilityZones: 0 },
+    output: { AvailabilityZones: D.list() },
+  },
   errors: [AccessPointNotFoundException, InvalidConfigurationRequestException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1290,7 +1370,11 @@ export const enableAvailabilityZonesForLoadBalancer: API.OperationMethod<
   EnableAvailabilityZonesForLoadBalancerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AvailabilityZones: D.list() } },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerName: 0, AvailabilityZones: 0 },
+    output: { AvailabilityZones: D.list() },
+  },
   errors: [AccessPointNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1327,6 +1411,21 @@ export const modifyLoadBalancerAttributes: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      LoadBalancerName: 0,
+      LoadBalancerAttributes: {
+        CrossZoneLoadBalancing: { Enabled: 0 },
+        AccessLog: {
+          Enabled: 0,
+          S3BucketName: 0,
+          EmitInterval: 0,
+          S3BucketPrefix: 0,
+        },
+        ConnectionDraining: { Enabled: 0, Timeout: 0 },
+        ConnectionSettings: { IdleTimeout: 0 },
+        AdditionalAttributes: D.list({ Key: 0, Value: 0 }),
+      },
+    },
     output: { LoadBalancerAttributes: o_LoadBalancerAttributes },
   },
   errors: [
@@ -1370,7 +1469,11 @@ export const registerInstancesWithLoadBalancer: API.OperationMethod<
   RegisterInstancesWithLoadBalancerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Instances: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerName: 0, Instances: D.list(i_Instance) },
+    output: { Instances: D.list({}) },
+  },
   errors: [AccessPointNotFoundException, InvalidEndPointException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1387,7 +1490,10 @@ export const removeTags: API.OperationMethod<
   RemoveTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerNames: 0, Tags: D.list({ Key: 0 }) },
+  },
   errors: [AccessPointNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1414,7 +1520,10 @@ export const setLoadBalancerListenerSSLCertificate: API.OperationMethod<
   SetLoadBalancerListenerSSLCertificateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerName: 0, LoadBalancerPort: 0, SSLCertificateId: 0 },
+  },
   errors: [
     AccessPointNotFoundException,
     CertificateNotFoundException,
@@ -1453,7 +1562,10 @@ export const setLoadBalancerPoliciesForBackendServer: API.OperationMethod<
   SetLoadBalancerPoliciesForBackendServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerName: 0, InstancePort: 0, PolicyNames: 0 },
+  },
   errors: [
     AccessPointNotFoundException,
     InvalidConfigurationRequestException,
@@ -1487,7 +1599,10 @@ export const setLoadBalancerPoliciesOfListener: API.OperationMethod<
   SetLoadBalancerPoliciesOfListenerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { LoadBalancerName: 0, LoadBalancerPort: 0, PolicyNames: 0 },
+  },
   errors: [
     AccessPointNotFoundException,
     InvalidConfigurationRequestException,
@@ -1499,6 +1614,15 @@ export const setLoadBalancerPoliciesOfListener: API.OperationMethod<
   operationName: "SetLoadBalancerPoliciesOfListener",
 })) as any;
 
+const i_Instance: D.LazyStruct = () => ({ InstanceId: 0 });
+const i_Listener: D.LazyStruct = () => ({
+  Protocol: 0,
+  LoadBalancerPort: 0,
+  InstanceProtocol: 0,
+  InstancePort: 0,
+  SSLCertificateId: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_HealthCheck: D.LazyStruct = () => ({
   Interval: D.num,
   Timeout: D.num,

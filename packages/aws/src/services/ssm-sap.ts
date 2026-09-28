@@ -699,6 +699,7 @@ export const deleteResourcePermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-resource-permission",
+    input: { ActionType: 0, SourceResourceArn: 0, ResourceArn: 0 },
     body: true,
   },
   errors: [
@@ -728,6 +729,7 @@ export const deregisterApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /deregister-application",
+    input: { ApplicationId: 0 },
     body: true,
   },
   errors: [InternalServerException, UnauthorizedException, ValidationException],
@@ -752,6 +754,7 @@ export const getApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /get-application",
+    input: { ApplicationId: 0, ApplicationArn: 0, AppRegistryArn: 0 },
     output: { Application: o_Application },
     body: true,
   },
@@ -778,6 +781,7 @@ export const getComponent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /get-component",
+    input: { ApplicationId: 0, ComponentId: 0 },
     output: { Component: { LastUpdated: D.ts } },
     body: true,
   },
@@ -803,6 +807,7 @@ export const getConfigurationCheckOperation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /get-configuration-check-operation",
+    input: { OperationId: 0 },
     output: { ConfigurationCheckOperation: o_ConfigurationCheckOperation },
     body: true,
   },
@@ -828,6 +833,7 @@ export const getDatabase: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /get-database",
+    input: { ApplicationId: 0, ComponentId: 0, DatabaseId: 0, DatabaseArn: 0 },
     output: {
       Database: {
         Credentials: D.list({ SecretId: D.secret }),
@@ -858,6 +864,7 @@ export const getOperation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /get-operation",
+    input: { OperationId: 0 },
     output: { Operation: o_Operation },
     body: true,
   },
@@ -884,6 +891,7 @@ export const getResourcePermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /get-resource-permission",
+    input: { ActionType: 0, ResourceArn: 0 },
     body: true,
   },
   errors: [
@@ -911,7 +919,12 @@ export const listApplications: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ApplicationSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /list-applications", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /list-applications",
+    input: { NextToken: 0, MaxResults: 0, Filters: D.list(i_Filter) },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -944,7 +957,12 @@ export const listComponents: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ComponentSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /list-components", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /list-components",
+    input: { ApplicationId: 0, NextToken: 0, MaxResults: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -979,6 +997,7 @@ export const listConfigurationCheckDefinitions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-configuration-check-definitions",
+    input: { MaxResults: 0, NextToken: 0 },
     body: true,
   },
   errors: [InternalServerException, ValidationException],
@@ -1011,6 +1030,13 @@ export const listConfigurationCheckOperations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-configuration-check-operations",
+    input: {
+      ApplicationId: 0,
+      ListMode: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list(i_Filter),
+    },
     output: {
       ConfigurationCheckOperations: D.list(o_ConfigurationCheckOperation),
     },
@@ -1047,7 +1073,12 @@ export const listDatabases: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   DatabaseSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /list-databases", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /list-databases",
+    input: { ApplicationId: 0, ComponentId: 0, NextToken: 0, MaxResults: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1083,6 +1114,12 @@ export const listOperationEvents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-operation-events",
+    input: {
+      OperationId: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list(i_Filter),
+    },
     output: { OperationEvents: D.list({ Timestamp: D.ts }) },
     body: true,
   },
@@ -1115,6 +1152,12 @@ export const listOperations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-operations",
+    input: {
+      ApplicationId: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: D.list(i_Filter),
+    },
     output: { Operations: D.list(o_Operation) },
     body: true,
   },
@@ -1147,6 +1190,7 @@ export const listSubCheckResults: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-sub-check-results",
+    input: { OperationId: 0, MaxResults: 0, NextToken: 0 },
     body: true,
   },
   errors: [InternalServerException, ValidationException],
@@ -1178,6 +1222,7 @@ export const listSubCheckRuleResults: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-sub-check-rule-results",
+    input: { SubCheckResultId: 0, MaxResults: 0, NextToken: 0 },
     body: true,
   },
   errors: [InternalServerException, ValidationException],
@@ -1206,7 +1251,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1230,6 +1279,7 @@ export const putResourcePermission: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /put-resource-permission",
+    input: { ActionType: 0, SourceResourceArn: 0, ResourceArn: 0 },
     body: true,
   },
   errors: [
@@ -1266,6 +1316,17 @@ export const registerApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /register-application",
+    input: {
+      ApplicationId: 0,
+      ApplicationType: 0,
+      Instances: 0,
+      SapInstanceNumber: 0,
+      Sid: 0,
+      Tags: 0,
+      Credentials: D.list(i_ApplicationCredential),
+      DatabaseArn: 0,
+      ComponentsInfo: D.list({ ComponentType: 0, Sid: 0, Ec2InstanceId: 0 }),
+    },
     output: { Application: o_Application },
     body: true,
   },
@@ -1297,7 +1358,12 @@ export const startApplication: API.OperationMethod<
   StartApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /start-application", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /start-application",
+    input: { ApplicationId: 0 },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1328,6 +1394,7 @@ export const startApplicationRefresh: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /start-application-refresh",
+    input: { ApplicationId: 0 },
     body: true,
   },
   errors: [
@@ -1360,6 +1427,7 @@ export const startConfigurationChecks: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /start-configuration-checks",
+    input: { ApplicationId: 0, ConfigurationCheckIds: 0 },
     output: {
       ConfigurationCheckOperations: D.list(o_ConfigurationCheckOperation),
     },
@@ -1393,7 +1461,16 @@ export const stopApplication: API.OperationMethod<
   StopApplicationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /stop-application", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /stop-application",
+    input: {
+      ApplicationId: 0,
+      StopConnectedEntity: 0,
+      IncludeEc2InstanceShutdown: 0,
+    },
+    body: true,
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -1419,7 +1496,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1443,7 +1525,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [ConflictException, ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
@@ -1470,6 +1552,13 @@ export const updateApplicationSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /update-application-settings",
+    input: {
+      ApplicationId: 0,
+      CredentialsToAddOrUpdate: D.list(i_ApplicationCredential),
+      CredentialsToRemove: D.list(i_ApplicationCredential),
+      Backint: { BackintMode: 0, EnsureNoBackupInProcess: 0 },
+      DatabaseArn: 0,
+    },
     body: true,
   },
   errors: [
@@ -1484,6 +1573,12 @@ export const updateApplicationSettings: API.OperationMethod<
   operationName: "UpdateApplicationSettings",
 })) as any;
 
+const i_ApplicationCredential: D.LazyStruct = () => ({
+  DatabaseName: 0,
+  CredentialType: 0,
+  SecretId: 0,
+});
+const i_Filter: D.LazyStruct = () => ({ Name: 0, Value: 0, Operator: 0 });
 const o_Application: D.LazyStruct = () => ({ LastUpdated: D.ts });
 const o_ConfigurationCheckOperation: D.LazyStruct = () => ({
   StartTime: D.ts,

@@ -160,9 +160,9 @@ export const restJson1Protocol: Protocol = (
             "application/vnd.amazon.eventstream";
         } else if (payloadShape === "stream" || payloadShape === "blob") {
           request.body = convertStreamingInput(value as StreamingInputBody);
-          // Streaming-input operations are signed UNSIGNED-PAYLOAD — some
-          // services (Lex Runtime V2) reject payload-hash signatures.
-          if (payloadShape === "stream") request.hasStreamingInput = true;
+          // Raw-byte payloads are signed UNSIGNED-PAYLOAD — some services
+          // (Lex Runtime V2) reject payload-hash signatures.
+          request.hasStreamingInput = true;
           setContentType("application/octet-stream");
         } else if (payloadShape === "text" || typeof value === "string") {
           request.body = value as string;

@@ -2005,6 +2005,16 @@ export const applyGuardrail: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /guardrail/{guardrailIdentifier}/version/{guardrailVersion}/apply",
+    input: {
+      guardrailIdentifier: 0,
+      guardrailVersion: 0,
+      source: 0,
+      content: D.list({
+        text: { text: 0, qualifiers: 0 },
+        image: { format: 0, source: { bytes: 0 } },
+      }),
+      outputScope: 0,
+    },
     output: { assessments: D.list(o_GuardrailAssessment) },
     body: true,
   },
@@ -2061,6 +2071,25 @@ export const converse: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /model/{modelId}/converse",
+    input: {
+      modelId: 0,
+      messages: D.list(i_Message),
+      system: D.list(i_SystemContentBlock),
+      inferenceConfig: i_InferenceConfiguration,
+      toolConfig: i_ToolConfiguration,
+      guardrailConfig: {
+        guardrailIdentifier: 0,
+        guardrailVersion: 0,
+        trace: 0,
+      },
+      additionalModelRequestFields: 0,
+      promptVariables: D.map(i_PromptVariableValues),
+      additionalModelResponseFieldPaths: 0,
+      requestMetadata: 0,
+      performanceConfig: i_PerformanceConfiguration,
+      serviceTier: i_ServiceTier,
+      outputConfig: i_OutputConfig,
+    },
     output: {
       output: {
         message: {
@@ -2144,6 +2173,26 @@ export const converseStream: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /model/{modelId}/converse-stream",
+    input: {
+      modelId: 0,
+      messages: D.list(i_Message),
+      system: D.list(i_SystemContentBlock),
+      inferenceConfig: i_InferenceConfiguration,
+      toolConfig: i_ToolConfiguration,
+      guardrailConfig: {
+        guardrailIdentifier: 0,
+        guardrailVersion: 0,
+        trace: 0,
+        streamProcessingMode: 0,
+      },
+      additionalModelRequestFields: 0,
+      promptVariables: D.map(i_PromptVariableValues),
+      additionalModelResponseFieldPaths: 0,
+      requestMetadata: 0,
+      performanceConfig: i_PerformanceConfiguration,
+      serviceTier: i_ServiceTier,
+      outputConfig: i_OutputConfig,
+    },
     output: {
       stream: D.m({
         payload: true,
@@ -2223,6 +2272,18 @@ export const countTokens: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /model/{modelId}/count-tokens",
+    input: {
+      modelId: 0,
+      input: {
+        invokeModel: { body: 0 },
+        converse: {
+          messages: D.list(i_Message),
+          system: D.list(i_SystemContentBlock),
+          toolConfig: i_ToolConfiguration,
+          additionalModelRequestFields: 0,
+        },
+      },
+    },
     body: true,
   },
   errors: [
@@ -2256,6 +2317,7 @@ export const getAsyncInvoke: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /async-invoke/{invocationArn}",
+    input: { invocationArn: 0 },
     output: {
       failureMessage: D.secret,
       submitTime: D.ts,
@@ -2293,6 +2355,14 @@ export const invokeGuardrailChecks: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /guardrail-checks/invoke",
+    input: {
+      messages: D.list({ role: 0, content: D.list({ text: 0 }) }),
+      checks: {
+        contentFilter: { categories: D.list({ category: 0 }) },
+        promptAttack: { categories: D.list({ category: 0 }) },
+        sensitiveInformation: { entities: D.list({ type: 0 }) },
+      },
+    },
     body: true,
   },
   errors: [
@@ -2340,9 +2410,10 @@ export const invokeModel: API.OperationMethod<
     service: svc,
     http: "POST /model/{modelId}/invoke",
     input: {
-      body: D.m({ payload: true, shape: D.stream }),
+      body: D.m({ payload: true, shape: D.blob }),
       contentType: D.m({ header: "Content-Type" }),
       accept: D.m({ header: "Accept" }),
+      modelId: 0,
       trace: D.m({ header: "X-Amzn-Bedrock-Trace" }),
       guardrailIdentifier: D.m({
         header: "X-Amzn-Bedrock-GuardrailIdentifier",
@@ -2355,7 +2426,7 @@ export const invokeModel: API.OperationMethod<
       requestMetadata: D.m({ header: "X-Amzn-Bedrock-Request-Metadata" }),
     },
     output: {
-      body: D.m({ payload: true, shape: D.stream }),
+      body: D.m({ payload: true, shape: D.secretBlob }),
       contentType: D.m({ header: "Content-Type" }),
       performanceConfigLatency: D.m({
         header: "X-Amzn-Bedrock-PerformanceConfig-Latency",
@@ -2407,7 +2478,10 @@ export const invokeModelWithBidirectionalStream: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /model/{modelId}/invoke-with-bidirectional-stream",
-    input: { body: D.m({ payload: true, shape: D.events({ chunk: 0 }) }) },
+    input: {
+      modelId: 0,
+      body: D.m({ payload: true, shape: D.events({ chunk: { bytes: 0 } }) }),
+    },
     output: {
       body: D.m({
         payload: true,
@@ -2479,9 +2553,10 @@ export const invokeModelWithResponseStream: API.OperationMethod<
     service: svc,
     http: "POST /model/{modelId}/invoke-with-response-stream",
     input: {
-      body: D.m({ payload: true, shape: D.stream }),
+      body: D.m({ payload: true, shape: D.blob }),
       contentType: D.m({ header: "Content-Type" }),
       accept: D.m({ header: "X-Amzn-Bedrock-Accept" }),
+      modelId: 0,
       trace: D.m({ header: "X-Amzn-Bedrock-Trace" }),
       guardrailIdentifier: D.m({
         header: "X-Amzn-Bedrock-GuardrailIdentifier",
@@ -2611,7 +2686,15 @@ export const startAsyncInvoke: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /async-invoke",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      clientRequestToken: D.m({ idempotency: true }),
+      modelId: 0,
+      modelInput: 0,
+      outputDataConfig: {
+        s3OutputDataConfig: { s3Uri: 0, kmsKeyId: 0, bucketOwner: 0 },
+      },
+      tags: D.list({ key: 0, value: 0 }),
+    },
     body: true,
   },
   errors: [
@@ -2629,6 +2712,87 @@ export const startAsyncInvoke: API.OperationMethod<
   operationName: "StartAsyncInvoke",
 })) as any;
 
+const i_InferenceConfiguration: D.LazyStruct = () => ({
+  maxTokens: 0,
+  temperature: 0,
+  topP: 0,
+  stopSequences: 0,
+});
+const i_Message: D.LazyStruct = () => ({
+  role: 0,
+  content: D.list({
+    text: 0,
+    image: i_ImageBlock,
+    document: i_DocumentBlock,
+    video: i_VideoBlock,
+    audio: {
+      format: 0,
+      source: { bytes: 0, s3Location: i_S3Location },
+      error: i_ErrorBlock,
+    },
+    toolUse: { toolUseId: 0, name: 0, input: 0, type: 0 },
+    toolResult: {
+      toolUseId: 0,
+      content: D.list({
+        json: 0,
+        text: 0,
+        image: i_ImageBlock,
+        document: i_DocumentBlock,
+        video: i_VideoBlock,
+        searchResult: i_SearchResultBlock,
+      }),
+      status: 0,
+      type: 0,
+    },
+    guardContent: i_GuardrailConverseContentBlock,
+    cachePoint: i_CachePointBlock,
+    reasoningContent: {
+      reasoningText: { text: 0, signature: 0 },
+      redactedContent: 0,
+    },
+    citationsContent: {
+      content: D.list({ text: 0 }),
+      citations: D.list({
+        title: 0,
+        source: 0,
+        sourceContent: D.list({ text: 0 }),
+        location: {
+          web: { url: 0, domain: 0 },
+          documentChar: { documentIndex: 0, start: 0, end: 0 },
+          documentPage: { documentIndex: 0, start: 0, end: 0 },
+          documentChunk: { documentIndex: 0, start: 0, end: 0 },
+          searchResultLocation: { searchResultIndex: 0, start: 0, end: 0 },
+        },
+      }),
+    },
+    searchResult: i_SearchResultBlock,
+    toolAddition: { tool: i_ToolReference },
+    toolRemoval: { tool: i_ToolReference },
+  }),
+});
+const i_OutputConfig: D.LazyStruct = () => ({
+  textFormat: {
+    type: 0,
+    structure: { jsonSchema: { schema: 0, name: 0, description: 0 } },
+  },
+  effort: 0,
+});
+const i_PerformanceConfiguration: D.LazyStruct = () => ({ latency: 0 });
+const i_PromptVariableValues: D.LazyStruct = () => ({ text: 0 });
+const i_ServiceTier: D.LazyStruct = () => ({ type: 0 });
+const i_SystemContentBlock: D.LazyStruct = () => ({
+  text: 0,
+  guardContent: i_GuardrailConverseContentBlock,
+  cachePoint: i_CachePointBlock,
+});
+const i_ToolConfiguration: D.LazyStruct = () => ({
+  tools: D.list({
+    toolSpec: { name: 0, description: 0, inputSchema: { json: 0 }, strict: 0 },
+    systemTool: { name: 0 },
+    cachePoint: i_CachePointBlock,
+  }),
+  toolChoice: { auto: {}, any: {}, tool: { name: 0 } },
+});
 const o_DocumentBlock: D.LazyStruct = () => ({ source: { bytes: D.blob } });
 const o_GuardrailAssessment: D.LazyStruct = () => ({
   automatedReasoningPolicy: {
@@ -2668,6 +2832,45 @@ const o_GuardrailTraceAssessment: D.LazyStruct = () => ({
 const o_ImageBlock: D.LazyStruct = () => ({ source: o_ImageSource });
 const o_ImageSource: D.LazyStruct = () => ({ bytes: D.blob });
 const o_VideoBlock: D.LazyStruct = () => ({ source: { bytes: D.blob } });
+const i_CachePointBlock: D.LazyStruct = () => ({ type: 0, ttl: 0 });
+const i_DocumentBlock: D.LazyStruct = () => ({
+  format: 0,
+  name: 0,
+  source: {
+    bytes: 0,
+    s3Location: i_S3Location,
+    text: 0,
+    content: D.list({ text: 0 }),
+  },
+  context: 0,
+  citations: i_CitationsConfig,
+});
+const i_ErrorBlock: D.LazyStruct = () => ({ message: 0 });
+const i_GuardrailConverseContentBlock: D.LazyStruct = () => ({
+  text: { text: 0, qualifiers: 0 },
+  image: { format: 0, source: { bytes: 0 } },
+});
+const i_ImageBlock: D.LazyStruct = () => ({
+  format: 0,
+  source: { bytes: 0, s3Location: i_S3Location },
+  error: i_ErrorBlock,
+});
+const i_S3Location: D.LazyStruct = () => ({ uri: 0, bucketOwner: 0 });
+const i_SearchResultBlock: D.LazyStruct = () => ({
+  source: 0,
+  title: 0,
+  content: D.list({ text: 0 }),
+  citations: i_CitationsConfig,
+});
+const i_ToolReference: D.LazyStruct = () => ({
+  type: 0,
+  name: 0,
+  serverName: 0,
+});
+const i_VideoBlock: D.LazyStruct = () => ({
+  format: 0,
+  source: { bytes: 0, s3Location: i_S3Location },
+});
 const o_GuardrailAutomatedReasoningLogicWarning: D.LazyStruct = () => ({
   premises: D.list(o_GuardrailAutomatedReasoningStatement),
   claims: D.list(o_GuardrailAutomatedReasoningStatement),
@@ -2681,6 +2884,7 @@ const o_GuardrailAutomatedReasoningTranslation: D.LazyStruct = () => ({
   untranslatedPremises: D.list(o_GuardrailAutomatedReasoningInputTextReference),
   untranslatedClaims: D.list(o_GuardrailAutomatedReasoningInputTextReference),
 });
+const i_CitationsConfig: D.LazyStruct = () => ({ enabled: 0 });
 const o_GuardrailAutomatedReasoningInputTextReference: D.LazyStruct = () => ({
   text: D.secret,
 });

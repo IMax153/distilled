@@ -490,7 +490,20 @@ export const createIdentityPool: API.OperationMethod<
   CreateIdentityPoolError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IdentityPoolName: 0,
+      AllowUnauthenticatedIdentities: 0,
+      AllowClassicFlow: 0,
+      SupportedLoginProviders: 0,
+      DeveloperProviderName: 0,
+      OpenIdConnectProviderARNs: 0,
+      CognitoIdentityProviders: D.list(i_CognitoIdentityProvider),
+      SamlProviderARNs: 0,
+      IdentityPoolTags: 0,
+    },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -522,7 +535,7 @@ export const deleteIdentities: API.OperationMethod<
   DeleteIdentitiesError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { IdentityIdsToDelete: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -553,7 +566,7 @@ export const deleteIdentityPool: API.OperationMethod<
   DeleteIdentityPoolError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { IdentityPoolId: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -588,6 +601,7 @@ export const describeIdentity: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { IdentityId: 0 },
     output: { CreationDate: D.ts, LastModifiedDate: D.ts },
   },
   errors: [
@@ -622,7 +636,7 @@ export const describeIdentityPool: API.OperationMethod<
   DescribeIdentityPoolError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { IdentityPoolId: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -660,6 +674,7 @@ export const getCredentialsForIdentity: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { IdentityId: 0, Logins: 0, CustomRoleArn: 0 },
     output: {
       Credentials: {
         SecretKey: D.secret,
@@ -705,7 +720,10 @@ export const getId: API.OperationMethod<
   GetIdError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AccountId: 0, IdentityPoolId: 0, Logins: 0 },
+  },
   errors: [
     ExternalServiceException,
     InternalErrorException,
@@ -741,7 +759,7 @@ export const getIdentityPoolRoles: API.OperationMethod<
   GetIdentityPoolRolesError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { IdentityPoolId: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -779,7 +797,11 @@ export const getOpenIdToken: API.OperationMethod<
   GetOpenIdTokenError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Token: D.secret } },
+  descriptor: {
+    service: svc,
+    input: { IdentityId: 0, Logins: 0 },
+    output: { Token: D.secret },
+  },
   errors: [
     ExternalServiceException,
     InternalErrorException,
@@ -827,7 +849,17 @@ export const getOpenIdTokenForDeveloperIdentity: API.OperationMethod<
   GetOpenIdTokenForDeveloperIdentityError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Token: D.secret } },
+  descriptor: {
+    service: svc,
+    input: {
+      IdentityPoolId: 0,
+      IdentityId: 0,
+      Logins: 0,
+      PrincipalTags: 0,
+      TokenDuration: 0,
+    },
+    output: { Token: D.secret },
+  },
   errors: [
     DeveloperUserAlreadyRegisteredException,
     InternalErrorException,
@@ -859,7 +891,10 @@ export const getPrincipalTagAttributeMap: API.OperationMethod<
   GetPrincipalTagAttributeMapError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { IdentityPoolId: 0, IdentityProviderName: 0 },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -893,6 +928,7 @@ export const listIdentities: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { IdentityPoolId: 0, MaxResults: 0, NextToken: 0, HideDisabled: 0 },
     output: {
       Identities: D.list({ CreationDate: D.ts, LastModifiedDate: D.ts }),
     },
@@ -929,7 +965,7 @@ export const listIdentityPools: API.PaginatedOperationMethod<
   Creds | HttpClient.HttpClient,
   IdentityPoolShortDescription
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MaxResults: 0, NextToken: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -969,7 +1005,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -1017,7 +1053,16 @@ export const lookupDeveloperIdentity: API.OperationMethod<
   LookupDeveloperIdentityError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IdentityPoolId: 0,
+      IdentityId: 0,
+      DeveloperUserIdentifier: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -1063,7 +1108,15 @@ export const mergeDeveloperIdentities: API.OperationMethod<
   MergeDeveloperIdentitiesError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SourceUserIdentifier: 0,
+      DestinationUserIdentifier: 0,
+      DeveloperProviderName: 0,
+      IdentityPoolId: 0,
+    },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -1098,7 +1151,20 @@ export const setIdentityPoolRoles: API.OperationMethod<
   SetIdentityPoolRolesError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IdentityPoolId: 0,
+      Roles: 0,
+      RoleMappings: D.map({
+        Type: 0,
+        AmbiguousRoleResolution: 0,
+        RulesConfiguration: {
+          Rules: D.list({ Claim: 0, MatchType: 0, Value: 0, RoleARN: 0 }),
+        },
+      }),
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InternalErrorException,
@@ -1130,7 +1196,15 @@ export const setPrincipalTagAttributeMap: API.OperationMethod<
   SetPrincipalTagAttributeMapError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IdentityPoolId: 0,
+      IdentityProviderName: 0,
+      UseDefaults: 0,
+      PrincipalTags: 0,
+    },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -1176,7 +1250,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -1212,7 +1286,15 @@ export const unlinkDeveloperIdentity: API.OperationMethod<
   UnlinkDeveloperIdentityError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IdentityId: 0,
+      IdentityPoolId: 0,
+      DeveloperProviderName: 0,
+      DeveloperUserIdentifier: 0,
+    },
+  },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -1248,7 +1330,10 @@ export const unlinkIdentity: API.OperationMethod<
   UnlinkIdentityError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { IdentityId: 0, Logins: 0, LoginsToRemove: 0 },
+  },
   errors: [
     ExternalServiceException,
     InternalErrorException,
@@ -1280,7 +1365,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     InternalErrorException,
     InvalidParameterException,
@@ -1317,7 +1402,21 @@ export const updateIdentityPool: API.OperationMethod<
   UpdateIdentityPoolError,
   Creds | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      IdentityPoolId: 0,
+      IdentityPoolName: 0,
+      AllowUnauthenticatedIdentities: 0,
+      AllowClassicFlow: 0,
+      SupportedLoginProviders: 0,
+      DeveloperProviderName: 0,
+      OpenIdConnectProviderARNs: 0,
+      CognitoIdentityProviders: D.list(i_CognitoIdentityProvider),
+      SamlProviderARNs: 0,
+      IdentityPoolTags: 0,
+    },
+  },
   errors: [
     ConcurrentModificationException,
     InternalErrorException,
@@ -1332,3 +1431,9 @@ export const updateIdentityPool: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateIdentityPool",
 })) as any;
+
+const i_CognitoIdentityProvider: D.LazyStruct = () => ({
+  ProviderName: 0,
+  ClientId: 0,
+  ServerSideTokenCheck: 0,
+});

@@ -17477,7 +17477,10 @@ export const addAssociation: API.OperationMethod<
   AddAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { SourceArn: 0, DestinationArn: 0, AssociationType: 0 },
+  },
   errors: [ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17500,7 +17503,7 @@ export const addTags: API.OperationMethod<
   AddTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17520,7 +17523,7 @@ export const associateTrialComponent: API.OperationMethod<
   AssociateTrialComponentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrialComponentName: 0, TrialName: 0 } },
   errors: [ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17539,7 +17542,11 @@ export const attachClusterNodeVolume: API.OperationMethod<
   AttachClusterNodeVolumeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AttachTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ClusterArn: 0, NodeId: 0, VolumeId: 0 },
+    output: { AttachTime: D.ts },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17563,7 +17570,16 @@ export const batchAddClusterNodes: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClusterName: 0,
+      ClientToken: D.m({ idempotency: true }),
+      NodesToAdd: D.list({
+        InstanceGroupName: 0,
+        IncrementTargetCountBy: 0,
+        AvailabilityZones: 0,
+        InstanceTypes: 0,
+      }),
+    },
   },
   errors: [ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
@@ -17585,7 +17601,10 @@ export const batchDeleteClusterNodes: API.OperationMethod<
   BatchDeleteClusterNodesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ClusterName: 0, NodeIds: 0, NodeLogicalIds: 0 },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17604,6 +17623,7 @@ export const batchDescribeModelPackage: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ModelPackageArnList: 0 },
     output: { ModelPackageSummaries: D.map({ CreationTime: D.ts }) },
   },
   errors: [],
@@ -17630,7 +17650,10 @@ export const batchRebootClusterNodes: API.OperationMethod<
   BatchRebootClusterNodesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ClusterName: 0, NodeIds: 0, NodeLogicalIds: 0 },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17657,7 +17680,10 @@ export const batchReplaceClusterNodes: API.OperationMethod<
   BatchReplaceClusterNodesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ClusterName: 0, NodeIds: 0, NodeLogicalIds: 0 },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17674,7 +17700,19 @@ export const createAction: API.OperationMethod<
   CreateActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ActionName: 0,
+      Source: { SourceUri: 0, SourceType: 0, SourceId: 0 },
+      ActionType: 0,
+      Description: 0,
+      Status: 0,
+      Properties: 0,
+      MetadataProperties: i_MetadataProperties,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17695,7 +17733,24 @@ export const createAIBenchmarkJob: API.OperationMethod<
   CreateAIBenchmarkJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AIBenchmarkJobName: 0,
+      BenchmarkTarget: {
+        Endpoint: {
+          Identifier: 0,
+          TargetContainerHostname: 0,
+          InferenceComponents: D.list({ Identifier: 0 }),
+        },
+      },
+      OutputConfig: { S3OutputLocation: 0, MlflowConfig: i_AIMlflowConfig },
+      AIWorkloadConfigIdentifier: 0,
+      RoleArn: 0,
+      NetworkConfig: { VpcConfig: i_VpcConfig },
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17716,7 +17771,35 @@ export const createAIRecommendationJob: API.OperationMethod<
   CreateAIRecommendationJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AIRecommendationJobName: 0,
+      ModelSource: { S3: { S3Uri: 0 } },
+      OutputConfig: {
+        S3OutputLocation: 0,
+        ModelPackageGroupIdentifier: 0,
+        MlflowConfig: i_AIMlflowConfig,
+      },
+      AIWorkloadConfigIdentifier: 0,
+      PerformanceTarget: { Constraints: D.list({ Metric: 0 }) },
+      RoleArn: 0,
+      InferenceSpecification: { Framework: 0 },
+      OptimizeModel: 0,
+      ComputeSpec: {
+        InstanceTypes: 0,
+        CapacityReservationConfig: {
+          CapacityReservationPreference: 0,
+          MlReservationArns: 0,
+        },
+      },
+      AdapterSource: {
+        ModelPackageArns: D.list({ AdapterId: 0, ModelPackageArn: 0 }),
+        S3Uris: D.list({ AdapterId: 0, S3Uri: 0 }),
+      },
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17736,7 +17819,20 @@ export const createAIWorkloadConfig: API.OperationMethod<
   CreateAIWorkloadConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AIWorkloadConfigName: 0,
+      DatasetConfig: {
+        InputDataConfig: D.list({
+          ChannelName: 0,
+          DataSource: { S3DataSource: { S3Uri: 0 } },
+        }),
+      },
+      AIWorkloadConfigs: { WorkloadSpec: { Inline: 0 } },
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17753,7 +17849,63 @@ export const createAlgorithm: API.OperationMethod<
   CreateAlgorithmError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AlgorithmName: 0,
+      AlgorithmDescription: 0,
+      TrainingSpecification: {
+        TrainingImage: 0,
+        TrainingImageDigest: 0,
+        SupportedHyperParameters: D.list({
+          Name: 0,
+          Description: 0,
+          Type: 0,
+          Range: {
+            IntegerParameterRangeSpecification: { MinValue: 0, MaxValue: 0 },
+            ContinuousParameterRangeSpecification: { MinValue: 0, MaxValue: 0 },
+            CategoricalParameterRangeSpecification: { Values: 0 },
+          },
+          IsTunable: 0,
+          IsRequired: 0,
+          DefaultValue: 0,
+        }),
+        SupportedTrainingInstanceTypes: 0,
+        SupportsDistributedTraining: 0,
+        MetricDefinitions: D.list(i_MetricDefinition),
+        TrainingChannels: D.list({
+          Name: 0,
+          Description: 0,
+          IsRequired: 0,
+          SupportedContentTypes: 0,
+          SupportedCompressionTypes: 0,
+          SupportedInputModes: 0,
+        }),
+        SupportedTuningJobObjectiveMetrics: D.list(
+          i_HyperParameterTuningJobObjective,
+        ),
+        AdditionalS3DataSource: i_AdditionalS3DataSource,
+      },
+      InferenceSpecification: i_InferenceSpecification,
+      ValidationSpecification: {
+        ValidationRole: 0,
+        ValidationProfiles: D.list({
+          ProfileName: 0,
+          TrainingJobDefinition: {
+            TrainingInputMode: 0,
+            HyperParameters: 0,
+            InputDataConfig: D.list(i_Channel),
+            OutputDataConfig: i_OutputDataConfig,
+            ResourceConfig: i_ResourceConfig,
+            StoppingCondition: i_StoppingCondition,
+          },
+          TransformJobDefinition: i_TransformJobDefinition,
+        }),
+      },
+      CertifyForMarketplace: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17773,7 +17925,19 @@ export const createApp: API.OperationMethod<
   CreateAppError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DomainId: 0,
+      UserProfileName: 0,
+      SpaceName: 0,
+      AppType: 0,
+      AppName: 0,
+      Tags: D.list(i_Tag),
+      ResourceSpec: i_ResourceSpec,
+      RecoveryMode: 0,
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17790,7 +17954,16 @@ export const createAppImageConfig: API.OperationMethod<
   CreateAppImageConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AppImageConfigName: 0,
+      Tags: D.list(i_Tag),
+      KernelGatewayImageConfig: i_KernelGatewayImageConfig,
+      JupyterLabAppImageConfig: i_JupyterLabAppImageConfig,
+      CodeEditorAppImageConfig: i_CodeEditorAppImageConfig,
+    },
+  },
   errors: [ResourceInUse],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17807,7 +17980,17 @@ export const createArtifact: API.OperationMethod<
   CreateArtifactError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ArtifactName: 0,
+      Source: i_ArtifactSource,
+      ArtifactType: 0,
+      Properties: 0,
+      MetadataProperties: i_MetadataProperties,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17839,7 +18022,37 @@ export const createAutoMLJob: API.OperationMethod<
   CreateAutoMLJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AutoMLJobName: 0,
+      InputDataConfig: D.list({
+        DataSource: i_AutoMLDataSource,
+        CompressionType: 0,
+        TargetAttributeName: 0,
+        ContentType: 0,
+        ChannelType: 0,
+        SampleWeightAttributeName: 0,
+      }),
+      OutputDataConfig: i_AutoMLOutputDataConfig,
+      ProblemType: 0,
+      AutoMLJobObjective: i_AutoMLJobObjective,
+      AutoMLJobConfig: {
+        CompletionCriteria: i_AutoMLJobCompletionCriteria,
+        SecurityConfig: i_AutoMLSecurityConfig,
+        CandidateGenerationConfig: {
+          FeatureSpecificationS3Uri: 0,
+          AlgorithmsConfig: D.list(i_AutoMLAlgorithmConfig),
+        },
+        DataSplitConfig: i_AutoMLDataSplitConfig,
+        Mode: 0,
+      },
+      RoleArn: 0,
+      GenerateCandidateDefinitionsOnly: 0,
+      Tags: D.list(i_Tag),
+      ModelDeployConfig: i_ModelDeployConfig,
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17875,7 +18088,70 @@ export const createAutoMLJobV2: API.OperationMethod<
   CreateAutoMLJobV2Error,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AutoMLJobName: 0,
+      AutoMLJobInputDataConfig: D.list({
+        ChannelType: 0,
+        ContentType: 0,
+        CompressionType: 0,
+        DataSource: i_AutoMLDataSource,
+      }),
+      OutputDataConfig: i_AutoMLOutputDataConfig,
+      AutoMLProblemTypeConfig: {
+        ImageClassificationJobConfig: {
+          CompletionCriteria: i_AutoMLJobCompletionCriteria,
+        },
+        TextClassificationJobConfig: {
+          CompletionCriteria: i_AutoMLJobCompletionCriteria,
+          ContentColumn: 0,
+          TargetLabelColumn: 0,
+        },
+        TimeSeriesForecastingJobConfig: {
+          FeatureSpecificationS3Uri: 0,
+          CompletionCriteria: i_AutoMLJobCompletionCriteria,
+          ForecastFrequency: 0,
+          ForecastHorizon: 0,
+          ForecastQuantiles: 0,
+          Transformations: { Filling: 0, Aggregation: 0 },
+          TimeSeriesConfig: {
+            TargetAttributeName: 0,
+            TimestampAttributeName: 0,
+            ItemIdentifierAttributeName: 0,
+            GroupingAttributeNames: 0,
+          },
+          HolidayConfig: D.list({ CountryCode: 0 }),
+          CandidateGenerationConfig: i_CandidateGenerationConfig,
+        },
+        TabularJobConfig: {
+          CandidateGenerationConfig: i_CandidateGenerationConfig,
+          CompletionCriteria: i_AutoMLJobCompletionCriteria,
+          FeatureSpecificationS3Uri: 0,
+          Mode: 0,
+          GenerateCandidateDefinitionsOnly: 0,
+          ProblemType: 0,
+          TargetAttributeName: 0,
+          SampleWeightAttributeName: 0,
+        },
+        TextGenerationJobConfig: {
+          CompletionCriteria: i_AutoMLJobCompletionCriteria,
+          BaseModelName: 0,
+          TextGenerationHyperParameters: 0,
+          ModelAccessConfig: i_ModelAccessConfig,
+        },
+      },
+      RoleArn: 0,
+      Tags: D.list(i_Tag),
+      SecurityConfig: i_AutoMLSecurityConfig,
+      AutoMLJobObjective: i_AutoMLJobObjective,
+      ModelDeployConfig: i_ModelDeployConfig,
+      DataSplitConfig: i_AutoMLDataSplitConfig,
+      AutoMLComputeConfig: {
+        EmrServerlessComputeConfig: { ExecutionRoleARN: 0 },
+      },
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17895,7 +18171,25 @@ export const createCluster: API.OperationMethod<
   CreateClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterName: 0,
+      InstanceGroups: D.list(i_ClusterInstanceGroupSpecification),
+      RestrictedInstanceGroups: D.list(
+        i_ClusterRestrictedInstanceGroupSpecification,
+      ),
+      RestrictedInstanceGroupsConfig: i_ClusterRestrictedInstanceGroupsConfig,
+      VpcConfig: i_VpcConfig,
+      Tags: D.list(i_Tag),
+      Orchestrator: i_ClusterOrchestrator,
+      NodeRecovery: 0,
+      TieredStorageConfig: i_ClusterTieredStorageConfig,
+      NodeProvisioningMode: 0,
+      ClusterRole: 0,
+      AutoScaling: i_ClusterAutoScalingConfig,
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17915,7 +18209,16 @@ export const createClusterSchedulerConfig: API.OperationMethod<
   CreateClusterSchedulerConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      ClusterArn: 0,
+      SchedulerConfig: i_SchedulerConfig,
+      Description: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ConflictException, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17934,7 +18237,14 @@ export const createCodeRepository: API.OperationMethod<
   CreateCodeRepositoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CodeRepositoryName: 0,
+      GitConfig: { RepositoryUrl: 0, Branch: 0, SecretArn: 0 },
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17970,7 +18280,30 @@ export const createCompilationJob: API.OperationMethod<
   CreateCompilationJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CompilationJobName: 0,
+      RoleArn: 0,
+      ModelPackageVersionArn: 0,
+      InputConfig: {
+        S3Uri: 0,
+        DataInputConfig: 0,
+        Framework: 0,
+        FrameworkVersion: 0,
+      },
+      OutputConfig: {
+        S3OutputLocation: 0,
+        TargetDevice: 0,
+        TargetPlatform: { Os: 0, Arch: 0, Accelerator: 0 },
+        CompilerOptions: 0,
+        KmsKeyId: 0,
+      },
+      VpcConfig: { SecurityGroupIds: 0, Subnets: 0 },
+      StoppingCondition: i_StoppingCondition,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -17990,7 +18323,18 @@ export const createComputeQuota: API.OperationMethod<
   CreateComputeQuotaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Description: 0,
+      ClusterArn: 0,
+      ComputeQuotaConfig: i_ComputeQuotaConfig,
+      ComputeQuotaTarget: i_ComputeQuotaTarget,
+      ActivationState: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ConflictException, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18007,7 +18351,17 @@ export const createContext: API.OperationMethod<
   CreateContextError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ContextName: 0,
+      Source: { SourceUri: 0, SourceType: 0, SourceId: 0 },
+      ContextType: 0,
+      Description: 0,
+      Properties: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18027,7 +18381,35 @@ export const createDataQualityJobDefinition: API.OperationMethod<
   CreateDataQualityJobDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      JobDefinitionName: 0,
+      DataQualityBaselineConfig: {
+        BaseliningJobName: 0,
+        ConstraintsResource: i_MonitoringConstraintsResource,
+        StatisticsResource: i_MonitoringStatisticsResource,
+      },
+      DataQualityAppSpecification: {
+        ImageUri: 0,
+        ContainerEntrypoint: 0,
+        ContainerArguments: 0,
+        RecordPreprocessorSourceUri: 0,
+        PostAnalyticsProcessorSourceUri: 0,
+        Environment: 0,
+      },
+      DataQualityJobInput: {
+        EndpointInput: i_EndpointInput,
+        BatchTransformInput: i_BatchTransformInput,
+      },
+      DataQualityJobOutputConfig: i_MonitoringOutputConfig,
+      JobResources: i_MonitoringResources,
+      NetworkConfig: i_MonitoringNetworkConfig,
+      RoleArn: 0,
+      StoppingCondition: i_MonitoringStoppingCondition,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18047,7 +18429,17 @@ export const createDeviceFleet: API.OperationMethod<
   CreateDeviceFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DeviceFleetName: 0,
+      RoleArn: 0,
+      Description: 0,
+      OutputConfig: i_EdgeOutputConfig,
+      Tags: D.list(i_Tag),
+      EnableIotRoleAlias: 0,
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18087,7 +18479,40 @@ export const createDomain: API.OperationMethod<
   CreateDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DomainName: 0,
+      AuthMode: 0,
+      DefaultUserSettings: i_UserSettings,
+      DomainSettings: {
+        SecurityGroupIds: 0,
+        RStudioServerProDomainSettings: {
+          DomainExecutionRoleArn: 0,
+          RStudioConnectUrl: 0,
+          RStudioPackageManagerUrl: 0,
+          DefaultResourceSpec: i_ResourceSpec,
+        },
+        ExecutionRoleIdentityConfig: 0,
+        TrustedIdentityPropagationSettings:
+          i_TrustedIdentityPropagationSettings,
+        DockerSettings: i_DockerSettings,
+        AmazonQSettings: i_AmazonQSettings,
+        UnifiedStudioSettings: i_UnifiedStudioSettings,
+        IpAddressType: 0,
+      },
+      SubnetIds: 0,
+      VpcId: 0,
+      Tags: D.list(i_Tag),
+      AppNetworkAccessType: 0,
+      HomeEfsFileSystemKmsKeyId: 0,
+      KmsKeyId: 0,
+      AppSecurityGroupManagement: 0,
+      HomeEfsFileSystemCreation: 0,
+      TagPropagation: 0,
+      DefaultSpaceSettings: i_DefaultSpaceSettings,
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18106,7 +18531,16 @@ export const createEdgeDeploymentPlan: API.OperationMethod<
   CreateEdgeDeploymentPlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EdgeDeploymentPlanName: 0,
+      ModelConfigs: D.list({ ModelHandle: 0, EdgePackagingJobName: 0 }),
+      DeviceFleetName: 0,
+      Stages: D.list(i_DeploymentStage),
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18125,7 +18559,10 @@ export const createEdgeDeploymentStage: API.OperationMethod<
   CreateEdgeDeploymentStageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { EdgeDeploymentPlanName: 0, Stages: D.list(i_DeploymentStage) },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18142,7 +18579,19 @@ export const createEdgePackagingJob: API.OperationMethod<
   CreateEdgePackagingJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EdgePackagingJobName: 0,
+      CompilationJobName: 0,
+      ModelName: 0,
+      ModelVersion: 0,
+      RoleArn: 0,
+      OutputConfig: i_EdgeOutputConfig,
+      ResourceKey: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18195,7 +18644,15 @@ export const createEndpoint: API.OperationMethod<
   CreateEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EndpointName: 0,
+      EndpointConfigName: 0,
+      DeploymentConfig: i_DeploymentConfig,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [
     ResourceLimitExceeded,
     EndpointConfigNotFound,
@@ -18227,7 +18684,74 @@ export const createEndpointConfig: API.OperationMethod<
   CreateEndpointConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EndpointConfigName: 0,
+      ProductionVariants: D.list(i_ProductionVariant),
+      DataCaptureConfig: {
+        EnableCapture: 0,
+        InitialSamplingPercentage: 0,
+        DestinationS3Uri: 0,
+        KmsKeyId: 0,
+        CaptureOptions: D.list({ CaptureMode: 0 }),
+        CaptureContentTypeHeader: i_CaptureContentTypeHeader,
+      },
+      Tags: D.list(i_Tag),
+      KmsKeyId: 0,
+      AsyncInferenceConfig: {
+        ClientConfig: { MaxConcurrentInvocationsPerInstance: 0 },
+        OutputConfig: {
+          KmsKeyId: 0,
+          S3OutputPath: 0,
+          NotificationConfig: {
+            SuccessTopic: 0,
+            ErrorTopic: 0,
+            IncludeInferenceResponseIn: 0,
+          },
+          S3FailurePath: 0,
+        },
+      },
+      ExplainerConfig: {
+        ClarifyExplainerConfig: {
+          EnableExplanations: 0,
+          InferenceConfig: {
+            FeaturesAttribute: 0,
+            ContentTemplate: 0,
+            MaxRecordCount: 0,
+            MaxPayloadInMB: 0,
+            ProbabilityIndex: 0,
+            LabelIndex: 0,
+            ProbabilityAttribute: 0,
+            LabelAttribute: 0,
+            LabelHeaders: 0,
+            FeatureHeaders: 0,
+            FeatureTypes: 0,
+          },
+          ShapConfig: {
+            ShapBaselineConfig: {
+              MimeType: 0,
+              ShapBaseline: 0,
+              ShapBaselineUri: 0,
+            },
+            NumberOfSamples: 0,
+            UseLogit: 0,
+            Seed: 0,
+            TextConfig: { Language: 0, Granularity: 0 },
+          },
+        },
+      },
+      ShadowProductionVariants: D.list(i_ProductionVariant),
+      ExecutionRoleArn: 0,
+      VpcConfig: i_VpcConfig,
+      EnableNetworkIsolation: 0,
+      MetricsConfig: {
+        EnableEnhancedMetrics: 0,
+        EnableDetailedObservability: 0,
+        MetricPublishFrequencyInSeconds: 0,
+      },
+    },
+  },
   errors: [ResourceLimitExceeded, EndpointConfigAlreadyExists],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18256,7 +18780,15 @@ export const createExperiment: API.OperationMethod<
   CreateExperimentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ExperimentName: 0,
+      DisplayName: 0,
+      Description: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18282,7 +18814,35 @@ export const createFeatureGroup: API.OperationMethod<
   CreateFeatureGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FeatureGroupName: 0,
+      RecordIdentifierFeatureName: 0,
+      EventTimeFeatureName: 0,
+      FeatureDefinitions: D.list(i_FeatureDefinition),
+      OnlineStoreConfig: {
+        SecurityConfig: { KmsKeyId: 0 },
+        EnableOnlineStore: 0,
+        TtlDuration: i_TtlDuration,
+        StorageType: 0,
+      },
+      OfflineStoreConfig: {
+        S3StorageConfig: { S3Uri: 0, KmsKeyId: 0, ResolvedOutputS3Uri: 0 },
+        DisableGlueTableCreation: 0,
+        DataCatalogConfig: { TableName: 0, Catalog: 0, Database: 0 },
+        TableFormat: 0,
+      },
+      ThroughputConfig: {
+        ThroughputMode: 0,
+        ProvisionedReadCapacityUnits: 0,
+        ProvisionedWriteCapacityUnits: 0,
+      },
+      RoleArn: 0,
+      Description: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18302,7 +18862,32 @@ export const createFlowDefinition: API.OperationMethod<
   CreateFlowDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FlowDefinitionName: 0,
+      HumanLoopRequestSource: { AwsManagedHumanLoopRequestSource: 0 },
+      HumanLoopActivationConfig: {
+        HumanLoopActivationConditionsConfig: {
+          HumanLoopActivationConditions: 0,
+        },
+      },
+      HumanLoopConfig: {
+        WorkteamArn: 0,
+        HumanTaskUiArn: 0,
+        TaskTitle: 0,
+        TaskDescription: 0,
+        TaskCount: 0,
+        TaskAvailabilityLifetimeInSeconds: 0,
+        TaskTimeLimitInSeconds: 0,
+        TaskKeywords: 0,
+        PublicWorkforceTaskPrice: i_PublicWorkforceTaskPrice,
+      },
+      OutputConfig: { S3OutputPath: 0, KmsKeyId: 0 },
+      RoleArn: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18322,7 +18907,17 @@ export const createHub: API.OperationMethod<
   CreateHubError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      HubName: 0,
+      HubDescription: 0,
+      HubDisplayName: 0,
+      HubSearchKeywords: 0,
+      S3StorageConfig: { S3OutputPath: 0 },
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18340,7 +18935,18 @@ export const createHubContentPresignedUrls: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   AuthorizedUrl
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      HubName: 0,
+      HubContentType: 0,
+      HubContentName: 0,
+      HubContentVersion: 0,
+      AccessConfig: { AcceptEula: 0, ExpectedS3Url: 0 },
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18367,7 +18973,16 @@ export const createHubContentReference: API.OperationMethod<
   CreateHubContentReferenceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      HubName: 0,
+      SageMakerPublicHubContentArn: 0,
+      HubContentName: 0,
+      MinVersion: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18387,7 +19002,14 @@ export const createHumanTaskUi: API.OperationMethod<
   CreateHumanTaskUiError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      HumanTaskUiName: 0,
+      UiTemplate: i_UiTemplate,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18411,7 +19033,42 @@ export const createHyperParameterTuningJob: API.OperationMethod<
   CreateHyperParameterTuningJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      HyperParameterTuningJobName: 0,
+      HyperParameterTuningJobConfig: {
+        Strategy: 0,
+        StrategyConfig: {
+          HyperbandStrategyConfig: { MinResource: 0, MaxResource: 0 },
+        },
+        HyperParameterTuningJobObjective: i_HyperParameterTuningJobObjective,
+        ResourceLimits: {
+          MaxNumberOfTrainingJobs: 0,
+          MaxParallelTrainingJobs: 0,
+          MaxRuntimeInSeconds: 0,
+        },
+        ParameterRanges: i_ParameterRanges,
+        TrainingJobEarlyStoppingType: 0,
+        TuningJobCompletionCriteria: {
+          TargetObjectiveMetricValue: 0,
+          BestObjectiveNotImproving: { MaxNumberOfTrainingJobsNotImproving: 0 },
+          ConvergenceDetected: { CompleteOnConvergence: 0 },
+        },
+        RandomSeed: 0,
+      },
+      TrainingJobDefinition: i_HyperParameterTrainingJobDefinition,
+      TrainingJobDefinitions: D.list(i_HyperParameterTrainingJobDefinition),
+      WarmStartConfig: {
+        ParentHyperParameterTuningJobs: D.list({
+          HyperParameterTuningJobName: 0,
+        }),
+        WarmStartType: 0,
+      },
+      Tags: D.list(i_Tag),
+      Autotune: { Mode: 0 },
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18431,7 +19088,16 @@ export const createImage: API.OperationMethod<
   CreateImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Description: 0,
+      DisplayName: 0,
+      ImageName: 0,
+      RoleArn: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18454,7 +19120,19 @@ export const createImageVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      BaseImage: 0,
+      ClientToken: D.m({ idempotency: true }),
+      ImageName: 0,
+      Aliases: 0,
+      VendorGuidance: 0,
+      JobType: 0,
+      MLFramework: 0,
+      ProgrammingLang: 0,
+      Processor: 0,
+      Horovod: 0,
+      ReleaseNotes: 0,
+    },
   },
   errors: [ResourceInUse, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
@@ -18474,7 +19152,18 @@ export const createInferenceComponent: API.OperationMethod<
   CreateInferenceComponentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InferenceComponentName: 0,
+      EndpointName: 0,
+      VariantName: 0,
+      Specification: i_InferenceComponentSpecification,
+      Specifications: D.list(i_InferenceComponentSpecification),
+      RuntimeConfig: i_InferenceComponentRuntimeConfig,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18500,7 +19189,22 @@ export const createInferenceExperiment: API.OperationMethod<
   CreateInferenceExperimentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Type: 0,
+      Schedule: i_InferenceExperimentSchedule,
+      Description: 0,
+      RoleArn: 0,
+      EndpointName: 0,
+      ModelVariants: D.list(i_ModelVariantConfig),
+      DataStorageConfig: i_InferenceExperimentDataStorageConfig,
+      ShadowModeConfig: i_ShadowModeConfig,
+      KmsKey: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18520,7 +19224,63 @@ export const createInferenceRecommendationsJob: API.OperationMethod<
   CreateInferenceRecommendationsJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      JobName: 0,
+      JobType: 0,
+      RoleArn: 0,
+      InputConfig: {
+        ModelPackageVersionArn: 0,
+        ModelName: 0,
+        JobDurationInSeconds: 0,
+        TrafficPattern: {
+          TrafficType: 0,
+          Phases: D.list({
+            InitialNumberOfUsers: 0,
+            SpawnRate: 0,
+            DurationInSeconds: 0,
+          }),
+          Stairs: { DurationInSeconds: 0, NumberOfSteps: 0, UsersPerStep: 0 },
+        },
+        ResourceLimit: { MaxNumberOfTests: 0, MaxParallelOfTests: 0 },
+        EndpointConfigurations: D.list({
+          InstanceType: 0,
+          ServerlessConfig: i_ProductionVariantServerlessConfig,
+          InferenceSpecificationName: 0,
+          EnvironmentParameterRanges: {
+            CategoricalParameterRanges: D.list({ Name: 0, Value: 0 }),
+          },
+        }),
+        VolumeKmsKeyId: 0,
+        ContainerConfig: {
+          Domain: 0,
+          Task: 0,
+          Framework: 0,
+          FrameworkVersion: 0,
+          PayloadConfig: { SamplePayloadUrl: 0, SupportedContentTypes: 0 },
+          NearestModelName: 0,
+          SupportedInstanceTypes: 0,
+          SupportedEndpointType: 0,
+          DataInputConfig: 0,
+          SupportedResponseMIMETypes: 0,
+        },
+        Endpoints: D.list({ EndpointName: 0 }),
+        VpcConfig: { SecurityGroupIds: 0, Subnets: 0 },
+      },
+      JobDescription: 0,
+      StoppingConditions: {
+        MaxInvocations: 0,
+        ModelLatencyThresholds: D.list({
+          Percentile: 0,
+          ValueInMilliseconds: 0,
+        }),
+        FlatInvocations: 0,
+      },
+      OutputConfig: { KmsKeyId: 0, CompiledOutputConfig: { S3OutputUri: 0 } },
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18559,7 +19319,17 @@ export const createJob: API.OperationMethod<
   CreateJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      JobName: 0,
+      RoleArn: 0,
+      JobCategory: 0,
+      JobConfigSchemaVersion: 0,
+      JobConfigDocument: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18595,7 +19365,50 @@ export const createLabelingJob: API.OperationMethod<
   CreateLabelingJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      LabelingJobName: 0,
+      LabelAttributeName: 0,
+      InputConfig: {
+        DataSource: {
+          S3DataSource: { ManifestS3Uri: 0 },
+          SnsDataSource: { SnsTopicArn: 0 },
+        },
+        DataAttributes: { ContentClassifiers: 0 },
+      },
+      OutputConfig: { S3OutputPath: 0, KmsKeyId: 0, SnsTopicArn: 0 },
+      RoleArn: 0,
+      LabelCategoryConfigS3Uri: 0,
+      StoppingConditions: {
+        MaxHumanLabeledObjectCount: 0,
+        MaxPercentageOfInputDatasetLabeled: 0,
+      },
+      LabelingJobAlgorithmsConfig: {
+        LabelingJobAlgorithmSpecificationArn: 0,
+        InitialActiveLearningModelArn: 0,
+        LabelingJobResourceConfig: {
+          VolumeKmsKeyId: 0,
+          VpcConfig: i_VpcConfig,
+        },
+      },
+      HumanTaskConfig: {
+        WorkteamArn: 0,
+        UiConfig: { UiTemplateS3Uri: 0, HumanTaskUiArn: 0 },
+        PreHumanTaskLambdaArn: 0,
+        TaskKeywords: 0,
+        TaskTitle: 0,
+        TaskDescription: 0,
+        NumberOfHumanWorkersPerDataObject: 0,
+        TaskTimeLimitInSeconds: 0,
+        TaskAvailabilityLifetimeInSeconds: 0,
+        MaxConcurrentTaskCount: 0,
+        AnnotationConsolidationConfig: { AnnotationConsolidationLambdaArn: 0 },
+        PublicWorkforceTaskPrice: i_PublicWorkforceTaskPrice,
+      },
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18612,7 +19425,20 @@ export const createMlflowApp: API.OperationMethod<
   CreateMlflowAppError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      ArtifactStoreUri: 0,
+      RoleArn: 0,
+      KmsKeyId: 0,
+      ModelRegistrationMode: 0,
+      WeeklyMaintenanceWindowStart: 0,
+      AccountDefaultStatus: 0,
+      DefaultDomainIdList: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18631,7 +19457,21 @@ export const createMlflowTrackingServer: API.OperationMethod<
   CreateMlflowTrackingServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TrackingServerName: 0,
+      ArtifactStoreUri: 0,
+      TrackingServerSize: 0,
+      MlflowVersion: 0,
+      RoleArn: 0,
+      AutomaticModelRegistration: 0,
+      WeeklyMaintenanceWindowStart: 0,
+      Tags: D.list(i_Tag),
+      S3BucketOwnerAccountId: 0,
+      S3BucketOwnerVerification: 0,
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18659,7 +19499,19 @@ export const createModel: API.OperationMethod<
   CreateModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ModelName: 0,
+      PrimaryContainer: i_ContainerDefinition,
+      Containers: D.list(i_ContainerDefinition),
+      InferenceExecutionConfig: { Mode: 0 },
+      ExecutionRoleArn: 0,
+      Tags: D.list(i_Tag),
+      VpcConfig: i_VpcConfig,
+      EnableNetworkIsolation: 0,
+    },
+  },
   errors: [ResourceLimitExceeded, ModelAlreadyExists],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18679,7 +19531,28 @@ export const createModelBiasJobDefinition: API.OperationMethod<
   CreateModelBiasJobDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      JobDefinitionName: 0,
+      ModelBiasBaselineConfig: {
+        BaseliningJobName: 0,
+        ConstraintsResource: i_MonitoringConstraintsResource,
+      },
+      ModelBiasAppSpecification: { ImageUri: 0, ConfigUri: 0, Environment: 0 },
+      ModelBiasJobInput: {
+        EndpointInput: i_EndpointInput,
+        BatchTransformInput: i_BatchTransformInput,
+        GroundTruthS3Input: i_MonitoringGroundTruthS3Input,
+      },
+      ModelBiasJobOutputConfig: i_MonitoringOutputConfig,
+      JobResources: i_MonitoringResources,
+      NetworkConfig: i_MonitoringNetworkConfig,
+      RoleArn: 0,
+      StoppingCondition: i_MonitoringStoppingCondition,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18701,7 +19574,16 @@ export const createModelCard: API.OperationMethod<
   CreateModelCardError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ModelCardName: 0,
+      SecurityConfig: { KmsKeyId: 0 },
+      Content: 0,
+      ModelCardStatus: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ConflictException, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18722,7 +19604,15 @@ export const createModelCardExportJob: API.OperationMethod<
   CreateModelCardExportJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ModelCardName: 0,
+      ModelCardVersion: 0,
+      ModelCardExportJobName: 0,
+      OutputConfig: { S3OutputPath: 0 },
+    },
+  },
   errors: [ConflictException, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18742,7 +19632,31 @@ export const createModelExplainabilityJobDefinition: API.OperationMethod<
   CreateModelExplainabilityJobDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      JobDefinitionName: 0,
+      ModelExplainabilityBaselineConfig: {
+        BaseliningJobName: 0,
+        ConstraintsResource: i_MonitoringConstraintsResource,
+      },
+      ModelExplainabilityAppSpecification: {
+        ImageUri: 0,
+        ConfigUri: 0,
+        Environment: 0,
+      },
+      ModelExplainabilityJobInput: {
+        EndpointInput: i_EndpointInput,
+        BatchTransformInput: i_BatchTransformInput,
+      },
+      ModelExplainabilityJobOutputConfig: i_MonitoringOutputConfig,
+      JobResources: i_MonitoringResources,
+      NetworkConfig: i_MonitoringNetworkConfig,
+      RoleArn: 0,
+      StoppingCondition: i_MonitoringStoppingCondition,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18772,7 +19686,81 @@ export const createModelPackage: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ModelPackageName: 0,
+      ModelPackageGroupName: 0,
+      ModelPackageDescription: 0,
+      ModelPackageRegistrationType: 0,
+      InferenceSpecification: i_InferenceSpecification,
+      ValidationSpecification: {
+        ValidationRole: 0,
+        ValidationProfiles: D.list({
+          ProfileName: 0,
+          TransformJobDefinition: i_TransformJobDefinition,
+        }),
+      },
+      SourceAlgorithmSpecification: {
+        SourceAlgorithms: D.list({
+          ModelDataUrl: 0,
+          ModelDataSource: i_ModelDataSource,
+          ModelDataETag: 0,
+          AlgorithmName: 0,
+        }),
+      },
+      CertifyForMarketplace: 0,
+      Tags: D.list(i_Tag),
+      ModelApprovalStatus: 0,
+      MetadataProperties: i_MetadataProperties,
+      ModelMetrics: {
+        ModelQuality: {
+          Statistics: i_MetricsSource,
+          Constraints: i_MetricsSource,
+        },
+        ModelDataQuality: {
+          Statistics: i_MetricsSource,
+          Constraints: i_MetricsSource,
+        },
+        Bias: {
+          Report: i_MetricsSource,
+          PreTrainingReport: i_MetricsSource,
+          PostTrainingReport: i_MetricsSource,
+        },
+        Explainability: { Report: i_MetricsSource },
+      },
+      ClientToken: D.m({ idempotency: true }),
+      Domain: 0,
+      Task: 0,
+      SamplePayloadUrl: 0,
+      CustomerMetadataProperties: 0,
+      DriftCheckBaselines: {
+        Bias: {
+          ConfigFile: i_FileSource,
+          PreTrainingConstraints: i_MetricsSource,
+          PostTrainingConstraints: i_MetricsSource,
+        },
+        Explainability: {
+          Constraints: i_MetricsSource,
+          ConfigFile: i_FileSource,
+        },
+        ModelQuality: {
+          Statistics: i_MetricsSource,
+          Constraints: i_MetricsSource,
+        },
+        ModelDataQuality: {
+          Statistics: i_MetricsSource,
+          Constraints: i_MetricsSource,
+        },
+      },
+      AdditionalInferenceSpecifications: D.list(
+        i_AdditionalInferenceSpecificationDefinition,
+      ),
+      SkipModelValidation: 0,
+      SourceUri: 0,
+      SecurityConfig: { KmsKeyId: 0 },
+      ModelCard: i_ModelPackageModelCard,
+      ModelLifeCycle: i_ModelLifeCycle,
+      ManagedStorageType: 0,
+    },
   },
   errors: [ConflictException, ResourceLimitExceeded],
   protocol: AwsProtocol,
@@ -18790,7 +19778,15 @@ export const createModelPackageGroup: API.OperationMethod<
   CreateModelPackageGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ModelPackageGroupName: 0,
+      ModelPackageGroupDescription: 0,
+      Tags: D.list(i_Tag),
+      ManagedConfiguration: { ManagedStorageType: 0 },
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18810,7 +19806,36 @@ export const createModelQualityJobDefinition: API.OperationMethod<
   CreateModelQualityJobDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      JobDefinitionName: 0,
+      ModelQualityBaselineConfig: {
+        BaseliningJobName: 0,
+        ConstraintsResource: i_MonitoringConstraintsResource,
+      },
+      ModelQualityAppSpecification: {
+        ImageUri: 0,
+        ContainerEntrypoint: 0,
+        ContainerArguments: 0,
+        RecordPreprocessorSourceUri: 0,
+        PostAnalyticsProcessorSourceUri: 0,
+        ProblemType: 0,
+        Environment: 0,
+      },
+      ModelQualityJobInput: {
+        EndpointInput: i_EndpointInput,
+        BatchTransformInput: i_BatchTransformInput,
+        GroundTruthS3Input: i_MonitoringGroundTruthS3Input,
+      },
+      ModelQualityJobOutputConfig: i_MonitoringOutputConfig,
+      JobResources: i_MonitoringResources,
+      NetworkConfig: i_MonitoringNetworkConfig,
+      RoleArn: 0,
+      StoppingCondition: i_MonitoringStoppingCondition,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18830,7 +19855,14 @@ export const createMonitoringSchedule: API.OperationMethod<
   CreateMonitoringScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MonitoringScheduleName: 0,
+      MonitoringScheduleConfig: i_MonitoringScheduleConfig,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18865,7 +19897,29 @@ export const createNotebookInstance: API.OperationMethod<
   CreateNotebookInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      NotebookInstanceName: 0,
+      InstanceType: 0,
+      SubnetId: 0,
+      SecurityGroupIds: 0,
+      IpAddressType: 0,
+      RoleArn: 0,
+      KmsKeyId: 0,
+      Tags: D.list(i_Tag),
+      LifecycleConfigName: 0,
+      DirectInternetAccess: 0,
+      VolumeSizeInGB: 0,
+      AcceleratorTypes: 0,
+      DefaultCodeRepository: 0,
+      AdditionalCodeRepositories: 0,
+      RootAccess: 0,
+      PlatformIdentifier: 0,
+      InstanceMetadataServiceConfiguration:
+        i_InstanceMetadataServiceConfiguration,
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18896,7 +19950,15 @@ export const createNotebookInstanceLifecycleConfig: API.OperationMethod<
   CreateNotebookInstanceLifecycleConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      NotebookInstanceLifecycleConfigName: 0,
+      OnCreate: D.list(i_NotebookInstanceLifecycleHook),
+      OnStart: D.list(i_NotebookInstanceLifecycleHook),
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18918,7 +19980,38 @@ export const createOptimizationJob: API.OperationMethod<
   CreateOptimizationJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      OptimizationJobName: 0,
+      RoleArn: 0,
+      ModelSource: {
+        S3: { S3Uri: 0, ModelAccessConfig: { AcceptEula: 0 } },
+        SageMakerModel: i_OptimizationSageMakerModel,
+      },
+      DeploymentInstanceType: 0,
+      MaxInstanceCount: 0,
+      OptimizationEnvironment: 0,
+      OptimizationConfigs: D.list({
+        ModelQuantizationConfig: { Image: 0, OverrideEnvironment: 0 },
+        ModelCompilationConfig: { Image: 0, OverrideEnvironment: 0 },
+        ModelShardingConfig: { Image: 0, OverrideEnvironment: 0 },
+        ModelSpeculativeDecodingConfig: {
+          Technique: 0,
+          TrainingDataSource: { S3Uri: 0, S3DataType: 0 },
+        },
+      }),
+      OutputConfig: {
+        KmsKeyId: 0,
+        S3OutputLocation: 0,
+        SageMakerModel: i_OptimizationSageMakerModel,
+      },
+      StoppingCondition: i_StoppingCondition,
+      Tags: D.list(i_Tag),
+      VpcConfig: { SecurityGroupIds: 0, Subnets: 0 },
+      TrainingPlanArns: 0,
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18940,7 +20033,21 @@ export const createPartnerApp: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Type: 0,
+      ExecutionRoleArn: 0,
+      KmsKeyId: 0,
+      MaintenanceConfig: i_PartnerAppMaintenanceConfig,
+      Tier: 0,
+      ApplicationConfig: i_PartnerAppConfig,
+      IdcConfig: i_IdcConfigInput,
+      AuthType: 0,
+      EnableIamSessionBasedIdentity: 0,
+      EnableAutoMinorVersionUpgrade: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [ConflictException, ResourceLimitExceeded],
   protocol: AwsProtocol,
@@ -18958,7 +20065,14 @@ export const createPartnerAppPresignedUrl: API.OperationMethod<
   CreatePartnerAppPresignedUrlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Arn: 0,
+      ExpiresInSeconds: 0,
+      SessionExpirationDurationInSeconds: 0,
+    },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -18981,7 +20095,17 @@ export const createPipeline: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      PipelineName: 0,
+      PipelineDisplayName: 0,
+      PipelineDefinition: 0,
+      PipelineDefinitionS3Location: i_PipelineDefinitionS3Location,
+      PipelineDescription: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      RoleArn: 0,
+      Tags: D.list(i_Tag),
+      ParallelismConfiguration: i_ParallelismConfiguration,
+    },
   },
   errors: [ConflictException, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
@@ -19007,7 +20131,17 @@ export const createPresignedDomainUrl: API.OperationMethod<
   CreatePresignedDomainUrlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DomainId: 0,
+      UserProfileName: 0,
+      SessionExpirationDurationInSeconds: 0,
+      ExpiresInSeconds: 0,
+      SpaceName: 0,
+      LandingUri: 0,
+    },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19024,7 +20158,14 @@ export const createPresignedMlflowAppUrl: API.OperationMethod<
   CreatePresignedMlflowAppUrlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Arn: 0,
+      ExpiresInSeconds: 0,
+      SessionExpirationDurationInSeconds: 0,
+    },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19043,7 +20184,14 @@ export const createPresignedMlflowTrackingServerUrl: API.OperationMethod<
   CreatePresignedMlflowTrackingServerUrlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TrackingServerName: 0,
+      ExpiresInSeconds: 0,
+      SessionExpirationDurationInSeconds: 0,
+    },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19066,7 +20214,10 @@ export const createPresignedNotebookInstanceUrl: API.OperationMethod<
   CreatePresignedNotebookInstanceUrlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NotebookInstanceName: 0, SessionExpirationDurationInSeconds: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19087,7 +20238,78 @@ export const createProcessingJob: API.OperationMethod<
   CreateProcessingJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProcessingInputs: D.list({
+        InputName: 0,
+        AppManaged: 0,
+        S3Input: {
+          S3Uri: 0,
+          LocalPath: 0,
+          S3DataType: 0,
+          S3InputMode: 0,
+          S3DataDistributionType: 0,
+          S3CompressionType: 0,
+        },
+        DatasetDefinition: {
+          AthenaDatasetDefinition: {
+            Catalog: 0,
+            Database: 0,
+            QueryString: 0,
+            WorkGroup: 0,
+            OutputS3Uri: 0,
+            KmsKeyId: 0,
+            OutputFormat: 0,
+            OutputCompression: 0,
+          },
+          RedshiftDatasetDefinition: {
+            ClusterId: 0,
+            Database: 0,
+            DbUser: 0,
+            QueryString: 0,
+            ClusterRoleArn: 0,
+            OutputS3Uri: 0,
+            KmsKeyId: 0,
+            OutputFormat: 0,
+            OutputCompression: 0,
+          },
+          LocalPath: 0,
+          DataDistributionType: 0,
+          InputMode: 0,
+        },
+      }),
+      ProcessingOutputConfig: {
+        Outputs: D.list({
+          OutputName: 0,
+          S3Output: { S3Uri: 0, LocalPath: 0, S3UploadMode: 0 },
+          FeatureStoreOutput: { FeatureGroupName: 0 },
+          AppManaged: 0,
+        }),
+        KmsKeyId: 0,
+      },
+      ProcessingJobName: 0,
+      ProcessingResources: {
+        ClusterConfig: {
+          InstanceCount: 0,
+          InstanceType: 0,
+          VolumeSizeInGB: 0,
+          VolumeKmsKeyId: 0,
+        },
+      },
+      StoppingCondition: { MaxRuntimeInSeconds: 0 },
+      AppSpecification: {
+        ImageUri: 0,
+        ContainerEntrypoint: 0,
+        ContainerArguments: 0,
+      },
+      Environment: 0,
+      NetworkConfig: i_NetworkConfig,
+      RoleArn: 0,
+      Tags: D.list(i_Tag),
+      ExperimentConfig: i_ExperimentConfig,
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19104,7 +20326,28 @@ export const createProject: API.OperationMethod<
   CreateProjectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProjectName: 0,
+      ProjectDescription: 0,
+      ServiceCatalogProvisioningDetails: {
+        ProductId: 0,
+        ProvisioningArtifactId: 0,
+        PathId: 0,
+        ProvisioningParameters: D.list(i_ProvisioningParameter),
+      },
+      Tags: D.list(i_Tag),
+      TemplateProviders: D.list({
+        CfnTemplateProvider: {
+          TemplateName: 0,
+          TemplateURL: 0,
+          RoleARN: 0,
+          Parameters: D.list({ Key: 0, Value: 0 }),
+        },
+      }),
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19124,7 +20367,18 @@ export const createSpace: API.OperationMethod<
   CreateSpaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DomainId: 0,
+      SpaceName: 0,
+      Tags: D.list(i_Tag),
+      SpaceSettings: i_SpaceSettings,
+      OwnershipSettings: { OwnerUserProfileName: 0 },
+      SpaceSharingSettings: { SharingType: 0 },
+      SpaceDisplayName: 0,
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19141,7 +20395,15 @@ export const createStudioLifecycleConfig: API.OperationMethod<
   CreateStudioLifecycleConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      StudioLifecycleConfigName: 0,
+      StudioLifecycleConfigContent: 0,
+      StudioLifecycleConfigAppType: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19192,7 +20454,87 @@ export const createTrainingJob: API.OperationMethod<
   CreateTrainingJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TrainingJobName: 0,
+      HyperParameters: 0,
+      AlgorithmSpecification: {
+        TrainingImage: 0,
+        AlgorithmName: 0,
+        TrainingInputMode: 0,
+        MetricDefinitions: D.list(i_MetricDefinition),
+        EnableSageMakerMetricsTimeSeries: 0,
+        ContainerEntrypoint: 0,
+        ContainerArguments: 0,
+        TrainingImageConfig: {
+          TrainingRepositoryAccessMode: 0,
+          TrainingRepositoryAuthConfig: {
+            TrainingRepositoryCredentialsProviderArn: 0,
+          },
+        },
+      },
+      RoleArn: 0,
+      InputDataConfig: D.list(i_Channel),
+      OutputDataConfig: i_OutputDataConfig,
+      ResourceConfig: i_ResourceConfig,
+      VpcConfig: i_VpcConfig,
+      StoppingCondition: i_StoppingCondition,
+      Tags: D.list(i_Tag),
+      EnableNetworkIsolation: 0,
+      EnableInterContainerTrafficEncryption: 0,
+      EnableManagedSpotTraining: 0,
+      CheckpointConfig: i_CheckpointConfig,
+      DebugHookConfig: {
+        LocalPath: 0,
+        S3OutputPath: 0,
+        HookParameters: 0,
+        CollectionConfigurations: D.list({
+          CollectionName: 0,
+          CollectionParameters: 0,
+        }),
+      },
+      DebugRuleConfigurations: D.list({
+        RuleConfigurationName: 0,
+        LocalPath: 0,
+        S3OutputPath: 0,
+        RuleEvaluatorImage: 0,
+        InstanceType: 0,
+        VolumeSizeInGB: 0,
+        RuleParameters: 0,
+      }),
+      TensorBoardOutputConfig: { LocalPath: 0, S3OutputPath: 0 },
+      ExperimentConfig: i_ExperimentConfig,
+      ProfilerConfig: {
+        S3OutputPath: 0,
+        ProfilingIntervalInMilliseconds: 0,
+        ProfilingParameters: 0,
+        DisableProfiler: 0,
+      },
+      ProfilerRuleConfigurations: D.list(i_ProfilerRuleConfiguration),
+      Environment: 0,
+      RetryStrategy: i_RetryStrategy,
+      RemoteDebugConfig: { EnableRemoteDebug: 0 },
+      InfraCheckConfig: { EnableInfraCheck: 0 },
+      SessionChainingConfig: { EnableSessionTagChaining: 0 },
+      ServerlessJobConfig: {
+        BaseModelArn: 0,
+        AcceptEula: 0,
+        JobType: 0,
+        CustomizationTechnique: 0,
+        Peft: 0,
+        EvaluationType: 0,
+        EvaluatorArn: 0,
+        SequenceLength: 0,
+      },
+      MlflowConfig: {
+        MlflowResourceArn: 0,
+        MlflowExperimentName: 0,
+        MlflowRunName: 0,
+      },
+      ModelPackageConfig: { ModelPackageGroupArn: 0, SourceModelPackageArn: 0 },
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19243,7 +20585,15 @@ export const createTrainingPlan: API.OperationMethod<
   CreateTrainingPlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TrainingPlanName: 0,
+      TrainingPlanOfferingId: 0,
+      SpareInstanceCountPerUltraServer: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19280,7 +20630,32 @@ export const createTransformJob: API.OperationMethod<
   CreateTransformJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TransformJobName: 0,
+      ModelName: 0,
+      MaxConcurrentTransforms: 0,
+      ModelClientConfig: {
+        InvocationsTimeoutInSeconds: 0,
+        InvocationsMaxRetries: 0,
+      },
+      MaxPayloadInMB: 0,
+      BatchStrategy: 0,
+      Environment: 0,
+      TransformInput: i_TransformInput,
+      TransformOutput: i_TransformOutput,
+      DataCaptureConfig: {
+        DestinationS3Uri: 0,
+        KmsKeyId: 0,
+        GenerateInferenceId: 0,
+      },
+      TransformResources: i_TransformResources,
+      DataProcessing: { InputFilter: 0, OutputFilter: 0, JoinSource: 0 },
+      Tags: D.list(i_Tag),
+      ExperimentConfig: i_ExperimentConfig,
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19306,7 +20681,16 @@ export const createTrial: API.OperationMethod<
   CreateTrialError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TrialName: 0,
+      DisplayName: 0,
+      ExperimentName: 0,
+      MetadataProperties: i_MetadataProperties,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19329,7 +20713,21 @@ export const createTrialComponent: API.OperationMethod<
   CreateTrialComponentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TrialComponentName: 0,
+      DisplayName: 0,
+      Status: i_TrialComponentStatus,
+      StartTime: 0,
+      EndTime: 0,
+      Parameters: D.map(i_TrialComponentParameterValue),
+      InputArtifacts: D.map(i_TrialComponentArtifact),
+      OutputArtifacts: D.map(i_TrialComponentArtifact),
+      MetadataProperties: i_MetadataProperties,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19349,7 +20747,17 @@ export const createUserProfile: API.OperationMethod<
   CreateUserProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DomainId: 0,
+      UserProfileName: 0,
+      SingleSignOnUserIdentifier: 0,
+      SingleSignOnUserValue: 0,
+      Tags: D.list(i_Tag),
+      UserSettings: i_UserSettings,
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19372,7 +20780,18 @@ export const createWorkforce: API.OperationMethod<
   CreateWorkforceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      CognitoConfig: { UserPool: 0, ClientId: 0 },
+      OidcConfig: i_OidcConfig,
+      SourceIpConfig: i_SourceIpConfig,
+      WorkforceName: 0,
+      Tags: D.list(i_Tag),
+      WorkforceVpcConfig: i_WorkforceVpcConfigRequest,
+      IpAddressType: 0,
+    },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19394,7 +20813,18 @@ export const createWorkteam: API.OperationMethod<
   CreateWorkteamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      WorkteamName: 0,
+      WorkforceName: 0,
+      MemberDefinitions: D.list(i_MemberDefinition),
+      Description: 0,
+      NotificationConfiguration: i_NotificationConfiguration,
+      WorkerAccessConfiguration: i_WorkerAccessConfiguration,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19411,7 +20841,7 @@ export const deleteAction: API.OperationMethod<
   DeleteActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ActionName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19428,7 +20858,7 @@ export const deleteAIBenchmarkJob: API.OperationMethod<
   DeleteAIBenchmarkJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AIBenchmarkJobName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19445,7 +20875,7 @@ export const deleteAIRecommendationJob: API.OperationMethod<
   DeleteAIRecommendationJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AIRecommendationJobName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19465,7 +20895,7 @@ export const deleteAIWorkloadConfig: API.OperationMethod<
   DeleteAIWorkloadConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AIWorkloadConfigName: 0 } },
   errors: [ResourceInUse, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19482,7 +20912,7 @@ export const deleteAlgorithm: API.OperationMethod<
   DeleteAlgorithmError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AlgorithmName: 0 } },
   errors: [ConflictException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19499,7 +20929,16 @@ export const deleteApp: API.OperationMethod<
   DeleteAppError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DomainId: 0,
+      UserProfileName: 0,
+      SpaceName: 0,
+      AppType: 0,
+      AppName: 0,
+    },
+  },
   errors: [ResourceInUse, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19516,7 +20955,7 @@ export const deleteAppImageConfig: API.OperationMethod<
   DeleteAppImageConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AppImageConfigName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19533,7 +20972,10 @@ export const deleteArtifact: API.OperationMethod<
   DeleteArtifactError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ArtifactArn: 0, Source: i_ArtifactSource },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19550,7 +20992,7 @@ export const deleteAssociation: API.OperationMethod<
   DeleteAssociationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { SourceArn: 0, DestinationArn: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19570,7 +21012,7 @@ export const deleteCluster: API.OperationMethod<
   DeleteClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ClusterName: 0 } },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19587,7 +21029,7 @@ export const deleteClusterSchedulerConfig: API.OperationMethod<
   DeleteClusterSchedulerConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ClusterSchedulerConfigId: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19604,7 +21046,7 @@ export const deleteCodeRepository: API.OperationMethod<
   DeleteCodeRepositoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CodeRepositoryName: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19623,7 +21065,7 @@ export const deleteCompilationJob: API.OperationMethod<
   DeleteCompilationJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CompilationJobName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19640,7 +21082,7 @@ export const deleteComputeQuota: API.OperationMethod<
   DeleteComputeQuotaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ComputeQuotaId: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19657,7 +21099,7 @@ export const deleteContext: API.OperationMethod<
   DeleteContextError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ContextName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19676,7 +21118,7 @@ export const deleteDataQualityJobDefinition: API.OperationMethod<
   DeleteDataQualityJobDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobDefinitionName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19693,7 +21135,7 @@ export const deleteDeviceFleet: API.OperationMethod<
   DeleteDeviceFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DeviceFleetName: 0 } },
   errors: [ResourceInUse],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19710,7 +21152,10 @@ export const deleteDomain: API.OperationMethod<
   DeleteDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DomainId: 0, RetentionPolicy: { HomeEfsFileSystem: 0 } },
+  },
   errors: [ResourceInUse, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19727,7 +21172,7 @@ export const deleteEdgeDeploymentPlan: API.OperationMethod<
   DeleteEdgeDeploymentPlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EdgeDeploymentPlanName: 0 } },
   errors: [ResourceInUse],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19744,7 +21189,10 @@ export const deleteEdgeDeploymentStage: API.OperationMethod<
   DeleteEdgeDeploymentStageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { EdgeDeploymentPlanName: 0, StageName: 0 },
+  },
   errors: [ResourceInUse],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19765,7 +21213,7 @@ export const deleteEndpoint: API.OperationMethod<
   DeleteEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EndpointName: 0 } },
   errors: [EndpointNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19784,7 +21232,7 @@ export const deleteEndpointConfig: API.OperationMethod<
   DeleteEndpointConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EndpointConfigName: 0 } },
   errors: [EndpointConfigNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19801,7 +21249,7 @@ export const deleteExperiment: API.OperationMethod<
   DeleteExperimentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ExperimentName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19822,7 +21270,7 @@ export const deleteFeatureGroup: API.OperationMethod<
   DeleteFeatureGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FeatureGroupName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19842,7 +21290,7 @@ export const deleteFlowDefinition: API.OperationMethod<
   DeleteFlowDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { FlowDefinitionName: 0 } },
   errors: [ResourceInUse, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19859,7 +21307,7 @@ export const deleteHub: API.OperationMethod<
   DeleteHubError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { HubName: 0 } },
   errors: [ResourceInUse, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19879,7 +21327,15 @@ export const deleteHubContent: API.OperationMethod<
   DeleteHubContentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      HubName: 0,
+      HubContentType: 0,
+      HubContentName: 0,
+      HubContentVersion: 0,
+    },
+  },
   errors: [ResourceInUse, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19896,7 +21352,10 @@ export const deleteHubContentReference: API.OperationMethod<
   DeleteHubContentReferenceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { HubName: 0, HubContentType: 0, HubContentName: 0 },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19915,7 +21374,7 @@ export const deleteHumanTaskUi: API.OperationMethod<
   DeleteHumanTaskUiError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { HumanTaskUiName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19932,7 +21391,7 @@ export const deleteHyperParameterTuningJob: API.OperationMethod<
   DeleteHyperParameterTuningJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { HyperParameterTuningJobName: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19949,7 +21408,7 @@ export const deleteImage: API.OperationMethod<
   DeleteImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ImageName: 0 } },
   errors: [ResourceInUse, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19969,7 +21428,7 @@ export const deleteImageVersion: API.OperationMethod<
   DeleteImageVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ImageName: 0, Version: 0, Alias: 0 } },
   errors: [ResourceInUse, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -19986,7 +21445,7 @@ export const deleteInferenceComponent: API.OperationMethod<
   DeleteInferenceComponentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { InferenceComponentName: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20008,7 +21467,7 @@ export const deleteInferenceExperiment: API.OperationMethod<
   DeleteInferenceExperimentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20033,7 +21492,7 @@ export const deleteJob: API.OperationMethod<
   DeleteJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobName: 0, JobCategory: 0 } },
   errors: [ResourceInUse, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20050,7 +21509,7 @@ export const deleteMlflowApp: API.OperationMethod<
   DeleteMlflowAppError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Arn: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20067,7 +21526,7 @@ export const deleteMlflowTrackingServer: API.OperationMethod<
   DeleteMlflowTrackingServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrackingServerName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20084,7 +21543,7 @@ export const deleteModel: API.OperationMethod<
   DeleteModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ModelName: 0 } },
   errors: [ModelNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20101,7 +21560,7 @@ export const deleteModelBiasJobDefinition: API.OperationMethod<
   DeleteModelBiasJobDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobDefinitionName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20121,7 +21580,7 @@ export const deleteModelCard: API.OperationMethod<
   DeleteModelCardError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ModelCardName: 0 } },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20140,7 +21599,7 @@ export const deleteModelExplainabilityJobDefinition: API.OperationMethod<
   DeleteModelExplainabilityJobDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobDefinitionName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20159,7 +21618,7 @@ export const deleteModelPackage: API.OperationMethod<
   DeleteModelPackageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ModelPackageName: 0 } },
   errors: [ConflictException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20176,7 +21635,7 @@ export const deleteModelPackageGroup: API.OperationMethod<
   DeleteModelPackageGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ModelPackageGroupName: 0 } },
   errors: [ConflictException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20193,7 +21652,7 @@ export const deleteModelPackageGroupPolicy: API.OperationMethod<
   DeleteModelPackageGroupPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ModelPackageGroupName: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20212,7 +21671,7 @@ export const deleteModelQualityJobDefinition: API.OperationMethod<
   DeleteModelQualityJobDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobDefinitionName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20229,7 +21688,7 @@ export const deleteMonitoringSchedule: API.OperationMethod<
   DeleteMonitoringScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MonitoringScheduleName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20248,7 +21707,7 @@ export const deleteNotebookInstance: API.OperationMethod<
   DeleteNotebookInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NotebookInstanceName: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20265,7 +21724,10 @@ export const deleteNotebookInstanceLifecycleConfig: API.OperationMethod<
   DeleteNotebookInstanceLifecycleConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NotebookInstanceLifecycleConfigName: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20282,7 +21744,7 @@ export const deleteOptimizationJob: API.OperationMethod<
   DeleteOptimizationJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OptimizationJobName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20304,7 +21766,7 @@ export const deletePartnerApp: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: { Arn: 0, ClientToken: D.m({ idempotency: true }) },
   },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
@@ -20327,7 +21789,7 @@ export const deletePipeline: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: { PipelineName: 0, ClientRequestToken: D.m({ idempotency: true }) },
   },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
@@ -20348,7 +21810,7 @@ export const deleteProcessingJob: API.OperationMethod<
   DeleteProcessingJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ProcessingJobName: 0 } },
   errors: [ResourceInUse, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20365,7 +21827,7 @@ export const deleteProject: API.OperationMethod<
   DeleteProjectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ProjectName: 0 } },
   errors: [ConflictException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20382,7 +21844,7 @@ export const deleteSpace: API.OperationMethod<
   DeleteSpaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainId: 0, SpaceName: 0 } },
   errors: [ResourceInUse, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20402,7 +21864,7 @@ export const deleteStudioLifecycleConfig: API.OperationMethod<
   DeleteStudioLifecycleConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { StudioLifecycleConfigName: 0 } },
   errors: [ResourceInUse, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20425,7 +21887,7 @@ export const deleteTags: API.OperationMethod<
   DeleteTagsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20445,7 +21907,7 @@ export const deleteTrainingJob: API.OperationMethod<
   DeleteTrainingJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrainingJobName: 0 } },
   errors: [ResourceInUse, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20462,7 +21924,7 @@ export const deleteTrial: API.OperationMethod<
   DeleteTrialError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrialName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20479,7 +21941,7 @@ export const deleteTrialComponent: API.OperationMethod<
   DeleteTrialComponentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrialComponentName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20499,7 +21961,7 @@ export const deleteUserProfile: API.OperationMethod<
   DeleteUserProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainId: 0, UserProfileName: 0 } },
   errors: [ResourceInUse, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20520,7 +21982,7 @@ export const deleteWorkforce: API.OperationMethod<
   DeleteWorkforceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WorkforceName: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20537,7 +21999,7 @@ export const deleteWorkteam: API.OperationMethod<
   DeleteWorkteamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WorkteamName: 0 } },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20554,7 +22016,7 @@ export const deregisterDevices: API.OperationMethod<
   DeregisterDevicesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DeviceFleetName: 0, DeviceNames: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20573,6 +22035,7 @@ export const describeAction: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ActionName: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -20593,6 +22056,7 @@ export const describeAIBenchmarkJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AIBenchmarkJobName: 0 },
     output: { CreationTime: D.ts, StartTime: D.ts, EndTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -20613,6 +22077,7 @@ export const describeAIRecommendationJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AIRecommendationJobName: 0 },
     output: { CreationTime: D.ts, StartTime: D.ts, EndTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -20631,7 +22096,11 @@ export const describeAIWorkloadConfig: API.OperationMethod<
   DescribeAIWorkloadConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { AIWorkloadConfigName: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20648,7 +22117,11 @@ export const describeAlgorithm: API.OperationMethod<
   DescribeAlgorithmError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { AlgorithmName: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20667,6 +22140,13 @@ export const describeApp: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      DomainId: 0,
+      UserProfileName: 0,
+      SpaceName: 0,
+      AppType: 0,
+      AppName: 0,
+    },
     output: {
       LastHealthCheckTimestamp: D.ts,
       LastUserActivityTimestamp: D.ts,
@@ -20691,6 +22171,7 @@ export const describeAppImageConfig: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AppImageConfigName: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -20711,6 +22192,7 @@ export const describeArtifact: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ArtifactArn: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -20733,6 +22215,7 @@ export const describeAutoMLJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AutoMLJobName: 0 },
     output: {
       CreationTime: D.ts,
       EndTime: D.ts,
@@ -20758,6 +22241,7 @@ export const describeAutoMLJobV2: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { AutoMLJobName: 0 },
     output: {
       CreationTime: D.ts,
       EndTime: D.ts,
@@ -20783,6 +22267,7 @@ export const describeCluster: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ClusterName: 0 },
     output: {
       CreationTime: D.ts,
       InstanceGroups: D.list({
@@ -20809,7 +22294,11 @@ export const describeClusterEvent: API.OperationMethod<
   DescribeClusterEventError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { EventDetails: { EventTime: D.ts } } },
+  descriptor: {
+    service: svc,
+    input: { EventId: 0, ClusterName: 0 },
+    output: { EventDetails: { EventTime: D.ts } },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20828,6 +22317,7 @@ export const describeClusterNode: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ClusterName: 0, NodeId: 0, NodeLogicalId: 0 },
     output: { NodeDetails: { LaunchTime: D.ts, LastSoftwareUpdateTime: D.ts } },
   },
   errors: [ResourceNotFound],
@@ -20850,6 +22340,7 @@ export const describeClusterSchedulerConfig: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ClusterSchedulerConfigId: 0, ClusterSchedulerConfigVersion: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -20870,6 +22361,7 @@ export const describeCodeRepository: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CodeRepositoryName: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [],
@@ -20892,6 +22384,7 @@ export const describeCompilationJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { CompilationJobName: 0 },
     output: {
       CompilationStartTime: D.ts,
       CompilationEndTime: D.ts,
@@ -20917,6 +22410,7 @@ export const describeComputeQuota: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ComputeQuotaId: 0, ComputeQuotaVersion: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -20937,6 +22431,7 @@ export const describeContext: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ContextName: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -20957,7 +22452,11 @@ export const describeDataQualityJobDefinition: API.OperationMethod<
   DescribeDataQualityJobDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { JobDefinitionName: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -20976,6 +22475,7 @@ export const describeDevice: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, DeviceName: 0, DeviceFleetName: 0 },
     output: {
       RegistrationTime: D.ts,
       LatestHeartbeat: D.ts,
@@ -21000,6 +22500,7 @@ export const describeDeviceFleet: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DeviceFleetName: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21020,6 +22521,7 @@ export const describeDomain: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DomainId: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21040,6 +22542,7 @@ export const describeEdgeDeploymentPlan: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { EdgeDeploymentPlanName: 0, NextToken: 0, MaxResults: 0 },
     output: {
       Stages: D.list({
         DeploymentStatus: { EdgeDeploymentStageStartTime: D.ts },
@@ -21066,6 +22569,7 @@ export const describeEdgePackagingJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { EdgePackagingJobName: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21086,6 +22590,7 @@ export const describeEndpoint: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { EndpointName: 0 },
     output: {
       ProductionVariants: D.list(o_ProductionVariantSummary),
       CreationTime: D.ts,
@@ -21114,7 +22619,11 @@ export const describeEndpointConfig: API.OperationMethod<
   DescribeEndpointConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { EndpointConfigName: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [EndpointConfigNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -21133,6 +22642,7 @@ export const describeExperiment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ExperimentName: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21153,6 +22663,7 @@ export const describeFeatureGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { FeatureGroupName: 0, NextToken: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21173,6 +22684,7 @@ export const describeFeatureMetadata: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { FeatureGroupName: 0, FeatureName: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21191,7 +22703,11 @@ export const describeFlowDefinition: API.OperationMethod<
   DescribeFlowDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { FlowDefinitionName: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -21210,6 +22726,7 @@ export const describeHub: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { HubName: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21230,6 +22747,12 @@ export const describeHubContent: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      HubName: 0,
+      HubContentType: 0,
+      HubContentName: 0,
+      HubContentVersion: 0,
+    },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21248,7 +22771,11 @@ export const describeHumanTaskUi: API.OperationMethod<
   DescribeHumanTaskUiError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { HumanTaskUiName: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -21269,6 +22796,7 @@ export const describeHyperParameterTuningJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { HyperParameterTuningJobName: 0 },
     output: {
       CreationTime: D.ts,
       HyperParameterTuningEndTime: D.ts,
@@ -21296,6 +22824,7 @@ export const describeImage: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ImageName: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21316,6 +22845,7 @@ export const describeImageVersion: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ImageName: 0, Version: 0, Alias: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21336,6 +22866,7 @@ export const describeInferenceComponent: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { InferenceComponentName: 0 },
     output: {
       Specification: o_InferenceComponentSpecificationSummary,
       Specifications: D.list(o_InferenceComponentSpecificationSummary),
@@ -21361,6 +22892,7 @@ export const describeInferenceExperiment: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Name: 0 },
     output: {
       Schedule: o_InferenceExperimentSchedule,
       CreationTime: D.ts,
@@ -21388,6 +22920,7 @@ export const describeInferenceRecommendationsJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobName: 0 },
     output: {
       CreationTime: D.ts,
       CompletionTime: D.ts,
@@ -21426,6 +22959,7 @@ export const describeJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { JobName: 0, JobCategory: 0 },
     output: {
       CreationTime: D.ts,
       LastModifiedTime: D.ts,
@@ -21455,7 +22989,10 @@ export const describeJobSchemaVersion: API.OperationMethod<
   DescribeJobSchemaVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { JobCategory: 0, JobConfigSchemaVersion: 0 },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -21474,6 +23011,7 @@ export const describeLabelingJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { LabelingJobName: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21494,6 +23032,7 @@ export const describeLineageGroup: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { LineageGroupName: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21514,6 +23053,7 @@ export const describeMlflowApp: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Arn: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21534,6 +23074,7 @@ export const describeMlflowTrackingServer: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TrackingServerName: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21552,7 +23093,11 @@ export const describeModel: API.OperationMethod<
   DescribeModelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ModelName: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [ModelNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -21571,7 +23116,11 @@ export const describeModelBiasJobDefinition: API.OperationMethod<
   DescribeModelBiasJobDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { JobDefinitionName: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -21592,6 +23141,7 @@ export const describeModelCard: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ModelCardName: 0, ModelCardVersion: 0, IncludedData: 0 },
     output: { Content: D.secret, CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21612,6 +23162,7 @@ export const describeModelCardExportJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ModelCardExportJobArn: 0 },
     output: { CreatedAt: D.ts, LastModifiedAt: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21632,7 +23183,11 @@ export const describeModelExplainabilityJobDefinition: API.OperationMethod<
   DescribeModelExplainabilityJobDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { JobDefinitionName: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -21655,6 +23210,7 @@ export const describeModelPackage: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ModelPackageName: 0, IncludedData: 0 },
     output: {
       CreationTime: D.ts,
       LastModifiedTime: D.ts,
@@ -21677,7 +23233,11 @@ export const describeModelPackageGroup: API.OperationMethod<
   DescribeModelPackageGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ModelPackageGroupName: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -21696,7 +23256,11 @@ export const describeModelQualityJobDefinition: API.OperationMethod<
   DescribeModelQualityJobDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { JobDefinitionName: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -21715,6 +23279,7 @@ export const describeMonitoringSchedule: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { MonitoringScheduleName: 0 },
     output: {
       CreationTime: D.ts,
       LastModifiedTime: D.ts,
@@ -21739,6 +23304,7 @@ export const describeNotebookInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { NotebookInstanceName: 0 },
     output: { LastModifiedTime: D.ts, CreationTime: D.ts },
   },
   errors: [],
@@ -21761,6 +23327,7 @@ export const describeNotebookInstanceLifecycleConfig: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { NotebookInstanceLifecycleConfigName: 0 },
     output: { LastModifiedTime: D.ts, CreationTime: D.ts },
   },
   errors: [],
@@ -21781,6 +23348,7 @@ export const describeOptimizationJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { OptimizationJobName: 0 },
     output: {
       OptimizationStartTime: D.ts,
       OptimizationEndTime: D.ts,
@@ -21806,6 +23374,7 @@ export const describePartnerApp: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Arn: 0, IncludeAvailableUpgrade: 0 },
     output: {
       CreationTime: D.ts,
       LastModifiedTime: D.ts,
@@ -21830,6 +23399,7 @@ export const describePipeline: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { PipelineName: 0, PipelineVersionId: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts, LastRunTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21850,7 +23420,11 @@ export const describePipelineDefinitionForExecution: API.OperationMethod<
   DescribePipelineDefinitionForExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { CreationTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { PipelineExecutionArn: 0 },
+    output: { CreationTime: D.ts },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -21869,6 +23443,7 @@ export const describePipelineExecution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { PipelineExecutionArn: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21889,6 +23464,7 @@ export const describeProcessingJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ProcessingJobName: 0 },
     output: {
       ProcessingEndTime: D.ts,
       ProcessingStartTime: D.ts,
@@ -21914,6 +23490,7 @@ export const describeProject: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ProjectName: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [],
@@ -21932,7 +23509,11 @@ export const describeReservedCapacity: API.OperationMethod<
   DescribeReservedCapacityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { StartTime: D.ts, EndTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ReservedCapacityArn: 0 },
+    output: { StartTime: D.ts, EndTime: D.ts },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -21951,6 +23532,7 @@ export const describeSpace: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DomainId: 0, SpaceName: 0 },
     output: { LastModifiedTime: D.ts, CreationTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21973,6 +23555,7 @@ export const describeStudioLifecycleConfig: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { StudioLifecycleConfigName: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -21991,7 +23574,7 @@ export const describeSubscribedWorkteam: API.OperationMethod<
   DescribeSubscribedWorkteamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { WorkteamArn: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -22012,6 +23595,7 @@ export const describeTrainingJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TrainingJobName: 0 },
     output: {
       CreationTime: D.ts,
       TrainingStartTime: D.ts,
@@ -22041,6 +23625,7 @@ export const describeTrainingPlan: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TrainingPlanName: 0 },
     output: {
       StartTime: D.ts,
       EndTime: D.ts,
@@ -22068,6 +23653,7 @@ export const describeTrainingPlanExtensionHistory: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { TrainingPlanArn: 0, NextToken: 0, MaxResults: 0 },
     output: { TrainingPlanExtensions: D.list(o_TrainingPlanExtension) },
   },
   errors: [ResourceNotFound],
@@ -22094,6 +23680,7 @@ export const describeTransformJob: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TransformJobName: 0 },
     output: {
       CreationTime: D.ts,
       TransformStartTime: D.ts,
@@ -22118,6 +23705,7 @@ export const describeTrial: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TrialName: 0 },
     output: { CreationTime: D.ts, LastModifiedTime: D.ts },
   },
   errors: [ResourceNotFound],
@@ -22138,6 +23726,7 @@ export const describeTrialComponent: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TrialComponentName: 0 },
     output: {
       StartTime: D.ts,
       EndTime: D.ts,
@@ -22167,6 +23756,7 @@ export const describeUserProfile: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DomainId: 0, UserProfileName: 0 },
     output: { LastModifiedTime: D.ts, CreationTime: D.ts },
   },
   errors: [ResourceLimitExceeded, ResourceNotFound],
@@ -22187,7 +23777,11 @@ export const describeWorkforce: API.OperationMethod<
   DescribeWorkforceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Workforce: o_Workforce } },
+  descriptor: {
+    service: svc,
+    input: { WorkforceName: 0 },
+    output: { Workforce: o_Workforce },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -22204,7 +23798,11 @@ export const describeWorkteam: API.OperationMethod<
   DescribeWorkteamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Workteam: o_Workteam } },
+  descriptor: {
+    service: svc,
+    input: { WorkteamName: 0 },
+    output: { Workteam: o_Workteam },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -22223,7 +23821,11 @@ export const detachClusterNodeVolume: API.OperationMethod<
   DetachClusterNodeVolumeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { AttachTime: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { ClusterArn: 0, NodeId: 0, VolumeId: 0 },
+    output: { AttachTime: D.ts },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -22240,7 +23842,7 @@ export const disableSagemakerServicecatalogPortfolio: API.OperationMethod<
   DisableSagemakerServicecatalogPortfolioError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -22259,7 +23861,7 @@ export const disassociateTrialComponent: API.OperationMethod<
   DisassociateTrialComponentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrialComponentName: 0, TrialName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -22276,7 +23878,7 @@ export const enableSagemakerServicecatalogPortfolio: API.OperationMethod<
   EnableSagemakerServicecatalogPortfolioError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -22299,6 +23901,7 @@ export const extendTrainingPlan: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TrainingPlanExtensionOfferingId: 0 },
     output: { TrainingPlanExtensions: D.list(o_TrainingPlanExtension) },
   },
   errors: [ResourceNotFound],
@@ -22317,7 +23920,11 @@ export const getDeviceFleetReport: API.OperationMethod<
   GetDeviceFleetReportError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { ReportGenerated: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { DeviceFleetName: 0 },
+    output: { ReportGenerated: D.ts },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -22334,7 +23941,7 @@ export const getLineageGroupPolicy: API.OperationMethod<
   GetLineageGroupPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LineageGroupName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -22351,7 +23958,7 @@ export const getModelPackageGroupPolicy: API.OperationMethod<
   GetModelPackageGroupPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ModelPackageGroupName: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -22368,7 +23975,7 @@ export const getSagemakerServicecatalogPortfolioStatus: API.OperationMethod<
   GetSagemakerServicecatalogPortfolioStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -22387,7 +23994,19 @@ export const getScalingConfigurationRecommendation: API.OperationMethod<
   GetScalingConfigurationRecommendationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InferenceRecommendationsJobName: 0,
+      RecommendationId: 0,
+      EndpointName: 0,
+      TargetCpuUtilizationPerCore: 0,
+      ScalingPolicyObjective: {
+        MinInvocationsPerMinute: 0,
+        MaxInvocationsPerMinute: 0,
+      },
+    },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -22404,7 +24023,13 @@ export const getSearchSuggestions: API.OperationMethod<
   GetSearchSuggestionsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Resource: 0,
+      SuggestionQuery: { PropertyNameQuery: { PropertyNameHint: 0 } },
+    },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -22425,7 +24050,23 @@ export const importHubContent: API.OperationMethod<
   ImportHubContentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      HubContentName: 0,
+      HubContentVersion: 0,
+      HubContentType: 0,
+      DocumentSchemaVersion: 0,
+      HubName: 0,
+      HubContentDisplayName: 0,
+      HubContentDescription: 0,
+      HubContentMarkdown: 0,
+      HubContentDocument: 0,
+      SupportStatus: 0,
+      HubContentSearchKeywords: 0,
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -22445,6 +24086,16 @@ export const listActions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      SourceUri: 0,
+      ActionType: 0,
+      CreatedAfter: 0,
+      CreatedBefore: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       ActionSummaries: D.list({ CreationTime: D.ts, LastModifiedTime: D.ts }),
     },
@@ -22474,6 +24125,16 @@ export const listAIBenchmarkJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      NameContains: 0,
+      StatusEquals: 0,
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: { AIBenchmarkJobs: D.list({ CreationTime: D.ts, EndTime: D.ts }) },
   },
   errors: [],
@@ -22501,6 +24162,16 @@ export const listAIRecommendationJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      NameContains: 0,
+      StatusEquals: 0,
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: {
       AIRecommendationJobs: D.list({ CreationTime: D.ts, EndTime: D.ts }),
     },
@@ -22530,6 +24201,15 @@ export const listAIWorkloadConfigs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      NameContains: 0,
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: { AIWorkloadConfigs: D.list({ CreationTime: D.ts }) },
   },
   errors: [],
@@ -22557,6 +24237,15 @@ export const listAlgorithms: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      MaxResults: 0,
+      NameContains: 0,
+      NextToken: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: { AlgorithmSummaryList: D.list({ CreationTime: D.ts }) },
   },
   errors: [],
@@ -22582,7 +24271,10 @@ export const listAliases: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   SageMakerImageVersionAlias
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ImageName: 0, Alias: 0, Version: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -22608,6 +24300,17 @@ export const listAppImageConfigs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      NameContains: 0,
+      CreationTimeBefore: 0,
+      CreationTimeAfter: 0,
+      ModifiedTimeBefore: 0,
+      ModifiedTimeAfter: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: {
       AppImageConfigs: D.list({ CreationTime: D.ts, LastModifiedTime: D.ts }),
     },
@@ -22637,6 +24340,15 @@ export const listApps: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      SortOrder: 0,
+      SortBy: 0,
+      DomainIdEquals: 0,
+      UserProfileNameEquals: 0,
+      SpaceNameEquals: 0,
+    },
     output: { Apps: D.list({ CreationTime: D.ts }) },
   },
   errors: [],
@@ -22664,6 +24376,16 @@ export const listArtifacts: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      SourceUri: 0,
+      ArtifactType: 0,
+      CreatedAfter: 0,
+      CreatedBefore: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       ArtifactSummaries: D.list({ CreationTime: D.ts, LastModifiedTime: D.ts }),
     },
@@ -22693,6 +24415,19 @@ export const listAssociations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      SourceArn: 0,
+      DestinationArn: 0,
+      SourceType: 0,
+      DestinationType: 0,
+      AssociationType: 0,
+      CreatedAfter: 0,
+      CreatedBefore: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { AssociationSummaries: D.list({ CreationTime: D.ts }) },
   },
   errors: [ResourceNotFound],
@@ -22720,6 +24455,18 @@ export const listAutoMLJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      NameContains: 0,
+      StatusEquals: 0,
+      SortOrder: 0,
+      SortBy: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       AutoMLJobSummaries: D.list({
         CreationTime: D.ts,
@@ -22753,6 +24500,15 @@ export const listCandidatesForAutoMLJob: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      AutoMLJobName: 0,
+      StatusEquals: 0,
+      CandidateNameEquals: 0,
+      SortOrder: 0,
+      SortBy: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { Candidates: D.list(o_AutoMLCandidate) },
   },
   errors: [ResourceNotFound],
@@ -22778,7 +24534,22 @@ export const listClusterEvents: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ClusterEventSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Events: D.list({ EventTime: D.ts }) } },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterName: 0,
+      InstanceGroupName: 0,
+      NodeId: 0,
+      EventTimeAfter: 0,
+      EventTimeBefore: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      ResourceType: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+    output: { Events: D.list({ EventTime: D.ts }) },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -22804,6 +24575,17 @@ export const listClusterNodes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ClusterName: 0,
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      InstanceGroupNameContains: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      IncludeNodeLogicalIds: 0,
+    },
     output: {
       ClusterNodeSummaries: D.list({
         LaunchTime: D.ts,
@@ -22836,6 +24618,16 @@ export const listClusters: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      MaxResults: 0,
+      NameContains: 0,
+      NextToken: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      TrainingPlanArn: 0,
+    },
     output: { ClusterSummaries: D.list({ CreationTime: D.ts }) },
   },
   errors: [],
@@ -22863,6 +24655,17 @@ export const listClusterSchedulerConfigs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreatedAfter: 0,
+      CreatedBefore: 0,
+      NameContains: 0,
+      ClusterArn: 0,
+      Status: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       ClusterSchedulerConfigSummaries: D.list({
         CreationTime: D.ts,
@@ -22895,6 +24698,17 @@ export const listCodeRepositories: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      MaxResults: 0,
+      NameContains: 0,
+      NextToken: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: {
       CodeRepositorySummaryList: D.list({
         CreationTime: D.ts,
@@ -22929,6 +24743,18 @@ export const listCompilationJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      NameContains: 0,
+      StatusEquals: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: {
       CompilationJobSummaries: D.list({
         CreationTime: D.ts,
@@ -22963,6 +24789,17 @@ export const listComputeQuotas: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreatedAfter: 0,
+      CreatedBefore: 0,
+      NameContains: 0,
+      Status: 0,
+      ClusterArn: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       ComputeQuotaSummaries: D.list({
         CreationTime: D.ts,
@@ -22995,6 +24832,16 @@ export const listContexts: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      SourceUri: 0,
+      ContextType: 0,
+      CreatedAfter: 0,
+      CreatedBefore: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       ContextSummaries: D.list({ CreationTime: D.ts, LastModifiedTime: D.ts }),
     },
@@ -23024,6 +24871,16 @@ export const listDataQualityJobDefinitions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      EndpointName: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      NameContains: 0,
+      CreationTimeBefore: 0,
+      CreationTimeAfter: 0,
+    },
     output: {
       JobDefinitionSummaries: D.list(o_MonitoringJobDefinitionSummary),
     },
@@ -23053,6 +24910,17 @@ export const listDeviceFleets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      NameContains: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: {
       DeviceFleetSummaries: D.list({
         CreationTime: D.ts,
@@ -23085,6 +24953,13 @@ export const listDevices: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      LatestHeartbeatAfter: 0,
+      ModelName: 0,
+      DeviceFleetName: 0,
+    },
     output: {
       DeviceSummaries: D.list({
         RegistrationTime: D.ts,
@@ -23117,6 +24992,7 @@ export const listDomains: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: { Domains: D.list({ CreationTime: D.ts, LastModifiedTime: D.ts }) },
   },
   errors: [],
@@ -23144,6 +25020,18 @@ export const listEdgeDeploymentPlans: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      NameContains: 0,
+      DeviceFleetNameContains: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: {
       EdgeDeploymentPlanSummaries: D.list({
         CreationTime: D.ts,
@@ -23176,6 +25064,19 @@ export const listEdgePackagingJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      NameContains: 0,
+      ModelNameContains: 0,
+      StatusEquals: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: {
       EdgePackagingJobSummaries: D.list({
         CreationTime: D.ts,
@@ -23208,6 +25109,15 @@ export const listEndpointConfigs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      NameContains: 0,
+      CreationTimeBefore: 0,
+      CreationTimeAfter: 0,
+    },
     output: { EndpointConfigs: D.list({ CreationTime: D.ts }) },
   },
   errors: [],
@@ -23235,6 +25145,18 @@ export const listEndpoints: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      NameContains: 0,
+      CreationTimeBefore: 0,
+      CreationTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      StatusEquals: 0,
+    },
     output: {
       Endpoints: D.list({ CreationTime: D.ts, LastModifiedTime: D.ts }),
     },
@@ -23264,6 +25186,14 @@ export const listExperiments: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreatedAfter: 0,
+      CreatedBefore: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       ExperimentSummaries: D.list({
         CreationTime: D.ts,
@@ -23296,6 +25226,17 @@ export const listFeatureGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NameContains: 0,
+      FeatureGroupStatusEquals: 0,
+      OfflineStoreStatusEquals: 0,
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      SortOrder: 0,
+      SortBy: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { FeatureGroupSummaries: D.list({ CreationTime: D.ts }) },
   },
   errors: [],
@@ -23323,6 +25264,13 @@ export const listFlowDefinitions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { FlowDefinitionSummaries: D.list({ CreationTime: D.ts }) },
   },
   errors: [],
@@ -23349,6 +25297,18 @@ export const listHubContents: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      HubName: 0,
+      HubContentType: 0,
+      NameContains: 0,
+      MaxSchemaVersion: 0,
+      CreationTimeBefore: 0,
+      CreationTimeAfter: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { HubContentSummaries: D.list(o_HubContentInfo) },
   },
   errors: [ResourceNotFound],
@@ -23369,6 +25329,19 @@ export const listHubContentVersions: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      HubName: 0,
+      HubContentType: 0,
+      HubContentName: 0,
+      MinVersion: 0,
+      MaxSchemaVersion: 0,
+      CreationTimeBefore: 0,
+      CreationTimeAfter: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { HubContentSummaries: D.list(o_HubContentInfo) },
   },
   errors: [ResourceNotFound],
@@ -23389,6 +25362,17 @@ export const listHubs: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NameContains: 0,
+      CreationTimeBefore: 0,
+      CreationTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       HubSummaries: D.list({ CreationTime: D.ts, LastModifiedTime: D.ts }),
     },
@@ -23412,6 +25396,13 @@ export const listHumanTaskUis: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { HumanTaskUiSummaries: D.list({ CreationTime: D.ts }) },
   },
   errors: [],
@@ -23439,6 +25430,18 @@ export const listHyperParameterTuningJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NameContains: 0,
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      StatusEquals: 0,
+    },
     output: {
       HyperParameterTuningJobSummaries: D.list({
         CreationTime: D.ts,
@@ -23472,6 +25475,17 @@ export const listImages: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      MaxResults: 0,
+      NameContains: 0,
+      NextToken: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: { Images: D.list({ CreationTime: D.ts, LastModifiedTime: D.ts }) },
   },
   errors: [],
@@ -23499,6 +25513,17 @@ export const listImageVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      ImageName: 0,
+      LastModifiedTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: {
       ImageVersions: D.list({ CreationTime: D.ts, LastModifiedTime: D.ts }),
     },
@@ -23528,6 +25553,20 @@ export const listInferenceComponents: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      NameContains: 0,
+      CreationTimeBefore: 0,
+      CreationTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      StatusEquals: 0,
+      EndpointNameEquals: 0,
+      VariantNameEquals: 0,
+    },
     output: {
       InferenceComponents: D.list({
         CreationTime: D.ts,
@@ -23560,6 +25599,19 @@ export const listInferenceExperiments: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NameContains: 0,
+      Type: 0,
+      StatusEquals: 0,
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       InferenceExperiments: D.list({
         Schedule: o_InferenceExperimentSchedule,
@@ -23594,6 +25646,20 @@ export const listInferenceRecommendationsJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      NameContains: 0,
+      StatusEquals: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      ModelNameEquals: 0,
+      ModelPackageVersionArnEquals: 0,
+    },
     output: {
       InferenceRecommendationsJobs: D.list({
         CreationTime: D.ts,
@@ -23631,6 +25697,7 @@ export const listInferenceRecommendationsJobSteps: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { JobName: 0, Status: 0, StepType: 0, MaxResults: 0, NextToken: 0 },
     output: {
       Steps: D.list({
         InferenceBenchmark: {
@@ -23671,6 +25738,19 @@ export const listJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      JobCategory: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      NameContains: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      StatusEquals: 0,
+    },
     output: {
       JobSummaries: D.list({
         CreationTime: D.ts,
@@ -23708,7 +25788,10 @@ export const listJobSchemaVersions: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   JobConfigSchemaVersionSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { JobCategory: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -23734,6 +25817,18 @@ export const listLabelingJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      NameContains: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      StatusEquals: 0,
+    },
     output: {
       LabelingJobSummaryList: D.list({
         CreationTime: D.ts,
@@ -23766,6 +25861,16 @@ export const listLabelingJobsForWorkteam: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      WorkteamArn: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      JobReferenceCodeContains: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: { LabelingJobSummaryList: D.list({ CreationTime: D.ts }) },
   },
   errors: [ResourceNotFound],
@@ -23793,6 +25898,14 @@ export const listLineageGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreatedAfter: 0,
+      CreatedBefore: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       LineageGroupSummaries: D.list({
         CreationTime: D.ts,
@@ -23825,6 +25938,18 @@ export const listMlflowApps: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreatedAfter: 0,
+      CreatedBefore: 0,
+      Status: 0,
+      MlflowVersion: 0,
+      DefaultForDomainId: 0,
+      AccountDefaultStatus: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       Summaries: D.list({ CreationTime: D.ts, LastModifiedTime: D.ts }),
     },
@@ -23854,6 +25979,16 @@ export const listMlflowTrackingServers: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreatedAfter: 0,
+      CreatedBefore: 0,
+      TrackingServerStatus: 0,
+      MlflowVersion: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       TrackingServerSummaries: D.list({
         CreationTime: D.ts,
@@ -23886,6 +26021,16 @@ export const listModelBiasJobDefinitions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      EndpointName: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      NameContains: 0,
+      CreationTimeBefore: 0,
+      CreationTimeAfter: 0,
+    },
     output: {
       JobDefinitionSummaries: D.list(o_MonitoringJobDefinitionSummary),
     },
@@ -23915,6 +26060,18 @@ export const listModelCardExportJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ModelCardName: 0,
+      ModelCardVersion: 0,
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      ModelCardExportJobNameContains: 0,
+      StatusEquals: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       ModelCardExportJobSummaries: D.list({
         CreatedAt: D.ts,
@@ -23947,6 +26104,16 @@ export const listModelCards: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      MaxResults: 0,
+      NameContains: 0,
+      ModelCardStatus: 0,
+      NextToken: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: {
       ModelCardSummaries: D.list({
         CreationTime: D.ts,
@@ -23979,6 +26146,16 @@ export const listModelCardVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      MaxResults: 0,
+      ModelCardName: 0,
+      ModelCardStatus: 0,
+      NextToken: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: {
       ModelCardVersionSummaryList: D.list({
         CreationTime: D.ts,
@@ -24011,6 +26188,16 @@ export const listModelExplainabilityJobDefinitions: API.PaginatedOperationMethod
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      EndpointName: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      NameContains: 0,
+      CreationTimeBefore: 0,
+      CreationTimeAfter: 0,
+    },
     output: {
       JobDefinitionSummaries: D.list(o_MonitoringJobDefinitionSummary),
     },
@@ -24038,7 +26225,14 @@ export const listModelMetadata: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   ModelMetadataSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      SearchExpression: { Filters: D.list({ Name: 0, Value: 0 }) },
+      NextToken: 0,
+      MaxResults: 0,
+    },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -24064,6 +26258,16 @@ export const listModelPackageGroups: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      MaxResults: 0,
+      NameContains: 0,
+      NextToken: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      CrossAccountFilterOption: 0,
+    },
     output: { ModelPackageGroupSummaryList: D.list({ CreationTime: D.ts }) },
   },
   errors: [],
@@ -24091,6 +26295,18 @@ export const listModelPackages: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      MaxResults: 0,
+      NameContains: 0,
+      ModelApprovalStatus: 0,
+      ModelPackageGroupName: 0,
+      ModelPackageType: 0,
+      NextToken: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: { ModelPackageSummaryList: D.list({ CreationTime: D.ts }) },
   },
   errors: [],
@@ -24118,6 +26334,16 @@ export const listModelQualityJobDefinitions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      EndpointName: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      NameContains: 0,
+      CreationTimeBefore: 0,
+      CreationTimeAfter: 0,
+    },
     output: {
       JobDefinitionSummaries: D.list(o_MonitoringJobDefinitionSummary),
     },
@@ -24147,6 +26373,15 @@ export const listModels: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      NameContains: 0,
+      CreationTimeBefore: 0,
+      CreationTimeAfter: 0,
+    },
     output: { Models: D.list({ CreationTime: D.ts }) },
   },
   errors: [],
@@ -24174,6 +26409,17 @@ export const listMonitoringAlertHistory: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MonitoringScheduleName: 0,
+      MonitoringAlertName: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      CreationTimeBefore: 0,
+      CreationTimeAfter: 0,
+      StatusEquals: 0,
+    },
     output: { MonitoringAlertHistory: D.list({ CreationTime: D.ts }) },
   },
   errors: [ResourceNotFound],
@@ -24201,6 +26447,7 @@ export const listMonitoringAlerts: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MonitoringScheduleName: 0, NextToken: 0, MaxResults: 0 },
     output: { MonitoringAlertSummaries: D.list(o_MonitoringAlertSummary) },
   },
   errors: [ResourceNotFound],
@@ -24228,6 +26475,23 @@ export const listMonitoringExecutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MonitoringScheduleName: 0,
+      EndpointName: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      ScheduledTimeBefore: 0,
+      ScheduledTimeAfter: 0,
+      CreationTimeBefore: 0,
+      CreationTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      StatusEquals: 0,
+      MonitoringJobDefinitionName: 0,
+      MonitoringTypeEquals: 0,
+    },
     output: {
       MonitoringExecutionSummaries: D.list(o_MonitoringExecutionSummary),
     },
@@ -24257,6 +26521,21 @@ export const listMonitoringSchedules: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      EndpointName: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      NameContains: 0,
+      CreationTimeBefore: 0,
+      CreationTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      StatusEquals: 0,
+      MonitoringJobDefinitionName: 0,
+      MonitoringTypeEquals: 0,
+    },
     output: {
       MonitoringScheduleSummaries: D.list({
         CreationTime: D.ts,
@@ -24289,6 +26568,17 @@ export const listNotebookInstanceLifecycleConfigs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NameContains: 0,
+      CreationTimeBefore: 0,
+      CreationTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+    },
     output: {
       NotebookInstanceLifecycleConfigs: D.list({
         CreationTime: D.ts,
@@ -24321,6 +26611,21 @@ export const listNotebookInstances: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NameContains: 0,
+      CreationTimeBefore: 0,
+      CreationTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      StatusEquals: 0,
+      NotebookInstanceLifecycleConfigNameContains: 0,
+      DefaultCodeRepositoryContains: 0,
+      AdditionalCodeRepositoryEquals: 0,
+    },
     output: {
       NotebookInstances: D.list({ CreationTime: D.ts, LastModifiedTime: D.ts }),
     },
@@ -24350,6 +26655,19 @@ export const listOptimizationJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      OptimizationContains: 0,
+      NameContains: 0,
+      StatusEquals: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: {
       OptimizationJobSummaries: D.list({
         CreationTime: D.ts,
@@ -24384,6 +26702,7 @@ export const listPartnerApps: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxResults: 0, NextToken: 0 },
     output: { Summaries: D.list({ CreationTime: D.ts }) },
   },
   errors: [],
@@ -24411,6 +26730,15 @@ export const listPipelineExecutions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      PipelineName: 0,
+      CreatedAfter: 0,
+      CreatedBefore: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { PipelineExecutionSummaries: D.list({ StartTime: D.ts }) },
   },
   errors: [ResourceNotFound],
@@ -24438,6 +26766,12 @@ export const listPipelineExecutionSteps: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      PipelineExecutionArn: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      SortOrder: 0,
+    },
     output: {
       PipelineExecutionSteps: D.list({ StartTime: D.ts, EndTime: D.ts }),
     },
@@ -24467,7 +26801,10 @@ export const listPipelineParametersForExecution: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Parameter
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { PipelineExecutionArn: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -24493,6 +26830,15 @@ export const listPipelines: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      PipelineNamePrefix: 0,
+      CreatedAfter: 0,
+      CreatedBefore: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       PipelineSummaries: D.list({
         CreationTime: D.ts,
@@ -24526,6 +26872,14 @@ export const listPipelineVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      PipelineName: 0,
+      CreatedAfter: 0,
+      CreatedBefore: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { PipelineVersionSummaries: D.list({ CreationTime: D.ts }) },
   },
   errors: [ResourceNotFound],
@@ -24553,6 +26907,18 @@ export const listProcessingJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      NameContains: 0,
+      StatusEquals: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       ProcessingJobSummaries: D.list({
         CreationTime: D.ts,
@@ -24586,6 +26952,15 @@ export const listProjects: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      MaxResults: 0,
+      NameContains: 0,
+      NextToken: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: { ProjectSummaryList: D.list({ CreationTime: D.ts }) },
   },
   errors: [],
@@ -24612,6 +26987,15 @@ export const listResourceCatalogs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NameContains: 0,
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      SortOrder: 0,
+      SortBy: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { ResourceCatalogs: D.list({ CreationTime: D.ts }) },
   },
   errors: [],
@@ -24639,6 +27023,14 @@ export const listSpaces: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      SortOrder: 0,
+      SortBy: 0,
+      DomainIdEquals: 0,
+      SpaceNameContains: 0,
+    },
     output: { Spaces: D.list({ CreationTime: D.ts, LastModifiedTime: D.ts }) },
   },
   errors: [],
@@ -24666,6 +27058,13 @@ export const listStageDevices: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      EdgeDeploymentPlanName: 0,
+      ExcludeDevicesDeployedInOtherStage: 0,
+      StageName: 0,
+    },
     output: {
       DeviceDeploymentSummaries: D.list({ DeploymentStartTime: D.ts }),
     },
@@ -24695,6 +27094,18 @@ export const listStudioLifecycleConfigs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      MaxResults: 0,
+      NextToken: 0,
+      NameContains: 0,
+      AppTypeEquals: 0,
+      CreationTimeBefore: 0,
+      CreationTimeAfter: 0,
+      ModifiedTimeBefore: 0,
+      ModifiedTimeAfter: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: {
       StudioLifecycleConfigs: D.list({
         CreationTime: D.ts,
@@ -24725,7 +27136,10 @@ export const listSubscribedWorkteams: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   SubscribedWorkteam
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { NameContains: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -24749,7 +27163,10 @@ export const listTags: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Tag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ResourceArn: 0, NextToken: 0, MaxResults: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -24787,6 +27204,20 @@ export const listTrainingJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      NameContains: 0,
+      StatusEquals: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      WarmPoolStatusEquals: 0,
+      TrainingPlanArnEquals: 0,
+    },
     output: {
       TrainingJobSummaries: D.list({
         CreationTime: D.ts,
@@ -24822,6 +27253,14 @@ export const listTrainingJobsForHyperParameterTuningJob: API.PaginatedOperationM
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      HyperParameterTuningJobName: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      StatusEquals: 0,
+      SortBy: 0,
+      SortOrder: 0,
+    },
     output: {
       TrainingJobSummaries: D.list(o_HyperParameterTrainingJobSummary),
     },
@@ -24851,6 +27290,15 @@ export const listTrainingPlans: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      StartTimeAfter: 0,
+      StartTimeBefore: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      Filters: D.list({ Name: 0, Value: 0 }),
+    },
     output: {
       TrainingPlanSummaries: D.list({
         StartTime: D.ts,
@@ -24884,6 +27332,18 @@ export const listTransformJobs: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      CreationTimeAfter: 0,
+      CreationTimeBefore: 0,
+      LastModifiedTimeAfter: 0,
+      LastModifiedTimeBefore: 0,
+      NameContains: 0,
+      StatusEquals: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: {
       TransformJobSummaries: D.list({
         CreationTime: D.ts,
@@ -24923,6 +27383,17 @@ export const listTrialComponents: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ExperimentName: 0,
+      TrialName: 0,
+      SourceArn: 0,
+      CreatedAfter: 0,
+      CreatedBefore: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       TrialComponentSummaries: D.list({
         StartTime: D.ts,
@@ -24957,6 +27428,16 @@ export const listTrials: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ExperimentName: 0,
+      TrialComponentName: 0,
+      CreatedAfter: 0,
+      CreatedBefore: 0,
+      SortBy: 0,
+      SortOrder: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       TrialSummaries: D.list({ CreationTime: D.ts, LastModifiedTime: D.ts }),
     },
@@ -24986,7 +27467,10 @@ export const listUltraServersByReservedCapacity: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   UltraServer
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ReservedCapacityArn: 0, MaxResults: 0, NextToken: 0 },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25012,6 +27496,14 @@ export const listUserProfiles: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      NextToken: 0,
+      MaxResults: 0,
+      SortOrder: 0,
+      SortBy: 0,
+      DomainIdEquals: 0,
+      UserProfileNameContains: 0,
+    },
     output: {
       UserProfiles: D.list({ CreationTime: D.ts, LastModifiedTime: D.ts }),
     },
@@ -25039,7 +27531,17 @@ export const listWorkforces: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Workforce
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Workforces: D.list(o_Workforce) } },
+  descriptor: {
+    service: svc,
+    input: {
+      SortBy: 0,
+      SortOrder: 0,
+      NameContains: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
+    output: { Workforces: D.list(o_Workforce) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25063,7 +27565,17 @@ export const listWorkteams: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Workteam
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Workteams: D.list(o_Workteam) } },
+  descriptor: {
+    service: svc,
+    input: {
+      SortBy: 0,
+      SortOrder: 0,
+      NameContains: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
+    output: { Workteams: D.list(o_Workteam) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25086,7 +27598,10 @@ export const putModelPackageGroupPolicy: API.OperationMethod<
   PutModelPackageGroupPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ModelPackageGroupName: 0, ResourcePolicy: 0 },
+  },
   errors: [ConflictException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25104,7 +27619,26 @@ export const queryLineage: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      StartArns: 0,
+      Direction: 0,
+      IncludeEdges: 0,
+      Filters: {
+        Types: 0,
+        LineageTypes: 0,
+        CreatedBefore: 0,
+        CreatedAfter: 0,
+        ModifiedBefore: 0,
+        ModifiedAfter: 0,
+        Properties: 0,
+      },
+      MaxDepth: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25126,7 +27660,14 @@ export const registerDevices: API.OperationMethod<
   RegisterDevicesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DeviceFleetName: 0,
+      Devices: D.list(i_Device),
+      Tags: D.list(i_Tag),
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25143,7 +27684,15 @@ export const renderUiTemplate: API.OperationMethod<
   RenderUiTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      UiTemplate: i_UiTemplate,
+      Task: { Input: 0 },
+      RoleArn: 0,
+      HumanTaskUiArn: 0,
+    },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25166,7 +27715,11 @@ export const retryPipelineExecution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      PipelineExecutionArn: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      ParallelismConfiguration: i_ParallelismConfiguration,
+    },
   },
   errors: [ConflictException, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
@@ -25191,6 +27744,16 @@ export const search: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Resource: 0,
+      SearchExpression: i_SearchExpression,
+      SortBy: 0,
+      SortOrder: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      CrossAccountFilterOption: 0,
+      VisibilityConditions: D.list({ Key: 0, Value: 0 }),
+    },
     output: {
       Results: D.list({
         TrainingJob: o_TrainingJob,
@@ -25311,6 +27874,17 @@ export const searchTrainingPlanOfferings: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      InstanceType: 0,
+      InstanceCount: 0,
+      UltraServerType: 0,
+      UltraServerCount: 0,
+      StartTimeAfter: 0,
+      EndTimeBefore: 0,
+      DurationHours: 0,
+      TargetResources: 0,
+      TrainingPlanArn: 0,
+    },
     output: {
       TrainingPlanOfferings: D.list({
         RequestedStartTimeAfter: D.ts,
@@ -25350,7 +27924,11 @@ export const sendPipelineExecutionStepFailure: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      CallbackToken: 0,
+      FailureReason: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
   },
   errors: [ConflictException, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
@@ -25374,7 +27952,11 @@ export const sendPipelineExecutionStepSuccess: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      CallbackToken: 0,
+      OutputParameters: D.list({ Name: 0, Value: 0 }),
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
   },
   errors: [ConflictException, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
@@ -25392,7 +27974,17 @@ export const startClusterHealthCheck: API.OperationMethod<
   StartClusterHealthCheckError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterName: 0,
+      DeepHealthCheckConfigurations: D.list({
+        InstanceGroupName: 0,
+        InstanceIds: 0,
+        DeepHealthChecks: 0,
+      }),
+    },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25409,7 +28001,10 @@ export const startEdgeDeploymentStage: API.OperationMethod<
   StartEdgeDeploymentStageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { EdgeDeploymentPlanName: 0, StageName: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25429,7 +28024,7 @@ export const startInferenceExperiment: API.OperationMethod<
   StartInferenceExperimentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Name: 0 } },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25449,7 +28044,7 @@ export const startMlflowTrackingServer: API.OperationMethod<
   StartMlflowTrackingServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrackingServerName: 0 } },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25468,7 +28063,7 @@ export const startMonitoringSchedule: API.OperationMethod<
   StartMonitoringScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MonitoringScheduleName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25485,7 +28080,7 @@ export const startNotebookInstance: API.OperationMethod<
   StartNotebookInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NotebookInstanceName: 0 } },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25508,7 +28103,20 @@ export const startPipelineExecution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      PipelineName: 0,
+      PipelineExecutionDisplayName: 0,
+      PipelineParameters: D.list({ Name: 0, Value: 0 }),
+      PipelineExecutionDescription: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      ParallelismConfiguration: i_ParallelismConfiguration,
+      SelectiveExecutionConfig: {
+        SourcePipelineExecutionArn: 0,
+        SelectedSteps: D.list({ StepName: 0 }),
+      },
+      PipelineVersionId: 0,
+      MlflowExperimentName: 0,
+    },
   },
   errors: [ConflictException, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
@@ -25529,7 +28137,7 @@ export const startSession: API.OperationMethod<
   StartSessionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceIdentifier: 0 } },
   errors: [ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25546,7 +28154,7 @@ export const stopAIBenchmarkJob: API.OperationMethod<
   StopAIBenchmarkJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AIBenchmarkJobName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25563,7 +28171,7 @@ export const stopAIRecommendationJob: API.OperationMethod<
   StopAIRecommendationJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AIRecommendationJobName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25580,7 +28188,7 @@ export const stopAutoMLJob: API.OperationMethod<
   StopAutoMLJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { AutoMLJobName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25601,7 +28209,7 @@ export const stopCompilationJob: API.OperationMethod<
   StopCompilationJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CompilationJobName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25618,7 +28226,10 @@ export const stopEdgeDeploymentStage: API.OperationMethod<
   StopEdgeDeploymentStageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { EdgeDeploymentPlanName: 0, StageName: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25635,7 +28246,7 @@ export const stopEdgePackagingJob: API.OperationMethod<
   StopEdgePackagingJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { EdgePackagingJobName: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25654,7 +28265,7 @@ export const stopHyperParameterTuningJob: API.OperationMethod<
   StopHyperParameterTuningJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { HyperParameterTuningJobName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25674,7 +28285,16 @@ export const stopInferenceExperiment: API.OperationMethod<
   StopInferenceExperimentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      ModelVariantActions: 0,
+      DesiredModelVariants: D.list(i_ModelVariantConfig),
+      DesiredState: 0,
+      Reason: 0,
+    },
+  },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25693,7 +28313,7 @@ export const stopInferenceRecommendationsJob: API.OperationMethod<
   StopInferenceRecommendationsJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25718,7 +28338,7 @@ export const stopJob: API.OperationMethod<
   StopJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { JobName: 0, JobCategory: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25735,7 +28355,7 @@ export const stopLabelingJob: API.OperationMethod<
   StopLabelingJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { LabelingJobName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25755,7 +28375,7 @@ export const stopMlflowTrackingServer: API.OperationMethod<
   StopMlflowTrackingServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrackingServerName: 0 } },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25772,7 +28392,7 @@ export const stopMonitoringSchedule: API.OperationMethod<
   StopMonitoringScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { MonitoringScheduleName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25791,7 +28411,7 @@ export const stopNotebookInstance: API.OperationMethod<
   StopNotebookInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { NotebookInstanceName: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25808,7 +28428,7 @@ export const stopOptimizationJob: API.OperationMethod<
   StopOptimizationJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { OptimizationJobName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25842,7 +28462,10 @@ export const stopPipelineExecution: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      PipelineExecutionArn: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+    },
   },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
@@ -25860,7 +28483,7 @@ export const stopProcessingJob: API.OperationMethod<
   StopProcessingJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ProcessingJobName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25879,7 +28502,7 @@ export const stopTrainingJob: API.OperationMethod<
   StopTrainingJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrainingJobName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25898,7 +28521,7 @@ export const stopTransformJob: API.OperationMethod<
   StopTransformJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TransformJobName: 0 } },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25918,7 +28541,16 @@ export const updateAction: API.OperationMethod<
   UpdateActionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ActionName: 0,
+      Description: 0,
+      Status: 0,
+      Properties: 0,
+      PropertiesToRemove: 0,
+    },
+  },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25935,7 +28567,15 @@ export const updateAppImageConfig: API.OperationMethod<
   UpdateAppImageConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      AppImageConfigName: 0,
+      KernelGatewayImageConfig: i_KernelGatewayImageConfig,
+      JupyterLabAppImageConfig: i_JupyterLabAppImageConfig,
+      CodeEditorAppImageConfig: i_CodeEditorAppImageConfig,
+    },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25955,7 +28595,15 @@ export const updateArtifact: API.OperationMethod<
   UpdateArtifactError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ArtifactArn: 0,
+      ArtifactName: 0,
+      Properties: 0,
+      PropertiesToRemove: 0,
+    },
+  },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25976,7 +28624,24 @@ export const updateCluster: API.OperationMethod<
   UpdateClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterName: 0,
+      InstanceGroups: D.list(i_ClusterInstanceGroupSpecification),
+      RestrictedInstanceGroups: D.list(
+        i_ClusterRestrictedInstanceGroupSpecification,
+      ),
+      RestrictedInstanceGroupsConfig: i_ClusterRestrictedInstanceGroupsConfig,
+      TieredStorageConfig: i_ClusterTieredStorageConfig,
+      NodeRecovery: 0,
+      InstanceGroupsToDelete: 0,
+      NodeProvisioningMode: 0,
+      ClusterRole: 0,
+      AutoScaling: i_ClusterAutoScalingConfig,
+      Orchestrator: i_ClusterOrchestrator,
+    },
+  },
   errors: [ConflictException, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -25997,7 +28662,15 @@ export const updateClusterSchedulerConfig: API.OperationMethod<
   UpdateClusterSchedulerConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterSchedulerConfigId: 0,
+      TargetVersion: 0,
+      SchedulerConfig: i_SchedulerConfig,
+      Description: 0,
+    },
+  },
   errors: [ConflictException, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26019,7 +28692,15 @@ export const updateClusterSoftware: API.OperationMethod<
   UpdateClusterSoftwareError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ClusterName: 0,
+      InstanceGroups: D.list({ InstanceGroupName: 0, ImageReleaseVersion: 0 }),
+      DeploymentConfig: i_DeploymentConfiguration,
+      ImageId: 0,
+    },
+  },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26036,7 +28717,10 @@ export const updateCodeRepository: API.OperationMethod<
   UpdateCodeRepositoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { CodeRepositoryName: 0, GitConfig: { SecretArn: 0 } },
+  },
   errors: [ConflictException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26057,7 +28741,17 @@ export const updateComputeQuota: API.OperationMethod<
   UpdateComputeQuotaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ComputeQuotaId: 0,
+      TargetVersion: 0,
+      ComputeQuotaConfig: i_ComputeQuotaConfig,
+      ComputeQuotaTarget: i_ComputeQuotaTarget,
+      ActivationState: 0,
+      Description: 0,
+    },
+  },
   errors: [ConflictException, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26077,7 +28771,15 @@ export const updateContext: API.OperationMethod<
   UpdateContextError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ContextName: 0,
+      Description: 0,
+      Properties: 0,
+      PropertiesToRemove: 0,
+    },
+  },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26094,7 +28796,16 @@ export const updateDeviceFleet: API.OperationMethod<
   UpdateDeviceFleetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DeviceFleetName: 0,
+      RoleArn: 0,
+      Description: 0,
+      OutputConfig: i_EdgeOutputConfig,
+      EnableIotRoleAlias: 0,
+    },
+  },
   errors: [ResourceInUse],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26111,7 +28822,10 @@ export const updateDevices: API.OperationMethod<
   UpdateDevicesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DeviceFleetName: 0, Devices: D.list(i_Device) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26132,7 +28846,36 @@ export const updateDomain: API.OperationMethod<
   UpdateDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DomainId: 0,
+      DefaultUserSettings: i_UserSettings,
+      DomainSettingsForUpdate: {
+        RStudioServerProDomainSettingsForUpdate: {
+          DomainExecutionRoleArn: 0,
+          DefaultResourceSpec: i_ResourceSpec,
+          RStudioConnectUrl: 0,
+          RStudioPackageManagerUrl: 0,
+        },
+        ExecutionRoleIdentityConfig: 0,
+        SecurityGroupIds: 0,
+        TrustedIdentityPropagationSettings:
+          i_TrustedIdentityPropagationSettings,
+        DockerSettings: i_DockerSettings,
+        AmazonQSettings: i_AmazonQSettings,
+        UnifiedStudioSettings: i_UnifiedStudioSettings,
+        IpAddressType: 0,
+      },
+      AppSecurityGroupManagement: 0,
+      DefaultSpaceSettings: i_DefaultSpaceSettings,
+      SubnetIds: 0,
+      AppNetworkAccessType: 0,
+      TagPropagation: 0,
+      HomeEfsFileSystemCreation: 0,
+      VpcId: 0,
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26159,7 +28902,17 @@ export const updateEndpoint: API.OperationMethod<
   UpdateEndpointError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EndpointName: 0,
+      EndpointConfigName: 0,
+      RetainAllVariantProperties: 0,
+      ExcludeRetainedVariantProperties: D.list({ VariantPropertyType: 0 }),
+      DeploymentConfig: i_DeploymentConfig,
+      RetainDeploymentConfig: 0,
+    },
+  },
   errors: [ResourceLimitExceeded, EndpointConfigNotFound, EndpointNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26178,7 +28931,21 @@ export const updateEndpointWeightsAndCapacities: API.OperationMethod<
   UpdateEndpointWeightsAndCapacitiesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      EndpointName: 0,
+      DesiredWeightsAndCapacities: D.list({
+        VariantName: 0,
+        DesiredWeight: 0,
+        DesiredInstanceCount: 0,
+        ServerlessUpdateConfig: {
+          MaxConcurrency: 0,
+          ProvisionedConcurrency: 0,
+        },
+      }),
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26198,7 +28965,10 @@ export const updateExperiment: API.OperationMethod<
   UpdateExperimentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ExperimentName: 0, DisplayName: 0, Description: 0 },
+  },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26222,7 +28992,19 @@ export const updateFeatureGroup: API.OperationMethod<
   UpdateFeatureGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FeatureGroupName: 0,
+      FeatureAdditions: D.list(i_FeatureDefinition),
+      OnlineStoreConfig: { TtlDuration: i_TtlDuration },
+      ThroughputConfig: {
+        ThroughputMode: 0,
+        ProvisionedReadCapacityUnits: 0,
+        ProvisionedWriteCapacityUnits: 0,
+      },
+    },
+  },
   errors: [ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26239,7 +29021,16 @@ export const updateFeatureMetadata: API.OperationMethod<
   UpdateFeatureMetadataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      FeatureGroupName: 0,
+      FeatureName: 0,
+      Description: 0,
+      ParameterAdditions: D.list({ Key: 0, Value: 0 }),
+      ParameterRemovals: 0,
+    },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26256,7 +29047,15 @@ export const updateHub: API.OperationMethod<
   UpdateHubError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      HubName: 0,
+      HubDescription: 0,
+      HubDisplayName: 0,
+      HubSearchKeywords: 0,
+    },
+  },
   errors: [ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26292,7 +29091,20 @@ export const updateHubContent: API.OperationMethod<
   UpdateHubContentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      HubName: 0,
+      HubContentName: 0,
+      HubContentType: 0,
+      HubContentVersion: 0,
+      HubContentDisplayName: 0,
+      HubContentDescription: 0,
+      HubContentMarkdown: 0,
+      HubContentSearchKeywords: 0,
+      SupportStatus: 0,
+    },
+  },
   errors: [ResourceInUse, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26318,7 +29130,10 @@ export const updateHubContentReference: API.OperationMethod<
   UpdateHubContentReferenceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { HubName: 0, HubContentName: 0, HubContentType: 0, MinVersion: 0 },
+  },
   errors: [ResourceInUse, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26335,7 +29150,16 @@ export const updateImage: API.OperationMethod<
   UpdateImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DeleteProperties: 0,
+      Description: 0,
+      DisplayName: 0,
+      ImageName: 0,
+      RoleArn: 0,
+    },
+  },
   errors: [ResourceInUse, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26355,7 +29179,23 @@ export const updateImageVersion: API.OperationMethod<
   UpdateImageVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ImageName: 0,
+      Alias: 0,
+      Version: 0,
+      AliasesToAdd: 0,
+      AliasesToDelete: 0,
+      VendorGuidance: 0,
+      JobType: 0,
+      MLFramework: 0,
+      ProgrammingLang: 0,
+      Processor: 0,
+      Horovod: 0,
+      ReleaseNotes: 0,
+    },
+  },
   errors: [ResourceInUse, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26374,7 +29214,24 @@ export const updateInferenceComponent: API.OperationMethod<
   UpdateInferenceComponentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InferenceComponentName: 0,
+      Specification: i_InferenceComponentSpecification,
+      Specifications: D.list(i_InferenceComponentSpecification),
+      RuntimeConfig: i_InferenceComponentRuntimeConfig,
+      DeploymentConfig: {
+        RollingUpdatePolicy: {
+          MaximumBatchSize: i_InferenceComponentCapacitySize,
+          WaitIntervalInSeconds: 0,
+          MaximumExecutionTimeoutInSeconds: 0,
+          RollbackMaximumBatchSize: i_InferenceComponentCapacitySize,
+        },
+        AutoRollbackConfiguration: i_AutoRollbackConfig,
+      },
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26393,7 +29250,13 @@ export const updateInferenceComponentRuntimeConfig: API.OperationMethod<
   UpdateInferenceComponentRuntimeConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      InferenceComponentName: 0,
+      DesiredRuntimeConfig: i_InferenceComponentRuntimeConfig,
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26413,7 +29276,17 @@ export const updateInferenceExperiment: API.OperationMethod<
   UpdateInferenceExperimentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Name: 0,
+      Schedule: i_InferenceExperimentSchedule,
+      Description: 0,
+      ModelVariants: D.list(i_ModelVariantConfig),
+      DataStorageConfig: i_InferenceExperimentDataStorageConfig,
+      ShadowModeConfig: i_ShadowModeConfig,
+    },
+  },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26433,7 +29306,18 @@ export const updateMlflowApp: API.OperationMethod<
   UpdateMlflowAppError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Arn: 0,
+      Name: 0,
+      ArtifactStoreUri: 0,
+      ModelRegistrationMode: 0,
+      WeeklyMaintenanceWindowStart: 0,
+      DefaultDomainIdList: 0,
+      AccountDefaultStatus: 0,
+    },
+  },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26454,7 +29338,18 @@ export const updateMlflowTrackingServer: API.OperationMethod<
   UpdateMlflowTrackingServerError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TrackingServerName: 0,
+      ArtifactStoreUri: 0,
+      TrackingServerSize: 0,
+      AutomaticModelRegistration: 0,
+      WeeklyMaintenanceWindowStart: 0,
+      S3BucketOwnerAccountId: 0,
+      S3BucketOwnerVerification: 0,
+    },
+  },
   errors: [ConflictException, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26477,7 +29372,10 @@ export const updateModelCard: API.OperationMethod<
   UpdateModelCardError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ModelCardName: 0, Content: 0, ModelCardStatus: 0 },
+  },
   errors: [ConflictException, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26494,7 +29392,25 @@ export const updateModelPackage: API.OperationMethod<
   UpdateModelPackageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ModelPackageArn: 0,
+      ModelApprovalStatus: 0,
+      ModelPackageRegistrationType: 0,
+      ApprovalDescription: 0,
+      CustomerMetadataProperties: 0,
+      CustomerMetadataPropertiesToRemove: 0,
+      AdditionalInferenceSpecificationsToAdd: D.list(
+        i_AdditionalInferenceSpecificationDefinition,
+      ),
+      InferenceSpecification: i_InferenceSpecification,
+      SourceUri: 0,
+      ModelCard: i_ModelPackageModelCard,
+      ModelLifeCycle: i_ModelLifeCycle,
+      ClientToken: 0,
+    },
+  },
   errors: [ConflictException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26514,7 +29430,15 @@ export const updateMonitoringAlert: API.OperationMethod<
   UpdateMonitoringAlertError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MonitoringScheduleName: 0,
+      MonitoringAlertName: 0,
+      DatapointsToAlert: 0,
+      EvaluationPeriod: 0,
+    },
+  },
   errors: [ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26534,7 +29458,13 @@ export const updateMonitoringSchedule: API.OperationMethod<
   UpdateMonitoringScheduleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      MonitoringScheduleName: 0,
+      MonitoringScheduleConfig: i_MonitoringScheduleConfig,
+    },
+  },
   errors: [ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26553,7 +29483,28 @@ export const updateNotebookInstance: API.OperationMethod<
   UpdateNotebookInstanceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      NotebookInstanceName: 0,
+      InstanceType: 0,
+      IpAddressType: 0,
+      PlatformIdentifier: 0,
+      RoleArn: 0,
+      LifecycleConfigName: 0,
+      DisassociateLifecycleConfig: 0,
+      VolumeSizeInGB: 0,
+      DefaultCodeRepository: 0,
+      AdditionalCodeRepositories: 0,
+      AcceleratorTypes: 0,
+      DisassociateAcceleratorTypes: 0,
+      DisassociateDefaultCodeRepository: 0,
+      DisassociateAdditionalCodeRepositories: 0,
+      RootAccess: 0,
+      InstanceMetadataServiceConfiguration:
+        i_InstanceMetadataServiceConfiguration,
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26574,7 +29525,14 @@ export const updateNotebookInstanceLifecycleConfig: API.OperationMethod<
   UpdateNotebookInstanceLifecycleConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      NotebookInstanceLifecycleConfigName: 0,
+      OnCreate: D.list(i_NotebookInstanceLifecycleHook),
+      OnStart: D.list(i_NotebookInstanceLifecycleHook),
+    },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26596,7 +29554,19 @@ export const updatePartnerApp: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Arn: 0,
+      MaintenanceConfig: i_PartnerAppMaintenanceConfig,
+      Tier: 0,
+      ApplicationConfig: i_PartnerAppConfig,
+      IdcConfig: i_IdcConfigInput,
+      AuthType: 0,
+      EnableIamSessionBasedIdentity: 0,
+      EnableAutoMinorVersionUpgrade: 0,
+      AppVersion: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
   },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
@@ -26617,7 +29587,18 @@ export const updatePipeline: API.OperationMethod<
   UpdatePipelineError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      PipelineName: 0,
+      PipelineDisplayName: 0,
+      PipelineDefinition: 0,
+      PipelineDefinitionS3Location: i_PipelineDefinitionS3Location,
+      PipelineDescription: 0,
+      RoleArn: 0,
+      ParallelismConfiguration: i_ParallelismConfiguration,
+    },
+  },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26637,7 +29618,15 @@ export const updatePipelineExecution: API.OperationMethod<
   UpdatePipelineExecutionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      PipelineExecutionArn: 0,
+      PipelineExecutionDescription: 0,
+      PipelineExecutionDisplayName: 0,
+      ParallelismConfiguration: i_ParallelismConfiguration,
+    },
+  },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26657,7 +29646,15 @@ export const updatePipelineVersion: API.OperationMethod<
   UpdatePipelineVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      PipelineArn: 0,
+      PipelineVersionId: 0,
+      PipelineVersionDisplayName: 0,
+      PipelineVersionDescription: 0,
+    },
+  },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26676,7 +29673,25 @@ export const updateProject: API.OperationMethod<
   UpdateProjectError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ProjectName: 0,
+      ProjectDescription: 0,
+      ServiceCatalogProvisioningUpdateDetails: {
+        ProvisioningArtifactId: 0,
+        ProvisioningParameters: D.list(i_ProvisioningParameter),
+      },
+      Tags: D.list(i_Tag),
+      TemplateProvidersToUpdate: D.list({
+        CfnTemplateProvider: {
+          TemplateName: 0,
+          TemplateURL: 0,
+          Parameters: D.list({ Key: 0, Value: 0 }),
+        },
+      }),
+    },
+  },
   errors: [ConflictException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26699,7 +29714,15 @@ export const updateSpace: API.OperationMethod<
   UpdateSpaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      DomainId: 0,
+      SpaceName: 0,
+      SpaceSettings: i_SpaceSettings,
+      SpaceDisplayName: 0,
+    },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26719,7 +29742,21 @@ export const updateTrainingJob: API.OperationMethod<
   UpdateTrainingJobError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TrainingJobName: 0,
+      ProfilerConfig: {
+        S3OutputPath: 0,
+        ProfilingIntervalInMilliseconds: 0,
+        ProfilingParameters: 0,
+        DisableProfiler: 0,
+      },
+      ProfilerRuleConfigurations: D.list(i_ProfilerRuleConfiguration),
+      ResourceConfig: { KeepAlivePeriodInSeconds: 0 },
+      RemoteDebugConfig: { EnableRemoteDebug: 0 },
+    },
+  },
   errors: [ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26739,7 +29776,7 @@ export const updateTrial: API.OperationMethod<
   UpdateTrialError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TrialName: 0, DisplayName: 0 } },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26759,7 +29796,22 @@ export const updateTrialComponent: API.OperationMethod<
   UpdateTrialComponentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TrialComponentName: 0,
+      DisplayName: 0,
+      Status: i_TrialComponentStatus,
+      StartTime: 0,
+      EndTime: 0,
+      Parameters: D.map(i_TrialComponentParameterValue),
+      ParametersToRemove: 0,
+      InputArtifacts: D.map(i_TrialComponentArtifact),
+      InputArtifactsToRemove: 0,
+      OutputArtifacts: D.map(i_TrialComponentArtifact),
+      OutputArtifactsToRemove: 0,
+    },
+  },
   errors: [ConflictException, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26780,7 +29832,10 @@ export const updateUserProfile: API.OperationMethod<
   UpdateUserProfileError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { DomainId: 0, UserProfileName: 0, UserSettings: i_UserSettings },
+  },
   errors: [ResourceInUse, ResourceLimitExceeded, ResourceNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26813,7 +29868,17 @@ export const updateWorkforce: API.OperationMethod<
   UpdateWorkforceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Workforce: o_Workforce } },
+  descriptor: {
+    service: svc,
+    input: {
+      WorkforceName: 0,
+      SourceIpConfig: i_SourceIpConfig,
+      OidcConfig: i_OidcConfig,
+      WorkforceVpcConfig: i_WorkforceVpcConfigRequest,
+      IpAddressType: 0,
+    },
+    output: { Workforce: o_Workforce },
+  },
   errors: [ConflictException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -26830,13 +29895,802 @@ export const updateWorkteam: API.OperationMethod<
   UpdateWorkteamError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { Workteam: o_Workteam } },
+  descriptor: {
+    service: svc,
+    input: {
+      WorkteamName: 0,
+      MemberDefinitions: D.list(i_MemberDefinition),
+      Description: 0,
+      NotificationConfiguration: i_NotificationConfiguration,
+      WorkerAccessConfiguration: i_WorkerAccessConfiguration,
+    },
+    output: { Workteam: o_Workteam },
+  },
   errors: [ResourceLimitExceeded],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "UpdateWorkteam",
 })) as any;
 
+const i_AIMlflowConfig: D.LazyStruct = () => ({
+  MlflowResourceArn: 0,
+  MlflowExperimentName: 0,
+  MlflowRunName: 0,
+});
+const i_AdditionalInferenceSpecificationDefinition: D.LazyStruct = () => ({
+  Name: 0,
+  Description: 0,
+  Containers: D.list(i_ModelPackageContainerDefinition),
+  SupportedTransformInstanceTypes: 0,
+  SupportedRealtimeInferenceInstanceTypes: 0,
+  SupportedContentTypes: 0,
+  SupportedResponseMIMETypes: 0,
+});
+const i_AdditionalS3DataSource: D.LazyStruct = () => ({
+  S3DataType: 0,
+  S3Uri: 0,
+  CompressionType: 0,
+  ETag: 0,
+});
+const i_AmazonQSettings: D.LazyStruct = () => ({ Status: 0, QProfileArn: 0 });
+const i_ArtifactSource: D.LazyStruct = () => ({
+  SourceUri: 0,
+  SourceTypes: D.list({ SourceIdType: 0, Value: 0 }),
+});
+const i_AutoMLAlgorithmConfig: D.LazyStruct = () => ({ AutoMLAlgorithms: 0 });
+const i_AutoMLDataSource: D.LazyStruct = () => ({
+  S3DataSource: { S3DataType: 0, S3Uri: 0 },
+});
+const i_AutoMLDataSplitConfig: D.LazyStruct = () => ({ ValidationFraction: 0 });
+const i_AutoMLJobCompletionCriteria: D.LazyStruct = () => ({
+  MaxCandidates: 0,
+  MaxRuntimePerTrainingJobInSeconds: 0,
+  MaxAutoMLJobRuntimeInSeconds: 0,
+});
+const i_AutoMLJobObjective: D.LazyStruct = () => ({ MetricName: 0 });
+const i_AutoMLOutputDataConfig: D.LazyStruct = () => ({
+  KmsKeyId: 0,
+  S3OutputPath: 0,
+});
+const i_AutoMLSecurityConfig: D.LazyStruct = () => ({
+  VolumeKmsKeyId: 0,
+  EnableInterContainerTrafficEncryption: 0,
+  VpcConfig: i_VpcConfig,
+});
+const i_AutoRollbackConfig: D.LazyStruct = () => ({
+  Alarms: D.list({ AlarmName: 0 }),
+});
+const i_BatchTransformInput: D.LazyStruct = () => ({
+  DataCapturedDestinationS3Uri: 0,
+  DatasetFormat: { Csv: { Header: 0 }, Json: { Line: 0 }, Parquet: {} },
+  LocalPath: 0,
+  S3InputMode: 0,
+  S3DataDistributionType: 0,
+  FeaturesAttribute: 0,
+  InferenceAttribute: 0,
+  ProbabilityAttribute: 0,
+  ProbabilityThresholdAttribute: 0,
+  StartTimeOffset: 0,
+  EndTimeOffset: 0,
+  ExcludeFeaturesAttribute: 0,
+});
+const i_CandidateGenerationConfig: D.LazyStruct = () => ({
+  AlgorithmsConfig: D.list(i_AutoMLAlgorithmConfig),
+});
+const i_CaptureContentTypeHeader: D.LazyStruct = () => ({
+  CsvContentTypes: 0,
+  JsonContentTypes: 0,
+});
+const i_Channel: D.LazyStruct = () => ({
+  ChannelName: 0,
+  DataSource: {
+    S3DataSource: {
+      S3DataType: 0,
+      S3Uri: 0,
+      S3DataDistributionType: 0,
+      AttributeNames: 0,
+      InstanceGroupNames: 0,
+      ModelAccessConfig: i_ModelAccessConfig,
+      HubAccessConfig: { HubContentArn: 0 },
+    },
+    FileSystemDataSource: {
+      FileSystemId: 0,
+      FileSystemAccessMode: 0,
+      FileSystemType: 0,
+      DirectoryPath: 0,
+    },
+    DatasetSource: { DatasetArn: 0 },
+  },
+  ContentType: 0,
+  CompressionType: 0,
+  RecordWrapperType: 0,
+  InputMode: 0,
+  ShuffleConfig: { Seed: 0 },
+});
+const i_CheckpointConfig: D.LazyStruct = () => ({ S3Uri: 0, LocalPath: 0 });
+const i_ClusterAutoScalingConfig: D.LazyStruct = () => ({
+  Mode: 0,
+  AutoScalerType: 0,
+});
+const i_ClusterInstanceGroupSpecification: D.LazyStruct = () => ({
+  InstanceCount: 0,
+  MinInstanceCount: 0,
+  InstanceGroupName: 0,
+  InstanceType: 0,
+  InstanceRequirements: { InstanceTypes: 0 },
+  LifeCycleConfig: { SourceS3Uri: 0, OnCreate: 0, OnInitComplete: 0 },
+  ExecutionRole: 0,
+  ThreadsPerCore: 0,
+  InstanceStorageConfigs: D.list(i_ClusterInstanceStorageConfig),
+  OnStartDeepHealthChecks: 0,
+  TrainingPlanArn: 0,
+  OverrideVpcConfig: i_VpcConfig,
+  ScheduledUpdateConfig: i_ScheduledUpdateConfig,
+  ImageId: 0,
+  AutoPatchConfig: {
+    PatchingStrategy: 0,
+    PatchSchedule: { NextPatchDate: 0 },
+    DeploymentConfig: i_DeploymentConfiguration,
+  },
+  ImageReleaseVersion: 0,
+  KubernetesConfig: {
+    Labels: 0,
+    Taints: D.list({ Key: 0, Value: 0, Effect: 0 }),
+  },
+  SlurmConfig: { NodeType: 0, PartitionNames: 0 },
+  CapacityRequirements: { Spot: {}, OnDemand: {} },
+  NetworkInterface: { InterfaceType: 0 },
+});
+const i_ClusterOrchestrator: D.LazyStruct = () => ({
+  Eks: { ClusterArn: 0 },
+  Slurm: { SlurmConfigStrategy: 0 },
+});
+const i_ClusterRestrictedInstanceGroupSpecification: D.LazyStruct = () => ({
+  InstanceCount: 0,
+  InstanceGroupName: 0,
+  InstanceType: 0,
+  ExecutionRole: 0,
+  ThreadsPerCore: 0,
+  InstanceStorageConfigs: D.list(i_ClusterInstanceStorageConfig),
+  OnStartDeepHealthChecks: 0,
+  TrainingPlanArn: 0,
+  OverrideVpcConfig: i_VpcConfig,
+  ScheduledUpdateConfig: i_ScheduledUpdateConfig,
+  EnvironmentConfig: { FSxLustreConfig: i_FSxLustreConfig },
+});
+const i_ClusterRestrictedInstanceGroupsConfig: D.LazyStruct = () => ({
+  SharedEnvironmentConfig: {
+    FSxLustreDeletionPolicy: 0,
+    FSxLustreConfig: i_FSxLustreConfig,
+  },
+});
+const i_ClusterTieredStorageConfig: D.LazyStruct = () => ({
+  Mode: 0,
+  InstanceMemoryAllocationPercentage: 0,
+});
+const i_CodeEditorAppImageConfig: D.LazyStruct = () => ({
+  FileSystemConfig: i_FileSystemConfig,
+  ContainerConfig: i_ContainerConfig,
+});
+const i_ComputeQuotaConfig: D.LazyStruct = () => ({
+  ComputeQuotaResources: D.list(i_ComputeQuotaResourceConfig),
+  ResourceSharingConfig: {
+    Strategy: 0,
+    BorrowLimit: 0,
+    AbsoluteBorrowLimits: D.list(i_ComputeQuotaResourceConfig),
+  },
+  PreemptTeamTasks: 0,
+});
+const i_ComputeQuotaTarget: D.LazyStruct = () => ({
+  TeamName: 0,
+  FairShareWeight: 0,
+});
+const i_ContainerDefinition: D.LazyStruct = () => ({
+  ContainerHostname: 0,
+  Image: 0,
+  ImageConfig: {
+    RepositoryAccessMode: 0,
+    RepositoryAuthConfig: { RepositoryCredentialsProviderArn: 0 },
+  },
+  Mode: 0,
+  ModelDataUrl: 0,
+  ModelDataSource: i_ModelDataSource,
+  AdditionalModelDataSources: D.list(i_AdditionalModelDataSource),
+  Environment: 0,
+  ModelPackageName: 0,
+  InferenceSpecificationName: 0,
+  MultiModelConfig: { ModelCacheSetting: 0 },
+  ContainerMetricsConfig: i_ContainerMetricsConfig,
+});
+const i_DefaultSpaceSettings: D.LazyStruct = () => ({
+  ExecutionRole: 0,
+  SecurityGroups: 0,
+  JupyterServerAppSettings: i_JupyterServerAppSettings,
+  KernelGatewayAppSettings: i_KernelGatewayAppSettings,
+  JupyterLabAppSettings: i_JupyterLabAppSettings,
+  SpaceStorageSettings: i_DefaultSpaceStorageSettings,
+  CustomPosixUserConfig: i_CustomPosixUserConfig,
+  CustomFileSystemConfigs: D.list(i_CustomFileSystemConfig),
+});
+const i_DeploymentConfig: D.LazyStruct = () => ({
+  BlueGreenUpdatePolicy: {
+    TrafficRoutingConfiguration: {
+      Type: 0,
+      WaitIntervalInSeconds: 0,
+      CanarySize: i_CapacitySize,
+      LinearStepSize: i_CapacitySize,
+    },
+    TerminationWaitInSeconds: 0,
+    MaximumExecutionTimeoutInSeconds: 0,
+  },
+  RollingUpdatePolicy: {
+    MaximumBatchSize: i_CapacitySize,
+    WaitIntervalInSeconds: 0,
+    MaximumExecutionTimeoutInSeconds: 0,
+    RollbackMaximumBatchSize: i_CapacitySize,
+  },
+  AutoRollbackConfiguration: i_AutoRollbackConfig,
+});
+const i_DeploymentConfiguration: D.LazyStruct = () => ({
+  RollingUpdatePolicy: {
+    MaximumBatchSize: i_CapacitySizeConfig,
+    RollbackMaximumBatchSize: i_CapacitySizeConfig,
+  },
+  WaitIntervalInSeconds: 0,
+  AutoRollbackConfiguration: D.list({ AlarmName: 0 }),
+});
+const i_DeploymentStage: D.LazyStruct = () => ({
+  StageName: 0,
+  DeviceSelectionConfig: {
+    DeviceSubsetType: 0,
+    Percentage: 0,
+    DeviceNames: 0,
+    DeviceNameContains: 0,
+  },
+  DeploymentConfig: { FailureHandlingPolicy: 0 },
+});
+const i_Device: D.LazyStruct = () => ({
+  DeviceName: 0,
+  Description: 0,
+  IotThingName: 0,
+});
+const i_DockerSettings: D.LazyStruct = () => ({
+  EnableDockerAccess: 0,
+  VpcOnlyTrustedAccounts: 0,
+  RootlessDocker: 0,
+});
+const i_EdgeOutputConfig: D.LazyStruct = () => ({
+  S3OutputLocation: 0,
+  KmsKeyId: 0,
+  PresetDeploymentType: 0,
+  PresetDeploymentConfig: 0,
+});
+const i_EndpointInput: D.LazyStruct = () => ({
+  EndpointName: 0,
+  LocalPath: 0,
+  S3InputMode: 0,
+  S3DataDistributionType: 0,
+  FeaturesAttribute: 0,
+  InferenceAttribute: 0,
+  ProbabilityAttribute: 0,
+  ProbabilityThresholdAttribute: 0,
+  StartTimeOffset: 0,
+  EndTimeOffset: 0,
+  ExcludeFeaturesAttribute: 0,
+});
+const i_ExperimentConfig: D.LazyStruct = () => ({
+  ExperimentName: 0,
+  TrialName: 0,
+  TrialComponentDisplayName: 0,
+  RunName: 0,
+});
+const i_FeatureDefinition: D.LazyStruct = () => ({
+  FeatureName: 0,
+  FeatureType: 0,
+  CollectionType: 0,
+  CollectionConfig: { VectorConfig: { Dimension: 0 } },
+});
+const i_FileSource: D.LazyStruct = () => ({
+  ContentType: 0,
+  ContentDigest: 0,
+  S3Uri: 0,
+});
+const i_HyperParameterTrainingJobDefinition: D.LazyStruct = () => ({
+  DefinitionName: 0,
+  TuningObjective: i_HyperParameterTuningJobObjective,
+  HyperParameterRanges: i_ParameterRanges,
+  StaticHyperParameters: 0,
+  AlgorithmSpecification: {
+    TrainingImage: 0,
+    TrainingInputMode: 0,
+    AlgorithmName: 0,
+    MetricDefinitions: D.list(i_MetricDefinition),
+  },
+  RoleArn: 0,
+  InputDataConfig: D.list(i_Channel),
+  VpcConfig: i_VpcConfig,
+  OutputDataConfig: i_OutputDataConfig,
+  ResourceConfig: i_ResourceConfig,
+  HyperParameterTuningResourceConfig: {
+    InstanceType: 0,
+    InstanceCount: 0,
+    VolumeSizeInGB: 0,
+    VolumeKmsKeyId: 0,
+    AllocationStrategy: 0,
+    InstanceConfigs: D.list({
+      InstanceType: 0,
+      InstanceCount: 0,
+      VolumeSizeInGB: 0,
+    }),
+  },
+  StoppingCondition: i_StoppingCondition,
+  EnableNetworkIsolation: 0,
+  EnableInterContainerTrafficEncryption: 0,
+  EnableManagedSpotTraining: 0,
+  CheckpointConfig: i_CheckpointConfig,
+  RetryStrategy: i_RetryStrategy,
+  Environment: 0,
+});
+const i_HyperParameterTuningJobObjective: D.LazyStruct = () => ({
+  Type: 0,
+  MetricName: 0,
+});
+const i_IdcConfigInput: D.LazyStruct = () => ({ InstanceArn: 0 });
+const i_InferenceComponentCapacitySize: D.LazyStruct = () => ({
+  Type: 0,
+  Value: 0,
+});
+const i_InferenceComponentRuntimeConfig: D.LazyStruct = () => ({
+  CopyCount: 0,
+});
+const i_InferenceComponentSpecification: D.LazyStruct = () => ({
+  InstanceType: 0,
+  ModelName: 0,
+  Container: {
+    Image: 0,
+    ArtifactUrl: 0,
+    Environment: 0,
+    ContainerMetricsConfig: i_ContainerMetricsConfig,
+  },
+  StartupParameters: {
+    ModelDataDownloadTimeoutInSeconds: 0,
+    ContainerStartupHealthCheckTimeoutInSeconds: 0,
+  },
+  ComputeResourceRequirements: {
+    NumberOfCpuCoresRequired: 0,
+    NumberOfAcceleratorDevicesRequired: 0,
+    MinMemoryRequiredInMb: 0,
+    MaxMemoryRequiredInMb: 0,
+  },
+  BaseInferenceComponentName: 0,
+  DataCacheConfig: { EnableCaching: 0 },
+  SchedulingConfig: {
+    PlacementStrategy: 0,
+    AvailabilityZoneBalance: { EnforcementMode: 0, MaxImbalance: 0 },
+  },
+});
+const i_InferenceExperimentDataStorageConfig: D.LazyStruct = () => ({
+  Destination: 0,
+  KmsKey: 0,
+  ContentType: i_CaptureContentTypeHeader,
+});
+const i_InferenceExperimentSchedule: D.LazyStruct = () => ({
+  StartTime: 0,
+  EndTime: 0,
+});
+const i_InferenceSpecification: D.LazyStruct = () => ({
+  Containers: D.list(i_ModelPackageContainerDefinition),
+  SupportedTransformInstanceTypes: 0,
+  SupportedRealtimeInferenceInstanceTypes: 0,
+  SupportedContentTypes: 0,
+  SupportedResponseMIMETypes: 0,
+});
+const i_InstanceMetadataServiceConfiguration: D.LazyStruct = () => ({
+  MinimumInstanceMetadataServiceVersion: 0,
+});
+const i_JupyterLabAppImageConfig: D.LazyStruct = () => ({
+  FileSystemConfig: i_FileSystemConfig,
+  ContainerConfig: i_ContainerConfig,
+});
+const i_KernelGatewayImageConfig: D.LazyStruct = () => ({
+  KernelSpecs: D.list({ Name: 0, DisplayName: 0 }),
+  FileSystemConfig: i_FileSystemConfig,
+});
+const i_MemberDefinition: D.LazyStruct = () => ({
+  CognitoMemberDefinition: { UserPool: 0, UserGroup: 0, ClientId: 0 },
+  OidcMemberDefinition: { Groups: 0 },
+});
+const i_MetadataProperties: D.LazyStruct = () => ({
+  CommitId: 0,
+  Repository: 0,
+  GeneratedBy: 0,
+  ProjectId: 0,
+});
+const i_MetricDefinition: D.LazyStruct = () => ({ Name: 0, Regex: 0 });
+const i_MetricsSource: D.LazyStruct = () => ({
+  ContentType: 0,
+  ContentDigest: 0,
+  S3Uri: 0,
+});
+const i_ModelAccessConfig: D.LazyStruct = () => ({ AcceptEula: 0 });
+const i_ModelDataSource: D.LazyStruct = () => ({
+  S3DataSource: i_S3ModelDataSource,
+});
+const i_ModelDeployConfig: D.LazyStruct = () => ({
+  AutoGenerateEndpointName: 0,
+  EndpointName: 0,
+});
+const i_ModelLifeCycle: D.LazyStruct = () => ({
+  Stage: 0,
+  StageStatus: 0,
+  StageDescription: 0,
+});
+const i_ModelPackageModelCard: D.LazyStruct = () => ({
+  ModelCardContent: 0,
+  ModelCardStatus: 0,
+});
+const i_ModelVariantConfig: D.LazyStruct = () => ({
+  ModelName: 0,
+  VariantName: 0,
+  InfrastructureConfig: {
+    InfrastructureType: 0,
+    RealTimeInferenceConfig: { InstanceType: 0, InstanceCount: 0 },
+  },
+});
+const i_MonitoringConstraintsResource: D.LazyStruct = () => ({ S3Uri: 0 });
+const i_MonitoringGroundTruthS3Input: D.LazyStruct = () => ({ S3Uri: 0 });
+const i_MonitoringNetworkConfig: D.LazyStruct = () => ({
+  EnableInterContainerTrafficEncryption: 0,
+  EnableNetworkIsolation: 0,
+  VpcConfig: i_VpcConfig,
+});
+const i_MonitoringOutputConfig: D.LazyStruct = () => ({
+  MonitoringOutputs: D.list({
+    S3Output: { S3Uri: 0, LocalPath: 0, S3UploadMode: 0 },
+  }),
+  KmsKeyId: 0,
+});
+const i_MonitoringResources: D.LazyStruct = () => ({
+  ClusterConfig: {
+    InstanceCount: 0,
+    InstanceType: 0,
+    VolumeSizeInGB: 0,
+    VolumeKmsKeyId: 0,
+  },
+});
+const i_MonitoringScheduleConfig: D.LazyStruct = () => ({
+  ScheduleConfig: {
+    ScheduleExpression: 0,
+    DataAnalysisStartTime: 0,
+    DataAnalysisEndTime: 0,
+  },
+  MonitoringJobDefinition: {
+    BaselineConfig: {
+      BaseliningJobName: 0,
+      ConstraintsResource: i_MonitoringConstraintsResource,
+      StatisticsResource: i_MonitoringStatisticsResource,
+    },
+    MonitoringInputs: D.list({
+      EndpointInput: i_EndpointInput,
+      BatchTransformInput: i_BatchTransformInput,
+    }),
+    MonitoringOutputConfig: i_MonitoringOutputConfig,
+    MonitoringResources: i_MonitoringResources,
+    MonitoringAppSpecification: {
+      ImageUri: 0,
+      ContainerEntrypoint: 0,
+      ContainerArguments: 0,
+      RecordPreprocessorSourceUri: 0,
+      PostAnalyticsProcessorSourceUri: 0,
+    },
+    StoppingCondition: i_MonitoringStoppingCondition,
+    Environment: 0,
+    NetworkConfig: i_NetworkConfig,
+    RoleArn: 0,
+  },
+  MonitoringJobDefinitionName: 0,
+  MonitoringType: 0,
+});
+const i_MonitoringStatisticsResource: D.LazyStruct = () => ({ S3Uri: 0 });
+const i_MonitoringStoppingCondition: D.LazyStruct = () => ({
+  MaxRuntimeInSeconds: 0,
+});
+const i_NetworkConfig: D.LazyStruct = () => ({
+  EnableInterContainerTrafficEncryption: 0,
+  EnableNetworkIsolation: 0,
+  VpcConfig: i_VpcConfig,
+});
+const i_NotebookInstanceLifecycleHook: D.LazyStruct = () => ({ Content: 0 });
+const i_NotificationConfiguration: D.LazyStruct = () => ({
+  NotificationTopicArn: 0,
+});
+const i_OidcConfig: D.LazyStruct = () => ({
+  ClientId: 0,
+  ClientSecret: 0,
+  Issuer: 0,
+  AuthorizationEndpoint: 0,
+  TokenEndpoint: 0,
+  UserInfoEndpoint: 0,
+  LogoutEndpoint: 0,
+  JwksUri: 0,
+  Scope: 0,
+  AuthenticationRequestExtraParams: 0,
+});
+const i_OptimizationSageMakerModel: D.LazyStruct = () => ({ ModelName: 0 });
+const i_OutputDataConfig: D.LazyStruct = () => ({
+  KmsKeyId: 0,
+  S3OutputPath: 0,
+  CompressionType: 0,
+});
+const i_ParallelismConfiguration: D.LazyStruct = () => ({
+  MaxParallelExecutionSteps: 0,
+});
+const i_ParameterRanges: D.LazyStruct = () => ({
+  IntegerParameterRanges: D.list({
+    Name: 0,
+    MinValue: 0,
+    MaxValue: 0,
+    ScalingType: 0,
+  }),
+  ContinuousParameterRanges: D.list({
+    Name: 0,
+    MinValue: 0,
+    MaxValue: 0,
+    ScalingType: 0,
+  }),
+  CategoricalParameterRanges: D.list({ Name: 0, Values: 0 }),
+  AutoParameters: D.list({ Name: 0, ValueHint: 0 }),
+});
+const i_PartnerAppConfig: D.LazyStruct = () => ({
+  AdminUsers: 0,
+  Arguments: 0,
+  AssignedGroupPatterns: 0,
+  RoleGroupAssignments: D.list({ RoleName: 0, GroupPatterns: 0 }),
+});
+const i_PartnerAppMaintenanceConfig: D.LazyStruct = () => ({
+  MaintenanceWindowStart: 0,
+});
+const i_PipelineDefinitionS3Location: D.LazyStruct = () => ({
+  Bucket: 0,
+  ObjectKey: 0,
+  VersionId: 0,
+});
+const i_ProductionVariant: D.LazyStruct = () => ({
+  VariantName: 0,
+  ModelName: 0,
+  InitialInstanceCount: 0,
+  InstanceType: 0,
+  InstancePools: D.list({ InstanceType: 0, ModelNameOverride: 0, Priority: 0 }),
+  VariantInstanceProvisionTimeoutInSeconds: 0,
+  InitialVariantWeight: 0,
+  AcceleratorType: 0,
+  CoreDumpConfig: { DestinationS3Uri: 0, KmsKeyId: 0 },
+  ServerlessConfig: i_ProductionVariantServerlessConfig,
+  VolumeSizeInGB: 0,
+  ModelDataDownloadTimeoutInSeconds: 0,
+  ContainerStartupHealthCheckTimeoutInSeconds: 0,
+  EnableSSMAccess: 0,
+  ManagedInstanceScaling: {
+    Status: 0,
+    MinInstanceCount: 0,
+    MaxInstanceCount: 0,
+    ScaleInPolicy: { Strategy: 0, MaximumStepSize: 0, CooldownInMinutes: 0 },
+  },
+  RoutingConfig: {
+    RoutingStrategy: 0,
+    PrefixAwareRoutingConfig: { PrefixLength: 0, ConcurrencyThreshold: 0 },
+  },
+  InferenceAmiVersion: 0,
+  CapacityReservationConfig: {
+    CapacityReservationPreference: 0,
+    MlReservationArn: 0,
+  },
+});
+const i_ProductionVariantServerlessConfig: D.LazyStruct = () => ({
+  MemorySizeInMB: 0,
+  MaxConcurrency: 0,
+  ProvisionedConcurrency: 0,
+});
+const i_ProfilerRuleConfiguration: D.LazyStruct = () => ({
+  RuleConfigurationName: 0,
+  LocalPath: 0,
+  S3OutputPath: 0,
+  RuleEvaluatorImage: 0,
+  InstanceType: 0,
+  VolumeSizeInGB: 0,
+  RuleParameters: 0,
+});
+const i_ProvisioningParameter: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_PublicWorkforceTaskPrice: D.LazyStruct = () => ({
+  AmountInUsd: { Dollars: 0, Cents: 0, TenthFractionsOfACent: 0 },
+});
+const i_ResourceConfig: D.LazyStruct = () => ({
+  InstanceType: 0,
+  InstanceCount: 0,
+  VolumeSizeInGB: 0,
+  VolumeKmsKeyId: 0,
+  KeepAlivePeriodInSeconds: 0,
+  InstanceGroups: D.list({
+    InstanceType: 0,
+    InstanceCount: 0,
+    InstanceGroupName: 0,
+  }),
+  TrainingPlanArn: 0,
+  InstancePlacementConfig: {
+    EnableMultipleJobs: 0,
+    PlacementSpecifications: D.list({ UltraServerId: 0, InstanceCount: 0 }),
+  },
+});
+const i_ResourceSpec: D.LazyStruct = () => ({
+  SageMakerImageArn: 0,
+  SageMakerImageVersionArn: 0,
+  SageMakerImageVersionAlias: 0,
+  InstanceType: 0,
+  LifecycleConfigArn: 0,
+  TrainingPlanArn: 0,
+});
+const i_RetryStrategy: D.LazyStruct = () => ({ MaximumRetryAttempts: 0 });
+const i_SchedulerConfig: D.LazyStruct = () => ({
+  PriorityClasses: D.list({ Name: 0, Weight: 0 }),
+  FairShare: 0,
+  IdleResourceSharing: 0,
+});
+const i_SearchExpression: D.LazyStruct = () => ({
+  Filters: D.list(i_Filter),
+  NestedFilters: D.list({ NestedPropertyName: 0, Filters: D.list(i_Filter) }),
+  SubExpressions: D.list(i_SearchExpression),
+  Operator: 0,
+});
+const i_ShadowModeConfig: D.LazyStruct = () => ({
+  SourceModelVariantName: 0,
+  ShadowModelVariants: D.list({
+    ShadowModelVariantName: 0,
+    SamplingPercentage: 0,
+  }),
+});
+const i_SourceIpConfig: D.LazyStruct = () => ({ Cidrs: 0 });
+const i_SpaceSettings: D.LazyStruct = () => ({
+  JupyterServerAppSettings: i_JupyterServerAppSettings,
+  KernelGatewayAppSettings: i_KernelGatewayAppSettings,
+  CodeEditorAppSettings: {
+    DefaultResourceSpec: i_ResourceSpec,
+    AppLifecycleManagement: i_SpaceAppLifecycleManagement,
+  },
+  JupyterLabAppSettings: {
+    DefaultResourceSpec: i_ResourceSpec,
+    CodeRepositories: D.list(i_CodeRepository),
+    AppLifecycleManagement: i_SpaceAppLifecycleManagement,
+  },
+  AppType: 0,
+  SpaceStorageSettings: { EbsStorageSettings: { EbsVolumeSizeInGb: 0 } },
+  SpaceManagedResources: 0,
+  CustomFileSystems: D.list({
+    EFSFileSystem: { FileSystemId: 0 },
+    FSxLustreFileSystem: { FileSystemId: 0 },
+    S3FileSystem: { S3Uri: 0 },
+  }),
+  RemoteAccess: 0,
+});
+const i_StoppingCondition: D.LazyStruct = () => ({
+  MaxRuntimeInSeconds: 0,
+  MaxWaitTimeInSeconds: 0,
+  MaxPendingTimeInSeconds: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_TransformInput: D.LazyStruct = () => ({
+  DataSource: { S3DataSource: { S3DataType: 0, S3Uri: 0 } },
+  ContentType: 0,
+  CompressionType: 0,
+  SplitType: 0,
+});
+const i_TransformJobDefinition: D.LazyStruct = () => ({
+  MaxConcurrentTransforms: 0,
+  MaxPayloadInMB: 0,
+  BatchStrategy: 0,
+  Environment: 0,
+  TransformInput: i_TransformInput,
+  TransformOutput: i_TransformOutput,
+  TransformResources: i_TransformResources,
+});
+const i_TransformOutput: D.LazyStruct = () => ({
+  S3OutputPath: 0,
+  Accept: 0,
+  AssembleWith: 0,
+  KmsKeyId: 0,
+});
+const i_TransformResources: D.LazyStruct = () => ({
+  InstanceType: 0,
+  InstanceCount: 0,
+  VolumeKmsKeyId: 0,
+  TransformAmiVersion: 0,
+});
+const i_TrialComponentArtifact: D.LazyStruct = () => ({
+  MediaType: 0,
+  Value: 0,
+});
+const i_TrialComponentParameterValue: D.LazyStruct = () => ({
+  StringValue: 0,
+  NumberValue: 0,
+});
+const i_TrialComponentStatus: D.LazyStruct = () => ({
+  PrimaryStatus: 0,
+  Message: 0,
+});
+const i_TrustedIdentityPropagationSettings: D.LazyStruct = () => ({
+  Status: 0,
+});
+const i_TtlDuration: D.LazyStruct = () => ({ Unit: 0, Value: 0 });
+const i_UiTemplate: D.LazyStruct = () => ({ Content: 0 });
+const i_UnifiedStudioSettings: D.LazyStruct = () => ({
+  StudioWebPortalAccess: 0,
+  DomainAccountId: 0,
+  DomainRegion: 0,
+  DomainId: 0,
+  ProjectId: 0,
+  EnvironmentId: 0,
+  ProjectS3Path: 0,
+  SingleSignOnApplicationArn: 0,
+});
+const i_UserSettings: D.LazyStruct = () => ({
+  ExecutionRole: 0,
+  SecurityGroups: 0,
+  SharingSettings: { NotebookOutputOption: 0, S3OutputPath: 0, S3KmsKeyId: 0 },
+  JupyterServerAppSettings: i_JupyterServerAppSettings,
+  KernelGatewayAppSettings: i_KernelGatewayAppSettings,
+  TensorBoardAppSettings: { DefaultResourceSpec: i_ResourceSpec },
+  RStudioServerProAppSettings: { AccessStatus: 0, UserGroup: 0 },
+  RSessionAppSettings: {
+    DefaultResourceSpec: i_ResourceSpec,
+    CustomImages: D.list(i_CustomImage),
+  },
+  CanvasAppSettings: {
+    TimeSeriesForecastingSettings: { Status: 0, AmazonForecastRoleArn: 0 },
+    ModelRegisterSettings: { Status: 0, CrossAccountModelRegisterRoleArn: 0 },
+    WorkspaceSettings: { S3ArtifactPath: 0, S3KmsKeyId: 0 },
+    IdentityProviderOAuthSettings: D.list({
+      DataSourceName: 0,
+      Status: 0,
+      SecretArn: 0,
+    }),
+    DirectDeploySettings: { Status: 0 },
+    KendraSettings: { Status: 0 },
+    GenerativeAiSettings: { AmazonBedrockRoleArn: 0 },
+    EmrServerlessSettings: { ExecutionRoleArn: 0, Status: 0 },
+  },
+  CodeEditorAppSettings: {
+    DefaultResourceSpec: i_ResourceSpec,
+    CustomImages: D.list(i_CustomImage),
+    LifecycleConfigArns: 0,
+    AppLifecycleManagement: i_AppLifecycleManagement,
+    BuiltInLifecycleConfigArn: 0,
+  },
+  JupyterLabAppSettings: i_JupyterLabAppSettings,
+  SpaceStorageSettings: i_DefaultSpaceStorageSettings,
+  DefaultLandingUri: 0,
+  StudioWebPortal: 0,
+  CustomPosixUserConfig: i_CustomPosixUserConfig,
+  CustomFileSystemConfigs: D.list(i_CustomFileSystemConfig),
+  StudioWebPortalSettings: {
+    HiddenMlTools: 0,
+    HiddenAppTypes: 0,
+    HiddenInstanceTypes: 0,
+    HiddenSageMakerImageVersionAliases: D.list({
+      SageMakerImageName: 0,
+      VersionAliases: 0,
+    }),
+    ExecutionRoleSessionNameMode: 0,
+  },
+  AutoMountHomeEFS: 0,
+});
+const i_VpcConfig: D.LazyStruct = () => ({ SecurityGroupIds: 0, Subnets: 0 });
+const i_WorkerAccessConfiguration: D.LazyStruct = () => ({
+  S3Presign: { IamPolicyConstraints: { SourceIp: 0, VpcSourceIp: 0 } },
+});
+const i_WorkforceVpcConfigRequest: D.LazyStruct = () => ({
+  VpcId: 0,
+  SecurityGroupIds: 0,
+  Subnets: 0,
+});
 const o_AutoMLCandidate: D.LazyStruct = () => ({
   CreationTime: D.ts,
   EndTime: D.ts,
@@ -26930,6 +30784,126 @@ const o_Workforce: D.LazyStruct = () => ({
 const o_Workteam: D.LazyStruct = () => ({
   CreateDate: D.ts,
   LastUpdatedDate: D.ts,
+});
+const i_AdditionalModelDataSource: D.LazyStruct = () => ({
+  ChannelName: 0,
+  S3DataSource: i_S3ModelDataSource,
+});
+const i_AppLifecycleManagement: D.LazyStruct = () => ({
+  IdleSettings: {
+    LifecycleManagement: 0,
+    IdleTimeoutInMinutes: 0,
+    MinIdleTimeoutInMinutes: 0,
+    MaxIdleTimeoutInMinutes: 0,
+  },
+});
+const i_CapacitySize: D.LazyStruct = () => ({ Type: 0, Value: 0 });
+const i_CapacitySizeConfig: D.LazyStruct = () => ({ Type: 0, Value: 0 });
+const i_ClusterInstanceStorageConfig: D.LazyStruct = () => ({
+  EbsVolumeConfig: { VolumeSizeInGB: 0, VolumeKmsKeyId: 0, RootVolume: 0 },
+  FsxLustreConfig: { DnsName: 0, MountName: 0, MountPath: 0 },
+  FsxOpenZfsConfig: { DnsName: 0, MountPath: 0 },
+});
+const i_CodeRepository: D.LazyStruct = () => ({ RepositoryUrl: 0 });
+const i_ComputeQuotaResourceConfig: D.LazyStruct = () => ({
+  InstanceType: 0,
+  Count: 0,
+  Accelerators: 0,
+  VCpu: 0,
+  MemoryInGiB: 0,
+  AcceleratorPartition: { Type: 0, Count: 0 },
+});
+const i_ContainerConfig: D.LazyStruct = () => ({
+  ContainerArguments: 0,
+  ContainerEntrypoint: 0,
+  ContainerEnvironmentVariables: 0,
+});
+const i_ContainerMetricsConfig: D.LazyStruct = () => ({
+  MetricsEndpoints: D.list({
+    MetricsEndpointPath: 0,
+    MetricPublishFrequencyInSeconds: 0,
+  }),
+});
+const i_CustomFileSystemConfig: D.LazyStruct = () => ({
+  EFSFileSystemConfig: { FileSystemId: 0, FileSystemPath: 0 },
+  FSxLustreFileSystemConfig: { FileSystemId: 0, FileSystemPath: 0 },
+  S3FileSystemConfig: { MountPath: 0, S3Uri: 0 },
+});
+const i_CustomImage: D.LazyStruct = () => ({
+  ImageName: 0,
+  ImageVersionNumber: 0,
+  AppImageConfigName: 0,
+});
+const i_CustomPosixUserConfig: D.LazyStruct = () => ({ Uid: 0, Gid: 0 });
+const i_DefaultSpaceStorageSettings: D.LazyStruct = () => ({
+  DefaultEbsStorageSettings: {
+    DefaultEbsVolumeSizeInGb: 0,
+    MaximumEbsVolumeSizeInGb: 0,
+  },
+});
+const i_FSxLustreConfig: D.LazyStruct = () => ({
+  SizeInGiB: 0,
+  PerUnitStorageThroughput: 0,
+});
+const i_FileSystemConfig: D.LazyStruct = () => ({
+  MountPath: 0,
+  DefaultUid: 0,
+  DefaultGid: 0,
+});
+const i_Filter: D.LazyStruct = () => ({ Name: 0, Operator: 0, Value: 0 });
+const i_JupyterLabAppSettings: D.LazyStruct = () => ({
+  DefaultResourceSpec: i_ResourceSpec,
+  CustomImages: D.list(i_CustomImage),
+  LifecycleConfigArns: 0,
+  CodeRepositories: D.list(i_CodeRepository),
+  AppLifecycleManagement: i_AppLifecycleManagement,
+  EmrSettings: { AssumableRoleArns: 0, ExecutionRoleArns: 0 },
+  BuiltInLifecycleConfigArn: 0,
+});
+const i_JupyterServerAppSettings: D.LazyStruct = () => ({
+  DefaultResourceSpec: i_ResourceSpec,
+  LifecycleConfigArns: 0,
+  CodeRepositories: D.list(i_CodeRepository),
+});
+const i_KernelGatewayAppSettings: D.LazyStruct = () => ({
+  DefaultResourceSpec: i_ResourceSpec,
+  CustomImages: D.list(i_CustomImage),
+  LifecycleConfigArns: 0,
+});
+const i_ModelPackageContainerDefinition: D.LazyStruct = () => ({
+  ContainerHostname: 0,
+  Image: 0,
+  ImageDigest: 0,
+  ModelDataUrl: 0,
+  ModelDataSource: i_ModelDataSource,
+  ProductId: 0,
+  Environment: 0,
+  ModelInput: { DataInputConfig: 0 },
+  Framework: 0,
+  FrameworkVersion: 0,
+  NearestModelName: 0,
+  AdditionalModelDataSources: D.list(i_AdditionalModelDataSource),
+  AdditionalS3DataSource: i_AdditionalS3DataSource,
+  ModelDataETag: 0,
+  IsCheckpoint: 0,
+  BaseModel: { HubContentName: 0, HubContentVersion: 0, RecipeName: 0 },
+});
+const i_S3ModelDataSource: D.LazyStruct = () => ({
+  S3Uri: 0,
+  S3DataType: 0,
+  CompressionType: 0,
+  ModelAccessConfig: i_ModelAccessConfig,
+  HubAccessConfig: { HubContentArn: 0 },
+  ManifestS3Uri: 0,
+  ETag: 0,
+  ManifestEtag: 0,
+});
+const i_ScheduledUpdateConfig: D.LazyStruct = () => ({
+  ScheduleExpression: 0,
+  DeploymentConfig: i_DeploymentConfiguration,
+});
+const i_SpaceAppLifecycleManagement: D.LazyStruct = () => ({
+  IdleSettings: { IdleTimeoutInMinutes: 0 },
 });
 const o_DeployedImage: D.LazyStruct = () => ({ ResolutionTime: D.ts });
 const o_ProductionVariantStatus: D.LazyStruct = () => ({ StartTime: D.ts });

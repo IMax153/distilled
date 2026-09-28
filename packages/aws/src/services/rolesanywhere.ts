@@ -392,6 +392,17 @@ export const createProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /profiles",
+    input: {
+      name: 0,
+      requireInstanceProperties: 0,
+      sessionPolicy: 0,
+      roleArns: 0,
+      managedPolicyArns: 0,
+      durationSeconds: 0,
+      enabled: 0,
+      tags: D.list(i_Tag),
+      acceptRoleSessionName: 0,
+    },
     output: { profile: o_ProfileDetail },
     body: true,
   },
@@ -419,6 +430,13 @@ export const createTrustAnchor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /trustanchors",
+    input: {
+      name: 0,
+      source: i_Source,
+      enabled: 0,
+      tags: D.list(i_Tag),
+      notificationSettings: D.list(i_NotificationSetting),
+    },
     output: { trustAnchor: o_TrustAnchorDetail },
     body: true,
   },
@@ -446,6 +464,7 @@ export const deleteAttributeMapping: API.OperationMethod<
     service: svc,
     http: "DELETE /profiles/{profileId}/mappings",
     input: {
+      profileId: 0,
       certificateField: D.m({ query: "certificateField" }),
       specifiers: D.m({ query: "specifiers" }),
     },
@@ -479,6 +498,7 @@ export const deleteCrl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /crl/{crlId}",
+    input: { crlId: 0 },
     output: { crl: o_CrlDetail },
   },
   errors: [AccessDeniedException, ResourceNotFoundException],
@@ -505,6 +525,7 @@ export const deleteProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /profile/{profileId}",
+    input: { profileId: 0 },
     output: { profile: o_ProfileDetail },
   },
   errors: [AccessDeniedException, ResourceNotFoundException],
@@ -531,6 +552,7 @@ export const deleteTrustAnchor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /trustanchor/{trustAnchorId}",
+    input: { trustAnchorId: 0 },
     output: { trustAnchor: o_TrustAnchorDetail },
   },
   errors: [AccessDeniedException, ResourceNotFoundException],
@@ -558,6 +580,7 @@ export const disableCrl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /crl/{crlId}/disable",
+    input: { crlId: 0 },
     output: { crl: o_CrlDetail },
   },
   errors: [AccessDeniedException, ResourceNotFoundException],
@@ -585,6 +608,7 @@ export const disableProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /profile/{profileId}/disable",
+    input: { profileId: 0 },
     output: { profile: o_ProfileDetail },
   },
   errors: [AccessDeniedException, ResourceNotFoundException],
@@ -612,6 +636,7 @@ export const disableTrustAnchor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /trustanchor/{trustAnchorId}/disable",
+    input: { trustAnchorId: 0 },
     output: { trustAnchor: o_TrustAnchorDetail },
   },
   errors: [AccessDeniedException, ResourceNotFoundException],
@@ -639,6 +664,7 @@ export const enableCrl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /crl/{crlId}/enable",
+    input: { crlId: 0 },
     output: { crl: o_CrlDetail },
   },
   errors: [AccessDeniedException, ResourceNotFoundException],
@@ -666,6 +692,7 @@ export const enableProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /profile/{profileId}/enable",
+    input: { profileId: 0 },
     output: { profile: o_ProfileDetail },
   },
   errors: [AccessDeniedException, ResourceNotFoundException],
@@ -693,6 +720,7 @@ export const enableTrustAnchor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /trustanchor/{trustAnchorId}/enable",
+    input: { trustAnchorId: 0 },
     output: { trustAnchor: o_TrustAnchorDetail },
   },
   errors: [AccessDeniedException, ResourceNotFoundException],
@@ -717,6 +745,7 @@ export const getCrl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /crl/{crlId}",
+    input: { crlId: 0 },
     output: { crl: o_CrlDetail },
   },
   errors: [ResourceNotFoundException],
@@ -744,6 +773,7 @@ export const getProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /profile/{profileId}",
+    input: { profileId: 0 },
     output: { profile: o_ProfileDetail },
   },
   errors: [AccessDeniedException, ResourceNotFoundException],
@@ -770,6 +800,7 @@ export const getSubject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /subject/{subjectId}",
+    input: { subjectId: 0 },
     output: {
       subject: {
         lastSeenAt: D.ts,
@@ -806,6 +837,7 @@ export const getTrustAnchor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /trustanchor/{trustAnchorId}",
+    input: { trustAnchorId: 0 },
     output: { trustAnchor: o_TrustAnchorDetail },
   },
   errors: [
@@ -836,6 +868,13 @@ export const importCrl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /crls",
+    input: {
+      name: 0,
+      crlData: 0,
+      enabled: 0,
+      tags: D.list(i_Tag),
+      trustAnchorArn: 0,
+    },
     output: { crl: o_CrlDetail },
     body: true,
   },
@@ -1043,6 +1082,11 @@ export const putAttributeMapping: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /profiles/{profileId}/mappings",
+    input: {
+      profileId: 0,
+      certificateField: 0,
+      mappingRules: D.list({ specifier: 0 }),
+    },
     output: { profile: o_ProfileDetail },
     body: true,
   },
@@ -1077,6 +1121,10 @@ export const putNotificationSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /put-notifications-settings",
+    input: {
+      trustAnchorId: 0,
+      notificationSettings: D.list(i_NotificationSetting),
+    },
     output: { trustAnchor: o_TrustAnchorDetail },
     body: true,
   },
@@ -1109,6 +1157,10 @@ export const resetNotificationSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /reset-notifications-settings",
+    input: {
+      trustAnchorId: 0,
+      notificationSettingKeys: D.list({ event: 0, channel: 0 }),
+    },
     output: { trustAnchor: o_TrustAnchorDetail },
     body: true,
   },
@@ -1139,7 +1191,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /TagResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /TagResource",
+    input: { resourceArn: 0, tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -1167,7 +1224,12 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UntagResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UntagResource",
+    input: { resourceArn: 0, tagKeys: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -1197,6 +1259,7 @@ export const updateCrl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /crl/{crlId}",
+    input: { crlId: 0, name: 0, crlData: 0 },
     output: { crl: o_CrlDetail },
     body: true,
   },
@@ -1229,6 +1292,15 @@ export const updateProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /profile/{profileId}",
+    input: {
+      profileId: 0,
+      name: 0,
+      sessionPolicy: 0,
+      roleArns: 0,
+      managedPolicyArns: 0,
+      durationSeconds: 0,
+      acceptRoleSessionName: 0,
+    },
     output: { profile: o_ProfileDetail },
     body: true,
   },
@@ -1261,6 +1333,7 @@ export const updateTrustAnchor: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /trustanchor/{trustAnchorId}",
+    input: { trustAnchorId: 0, name: 0, source: i_Source },
     output: { trustAnchor: o_TrustAnchorDetail },
     body: true,
   },
@@ -1274,6 +1347,17 @@ export const updateTrustAnchor: API.OperationMethod<
   operationName: "UpdateTrustAnchor",
 })) as any;
 
+const i_NotificationSetting: D.LazyStruct = () => ({
+  enabled: 0,
+  event: 0,
+  threshold: 0,
+  channel: 0,
+});
+const i_Source: D.LazyStruct = () => ({
+  sourceType: 0,
+  sourceData: { x509CertificateData: 0, acmPcaArn: 0 },
+});
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });
 const o_CrlDetail: D.LazyStruct = () => ({
   crlData: D.blob,
   createdAt: D.ts,

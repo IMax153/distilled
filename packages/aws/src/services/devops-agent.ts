@@ -2754,6 +2754,12 @@ export const associateService: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/agentspaces/{agentSpaceId}/associations",
+    input: {
+      agentSpaceId: 0,
+      serviceId: 0,
+      configuration: i_ServiceConfiguration,
+      capabilities: D.map(i_CapabilityConfiguration),
+    },
     output: { association: o_Association, webhook: o_GenericWebhook },
     body: true,
   },
@@ -2791,7 +2797,15 @@ export const createAgentSpace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/agentspaces",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      locale: 0,
+      kmsKeyArn: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: 0,
+      preferences: 0,
+    },
     output: { agentSpace: o_AgentSpace },
     body: true,
   },
@@ -2828,7 +2842,13 @@ export const createAsset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /asset/agent-space/{agentSpaceId}/assets",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      agentSpaceId: 0,
+      assetType: 0,
+      metadata: 0,
+      content: i_AssetContent,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { asset: o_Asset },
     body: true,
   },
@@ -2866,7 +2886,14 @@ export const createAssetFile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /asset/agent-space/{agentSpaceId}/assets/{assetId}/files/{path+}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      agentSpaceId: 0,
+      assetId: 0,
+      path: 0,
+      content: i_AssetFileBody,
+      metadata: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { file: o_AssetFile },
     body: true,
   },
@@ -2905,7 +2932,21 @@ export const createBacklogTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backlog/agent-space/{agentSpaceId}/tasks",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      agentSpaceId: 0,
+      reference: {
+        system: 0,
+        title: 0,
+        referenceId: 0,
+        referenceUrl: 0,
+        associationId: 0,
+      },
+      taskType: 0,
+      title: 0,
+      description: 0,
+      priority: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { task: o_Task },
     body: true,
   },
@@ -2942,6 +2983,7 @@ export const createChat: API.OperationMethod<
     service: svc,
     http: "POST /agents/agent-space/{agentSpaceId}/chat/create",
     input: {
+      agentSpaceId: 0,
       userId: D.m({ query: "userId" }),
       userType: D.m({ query: "userType" }),
     },
@@ -2978,6 +3020,24 @@ export const createPrivateConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/private-connections",
+    input: {
+      name: 0,
+      mode: {
+        serviceManaged: {
+          hostAddress: 0,
+          vpcId: 0,
+          subnetIds: 0,
+          securityGroupIds: 0,
+          ipAddressType: 0,
+          ipv4AddressesPerEni: 0,
+          portRanges: 0,
+          certificate: 0,
+          dnsResolution: 0,
+        },
+        selfManaged: { resourceConfigurationId: 0, certificate: 0 },
+      },
+      tags: 0,
+    },
     output: { certificateExpiryTime: D.ts },
     body: true,
   },
@@ -3014,7 +3074,14 @@ export const createTrigger: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /trigger/agent-space/{agentSpaceId}/triggers",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      agentSpaceId: 0,
+      type: 0,
+      condition: { schedule: { expression: 0 } },
+      action: 0,
+      status: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { trigger: o_Trigger },
     body: true,
   },
@@ -3048,7 +3115,11 @@ export const deleteAgentSpace: API.OperationMethod<
   DeleteAgentSpaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v1/agentspaces/{agentSpaceId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v1/agentspaces/{agentSpaceId}",
+    input: { agentSpaceId: 0 },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -3082,6 +3153,7 @@ export const deleteAsset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /asset/agent-space/{agentSpaceId}/assets/{assetId}",
+    input: { agentSpaceId: 0, assetId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3116,6 +3188,7 @@ export const deleteAssetFile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /asset/agent-space/{agentSpaceId}/assets/{assetId}/files/{path+}",
+    input: { agentSpaceId: 0, assetId: 0, path: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3146,7 +3219,11 @@ export const deletePrivateConnection: API.OperationMethod<
   DeletePrivateConnectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v1/private-connections/{name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v1/private-connections/{name}",
+    input: { name: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3180,6 +3257,7 @@ export const deleteTrigger: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /trigger/agent-space/{agentSpaceId}/triggers/{triggerId}",
+    input: { agentSpaceId: 0, triggerId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -3211,7 +3289,11 @@ export const deregisterService: API.OperationMethod<
   DeregisterServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v1/services/{serviceId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v1/services/{serviceId}",
+    input: { serviceId: 0 },
+  },
   errors: [
     ConflictException,
     InternalServerException,
@@ -3244,6 +3326,7 @@ export const describePrivateConnection: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/private-connections/{name}",
+    input: { name: 0 },
     output: { certificateExpiryTime: D.ts },
   },
   errors: [
@@ -3277,7 +3360,10 @@ export const disableOperatorApp: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/agentspaces/{agentSpaceId}/operator",
-    input: { authFlow: D.m({ header: "x-amzn-app-auth-flow" }) },
+    input: {
+      agentSpaceId: 0,
+      authFlow: D.m({ header: "x-amzn-app-auth-flow" }),
+    },
   },
   errors: [
     IdentityCenterServiceException,
@@ -3309,6 +3395,7 @@ export const disassociateService: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/agentspaces/{agentSpaceId}/associations/{associationId}",
+    input: { agentSpaceId: 0, associationId: 0 },
   },
   errors: [
     InternalServerException,
@@ -3340,6 +3427,16 @@ export const enableOperatorApp: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/agentspaces/{agentSpaceId}/operator",
+    input: {
+      agentSpaceId: 0,
+      authFlow: 0,
+      operatorAppRoleArn: 0,
+      idcInstanceArn: 0,
+      issuerUrl: 0,
+      idpClientId: 0,
+      idpClientSecret: 0,
+      provider: 0,
+    },
     output: {
       iam: o_IamAuthConfiguration,
       idc: o_IdcAuthConfiguration,
@@ -3378,6 +3475,7 @@ export const getAccountUsage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /usage/account",
+    input: {},
     output: { usagePeriodStartTime: D.ts, usagePeriodEndTime: D.ts },
   },
   errors: [
@@ -3411,6 +3509,7 @@ export const getAgentSpace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/agentspaces/{agentSpaceId}",
+    input: { agentSpaceId: 0 },
     output: { agentSpace: o_AgentSpace },
   },
   errors: [
@@ -3444,7 +3543,11 @@ export const getAsset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /asset/agent-space/{agentSpaceId}/assets/{assetId}",
-    input: { assetVersion: D.m({ query: "assetVersion" }) },
+    input: {
+      agentSpaceId: 0,
+      assetId: 0,
+      assetVersion: D.m({ query: "assetVersion" }),
+    },
     output: { asset: o_Asset },
   },
   errors: [
@@ -3479,7 +3582,11 @@ export const getAssetContent: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /asset/agent-space/{agentSpaceId}/assets/{assetId}/content",
-    input: { assetVersion: D.m({ query: "assetVersion" }) },
+    input: {
+      agentSpaceId: 0,
+      assetId: 0,
+      assetVersion: D.m({ query: "assetVersion" }),
+    },
     output: { content: { zipFile: D.blob } },
   },
   errors: [
@@ -3514,7 +3621,12 @@ export const getAssetFile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /asset/agent-space/{agentSpaceId}/assets/{assetId}/files/{path+}",
-    input: { assetVersion: D.m({ query: "assetVersion" }) },
+    input: {
+      agentSpaceId: 0,
+      assetId: 0,
+      path: 0,
+      assetVersion: D.m({ query: "assetVersion" }),
+    },
     output: { file: o_AssetFile },
   },
   errors: [
@@ -3548,6 +3660,7 @@ export const getAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/agentspaces/{agentSpaceId}/associations/{associationId}",
+    input: { agentSpaceId: 0, associationId: 0 },
     output: { association: o_Association },
   },
   errors: [
@@ -3582,6 +3695,7 @@ export const getBacklogTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /backlog/agent-space/{agentSpaceId}/tasks/{taskId}",
+    input: { agentSpaceId: 0, taskId: 0 },
     output: { task: o_Task },
   },
   errors: [
@@ -3615,6 +3729,7 @@ export const getOperatorApp: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v2/agentspaces/{agentSpaceId}/operator",
+    input: { agentSpaceId: 0 },
     output: {
       iam: o_IamAuthConfiguration,
       idc: o_IdcAuthConfiguration,
@@ -3647,7 +3762,11 @@ export const getRecommendation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /backlog/agent-space/{agentSpaceId}/recommendations/{recommendationId}",
-    input: { recommendationVersion: D.m({ query: "recommendationVersion" }) },
+    input: {
+      agentSpaceId: 0,
+      recommendationId: 0,
+      recommendationVersion: D.m({ query: "recommendationVersion" }),
+    },
     output: { recommendation: o_Recommendation },
   },
   errors: [
@@ -3681,6 +3800,7 @@ export const getService: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/services/{serviceId}",
+    input: { serviceId: 0 },
     output: { service: o_RegisteredService },
   },
   errors: [
@@ -3714,6 +3834,7 @@ export const getTrigger: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /trigger/agent-space/{agentSpaceId}/triggers/{triggerId}",
+    input: { agentSpaceId: 0, triggerId: 0 },
     output: { trigger: o_Trigger },
   },
   errors: [
@@ -3787,6 +3908,8 @@ export const listAssetFiles: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /asset/agent-space/{agentSpaceId}/assets/{assetId}/files",
     input: {
+      agentSpaceId: 0,
+      assetId: 0,
       assetVersion: D.m({ query: "assetVersion" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -3832,9 +3955,16 @@ export const listAssets: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /asset/agent-space/{agentSpaceId}/assets",
     input: {
+      agentSpaceId: 0,
       assetType: D.m({ query: "assetType" }),
-      updatedAfter: D.m({ query: "updatedAfter" }),
-      updatedBefore: D.m({ query: "updatedBefore" }),
+      updatedAfter: D.m({
+        query: "updatedAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      updatedBefore: D.m({
+        query: "updatedBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -3921,6 +4051,8 @@ export const listAssetVersions: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /asset/agent-space/{agentSpaceId}/assets/{assetId}/versions",
     input: {
+      agentSpaceId: 0,
+      assetId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -3965,6 +4097,7 @@ export const listAssociations: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /v1/agentspaces/{agentSpaceId}/associations/list",
     input: {
+      agentSpaceId: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
       filterServiceTypes: D.m({ query: "filterServiceTypes" }),
@@ -4009,10 +4142,19 @@ export const listBacklogTasks: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /backlog/agent-space/{agentSpaceId}/tasks/list",
     input: {
+      agentSpaceId: 0,
       filter: {
         createdAfter: D.tsAs("date-time"),
         createdBefore: D.tsAs("date-time"),
+        priority: 0,
+        status: 0,
+        taskType: 0,
+        primaryTaskId: 0,
       },
+      limit: 0,
+      nextToken: 0,
+      sortField: 0,
+      order: 0,
     },
     output: { tasks: D.list(o_Task) },
     body: true,
@@ -4054,6 +4196,7 @@ export const listChats: API.OperationMethod<
     service: svc,
     http: "GET /agents/agent-space/{agentSpaceId}/chat/list",
     input: {
+      agentSpaceId: 0,
       userId: D.m({ query: "userId" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -4092,6 +4235,7 @@ export const listExecutions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /journal/agent-space/{agentSpaceId}/executions",
+    input: { agentSpaceId: 0, taskId: 0, limit: 0, nextToken: 0 },
     output: { executions: D.list({ createdAt: D.ts, updatedAt: D.ts }) },
     body: true,
   },
@@ -4133,6 +4277,7 @@ export const listGoals: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backlog/agent-space/{agentSpaceId}/goals/list",
+    input: { agentSpaceId: 0, status: 0, goalType: 0, limit: 0, nextToken: 0 },
     output: { goals: D.list(o_Goal) },
     body: true,
   },
@@ -4174,6 +4319,14 @@ export const listJournalRecords: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /journal/agent-space/{agentSpaceId}/journalRecords",
+    input: {
+      agentSpaceId: 0,
+      executionId: 0,
+      limit: 0,
+      nextToken: 0,
+      recordType: 0,
+      order: 0,
+    },
     output: { records: D.list({ createdAt: D.ts }) },
     body: true,
   },
@@ -4215,6 +4368,7 @@ export const listPendingMessages: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /agents/agent-space/{agentSpaceId}/pendingMessages",
+    input: { agentSpaceId: 0, executionId: 0 },
     output: { createdAt: D.ts },
     body: true,
   },
@@ -4249,6 +4403,7 @@ export const listPrivateConnections: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/private-connections",
+    input: {},
     output: { privateConnections: D.list({ certificateExpiryTime: D.ts }) },
   },
   errors: [
@@ -4281,6 +4436,15 @@ export const listRecommendations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /backlog/agent-space/{agentSpaceId}/recommendations/list",
+    input: {
+      agentSpaceId: 0,
+      taskId: 0,
+      goalId: 0,
+      status: 0,
+      priority: 0,
+      limit: 0,
+      nextToken: 0,
+    },
     output: { recommendations: D.list(o_Recommendation) },
     body: true,
   },
@@ -4349,7 +4513,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4383,6 +4551,7 @@ export const listTriggers: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /trigger/agent-space/{agentSpaceId}/triggers",
     input: {
+      agentSpaceId: 0,
       status: D.m({ query: "status" }),
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -4426,6 +4595,7 @@ export const listWebhooks: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/agentspaces/{agentSpaceId}/associations/{associationId}/webhooks/list",
+    input: { agentSpaceId: 0, associationId: 0 },
   },
   errors: [
     InternalServerException,
@@ -4454,7 +4624,130 @@ export const registerService: API.OperationMethod<
   RegisterServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/register/{service}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/register/{service}",
+    input: {
+      service: 0,
+      serviceDetails: {
+        dynatrace: {
+          accountUrn: 0,
+          authorizationConfig: {
+            oAuthClientCredentials: {
+              clientName: 0,
+              clientId: 0,
+              exchangeParameters: 0,
+              clientSecret: 0,
+            },
+          },
+        },
+        servicenow: {
+          instanceUrl: 0,
+          authorizationConfig: {
+            oAuthClientCredentials: {
+              clientName: 0,
+              clientId: 0,
+              exchangeParameters: 0,
+              clientSecret: 0,
+            },
+          },
+        },
+        mcpserverdatadog: {
+          name: 0,
+          endpoint: 0,
+          description: 0,
+          authorizationConfig: {
+            authorizationDiscovery: i_MCPServerAuthorizationDiscoveryConfig,
+          },
+        },
+        mcpserver: i_MCPServerDetails,
+        gitlab: { targetUrl: 0, tokenType: 0, tokenValue: 0, groupId: 0 },
+        mcpserversplunk: i_MCPServerDetails,
+        mcpservernewrelic: {
+          authorizationConfig: {
+            apiKey: {
+              apiKey: 0,
+              accountId: 0,
+              region: 0,
+              applicationIds: 0,
+              entityGuids: 0,
+              alertPolicyIds: 0,
+            },
+          },
+        },
+        eventChannel: { type: 0 },
+        mcpservergrafana: {
+          name: 0,
+          endpoint: 0,
+          description: 0,
+          authorizationConfig: i_MCPServerAuthorizationConfig,
+        },
+        pagerduty: {
+          scopes: 0,
+          authorizationConfig: {
+            oAuthClientCredentials: {
+              clientName: 0,
+              clientId: 0,
+              exchangeParameters: 0,
+              clientSecret: 0,
+            },
+          },
+        },
+        azureidentity: {
+          tenantId: 0,
+          clientId: 0,
+          webIdentityRoleArn: 0,
+          webIdentityTokenAudiences: 0,
+        },
+        mcpserversigv4: {
+          name: 0,
+          endpoint: 0,
+          description: 0,
+          authorizationConfig: {
+            region: 0,
+            service: 0,
+            roleArn: 0,
+            mcpRoleArn: 0,
+            customHeaders: 0,
+          },
+        },
+        remoteagent: {
+          name: 0,
+          endpoint: 0,
+          description: 0,
+          authorizationConfig: {
+            apiKey: { apiKeyName: 0, apiKeyValue: 0, apiKeyHeader: 0 },
+            oAuthClientCredentials: {
+              clientName: 0,
+              clientId: 0,
+              exchangeParameters: 0,
+              clientSecret: 0,
+              exchangeUrl: 0,
+              scopes: 0,
+            },
+            bearerToken: {
+              tokenName: 0,
+              tokenValue: 0,
+              authorizationHeader: 0,
+            },
+          },
+        },
+        remoteagentsigv4: {
+          name: 0,
+          endpoint: 0,
+          description: 0,
+          authorizationConfig: { region: 0, service: 0, roleArn: 0 },
+        },
+      },
+      kmsKeyArn: 0,
+      privateConnectionName: 0,
+      targetUrlPrivateConnectionName: 0,
+      exchangeUrlPrivateConnectionName: 0,
+      name: 0,
+      tags: 0,
+    },
+    body: true,
+  },
   errors: [
     InternalServerException,
     InvalidParameterException,
@@ -4487,6 +4780,26 @@ export const sendMessage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /agents/agent-space/{agentSpaceId}/chat/sendMessage",
+    input: {
+      agentSpaceId: 0,
+      executionId: 0,
+      content: 0,
+      context: {
+        currentPage: 0,
+        lastMessage: 0,
+        userActionResponse: 0,
+        approvalAction: {
+          toolUseId: 0,
+          interruptId: 0,
+          approvalId: 0,
+          buttonText: 0,
+          action: 0,
+        },
+      },
+      userId: 0,
+      assetIds: 0,
+      modelTier: 0,
+    },
     output: {
       events: D.m({
         payload: true,
@@ -4534,7 +4847,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4565,7 +4883,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -4598,6 +4916,13 @@ export const updateAgentSpace: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v1/agentspaces/{agentSpaceId}",
+    input: {
+      agentSpaceId: 0,
+      name: 0,
+      description: 0,
+      locale: 0,
+      preferences: 0,
+    },
     output: { agentSpace: o_AgentSpace },
     body: true,
   },
@@ -4635,6 +4960,15 @@ export const updateApprovalAction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /agents/agent-space/{agentSpaceId}/approvals/{approvalId}/update-action",
+    input: {
+      agentSpaceId: 0,
+      approvalId: 0,
+      action: 0,
+      finalPattern: { tool: 0, argumentPins: 0 },
+      reason: 0,
+      ttlSeconds: 0,
+      singleUse: 0,
+    },
     output: { expiresAt: D.ts },
     body: true,
   },
@@ -4673,7 +5007,13 @@ export const updateAsset: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /asset/agent-space/{agentSpaceId}/assets/{assetId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      agentSpaceId: 0,
+      assetId: 0,
+      metadata: 0,
+      content: i_AssetContent,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { asset: o_Asset },
     body: true,
   },
@@ -4712,7 +5052,14 @@ export const updateAssetFile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /asset/agent-space/{agentSpaceId}/assets/{assetId}/files/{path+}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      agentSpaceId: 0,
+      assetId: 0,
+      path: 0,
+      content: i_AssetFileBody,
+      metadata: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { file: o_AssetFile },
     body: true,
   },
@@ -4749,6 +5096,12 @@ export const updateAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v1/agentspaces/{agentSpaceId}/associations/{associationId}",
+    input: {
+      agentSpaceId: 0,
+      associationId: 0,
+      configuration: i_ServiceConfiguration,
+      capabilities: D.map(i_CapabilityConfiguration),
+    },
     output: { association: o_Association, webhook: o_GenericWebhook },
     body: true,
   },
@@ -4784,7 +5137,12 @@ export const updateBacklogTask: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /backlog/agent-space/{agentSpaceId}/tasks/{taskId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      agentSpaceId: 0,
+      taskId: 0,
+      taskStatus: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { task: o_Task },
     body: true,
   },
@@ -4822,7 +5180,12 @@ export const updateGoal: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /backlog/agent-space/{agentSpaceId}/goals/{goalId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      agentSpaceId: 0,
+      goalId: 0,
+      evaluationSchedule: { state: 0 },
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { goal: o_Goal },
     body: true,
   },
@@ -4858,6 +5221,7 @@ export const updateOperatorAppIdpConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v1/agentspaces/{agentSpaceId}/operator/idp",
+    input: { agentSpaceId: 0, idpClientSecret: 0 },
     output: { idp: o_IdpAuthConfiguration },
     body: true,
   },
@@ -4892,6 +5256,7 @@ export const updatePrivateConnectionCertificate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/private-connections/{name}/certificate",
+    input: { name: 0, certificate: 0 },
     output: { certificateExpiryTime: D.ts },
     body: true,
   },
@@ -4928,7 +5293,13 @@ export const updateRecommendation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /backlog/agent-space/{agentSpaceId}/recommendations/{recommendationId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      agentSpaceId: 0,
+      recommendationId: 0,
+      status: 0,
+      additionalContext: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { recommendation: o_Recommendation },
     body: true,
   },
@@ -4965,7 +5336,12 @@ export const updateTrigger: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /trigger/agent-space/{agentSpaceId}/triggers/{triggerId}",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      agentSpaceId: 0,
+      triggerId: 0,
+      status: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { trigger: o_Trigger },
     body: true,
   },
@@ -5000,6 +5376,7 @@ export const validateAwsAssociations: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/agentspaces/{agentSpaceId}/associations/validate",
+    input: { agentSpaceId: 0 },
   },
   errors: [
     InternalServerException,
@@ -5013,6 +5390,107 @@ export const validateAwsAssociations: API.OperationMethod<
   endpointHostPrefix: "cp.",
 })) as any;
 
+const i_AssetContent: D.LazyStruct = () => ({
+  file: { path: 0, body: i_AssetFileBody, metadata: 0 },
+  zip: { zipFile: 0 },
+  sourceUrl: { url: 0 },
+});
+const i_AssetFileBody: D.LazyStruct = () => ({ bytes: 0, text: 0 });
+const i_CapabilityConfiguration: D.LazyStruct = () => ({
+  enabled: 0,
+  triggerFilterGroups: D.list({ events: 0, targetBranches: { patterns: 0 } }),
+});
+const i_MCPServerAuthorizationConfig: D.LazyStruct = () => ({
+  oAuthClientCredentials: {
+    clientName: 0,
+    clientId: 0,
+    exchangeParameters: 0,
+    clientSecret: 0,
+    exchangeUrl: 0,
+    scopes: 0,
+  },
+  oAuth3LO: {
+    clientName: 0,
+    clientId: 0,
+    exchangeParameters: 0,
+    returnToEndpoint: 0,
+    authorizationUrl: 0,
+    exchangeUrl: 0,
+    clientSecret: 0,
+    supportCodeChallenge: 0,
+    scopes: 0,
+  },
+  apiKey: { apiKeyName: 0, apiKeyValue: 0, apiKeyHeader: 0 },
+  bearerToken: { tokenName: 0, tokenValue: 0, authorizationHeader: 0 },
+  authorizationDiscovery: i_MCPServerAuthorizationDiscoveryConfig,
+});
+const i_MCPServerAuthorizationDiscoveryConfig: D.LazyStruct = () => ({
+  returnToEndpoint: 0,
+});
+const i_MCPServerDetails: D.LazyStruct = () => ({
+  name: 0,
+  endpoint: 0,
+  description: 0,
+  authorizationConfig: i_MCPServerAuthorizationConfig,
+});
+const i_ServiceConfiguration: D.LazyStruct = () => ({
+  sourceAws: {
+    accountId: 0,
+    accountType: 0,
+    assumableRoleArn: 0,
+    externalId: 0,
+    agentElevatedRoleArn: 0,
+    agentElevatedRoleArnStatus: 0,
+  },
+  aws: {
+    assumableRoleArn: 0,
+    accountId: 0,
+    accountType: 0,
+    agentElevatedRoleArn: 0,
+    agentElevatedRoleArnStatus: 0,
+  },
+  github: {
+    repoName: 0,
+    repoId: 0,
+    owner: 0,
+    ownerType: 0,
+    instanceIdentifier: 0,
+    runtimeRoleArn: 0,
+  },
+  slack: {
+    workspaceId: 0,
+    workspaceName: 0,
+    transmissionTarget: {
+      opsOncallTarget: i_SlackChannel,
+      opsSRETarget: i_SlackChannel,
+    },
+  },
+  dynatrace: { envId: 0, resources: 0 },
+  servicenow: { instanceId: 0, authScopes: 0 },
+  mcpservernewrelic: { accountId: 0, endpoint: 0 },
+  mcpserverdatadog: { enabledElevatedTools: D.list(i_MCPToolDetail) },
+  mcpserver: { tools: 0, toolDetails: D.list(i_MCPToolDetail) },
+  gitlab: {
+    projectId: 0,
+    projectPath: 0,
+    instanceIdentifier: 0,
+    runtimeRoleArn: 0,
+  },
+  mcpserversplunk: {},
+  eventChannel: {},
+  azure: { subscriptionId: 0 },
+  azuredevops: { organizationName: 0, projectId: 0, projectName: 0 },
+  mcpservergrafana: {
+    endpoint: 0,
+    organizationId: 0,
+    tools: 0,
+    enabledElevatedTools: D.list(i_MCPToolDetail),
+  },
+  pagerduty: { services: 0, customerEmail: 0 },
+  mcpserversigv4: { tools: 0, toolDetails: D.list(i_MCPToolDetail) },
+  remoteagent: {},
+  remoteagentsigv4: {},
+});
 const o_AgentSpace: D.LazyStruct = () => ({
   description: D.secret,
   createdAt: D.ts,
@@ -5070,6 +5548,11 @@ const o_RegisteredService: D.LazyStruct = () => ({
 });
 const o_Task: D.LazyStruct = () => ({ createdAt: D.ts, updatedAt: D.ts });
 const o_Trigger: D.LazyStruct = () => ({ createdAt: D.ts, updatedAt: D.ts });
+const i_MCPToolDetail: D.LazyStruct = () => ({
+  name: 0,
+  toolClassification: 0,
+});
+const i_SlackChannel: D.LazyStruct = () => ({ channelName: 0, channelId: 0 });
 const o_RegisteredMCPServerDetails: D.LazyStruct = () => ({
   description: D.secret,
 });

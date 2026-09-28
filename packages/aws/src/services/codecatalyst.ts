@@ -728,7 +728,7 @@ export const createAccessToken: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/accessTokens",
-    input: { expiresTime: D.tsAs("date-time") },
+    input: { name: 0, expiresTime: D.tsAs("date-time") },
     output: { secret: D.secret, expiresTime: D.ts },
     body: true,
   },
@@ -755,6 +755,18 @@ export const createDevEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/spaces/{spaceName}/projects/{projectName}/devEnvironments",
+    input: {
+      spaceName: 0,
+      projectName: 0,
+      repositories: D.list({ repositoryName: 0, branchName: 0 }),
+      clientToken: 0,
+      alias: 0,
+      ides: D.list(i_IdeConfiguration),
+      instanceType: 0,
+      inactivityTimeoutMinutes: 0,
+      persistentStorage: { sizeInGiB: 0 },
+      vpcConnectionName: 0,
+    },
     body: true,
   },
   errors: [],
@@ -776,6 +788,7 @@ export const createProject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/spaces/{spaceName}/projects",
+    input: { spaceName: 0, displayName: 0, description: 0 },
     body: true,
   },
   errors: [],
@@ -798,6 +811,7 @@ export const createSourceRepository: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/spaces/{spaceName}/projects/{projectName}/sourceRepositories/{name}",
+    input: { spaceName: 0, projectName: 0, name: 0, description: 0 },
     body: true,
   },
   errors: [],
@@ -821,6 +835,13 @@ export const createSourceRepositoryBranch: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/spaces/{spaceName}/projects/{projectName}/sourceRepositories/{sourceRepositoryName}/branches/{name}",
+    input: {
+      spaceName: 0,
+      projectName: 0,
+      sourceRepositoryName: 0,
+      name: 0,
+      headCommitId: 0,
+    },
     output: { lastUpdatedTime: D.ts },
     body: true,
   },
@@ -840,7 +861,11 @@ export const deleteAccessToken: API.OperationMethod<
   DeleteAccessTokenError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v1/accessTokens/{id}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v1/accessTokens/{id}",
+    input: { id: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -860,6 +885,7 @@ export const deleteDevEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/spaces/{spaceName}/projects/{projectName}/devEnvironments/{id}",
+    input: { spaceName: 0, projectName: 0, id: 0 },
   },
   errors: [],
   protocol: AwsProtocol,
@@ -880,6 +906,7 @@ export const deleteProject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/spaces/{spaceName}/projects/{name}",
+    input: { spaceName: 0, name: 0 },
   },
   errors: [],
   protocol: AwsProtocol,
@@ -900,6 +927,7 @@ export const deleteSourceRepository: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/spaces/{spaceName}/projects/{projectName}/sourceRepositories/{name}",
+    input: { spaceName: 0, projectName: 0, name: 0 },
   },
   errors: [],
   protocol: AwsProtocol,
@@ -919,7 +947,11 @@ export const deleteSpace: API.OperationMethod<
   DeleteSpaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /v1/spaces/{name}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /v1/spaces/{name}",
+    input: { name: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -939,6 +971,7 @@ export const getDevEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/spaces/{spaceName}/projects/{projectName}/devEnvironments/{id}",
+    input: { spaceName: 0, projectName: 0, id: 0 },
     output: { lastUpdatedTime: D.ts },
   },
   errors: [],
@@ -960,6 +993,7 @@ export const getProject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/spaces/{spaceName}/projects/{name}",
+    input: { spaceName: 0, name: 0 },
   },
   errors: [],
   protocol: AwsProtocol,
@@ -980,6 +1014,7 @@ export const getSourceRepository: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/spaces/{spaceName}/projects/{projectName}/sourceRepositories/{name}",
+    input: { spaceName: 0, projectName: 0, name: 0 },
     output: { lastUpdatedTime: D.ts, createdTime: D.ts },
   },
   errors: [],
@@ -1002,6 +1037,7 @@ export const getSourceRepositoryCloneUrls: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/spaces/{spaceName}/projects/{projectName}/sourceRepositories/{sourceRepositoryName}/cloneUrls",
+    input: { spaceName: 0, projectName: 0, sourceRepositoryName: 0 },
   },
   errors: [],
   protocol: AwsProtocol,
@@ -1019,7 +1055,11 @@ export const getSpace: API.OperationMethod<
   GetSpaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v1/spaces/{name}" },
+  descriptor: {
+    service: svc,
+    http: "GET /v1/spaces/{name}",
+    input: { name: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1040,6 +1080,7 @@ export const getSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/spaces/{spaceName}/subscription",
+    input: { spaceName: 0 },
     output: { pendingSubscriptionStartTime: D.ts },
   },
   errors: [],
@@ -1082,6 +1123,7 @@ export const getWorkflow: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/spaces/{spaceName}/projects/{projectName}/workflows/{id}",
+    input: { spaceName: 0, id: 0, projectName: 0 },
     output: { createdTime: D.ts, lastUpdatedTime: D.ts },
   },
   errors: [],
@@ -1103,6 +1145,7 @@ export const getWorkflowRun: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/spaces/{spaceName}/projects/{projectName}/workflowRuns/{id}",
+    input: { spaceName: 0, id: 0, projectName: 0 },
     output: { startTime: D.ts, endTime: D.ts, lastUpdatedTime: D.ts },
   },
   errors: [],
@@ -1125,6 +1168,7 @@ export const listAccessTokens: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/accessTokens",
+    input: { maxResults: 0, nextToken: 0 },
     output: { items: D.list({ expiresTime: D.ts }) },
     body: true,
   },
@@ -1154,6 +1198,13 @@ export const listDevEnvironments: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/spaces/{spaceName}/devEnvironments",
+    input: {
+      spaceName: 0,
+      projectName: 0,
+      filters: D.list({ key: 0, values: 0, comparisonOperator: 0 }),
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { items: D.list({ lastUpdatedTime: D.ts }) },
     body: true,
   },
@@ -1183,6 +1234,13 @@ export const listDevEnvironmentSessions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/spaces/{spaceName}/projects/{projectName}/devEnvironments/{devEnvironmentId}/sessions",
+    input: {
+      spaceName: 0,
+      projectName: 0,
+      devEnvironmentId: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { items: D.list({ startedTime: D.ts }) },
     body: true,
   },
@@ -1220,7 +1278,14 @@ export const listEventLogs: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/spaces/{spaceName}/eventLogs",
-    input: { startTime: D.tsAs("date-time"), endTime: D.tsAs("date-time") },
+    input: {
+      spaceName: 0,
+      startTime: D.tsAs("date-time"),
+      endTime: D.tsAs("date-time"),
+      eventName: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { items: D.list({ eventTime: D.ts }) },
     body: true,
   },
@@ -1250,6 +1315,12 @@ export const listProjects: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/spaces/{spaceName}/projects",
+    input: {
+      spaceName: 0,
+      nextToken: 0,
+      maxResults: 0,
+      filters: D.list({ key: 0, values: 0, comparisonOperator: 0 }),
+    },
     body: true,
   },
   errors: [],
@@ -1278,6 +1349,7 @@ export const listSourceRepositories: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/spaces/{spaceName}/projects/{projectName}/sourceRepositories",
+    input: { spaceName: 0, projectName: 0, nextToken: 0, maxResults: 0 },
     output: { items: D.list({ lastUpdatedTime: D.ts, createdTime: D.ts }) },
     body: true,
   },
@@ -1307,6 +1379,13 @@ export const listSourceRepositoryBranches: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/spaces/{spaceName}/projects/{projectName}/sourceRepositories/{sourceRepositoryName}/branches",
+    input: {
+      spaceName: 0,
+      projectName: 0,
+      sourceRepositoryName: 0,
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { items: D.list({ lastUpdatedTime: D.ts }) },
     body: true,
   },
@@ -1333,7 +1412,12 @@ export const listSpaces: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   SpaceSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /v1/spaces", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/spaces",
+    input: { nextToken: 0 },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1360,9 +1444,12 @@ export const listWorkflowRuns: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /v1/spaces/{spaceName}/projects/{projectName}/workflowRuns",
     input: {
+      spaceName: 0,
       workflowId: D.m({ query: "workflowId" }),
+      projectName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      sortBy: D.list({}),
     },
     output: {
       items: D.list({ startTime: D.ts, endTime: D.ts, lastUpdatedTime: D.ts }),
@@ -1396,8 +1483,11 @@ export const listWorkflows: API.PaginatedOperationMethod<
     service: svc,
     http: "POST /v1/spaces/{spaceName}/projects/{projectName}/workflows",
     input: {
+      spaceName: 0,
+      projectName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
+      sortBy: D.list({}),
     },
     output: { items: D.list({ createdTime: D.ts, lastUpdatedTime: D.ts }) },
     body: true,
@@ -1427,6 +1517,14 @@ export const startDevEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/spaces/{spaceName}/projects/{projectName}/devEnvironments/{id}/start",
+    input: {
+      spaceName: 0,
+      projectName: 0,
+      id: 0,
+      ides: D.list(i_IdeConfiguration),
+      instanceType: 0,
+      inactivityTimeoutMinutes: 0,
+    },
     body: true,
   },
   errors: [],
@@ -1448,6 +1546,15 @@ export const startDevEnvironmentSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/spaces/{spaceName}/projects/{projectName}/devEnvironments/{id}/session",
+    input: {
+      spaceName: 0,
+      projectName: 0,
+      id: 0,
+      sessionConfiguration: {
+        sessionType: 0,
+        executeCommandSessionConfiguration: { command: 0, arguments: 0 },
+      },
+    },
     output: { accessDetails: { streamUrl: D.secret, tokenValue: D.secret } },
     body: true,
   },
@@ -1471,6 +1578,8 @@ export const startWorkflowRun: API.OperationMethod<
     service: svc,
     http: "PUT /v1/spaces/{spaceName}/projects/{projectName}/workflowRuns",
     input: {
+      spaceName: 0,
+      projectName: 0,
       workflowId: D.m({ query: "workflowId" }),
       clientToken: D.m({ idempotency: true }),
     },
@@ -1495,6 +1604,7 @@ export const stopDevEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/spaces/{spaceName}/projects/{projectName}/devEnvironments/{id}/stop",
+    input: { spaceName: 0, projectName: 0, id: 0 },
   },
   errors: [],
   protocol: AwsProtocol,
@@ -1515,6 +1625,7 @@ export const stopDevEnvironmentSession: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/spaces/{spaceName}/projects/{projectName}/devEnvironments/{id}/session/{sessionId}",
+    input: { spaceName: 0, projectName: 0, id: 0, sessionId: 0 },
   },
   errors: [],
   protocol: AwsProtocol,
@@ -1535,6 +1646,16 @@ export const updateDevEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v1/spaces/{spaceName}/projects/{projectName}/devEnvironments/{id}",
+    input: {
+      spaceName: 0,
+      projectName: 0,
+      id: 0,
+      alias: 0,
+      ides: D.list(i_IdeConfiguration),
+      instanceType: 0,
+      inactivityTimeoutMinutes: 0,
+      clientToken: 0,
+    },
     body: true,
   },
   errors: [],
@@ -1556,6 +1677,7 @@ export const updateProject: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /v1/spaces/{spaceName}/projects/{name}",
+    input: { spaceName: 0, name: 0, description: 0 },
     body: true,
   },
   errors: [],
@@ -1574,7 +1696,12 @@ export const updateSpace: API.OperationMethod<
   UpdateSpaceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PATCH /v1/spaces/{name}", body: true },
+  descriptor: {
+    service: svc,
+    http: "PATCH /v1/spaces/{name}",
+    input: { name: 0, description: 0 },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1597,3 +1724,5 @@ export const verifySession: API.OperationMethod<
   retry: Retry,
   operationName: "VerifySession",
 })) as any;
+
+const i_IdeConfiguration: D.LazyStruct = () => ({ runtime: 0, name: 0 });

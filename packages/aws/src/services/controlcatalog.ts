@@ -380,6 +380,7 @@ export const getControl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /get-control",
+    input: { ControlArn: 0 },
     output: { CreateTime: D.ts },
     body: true,
   },
@@ -419,6 +420,7 @@ export const listCommonControls: API.PaginatedOperationMethod<
     input: {
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
+      CommonControlFilter: { Objectives: D.list({ Arn: 0 }) },
     },
     output: {
       CommonControls: D.list({ CreateTime: D.ts, LastUpdateTime: D.ts }),
@@ -464,6 +466,7 @@ export const listControlMappings: API.PaginatedOperationMethod<
     input: {
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
+      Filter: { ControlArns: 0, CommonControlArns: 0, MappingTypes: 0 },
     },
     body: true,
   },
@@ -506,6 +509,10 @@ export const listControls: API.PaginatedOperationMethod<
     input: {
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
+      Filter: {
+        Implementations: { Types: 0, Identifiers: 0 },
+        GovernedProviders: 0,
+      },
     },
     output: { Controls: D.list({ CreateTime: D.ts }) },
     body: true,
@@ -593,6 +600,7 @@ export const listObjectives: API.PaginatedOperationMethod<
     input: {
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
+      ObjectiveFilter: { Domains: D.list({ Arn: 0 }) },
     },
     output: { Objectives: D.list({ CreateTime: D.ts, LastUpdateTime: D.ts }) },
     body: true,

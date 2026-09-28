@@ -259,13 +259,15 @@ export const batchDeleteAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DomainName: 0,
       Items: D.m({
         wire: "Item",
         shape: D.list(
           {
+            ItemName: 0,
             Attributes: D.m({
               wire: "Attribute",
-              shape: D.list(0, { flat: true }),
+              shape: D.list(i_DeletableAttribute, { flat: true }),
             }),
           },
           { flat: true },
@@ -302,13 +304,15 @@ export const batchPutAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DomainName: 0,
       Items: D.m({
         wire: "Item",
         shape: D.list(
           {
+            ItemName: 0,
             Attributes: D.m({
               wire: "Attribute",
-              shape: D.list(0, { flat: true }),
+              shape: D.list(i_ReplaceableAttribute, { flat: true }),
             }),
           },
           { flat: true },
@@ -346,7 +350,7 @@ export const createDomain: API.OperationMethod<
   CreateDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainName: 0 } },
   errors: [InvalidParameterValue, MissingParameter, NumberDomainsExceeded],
   protocol: AwsProtocol,
   retry: Retry,
@@ -371,7 +375,13 @@ export const deleteAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      Attributes: D.m({ wire: "Attribute", shape: D.list(0, { flat: true }) }),
+      DomainName: 0,
+      ItemName: 0,
+      Attributes: D.m({
+        wire: "Attribute",
+        shape: D.list(i_DeletableAttribute, { flat: true }),
+      }),
+      Expected: i_UpdateCondition,
     },
   },
   errors: [
@@ -395,7 +405,7 @@ export const deleteDomain: API.OperationMethod<
   DeleteDomainError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { DomainName: 0 } },
   errors: [MissingParameter],
   protocol: AwsProtocol,
   retry: Retry,
@@ -417,6 +427,7 @@ export const domainMetadata: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { DomainName: 0 },
     output: {
       ItemCount: D.num,
       ItemNamesSizeBytes: D.num,
@@ -450,10 +461,13 @@ export const getAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
+      DomainName: 0,
+      ItemName: 0,
       AttributeNames: D.m({
         wire: "AttributeName",
         shape: D.list(0, { flat: true }),
       }),
+      ConsistentRead: 0,
     },
     output: {
       Attributes: D.m({ wire: "Attribute", shape: D.list({}, { flat: true }) }),
@@ -481,6 +495,7 @@ export const listDomains: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { MaxNumberOfDomains: 0, NextToken: 0 },
     output: {
       DomainNames: D.m({
         wire: "DomainName",
@@ -521,7 +536,13 @@ export const putAttributes: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      Attributes: D.m({ wire: "Attribute", shape: D.list(0, { flat: true }) }),
+      DomainName: 0,
+      ItemName: 0,
+      Attributes: D.m({
+        wire: "Attribute",
+        shape: D.list(i_ReplaceableAttribute, { flat: true }),
+      }),
+      Expected: i_UpdateCondition,
     },
   },
   errors: [
@@ -561,6 +582,7 @@ export const select: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { SelectExpression: 0, NextToken: 0, ConsistentRead: 0 },
     output: {
       Items: D.m({
         wire: "Item",
@@ -596,3 +618,15 @@ export const select: API.PaginatedOperationMethod<
     items: "Items",
   } as const,
 })) as any;
+
+const i_DeletableAttribute: D.LazyStruct = () => ({ Name: 0, Value: 0 });
+const i_ReplaceableAttribute: D.LazyStruct = () => ({
+  Name: 0,
+  Value: 0,
+  Replace: 0,
+});
+const i_UpdateCondition: D.LazyStruct = () => ({
+  Name: 0,
+  Value: 0,
+  Exists: 0,
+});

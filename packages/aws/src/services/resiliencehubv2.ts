@@ -2286,7 +2286,7 @@ export const createAssertion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/create-assertion",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { serviceArn: 0, text: 0, clientToken: D.m({ idempotency: true }) },
     output: { assertion: o_Assertion },
     body: true,
   },
@@ -2323,7 +2323,17 @@ export const createInputSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/create-input-source",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      serviceArn: 0,
+      resourceConfiguration: {
+        resourceTags: D.list({ key: 0, values: 0 }),
+        cfnStackArn: 0,
+        tfStateFileUrl: 0,
+        eks: { clusterArn: 0, namespaces: 0 },
+        designFileS3Url: 0,
+      },
+      clientToken: D.m({ idempotency: true }),
+    },
     body: true,
   },
   errors: [
@@ -2359,7 +2369,17 @@ export const createPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/create-policy",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      availabilitySlo: i_AvailabilitySlo,
+      multiAz: i_MultiAzTargets,
+      multiRegion: i_MultiRegionTargets,
+      dataRecovery: i_DataRecoveryTargets,
+      kmsKeyId: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { policy: o_Policy },
     body: true,
   },
@@ -2396,7 +2416,11 @@ export const createReport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/create-report",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      serviceArn: 0,
+      reportType: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { reportGenerationResult: o_ReportGenerationResult },
     body: true,
   },
@@ -2433,7 +2457,19 @@ export const createService: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/create-service",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      associatedSystems: D.list(i_AssociatedSystem),
+      policyArn: 0,
+      regions: 0,
+      permissionModel: i_PermissionModel,
+      dependencyDiscovery: 0,
+      reportConfiguration: i_ServiceReportConfiguration,
+      kmsKeyId: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { service: o_Service },
     body: true,
   },
@@ -2470,7 +2506,13 @@ export const createServiceFunction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/create-service-function",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      serviceArn: 0,
+      description: 0,
+      criticality: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { serviceFunction: o_ServiceFunction },
     body: true,
   },
@@ -2506,6 +2548,7 @@ export const createServiceFunctionResources: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/create-service-function-resources",
+    input: { serviceArn: 0, serviceFunctionId: 0, resources: 0 },
     body: true,
   },
   errors: [
@@ -2540,7 +2583,14 @@ export const createSystem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/create-system",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      description: 0,
+      sharingEnabled: 0,
+      kmsKeyId: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { system: o_System },
     body: true,
   },
@@ -2576,6 +2626,14 @@ export const createTest: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/create-test",
+    input: {
+      serviceArn: 0,
+      testTemplateArn: 0,
+      loggingConfiguration: i_LoggingConfiguration,
+      stopConditions: D.list(i_StopCondition),
+      roleName: 0,
+      parameters: 0,
+    },
     output: { test: o_Test },
     body: true,
   },
@@ -2611,7 +2669,13 @@ export const createUserJourney: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/create-user-journey",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      systemArn: 0,
+      name: 0,
+      description: 0,
+      policyArn: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { userJourney: o_UserJourney },
     body: true,
   },
@@ -2643,7 +2707,12 @@ export const deleteAssertion: API.OperationMethod<
   DeleteAssertionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/delete-assertion", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/delete-assertion",
+    input: { serviceArn: 0, assertionId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2673,6 +2742,7 @@ export const deleteInputSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/delete-input-source",
+    input: { serviceArn: 0, inputSourceId: 0 },
     body: true,
   },
   errors: [
@@ -2702,7 +2772,12 @@ export const deletePolicy: API.OperationMethod<
   DeletePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/delete-policy", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/delete-policy",
+    input: { policyArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2731,7 +2806,12 @@ export const deleteService: API.OperationMethod<
   DeleteServiceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/delete-service", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/delete-service",
+    input: { serviceArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2760,7 +2840,12 @@ export const deleteServiceFunction: API.OperationMethod<
   DeleteServiceFunctionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/delete-function", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/delete-function",
+    input: { serviceArn: 0, serviceFunctionId: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2792,6 +2877,7 @@ export const deleteServiceFunctionResources: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/delete-service-function-resources",
+    input: { serviceArn: 0, serviceFunctionId: 0, resources: 0 },
     body: true,
   },
   errors: [
@@ -2822,7 +2908,12 @@ export const deleteSystem: API.OperationMethod<
   DeleteSystemError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/delete-system", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/delete-system",
+    input: { systemArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2851,7 +2942,12 @@ export const deleteTest: API.OperationMethod<
   DeleteTestError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/delete-test", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/delete-test",
+    input: { testId: 0, serviceArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2883,6 +2979,7 @@ export const deleteTestSources: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/delete-test-sources",
+    input: { testId: 0, serviceArn: 0, testSources: D.list(i_TestSourceInput) },
     body: true,
   },
   errors: [
@@ -2916,6 +3013,7 @@ export const deleteUserJourney: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/delete-user-journey",
+    input: { systemArn: 0, userJourneyId: 0 },
     body: true,
   },
   errors: [
@@ -3222,7 +3320,15 @@ export const importApp: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/import-app",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      v1AppArn: 0,
+      policyArn: 0,
+      kmsKeyId: 0,
+      skipManuallyAddedResources: 0,
+      associatedSystems: D.list(i_AssociatedSystem),
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { service: o_Service },
     body: true,
   },
@@ -3257,7 +3363,15 @@ export const importPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/import-policy",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      v1PolicyArn: 0,
+      kmsKeyId: 0,
+      availabilitySlo: i_AvailabilitySlo,
+      multiAzDisasterRecoveryApproach: 0,
+      multiRegionDisasterRecoveryApproach: 0,
+      tags: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
     output: { policy: o_Policy },
     body: true,
   },
@@ -3338,8 +3452,14 @@ export const listDependencies: API.PaginatedOperationMethod<
     http: "GET /v2/list-dependencies",
     input: {
       serviceArn: D.m({ query: "serviceArn" }),
-      queryRangeStartTime: D.m({ query: "queryRangeStartTime" }),
-      queryRangeEndTime: D.m({ query: "queryRangeEndTime" }),
+      queryRangeStartTime: D.m({
+        query: "queryRangeStartTime",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      queryRangeEndTime: D.m({
+        query: "queryRangeEndTime",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       queryRangeGranularity: D.m({ query: "queryRangeGranularity" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -3394,8 +3514,14 @@ export const listFailureModeAssessments: API.PaginatedOperationMethod<
     input: {
       serviceArn: D.m({ query: "serviceArn" }),
       assessmentStatuses: D.m({ query: "assessmentStatuses" }),
-      startedAfter: D.m({ query: "startedAfter" }),
-      endedBefore: D.m({ query: "endedBefore" }),
+      startedAfter: D.m({
+        query: "startedAfter",
+        shape: D.tsAs("epoch-seconds"),
+      }),
+      endedBefore: D.m({
+        query: "endedBefore",
+        shape: D.tsAs("epoch-seconds"),
+      }),
       sortBy: D.m({ query: "sortBy" }),
       sortOrder: D.m({ query: "sortOrder" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -3613,6 +3739,7 @@ export const listResolvedTestRunTargetResources: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/test-runs/{testRunId}/resolved-target-resources",
     input: {
+      testRunId: 0,
       serviceArn: D.m({ query: "serviceArn" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -3703,8 +3830,8 @@ export const listServiceEvents: API.PaginatedOperationMethod<
     input: {
       serviceArn: D.m({ query: "serviceArn" }),
       eventTypes: D.m({ query: "eventTypes" }),
-      startTime: D.m({ query: "startTime" }),
-      endTime: D.m({ query: "endTime" }),
+      startTime: D.m({ query: "startTime", shape: D.tsAs("epoch-seconds") }),
+      endTime: D.m({ query: "endTime", shape: D.tsAs("epoch-seconds") }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -3876,8 +4003,8 @@ export const listSystemEvents: API.PaginatedOperationMethod<
     input: {
       systemArn: D.m({ query: "systemArn" }),
       eventTypes: D.m({ query: "eventTypes" }),
-      startTime: D.m({ query: "startTime" }),
-      endTime: D.m({ query: "endTime" }),
+      startTime: D.m({ query: "startTime", shape: D.tsAs("epoch-seconds") }),
+      endTime: D.m({ query: "endTime", shape: D.tsAs("epoch-seconds") }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -3953,7 +4080,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v2/tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /v2/tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -3986,9 +4117,10 @@ export const listTestRunEvents: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/test-runs/{testRunId}/events",
     input: {
+      testRunId: 0,
       serviceArn: D.m({ query: "serviceArn" }),
-      startedAt: D.m({ query: "startedAt" }),
-      endedAt: D.m({ query: "endedAt" }),
+      startedAt: D.m({ query: "startedAt", shape: D.tsAs("epoch-seconds") }),
+      endedAt: D.m({ query: "endedAt", shape: D.tsAs("epoch-seconds") }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -4075,6 +4207,7 @@ export const listTestRunSources: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/test-runs/{testRunId}/sources",
     input: {
+      testRunId: 0,
       serviceArn: D.m({ query: "serviceArn" }),
       type: D.m({ query: "type" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -4161,6 +4294,7 @@ export const listTestSources: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /v2/tests/{testId}/sources",
     input: {
+      testId: 0,
       serviceArn: D.m({ query: "serviceArn" }),
       type: D.m({ query: "type" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -4204,7 +4338,7 @@ export const listTestTemplates: API.OperationMethod<
   ListTestTemplatesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /v2/list-test-templates" },
+  descriptor: { service: svc, http: "GET /v2/list-test-templates", input: {} },
   errors: [AccessDeniedException, InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4273,7 +4407,12 @@ export const putTestSources: API.OperationMethod<
   PutTestSourcesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/put-test-sources", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/put-test-sources",
+    input: { testId: 0, serviceArn: 0, testSources: D.list(i_TestSourceInput) },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4307,7 +4446,7 @@ export const startFailureModeAssessment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/start-failure-mode-assessment",
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: { serviceArn: 0, clientToken: D.m({ idempotency: true }) },
     output: { startedAt: D.ts },
     body: true,
   },
@@ -4340,7 +4479,12 @@ export const startTestRun: API.OperationMethod<
   StartTestRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/start-test-run", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/start-test-run",
+    input: { testId: 0, serviceArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4369,7 +4513,12 @@ export const stopTestRun: API.OperationMethod<
   StopTestRunError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/stop-test-run", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/stop-test-run",
+    input: { testRunId: 0, serviceArn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -4398,7 +4547,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v2/tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v2/tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -4430,7 +4584,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v2/tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -4463,6 +4617,7 @@ export const updateAssertion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/update-assertion",
+    input: { serviceArn: 0, assertionId: 0, text: 0 },
     output: { assertion: o_Assertion },
     body: true,
   },
@@ -4497,6 +4652,7 @@ export const updateDependency: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/update-dependency",
+    input: { serviceArn: 0, dependencyId: 0, criticality: 0, comment: 0 },
     output: { updatedAt: D.ts },
     body: true,
   },
@@ -4531,6 +4687,7 @@ export const updateFailureModeFinding: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/update-failure-mode-finding",
+    input: { findingId: 0, status: 0, serviceArn: 0, comment: 0 },
     output: { finding: o_Finding },
     body: true,
   },
@@ -4565,6 +4722,14 @@ export const updatePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/update-policy",
+    input: {
+      policyArn: 0,
+      description: 0,
+      availabilitySlo: i_AvailabilitySlo,
+      multiAz: i_MultiAzTargets,
+      multiRegion: i_MultiRegionTargets,
+      dataRecovery: i_DataRecoveryTargets,
+    },
     output: { policy: o_Policy },
     body: true,
   },
@@ -4600,6 +4765,16 @@ export const updateService: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/update-service",
+    input: {
+      serviceArn: 0,
+      description: 0,
+      associatedSystems: D.list(i_AssociatedSystem),
+      policyArn: 0,
+      regions: 0,
+      permissionModel: i_PermissionModel,
+      dependencyDiscovery: 0,
+      reportConfiguration: i_ServiceReportConfiguration,
+    },
     output: { service: o_Service },
     body: true,
   },
@@ -4635,6 +4810,13 @@ export const updateServiceFunction: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/update-function",
+    input: {
+      serviceArn: 0,
+      serviceFunctionId: 0,
+      name: 0,
+      description: 0,
+      criticality: 0,
+    },
     output: { serviceFunction: o_ServiceFunction },
     body: true,
   },
@@ -4669,6 +4851,7 @@ export const updateSystem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/update-system",
+    input: { systemArn: 0, description: 0, sharingEnabled: 0 },
     output: { system: o_System },
     body: true,
   },
@@ -4703,6 +4886,14 @@ export const updateTest: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/update-test",
+    input: {
+      testId: 0,
+      serviceArn: 0,
+      loggingConfiguration: i_LoggingConfiguration,
+      stopConditions: D.list(i_StopCondition),
+      roleName: 0,
+      parameters: 0,
+    },
     output: { test: o_Test },
     body: true,
   },
@@ -4737,6 +4928,13 @@ export const updateUserJourney: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v2/update-user-journey",
+    input: {
+      systemArn: 0,
+      userJourneyId: 0,
+      name: 0,
+      description: 0,
+      policyArn: 0,
+    },
     output: { userJourney: o_UserJourney },
     body: true,
   },
@@ -4752,6 +4950,42 @@ export const updateUserJourney: API.OperationMethod<
   operationName: "UpdateUserJourney",
 })) as any;
 
+const i_AssociatedSystem: D.LazyStruct = () => ({
+  systemArn: 0,
+  systemName: 0,
+  userJourneyIds: 0,
+});
+const i_AvailabilitySlo: D.LazyStruct = () => ({ target: 0 });
+const i_DataRecoveryTargets: D.LazyStruct = () => ({
+  timeBetweenBackupsInMinutes: 0,
+});
+const i_LoggingConfiguration: D.LazyStruct = () => ({
+  s3BucketName: 0,
+  cloudWatchLogGroupArn: 0,
+  logSchemaVersion: 0,
+});
+const i_MultiAzTargets: D.LazyStruct = () => ({
+  rtoInMinutes: 0,
+  rpoInMinutes: 0,
+  disasterRecoveryApproach: 0,
+});
+const i_MultiRegionTargets: D.LazyStruct = () => ({
+  rtoInMinutes: 0,
+  rpoInMinutes: 0,
+  disasterRecoveryApproach: 0,
+});
+const i_PermissionModel: D.LazyStruct = () => ({
+  invokerRoleName: 0,
+  crossAccountRoles: D.list({ crossAccountRoleArn: 0, externalId: 0 }),
+});
+const i_ServiceReportConfiguration: D.LazyStruct = () => ({
+  reportOutputs: D.list({ s3: { bucketPath: 0, bucketOwner: 0 } }),
+});
+const i_StopCondition: D.LazyStruct = () => ({ source: 0, value: 0 });
+const i_TestSourceInput: D.LazyStruct = () => ({
+  successCriteriaAlarm: { alarmArn: 0 },
+  observabilityAlarm: { alarmArn: 0 },
+});
 const o_Assertion: D.LazyStruct = () => ({ createdAt: D.ts, updatedAt: D.ts });
 const o_DependencyDiscoveryConfig: D.LazyStruct = () => ({ updatedAt: D.ts });
 const o_Finding: D.LazyStruct = () => ({ updatedAt: D.ts });

@@ -573,7 +573,12 @@ export const createCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cluster",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      ClusterName: 0,
+      Tags: 0,
+      NetworkType: 0,
+    },
     body: true,
   },
   errors: [
@@ -611,7 +616,12 @@ export const createControlPanel: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /controlpanel",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      ClusterArn: 0,
+      ControlPanelName: 0,
+      Tags: 0,
+    },
     body: true,
   },
   errors: [
@@ -653,7 +663,12 @@ export const createRoutingControl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /routingcontrol",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      ClusterArn: 0,
+      ControlPanelArn: 0,
+      RoutingControlName: 0,
+    },
     body: true,
   },
   errors: [
@@ -694,7 +709,25 @@ export const createSafetyRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /safetyrule",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      AssertionRule: {
+        AssertedControls: 0,
+        ControlPanelArn: 0,
+        Name: 0,
+        RuleConfig: i_RuleConfig,
+        WaitPeriodMs: 0,
+      },
+      ClientToken: D.m({ idempotency: true }),
+      GatingRule: {
+        ControlPanelArn: 0,
+        GatingControls: 0,
+        Name: 0,
+        RuleConfig: i_RuleConfig,
+        TargetControls: 0,
+        WaitPeriodMs: 0,
+      },
+      Tags: 0,
+    },
     body: true,
   },
   errors: [InternalServerException, ValidationException],
@@ -720,7 +753,11 @@ export const deleteCluster: API.OperationMethod<
   DeleteClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /cluster/{ClusterArn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /cluster/{ClusterArn}",
+    input: { ClusterArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -751,7 +788,11 @@ export const deleteControlPanel: API.OperationMethod<
   DeleteControlPanelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /controlpanel/{ControlPanelArn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /controlpanel/{ControlPanelArn}",
+    input: { ControlPanelArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -785,6 +826,7 @@ export const deleteRoutingControl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /routingcontrol/{RoutingControlArn}",
+    input: { RoutingControlArn: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -814,7 +856,11 @@ export const deleteSafetyRule: API.OperationMethod<
   DeleteSafetyRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /safetyrule/{SafetyRuleArn}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /safetyrule/{SafetyRuleArn}",
+    input: { SafetyRuleArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -842,7 +888,11 @@ export const describeCluster: API.OperationMethod<
   DescribeClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /cluster/{ClusterArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /cluster/{ClusterArn}",
+    input: { ClusterArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -873,7 +923,11 @@ export const describeControlPanel: API.OperationMethod<
   DescribeControlPanelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /controlpanel/{ControlPanelArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /controlpanel/{ControlPanelArn}",
+    input: { ControlPanelArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -906,7 +960,11 @@ export const describeRoutingControl: API.OperationMethod<
   DescribeRoutingControlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /routingcontrol/{RoutingControlArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /routingcontrol/{RoutingControlArn}",
+    input: { RoutingControlArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -933,7 +991,11 @@ export const describeSafetyRule: API.OperationMethod<
   DescribeSafetyRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /safetyrule/{SafetyRuleArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /safetyrule/{SafetyRuleArn}",
+    input: { SafetyRuleArn: 0 },
+  },
   errors: [ResourceNotFoundException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -953,7 +1015,11 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /resourcePolicy/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /resourcePolicy/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [InternalServerException, ResourceNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -981,6 +1047,7 @@ export const listAssociatedRoute53HealthChecks: API.PaginatedOperationMethod<
     input: {
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
+      RoutingControlArn: 0,
     },
   },
   errors: [
@@ -1107,6 +1174,7 @@ export const listRoutingControls: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /controlpanel/{ControlPanelArn}/routingcontrols",
     input: {
+      ControlPanelArn: 0,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
     },
@@ -1150,6 +1218,7 @@ export const listSafetyRules: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /controlpanel/{ControlPanelArn}/safetyrules",
     input: {
+      ControlPanelArn: 0,
       MaxResults: D.m({ query: "MaxResults" }),
       NextToken: D.m({ query: "NextToken" }),
     },
@@ -1186,7 +1255,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1211,7 +1284,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1239,7 +1317,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "TagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "TagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -1268,7 +1346,12 @@ export const updateCluster: API.OperationMethod<
   UpdateClusterError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /cluster", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /cluster",
+    input: { ClusterArn: 0, NetworkType: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1299,7 +1382,12 @@ export const updateControlPanel: API.OperationMethod<
   UpdateControlPanelError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /controlpanel", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /controlpanel",
+    input: { ControlPanelArn: 0, ControlPanelName: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1330,7 +1418,12 @@ export const updateRoutingControl: API.OperationMethod<
   UpdateRoutingControlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /routingcontrol", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /routingcontrol",
+    input: { RoutingControlArn: 0, RoutingControlName: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1358,7 +1451,15 @@ export const updateSafetyRule: API.OperationMethod<
   UpdateSafetyRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /safetyrule", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /safetyrule",
+    input: {
+      AssertionRuleUpdate: { Name: 0, SafetyRuleArn: 0, WaitPeriodMs: 0 },
+      GatingRuleUpdate: { Name: 0, SafetyRuleArn: 0, WaitPeriodMs: 0 },
+    },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1368,3 +1469,9 @@ export const updateSafetyRule: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateSafetyRule",
 })) as any;
+
+const i_RuleConfig: D.LazyStruct = () => ({
+  Inverted: 0,
+  Threshold: 0,
+  Type: 0,
+});

@@ -2771,7 +2771,7 @@ export const activateOrganizationsAccess: API.OperationMethod<
   ActivateOrganizationsAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [InvalidOperationException, OperationNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2804,7 +2804,21 @@ export const activateType: API.OperationMethod<
   ActivateTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Type: 0,
+      PublicTypeArn: 0,
+      PublisherId: 0,
+      TypeName: 0,
+      TypeNameAlias: 0,
+      AutoUpdate: 0,
+      LoggingConfig: i_LoggingConfig,
+      ExecutionRoleArn: 0,
+      VersionBump: 0,
+      MajorVersion: 0,
+    },
+  },
   errors: [CFNRegistryException, TypeNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2831,6 +2845,15 @@ export const batchDescribeTypeConfigurations: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TypeConfigurationIdentifiers: D.list({
+        TypeArn: 0,
+        TypeConfigurationAlias: 0,
+        TypeConfigurationArn: 0,
+        Type: 0,
+        TypeName: 0,
+      }),
+    },
     output: {
       Errors: D.list({ TypeConfigurationIdentifier: {} }),
       UnprocessedTypeConfigurations: D.list({}),
@@ -2859,7 +2882,7 @@ export const cancelUpdateStack: API.OperationMethod<
   CancelUpdateStackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { StackName: 0, ClientRequestToken: 0 } },
   errors: [TokenAlreadyExistsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2891,7 +2914,15 @@ export const continueUpdateRollback: API.OperationMethod<
   ContinueUpdateRollbackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      StackName: 0,
+      RoleARN: 0,
+      ResourcesToSkip: 0,
+      ClientRequestToken: 0,
+    },
+  },
   errors: [TokenAlreadyExistsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2935,7 +2966,34 @@ export const createChangeSet: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ResourcesToImport: D.list({ ResourceIdentifier: D.map() }) },
+    input: {
+      StackName: 0,
+      TemplateBody: 0,
+      TemplateURL: 0,
+      UsePreviousTemplate: 0,
+      Parameters: D.list(i_Parameter),
+      Capabilities: 0,
+      ResourceTypes: 0,
+      RoleARN: 0,
+      RollbackConfiguration: i_RollbackConfiguration,
+      NotificationARNs: 0,
+      Tags: D.list(i_Tag),
+      ChangeSetName: 0,
+      ClientToken: 0,
+      Description: 0,
+      ChangeSetType: 0,
+      ResourcesToImport: D.list({
+        ResourceType: 0,
+        LogicalResourceId: 0,
+        ResourceIdentifier: D.map(),
+      }),
+      IncludeNestedStacks: 0,
+      OnStackFailure: 0,
+      ImportExistingResources: 0,
+      DeploymentMode: 0,
+      DeploymentConfig: i_DeploymentConfig,
+      DisableValidation: 0,
+    },
   },
   errors: [
     AlreadyExistsException,
@@ -2965,7 +3023,12 @@ export const createGeneratedTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { Resources: D.list(i_ResourceDefinition) },
+    input: {
+      Resources: D.list(i_ResourceDefinition),
+      GeneratedTemplateName: 0,
+      StackName: 0,
+      TemplateConfiguration: i_TemplateConfiguration,
+    },
   },
   errors: [
     AlreadyExistsException,
@@ -2997,7 +3060,31 @@ export const createStack: API.OperationMethod<
   CreateStackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      StackName: 0,
+      TemplateBody: 0,
+      TemplateURL: 0,
+      Parameters: D.list(i_Parameter),
+      DisableRollback: 0,
+      RollbackConfiguration: i_RollbackConfiguration,
+      TimeoutInMinutes: 0,
+      NotificationARNs: 0,
+      Capabilities: 0,
+      ResourceTypes: 0,
+      RoleARN: 0,
+      OnFailure: 0,
+      StackPolicyBody: 0,
+      StackPolicyURL: 0,
+      Tags: D.list(i_Tag),
+      ClientRequestToken: 0,
+      EnableTerminationProtection: 0,
+      RetainExceptOnCreate: 0,
+      DeploymentConfig: i_DeploymentConfig,
+      DisableValidation: 0,
+    },
+  },
   errors: [
     AlreadyExistsException,
     InsufficientCapabilitiesException,
@@ -3043,7 +3130,16 @@ export const createStackInstances: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { OperationId: D.m({ idempotency: true }) },
+    input: {
+      StackSetName: 0,
+      Accounts: 0,
+      DeploymentTargets: i_DeploymentTargets,
+      Regions: 0,
+      ParameterOverrides: D.list(i_Parameter),
+      OperationPreferences: i_StackSetOperationPreferences,
+      OperationId: D.m({ idempotency: true }),
+      CallAs: 0,
+    },
   },
   errors: [
     InvalidOperationException,
@@ -3069,7 +3165,22 @@ export const createStackRefactor: API.OperationMethod<
   CreateStackRefactorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Description: 0,
+      EnableStackCreation: 0,
+      ResourceMappings: D.list({
+        Source: i_ResourceLocation,
+        Destination: i_ResourceLocation,
+      }),
+      StackDefinitions: D.list({
+        StackName: 0,
+        TemplateBody: 0,
+        TemplateURL: 0,
+      }),
+    },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3092,7 +3203,23 @@ export const createStackSet: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      StackSetName: 0,
+      Description: 0,
+      TemplateBody: 0,
+      TemplateURL: 0,
+      StackId: 0,
+      Parameters: D.list(i_Parameter),
+      Capabilities: 0,
+      Tags: D.list(i_Tag),
+      AdministrationRoleARN: 0,
+      ExecutionRoleName: 0,
+      PermissionModel: 0,
+      AutoDeployment: i_AutoDeployment,
+      CallAs: 0,
+      ClientRequestToken: D.m({ idempotency: true }),
+      ManagedExecution: i_ManagedExecution,
+    },
   },
   errors: [
     CreatedButModifiedException,
@@ -3119,7 +3246,7 @@ export const deactivateOrganizationsAccess: API.OperationMethod<
   DeactivateOrganizationsAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [InvalidOperationException, OperationNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3150,7 +3277,7 @@ export const deactivateType: API.OperationMethod<
   DeactivateTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { TypeName: 0, Type: 0, Arn: 0 } },
   errors: [CFNRegistryException, TypeNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3177,7 +3304,7 @@ export const deleteChangeSet: API.OperationMethod<
   DeleteChangeSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ChangeSetName: 0, StackName: 0 } },
   errors: [InvalidChangeSetStatusException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3197,7 +3324,7 @@ export const deleteGeneratedTemplate: API.OperationMethod<
   DeleteGeneratedTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { GeneratedTemplateName: 0 } },
   errors: [
     ConcurrentResourcesLimitExceededException,
     GeneratedTemplateNotFoundException,
@@ -3222,7 +3349,17 @@ export const deleteStack: API.OperationMethod<
   DeleteStackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      StackName: 0,
+      RetainResources: 0,
+      RoleARN: 0,
+      ClientRequestToken: 0,
+      DeletionMode: 0,
+      DeploymentConfig: i_DeploymentConfig,
+    },
+  },
   errors: [TokenAlreadyExistsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3259,7 +3396,16 @@ export const deleteStackInstances: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { OperationId: D.m({ idempotency: true }) },
+    input: {
+      StackSetName: 0,
+      Accounts: 0,
+      DeploymentTargets: i_DeploymentTargets,
+      Regions: 0,
+      OperationPreferences: i_StackSetOperationPreferences,
+      RetainStacks: 0,
+      OperationId: D.m({ idempotency: true }),
+      CallAs: 0,
+    },
   },
   errors: [
     InvalidOperationException,
@@ -3287,7 +3433,7 @@ export const deleteStackSet: API.OperationMethod<
   DeleteStackSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { StackSetName: 0, CallAs: 0 } },
   errors: [OperationInProgressException, StackSetNotEmptyException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3324,7 +3470,10 @@ export const deregisterType: API.OperationMethod<
   DeregisterTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Arn: 0, Type: 0, TypeName: 0, VersionId: 0 },
+  },
   errors: [CFNRegistryException, TypeNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3345,6 +3494,7 @@ export const describeAccountLimits: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0 },
     output: { AccountLimits: D.list({ Value: D.num }) },
   },
   errors: [],
@@ -3374,6 +3524,12 @@ export const describeChangeSet: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ChangeSetName: 0,
+      StackName: 0,
+      NextToken: 0,
+      IncludePropertyValues: 0,
+    },
     output: {
       Parameters: D.list(o_Parameter),
       CreationTime: D.ts,
@@ -3423,6 +3579,12 @@ export const describeChangeSetHooks: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ChangeSetName: 0,
+      StackName: 0,
+      NextToken: 0,
+      LogicalResourceId: 0,
+    },
     output: { Hooks: D.list({ TargetDetails: { ResourceTargetDetails: {} } }) },
   },
   errors: [ChangeSetNotFoundException],
@@ -3467,6 +3629,13 @@ export const describeEvents: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      StackName: 0,
+      ChangeSetName: 0,
+      OperationId: 0,
+      Filters: { FailedEvents: 0 },
+      NextToken: 0,
+    },
     output: {
       OperationEvents: D.list({
         Timestamp: D.ts,
@@ -3503,6 +3672,7 @@ export const describeGeneratedTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { GeneratedTemplateName: 0 },
     output: {
       Resources: D.list({
         ResourceIdentifier: D.map(),
@@ -3542,7 +3712,7 @@ export const describeOrganizationsAccess: API.OperationMethod<
   DescribeOrganizationsAccessError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { CallAs: 0 } },
   errors: [InvalidOperationException, OperationNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3571,7 +3741,7 @@ export const describePublisher: API.OperationMethod<
   DescribePublisherError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { PublisherId: 0 } },
   errors: [CFNRegistryException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3592,6 +3762,7 @@ export const describeResourceScan: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { ResourceScanId: 0 },
     output: {
       StartTime: D.ts,
       EndTime: D.ts,
@@ -3632,6 +3803,7 @@ export const describeStackDriftDetectionStatus: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { StackDriftDetectionId: 0 },
     output: { DriftedStackResourceCount: D.num, Timestamp: D.ts },
   },
   errors: [],
@@ -3658,6 +3830,7 @@ export const describeStackEvents: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { StackName: 0, NextToken: 0 },
     output: { StackEvents: D.list({ Timestamp: D.ts }) },
   },
   errors: [],
@@ -3689,6 +3862,12 @@ export const describeStackInstance: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      StackSetName: 0,
+      StackInstanceAccount: 0,
+      StackInstanceRegion: 0,
+      CallAs: 0,
+    },
     output: {
       StackInstance: {
         ParameterOverrides: D.list(o_Parameter),
@@ -3715,7 +3894,11 @@ export const describeStackRefactor: API.OperationMethod<
   DescribeStackRefactorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { StackIds: D.list() } },
+  descriptor: {
+    service: svc,
+    input: { StackRefactorId: 0 },
+    output: { StackIds: D.list() },
+  },
   errors: [StackRefactorNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -3737,6 +3920,7 @@ export const describeStackResource: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { StackName: 0, LogicalResourceId: 0 },
     output: {
       StackResourceDetail: {
         LastUpdatedTimestamp: D.ts,
@@ -3776,6 +3960,12 @@ export const describeStackResourceDrifts: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      StackName: 0,
+      StackResourceDriftStatusFilters: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { StackResourceDrifts: D.list(o_StackResourceDrift) },
   },
   errors: [],
@@ -3818,6 +4008,7 @@ export const describeStackResources: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { StackName: 0, LogicalResourceId: 0, PhysicalResourceId: 0 },
     output: {
       StackResources: D.list({
         Timestamp: D.ts,
@@ -3850,6 +4041,7 @@ export const describeStacks: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { StackName: 0, NextToken: 0 },
     output: {
       Stacks: D.list({
         Parameters: D.list(o_Parameter),
@@ -3897,6 +4089,7 @@ export const describeStackSet: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { StackSetName: 0, CallAs: 0 },
     output: {
       StackSet: {
         Parameters: D.list(o_Parameter),
@@ -3934,6 +4127,7 @@ export const describeStackSetOperation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { StackSetName: 0, OperationId: 0, CallAs: 0 },
     output: {
       StackSetOperation: {
         OperationPreferences: o_StackSetOperationPreferences,
@@ -3979,6 +4173,14 @@ export const describeType: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Type: 0,
+      TypeName: 0,
+      Arn: 0,
+      VersionId: 0,
+      PublisherId: 0,
+      PublicVersionNumber: 0,
+    },
     output: {
       IsDefaultVersion: D.bool,
       LoggingConfig: {},
@@ -4013,7 +4215,7 @@ export const describeTypeRegistration: API.OperationMethod<
   DescribeTypeRegistrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { RegistrationToken: 0 } },
   errors: [CFNRegistryException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4054,7 +4256,7 @@ export const detectStackDrift: API.OperationMethod<
   DetectStackDriftError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { StackName: 0, LogicalResourceIds: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4087,6 +4289,7 @@ export const detectStackResourceDrift: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { StackName: 0, LogicalResourceId: 0 },
     output: { StackResourceDrift: o_StackResourceDrift },
   },
   errors: [],
@@ -4140,7 +4343,12 @@ export const detectStackSetDrift: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { OperationId: D.m({ idempotency: true }) },
+    input: {
+      StackSetName: 0,
+      OperationPreferences: i_StackSetOperationPreferences,
+      OperationId: D.m({ idempotency: true }),
+      CallAs: 0,
+    },
   },
   errors: [
     InvalidOperationException,
@@ -4164,7 +4372,10 @@ export const estimateTemplateCost: API.OperationMethod<
   EstimateTemplateCostError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { TemplateBody: 0, TemplateURL: 0, Parameters: D.list(i_Parameter) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4197,7 +4408,16 @@ export const executeChangeSet: API.OperationMethod<
   ExecuteChangeSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      ChangeSetName: 0,
+      StackName: 0,
+      ClientRequestToken: 0,
+      DisableRollback: 0,
+      RetainExceptOnCreate: 0,
+    },
+  },
   errors: [
     ChangeSetNotFoundException,
     InsufficientCapabilitiesException,
@@ -4219,7 +4439,7 @@ export const executeStackRefactor: API.OperationMethod<
   ExecuteStackRefactorError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { StackRefactorId: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4241,7 +4461,7 @@ export const getGeneratedTemplate: API.OperationMethod<
   GetGeneratedTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Format: 0, GeneratedTemplateName: 0 } },
   errors: [GeneratedTemplateNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4267,6 +4487,7 @@ export const getHookResult: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { HookResultId: 0 },
     output: { InvokedAt: D.ts, Target: {}, Annotations: D.list({}) },
   },
   errors: [HookResultNotFoundException],
@@ -4286,7 +4507,7 @@ export const getStackPolicy: API.OperationMethod<
   GetStackPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { StackName: 0 } },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4309,7 +4530,11 @@ export const getTemplate: API.OperationMethod<
   GetTemplateError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { StagesAvailable: D.list() } },
+  descriptor: {
+    service: svc,
+    input: { StackName: 0, ChangeSetName: 0, TemplateStage: 0 },
+    output: { StagesAvailable: D.list() },
+  },
   errors: [ChangeSetNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4337,6 +4562,14 @@ export const getTemplateSummary: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      TemplateBody: 0,
+      TemplateURL: 0,
+      StackName: 0,
+      StackSetName: 0,
+      CallAs: 0,
+      TemplateSummaryConfig: { TreatUnrecognizedResourceTypesAsWarnings: 0 },
+    },
     output: {
       Parameters: D.list({
         NoEcho: D.bool,
@@ -4381,7 +4614,15 @@ export const importStacksToStackSet: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { OperationId: D.m({ idempotency: true }) },
+    input: {
+      StackSetName: 0,
+      StackIds: 0,
+      StackIdsUrl: 0,
+      OrganizationalUnitIds: 0,
+      OperationPreferences: i_StackSetOperationPreferences,
+      OperationId: D.m({ idempotency: true }),
+      CallAs: 0,
+    },
   },
   errors: [
     InvalidOperationException,
@@ -4412,6 +4653,7 @@ export const listChangeSets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { StackName: 0, NextToken: 0 },
     output: {
       Summaries: D.list({
         CreationTime: D.ts,
@@ -4447,7 +4689,11 @@ export const listExports: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Export
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Exports: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { NextToken: 0 },
+    output: { Exports: D.list({}) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4472,6 +4718,7 @@ export const listGeneratedTemplates: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0 },
     output: {
       Summaries: D.list({
         CreationTime: D.ts,
@@ -4517,6 +4764,7 @@ export const listHookResults: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TargetType: 0, TargetId: 0, TypeArn: 0, Status: 0, NextToken: 0 },
     output: { HookResults: D.list({ InvokedAt: D.ts }) },
   },
   errors: [HookResultNotFoundException],
@@ -4540,7 +4788,11 @@ export const listImports: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   StackName
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { Imports: D.list() } },
+  descriptor: {
+    service: svc,
+    input: { ExportName: 0, NextToken: 0 },
+    output: { Imports: D.list() },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4569,7 +4821,12 @@ export const listResourceScanRelatedResources: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
-    input: { Resources: D.list({ ResourceIdentifier: D.map() }) },
+    input: {
+      ResourceScanId: 0,
+      Resources: D.list({ ResourceType: 0, ResourceIdentifier: D.map() }),
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { RelatedResources: D.list(o_ScannedResource) },
   },
   errors: [ResourceScanInProgressException, ResourceScanNotFoundException],
@@ -4603,6 +4860,15 @@ export const listResourceScanResources: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      ResourceScanId: 0,
+      ResourceIdentifier: 0,
+      ResourceTypePrefix: 0,
+      TagKey: 0,
+      TagValue: 0,
+      NextToken: 0,
+      MaxResults: 0,
+    },
     output: { Resources: D.list(o_ScannedResource) },
   },
   errors: [ResourceScanInProgressException, ResourceScanNotFoundException],
@@ -4631,6 +4897,7 @@ export const listResourceScans: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, ScanTypeFilter: 0 },
     output: {
       ResourceScanSummaries: D.list({
         StartTime: D.ts,
@@ -4671,6 +4938,16 @@ export const listStackInstanceResourceDrifts: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      StackSetName: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      StackInstanceResourceDriftStatuses: 0,
+      StackInstanceAccount: 0,
+      StackInstanceRegion: 0,
+      OperationId: 0,
+      CallAs: 0,
+    },
     output: {
       Summaries: D.list({
         PhysicalResourceIdContext: D.list({}),
@@ -4704,6 +4981,15 @@ export const listStackInstances: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      StackSetName: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+      StackInstanceAccount: 0,
+      StackInstanceRegion: 0,
+      CallAs: 0,
+    },
     output: {
       Summaries: D.list({
         StackInstanceStatus: {},
@@ -4736,6 +5022,7 @@ export const listStackRefactorActions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { StackRefactorId: 0, NextToken: 0, MaxResults: 0 },
     output: {
       StackRefactorActions: D.list({
         TagResources: D.list({}),
@@ -4767,7 +5054,11 @@ export const listStackRefactors: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   StackRefactorSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { StackRefactorSummaries: D.list({}) } },
+  descriptor: {
+    service: svc,
+    input: { ExecutionStatusFilter: 0, NextToken: 0, MaxResults: 0 },
+    output: { StackRefactorSummaries: D.list({}) },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4796,6 +5087,7 @@ export const listStackResources: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { StackName: 0, NextToken: 0 },
     output: {
       StackResourceSummaries: D.list({
         LastUpdatedTimestamp: D.ts,
@@ -4832,6 +5124,7 @@ export const listStacks: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, StackStatusFilter: 0 },
     output: {
       StackSummaries: D.list({
         CreationTime: D.ts,
@@ -4867,6 +5160,7 @@ export const listStackSetAutoDeploymentTargets: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { StackSetName: 0, NextToken: 0, MaxResults: 0, CallAs: 0 },
     output: { Summaries: D.list({ Regions: D.list() }) },
   },
   errors: [StackSetNotFoundException],
@@ -4894,6 +5188,14 @@ export const listStackSetOperationResults: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      StackSetName: 0,
+      OperationId: 0,
+      NextToken: 0,
+      MaxResults: 0,
+      CallAs: 0,
+      Filters: D.list({ Name: 0, Values: 0 }),
+    },
     output: { Summaries: D.list({ AccountGateResult: {} }) },
   },
   errors: [OperationNotFoundException, StackSetNotFoundException],
@@ -4926,6 +5228,7 @@ export const listStackSetOperations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { StackSetName: 0, NextToken: 0, MaxResults: 0, CallAs: 0 },
     output: {
       Summaries: D.list({
         CreationTimestamp: D.ts,
@@ -4976,6 +5279,7 @@ export const listStackSets: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { NextToken: 0, MaxResults: 0, Status: 0, CallAs: 0 },
     output: {
       Summaries: D.list({
         AutoDeployment: o_AutoDeployment,
@@ -5007,7 +5311,18 @@ export const listTypeRegistrations: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   unknown
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { RegistrationTokenList: D.list() } },
+  descriptor: {
+    service: svc,
+    input: {
+      Type: 0,
+      TypeName: 0,
+      TypeArn: 0,
+      RegistrationStatusFilter: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
+    output: { RegistrationTokenList: D.list() },
+  },
   errors: [CFNRegistryException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5034,6 +5349,15 @@ export const listTypes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Visibility: 0,
+      ProvisioningType: 0,
+      DeprecatedStatus: 0,
+      Type: 0,
+      Filters: { Category: 0, PublisherId: 0, TypeNamePrefix: 0 },
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       TypeSummaries: D.list({ LastUpdated: D.ts, IsActivated: D.bool }),
     },
@@ -5063,6 +5387,15 @@ export const listTypeVersions: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Type: 0,
+      TypeName: 0,
+      Arn: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      DeprecatedStatus: 0,
+      PublisherId: 0,
+    },
     output: {
       TypeVersionSummaries: D.list({
         IsDefaultVersion: D.bool,
@@ -5101,7 +5434,10 @@ export const publishType: API.OperationMethod<
   PublishTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Type: 0, Arn: 0, TypeName: 0, PublicVersionNumber: 0 },
+  },
   errors: [CFNRegistryException, TypeNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5124,7 +5460,18 @@ export const recordHandlerProgress: API.OperationMethod<
   RecordHandlerProgressError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      BearerToken: 0,
+      OperationStatus: 0,
+      CurrentOperationStatus: 0,
+      StatusMessage: 0,
+      ErrorCode: 0,
+      ResourceModel: 0,
+      ClientRequestToken: 0,
+    },
+  },
   errors: [
     InvalidStateTransitionException,
     OperationStatusCheckFailedException,
@@ -5150,7 +5497,10 @@ export const registerPublisher: API.OperationMethod<
   RegisterPublisherError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { AcceptTermsAndConditions: 0, ConnectionArn: 0 },
+  },
   errors: [CFNRegistryException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5191,7 +5541,17 @@ export const registerType: API.OperationMethod<
   RegisterTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      Type: 0,
+      TypeName: 0,
+      SchemaHandlerPackage: 0,
+      LoggingConfig: i_LoggingConfig,
+      ExecutionRoleArn: 0,
+      ClientRequestToken: 0,
+    },
+  },
   errors: [CFNRegistryException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5227,7 +5587,16 @@ export const rollbackStack: API.OperationMethod<
   RollbackStackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      StackName: 0,
+      RoleARN: 0,
+      ClientRequestToken: 0,
+      RetainExceptOnCreate: 0,
+      DeploymentConfig: i_DeploymentConfig,
+    },
+  },
   errors: [TokenAlreadyExistsException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5244,7 +5613,10 @@ export const setStackPolicy: API.OperationMethod<
   SetStackPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { StackName: 0, StackPolicyBody: 0, StackPolicyURL: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5280,7 +5652,16 @@ export const setTypeConfiguration: API.OperationMethod<
   SetTypeConfigurationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      TypeArn: 0,
+      Configuration: 0,
+      ConfigurationAlias: 0,
+      TypeName: 0,
+      Type: 0,
+    },
+  },
   errors: [CFNRegistryException, TypeNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5301,7 +5682,10 @@ export const setTypeDefaultVersion: API.OperationMethod<
   SetTypeDefaultVersionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Arn: 0, Type: 0, TypeName: 0, VersionId: 0 },
+  },
   errors: [CFNRegistryException, TypeNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5323,7 +5707,10 @@ export const signalResource: API.OperationMethod<
   SignalResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { StackName: 0, LogicalResourceId: 0, UniqueId: 0, Status: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5344,7 +5731,10 @@ export const startResourceScan: API.OperationMethod<
   StartResourceScanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { ClientRequestToken: 0, ScanFilters: D.list({ Types: 0 }) },
+  },
   errors: [ResourceScanInProgressException, ResourceScanLimitExceededException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5367,7 +5757,10 @@ export const stopStackSetOperation: API.OperationMethod<
   StopStackSetOperationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { StackSetName: 0, OperationId: 0, CallAs: 0 },
+  },
   errors: [
     InvalidOperationException,
     OperationNotFoundException,
@@ -5416,7 +5809,10 @@ export const testType: API.OperationMethod<
   TestTypeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Arn: 0, Type: 0, TypeName: 0, VersionId: 0, LogDeliveryBucket: 0 },
+  },
   errors: [CFNRegistryException, TypeNotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5442,7 +5838,14 @@ export const updateGeneratedTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { AddResources: D.list(i_ResourceDefinition) },
+    input: {
+      GeneratedTemplateName: 0,
+      NewGeneratedTemplateName: 0,
+      AddResources: D.list(i_ResourceDefinition),
+      RemoveResources: 0,
+      RefreshAllResources: 0,
+      TemplateConfiguration: i_TemplateConfiguration,
+    },
   },
   errors: [
     AlreadyExistsException,
@@ -5476,7 +5879,31 @@ export const updateStack: API.OperationMethod<
   UpdateStackError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      StackName: 0,
+      TemplateBody: 0,
+      TemplateURL: 0,
+      UsePreviousTemplate: 0,
+      StackPolicyDuringUpdateBody: 0,
+      StackPolicyDuringUpdateURL: 0,
+      Parameters: D.list(i_Parameter),
+      Capabilities: 0,
+      ResourceTypes: 0,
+      RoleARN: 0,
+      RollbackConfiguration: i_RollbackConfiguration,
+      StackPolicyBody: 0,
+      StackPolicyURL: 0,
+      NotificationARNs: 0,
+      Tags: D.list(i_Tag),
+      DisableRollback: 0,
+      ClientRequestToken: 0,
+      RetainExceptOnCreate: 0,
+      DeploymentConfig: i_DeploymentConfig,
+      DisableValidation: 0,
+    },
+  },
   errors: [
     InsufficientCapabilitiesException,
     TokenAlreadyExistsException,
@@ -5534,7 +5961,16 @@ export const updateStackInstances: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { OperationId: D.m({ idempotency: true }) },
+    input: {
+      StackSetName: 0,
+      Accounts: 0,
+      DeploymentTargets: i_DeploymentTargets,
+      Regions: 0,
+      ParameterOverrides: D.list(i_Parameter),
+      OperationPreferences: i_StackSetOperationPreferences,
+      OperationId: D.m({ idempotency: true }),
+      CallAs: 0,
+    },
   },
   errors: [
     InvalidOperationException,
@@ -5586,7 +6022,27 @@ export const updateStackSet: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { OperationId: D.m({ idempotency: true }) },
+    input: {
+      StackSetName: 0,
+      Description: 0,
+      TemplateBody: 0,
+      TemplateURL: 0,
+      UsePreviousTemplate: 0,
+      Parameters: D.list(i_Parameter),
+      Capabilities: 0,
+      Tags: D.list(i_Tag),
+      OperationPreferences: i_StackSetOperationPreferences,
+      AdministrationRoleARN: 0,
+      ExecutionRoleName: 0,
+      DeploymentTargets: i_DeploymentTargets,
+      PermissionModel: 0,
+      AutoDeployment: i_AutoDeployment,
+      OperationId: D.m({ idempotency: true }),
+      Accounts: 0,
+      Regions: 0,
+      CallAs: 0,
+      ManagedExecution: i_ManagedExecution,
+    },
   },
   errors: [
     InvalidOperationException,
@@ -5618,7 +6074,10 @@ export const updateTerminationProtection: API.OperationMethod<
   UpdateTerminationProtectionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { EnableTerminationProtection: 0, StackName: 0 },
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -5639,6 +6098,7 @@ export const validateTemplate: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { TemplateBody: 0, TemplateURL: 0 },
     output: {
       Parameters: D.list({ NoEcho: D.bool }),
       Capabilities: D.list(),
@@ -5651,8 +6111,58 @@ export const validateTemplate: API.OperationMethod<
   operationName: "ValidateTemplate",
 })) as any;
 
+const i_AutoDeployment: D.LazyStruct = () => ({
+  Enabled: 0,
+  RetainStacksOnAccountRemoval: 0,
+  DependsOn: 0,
+});
+const i_DeploymentConfig: D.LazyStruct = () => ({
+  Mode: 0,
+  DisableRollback: 0,
+});
+const i_DeploymentTargets: D.LazyStruct = () => ({
+  Accounts: 0,
+  AccountsUrl: 0,
+  OrganizationalUnitIds: 0,
+  AccountFilterType: 0,
+});
+const i_LoggingConfig: D.LazyStruct = () => ({
+  LogRoleArn: 0,
+  LogGroupName: 0,
+});
+const i_ManagedExecution: D.LazyStruct = () => ({ Active: 0 });
+const i_Parameter: D.LazyStruct = () => ({
+  ParameterKey: 0,
+  ParameterValue: 0,
+  UsePreviousValue: 0,
+  ResolvedValue: 0,
+});
 const i_ResourceDefinition: D.LazyStruct = () => ({
+  ResourceType: 0,
+  LogicalResourceId: 0,
   ResourceIdentifier: D.map(),
+});
+const i_ResourceLocation: D.LazyStruct = () => ({
+  StackName: 0,
+  LogicalResourceId: 0,
+});
+const i_RollbackConfiguration: D.LazyStruct = () => ({
+  RollbackTriggers: D.list({ Arn: 0, Type: 0 }),
+  MonitoringTimeInMinutes: 0,
+});
+const i_StackSetOperationPreferences: D.LazyStruct = () => ({
+  RegionConcurrencyType: 0,
+  RegionOrder: 0,
+  FailureToleranceCount: 0,
+  FailureTolerancePercentage: 0,
+  MaxConcurrentCount: 0,
+  MaxConcurrentPercentage: 0,
+  ConcurrencyMode: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
+const i_TemplateConfiguration: D.LazyStruct = () => ({
+  DeletionPolicy: 0,
+  UpdateReplacePolicy: 0,
 });
 const o_AutoDeployment: D.LazyStruct = () => ({
   Enabled: D.bool,

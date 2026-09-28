@@ -215,7 +215,11 @@ export const deleteReportDefinition: API.OperationMethod<
   DeleteReportDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /reportDefinition/{reportId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /reportDefinition/{reportId}",
+    input: { reportId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -245,6 +249,7 @@ export const getReportDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /reportDefinition/{reportId}",
+    input: { reportId: 0 },
     output: { createdAt: D.ts, lastUpdated: D.ts },
   },
   errors: [
@@ -280,6 +285,7 @@ export const importApplicationUsage: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /importApplicationUsage",
+    input: { sourceS3Location: { bucket: 0, key: 0, region: 0 } },
     body: true,
   },
   errors: [
@@ -355,7 +361,18 @@ export const putReportDefinition: API.OperationMethod<
   PutReportDefinitionError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /reportDefinition", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /reportDefinition",
+    input: {
+      reportId: 0,
+      reportDescription: 0,
+      reportFrequency: 0,
+      format: 0,
+      destinationS3Location: i_S3Location,
+    },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -386,6 +403,13 @@ export const updateReportDefinition: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /reportDefinition/{reportId}",
+    input: {
+      reportId: 0,
+      reportDescription: 0,
+      reportFrequency: 0,
+      format: 0,
+      destinationS3Location: i_S3Location,
+    },
     body: true,
   },
   errors: [
@@ -398,3 +422,5 @@ export const updateReportDefinition: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateReportDefinition",
 })) as any;
+
+const i_S3Location: D.LazyStruct = () => ({ bucket: 0, prefix: 0 });

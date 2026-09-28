@@ -679,7 +679,7 @@ export const acceptChannelHandshake: API.OperationMethod<
   AcceptChannelHandshakeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { catalog: 0, identifier: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -708,7 +708,7 @@ export const cancelChannelHandshake: API.OperationMethod<
   CancelChannelHandshakeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { catalog: 0, identifier: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -742,8 +742,24 @@ export const createChannelHandshake: API.OperationMethod<
   descriptor: {
     service: svc,
     input: {
-      payload: { startServicePeriodPayload: { endDate: D.tsAs("date-time") } },
+      handshakeType: 0,
+      catalog: 0,
+      associatedResourceIdentifier: 0,
+      payload: {
+        startServicePeriodPayload: {
+          programManagementAccountIdentifier: 0,
+          note: 0,
+          servicePeriodType: 0,
+          minimumNoticeDays: 0,
+          endDate: D.tsAs("date-time"),
+        },
+        revokeServicePeriodPayload: {
+          programManagementAccountIdentifier: 0,
+          note: 0,
+        },
+      },
       clientToken: D.m({ idempotency: true }),
+      tags: D.list(i_Tag),
     },
   },
   errors: [
@@ -780,7 +796,14 @@ export const createProgramManagementAccount: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      catalog: 0,
+      program: 0,
+      displayName: 0,
+      accountId: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: D.list(i_Tag),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -816,7 +839,18 @@ export const createRelationship: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      catalog: 0,
+      associationType: 0,
+      programManagementAccountIdentifier: 0,
+      associatedAccountId: 0,
+      displayName: 0,
+      resaleAccountModel: 0,
+      sector: 0,
+      clientToken: D.m({ idempotency: true }),
+      tags: D.list(i_Tag),
+      requestedSupportPlan: i_SupportPlan,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -851,7 +885,11 @@ export const deleteProgramManagementAccount: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      catalog: 0,
+      identifier: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -885,7 +923,12 @@ export const deleteRelationship: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { clientToken: D.m({ idempotency: true }) },
+    input: {
+      catalog: 0,
+      identifier: 0,
+      programManagementAccountIdentifier: 0,
+      clientToken: D.m({ idempotency: true }),
+    },
   },
   errors: [
     AccessDeniedException,
@@ -918,6 +961,7 @@ export const getRelationship: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { catalog: 0, programManagementAccountIdentifier: 0, identifier: 0 },
     output: {
       relationshipDetail: { createdAt: D.ts, updatedAt: D.ts, startDate: D.ts },
     },
@@ -953,6 +997,25 @@ export const listChannelHandshakes: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      handshakeType: 0,
+      catalog: 0,
+      participantType: 0,
+      maxResults: 0,
+      statuses: 0,
+      associatedResourceIdentifiers: 0,
+      handshakeTypeFilters: {
+        startServicePeriodTypeFilters: { servicePeriodTypes: 0 },
+        revokeServicePeriodTypeFilters: { servicePeriodTypes: 0 },
+        programManagementAccountTypeFilters: { programs: 0 },
+      },
+      handshakeTypeSort: {
+        startServicePeriodTypeSort: { sortOrder: 0, sortBy: 0 },
+        revokeServicePeriodTypeSort: { sortOrder: 0, sortBy: 0 },
+        programManagementAccountTypeSort: { sortOrder: 0, sortBy: 0 },
+      },
+      nextToken: 0,
+    },
     output: {
       items: D.list({
         detail: {
@@ -1004,6 +1067,16 @@ export const listProgramManagementAccounts: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      catalog: 0,
+      maxResults: 0,
+      displayNames: 0,
+      programs: 0,
+      accountIds: 0,
+      statuses: 0,
+      sort: { sortOrder: 0, sortBy: 0 },
+      nextToken: 0,
+    },
     output: {
       items: D.list({ createdAt: D.ts, updatedAt: D.ts, startDate: D.ts }),
     },
@@ -1045,6 +1118,16 @@ export const listRelationships: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      catalog: 0,
+      maxResults: 0,
+      associatedAccountIds: 0,
+      associationTypes: 0,
+      displayNames: 0,
+      programManagementAccountIdentifiers: 0,
+      sort: { sortOrder: 0, sortBy: 0 },
+      nextToken: 0,
+    },
     output: {
       items: D.list({ createdAt: D.ts, updatedAt: D.ts, startDate: D.ts }),
     },
@@ -1083,7 +1166,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1112,7 +1195,7 @@ export const rejectChannelHandshake: API.OperationMethod<
   RejectChannelHandshakeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { catalog: 0, identifier: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1142,7 +1225,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1173,7 +1256,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1204,7 +1287,10 @@ export const updateProgramManagementAccount: API.OperationMethod<
   UpdateProgramManagementAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { catalog: 0, identifier: 0, revision: 0, displayName: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1235,7 +1321,17 @@ export const updateRelationship: API.OperationMethod<
   UpdateRelationshipError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      catalog: 0,
+      identifier: 0,
+      programManagementAccountIdentifier: 0,
+      revision: 0,
+      displayName: 0,
+      requestedSupportPlan: i_SupportPlan,
+    },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1248,3 +1344,10 @@ export const updateRelationship: API.OperationMethod<
   retry: Retry,
   operationName: "UpdateRelationship",
 })) as any;
+
+const i_SupportPlan: D.LazyStruct = () => ({
+  resoldEnterprise: { coverage: 0, tamLocation: 0, chargeAccountId: 0 },
+  partnerLedSupport: { coverage: 0, provider: 0, tamLocation: 0 },
+  resoldUnifiedOperations: { coverage: 0, tamLocation: 0, chargeAccountId: 0 },
+});
+const i_Tag: D.LazyStruct = () => ({ key: 0, value: 0 });

@@ -697,7 +697,15 @@ export const createApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /environments/{EnvironmentIdentifier}/applications",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      EnvironmentIdentifier: 0,
+      VpcId: 0,
+      ProxyType: 0,
+      ApiGatewayProxy: { EndpointType: 0, StageName: 0 },
+      Tags: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { LastUpdatedTime: D.ts, CreatedTime: D.ts },
     body: true,
   },
@@ -746,7 +754,13 @@ export const createEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /environments",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Description: 0,
+      NetworkFabricType: 0,
+      Tags: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { LastUpdatedTime: D.ts, CreatedTime: D.ts },
     body: true,
   },
@@ -852,7 +866,22 @@ export const createRoute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /environments/{EnvironmentIdentifier}/applications/{ApplicationIdentifier}/routes",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      EnvironmentIdentifier: 0,
+      ApplicationIdentifier: 0,
+      ServiceIdentifier: 0,
+      RouteType: 0,
+      DefaultRoute: { ActivationState: 0 },
+      UriPathRoute: {
+        SourcePath: 0,
+        ActivationState: 0,
+        Methods: 0,
+        IncludeChildPaths: 0,
+        AppendSourcePath: 0,
+      },
+      Tags: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { LastUpdatedTime: D.ts, CreatedTime: D.ts },
     body: true,
   },
@@ -899,7 +928,18 @@ export const createService: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /environments/{EnvironmentIdentifier}/applications/{ApplicationIdentifier}/services",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      Description: 0,
+      EnvironmentIdentifier: 0,
+      ApplicationIdentifier: 0,
+      VpcId: 0,
+      EndpointType: 0,
+      UrlEndpoint: { Url: 0, HealthUrl: 0 },
+      LambdaEndpoint: { Arn: 0 },
+      Tags: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { LastUpdatedTime: D.ts, CreatedTime: D.ts },
     body: true,
   },
@@ -938,6 +978,7 @@ export const deleteApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /environments/{EnvironmentIdentifier}/applications/{ApplicationIdentifier}",
+    input: { EnvironmentIdentifier: 0, ApplicationIdentifier: 0 },
     output: { LastUpdatedTime: D.ts },
   },
   errors: [
@@ -974,6 +1015,7 @@ export const deleteEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /environments/{EnvironmentIdentifier}",
+    input: { EnvironmentIdentifier: 0 },
     output: { LastUpdatedTime: D.ts },
   },
   errors: [
@@ -1005,7 +1047,11 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /resourcepolicy/{Identifier}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /resourcepolicy/{Identifier}",
+    input: { Identifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1038,6 +1084,11 @@ export const deleteRoute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /environments/{EnvironmentIdentifier}/applications/{ApplicationIdentifier}/routes/{RouteIdentifier}",
+    input: {
+      EnvironmentIdentifier: 0,
+      ApplicationIdentifier: 0,
+      RouteIdentifier: 0,
+    },
     output: { LastUpdatedTime: D.ts },
   },
   errors: [
@@ -1073,6 +1124,11 @@ export const deleteService: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /environments/{EnvironmentIdentifier}/applications/{ApplicationIdentifier}/services/{ServiceIdentifier}",
+    input: {
+      EnvironmentIdentifier: 0,
+      ApplicationIdentifier: 0,
+      ServiceIdentifier: 0,
+    },
     output: { LastUpdatedTime: D.ts },
   },
   errors: [
@@ -1107,6 +1163,7 @@ export const getApplication: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /environments/{EnvironmentIdentifier}/applications/{ApplicationIdentifier}",
+    input: { EnvironmentIdentifier: 0, ApplicationIdentifier: 0 },
     output: { LastUpdatedTime: D.ts, CreatedTime: D.ts },
   },
   errors: [
@@ -1140,6 +1197,7 @@ export const getEnvironment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /environments/{EnvironmentIdentifier}",
+    input: { EnvironmentIdentifier: 0 },
     output: { LastUpdatedTime: D.ts, CreatedTime: D.ts },
   },
   errors: [
@@ -1170,7 +1228,11 @@ export const getResourcePolicy: API.OperationMethod<
   GetResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /resourcepolicy/{Identifier}" },
+  descriptor: {
+    service: svc,
+    http: "GET /resourcepolicy/{Identifier}",
+    input: { Identifier: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1202,6 +1264,11 @@ export const getRoute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /environments/{EnvironmentIdentifier}/applications/{ApplicationIdentifier}/routes/{RouteIdentifier}",
+    input: {
+      EnvironmentIdentifier: 0,
+      ApplicationIdentifier: 0,
+      RouteIdentifier: 0,
+    },
     output: { LastUpdatedTime: D.ts, CreatedTime: D.ts },
   },
   errors: [
@@ -1235,6 +1302,11 @@ export const getService: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /environments/{EnvironmentIdentifier}/applications/{ApplicationIdentifier}/services/{ServiceIdentifier}",
+    input: {
+      EnvironmentIdentifier: 0,
+      ApplicationIdentifier: 0,
+      ServiceIdentifier: 0,
+    },
     output: { LastUpdatedTime: D.ts, CreatedTime: D.ts },
   },
   errors: [
@@ -1272,6 +1344,7 @@ export const listApplications: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /environments/{EnvironmentIdentifier}/applications",
     input: {
+      EnvironmentIdentifier: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -1374,6 +1447,7 @@ export const listEnvironmentVpcs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /environments/{EnvironmentIdentifier}/vpcs",
     input: {
+      EnvironmentIdentifier: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -1422,6 +1496,8 @@ export const listRoutes: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /environments/{EnvironmentIdentifier}/applications/{ApplicationIdentifier}/routes",
     input: {
+      EnvironmentIdentifier: 0,
+      ApplicationIdentifier: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -1472,6 +1548,8 @@ export const listServices: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /environments/{EnvironmentIdentifier}/applications/{ApplicationIdentifier}/services",
     input: {
+      EnvironmentIdentifier: 0,
+      ApplicationIdentifier: 0,
       NextToken: D.m({ query: "nextToken" }),
       MaxResults: D.m({ query: "maxResults" }),
     },
@@ -1514,7 +1592,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1545,7 +1627,12 @@ export const putResourcePolicy: API.OperationMethod<
   PutResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /resourcepolicy", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /resourcepolicy",
+    input: { ResourceArn: 0, Policy: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1578,7 +1665,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -1608,7 +1700,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -1639,6 +1731,12 @@ export const updateRoute: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /environments/{EnvironmentIdentifier}/applications/{ApplicationIdentifier}/routes/{RouteIdentifier}",
+    input: {
+      EnvironmentIdentifier: 0,
+      ApplicationIdentifier: 0,
+      RouteIdentifier: 0,
+      ActivationState: 0,
+    },
     output: { LastUpdatedTime: D.ts },
     body: true,
   },

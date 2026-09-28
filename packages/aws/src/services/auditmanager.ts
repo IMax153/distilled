@@ -1294,6 +1294,7 @@ export const associateAssessmentReportEvidenceFolder: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /assessments/{assessmentId}/associateToAssessmentReport",
+    input: { assessmentId: 0, evidenceFolderId: 0 },
     body: true,
   },
   errors: [
@@ -1326,6 +1327,7 @@ export const batchAssociateAssessmentReportEvidence: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /assessments/{assessmentId}/batchAssociateToAssessmentReport",
+    input: { assessmentId: 0, evidenceFolderId: 0, evidenceIds: 0 },
     body: true,
   },
   errors: [
@@ -1357,6 +1359,15 @@ export const batchCreateDelegationByAssessment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assessments/{assessmentId}/delegations",
+    input: {
+      createDelegationRequests: D.list({
+        comment: 0,
+        controlSetId: 0,
+        roleArn: 0,
+        roleType: 0,
+      }),
+      assessmentId: 0,
+    },
     output: {
       delegations: D.list(o_Delegation),
       errors: D.list({ createDelegationRequest: { comment: D.secret } }),
@@ -1392,6 +1403,7 @@ export const batchDeleteDelegationByAssessment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /assessments/{assessmentId}/delegations",
+    input: { delegationIds: 0, assessmentId: 0 },
     body: true,
   },
   errors: [
@@ -1423,6 +1435,7 @@ export const batchDisassociateAssessmentReportEvidence: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /assessments/{assessmentId}/batchDisassociateFromAssessmentReport",
+    input: { assessmentId: 0, evidenceFolderId: 0, evidenceIds: 0 },
     body: true,
   },
   errors: [
@@ -1474,6 +1487,16 @@ export const batchImportEvidenceToAssessmentControl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assessments/{assessmentId}/controlSets/{controlSetId}/controls/{controlId}/evidence",
+    input: {
+      assessmentId: 0,
+      controlSetId: 0,
+      controlId: 0,
+      manualEvidence: D.list({
+        s3ResourcePath: 0,
+        textResponse: 0,
+        evidenceFileName: 0,
+      }),
+    },
     output: {
       errors: D.list({
         manualEvidence: { textResponse: D.secret, evidenceFileName: D.secret },
@@ -1513,6 +1536,15 @@ export const createAssessment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assessments",
+    input: {
+      name: 0,
+      description: 0,
+      assessmentReportsDestination: i_AssessmentReportsDestination,
+      scope: i_Scope,
+      roles: D.list(i_Role),
+      frameworkId: 0,
+      tags: 0,
+    },
     output: { assessment: o_Assessment },
     body: true,
   },
@@ -1548,6 +1580,16 @@ export const createAssessmentFramework: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assessmentFrameworks",
+    input: {
+      name: 0,
+      description: 0,
+      complianceType: 0,
+      controlSets: D.list({
+        name: 0,
+        controls: D.list(i_CreateAssessmentFrameworkControl),
+      }),
+      tags: 0,
+    },
     output: { framework: o_Framework },
     body: true,
   },
@@ -1581,6 +1623,7 @@ export const createAssessmentReport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assessments/{assessmentId}/reports",
+    input: { name: 0, description: 0, assessmentId: 0, queryStatement: 0 },
     output: {
       assessmentReport: {
         description: D.secret,
@@ -1621,6 +1664,23 @@ export const createControl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /controls",
+    input: {
+      name: 0,
+      description: 0,
+      testingInformation: 0,
+      actionPlanTitle: 0,
+      actionPlanInstructions: 0,
+      controlMappingSources: D.list({
+        sourceName: 0,
+        sourceDescription: 0,
+        sourceSetUpOption: 0,
+        sourceType: 0,
+        sourceKeyword: i_SourceKeyword,
+        sourceFrequency: 0,
+        troubleshootingText: 0,
+      }),
+      tags: 0,
+    },
     output: { control: o_Control },
     body: true,
   },
@@ -1651,7 +1711,11 @@ export const deleteAssessment: API.OperationMethod<
   DeleteAssessmentError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /assessments/{assessmentId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /assessments/{assessmentId}",
+    input: { assessmentId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1681,6 +1745,7 @@ export const deleteAssessmentFramework: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /assessmentFrameworks/{frameworkId}",
+    input: { frameworkId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1711,7 +1776,7 @@ export const deleteAssessmentFrameworkShare: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /assessmentFrameworkShareRequests/{requestId}",
-    input: { requestType: D.m({ query: "requestType" }) },
+    input: { requestId: 0, requestType: D.m({ query: "requestType" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1762,6 +1827,7 @@ export const deleteAssessmentReport: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /assessments/{assessmentId}/reports/{assessmentReportId}",
+    input: { assessmentId: 0, assessmentReportId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -1794,7 +1860,11 @@ export const deleteControl: API.OperationMethod<
   DeleteControlError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /controls/{controlId}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /controls/{controlId}",
+    input: { controlId: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1829,7 +1899,11 @@ export const deregisterAccount: API.OperationMethod<
   DeregisterAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /account/deregisterAccount" },
+  descriptor: {
+    service: svc,
+    http: "POST /account/deregisterAccount",
+    input: {},
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1911,6 +1985,7 @@ export const deregisterOrganizationAdminAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /account/deregisterOrganizationAdminAccount",
+    input: { adminAccountId: 0 },
     body: true,
   },
   errors: [
@@ -1942,6 +2017,7 @@ export const disassociateAssessmentReportEvidenceFolder: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /assessments/{assessmentId}/disassociateFromAssessmentReport",
+    input: { assessmentId: 0, evidenceFolderId: 0 },
     body: true,
   },
   errors: [
@@ -1965,7 +2041,7 @@ export const getAccountStatus: API.OperationMethod<
   GetAccountStatusError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /account/status" },
+  descriptor: { service: svc, http: "GET /account/status", input: {} },
   errors: [InternalServerException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1990,6 +2066,7 @@ export const getAssessment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /assessments/{assessmentId}",
+    input: { assessmentId: 0 },
     output: { assessment: o_Assessment },
   },
   errors: [
@@ -2021,6 +2098,7 @@ export const getAssessmentFramework: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /assessmentFrameworks/{frameworkId}",
+    input: { frameworkId: 0 },
     output: { framework: o_Framework },
   },
   errors: [
@@ -2052,6 +2130,7 @@ export const getAssessmentReportUrl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /assessments/{assessmentId}/reports/{assessmentReportId}/url",
+    input: { assessmentReportId: 0, assessmentId: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -2084,6 +2163,7 @@ export const getChangeLogs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /assessments/{assessmentId}/changelogs",
     input: {
+      assessmentId: 0,
       controlSetId: D.m({ query: "controlSetId" }),
       controlId: D.m({ query: "controlId" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -2125,6 +2205,7 @@ export const getControl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /controls/{controlId}",
+    input: { controlId: 0 },
     output: { control: o_Control },
   },
   errors: [
@@ -2193,6 +2274,12 @@ export const getEvidence: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /assessments/{assessmentId}/controlSets/{controlSetId}/evidenceFolders/{evidenceFolderId}/evidence/{evidenceId}",
+    input: {
+      assessmentId: 0,
+      controlSetId: 0,
+      evidenceFolderId: 0,
+      evidenceId: 0,
+    },
     output: { evidence: o_Evidence },
   },
   errors: [
@@ -2226,6 +2313,9 @@ export const getEvidenceByEvidenceFolder: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /assessments/{assessmentId}/controlSets/{controlSetId}/evidenceFolders/{evidenceFolderId}/evidence",
     input: {
+      assessmentId: 0,
+      controlSetId: 0,
+      evidenceFolderId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -2309,6 +2399,7 @@ export const getEvidenceFolder: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /assessments/{assessmentId}/controlSets/{controlSetId}/evidenceFolders/{evidenceFolderId}",
+    input: { assessmentId: 0, controlSetId: 0, evidenceFolderId: 0 },
     output: { evidenceFolder: o_AssessmentEvidenceFolder },
   },
   errors: [
@@ -2342,6 +2433,7 @@ export const getEvidenceFoldersByAssessment: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /assessments/{assessmentId}/evidenceFolders",
     input: {
+      assessmentId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -2384,6 +2476,9 @@ export const getEvidenceFoldersByAssessmentControl: API.PaginatedOperationMethod
     service: svc,
     http: "GET /assessments/{assessmentId}/evidenceFolders-by-assessment-control/{controlSetId}/{controlId}",
     input: {
+      assessmentId: 0,
+      controlSetId: 0,
+      controlId: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -2421,6 +2516,7 @@ export const getInsights: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /insights",
+    input: {},
     output: { insights: { lastUpdated: D.ts } },
   },
   errors: [AccessDeniedException, InternalServerException],
@@ -2447,6 +2543,7 @@ export const getInsightsByAssessment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /insights/assessments/{assessmentId}",
+    input: { assessmentId: 0 },
     output: { insights: { lastUpdated: D.ts } },
   },
   errors: [
@@ -2476,7 +2573,11 @@ export const getOrganizationAdminAccount: API.OperationMethod<
   GetOrganizationAdminAccountError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /account/organizationAdminAccount" },
+  descriptor: {
+    service: svc,
+    http: "GET /account/organizationAdminAccount",
+    input: {},
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -2513,7 +2614,7 @@ export const getServicesInScope: API.OperationMethod<
   GetServicesInScopeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /services" },
+  descriptor: { service: svc, http: "GET /services", input: {} },
   errors: [AccessDeniedException, InternalServerException, ValidationException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2536,6 +2637,7 @@ export const getSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /settings/{attribute}",
+    input: { attribute: 0 },
     output: { settings: o_Settings },
   },
   errors: [AccessDeniedException, InternalServerException],
@@ -3044,7 +3146,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -3075,6 +3181,7 @@ export const registerAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /account/registerAccount",
+    input: { kmsKey: 0, delegatedAdminAccount: 0 },
     body: true,
   },
   errors: [
@@ -3110,6 +3217,7 @@ export const registerOrganizationAdminAccount: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /account/registerOrganizationAdminAccount",
+    input: { adminAccountId: 0 },
     body: true,
   },
   errors: [
@@ -3176,6 +3284,12 @@ export const startAssessmentFrameworkShare: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assessmentFrameworks/{frameworkId}/shareRequests",
+    input: {
+      frameworkId: 0,
+      destinationAccount: 0,
+      destinationRegion: 0,
+      comment: 0,
+    },
     output: {
       assessmentFrameworkShareRequest: o_AssessmentFrameworkShareRequest,
     },
@@ -3206,7 +3320,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [
     InternalServerException,
     ResourceNotFoundException,
@@ -3234,7 +3353,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -3266,6 +3385,14 @@ export const updateAssessment: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /assessments/{assessmentId}",
+    input: {
+      assessmentId: 0,
+      assessmentName: 0,
+      assessmentDescription: 0,
+      scope: i_Scope,
+      assessmentReportsDestination: i_AssessmentReportsDestination,
+      roles: D.list(i_Role),
+    },
     output: { assessment: o_Assessment },
     body: true,
   },
@@ -3300,6 +3427,13 @@ export const updateAssessmentControl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /assessments/{assessmentId}/controlSets/{controlSetId}/controls/{controlId}",
+    input: {
+      assessmentId: 0,
+      controlSetId: 0,
+      controlId: 0,
+      controlStatus: 0,
+      commentBody: 0,
+    },
     output: { control: o_AssessmentControl },
     body: true,
   },
@@ -3332,6 +3466,7 @@ export const updateAssessmentControlSetStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /assessments/{assessmentId}/controlSets/{controlSetId}/status",
+    input: { assessmentId: 0, controlSetId: 0, status: 0, comment: 0 },
     output: { controlSet: o_AssessmentControlSet },
     body: true,
   },
@@ -3365,6 +3500,17 @@ export const updateAssessmentFramework: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /assessmentFrameworks/{frameworkId}",
+    input: {
+      frameworkId: 0,
+      name: 0,
+      description: 0,
+      complianceType: 0,
+      controlSets: D.list({
+        id: 0,
+        name: 0,
+        controls: D.list(i_CreateAssessmentFrameworkControl),
+      }),
+    },
     output: { framework: o_Framework },
     body: true,
   },
@@ -3399,6 +3545,7 @@ export const updateAssessmentFrameworkShare: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /assessmentFrameworkShareRequests/{requestId}",
+    input: { requestId: 0, requestType: 0, action: 0 },
     output: {
       assessmentFrameworkShareRequest: o_AssessmentFrameworkShareRequest,
     },
@@ -3435,6 +3582,7 @@ export const updateAssessmentStatus: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /assessments/{assessmentId}/status",
+    input: { assessmentId: 0, status: 0 },
     output: { assessment: o_Assessment },
     body: true,
   },
@@ -3468,6 +3616,24 @@ export const updateControl: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /controls/{controlId}",
+    input: {
+      controlId: 0,
+      name: 0,
+      description: 0,
+      testingInformation: 0,
+      actionPlanTitle: 0,
+      actionPlanInstructions: 0,
+      controlMappingSources: D.list({
+        sourceId: 0,
+        sourceName: 0,
+        sourceDescription: 0,
+        sourceSetUpOption: 0,
+        sourceType: 0,
+        sourceKeyword: i_SourceKeyword,
+        sourceFrequency: 0,
+        troubleshootingText: 0,
+      }),
+    },
     output: { control: o_Control },
     body: true,
   },
@@ -3499,6 +3665,15 @@ export const updateSettings: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /settings",
+    input: {
+      snsTopic: 0,
+      defaultAssessmentReportsDestination: i_AssessmentReportsDestination,
+      defaultProcessOwners: D.list(i_Role),
+      kmsKey: 0,
+      evidenceFinderEnabled: 0,
+      deregistrationPolicy: { deleteResources: 0 },
+      defaultExportDestination: { destinationType: 0, destination: 0 },
+    },
     output: { settings: o_Settings },
     body: true,
   },
@@ -3526,6 +3701,7 @@ export const validateAssessmentReportIntegrity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /assessmentReports/integrity",
+    input: { s3RelativePath: 0 },
     body: true,
   },
   errors: [
@@ -3539,6 +3715,20 @@ export const validateAssessmentReportIntegrity: API.OperationMethod<
   operationName: "ValidateAssessmentReportIntegrity",
 })) as any;
 
+const i_AssessmentReportsDestination: D.LazyStruct = () => ({
+  destinationType: 0,
+  destination: 0,
+});
+const i_CreateAssessmentFrameworkControl: D.LazyStruct = () => ({ id: 0 });
+const i_Role: D.LazyStruct = () => ({ roleType: 0, roleArn: 0 });
+const i_Scope: D.LazyStruct = () => ({
+  awsAccounts: D.list({ id: 0, emailAddress: 0, name: 0 }),
+  awsServices: D.list({ serviceName: 0 }),
+});
+const i_SourceKeyword: D.LazyStruct = () => ({
+  keywordInputType: 0,
+  keywordValue: 0,
+});
 const o_Assessment: D.LazyStruct = () => ({
   awsAccount: o_AWSAccount,
   metadata: {

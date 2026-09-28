@@ -962,7 +962,12 @@ export const associateAccounts: API.OperationMethod<
   AssociateAccountsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /associate-accounts", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /associate-accounts",
+    input: { Arn: 0, AccountIds: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -998,6 +1003,7 @@ export const associatePricingRules: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /associate-pricing-rules",
+    input: { Arn: 0, PricingRuleArns: 0 },
     body: true,
   },
   errors: [
@@ -1035,6 +1041,11 @@ export const batchAssociateResourcesToCustomLineItem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /batch-associate-resources-to-custom-line-item",
+    input: {
+      TargetArn: 0,
+      ResourceArns: 0,
+      BillingPeriodRange: i_CustomLineItemBillingPeriodRange,
+    },
     body: true,
   },
   errors: [
@@ -1071,6 +1082,11 @@ export const batchDisassociateResourcesFromCustomLineItem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /batch-disassociate-resources-from-custom-line-item",
+    input: {
+      TargetArn: 0,
+      ResourceArns: 0,
+      BillingPeriodRange: i_CustomLineItemBillingPeriodRange,
+    },
     body: true,
   },
   errors: [
@@ -1108,6 +1124,16 @@ export const createBillingGroup: API.OperationMethod<
     http: "POST /create-billing-group",
     input: {
       ClientToken: D.m({ header: "X-Amzn-Client-Token", idempotency: true }),
+      Name: 0,
+      AccountGrouping: {
+        LinkedAccountIds: 0,
+        AutoAssociate: 0,
+        ResponsibilityTransferArn: 0,
+      },
+      ComputationPreference: i_ComputationPreference,
+      PrimaryAccountId: 0,
+      Description: 0,
+      Tags: 0,
     },
     body: true,
   },
@@ -1146,6 +1172,20 @@ export const createCustomLineItem: API.OperationMethod<
     http: "POST /create-custom-line-item",
     input: {
       ClientToken: D.m({ header: "X-Amzn-Client-Token", idempotency: true }),
+      Name: 0,
+      Description: 0,
+      BillingGroupArn: 0,
+      BillingPeriodRange: i_CustomLineItemBillingPeriodRange,
+      Tags: 0,
+      ChargeDetails: {
+        Flat: { ChargeValue: 0 },
+        Percentage: { PercentageValue: 0, AssociatedValues: 0 },
+        Type: 0,
+        LineItemFilters: D.list(i_LineItemFilter),
+      },
+      AccountId: 0,
+      ComputationRule: 0,
+      PresentationDetails: { Service: 0 },
     },
     body: true,
   },
@@ -1185,6 +1225,10 @@ export const createPricingPlan: API.OperationMethod<
     http: "POST /create-pricing-plan",
     input: {
       ClientToken: D.m({ header: "X-Amzn-Client-Token", idempotency: true }),
+      Name: 0,
+      Description: 0,
+      PricingRuleArns: 0,
+      Tags: 0,
     },
     body: true,
   },
@@ -1224,6 +1268,17 @@ export const createPricingRule: API.OperationMethod<
     http: "POST /create-pricing-rule",
     input: {
       ClientToken: D.m({ header: "X-Amzn-Client-Token", idempotency: true }),
+      Name: 0,
+      Description: 0,
+      Scope: 0,
+      Type: 0,
+      ModifierPercentage: 0,
+      Service: 0,
+      Tags: 0,
+      BillingEntity: 0,
+      Tiering: { FreeTier: { Activated: 0 } },
+      UsageType: 0,
+      Operation: 0,
     },
     body: true,
   },
@@ -1255,7 +1310,12 @@ export const deleteBillingGroup: API.OperationMethod<
   DeleteBillingGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /delete-billing-group", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /delete-billing-group",
+    input: { Arn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1286,6 +1346,7 @@ export const deleteCustomLineItem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /delete-custom-line-item",
+    input: { Arn: 0, BillingPeriodRange: i_CustomLineItemBillingPeriodRange },
     body: true,
   },
   errors: [
@@ -1316,7 +1377,12 @@ export const deletePricingPlan: API.OperationMethod<
   DeletePricingPlanError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /delete-pricing-plan", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /delete-pricing-plan",
+    input: { Arn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1345,7 +1411,12 @@ export const deletePricingRule: API.OperationMethod<
   DeletePricingRuleError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /delete-pricing-rule", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /delete-pricing-rule",
+    input: { Arn: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1375,7 +1446,12 @@ export const disassociateAccounts: API.OperationMethod<
   DisassociateAccountsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /disassociate-accounts", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /disassociate-accounts",
+    input: { Arn: 0, AccountIds: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -1409,6 +1485,7 @@ export const disassociatePricingRules: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /disassociate-pricing-rules",
+    input: { Arn: 0, PricingRuleArns: 0 },
     body: true,
   },
   errors: [
@@ -1444,6 +1521,16 @@ export const getBillingGroupCostReport: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /get-billing-group-cost-report",
+    input: {
+      Arn: 0,
+      BillingPeriodRange: {
+        InclusiveStartBillingPeriod: 0,
+        ExclusiveEndBillingPeriod: 0,
+      },
+      GroupBy: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     body: true,
   },
   errors: [
@@ -1484,6 +1571,11 @@ export const listAccountAssociations: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-account-associations",
+    input: {
+      BillingPeriod: 0,
+      Filters: { Association: 0, AccountId: 0, AccountIds: 0 },
+      NextToken: 0,
+    },
     output: {
       LinkedAccounts: D.list({ AccountName: D.secret, AccountEmail: D.secret }),
     },
@@ -1526,6 +1618,12 @@ export const listBillingGroupCostReports: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-billing-group-cost-reports",
+    input: {
+      BillingPeriod: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: { BillingGroupArns: 0 },
+    },
     body: true,
   },
   errors: [
@@ -1566,6 +1664,21 @@ export const listBillingGroups: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-billing-groups",
+    input: {
+      BillingPeriod: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: {
+        Arns: 0,
+        PricingPlan: 0,
+        Statuses: 0,
+        AutoAssociate: 0,
+        PrimaryAccountIds: 0,
+        BillingGroupTypes: 0,
+        Names: D.list({ SearchOption: 0, SearchValue: 0 }),
+        ResponsibilityTransferArns: 0,
+      },
+    },
     output: {
       BillingGroups: D.list({ Name: D.secret, Description: D.secret }),
     },
@@ -1609,6 +1722,12 @@ export const listCustomLineItems: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-custom-line-items",
+    input: {
+      BillingPeriod: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: { Names: 0, BillingGroups: 0, Arns: 0, AccountIds: 0 },
+    },
     output: {
       CustomLineItems: D.list({ Name: D.secret, Description: D.secret }),
     },
@@ -1651,6 +1770,14 @@ export const listCustomLineItemVersions: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-custom-line-item-versions",
+    input: {
+      Arn: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: {
+        BillingPeriodRange: { StartBillingPeriod: 0, EndBillingPeriod: 0 },
+      },
+    },
     output: {
       CustomLineItemVersions: D.list({ Name: D.secret, Description: D.secret }),
     },
@@ -1692,6 +1819,12 @@ export const listPricingPlans: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-pricing-plans",
+    input: {
+      BillingPeriod: 0,
+      Filters: { Arns: 0 },
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { PricingPlans: D.list({ Name: D.secret, Description: D.secret }) },
     body: true,
   },
@@ -1732,6 +1865,7 @@ export const listPricingPlansAssociatedWithPricingRule: API.PaginatedOperationMe
   descriptor: {
     service: svc,
     http: "POST /list-pricing-plans-associated-with-pricing-rule",
+    input: { BillingPeriod: 0, PricingRuleArn: 0, MaxResults: 0, NextToken: 0 },
     body: true,
   },
   errors: [
@@ -1771,6 +1905,12 @@ export const listPricingRules: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /list-pricing-rules",
+    input: {
+      BillingPeriod: 0,
+      Filters: { Arns: 0 },
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: { PricingRules: D.list({ Name: D.secret, Description: D.secret }) },
     body: true,
   },
@@ -1811,6 +1951,7 @@ export const listPricingRulesAssociatedToPricingPlan: API.PaginatedOperationMeth
   descriptor: {
     service: svc,
     http: "POST /list-pricing-rules-associated-to-pricing-plan",
+    input: { BillingPeriod: 0, PricingPlanArn: 0, MaxResults: 0, NextToken: 0 },
     body: true,
   },
   errors: [
@@ -1851,6 +1992,13 @@ export const listResourcesAssociatedToCustomLineItem: API.PaginatedOperationMeth
   descriptor: {
     service: svc,
     http: "POST /list-resources-associated-to-custom-line-item",
+    input: {
+      BillingPeriod: 0,
+      Arn: 0,
+      MaxResults: 0,
+      NextToken: 0,
+      Filters: { Relationship: 0 },
+    },
     body: true,
   },
   errors: [
@@ -1887,7 +2035,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1916,7 +2068,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1948,7 +2105,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -1982,6 +2139,14 @@ export const updateBillingGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /update-billing-group",
+    input: {
+      Arn: 0,
+      Name: 0,
+      Status: 0,
+      ComputationPreference: i_ComputationPreference,
+      Description: 0,
+      AccountGrouping: { AutoAssociate: 0, ResponsibilityTransferArn: 0 },
+    },
     output: { Name: D.secret, Description: D.secret },
     body: true,
   },
@@ -2018,6 +2183,17 @@ export const updateCustomLineItem: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /update-custom-line-item",
+    input: {
+      Arn: 0,
+      Name: 0,
+      Description: 0,
+      ChargeDetails: {
+        Flat: { ChargeValue: 0 },
+        Percentage: { PercentageValue: 0 },
+        LineItemFilters: D.list(i_LineItemFilter),
+      },
+      BillingPeriodRange: i_CustomLineItemBillingPeriodRange,
+    },
     output: { Name: D.secret, Description: D.secret },
     body: true,
   },
@@ -2054,6 +2230,7 @@ export const updatePricingPlan: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /update-pricing-plan",
+    input: { Arn: 0, Name: 0, Description: 0 },
     output: { Name: D.secret, Description: D.secret },
     body: true,
   },
@@ -2090,6 +2267,14 @@ export const updatePricingRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /update-pricing-rule",
+    input: {
+      Arn: 0,
+      Name: 0,
+      Description: 0,
+      Type: 0,
+      ModifierPercentage: 0,
+      Tiering: { FreeTier: { Activated: 0 } },
+    },
     output: { Name: D.secret, Description: D.secret },
     body: true,
   },
@@ -2105,3 +2290,15 @@ export const updatePricingRule: API.OperationMethod<
   retry: Retry,
   operationName: "UpdatePricingRule",
 })) as any;
+
+const i_ComputationPreference: D.LazyStruct = () => ({ PricingPlanArn: 0 });
+const i_CustomLineItemBillingPeriodRange: D.LazyStruct = () => ({
+  InclusiveStartBillingPeriod: 0,
+  ExclusiveEndBillingPeriod: 0,
+});
+const i_LineItemFilter: D.LazyStruct = () => ({
+  Attribute: 0,
+  MatchOption: 0,
+  Values: 0,
+  AttributeValues: 0,
+});

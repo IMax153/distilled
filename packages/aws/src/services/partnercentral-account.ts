@@ -978,7 +978,11 @@ export const acceptConnectionInvitation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      Identifier: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: {
       Connection: {
         UpdatedAt: D.ts,
@@ -1019,7 +1023,13 @@ export const associateAwsTrainingCertificationEmailDomain: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      Identifier: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Email: 0,
+      EmailVerificationCode: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1053,7 +1063,13 @@ export const cancelConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      Identifier: 0,
+      ConnectionType: 0,
+      Reason: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: { UpdatedAt: D.ts, ConnectionTypes: D.map(o_ConnectionTypeDetail) },
   },
   errors: [
@@ -1088,7 +1104,11 @@ export const cancelConnectionInvitation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      Identifier: 0,
+      ClientToken: D.m({ idempotency: true }),
+    },
     output: {
       CreatedAt: D.ts,
       UpdatedAt: D.ts,
@@ -1128,7 +1148,12 @@ export const cancelProfileUpdateTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      Identifier: 0,
+      ClientToken: D.m({ idempotency: true }),
+      TaskId: 0,
+    },
     output: { StartedAt: D.ts, EndedAt: D.ts },
   },
   errors: [
@@ -1164,7 +1189,15 @@ export const createConnectionInvitation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      ClientToken: D.m({ idempotency: true }),
+      ConnectionType: 0,
+      Email: 0,
+      Message: 0,
+      Name: 0,
+      ReceiverIdentifier: 0,
+    },
     output: {
       CreatedAt: D.ts,
       UpdatedAt: D.ts,
@@ -1204,7 +1237,15 @@ export const createPartner: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      ClientToken: D.m({ idempotency: true }),
+      LegalName: 0,
+      PrimarySolutionType: 0,
+      AllianceLeadContact: i_AllianceLeadContact,
+      EmailVerificationCode: 0,
+      Tags: D.list(i_Tag),
+    },
     output: {
       LegalName: D.secret,
       CreatedAt: D.ts,
@@ -1242,7 +1283,12 @@ export const disassociateAwsTrainingCertificationEmailDomain: API.OperationMetho
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      Identifier: 0,
+      ClientToken: D.m({ idempotency: true }),
+      DomainName: 0,
+    },
   },
   errors: [
     AccessDeniedException,
@@ -1274,6 +1320,7 @@ export const getAllianceLeadContact: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Catalog: 0, Identifier: 0 },
     output: { AllianceLeadContact: o_AllianceLeadContact },
   },
   errors: [
@@ -1306,6 +1353,7 @@ export const getConnection: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Catalog: 0, Identifier: 0 },
     output: { UpdatedAt: D.ts, ConnectionTypes: D.map(o_ConnectionTypeDetail) },
   },
   errors: [
@@ -1338,6 +1386,7 @@ export const getConnectionInvitation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Catalog: 0, Identifier: 0 },
     output: {
       CreatedAt: D.ts,
       UpdatedAt: D.ts,
@@ -1372,7 +1421,11 @@ export const getConnectionPreferences: API.OperationMethod<
   GetConnectionPreferencesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { UpdatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { Catalog: 0 },
+    output: { UpdatedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1402,6 +1455,7 @@ export const getPartner: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { Catalog: 0, Identifier: 0 },
     output: {
       LegalName: D.secret,
       CreatedAt: D.ts,
@@ -1436,7 +1490,11 @@ export const getProfileUpdateTask: API.OperationMethod<
   GetProfileUpdateTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { StartedAt: D.ts, EndedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { Catalog: 0, Identifier: 0 },
+    output: { StartedAt: D.ts, EndedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1465,7 +1523,7 @@ export const getProfileVisibility: API.OperationMethod<
   GetProfileVisibilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Catalog: 0, Identifier: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1494,7 +1552,11 @@ export const getQualificationsAssociationDetails: API.OperationMethod<
   GetQualificationsAssociationDetailsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { UpdatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { Catalog: 0, Identifier: 0 },
+    output: { UpdatedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1523,7 +1585,11 @@ export const getQualificationsAssociationTask: API.OperationMethod<
   GetQualificationsAssociationTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { StartedAt: D.ts, EndedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { Catalog: 0, Identifier: 0 },
+    output: { StartedAt: D.ts, EndedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1552,7 +1618,11 @@ export const getQualificationsDisassociationTask: API.OperationMethod<
   GetQualificationsDisassociationTaskError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { StartedAt: D.ts, EndedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: { Catalog: 0, Identifier: 0 },
+    output: { StartedAt: D.ts, EndedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1583,6 +1653,7 @@ export const getVerification: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: { VerificationType: 0 },
     output: {
       VerificationResponseDetails: o_VerificationResponseDetails,
       StartedAt: D.ts,
@@ -1619,6 +1690,15 @@ export const listConnectionInvitations: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Catalog: 0,
+      NextToken: 0,
+      ConnectionType: 0,
+      MaxResults: 0,
+      OtherParticipantIdentifiers: 0,
+      ParticipantType: 0,
+      Status: 0,
+    },
     output: {
       ConnectionInvitationSummaries: D.list({
         CreatedAt: D.ts,
@@ -1662,6 +1742,13 @@ export const listConnections: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Catalog: 0,
+      NextToken: 0,
+      ConnectionType: 0,
+      MaxResults: 0,
+      OtherParticipantIdentifiers: 0,
+    },
     output: { ConnectionSummaries: D.list({ UpdatedAt: D.ts }) },
   },
   errors: [
@@ -1699,6 +1786,7 @@ export const listPartners: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { Catalog: 0, NextToken: 0 },
     output: {
       PartnerSummaryList: D.list({ LegalName: D.secret, CreatedAt: D.ts }),
     },
@@ -1735,7 +1823,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1766,6 +1854,12 @@ export const putAllianceLeadContact: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {
+      Catalog: 0,
+      Identifier: 0,
+      AllianceLeadContact: i_AllianceLeadContact,
+      EmailVerificationCode: 0,
+    },
     output: { AllianceLeadContact: o_AllianceLeadContact },
   },
   errors: [
@@ -1797,7 +1891,10 @@ export const putProfileVisibility: API.OperationMethod<
   PutProfileVisibilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { Catalog: 0, Identifier: 0, Visibility: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1830,7 +1927,12 @@ export const rejectConnectionInvitation: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      Identifier: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Reason: 0,
+    },
     output: {
       CreatedAt: D.ts,
       UpdatedAt: D.ts,
@@ -1867,7 +1969,7 @@ export const sendEmailVerificationCode: API.OperationMethod<
   SendEmailVerificationCodeError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { Catalog: 0, Email: 0 } },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -1900,7 +2002,28 @@ export const startProfileUpdateTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      Identifier: 0,
+      ClientToken: D.m({ idempotency: true }),
+      TaskDetails: {
+        DisplayName: 0,
+        Description: 0,
+        WebsiteUrl: 0,
+        LogoUrl: 0,
+        PrimarySolutionType: 0,
+        IndustrySegments: 0,
+        TranslationSourceLocale: 0,
+        LocalizedContents: D.list({
+          DisplayName: 0,
+          Description: 0,
+          WebsiteUrl: 0,
+          LogoUrl: 0,
+          Locale: 0,
+        }),
+        Headquarters: { CountryCode: 0, SubdivisionCode: 0 },
+      },
+    },
     output: { StartedAt: D.ts, EndedAt: D.ts },
   },
   errors: [
@@ -1936,7 +2059,12 @@ export const startQualificationsAssociationTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      Identifier: 0,
+      ClientToken: D.m({ idempotency: true }),
+      PrimaryPartner: i_QualificationsAssociationPartner,
+    },
     output: { StartedAt: D.ts },
   },
   errors: [
@@ -1971,7 +2099,12 @@ export const startQualificationsDisassociationTask: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Catalog: 0,
+      Identifier: 0,
+      ClientToken: D.m({ idempotency: true }),
+      AssociatedPartner: i_QualificationsAssociationPartner,
+    },
     output: { StartedAt: D.ts },
   },
   errors: [
@@ -2006,7 +2139,18 @@ export const startVerification: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      ClientToken: D.m({ idempotency: true }),
+      VerificationDetails: {
+        BusinessVerificationDetails: {
+          LegalName: 0,
+          RegistrationId: 0,
+          CountryCode: 0,
+          JurisdictionOfIncorporation: 0,
+        },
+        RegistrantVerificationDetails: {},
+      },
+    },
     output: {
       VerificationResponseDetails: o_VerificationResponseDetails,
       StartedAt: D.ts,
@@ -2043,7 +2187,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, Tags: D.list(i_Tag) } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2074,7 +2218,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { ResourceArn: 0, TagKeys: 0 } },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2104,7 +2248,16 @@ export const updateConnectionPreferences: API.OperationMethod<
   UpdateConnectionPreferencesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { UpdatedAt: D.ts } },
+  descriptor: {
+    service: svc,
+    input: {
+      Catalog: 0,
+      Revision: 0,
+      AccessType: 0,
+      ExcludedParticipantIdentifiers: 0,
+    },
+    output: { UpdatedAt: D.ts },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -2117,6 +2270,17 @@ export const updateConnectionPreferences: API.OperationMethod<
   operationName: "UpdateConnectionPreferences",
 })) as any;
 
+const i_AllianceLeadContact: D.LazyStruct = () => ({
+  FirstName: 0,
+  LastName: 0,
+  Email: 0,
+  BusinessTitle: 0,
+});
+const i_QualificationsAssociationPartner: D.LazyStruct = () => ({
+  ProfileId: 0,
+  AccountId: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_AllianceLeadContact: D.LazyStruct = () => ({
   FirstName: D.secret,
   LastName: D.secret,

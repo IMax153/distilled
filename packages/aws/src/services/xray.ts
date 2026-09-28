@@ -1045,7 +1045,12 @@ export const batchGetTraces: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Trace
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /Traces", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /Traces",
+    input: { TraceIds: 0, NextToken: 0 },
+    body: true,
+  },
   errors: [InvalidRequestException, ThrottledException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1071,7 +1076,12 @@ export const cancelTraceRetrieval: API.OperationMethod<
   CancelTraceRetrievalError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CancelTraceRetrieval", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CancelTraceRetrieval",
+    input: { RetrievalToken: 0 },
+    body: true,
+  },
   errors: [
     InvalidRequestException,
     ResourceNotFoundException,
@@ -1096,7 +1106,17 @@ export const createGroup: API.OperationMethod<
   CreateGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /CreateGroup", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /CreateGroup",
+    input: {
+      GroupName: 0,
+      FilterExpression: 0,
+      InsightsConfiguration: i_InsightsConfiguration,
+      Tags: D.list(i_Tag),
+    },
+    body: true,
+  },
   errors: [InvalidRequestException, ThrottledException, GroupAlreadyExists],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1127,6 +1147,25 @@ export const createSamplingRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /CreateSamplingRule",
+    input: {
+      SamplingRule: {
+        RuleName: 0,
+        RuleARN: 0,
+        ResourceARN: 0,
+        Priority: 0,
+        FixedRate: 0,
+        ReservoirSize: 0,
+        ServiceName: 0,
+        ServiceType: 0,
+        Host: 0,
+        HTTPMethod: 0,
+        URLPath: 0,
+        Version: 0,
+        Attributes: 0,
+        SamplingRateBoost: i_SamplingRateBoost,
+      },
+      Tags: D.list(i_Tag),
+    },
     output: { SamplingRuleRecord: o_SamplingRuleRecord },
     body: true,
   },
@@ -1155,7 +1194,12 @@ export const deleteGroup: API.OperationMethod<
   DeleteGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteGroup", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteGroup",
+    input: { GroupName: 0, GroupARN: 0 },
+    body: true,
+  },
   errors: [InvalidRequestException, ThrottledException, GroupNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1176,7 +1220,12 @@ export const deleteResourcePolicy: API.OperationMethod<
   DeleteResourcePolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /DeleteResourcePolicy", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /DeleteResourcePolicy",
+    input: { PolicyName: 0, PolicyRevisionId: 0 },
+    body: true,
+  },
   errors: [
     InvalidPolicyRevisionIdException,
     InvalidRequestException,
@@ -1204,6 +1253,7 @@ export const deleteSamplingRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /DeleteSamplingRule",
+    input: { RuleName: 0, RuleARN: 0 },
     output: { SamplingRuleRecord: o_SamplingRuleRecord },
     body: true,
   },
@@ -1226,7 +1276,7 @@ export const getEncryptionConfig: API.OperationMethod<
   GetEncryptionConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /EncryptionConfig" },
+  descriptor: { service: svc, http: "POST /EncryptionConfig", input: {} },
   errors: [InvalidRequestException, ThrottledException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1247,7 +1297,12 @@ export const getGroup: API.OperationMethod<
   GetGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetGroup", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetGroup",
+    input: { GroupName: 0, GroupARN: 0 },
+    body: true,
+  },
   errors: [InvalidRequestException, ThrottledException, GroupNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1268,7 +1323,12 @@ export const getGroups: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   GroupSummary
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /Groups", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /Groups",
+    input: { NextToken: 0 },
+    body: true,
+  },
   errors: [InvalidRequestException, ThrottledException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1298,6 +1358,7 @@ export const getIndexingRules: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetIndexingRules",
+    input: { NextToken: 0 },
     output: { IndexingRules: D.list(o_IndexingRule) },
     body: true,
   },
@@ -1325,6 +1386,7 @@ export const getInsight: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /Insight",
+    input: { InsightId: 0 },
     output: { Insight: { StartTime: D.ts, EndTime: D.ts } },
     body: true,
   },
@@ -1353,6 +1415,7 @@ export const getInsightEvents: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /InsightEvents",
+    input: { InsightId: 0, MaxResults: 0, NextToken: 0 },
     output: { InsightEvents: D.list({ EventTime: D.ts }) },
     body: true,
   },
@@ -1384,6 +1447,7 @@ export const getInsightImpactGraph: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /InsightImpactGraph",
+    input: { InsightId: 0, StartTime: 0, EndTime: 0, NextToken: 0 },
     output: {
       StartTime: D.ts,
       EndTime: D.ts,
@@ -1415,6 +1479,15 @@ export const getInsightSummaries: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /InsightSummaries",
+    input: {
+      States: 0,
+      GroupARN: 0,
+      GroupName: 0,
+      StartTime: 0,
+      EndTime: 0,
+      MaxResults: 0,
+      NextToken: 0,
+    },
     output: {
       InsightSummaries: D.list({
         StartTime: D.ts,
@@ -1460,6 +1533,7 @@ export const getRetrievedTracesGraph: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetRetrievedTracesGraph",
+    input: { RetrievalToken: 0, NextToken: 0 },
     output: { Services: D.list({ Service: o_Service }) },
     body: true,
   },
@@ -1490,6 +1564,7 @@ export const getSamplingRules: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /GetSamplingRules",
+    input: { NextToken: 0 },
     output: { SamplingRuleRecords: D.list(o_SamplingRuleRecord) },
     body: true,
   },
@@ -1521,6 +1596,7 @@ export const getSamplingStatisticSummaries: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /SamplingStatisticSummaries",
+    input: { NextToken: 0 },
     output: { SamplingStatisticSummaries: D.list({ Timestamp: D.ts }) },
     body: true,
   },
@@ -1551,6 +1627,24 @@ export const getSamplingTargets: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /SamplingTargets",
+    input: {
+      SamplingStatisticsDocuments: D.list({
+        RuleName: 0,
+        ClientID: 0,
+        Timestamp: 0,
+        RequestCount: 0,
+        SampledCount: 0,
+        BorrowCount: 0,
+      }),
+      SamplingBoostStatisticsDocuments: D.list({
+        RuleName: 0,
+        ServiceName: 0,
+        Timestamp: 0,
+        AnomalyCount: 0,
+        TotalCount: 0,
+        SampledAnomalyCount: 0,
+      }),
+    },
     output: {
       SamplingTargetDocuments: D.list({
         ReservoirQuotaTTL: D.ts,
@@ -1587,6 +1681,13 @@ export const getServiceGraph: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ServiceGraph",
+    input: {
+      StartTime: 0,
+      EndTime: 0,
+      GroupName: 0,
+      GroupARN: 0,
+      NextToken: 0,
+    },
     output: { StartTime: D.ts, EndTime: D.ts, Services: D.list(o_Service) },
     body: true,
   },
@@ -1619,6 +1720,16 @@ export const getTimeSeriesServiceStatistics: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /TimeSeriesServiceStatistics",
+    input: {
+      StartTime: 0,
+      EndTime: 0,
+      GroupName: 0,
+      GroupARN: 0,
+      EntitySelectorExpression: 0,
+      Period: 0,
+      ForecastStatistics: 0,
+      NextToken: 0,
+    },
     output: { TimeSeriesServiceStatistics: D.list({ Timestamp: D.ts }) },
     body: true,
   },
@@ -1650,6 +1761,7 @@ export const getTraceGraph: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /TraceGraph",
+    input: { TraceIds: 0, NextToken: 0 },
     output: { Services: D.list(o_Service) },
     body: true,
   },
@@ -1677,7 +1789,11 @@ export const getTraceSegmentDestination: API.OperationMethod<
   GetTraceSegmentDestinationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetTraceSegmentDestination" },
+  descriptor: {
+    service: svc,
+    http: "POST /GetTraceSegmentDestination",
+    input: {},
+  },
   errors: [InvalidRequestException, ThrottledException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1718,6 +1834,15 @@ export const getTraceSummaries: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /TraceSummaries",
+    input: {
+      StartTime: 0,
+      EndTime: 0,
+      TimeRangeType: 0,
+      Sampling: 0,
+      SamplingStrategy: { Name: 0, Value: 0 },
+      FilterExpression: 0,
+      NextToken: 0,
+    },
     output: {
       TraceSummaries: D.list({ StartTime: D.ts, MatchedEventTime: D.ts }),
       ApproximateTime: D.ts,
@@ -1752,6 +1877,7 @@ export const listResourcePolicies: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /ListResourcePolicies",
+    input: { NextToken: 0 },
     output: { ResourcePolicies: D.list(o_ResourcePolicy) },
     body: true,
   },
@@ -1788,7 +1914,12 @@ export const listRetrievedTraces: API.OperationMethod<
   ListRetrievedTracesError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /ListRetrievedTraces", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListRetrievedTraces",
+    input: { RetrievalToken: 0, TraceFormat: 0, NextToken: 0 },
+    body: true,
+  },
   errors: [
     InvalidRequestException,
     ResourceNotFoundException,
@@ -1814,7 +1945,12 @@ export const listTagsForResource: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Tag
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, http: "POST /ListTagsForResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /ListTagsForResource",
+    input: { ResourceARN: 0, NextToken: 0 },
+    body: true,
+  },
   errors: [
     InvalidRequestException,
     ResourceNotFoundException,
@@ -1843,7 +1979,12 @@ export const putEncryptionConfig: API.OperationMethod<
   PutEncryptionConfigError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /PutEncryptionConfig", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /PutEncryptionConfig",
+    input: { KeyId: 0, Type: 0 },
+    body: true,
+  },
   errors: [InvalidRequestException, ThrottledException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1873,6 +2014,12 @@ export const putResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /PutResourcePolicy",
+    input: {
+      PolicyName: 0,
+      PolicyDocument: 0,
+      PolicyRevisionId: 0,
+      BypassPolicyLockoutCheck: 0,
+    },
     output: { ResourcePolicy: o_ResourcePolicy },
     body: true,
   },
@@ -1902,7 +2049,31 @@ export const putTelemetryRecords: API.OperationMethod<
   PutTelemetryRecordsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /TelemetryRecords", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /TelemetryRecords",
+    input: {
+      TelemetryRecords: D.list({
+        Timestamp: 0,
+        SegmentsReceivedCount: 0,
+        SegmentsSentCount: 0,
+        SegmentsSpilloverCount: 0,
+        SegmentsRejectedCount: 0,
+        BackendConnectionErrors: {
+          TimeoutCount: 0,
+          ConnectionRefusedCount: 0,
+          HTTPCode4XXCount: 0,
+          HTTPCode5XXCount: 0,
+          UnknownHostCount: 0,
+          OtherCount: 0,
+        },
+      }),
+      EC2InstanceId: 0,
+      Hostname: 0,
+      ResourceARN: 0,
+    },
+    body: true,
+  },
   errors: [InvalidRequestException, ThrottledException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -1973,7 +2144,12 @@ export const putTraceSegments: API.OperationMethod<
   PutTraceSegmentsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /TraceSegments", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /TraceSegments",
+    input: { TraceSegmentDocuments: 0 },
+    body: true,
+  },
   errors: [InvalidRequestException, ThrottledException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2000,7 +2176,12 @@ export const startTraceRetrieval: API.OperationMethod<
   StartTraceRetrievalError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /StartTraceRetrieval", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /StartTraceRetrieval",
+    input: { TraceIds: 0, StartTime: 0, EndTime: 0 },
+    body: true,
+  },
   errors: [
     InvalidRequestException,
     ResourceNotFoundException,
@@ -2026,7 +2207,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /TagResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /TagResource",
+    input: { ResourceARN: 0, Tags: D.list(i_Tag) },
+    body: true,
+  },
   errors: [
     InvalidRequestException,
     ResourceNotFoundException,
@@ -2053,7 +2239,12 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UntagResource", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UntagResource",
+    input: { ResourceARN: 0, TagKeys: 0 },
+    body: true,
+  },
   errors: [
     InvalidRequestException,
     ResourceNotFoundException,
@@ -2078,7 +2269,17 @@ export const updateGroup: API.OperationMethod<
   UpdateGroupError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /UpdateGroup", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /UpdateGroup",
+    input: {
+      GroupName: 0,
+      GroupARN: 0,
+      FilterExpression: 0,
+      InsightsConfiguration: i_InsightsConfiguration,
+    },
+    body: true,
+  },
   errors: [InvalidRequestException, ThrottledException, GroupNotFound],
   protocol: AwsProtocol,
   retry: Retry,
@@ -2104,6 +2305,10 @@ export const updateIndexingRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateIndexingRule",
+    input: {
+      Name: 0,
+      Rule: { Probabilistic: { DesiredSamplingPercentage: 0 } },
+    },
     output: { IndexingRule: o_IndexingRule },
     body: true,
   },
@@ -2134,6 +2339,23 @@ export const updateSamplingRule: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateSamplingRule",
+    input: {
+      SamplingRuleUpdate: {
+        RuleName: 0,
+        RuleARN: 0,
+        ResourceARN: 0,
+        Priority: 0,
+        FixedRate: 0,
+        ReservoirSize: 0,
+        Host: 0,
+        ServiceName: 0,
+        ServiceType: 0,
+        HTTPMethod: 0,
+        URLPath: 0,
+        Attributes: 0,
+        SamplingRateBoost: i_SamplingRateBoost,
+      },
+    },
     output: { SamplingRuleRecord: o_SamplingRuleRecord },
     body: true,
   },
@@ -2159,6 +2381,7 @@ export const updateTraceSegmentDestination: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /UpdateTraceSegmentDestination",
+    input: { Destination: 0 },
     body: true,
   },
   errors: [InvalidRequestException, ThrottledException],
@@ -2167,6 +2390,15 @@ export const updateTraceSegmentDestination: API.OperationMethod<
   operationName: "UpdateTraceSegmentDestination",
 })) as any;
 
+const i_InsightsConfiguration: D.LazyStruct = () => ({
+  InsightsEnabled: 0,
+  NotificationsEnabled: 0,
+});
+const i_SamplingRateBoost: D.LazyStruct = () => ({
+  MaxRate: 0,
+  CooldownWindowMinutes: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_IndexingRule: D.LazyStruct = () => ({ ModifiedAt: D.ts });
 const o_ResourcePolicy: D.LazyStruct = () => ({ LastUpdatedTime: D.ts });
 const o_SamplingRuleRecord: D.LazyStruct = () => ({

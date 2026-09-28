@@ -1,5 +1,6 @@
 import type * as HttpClient from "effect/unstable/http/HttpClient";
 import * as API from "@distilled.cloud/core/api";
+import * as D from "@distilled.cloud/core/shape";
 import { AwsProtocol } from "../protocol.ts";
 import { restJson1Protocol } from "../protocols/rest-json.ts";
 import { Retry } from "../retry.ts";
@@ -177,7 +178,22 @@ export const batchGetMetrics: API.OperationMethod<
   BatchGetMetricsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /BatchGetMetrics", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /BatchGetMetrics",
+    input: {
+      MetricQueries: D.list({
+        MetricName: 0,
+        ResourceArn: 0,
+        MetricStat: 0,
+        Period: 0,
+        XAxisType: 0,
+        Start: 0,
+        End: 0,
+      }),
+    },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,
@@ -194,7 +210,15 @@ export const batchPutMetrics: API.OperationMethod<
   BatchPutMetricsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "PUT /BatchPutMetrics", body: true },
+  descriptor: {
+    service: svc,
+    http: "PUT /BatchPutMetrics",
+    input: {
+      TrialComponentName: 0,
+      MetricData: D.list({ MetricName: 0, Timestamp: 0, Step: 0, Value: 0 }),
+    },
+    body: true,
+  },
   errors: [],
   protocol: AwsProtocol,
   retry: Retry,

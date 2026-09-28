@@ -1,5 +1,6 @@
 import type * as HttpClient from "effect/unstable/http/HttpClient";
 import * as API from "@distilled.cloud/core/api";
+import * as D from "@distilled.cloud/core/shape";
 import * as TE from "@distilled.cloud/core/error-class";
 import { AwsProtocol } from "../protocol.ts";
 import { restJson1Protocol } from "../protocols/rest-json.ts";
@@ -194,7 +195,12 @@ export const getDeployments: API.OperationMethod<
   GetDeploymentsError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetDeployments", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetDeployments",
+    input: { DeviceName: 0, DeviceFleetName: 0 },
+    body: true,
+  },
   errors: [InternalServiceException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -213,7 +219,12 @@ export const getDeviceRegistration: API.OperationMethod<
   GetDeviceRegistrationError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /GetDeviceRegistration", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /GetDeviceRegistration",
+    input: { DeviceName: 0, DeviceFleetName: 0 },
+    body: true,
+  },
   errors: [InternalServiceException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -230,9 +241,50 @@ export const sendHeartbeat: API.OperationMethod<
   SendHeartbeatError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /SendHeartbeat", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /SendHeartbeat",
+    input: {
+      AgentMetrics: D.list(i_EdgeMetric),
+      Models: D.list({
+        ModelName: 0,
+        ModelVersion: 0,
+        LatestSampleTime: 0,
+        LatestInference: 0,
+        ModelMetrics: D.list(i_EdgeMetric),
+      }),
+      AgentVersion: 0,
+      DeviceName: 0,
+      DeviceFleetName: 0,
+      DeploymentResult: {
+        DeploymentName: 0,
+        DeploymentStatus: 0,
+        DeploymentStatusMessage: 0,
+        DeploymentStartTime: 0,
+        DeploymentEndTime: 0,
+        DeploymentModels: D.list({
+          ModelHandle: 0,
+          ModelName: 0,
+          ModelVersion: 0,
+          DesiredState: 0,
+          State: 0,
+          Status: 0,
+          StatusReason: 0,
+          RollbackFailureReason: 0,
+        }),
+      },
+    },
+    body: true,
+  },
   errors: [InternalServiceException],
   protocol: AwsProtocol,
   retry: Retry,
   operationName: "SendHeartbeat",
 })) as any;
+
+const i_EdgeMetric: D.LazyStruct = () => ({
+  Dimension: 0,
+  MetricName: 0,
+  Value: 0,
+  Timestamp: 0,
+});

@@ -344,6 +344,7 @@ export const associateProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /profileassociation",
+    input: { ProfileId: 0, ResourceId: 0, Name: 0, Tags: D.list(i_Tag) },
     output: { ProfileAssociation: o_ProfileAssociation },
     body: true,
   },
@@ -384,6 +385,7 @@ export const associateResourceToProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /profileresourceassociation",
+    input: { ProfileId: 0, ResourceArn: 0, Name: 0, ResourceProperties: 0 },
     output: { ProfileResourceAssociation: o_ProfileResourceAssociation },
     body: true,
   },
@@ -421,7 +423,11 @@ export const createProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /profile",
-    input: { ClientToken: D.m({ idempotency: true }) },
+    input: {
+      Name: 0,
+      ClientToken: D.m({ idempotency: true }),
+      Tags: D.list(i_Tag),
+    },
     output: { Profile: o_Profile },
     body: true,
   },
@@ -456,6 +462,7 @@ export const deleteProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /profile/{ProfileId}",
+    input: { ProfileId: 0 },
     output: { Profile: o_Profile },
   },
   errors: [
@@ -490,6 +497,7 @@ export const disassociateProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /profileassociation/Profileid/{ProfileId}/resourceid/{ResourceId}",
+    input: { ProfileId: 0, ResourceId: 0 },
     output: { ProfileAssociation: o_ProfileAssociation },
   },
   errors: [
@@ -527,6 +535,7 @@ export const disassociateResourceFromProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /profileresourceassociation/profileid/{ProfileId}/resourcearn/{ResourceArn}",
+    input: { ProfileId: 0, ResourceArn: 0 },
     output: { ProfileResourceAssociation: o_ProfileResourceAssociation },
   },
   errors: [
@@ -562,6 +571,7 @@ export const getProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /profile/{ProfileId}",
+    input: { ProfileId: 0 },
     output: { Profile: o_Profile },
   },
   errors: [
@@ -593,6 +603,7 @@ export const getProfileAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /profileassociation/{ProfileAssociationId}",
+    input: { ProfileAssociationId: 0 },
     output: { ProfileAssociation: o_ProfileAssociation },
   },
   errors: [
@@ -625,6 +636,7 @@ export const getProfileResourceAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /profileresourceassociation/{ProfileResourceAssociationId}",
+    input: { ProfileResourceAssociationId: 0 },
     output: { ProfileResourceAssociation: o_ProfileResourceAssociation },
   },
   errors: [
@@ -708,6 +720,7 @@ export const listProfileResourceAssociations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /profileresourceassociations/profileid/{ProfileId}",
     input: {
+      ProfileId: 0,
       ResourceType: D.m({ query: "resourceType" }),
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
@@ -795,7 +808,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{ResourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
+  },
   errors: [
     AccessDeniedException,
     ConflictException,
@@ -823,7 +840,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{ResourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{ResourceArn}",
+    input: { ResourceArn: 0, Tags: 0 },
+    body: true,
+  },
   errors: [
     AccessDeniedException,
     ResourceNotFoundException,
@@ -854,7 +876,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     AccessDeniedException,
@@ -890,6 +912,7 @@ export const updateProfileResourceAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PATCH /profileresourceassociation/{ProfileResourceAssociationId}",
+    input: { ProfileResourceAssociationId: 0, Name: 0, ResourceProperties: 0 },
     output: { ProfileResourceAssociation: o_ProfileResourceAssociation },
     body: true,
   },
@@ -908,6 +931,7 @@ export const updateProfileResourceAssociation: API.OperationMethod<
   operationName: "UpdateProfileResourceAssociation",
 })) as any;
 
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Profile: D.LazyStruct = () => ({
   CreationTime: D.ts,
   ModificationTime: D.ts,

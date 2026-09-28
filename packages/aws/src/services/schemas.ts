@@ -509,7 +509,12 @@ export const createDiscoverer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/discoverers",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: {
+      Description: 0,
+      SourceArn: 0,
+      CrossAccount: 0,
+      Tags: D.m({ wire: "tags" }),
+    },
     output: { Tags: D.m({ wire: "tags" }) },
     body: true,
   },
@@ -546,7 +551,7 @@ export const createRegistry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/registries/name/{RegistryName}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: { Description: 0, RegistryName: 0, Tags: D.m({ wire: "tags" }) },
     output: { Tags: D.m({ wire: "tags" }) },
     body: true,
   },
@@ -583,7 +588,14 @@ export const createSchema: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/registries/name/{RegistryName}/schemas/name/{SchemaName}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: {
+      Content: 0,
+      Description: 0,
+      RegistryName: 0,
+      SchemaName: 0,
+      Tags: D.m({ wire: "tags" }),
+      Type: 0,
+    },
     output: {
       LastModified: D.ts,
       Tags: D.m({ wire: "tags" }),
@@ -622,6 +634,7 @@ export const deleteDiscoverer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/discoverers/id/{DiscovererId}",
+    input: { DiscovererId: 0 },
   },
   errors: [
     BadRequestException,
@@ -656,6 +669,7 @@ export const deleteRegistry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/registries/name/{RegistryName}",
+    input: { RegistryName: 0 },
   },
   errors: [
     BadRequestException,
@@ -725,6 +739,7 @@ export const deleteSchema: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/registries/name/{RegistryName}/schemas/name/{SchemaName}",
+    input: { RegistryName: 0, SchemaName: 0 },
   },
   errors: [
     BadRequestException,
@@ -759,6 +774,7 @@ export const deleteSchemaVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /v1/registries/name/{RegistryName}/schemas/name/{SchemaName}/version/{SchemaVersion}",
+    input: { RegistryName: 0, SchemaName: 0, SchemaVersion: 0 },
   },
   errors: [
     BadRequestException,
@@ -793,7 +809,12 @@ export const describeCodeBinding: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/registries/name/{RegistryName}/schemas/name/{SchemaName}/language/{Language}",
-    input: { SchemaVersion: D.m({ query: "schemaVersion" }) },
+    input: {
+      Language: 0,
+      RegistryName: 0,
+      SchemaName: 0,
+      SchemaVersion: D.m({ query: "schemaVersion" }),
+    },
     output: { CreationDate: D.ts, LastModified: D.ts },
   },
   errors: [
@@ -829,6 +850,7 @@ export const describeDiscoverer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/discoverers/id/{DiscovererId}",
+    input: { DiscovererId: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
   },
   errors: [
@@ -864,6 +886,7 @@ export const describeRegistry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/registries/name/{RegistryName}",
+    input: { RegistryName: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
   },
   errors: [
@@ -899,7 +922,11 @@ export const describeSchema: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/registries/name/{RegistryName}/schemas/name/{SchemaName}",
-    input: { SchemaVersion: D.m({ query: "schemaVersion" }) },
+    input: {
+      RegistryName: 0,
+      SchemaName: 0,
+      SchemaVersion: D.m({ query: "schemaVersion" }),
+    },
     output: {
       LastModified: D.ts,
       Tags: D.m({ wire: "tags" }),
@@ -941,6 +968,8 @@ export const exportSchema: API.OperationMethod<
     service: svc,
     http: "GET /v1/registries/name/{RegistryName}/schemas/name/{SchemaName}/export",
     input: {
+      RegistryName: 0,
+      SchemaName: 0,
       SchemaVersion: D.m({ query: "schemaVersion" }),
       Type: D.m({ query: "type" }),
     },
@@ -979,8 +1008,13 @@ export const getCodeBindingSource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /v1/registries/name/{RegistryName}/schemas/name/{SchemaName}/language/{Language}/source",
-    input: { SchemaVersion: D.m({ query: "schemaVersion" }) },
-    output: { Body: D.m({ payload: true, shape: D.stream }) },
+    input: {
+      Language: 0,
+      RegistryName: 0,
+      SchemaName: 0,
+      SchemaVersion: D.m({ query: "schemaVersion" }),
+    },
+    output: { Body: D.m({ payload: true, shape: D.blob }) },
   },
   errors: [
     BadRequestException,
@@ -1011,7 +1045,12 @@ export const getDiscoveredSchema: API.OperationMethod<
   GetDiscoveredSchemaError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /v1/discover", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /v1/discover",
+    input: { Events: 0, Type: 0 },
+    body: true,
+  },
   errors: [
     BadRequestException,
     ForbiddenException,
@@ -1174,6 +1213,7 @@ export const listSchemas: API.PaginatedOperationMethod<
     input: {
       Limit: D.m({ query: "limit" }),
       NextToken: D.m({ query: "nextToken" }),
+      RegistryName: 0,
       SchemaNamePrefix: D.m({ query: "schemaNamePrefix" }),
     },
     output: {
@@ -1222,6 +1262,8 @@ export const listSchemaVersions: API.PaginatedOperationMethod<
     input: {
       Limit: D.m({ query: "limit" }),
       NextToken: D.m({ query: "nextToken" }),
+      RegistryName: 0,
+      SchemaName: 0,
     },
   },
   errors: [
@@ -1261,6 +1303,7 @@ export const listTagsForResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
   },
   errors: [
@@ -1296,7 +1339,12 @@ export const putCodeBinding: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/registries/name/{RegistryName}/schemas/name/{SchemaName}/language/{Language}",
-    input: { SchemaVersion: D.m({ query: "schemaVersion" }) },
+    input: {
+      Language: 0,
+      RegistryName: 0,
+      SchemaName: 0,
+      SchemaVersion: D.m({ query: "schemaVersion" }),
+    },
     output: { CreationDate: D.ts, LastModified: D.ts },
   },
   errors: [
@@ -1335,7 +1383,11 @@ export const putResourcePolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/policy",
-    input: { RegistryName: D.m({ query: "registryName" }) },
+    input: {
+      Policy: 0,
+      RegistryName: D.m({ query: "registryName" }),
+      RevisionId: 0,
+    },
     body: true,
   },
   errors: [
@@ -1376,6 +1428,7 @@ export const searchSchemas: API.PaginatedOperationMethod<
       Keywords: D.m({ query: "keywords" }),
       Limit: D.m({ query: "limit" }),
       NextToken: D.m({ query: "nextToken" }),
+      RegistryName: 0,
     },
     output: {
       Schemas: D.list({ SchemaVersions: D.list({ CreatedDate: D.ts }) }),
@@ -1419,6 +1472,7 @@ export const startDiscoverer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/discoverers/id/{DiscovererId}/start",
+    input: { DiscovererId: 0 },
   },
   errors: [
     BadRequestException,
@@ -1453,6 +1507,7 @@ export const stopDiscoverer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /v1/discoverers/id/{DiscovererId}/stop",
+    input: { DiscovererId: 0 },
   },
   errors: [
     BadRequestException,
@@ -1485,7 +1540,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags/{ResourceArn}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: { ResourceArn: 0, Tags: D.m({ wire: "tags" }) },
     body: true,
   },
   errors: [
@@ -1517,7 +1572,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     BadRequestException,
@@ -1550,6 +1605,7 @@ export const updateDiscoverer: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/discoverers/id/{DiscovererId}",
+    input: { Description: 0, DiscovererId: 0, CrossAccount: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
     body: true,
   },
@@ -1586,6 +1642,7 @@ export const updateRegistry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/registries/name/{RegistryName}",
+    input: { Description: 0, RegistryName: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
     body: true,
   },
@@ -1623,7 +1680,14 @@ export const updateSchema: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /v1/registries/name/{RegistryName}/schemas/name/{SchemaName}",
-    input: { ClientTokenId: D.m({ idempotency: true }) },
+    input: {
+      ClientTokenId: D.m({ idempotency: true }),
+      Content: 0,
+      Description: 0,
+      RegistryName: 0,
+      SchemaName: 0,
+      Type: 0,
+    },
     output: {
       LastModified: D.ts,
       Tags: D.m({ wire: "tags" }),

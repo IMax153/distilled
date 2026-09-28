@@ -2230,7 +2230,11 @@ export const activateCertificateAuthority: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/certificate-authorities/{certificateAuthorityId}/activate",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      clusterName: 0,
+      certificateAuthorityId: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     output: {
       update: o_Update,
       certificateAuthority: o_CertificateAuthoritySummary,
@@ -2268,6 +2272,12 @@ export const associateAccessPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/access-entries/{principalArn}/access-policies",
+    input: {
+      clusterName: 0,
+      principalArn: 0,
+      policyArn: 0,
+      accessScope: { type: 0, namespaces: 0 },
+    },
     output: { associatedAccessPolicy: o_AssociatedAccessPolicy },
     body: true,
   },
@@ -2307,7 +2317,11 @@ export const associateEncryptionConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/encryption-config/associate",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      clusterName: 0,
+      encryptionConfig: D.list(i_EncryptionConfig),
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     output: { update: o_Update },
     body: true,
   },
@@ -2354,7 +2368,21 @@ export const associateIdentityProviderConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/identity-provider-configs/associate",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      clusterName: 0,
+      oidc: {
+        identityProviderConfigName: 0,
+        issuerUrl: 0,
+        clientId: 0,
+        usernameClaim: 0,
+        usernamePrefix: 0,
+        groupsClaim: 0,
+        groupsPrefix: 0,
+        requiredClaims: 0,
+      },
+      tags: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     output: { update: o_Update },
     body: true,
   },
@@ -2401,7 +2429,11 @@ export const cancelUpdate: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{name}/updates/{updateId}/cancel-update",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      updateId: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     output: { update: o_Update },
     body: true,
   },
@@ -2454,7 +2486,15 @@ export const createAccessEntry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/access-entries",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      clusterName: 0,
+      principalArn: 0,
+      kubernetesGroups: 0,
+      tags: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      username: 0,
+      type: 0,
+    },
     output: { accessEntry: o_AccessEntry },
     body: true,
   },
@@ -2495,7 +2535,18 @@ export const createAddon: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/addons",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      clusterName: 0,
+      addonName: 0,
+      addonVersion: 0,
+      serviceAccountRoleArn: 0,
+      resolveConflicts: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      tags: 0,
+      configurationValues: 0,
+      podIdentityAssociations: D.list(i_AddonPodIdentityAssociations),
+      namespaceConfig: { namespace: 0 },
+    },
     output: { addon: o_Addon },
     body: true,
   },
@@ -2539,7 +2590,23 @@ export const createCapability: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/capabilities",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      capabilityName: 0,
+      clusterName: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      type: 0,
+      roleArn: 0,
+      configuration: {
+        argoCd: {
+          namespace: 0,
+          awsIdc: { idcInstanceArn: 0, idcRegion: 0 },
+          rbacRoleMappings: D.list(i_ArgoCdRoleMapping),
+          networkAccess: i_ArgoCdNetworkAccessConfigRequest,
+        },
+      },
+      tags: 0,
+      deletePropagationPolicy: 0,
+    },
     output: { capability: o_Capability },
     body: true,
   },
@@ -2602,7 +2669,7 @@ export const createCertificateAuthority: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/certificate-authorities",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: { clusterName: 0, clientRequestToken: D.m({ idempotency: true }) },
     output: {
       update: o_Update,
       certificateAuthority: o_CertificateAuthoritySummary,
@@ -2686,7 +2753,39 @@ export const createCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      version: 0,
+      roleArn: 0,
+      resourcesVpcConfig: i_VpcConfigRequest,
+      kubernetesNetworkConfig: i_KubernetesNetworkConfigRequest,
+      logging: i_Logging,
+      clientRequestToken: D.m({ idempotency: true }),
+      tags: 0,
+      encryptionConfig: D.list(i_EncryptionConfig),
+      outpostConfig: {
+        outpostArns: 0,
+        controlPlaneInstanceType: 0,
+        controlPlanePlacement: { groupName: 0, spreadLevel: 0 },
+        etcdInstanceType: 0,
+        etcdPlacement: { spreadLevel: 0 },
+      },
+      accessConfig: {
+        bootstrapClusterCreatorAdminPermissions: 0,
+        authenticationMode: 0,
+      },
+      bootstrapSelfManagedAddons: 0,
+      upgradePolicy: i_UpgradePolicyRequest,
+      zonalShiftConfig: i_ZonalShiftConfigRequest,
+      remoteNetworkConfig: i_RemoteNetworkConfigRequest,
+      computeConfig: i_ComputeConfigRequest,
+      storageConfig: i_StorageConfigRequest,
+      deletionProtection: 0,
+      controlPlaneScalingConfig: i_ControlPlaneScalingConfig,
+      kubeApiServerConfig: i_KubeApiServerConfigRequest,
+      kubeSchedulerConfig: i_KubeSchedulerConfigRequest,
+      kubeControllerManagerConfig: i_KubeControllerManagerConfigRequest,
+    },
     output: { cluster: o_Cluster },
     body: true,
   },
@@ -2726,7 +2825,15 @@ export const createEksAnywhereSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /eks-anywhere-subscriptions",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      term: { duration: 0, unit: 0 },
+      licenseQuantity: 0,
+      licenseType: 0,
+      autoRenew: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { subscription: o_EksAnywhereSubscription },
     body: true,
   },
@@ -2792,7 +2899,15 @@ export const createFargateProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/fargate-profiles",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      fargateProfileName: 0,
+      clusterName: 0,
+      podExecutionRoleArn: 0,
+      subnets: 0,
+      selectors: D.list({ namespace: 0, labels: 0 }),
+      clientRequestToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { fargateProfile: o_FargateProfile },
     body: true,
   },
@@ -2850,7 +2965,28 @@ export const createNodegroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/node-groups",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      clusterName: 0,
+      nodegroupName: 0,
+      scalingConfig: i_NodegroupScalingConfig,
+      diskSize: 0,
+      subnets: 0,
+      instanceTypes: 0,
+      amiType: 0,
+      remoteAccess: { ec2SshKey: 0, sourceSecurityGroups: 0 },
+      nodeRole: 0,
+      labels: 0,
+      taints: D.list(i_Taint),
+      tags: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      launchTemplate: i_LaunchTemplateSpecification,
+      updateConfig: i_NodegroupUpdateConfig,
+      nodeRepairConfig: i_NodeRepairConfig,
+      capacityType: 0,
+      version: 0,
+      releaseVersion: 0,
+      warmPoolConfig: i_WarmPoolConfig,
+    },
     output: { nodegroup: o_Nodegroup },
     body: true,
   },
@@ -2915,7 +3051,17 @@ export const createPodIdentityAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/pod-identity-associations",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      clusterName: 0,
+      namespace: 0,
+      serviceAccount: 0,
+      roleArn: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      tags: 0,
+      disableSessionTags: 0,
+      targetRoleArn: 0,
+      policy: 0,
+    },
     output: { association: o_PodIdentityAssociation },
     body: true,
   },
@@ -2953,6 +3099,7 @@ export const deleteAccessEntry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /clusters/{clusterName}/access-entries/{principalArn}",
+    input: { clusterName: 0, principalArn: 0 },
   },
   errors: [InvalidRequestException, ResourceNotFoundException, ServerException],
   protocol: AwsProtocol,
@@ -2982,7 +3129,11 @@ export const deleteAddon: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /clusters/{clusterName}/addons/{addonName}",
-    input: { preserve: D.m({ query: "preserve" }) },
+    input: {
+      clusterName: 0,
+      addonName: 0,
+      preserve: D.m({ query: "preserve" }),
+    },
     output: { addon: o_Addon },
   },
   errors: [
@@ -3018,6 +3169,7 @@ export const deleteCapability: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /clusters/{clusterName}/capabilities/{capabilityName}",
+    input: { clusterName: 0, capabilityName: 0 },
     output: { capability: o_Capability },
   },
   errors: [
@@ -3062,6 +3214,8 @@ export const deleteCertificateAuthority: API.OperationMethod<
     service: svc,
     http: "DELETE /clusters/{clusterName}/certificate-authorities/{certificateAuthorityId}",
     input: {
+      clusterName: 0,
+      certificateAuthorityId: 0,
       clientRequestToken: D.m({
         query: "clientRequestToken",
         idempotency: true,
@@ -3114,6 +3268,7 @@ export const deleteCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /clusters/{name}",
+    input: { name: 0 },
     output: { cluster: o_Cluster },
   },
   errors: [
@@ -3150,6 +3305,7 @@ export const deleteEksAnywhereSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /eks-anywhere-subscriptions/{id}",
+    input: { id: 0 },
     output: { subscription: o_EksAnywhereSubscription },
   },
   errors: [
@@ -3192,6 +3348,7 @@ export const deleteFargateProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /clusters/{clusterName}/fargate-profiles/{fargateProfileName}",
+    input: { clusterName: 0, fargateProfileName: 0 },
     output: { fargateProfile: o_FargateProfile },
   },
   errors: [
@@ -3226,6 +3383,7 @@ export const deleteNodegroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /clusters/{clusterName}/node-groups/{nodegroupName}",
+    input: { clusterName: 0, nodegroupName: 0 },
     output: { nodegroup: o_Nodegroup },
   },
   errors: [
@@ -3261,6 +3419,7 @@ export const deletePodIdentityAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /clusters/{clusterName}/pod-identity-associations/{associationId}",
+    input: { clusterName: 0, associationId: 0 },
     output: { association: o_PodIdentityAssociation },
   },
   errors: [
@@ -3297,6 +3456,7 @@ export const deregisterCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /cluster-registrations/{name}",
+    input: { name: 0 },
     output: { cluster: o_Cluster },
   },
   errors: [
@@ -3329,6 +3489,7 @@ export const describeAccessEntry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /clusters/{clusterName}/access-entries/{principalArn}",
+    input: { clusterName: 0, principalArn: 0 },
     output: { accessEntry: o_AccessEntry },
   },
   errors: [InvalidRequestException, ResourceNotFoundException, ServerException],
@@ -3356,6 +3517,7 @@ export const describeAddon: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /clusters/{clusterName}/addons/{addonName}",
+    input: { clusterName: 0, addonName: 0 },
     output: { addon: o_Addon },
   },
   errors: [
@@ -3468,6 +3630,7 @@ export const describeCapability: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /clusters/{clusterName}/capabilities/{capabilityName}",
+    input: { clusterName: 0, capabilityName: 0 },
     output: { capability: o_Capability },
   },
   errors: [
@@ -3500,6 +3663,7 @@ export const describeCertificateAuthority: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /clusters/{clusterName}/certificate-authorities/{certificateAuthorityId}",
+    input: { clusterName: 0, certificateAuthorityId: 0 },
     output: {
       certificateAuthority: {
         createdAt: D.ts,
@@ -3548,6 +3712,7 @@ export const describeCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /clusters/{name}",
+    input: { name: 0 },
     output: { cluster: o_Cluster },
   },
   errors: [
@@ -3627,6 +3792,7 @@ export const describeEksAnywhereSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /eks-anywhere-subscriptions/{id}",
+    input: { id: 0 },
     output: { subscription: o_EksAnywhereSubscription },
   },
   errors: [
@@ -3658,6 +3824,7 @@ export const describeFargateProfile: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /clusters/{clusterName}/fargate-profiles/{fargateProfileName}",
+    input: { clusterName: 0, fargateProfileName: 0 },
     output: { fargateProfile: o_FargateProfile },
   },
   errors: [
@@ -3690,6 +3857,7 @@ export const describeIdentityProviderConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/identity-provider-configs/describe",
+    input: { clusterName: 0, identityProviderConfig: i_IdentityProviderConfig },
     body: true,
   },
   errors: [
@@ -3722,6 +3890,7 @@ export const describeInsight: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /clusters/{clusterName}/insights/{id}",
+    input: { clusterName: 0, id: 0 },
     output: {
       insight: {
         lastRefreshTime: D.ts,
@@ -3763,6 +3932,7 @@ export const describeInsightsRefresh: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /clusters/{clusterName}/insights-refresh",
+    input: { clusterName: 0 },
     output: { startedAt: D.ts, endedAt: D.ts },
   },
   errors: [
@@ -3795,6 +3965,7 @@ export const describeNodegroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /clusters/{clusterName}/node-groups/{nodegroupName}",
+    input: { clusterName: 0, nodegroupName: 0 },
     output: { nodegroup: o_Nodegroup },
   },
   errors: [
@@ -3832,6 +4003,7 @@ export const describePodIdentityAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /clusters/{clusterName}/pod-identity-associations/{associationId}",
+    input: { clusterName: 0, associationId: 0 },
     output: { association: o_PodIdentityAssociation },
   },
   errors: [
@@ -3868,6 +4040,8 @@ export const describeUpdate: API.OperationMethod<
     service: svc,
     http: "GET /clusters/{name}/updates/{updateId}",
     input: {
+      name: 0,
+      updateId: 0,
       nodegroupName: D.m({ query: "nodegroupName" }),
       addonName: D.m({ query: "addonName" }),
       capabilityName: D.m({ query: "capabilityName" }),
@@ -3902,6 +4076,7 @@ export const disassociateAccessPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /clusters/{clusterName}/access-entries/{principalArn}/access-policies/{policyArn}",
+    input: { clusterName: 0, principalArn: 0, policyArn: 0 },
   },
   errors: [InvalidRequestException, ResourceNotFoundException, ServerException],
   protocol: AwsProtocol,
@@ -3934,7 +4109,11 @@ export const disassociateIdentityProviderConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/identity-provider-configs/disassociate",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      clusterName: 0,
+      identityProviderConfig: i_IdentityProviderConfig,
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     output: { update: o_Update },
     body: true,
   },
@@ -3972,6 +4151,7 @@ export const listAccessEntries: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /clusters/{clusterName}/access-entries",
     input: {
+      clusterName: 0,
       associatedPolicyArn: D.m({ query: "associatedPolicyArn" }),
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
@@ -4046,6 +4226,7 @@ export const listAddons: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /clusters/{clusterName}/addons",
     input: {
+      clusterName: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -4087,6 +4268,8 @@ export const listAssociatedAccessPolicies: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /clusters/{clusterName}/access-entries/{principalArn}/access-policies",
     input: {
+      clusterName: 0,
+      principalArn: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -4122,6 +4305,7 @@ export const listCapabilities: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /clusters/{clusterName}/capabilities",
     input: {
+      clusterName: 0,
       nextToken: D.m({ query: "nextToken" }),
       maxResults: D.m({ query: "maxResults" }),
     },
@@ -4161,6 +4345,7 @@ export const listCertificateAuthorities: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /clusters/{clusterName}/certificate-authorities",
     input: {
+      clusterName: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -4289,6 +4474,7 @@ export const listFargateProfiles: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /clusters/{clusterName}/fargate-profiles",
     input: {
+      clusterName: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -4331,6 +4517,7 @@ export const listIdentityProviderConfigs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /clusters/{clusterName}/identity-provider-configs",
     input: {
+      clusterName: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -4383,6 +4570,12 @@ export const listInsights: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/insights",
+    input: {
+      clusterName: 0,
+      filter: { categories: 0, kubernetesVersions: 0, statuses: 0 },
+      maxResults: 0,
+      nextToken: 0,
+    },
     output: {
       insights: D.list({ lastRefreshTime: D.ts, lastTransitionTime: D.ts }),
     },
@@ -4427,6 +4620,7 @@ export const listNodegroups: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /clusters/{clusterName}/node-groups",
     input: {
+      clusterName: 0,
       maxResults: D.m({ query: "maxResults" }),
       nextToken: D.m({ query: "nextToken" }),
     },
@@ -4470,6 +4664,7 @@ export const listPodIdentityAssociations: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /clusters/{clusterName}/pod-identity-associations",
     input: {
+      clusterName: 0,
       namespace: D.m({ query: "namespace" }),
       serviceAccount: D.m({ query: "serviceAccount" }),
       maxResults: D.m({ query: "maxResults" }),
@@ -4506,7 +4701,11 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /tags/{resourceArn}" },
+  descriptor: {
+    service: svc,
+    http: "GET /tags/{resourceArn}",
+    input: { resourceArn: 0 },
+  },
   errors: [BadRequestException, NotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4534,6 +4733,7 @@ export const listUpdates: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /clusters/{name}/updates",
     input: {
+      name: 0,
       nodegroupName: D.m({ query: "nodegroupName" }),
       addonName: D.m({ query: "addonName" }),
       capabilityName: D.m({ query: "capabilityName" }),
@@ -4597,7 +4797,12 @@ export const registerCluster: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /cluster-registrations",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      connectorConfig: { roleArn: 0, provider: 0 },
+      clientRequestToken: D.m({ idempotency: true }),
+      tags: 0,
+    },
     output: { cluster: o_Cluster },
     body: true,
   },
@@ -4634,6 +4839,7 @@ export const startInsightsRefresh: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/insights-refresh",
+    input: { clusterName: 0 },
   },
   errors: [
     InvalidParameterException,
@@ -4665,7 +4871,12 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "POST /tags/{resourceArn}", body: true },
+  descriptor: {
+    service: svc,
+    http: "POST /tags/{resourceArn}",
+    input: { resourceArn: 0, tags: 0 },
+    body: true,
+  },
   errors: [BadRequestException, NotFoundException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -4688,7 +4899,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{resourceArn}",
-    input: { tagKeys: D.m({ query: "tagKeys" }) },
+    input: { resourceArn: 0, tagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [BadRequestException, NotFoundException],
   protocol: AwsProtocol,
@@ -4714,7 +4925,13 @@ export const updateAccessEntry: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/access-entries/{principalArn}",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      clusterName: 0,
+      principalArn: 0,
+      kubernetesGroups: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      username: 0,
+    },
     output: { accessEntry: o_AccessEntry },
     body: true,
   },
@@ -4749,7 +4966,16 @@ export const updateAddon: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/addons/{addonName}/update",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      clusterName: 0,
+      addonName: 0,
+      addonVersion: 0,
+      serviceAccountRoleArn: 0,
+      resolveConflicts: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      configurationValues: 0,
+      podIdentityAssociations: D.list(i_AddonPodIdentityAssociations),
+    },
     output: { update: o_Update },
     body: true,
   },
@@ -4787,7 +5013,22 @@ export const updateCapability: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/capabilities/{capabilityName}",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      clusterName: 0,
+      capabilityName: 0,
+      roleArn: 0,
+      configuration: {
+        argoCd: {
+          rbacRoleMappings: {
+            addOrUpdateRoleMappings: D.list(i_ArgoCdRoleMapping),
+            removeRoleMappings: D.list(i_ArgoCdRoleMapping),
+          },
+          networkAccess: i_ArgoCdNetworkAccessConfigRequest,
+        },
+      },
+      clientRequestToken: D.m({ idempotency: true }),
+      deletePropagationPolicy: 0,
+    },
     output: { update: o_Update },
     body: true,
   },
@@ -4870,7 +5111,24 @@ export const updateClusterConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{name}/update-config",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      resourcesVpcConfig: i_VpcConfigRequest,
+      logging: i_Logging,
+      clientRequestToken: D.m({ idempotency: true }),
+      accessConfig: { authenticationMode: 0 },
+      upgradePolicy: i_UpgradePolicyRequest,
+      zonalShiftConfig: i_ZonalShiftConfigRequest,
+      computeConfig: i_ComputeConfigRequest,
+      kubernetesNetworkConfig: i_KubernetesNetworkConfigRequest,
+      storageConfig: i_StorageConfigRequest,
+      remoteNetworkConfig: i_RemoteNetworkConfigRequest,
+      deletionProtection: 0,
+      controlPlaneScalingConfig: i_ControlPlaneScalingConfig,
+      kubeApiServerConfig: i_KubeApiServerConfigRequest,
+      kubeSchedulerConfig: i_KubeSchedulerConfigRequest,
+      kubeControllerManagerConfig: i_KubeControllerManagerConfigRequest,
+    },
     output: { update: o_Update },
     body: true,
   },
@@ -4923,7 +5181,13 @@ export const updateClusterVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{name}/updates",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      name: 0,
+      version: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      force: 0,
+      rollbackConfig: { timeoutMinutes: 0 },
+    },
     output: { update: o_Update },
     body: true,
   },
@@ -4962,7 +5226,11 @@ export const updateEksAnywhereSubscription: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /eks-anywhere-subscriptions/{id}",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      id: 0,
+      autoRenew: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     output: { subscription: o_EksAnywhereSubscription },
     body: true,
   },
@@ -5003,7 +5271,20 @@ export const updateNodegroupConfig: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/node-groups/{nodegroupName}/update-config",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      clusterName: 0,
+      nodegroupName: 0,
+      labels: { addOrUpdateLabels: 0, removeLabels: 0 },
+      taints: {
+        addOrUpdateTaints: D.list(i_Taint),
+        removeTaints: D.list(i_Taint),
+      },
+      scalingConfig: i_NodegroupScalingConfig,
+      updateConfig: i_NodegroupUpdateConfig,
+      nodeRepairConfig: i_NodeRepairConfig,
+      warmPoolConfig: i_WarmPoolConfig,
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     output: { update: o_Update },
     body: true,
   },
@@ -5066,7 +5347,15 @@ export const updateNodegroupVersion: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/node-groups/{nodegroupName}/update-version",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      clusterName: 0,
+      nodegroupName: 0,
+      version: 0,
+      releaseVersion: 0,
+      launchTemplate: i_LaunchTemplateSpecification,
+      force: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+    },
     output: { update: o_Update },
     body: true,
   },
@@ -5119,7 +5408,15 @@ export const updatePodIdentityAssociation: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /clusters/{clusterName}/pod-identity-associations/{associationId}",
-    input: { clientRequestToken: D.m({ idempotency: true }) },
+    input: {
+      clusterName: 0,
+      associationId: 0,
+      roleArn: 0,
+      clientRequestToken: D.m({ idempotency: true }),
+      disableSessionTags: 0,
+      targetRoleArn: 0,
+      policy: 0,
+    },
     output: { association: o_PodIdentityAssociation },
     body: true,
   },
@@ -5134,6 +5431,102 @@ export const updatePodIdentityAssociation: API.OperationMethod<
   operationName: "UpdatePodIdentityAssociation",
 })) as any;
 
+const i_AddonPodIdentityAssociations: D.LazyStruct = () => ({
+  serviceAccount: 0,
+  roleArn: 0,
+});
+const i_ArgoCdNetworkAccessConfigRequest: D.LazyStruct = () => ({ vpceIds: 0 });
+const i_ArgoCdRoleMapping: D.LazyStruct = () => ({
+  role: 0,
+  identities: D.list({ id: 0, type: 0 }),
+});
+const i_ComputeConfigRequest: D.LazyStruct = () => ({
+  enabled: 0,
+  nodePools: 0,
+  nodeRoleArn: 0,
+});
+const i_ControlPlaneScalingConfig: D.LazyStruct = () => ({ tier: 0 });
+const i_EncryptionConfig: D.LazyStruct = () => ({
+  resources: 0,
+  provider: { keyArn: 0 },
+});
+const i_IdentityProviderConfig: D.LazyStruct = () => ({ type: 0, name: 0 });
+const i_KubeApiServerConfigRequest: D.LazyStruct = () => ({
+  eventTtl: 0,
+  serviceNodePortRange: { minPort: 0, maxPort: 0 },
+});
+const i_KubeControllerManagerConfigRequest: D.LazyStruct = () => ({
+  podGcControllerConfig: { terminatedPodGcThreshold: 0 },
+  horizontalPodAutoscalerControllerConfig: {
+    horizontalPodAutoscalerSyncPeriod: 0,
+  },
+});
+const i_KubeSchedulerConfigRequest: D.LazyStruct = () => ({
+  nodeResourcesFit: {
+    scoringStrategy: { type: 0, resources: D.list({ name: 0, weight: 0 }) },
+  },
+});
+const i_KubernetesNetworkConfigRequest: D.LazyStruct = () => ({
+  serviceIpv4Cidr: 0,
+  ipFamily: 0,
+  elasticLoadBalancing: { enabled: 0 },
+});
+const i_LaunchTemplateSpecification: D.LazyStruct = () => ({
+  name: 0,
+  version: 0,
+  id: 0,
+});
+const i_Logging: D.LazyStruct = () => ({
+  clusterLogging: D.list({ types: 0, enabled: 0 }),
+});
+const i_NodeRepairConfig: D.LazyStruct = () => ({
+  enabled: 0,
+  maxUnhealthyNodeThresholdCount: 0,
+  maxUnhealthyNodeThresholdPercentage: 0,
+  maxParallelNodesRepairedCount: 0,
+  maxParallelNodesRepairedPercentage: 0,
+  nodeRepairConfigOverrides: D.list({
+    nodeMonitoringCondition: 0,
+    nodeUnhealthyReason: 0,
+    minRepairWaitTimeMins: 0,
+    repairAction: 0,
+  }),
+});
+const i_NodegroupScalingConfig: D.LazyStruct = () => ({
+  minSize: 0,
+  maxSize: 0,
+  desiredSize: 0,
+});
+const i_NodegroupUpdateConfig: D.LazyStruct = () => ({
+  maxUnavailable: 0,
+  maxUnavailablePercentage: 0,
+  updateStrategy: 0,
+});
+const i_RemoteNetworkConfigRequest: D.LazyStruct = () => ({
+  remoteNodeNetworks: D.list({ cidrs: 0 }),
+  remotePodNetworks: D.list({ cidrs: 0 }),
+});
+const i_StorageConfigRequest: D.LazyStruct = () => ({
+  blockStorage: { enabled: 0 },
+});
+const i_Taint: D.LazyStruct = () => ({ key: 0, value: 0, effect: 0 });
+const i_UpgradePolicyRequest: D.LazyStruct = () => ({ supportType: 0 });
+const i_VpcConfigRequest: D.LazyStruct = () => ({
+  subnetIds: 0,
+  securityGroupIds: 0,
+  endpointPublicAccess: 0,
+  endpointPrivateAccess: 0,
+  publicAccessCidrs: 0,
+  controlPlaneEgressMode: 0,
+});
+const i_WarmPoolConfig: D.LazyStruct = () => ({
+  enabled: 0,
+  minSize: 0,
+  maxGroupPreparedCapacity: 0,
+  poolState: 0,
+  reuseOnScaleIn: 0,
+});
+const i_ZonalShiftConfigRequest: D.LazyStruct = () => ({ enabled: 0 });
 const o_AccessEntry: D.LazyStruct = () => ({
   createdAt: D.ts,
   modifiedAt: D.ts,

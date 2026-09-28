@@ -662,6 +662,7 @@ export const abortMultipartUpload: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /{accountId}/vaults/{vaultName}/multipart-uploads/{uploadId}",
+    input: { accountId: 0, vaultName: 0, uploadId: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -709,6 +710,7 @@ export const abortVaultLock: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /{accountId}/vaults/{vaultName}/lock-policy",
+    input: { accountId: 0, vaultName: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -746,6 +748,7 @@ export const addTagsToVault: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /{accountId}/vaults/{vaultName}/tags?operation=add",
+    input: { accountId: 0, vaultName: 0, Tags: 0 },
     body: true,
   },
   errors: [
@@ -819,6 +822,9 @@ export const completeMultipartUpload: API.OperationMethod<
     service: svc,
     http: "POST /{accountId}/vaults/{vaultName}/multipart-uploads/{uploadId}",
     input: {
+      accountId: 0,
+      vaultName: 0,
+      uploadId: 0,
       archiveSize: D.m({ header: "x-amz-archive-size" }),
       checksum: D.m({ header: "x-amz-sha256-tree-hash" }),
     },
@@ -874,6 +880,7 @@ export const completeVaultLock: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /{accountId}/vaults/{vaultName}/lock-policy/{lockId}",
+    input: { accountId: 0, vaultName: 0, lockId: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -927,6 +934,7 @@ export const createVault: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /{accountId}/vaults/{vaultName}",
+    input: { accountId: 0, vaultName: 0 },
     output: { location: D.m({ header: "Location" }) },
   },
   errors: [
@@ -983,6 +991,7 @@ export const deleteArchive: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /{accountId}/vaults/{vaultName}/archives/{archiveId}",
+    input: { accountId: 0, vaultName: 0, archiveId: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -1032,7 +1041,11 @@ export const deleteVault: API.OperationMethod<
   DeleteVaultError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /{accountId}/vaults/{vaultName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /{accountId}/vaults/{vaultName}",
+    input: { accountId: 0, vaultName: 0 },
+  },
   errors: [
     InvalidParameterValueException,
     MissingParameterValueException,
@@ -1071,6 +1084,7 @@ export const deleteVaultAccessPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /{accountId}/vaults/{vaultName}/access-policy",
+    input: { accountId: 0, vaultName: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -1116,6 +1130,7 @@ export const deleteVaultNotifications: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /{accountId}/vaults/{vaultName}/notification-configuration",
+    input: { accountId: 0, vaultName: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -1169,6 +1184,7 @@ export const describeJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /{accountId}/vaults/{vaultName}/jobs/{jobId}",
+    input: { accountId: 0, vaultName: 0, jobId: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -1216,7 +1232,11 @@ export const describeVault: API.OperationMethod<
   DescribeVaultError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /{accountId}/vaults/{vaultName}" },
+  descriptor: {
+    service: svc,
+    http: "GET /{accountId}/vaults/{vaultName}",
+    input: { accountId: 0, vaultName: 0 },
+  },
   errors: [
     InvalidParameterValueException,
     MissingParameterValueException,
@@ -1249,6 +1269,7 @@ export const getDataRetrievalPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /{accountId}/policies/data-retrieval",
+    input: { accountId: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -1319,7 +1340,12 @@ export const getJobOutput: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /{accountId}/vaults/{vaultName}/jobs/{jobId}/output",
-    input: { range: D.m({ header: "Range" }) },
+    input: {
+      accountId: 0,
+      vaultName: 0,
+      jobId: 0,
+      range: D.m({ header: "Range" }),
+    },
     output: {
       body: D.m({ payload: true, shape: D.stream }),
       checksum: D.m({ header: "x-amz-sha256-tree-hash" }),
@@ -1366,6 +1392,7 @@ export const getVaultAccessPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /{accountId}/vaults/{vaultName}/access-policy",
+    input: { accountId: 0, vaultName: 0 },
     output: { policy: D.m({ payload: true }) },
   },
   errors: [
@@ -1421,6 +1448,7 @@ export const getVaultLock: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /{accountId}/vaults/{vaultName}/lock-policy",
+    input: { accountId: 0, vaultName: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -1469,6 +1497,7 @@ export const getVaultNotifications: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /{accountId}/vaults/{vaultName}/notification-configuration",
+    input: { accountId: 0, vaultName: 0 },
     output: { vaultNotificationConfig: D.m({ payload: true }) },
   },
   errors: [
@@ -1507,7 +1536,72 @@ export const initiateJob: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /{accountId}/vaults/{vaultName}/jobs",
-    input: { jobParameters: D.m({ payload: true }) },
+    input: {
+      accountId: 0,
+      vaultName: 0,
+      jobParameters: D.m({
+        payload: true,
+        shape: {
+          Format: 0,
+          Type: 0,
+          ArchiveId: 0,
+          Description: 0,
+          SNSTopic: 0,
+          RetrievalByteRange: 0,
+          Tier: 0,
+          InventoryRetrievalParameters: {
+            StartDate: 0,
+            EndDate: 0,
+            Limit: 0,
+            Marker: 0,
+          },
+          SelectParameters: {
+            InputSerialization: {
+              csv: {
+                FileHeaderInfo: 0,
+                Comments: 0,
+                QuoteEscapeCharacter: 0,
+                RecordDelimiter: 0,
+                FieldDelimiter: 0,
+                QuoteCharacter: 0,
+              },
+            },
+            ExpressionType: 0,
+            Expression: 0,
+            OutputSerialization: {
+              csv: {
+                QuoteFields: 0,
+                QuoteEscapeCharacter: 0,
+                RecordDelimiter: 0,
+                FieldDelimiter: 0,
+                QuoteCharacter: 0,
+              },
+            },
+          },
+          OutputLocation: {
+            S3: {
+              BucketName: 0,
+              Prefix: 0,
+              Encryption: { EncryptionType: 0, KMSKeyId: 0, KMSContext: 0 },
+              CannedACL: 0,
+              AccessControlList: D.list({
+                Grantee: {
+                  Type: 0,
+                  DisplayName: 0,
+                  URI: 0,
+                  ID: 0,
+                  EmailAddress: 0,
+                },
+                Permission: 0,
+              }),
+              Tagging: 0,
+              UserMetadata: 0,
+              StorageClass: 0,
+            },
+          },
+        },
+      }),
+    },
     output: {
       location: D.m({ header: "Location" }),
       jobId: D.m({ header: "x-amz-job-id" }),
@@ -1580,6 +1674,8 @@ export const initiateMultipartUpload: API.OperationMethod<
     service: svc,
     http: "POST /{accountId}/vaults/{vaultName}/multipart-uploads",
     input: {
+      accountId: 0,
+      vaultName: 0,
       archiveDescription: D.m({ header: "x-amz-archive-description" }),
       partSize: D.m({ header: "x-amz-part-size" }),
     },
@@ -1650,7 +1746,11 @@ export const initiateVaultLock: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /{accountId}/vaults/{vaultName}/lock-policy",
-    input: { policy: D.m({ payload: true }) },
+    input: {
+      accountId: 0,
+      vaultName: 0,
+      policy: D.m({ payload: true, shape: { Policy: 0 } }),
+    },
     output: { lockId: D.m({ header: "x-amz-lock-id" }) },
   },
   errors: [
@@ -1719,6 +1819,8 @@ export const listJobs: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /{accountId}/vaults/{vaultName}/jobs",
     input: {
+      accountId: 0,
+      vaultName: 0,
       limit: D.m({ query: "limit" }),
       marker: D.m({ query: "marker" }),
       statuscode: D.m({ query: "statuscode" }),
@@ -1788,7 +1890,12 @@ export const listMultipartUploads: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "GET /{accountId}/vaults/{vaultName}/multipart-uploads",
-    input: { limit: D.m({ query: "limit" }), marker: D.m({ query: "marker" }) },
+    input: {
+      accountId: 0,
+      vaultName: 0,
+      limit: D.m({ query: "limit" }),
+      marker: D.m({ query: "marker" }),
+    },
   },
   errors: [
     InvalidParameterValueException,
@@ -1850,7 +1957,13 @@ export const listParts: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "GET /{accountId}/vaults/{vaultName}/multipart-uploads/{uploadId}",
-    input: { marker: D.m({ query: "marker" }), limit: D.m({ query: "limit" }) },
+    input: {
+      accountId: 0,
+      vaultName: 0,
+      uploadId: 0,
+      marker: D.m({ query: "marker" }),
+      limit: D.m({ query: "limit" }),
+    },
   },
   errors: [
     InvalidParameterValueException,
@@ -1886,7 +1999,11 @@ export const listProvisionedCapacity: API.OperationMethod<
   ListProvisionedCapacityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "GET /{accountId}/provisioned-capacity" },
+  descriptor: {
+    service: svc,
+    http: "GET /{accountId}/provisioned-capacity",
+    input: { accountId: 0 },
+  },
   errors: [
     InvalidParameterValueException,
     MissingParameterValueException,
@@ -1919,6 +2036,7 @@ export const listTagsForVault: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /{accountId}/vaults/{vaultName}/tags",
+    input: { accountId: 0, vaultName: 0 },
   },
   errors: [
     InvalidParameterValueException,
@@ -1971,7 +2089,11 @@ export const listVaults: API.PaginatedOperationMethod<
   descriptor: {
     service: svc,
     http: "GET /{accountId}/vaults",
-    input: { marker: D.m({ query: "marker" }), limit: D.m({ query: "limit" }) },
+    input: {
+      accountId: 0,
+      marker: D.m({ query: "marker" }),
+      limit: D.m({ query: "limit" }),
+    },
   },
   errors: [
     InvalidParameterValueException,
@@ -2010,6 +2132,7 @@ export const purchaseProvisionedCapacity: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /{accountId}/provisioned-capacity",
+    input: { accountId: 0 },
     output: { capacityId: D.m({ header: "x-amz-capacity-id" }) },
   },
   errors: [
@@ -2046,6 +2169,7 @@ export const removeTagsFromVault: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /{accountId}/vaults/{vaultName}/tags?operation=remove",
+    input: { accountId: 0, vaultName: 0, TagKeys: 0 },
     body: true,
   },
   errors: [
@@ -2084,6 +2208,10 @@ export const setDataRetrievalPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /{accountId}/policies/data-retrieval",
+    input: {
+      accountId: 0,
+      Policy: { Rules: D.list({ Strategy: 0, BytesPerHour: 0 }) },
+    },
     body: true,
   },
   errors: [
@@ -2121,7 +2249,11 @@ export const setVaultAccessPolicy: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /{accountId}/vaults/{vaultName}/access-policy",
-    input: { policy: D.m({ payload: true }) },
+    input: {
+      accountId: 0,
+      vaultName: 0,
+      policy: D.m({ payload: true, shape: { Policy: 0 } }),
+    },
   },
   errors: [
     InvalidParameterValueException,
@@ -2184,7 +2316,14 @@ export const setVaultNotifications: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /{accountId}/vaults/{vaultName}/notification-configuration",
-    input: { vaultNotificationConfig: D.m({ payload: true }) },
+    input: {
+      accountId: 0,
+      vaultName: 0,
+      vaultNotificationConfig: D.m({
+        payload: true,
+        shape: { SNSTopic: 0, Events: 0 },
+      }),
+    },
   },
   errors: [
     InvalidParameterValueException,
@@ -2251,6 +2390,8 @@ export const uploadArchive: API.OperationMethod<
     service: svc,
     http: "POST /{accountId}/vaults/{vaultName}/archives",
     input: {
+      vaultName: 0,
+      accountId: 0,
       archiveDescription: D.m({ header: "x-amz-archive-description" }),
       checksum: D.m({ header: "x-amz-sha256-tree-hash" }),
       body: D.m({ payload: true, shape: D.stream }),
@@ -2336,6 +2477,9 @@ export const uploadMultipartPart: API.OperationMethod<
     service: svc,
     http: "PUT /{accountId}/vaults/{vaultName}/multipart-uploads/{uploadId}",
     input: {
+      accountId: 0,
+      vaultName: 0,
+      uploadId: 0,
       checksum: D.m({ header: "x-amz-sha256-tree-hash" }),
       range: D.m({ header: "Content-Range" }),
       body: D.m({ payload: true, shape: D.stream }),

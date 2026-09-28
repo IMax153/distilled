@@ -578,7 +578,10 @@ export const batchCheckLayerAvailability: API.OperationMethod<
   BatchCheckLayerAvailabilityError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { registryId: 0, repositoryName: 0, layerDigests: 0 },
+  },
   errors: [
     InvalidParameterException,
     RegistryNotFoundException,
@@ -614,7 +617,14 @@ export const batchDeleteImage: API.OperationMethod<
   BatchDeleteImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      registryId: 0,
+      repositoryName: 0,
+      imageIds: D.list(i_ImageIdentifier),
+    },
+  },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -654,7 +664,10 @@ export const completeLayerUpload: API.OperationMethod<
   CompleteLayerUploadError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { registryId: 0, repositoryName: 0, uploadId: 0, layerDigests: 0 },
+  },
   errors: [
     EmptyUploadException,
     InvalidLayerException,
@@ -691,7 +704,15 @@ export const createRepository: API.OperationMethod<
   CreateRepositoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { repository: o_Repository } },
+  descriptor: {
+    service: svc,
+    input: {
+      repositoryName: 0,
+      catalogData: i_RepositoryCatalogDataInput,
+      tags: D.list(i_Tag),
+    },
+    output: { repository: o_Repository },
+  },
   errors: [
     InvalidParameterException,
     InvalidTagParameterException,
@@ -724,7 +745,11 @@ export const deleteRepository: API.OperationMethod<
   DeleteRepositoryError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, output: { repository: o_Repository } },
+  descriptor: {
+    service: svc,
+    input: { registryId: 0, repositoryName: 0, force: 0 },
+    output: { repository: o_Repository },
+  },
   errors: [
     InvalidParameterException,
     RepositoryNotEmptyException,
@@ -753,7 +778,7 @@ export const deleteRepositoryPolicy: API.OperationMethod<
   DeleteRepositoryPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { registryId: 0, repositoryName: 0 } },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -791,6 +816,13 @@ export const describeImages: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: {
+      registryId: 0,
+      repositoryName: 0,
+      imageIds: D.list(i_ImageIdentifier),
+      nextToken: 0,
+      maxResults: 0,
+    },
     output: { imageDetails: D.list({ imagePushedAt: D.ts }) },
   },
   errors: [
@@ -829,6 +861,7 @@ export const describeImageTags: API.PaginatedOperationMethod<
 > = /*@__PURE__*/ API.makePaginated(() => ({
   descriptor: {
     service: svc,
+    input: { registryId: 0, repositoryName: 0, nextToken: 0, maxResults: 0 },
     output: {
       imageTagDetails: D.list({
         createdAt: D.ts,
@@ -868,7 +901,7 @@ export const describeRegistries: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Registry
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { nextToken: 0, maxResults: 0 } },
   errors: [
     InvalidParameterException,
     ServerException,
@@ -901,7 +934,11 @@ export const describeRepositories: API.PaginatedOperationMethod<
   Credentials | HttpClient.HttpClient,
   Repository
 > = /*@__PURE__*/ API.makePaginated(() => ({
-  descriptor: { service: svc, output: { repositories: D.list(o_Repository) } },
+  descriptor: {
+    service: svc,
+    input: { registryId: 0, repositoryNames: 0, nextToken: 0, maxResults: 0 },
+    output: { repositories: D.list(o_Repository) },
+  },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -939,6 +976,7 @@ export const getAuthorizationToken: API.OperationMethod<
 > = /*@__PURE__*/ API.make(() => ({
   descriptor: {
     service: svc,
+    input: {},
     output: {
       authorizationData: { authorizationToken: D.secret, expiresAt: D.ts },
     },
@@ -966,7 +1004,7 @@ export const getRegistryCatalogData: API.OperationMethod<
   GetRegistryCatalogDataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: {} },
   errors: [ServerException, UnsupportedCommandException],
   protocol: AwsProtocol,
   retry: Retry,
@@ -990,7 +1028,7 @@ export const getRepositoryCatalogData: API.OperationMethod<
   GetRepositoryCatalogDataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { registryId: 0, repositoryName: 0 } },
   errors: [
     InvalidParameterException,
     RepositoryCatalogDataNotFoundException,
@@ -1019,7 +1057,7 @@ export const getRepositoryPolicy: API.OperationMethod<
   GetRepositoryPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { registryId: 0, repositoryName: 0 } },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -1054,7 +1092,7 @@ export const initiateLayerUpload: API.OperationMethod<
   InitiateLayerUploadError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { registryId: 0, repositoryName: 0 } },
   errors: [
     InvalidParameterException,
     RegistryNotFoundException,
@@ -1082,7 +1120,7 @@ export const listTagsForResource: API.OperationMethod<
   ListTagsForResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0 } },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -1122,7 +1160,17 @@ export const putImage: API.OperationMethod<
   PutImageError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      registryId: 0,
+      repositoryName: 0,
+      imageManifest: 0,
+      imageManifestMediaType: 0,
+      imageTag: 0,
+      imageDigest: 0,
+    },
+  },
   errors: [
     ImageAlreadyExistsException,
     ImageDigestDoesNotMatchException,
@@ -1155,7 +1203,7 @@ export const putRegistryCatalogData: API.OperationMethod<
   PutRegistryCatalogDataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { displayName: 0 } },
   errors: [
     InvalidParameterException,
     ServerException,
@@ -1181,7 +1229,14 @@ export const putRepositoryCatalogData: API.OperationMethod<
   PutRepositoryCatalogDataError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      registryId: 0,
+      repositoryName: 0,
+      catalogData: i_RepositoryCatalogDataInput,
+    },
+  },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -1210,7 +1265,10 @@ export const setRepositoryPolicy: API.OperationMethod<
   SetRepositoryPolicyError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: { registryId: 0, repositoryName: 0, policyText: 0, force: 0 },
+  },
   errors: [
     InvalidParameterException,
     RepositoryNotFoundException,
@@ -1242,7 +1300,7 @@ export const tagResource: API.OperationMethod<
   TagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tags: D.list(i_Tag) } },
   errors: [
     InvalidParameterException,
     InvalidTagParameterException,
@@ -1273,7 +1331,7 @@ export const untagResource: API.OperationMethod<
   UntagResourceError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: { service: svc, input: { resourceArn: 0, tagKeys: 0 } },
   errors: [
     InvalidParameterException,
     InvalidTagParameterException,
@@ -1312,7 +1370,17 @@ export const uploadLayerPart: API.OperationMethod<
   UploadLayerPartError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc },
+  descriptor: {
+    service: svc,
+    input: {
+      registryId: 0,
+      repositoryName: 0,
+      uploadId: 0,
+      partFirstByte: 0,
+      partLastByte: 0,
+      layerPartBlob: 0,
+    },
+  },
   errors: [
     InvalidLayerPartException,
     InvalidParameterException,
@@ -1328,4 +1396,14 @@ export const uploadLayerPart: API.OperationMethod<
   operationName: "UploadLayerPart",
 })) as any;
 
+const i_ImageIdentifier: D.LazyStruct = () => ({ imageDigest: 0, imageTag: 0 });
+const i_RepositoryCatalogDataInput: D.LazyStruct = () => ({
+  description: 0,
+  architectures: 0,
+  operatingSystems: 0,
+  logoImageBlob: 0,
+  aboutText: 0,
+  usageText: 0,
+});
+const i_Tag: D.LazyStruct = () => ({ Key: 0, Value: 0 });
 const o_Repository: D.LazyStruct = () => ({ createdAt: D.ts });

@@ -757,7 +757,11 @@ export const deleteCell: API.OperationMethod<
   DeleteCellError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /cells/{CellName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /cells/{CellName}",
+    input: { CellName: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -788,6 +792,7 @@ export const deleteCrossAccountAuthorization: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /crossaccountauthorizations/{CrossAccountAuthorization}",
+    input: { CrossAccountAuthorization: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -819,6 +824,7 @@ export const deleteReadinessCheck: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /readinesschecks/{ReadinessCheckName}",
+    input: { ReadinessCheckName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -851,6 +857,7 @@ export const deleteRecoveryGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /recoverygroups/{RecoveryGroupName}",
+    input: { RecoveryGroupName: 0 },
   },
   errors: [
     AccessDeniedException,
@@ -880,7 +887,11 @@ export const deleteResourceSet: API.OperationMethod<
   DeleteResourceSetError,
   Credentials | HttpClient.HttpClient
 > = /*@__PURE__*/ API.make(() => ({
-  descriptor: { service: svc, http: "DELETE /resourcesets/{ResourceSetName}" },
+  descriptor: {
+    service: svc,
+    http: "DELETE /resourcesets/{ResourceSetName}",
+    input: { ResourceSetName: 0 },
+  },
   errors: [
     AccessDeniedException,
     InternalServerException,
@@ -915,6 +926,7 @@ export const getArchitectureRecommendations: API.OperationMethod<
     input: {
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
+      RecoveryGroupName: 0,
     },
     output: {
       LastAuditTimestamp: D.m({ wire: "lastAuditTimestamp", shape: D.ts }),
@@ -958,6 +970,7 @@ export const getCell: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /cells/{CellName}",
+    input: { CellName: 0 },
     output: {
       CellArn: D.m({ wire: "cellArn" }),
       CellName: D.m({ wire: "cellName" }),
@@ -999,6 +1012,7 @@ export const getCellReadinessSummary: API.PaginatedOperationMethod<
     service: svc,
     http: "GET /cellreadiness/{CellName}",
     input: {
+      CellName: 0,
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
     },
@@ -1048,6 +1062,7 @@ export const getReadinessCheck: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /readinesschecks/{ReadinessCheckName}",
+    input: { ReadinessCheckName: 0 },
     output: {
       ReadinessCheckArn: D.m({ wire: "readinessCheckArn" }),
       ReadinessCheckName: D.m({ wire: "readinessCheckName" }),
@@ -1090,6 +1105,8 @@ export const getReadinessCheckResourceStatus: API.PaginatedOperationMethod<
     input: {
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
+      ReadinessCheckName: 0,
+      ResourceIdentifier: 0,
     },
     output: {
       NextToken: D.m({ wire: "nextToken" }),
@@ -1149,6 +1166,7 @@ export const getReadinessCheckStatus: API.PaginatedOperationMethod<
     input: {
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
+      ReadinessCheckName: 0,
     },
     output: {
       Messages: D.m({ wire: "messages", shape: D.list(o_Message) }),
@@ -1205,6 +1223,7 @@ export const getRecoveryGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /recoverygroups/{RecoveryGroupName}",
+    input: { RecoveryGroupName: 0 },
     output: {
       Cells: D.m({ wire: "cells" }),
       RecoveryGroupArn: D.m({ wire: "recoveryGroupArn" }),
@@ -1247,6 +1266,7 @@ export const getRecoveryGroupReadinessSummary: API.PaginatedOperationMethod<
     input: {
       MaxResults: D.m({ query: "maxResults" }),
       NextToken: D.m({ query: "nextToken" }),
+      RecoveryGroupName: 0,
     },
     output: {
       NextToken: D.m({ wire: "nextToken" }),
@@ -1294,6 +1314,7 @@ export const getResourceSet: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /resourcesets/{ResourceSetName}",
+    input: { ResourceSetName: 0 },
     output: {
       ResourceSetArn: D.m({ wire: "resourceSetArn" }),
       ResourceSetName: D.m({ wire: "resourceSetName" }),
@@ -1643,6 +1664,7 @@ export const listTagsForResources: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "GET /tags/{ResourceArn}",
+    input: { ResourceArn: 0 },
     output: { Tags: D.m({ wire: "tags" }) },
   },
   errors: [
@@ -1672,7 +1694,7 @@ export const tagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "POST /tags/{ResourceArn}",
-    input: { Tags: D.m({ wire: "tags" }) },
+    input: { ResourceArn: 0, Tags: D.m({ wire: "tags" }) },
     body: true,
   },
   errors: [
@@ -1702,7 +1724,7 @@ export const untagResource: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "DELETE /tags/{ResourceArn}",
-    input: { TagKeys: D.m({ query: "tagKeys" }) },
+    input: { ResourceArn: 0, TagKeys: D.m({ query: "tagKeys" }) },
   },
   errors: [
     InternalServerException,
@@ -1733,7 +1755,7 @@ export const updateCell: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /cells/{CellName}",
-    input: { Cells: D.m({ wire: "cells" }) },
+    input: { CellName: 0, Cells: D.m({ wire: "cells" }) },
     output: {
       CellArn: D.m({ wire: "cellArn" }),
       CellName: D.m({ wire: "cellName" }),
@@ -1774,7 +1796,10 @@ export const updateReadinessCheck: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /readinesschecks/{ReadinessCheckName}",
-    input: { ResourceSetName: D.m({ wire: "resourceSetName" }) },
+    input: {
+      ReadinessCheckName: 0,
+      ResourceSetName: D.m({ wire: "resourceSetName" }),
+    },
     output: {
       ReadinessCheckArn: D.m({ wire: "readinessCheckArn" }),
       ReadinessCheckName: D.m({ wire: "readinessCheckName" }),
@@ -1814,7 +1839,7 @@ export const updateRecoveryGroup: API.OperationMethod<
   descriptor: {
     service: svc,
     http: "PUT /recoverygroups/{RecoveryGroupName}",
-    input: { Cells: D.m({ wire: "cells" }) },
+    input: { Cells: D.m({ wire: "cells" }), RecoveryGroupName: 0 },
     output: {
       Cells: D.m({ wire: "cells" }),
       RecoveryGroupArn: D.m({ wire: "recoveryGroupArn" }),
@@ -1855,6 +1880,7 @@ export const updateResourceSet: API.OperationMethod<
     service: svc,
     http: "PUT /resourcesets/{ResourceSetName}",
     input: {
+      ResourceSetName: 0,
       ResourceSetType: D.m({ wire: "resourceSetType" }),
       Resources: D.m({ wire: "resources", shape: D.list(i_Resource) }),
     },
