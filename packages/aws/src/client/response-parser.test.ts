@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import * as Effect from "effect/Effect";
+import * as ResponseValidation from "@distilled.cloud/core/response-validation";
 import { isTransientError } from "../category.ts";
 import { InternalError, ParseError } from "../errors.ts";
 import { PutObjectRequest, PutObjectOutput, SlowDown } from "../services/s3.ts";
@@ -144,5 +145,40 @@ describe("Lambda synthetic error parsing", () => {
     );
     expect(error).toBeInstanceOf(InvalidParameterValueException);
     expect(isTransientError(error)).toBe(false);
+  });
+});
+
+describe("2xx response validation", () => {
+  const mismatched = {
+    status: 200,
+    statusText: "OK",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ FunctionName: 123 }),
+  };
+
+  test("lenient (default) falls back to the raw response on a mismatch", async () => {
+    const output = await Effect.runPromise(parseCreateFunction(mismatched));
+    expect(output).toMatchObject({ FunctionName: 123 });
+  });
+
+  test("strict fails a mismatch with ParseError", async () => {
+    const error = await Effect.runPromise(
+      parseCreateFunction(mismatched).pipe(
+        Effect.provide(ResponseValidation.strict),
+        Effect.flip,
+      ),
+    );
+    expect(error).toBeInstanceOf(ParseError);
+    expect(isTransientError(error)).toBe(false);
+  });
+
+  test("strict decodes a matching response", async () => {
+    const output = await Effect.runPromise(
+      parseCreateFunction({
+        ...mismatched,
+        body: JSON.stringify({ FunctionName: "fn" }),
+      }).pipe(Effect.provide(ResponseValidation.strict)),
+    );
+    expect(output).toMatchObject({ FunctionName: "fn" });
   });
 });

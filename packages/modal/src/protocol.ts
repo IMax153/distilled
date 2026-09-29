@@ -22,7 +22,11 @@ import {
   type RestErrorEnvelope,
 } from "@distilled.cloud/core/protocol-rest";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownModalError, type DefaultErrors } from "./errors.ts";
+import {
+  UnknownModalError,
+  type DefaultErrors,
+  ModalParseError,
+} from "./errors.ts";
 
 /**
  * Behaves like this Python SDK version, matching the official JS client's
@@ -89,4 +93,5 @@ export const ModalProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new ModalParseError({ body, cause }),
   });

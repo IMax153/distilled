@@ -3,10 +3,12 @@ import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as HttpClient from "effect/unstable/http/HttpClient";
 import * as HttpClientResponse from "effect/unstable/http/HttpClientResponse";
+import * as ResponseValidation from "@distilled.cloud/core/response-validation";
 import { credentials } from "./credentials.ts";
-import { BadRequest, UnknownFlyIoError } from "./errors.ts";
+import { BadRequest, FlyIoParseError, UnknownFlyIoError } from "./errors.ts";
 import type { FlyIoOpContext } from "./protocol.ts";
 import * as Retry from "./retry.ts";
+import { agreedToProviderTos } from "./services/addons.ts";
 import {
   MachineStartFromCreatedState,
   MachineWaitTimeout,
@@ -19,6 +21,22 @@ const recordedMessage =
   "failed_precondition: unable to start machine from current state: 'created'";
 const machine = { app_name: "decoder-test", machine_id: "machine-test" };
 
+const respondWith = (status: number, body: string) =>
+  Layer.mergeAll(
+    Layer.succeed(
+      HttpClient.HttpClient,
+      HttpClient.make((request) =>
+        Effect.sync(() =>
+          HttpClientResponse.fromWeb(request, new Response(body, { status })),
+        ),
+      ),
+    ),
+    credentials({
+      apiKey: "decoder-test",
+      apiBaseUrl: "https://fly.test",
+    }),
+  );
+
 const decodeError = <A, E>(
   operation: Effect.Effect<A, E, FlyIoOpContext>,
   status: number,
@@ -27,25 +45,7 @@ const decodeError = <A, E>(
   Effect.runPromise(
     operation.pipe(
       Retry.none,
-      Effect.provide(
-        Layer.mergeAll(
-          Layer.succeed(
-            HttpClient.HttpClient,
-            HttpClient.make((request) =>
-              Effect.sync(() =>
-                HttpClientResponse.fromWeb(
-                  request,
-                  new Response(body, { status }),
-                ),
-              ),
-            ),
-          ),
-          credentials({
-            apiKey: "decoder-test",
-            apiBaseUrl: "https://fly.test",
-          }),
-        ),
-      ),
+      Effect.provide(respondWith(status, body)),
       Effect.flip,
     ),
   );
@@ -170,5 +170,53 @@ describe("Machines wait timeout decoding", () => {
     );
     expect(error).toBeInstanceOf(UnknownFlyIoError);
     expect(error).toMatchObject({ message: recordedWaitMessage });
+  });
+});
+
+describe("GraphQL response validation", () => {
+  const tos = { slug: "decoder-test", providerName: "tigris" };
+  // `agreedToProviderTos` is `boolean | null`; a string is a mismatch.
+  const mismatched = JSON.stringify({
+    data: { organization: { agreedToProviderTos: "yes" } },
+  });
+
+  test("lenient mode returns the payload as read", async () => {
+    const result = await Effect.runPromise(
+      agreedToProviderTos(tos).pipe(
+        Retry.none,
+        Effect.provide(respondWith(200, mismatched)),
+      ),
+    );
+    expect(result as unknown).toBe("yes");
+  });
+
+  test("strict mode fails a mismatched payload with FlyIoParseError", async () => {
+    const error = await Effect.runPromise(
+      agreedToProviderTos(tos).pipe(
+        Retry.none,
+        Effect.provide(respondWith(200, mismatched)),
+        Effect.provide(ResponseValidation.strict),
+        Effect.flip,
+      ),
+    );
+    expect(error).toBeInstanceOf(FlyIoParseError);
+  });
+
+  test("strict mode passes a matching payload", async () => {
+    const result = await Effect.runPromise(
+      agreedToProviderTos(tos).pipe(
+        Retry.none,
+        Effect.provide(
+          respondWith(
+            200,
+            JSON.stringify({
+              data: { organization: { agreedToProviderTos: true } },
+            }),
+          ),
+        ),
+        Effect.provide(ResponseValidation.strict),
+      ),
+    );
+    expect(result).toBe(true);
   });
 });

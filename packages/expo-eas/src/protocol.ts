@@ -36,6 +36,7 @@ import type * as HttpClientResponse from "effect/unstable/http/HttpClientRespons
 import * as API from "@distilled.cloud/core/api";
 import { getAnn } from "@distilled.cloud/core/protocol-http";
 import { HTTP_STATUS_MAP } from "@distilled.cloud/core/errors";
+import { validateResponse } from "@distilled.cloud/core/response-validation";
 import { parseRetryAfterForStatus } from "@distilled.cloud/core/retry-after";
 import { type Config, Credentials } from "./credentials.ts";
 import {
@@ -298,7 +299,8 @@ const decode = ({
     }
 
     // Success: unwrap `data.<responsePath>` and return it verbatim (member
-    // names are GraphQL field names — no wire renames).
+    // names are GraphQL field names — no wire renames). Strict mode
+    // (core/response-validation) checks it against the output schema.
     const path = getAnn(outputAst, responsePathSymbol) as string | undefined;
     let payload: unknown =
       envelope !== null && typeof envelope === "object"
@@ -312,7 +314,11 @@ const decode = ({
             : undefined;
       }
     }
-    return payload === undefined ? null : payload;
+    return yield* validateResponse(
+      outputAst,
+      payload === undefined ? null : payload,
+      (cause) => new EasParseError({ body: json, cause }),
+    ).pipe(Effect.catch(fail));
   });
 
 /**

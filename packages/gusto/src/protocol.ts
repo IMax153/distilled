@@ -27,7 +27,7 @@ import {
 } from "@distilled.cloud/core/protocol-rest";
 import type { API_ERRORS, ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownGustoError } from "./errors.ts";
+import { UnknownGustoError, GustoParseError } from "./errors.ts";
 
 /**
  * Error channel shared by every generated Gusto operation. Generated
@@ -98,4 +98,5 @@ export const GustoProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new GustoParseError({ body, cause }),
   });

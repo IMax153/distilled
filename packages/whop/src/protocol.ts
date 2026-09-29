@@ -41,6 +41,7 @@ import {
   PaymentRequired,
   UnknownWhopError,
   type DefaultErrors,
+  WhopParseError,
 } from "./errors.ts";
 
 /**
@@ -110,5 +111,6 @@ export const WhopProtocol: Layer.Layer<API.Protocol> = makeRestProtocol<Config>(
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new WhopParseError({ body, cause }),
   },
 );

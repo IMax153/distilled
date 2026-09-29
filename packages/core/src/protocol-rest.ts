@@ -12,7 +12,9 @@
  *             values first)
  *
  *   response: 2xx JSON → optional `transformResponse` → recursive wire→TS
- *             key mapping (`mapKeys`) → `Redacted` wrapping of members
+ *             key mapping (`mapKeys`) → in strict mode, a schema check
+ *             failing with the provider's `parseError` (see
+ *             `core/response-validation`) → `Redacted` wrapping of members
  *             marked with {@link SensitiveValue}; non-2xx → typed error:
  *             per-op matcher classes (`matchTypedError`), then the status
  *             map (default `HTTP_STATUS_MAP`), then an `InternalServerError`
@@ -43,6 +45,7 @@ import {
 } from "./protocol-http.ts";
 import { HTTP_STATUS_MAP, InternalServerError } from "./errors.ts";
 import { parseRetryAfterForStatus } from "./retry-after.ts";
+import { validateResponse } from "./response-validation.ts";
 
 // =============================================================================
 // Traits
@@ -183,6 +186,12 @@ export interface RestErrorInfo {
   readonly headers: Record<string, string | undefined>;
 }
 
+/** A 2xx body that failed strict validation, for the `parseError` option. */
+export interface RestParseErrorInfo {
+  readonly body: unknown;
+  readonly cause: unknown;
+}
+
 export interface RestErrorEnvelope {
   readonly code?: string | number;
   readonly message?: string;
@@ -229,6 +238,13 @@ export interface RestProtocolOptions<C> {
   readonly statusMap?: Readonly<Record<number, new (args: any) => any>>;
   /** Fallback error for failures nothing else matched. */
   readonly unknownError: (info: RestErrorInfo) => unknown;
+  /**
+   * The SDK's `<Sdk>ParseError`, raised when a 2xx body does not match the
+   * operation's output schema in strict mode (see
+   * `core/response-validation`). `body` is the parsed JSON, or the raw text
+   * when the body wasn't JSON; `cause` is the schema error.
+   */
+  readonly parseError: (info: RestParseErrorInfo) => unknown;
   /** Transform the parsed 2xx JSON before decoding (e.g. stripNulls). */
   readonly transformResponse?: (body: unknown) => unknown;
   /** Passed through to `buildRequest` (member-header transforms). */
@@ -398,9 +414,17 @@ export const makeRestProtocol = <C>(
       // 2xx: the response body IS the payload (no envelope). Wire→TS key
       // mapping is schema-driven; `RawResponseRoot` responses are the body
       // verbatim (mapKeys handles arrays/scalars structurally either way).
+      // Strict mode (core/response-validation) checks the mapped body against
+      // the output schema — a non-JSON body reaches it as a string and fails
+      // there unless the operation's output is itself a string.
       let body: unknown = nonJson ? text : (json ?? {});
       if (options.transformResponse) body = options.transformResponse(body);
-      return wrapSensitive(outputAst, mapKeys(outputAst, body, "decode"));
+      const mapped = yield* validateResponse(
+        outputAst,
+        mapKeys(outputAst, body, "decode"),
+        (cause) => options.parseError({ body: nonJson ? text : json, cause }),
+      ).pipe(Effect.catch(fail));
+      return wrapSensitive(outputAst, mapped);
     });
 
   return Layer.succeed(

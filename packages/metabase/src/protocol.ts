@@ -24,7 +24,7 @@ import type * as API from "@distilled.cloud/core/api";
 import { makeRestProtocol } from "@distilled.cloud/core/protocol-rest";
 import type { API_ERRORS, ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownMetabaseError } from "./errors.ts";
+import { UnknownMetabaseError, MetabaseParseError } from "./errors.ts";
 
 /**
  * Error channel shared by every generated Metabase operation. Generated
@@ -66,4 +66,5 @@ export const MetabaseProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new MetabaseParseError({ body, cause }),
   });

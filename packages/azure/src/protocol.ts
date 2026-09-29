@@ -51,11 +51,13 @@ import {
   InternalServerError,
   type API_ERRORS,
 } from "@distilled.cloud/core/errors";
+import { validateResponse } from "@distilled.cloud/core/response-validation";
 import { parseRetryAfterForStatus } from "@distilled.cloud/core/retry-after";
 import { Credentials, type Config } from "./credentials.ts";
 import {
   AZURE_ERROR_CODE_MAP,
   type AzureApiError,
+  AzureParseError,
   UnknownAzureError,
 } from "./errors.ts";
 import type { HttpTrait } from "./traits.ts";
@@ -71,6 +73,7 @@ export type AzureOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | AzureApiError
   | UnknownAzureError
+  | AzureParseError
   | ConfigError
   | HttpClientError.HttpClientError;
 
@@ -249,9 +252,16 @@ const decode = ({
     // 2xx: the response body IS the payload (ARM has no success envelope).
     // Wire→TS key mapping is schema-driven; `RawResponseRoot` responses are
     // the body verbatim (mapKeys handles arrays/scalars structurally either
-    // way). Sensitive members are delivered as `Redacted`.
+    // way). Strict mode (core/response-validation) checks the mapped body
+    // against the output schema. Sensitive members are delivered as
+    // `Redacted`.
     const body: unknown = nonJson ? text : (json ?? {});
-    return wrapSensitive(outputAst, mapKeys(outputAst, body, "decode"));
+    const mapped = yield* validateResponse(
+      outputAst,
+      mapKeys(outputAst, body, "decode"),
+      (cause) => new AzureParseError({ body: nonJson ? text : json, cause }),
+    ).pipe(Effect.catch(fail));
+    return wrapSensitive(outputAst, mapped);
   });
 
 export const AzureProtocol: Layer.Layer<API.Protocol> = Layer.succeed(

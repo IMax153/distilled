@@ -51,6 +51,7 @@ import {
 } from "@distilled.cloud/core/trait";
 import { HTTP_STATUS_MAP } from "@distilled.cloud/core/errors";
 import type { DefaultErrors } from "@distilled.cloud/core/errors";
+import { validateResponse } from "@distilled.cloud/core/response-validation";
 import { parseRetryAfterForStatus } from "@distilled.cloud/core/retry-after";
 import { Credentials, type Config } from "./credentials.ts";
 import * as Endpoint from "./endpoint.ts";
@@ -259,6 +260,7 @@ const tackEnvelope = <T>(instance: T, envelope: EnvelopeAddenda): T => {
 
 const decode = ({
   response,
+  outputAst,
   errors,
 }: {
   readonly response: HttpClientResponse.HttpClientResponse;
@@ -328,8 +330,13 @@ const decode = ({
     // Success: the JSON body is the payload verbatim (GCP wire names are
     // already the TS-facing names). Empty bodies (204 / empty 200) decode
     // to an empty object so `<Op>Response {}` outputs stay well-typed.
-    if (nonJson) return text;
-    return json ?? {};
+    // Strict mode (core/response-validation) checks it against the output
+    // schema.
+    return yield* validateResponse(
+      outputAst,
+      nonJson ? text : (json ?? {}),
+      (cause) => new GCPParseError({ body: nonJson ? text : json, cause }),
+    ).pipe(Effect.catch(fail));
   });
 
 export const GcpProtocol: Layer.Layer<API.Protocol> = Layer.succeed(

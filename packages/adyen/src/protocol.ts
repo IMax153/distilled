@@ -26,7 +26,7 @@ import {
 } from "@distilled.cloud/core/protocol-rest";
 import type { API_ERRORS, ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownAdyenError } from "./errors.ts";
+import { UnknownAdyenError, AdyenParseError } from "./errors.ts";
 
 /**
  * Error channel shared by every generated Adyen operation. Generated service
@@ -83,4 +83,5 @@ export const AdyenProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new AdyenParseError({ body, cause }),
   });

@@ -24,7 +24,7 @@ import type * as API from "@distilled.cloud/core/api";
 import { makeRestProtocol } from "@distilled.cloud/core/protocol-rest";
 import type { API_ERRORS, ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownBoatError } from "./errors.ts";
+import { UnknownBoatError, BoatParseError } from "./errors.ts";
 
 /**
  * Error channel shared by every generated Boat operation. Generated service
@@ -64,5 +64,6 @@ export const BoatProtocol: Layer.Layer<API.Protocol> = makeRestProtocol<Config>(
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new BoatParseError({ body, cause }),
   },
 );

@@ -25,7 +25,7 @@ import {
 } from "@distilled.cloud/core/protocol-rest";
 import type { API_ERRORS, ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, formatHeaders, type Config } from "./credentials.ts";
-import { UnknownOktaError } from "./errors.ts";
+import { UnknownOktaError, OktaParseError } from "./errors.ts";
 
 /**
  * Error channel shared by every generated Okta operation. Generated service
@@ -88,5 +88,6 @@ export const OktaProtocol: Layer.Layer<API.Protocol> = makeRestProtocol<Config>(
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new OktaParseError({ body, cause }),
   },
 );

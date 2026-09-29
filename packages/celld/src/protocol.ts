@@ -6,12 +6,13 @@ import * as Predicate from "effect/Predicate";
 import type * as HttpClient from "effect/unstable/http/HttpClient";
 import type * as HttpClientError from "effect/unstable/http/HttpClientError";
 import { Endpoint, endpoint } from "./endpoint.ts";
-import { UnknownCelldError } from "./errors.ts";
+import { CelldParseError, UnknownCelldError } from "./errors.ts";
 
 export type CelldOpContext = Endpoint | HttpClient.HttpClient;
 export type CelldOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownCelldError
+  | CelldParseError
   | HttpClientError.HttpClientError;
 
 /** Standard REST encoding; signed runtime headers are explicit modeled inputs. */
@@ -44,4 +45,5 @@ export const CelldProtocol: Layer.Layer<API.Protocol> = makeRestProtocol({
   },
   unknownError: ({ status, message }) =>
     new UnknownCelldError({ status, message }),
+  parseError: ({ body, cause }) => new CelldParseError({ body, cause }),
 });

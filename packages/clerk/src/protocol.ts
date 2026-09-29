@@ -26,7 +26,7 @@ import {
 } from "@distilled.cloud/core/protocol-rest";
 import type { API_ERRORS, ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownClerkError } from "./errors.ts";
+import { UnknownClerkError, ClerkParseError } from "./errors.ts";
 
 /**
  * Error channel shared by every generated Clerk operation. Generated service
@@ -97,4 +97,5 @@ export const ClerkProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new ClerkParseError({ body, cause }),
   });

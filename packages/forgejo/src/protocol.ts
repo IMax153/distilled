@@ -28,7 +28,11 @@ import {
   type RestErrorEnvelope,
 } from "@distilled.cloud/core/protocol-rest";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownForgejoError, type DefaultErrors } from "./errors.ts";
+import {
+  UnknownForgejoError,
+  type DefaultErrors,
+  ForgejoParseError,
+} from "./errors.ts";
 
 /**
  * Error channel shared by every generated Forgejo operation. Generated
@@ -83,4 +87,5 @@ export const ForgejoProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new ForgejoParseError({ body, cause }),
   });

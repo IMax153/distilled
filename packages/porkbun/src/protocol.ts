@@ -26,7 +26,7 @@ import {
 } from "@distilled.cloud/core/protocol-rest";
 import type { API_ERRORS, ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, formatHeaders, type Config } from "./credentials.ts";
-import { UnknownPorkbunError } from "./errors.ts";
+import { UnknownPorkbunError, PorkbunParseError } from "./errors.ts";
 
 /**
  * Error channel shared by every generated Porkbun operation. Generated
@@ -80,4 +80,5 @@ export const PorkbunProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new PorkbunParseError({ body, cause }),
   });

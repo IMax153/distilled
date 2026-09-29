@@ -134,6 +134,53 @@ not `Pkg.Services.vms.createVm`. Do not add a `Services` namespace. A
 single-service package re-exports operations on the root (`Pkg.listX`) the
 same way.
 
+### Errors and response validation
+
+Every error class in `src/errors.ts` must be one the protocol can actually
+raise. A class in the operation error union that nothing constructs tells
+callers to handle a failure that never happens — that is how ~75 packages
+ended up declaring a `<Pkg>ParseError` no code path created.
+
+`src/errors.ts` declares, and the operation error union
+(`<Pkg>OpError` / `DefaultErrors`) includes:
+
+- `Unknown<Pkg>Error` — built by the protocol's `unknownError` fallback.
+- `<Pkg>ParseError` with `{ body: Schema.Unknown, cause: Schema.Unknown }`,
+  `.pipe(Category.withParseError)` — built by the protocol's `parseError`
+  (copy `packages/s2/src/errors.ts`).
+- Any status classes the provider needs beyond core's `HTTP_STATUS_MAP`,
+  each wired into the protocol's `statusMap`.
+
+The protocol wires every one of them:
+
+- **`makeRestProtocol`** requires `parseError`:
+  `parseError: ({ body, cause }) => new <Pkg>ParseError({ body, cause })`.
+- **A hand-written protocol** calls `validateResponse(outputAst, value,
+  (cause) => new <Pkg>ParseError({ body, cause }))` from
+  `@distilled.cloud/core/response-validation` on every 2xx path that returns
+  the operation output — after wire→TS key mapping, before `wrapSensitive`.
+  `packages/core/src/protocol-rest.ts` is the reference.
+
+2xx responses are validated only in strict mode. `ResponseValidation`
+(`@distilled.cloud/core/response-validation`) is one context reference shared
+by every SDK: lenient by default, switched with
+`Effect.provide(ResponseValidation.strict)` or
+`DISTILLED_STRICT_RESPONSES=1`. A new protocol reads the mode through
+`validateResponse`; it never adds its own flag or environment variable.
+
+Before opening the PR, confirm the parse error and the unknown-error
+fallback are both constructed outside the generated code — this must print
+two or more lines:
+
+```sh
+grep -rnE 'new \w+(ParseError|Unknown\w*Error)\(' packages/<pkg>/src \
+  --include='*.ts' --exclude-dir=services
+```
+
+For every other class you add to `errors.ts`, find where the protocol
+raises it (`statusMap`, a code lookup table, or `new`). A class nothing
+raises comes out of `errors.ts` and the error union.
+
 ## Step 5 — iterate
 
 ```sh
@@ -341,7 +388,8 @@ Body, in order:
    A PR whose only snippet is `listX({})` is incomplete; paste the README
    quick start.
 4. `Checks: pnpm specs:check` green, `tsc -b packages/<pkg> --noCheck false`
-   green, `DISTILLED_SPECS_LOCAL=1 pnpm generate <pkg>` reproduces output.
+   green, `DISTILLED_SPECS_LOCAL=1 pnpm generate <pkg>` reproduces output,
+   and the error-construction check from step 4 finds both classes.
 
 ```sh
 git push -u origin HEAD

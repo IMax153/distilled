@@ -25,7 +25,7 @@ import type * as API from "@distilled.cloud/core/api";
 import { makeRestProtocol } from "@distilled.cloud/core/protocol-rest";
 import type { API_ERRORS, ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, formatHeaders, type Config } from "./credentials.ts";
-import { UnknownPlanetScaleError } from "./errors.ts";
+import { UnknownPlanetScaleError, PlanetScaleParseError } from "./errors.ts";
 
 /**
  * Error channel shared by every generated PlanetScale operation. Generated
@@ -65,4 +65,5 @@ export const PlanetScaleProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new PlanetScaleParseError({ body, cause }),
   });

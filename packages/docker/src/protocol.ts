@@ -22,7 +22,7 @@ import type * as API from "@distilled.cloud/core/api";
 import { makeRestProtocol } from "@distilled.cloud/core/protocol-rest";
 import type { API_ERRORS, ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownDockerError } from "./errors.ts";
+import { UnknownDockerError, DockerParseError } from "./errors.ts";
 
 /**
  * Error channel shared by every generated Docker operation. Generated service
@@ -68,4 +68,5 @@ export const DockerProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new DockerParseError({ body, cause }),
   });

@@ -22,7 +22,7 @@ import type * as API from "@distilled.cloud/core/api";
 import { makeRestProtocol } from "@distilled.cloud/core/protocol-rest";
 import type { API_ERRORS, ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownArchilError } from "./errors.ts";
+import { UnknownArchilError, ArchilParseError } from "./errors.ts";
 
 /**
  * Error channel shared by every generated Archil operation. Generated service
@@ -72,4 +72,5 @@ export const ArchilProtocol: Layer.Layer<API.Protocol> =
             : undefined),
         body,
       }),
+    parseError: ({ body, cause }) => new ArchilParseError({ body, cause }),
   });

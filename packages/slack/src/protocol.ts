@@ -62,11 +62,13 @@ import {
   parseRetryAfterForStatus,
   parseServerRetryHint,
 } from "@distilled.cloud/core/retry-after";
+import { validateResponse } from "@distilled.cloud/core/response-validation";
 import { Credentials, type Config } from "./credentials.ts";
 import {
   type DefaultErrors,
   SlackError,
   SlackHttpError,
+  SlackParseError,
   SlackRateLimited,
 } from "./errors.ts";
 
@@ -314,8 +316,14 @@ const decode = ({
 
     // 2xx envelope: the body IS the payload (`ok` rides along as a modeled
     // member). Wire→TS key mapping is schema-driven; sensitive members
-    // (OAuth access/refresh tokens) wrap in Redacted.
-    return wrapSensitive(outputAst, mapKeys(outputAst, json, "decode"));
+    // (OAuth access/refresh tokens) wrap in Redacted. Strict mode checks the
+    // mapped payload against the output schema first.
+    const mapped = yield* validateResponse(
+      outputAst,
+      mapKeys(outputAst, json, "decode"),
+      (cause) => new SlackParseError({ body: json, cause }),
+    ).pipe(Effect.catch(fail));
+    return wrapSensitive(outputAst, mapped);
   });
 
 export const SlackProtocol: Layer.Layer<API.Protocol> = Layer.succeed(

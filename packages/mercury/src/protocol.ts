@@ -23,7 +23,7 @@ import type * as API from "@distilled.cloud/core/api";
 import { makeRestProtocol } from "@distilled.cloud/core/protocol-rest";
 import type { API_ERRORS, ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownMercuryError } from "./errors.ts";
+import { UnknownMercuryError, MercuryParseError } from "./errors.ts";
 
 /**
  * Error channel shared by every generated Mercury operation. Generated service
@@ -65,4 +65,5 @@ export const MercuryProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new MercuryParseError({ body, cause }),
   });

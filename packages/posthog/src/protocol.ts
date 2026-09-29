@@ -29,7 +29,11 @@ import {
 } from "@distilled.cloud/core/protocol-rest";
 import type { ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, type Config } from "./credentials.ts";
-import { type DefaultErrors, UnknownPosthogError } from "./errors.ts";
+import {
+  type DefaultErrors,
+  UnknownPosthogError,
+  PosthogParseError,
+} from "./errors.ts";
 
 /**
  * Error channel shared by every generated PostHog operation. Generated
@@ -91,4 +95,5 @@ export const PosthogProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new PosthogParseError({ body, cause }),
   });

@@ -25,7 +25,7 @@ import {
 } from "@distilled.cloud/core/protocol-rest";
 import type { API_ERRORS, ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownModrinthError } from "./errors.ts";
+import { UnknownModrinthError, ModrinthParseError } from "./errors.ts";
 
 /**
  * Error channel shared by every generated Modrinth operation. Generated
@@ -90,4 +90,5 @@ export const ModrinthProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new ModrinthParseError({ body, cause }),
   });

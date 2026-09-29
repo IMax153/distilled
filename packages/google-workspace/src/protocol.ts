@@ -49,6 +49,7 @@ import {
 } from "@distilled.cloud/core/trait";
 import { HTTP_STATUS_MAP } from "@distilled.cloud/core/errors";
 import type { DefaultErrors } from "@distilled.cloud/core/errors";
+import { validateResponse } from "@distilled.cloud/core/response-validation";
 import { parseRetryAfterForStatus } from "@distilled.cloud/core/retry-after";
 import { Credentials, type Config } from "./credentials.ts";
 import {
@@ -239,6 +240,7 @@ const encode = ({
 
 const decode = ({
   response,
+  outputAst,
 }: {
   readonly response: HttpClientResponse.HttpClientResponse;
   readonly outputAst: AST.AST;
@@ -301,8 +303,14 @@ const decode = ({
     // Success: the JSON body is the payload verbatim (Google wire names are
     // already the TS-facing names). Empty bodies (204 / empty 200) decode
     // to an empty object so `<Op>Response {}` outputs stay well-typed.
-    if (nonJson) return text;
-    return json ?? {};
+    // Strict mode (core/response-validation) checks it against the output
+    // schema.
+    return yield* validateResponse(
+      outputAst,
+      nonJson ? text : (json ?? {}),
+      (cause) =>
+        new GoogleWorkspaceParseError({ body: nonJson ? text : json, cause }),
+    ).pipe(Effect.catch(fail));
   });
 
 export const GoogleWorkspaceProtocol: Layer.Layer<API.Protocol> = Layer.succeed(

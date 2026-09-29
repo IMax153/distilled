@@ -32,7 +32,7 @@ import {
 } from "@distilled.cloud/core/protocol-rest";
 import type { API_ERRORS, ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownAxiomError } from "./errors.ts";
+import { UnknownAxiomError, AxiomParseError } from "./errors.ts";
 
 /**
  * Error channel shared by every generated Axiom operation. Generated service
@@ -108,4 +108,5 @@ export const AxiomProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new AxiomParseError({ body, cause }),
   });

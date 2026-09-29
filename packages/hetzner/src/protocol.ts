@@ -42,6 +42,7 @@ import {
   PreconditionFailed,
   UnknownHetznerError,
   type DefaultErrors,
+  HetznerParseError,
 } from "./errors.ts";
 
 /**
@@ -119,4 +120,5 @@ export const HetznerProtocol: Layer.Layer<API.Protocol> =
         details: errorDetails(body),
         body,
       }),
+    parseError: ({ body, cause }) => new HetznerParseError({ body, cause }),
   });

@@ -66,6 +66,7 @@ import {
   NotFound,
   UnprocessableEntity,
 } from "@distilled.cloud/core/errors";
+import { validateResponse } from "@distilled.cloud/core/response-validation";
 import { parseRetryAfterForStatus } from "@distilled.cloud/core/retry-after";
 import { Credentials, type Config } from "./credentials.ts";
 import {
@@ -586,8 +587,14 @@ const decode = ({
 
     // 2xx: the response body IS the payload (no envelope). Wire→TS key
     // mapping is schema-driven; sensitive members come back Redacted.
+    // Strict mode checks the mapped body against the output schema first.
     const body: unknown = nonJson ? text : (json ?? {});
-    return wrapSensitive(outputAst, mapKeys(outputAst, body, "decode"));
+    const mapped = yield* validateResponse(
+      outputAst,
+      mapKeys(outputAst, body, "decode"),
+      (cause) => new StripeParseError({ body: nonJson ? text : json, cause }),
+    ).pipe(Effect.catch(fail));
+    return wrapSensitive(outputAst, mapped);
   });
 
 export const StripeProtocol: Layer.Layer<API.Protocol> = Layer.succeed(

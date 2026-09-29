@@ -26,7 +26,11 @@ import {
   type RestErrorEnvelope,
 } from "@distilled.cloud/core/protocol-rest";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownHuggingFaceError, type DefaultErrors } from "./errors.ts";
+import {
+  UnknownHuggingFaceError,
+  type DefaultErrors,
+  HuggingFaceParseError,
+} from "./errors.ts";
 
 /**
  * Error channel shared by every generated Hugging Face operation. Generated
@@ -86,4 +90,5 @@ export const HuggingFaceProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new HuggingFaceParseError({ body, cause }),
   });

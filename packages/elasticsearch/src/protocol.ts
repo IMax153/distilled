@@ -24,7 +24,10 @@ import type * as API from "@distilled.cloud/core/api";
 import { makeRestProtocol } from "@distilled.cloud/core/protocol-rest";
 import type { API_ERRORS, ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownElasticsearchError } from "./errors.ts";
+import {
+  UnknownElasticsearchError,
+  ElasticsearchParseError,
+} from "./errors.ts";
 
 /**
  * Error channel shared by every generated Elasticsearch operation. Generated
@@ -66,4 +69,6 @@ export const ElasticsearchProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) =>
+      new ElasticsearchParseError({ body, cause }),
   });

@@ -37,10 +37,11 @@ import {
   wrapSensitive,
   type RestErrorEnvelope,
 } from "@distilled.cloud/core/protocol-rest";
+import { validateResponse } from "@distilled.cloud/core/response-validation";
 import { parseRetryAfterForStatus } from "@distilled.cloud/core/retry-after";
 import { httpSymbol } from "@distilled.cloud/core/trait";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownStackitError } from "./errors.ts";
+import { StackitParseError, UnknownStackitError } from "./errors.ts";
 import type { DefaultErrors } from "./errors.ts";
 import type { StackitHttpTrait } from "./traits.ts";
 
@@ -53,6 +54,7 @@ import type { StackitHttpTrait } from "./traits.ts";
 export type StackitOpError =
   | DefaultErrors
   | UnknownStackitError
+  | StackitParseError
   | ConfigError
   | HttpClientError.HttpClientError;
 
@@ -227,8 +229,15 @@ export const StackitProtocol: Layer.Layer<API.Protocol> = Layer.succeed(
           );
         }
 
+        // Strict mode checks the mapped body against the output schema.
         const body: unknown = nonJson ? text : (json ?? {});
-        return wrapSensitive(outputAst, mapKeys(outputAst, body, "decode"));
+        const mapped = yield* validateResponse(
+          outputAst,
+          mapKeys(outputAst, body, "decode"),
+          (cause) =>
+            new StackitParseError({ body: nonJson ? text : json, cause }),
+        ).pipe(Effect.catch(fail));
+        return wrapSensitive(outputAst, mapped);
       }),
   }),
 );

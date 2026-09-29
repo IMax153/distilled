@@ -25,7 +25,11 @@ import type * as API from "@distilled.cloud/core/api";
 import { ConfigError } from "@distilled.cloud/core/errors";
 import { makeRestProtocol } from "@distilled.cloud/core/protocol-rest";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownDaytonaError, type DefaultErrors } from "./errors.ts";
+import {
+  UnknownDaytonaError,
+  type DefaultErrors,
+  DaytonaParseError,
+} from "./errors.ts";
 import { ANALYTICS_PREFIX, TOOLBOX_ROOTS } from "./endpoints.ts";
 
 /**
@@ -100,4 +104,5 @@ export const DaytonaProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new DaytonaParseError({ body, cause }),
   });

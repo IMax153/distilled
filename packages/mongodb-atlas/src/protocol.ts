@@ -48,9 +48,14 @@ import {
   HTTP_STATUS_MAP,
   InternalServerError,
 } from "@distilled.cloud/core/errors";
+import { validateResponse } from "@distilled.cloud/core/response-validation";
 import { parseRetryAfterForStatus } from "@distilled.cloud/core/retry-after";
 import { Credentials, type Config } from "./credentials.ts";
-import { PaymentRequired, UnknownMongodbAtlasError } from "./errors.ts";
+import {
+  MongodbAtlasParseError,
+  PaymentRequired,
+  UnknownMongodbAtlasError,
+} from "./errors.ts";
 
 /**
  * Error channel shared by every generated Atlas operation. Generated service
@@ -62,6 +67,7 @@ export type MongodbAtlasOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | PaymentRequired
   | UnknownMongodbAtlasError
+  | MongodbAtlasParseError
   | ConfigError
   | HttpClientError.HttpClientError;
 
@@ -210,8 +216,16 @@ const decode = ({
     // `?envelope=true` wrapper is never requested by the SDK — v0 parity).
     // Wire→TS key mapping is schema-driven; `RawResponseRoot` responses are
     // the body verbatim (mapKeys handles arrays/scalars structurally).
+    // Strict mode (core/response-validation) checks the mapped body against
+    // the output schema.
     const body: unknown = nonJson ? text : (json ?? {});
-    return wrapSensitive(outputAst, mapKeys(outputAst, body, "decode"));
+    const mapped = yield* validateResponse(
+      outputAst,
+      mapKeys(outputAst, body, "decode"),
+      (cause) =>
+        new MongodbAtlasParseError({ body: nonJson ? text : json, cause }),
+    ).pipe(Effect.catch(fail));
+    return wrapSensitive(outputAst, mapped);
   });
 
 export const MongodbAtlasProtocol: Layer.Layer<API.Protocol> = Layer.succeed(

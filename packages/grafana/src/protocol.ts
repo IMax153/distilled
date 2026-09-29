@@ -24,7 +24,7 @@ import type * as API from "@distilled.cloud/core/api";
 import { makeRestProtocol } from "@distilled.cloud/core/protocol-rest";
 import type { API_ERRORS, ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownGrafanaError } from "./errors.ts";
+import { UnknownGrafanaError, GrafanaParseError } from "./errors.ts";
 
 /**
  * Error channel shared by every generated Grafana operation. Generated
@@ -79,4 +79,5 @@ export const GrafanaProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new GrafanaParseError({ body, cause }),
   });

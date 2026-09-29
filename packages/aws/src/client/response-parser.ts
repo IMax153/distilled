@@ -10,6 +10,7 @@
  * This is independently testable without making HTTP requests.
  */
 
+import { isStrict } from "@distilled.cloud/core/response-validation";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import * as SchemaIssue from "effect/SchemaIssue";
@@ -45,8 +46,11 @@ export interface ResponseParserOptions {
   /** Skip schema validation - returns raw deserialized response */
   skipValidation?: boolean;
   /**
-   * Hard-fail on output shape mismatches. Off by default: decode runs for
-   * its transformations but mismatches fall back to the raw response.
+   * Always hard-fail on output shape mismatches, whatever the
+   * `ResponseValidation` mode (`@distilled.cloud/core/response-validation`)
+   * of the calling fiber. Without it the mode decides: lenient (the default)
+   * runs decode for its transformations but falls back to the raw response
+   * on a mismatch; strict fails with ParseError.
    */
   validate?: boolean;
   /** AWS service SDK ID for error context (e.g., "S3", "DynamoDB") */
@@ -121,7 +125,7 @@ export const makeResponseParser = <A>(
   const decode = options?.skipValidation
     ? undefined
     : Schema.decodeUnknownEffect(outputSchema);
-  const lenient = !options?.validate;
+  const forceStrict = options?.validate === true;
 
   // Create stream parser if output has event stream member (done once)
   const streamParser = makeStreamParser(outputAst);
@@ -198,15 +202,24 @@ export const makeResponseParser = <A>(
       }
 
       // Decode applies the schema's transformations (timestamp -> Date,
-      // sensitive -> Redacted). A shape mismatch is NOT a failure: fall back
-      // to the raw deserialized response (DISTILLED_AWS_VALIDATE=1 restores
-      // hard-failing validation).
-      if (lenient) {
+      // sensitive -> Redacted). In lenient mode (the default) a shape
+      // mismatch falls back to the raw deserialized response; in strict mode
+      // (core/response-validation, or the `validate` option) it fails with
+      // ParseError.
+      const strict = forceStrict || (yield* isStrict);
+      if (!strict) {
         return yield* decode(deserialized).pipe(
           Effect.catch(() => Effect.succeed(deserialized as A)),
         );
       }
-      return yield* decode(deserialized);
+      return yield* decode(deserialized).pipe(
+        Effect.mapError(
+          (error) =>
+            new ParseError({
+              message: `${options?.service ?? "AWS"}.${options?.operation ?? "operation"} response does not match its output schema: ${error.message}`,
+            }),
+        ),
+      );
     }
 
     // Error path

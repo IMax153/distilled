@@ -29,6 +29,7 @@ import {
   PaymentRequired,
   UnknownVercelError,
   type DefaultErrors,
+  VercelParseError,
 } from "./errors.ts";
 
 /**
@@ -95,4 +96,5 @@ export const VercelProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new VercelParseError({ body, cause }),
   });

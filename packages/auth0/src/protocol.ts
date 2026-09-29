@@ -24,7 +24,7 @@ import type * as API from "@distilled.cloud/core/api";
 import { makeRestProtocol } from "@distilled.cloud/core/protocol-rest";
 import type { API_ERRORS, ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownAuth0Error } from "./errors.ts";
+import { UnknownAuth0Error, Auth0ParseError } from "./errors.ts";
 
 /**
  * Error channel shared by every generated Auth0 operation. Generated service
@@ -66,4 +66,5 @@ export const Auth0Protocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new Auth0ParseError({ body, cause }),
   });

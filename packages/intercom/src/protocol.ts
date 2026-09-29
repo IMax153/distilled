@@ -27,7 +27,7 @@ import {
 } from "@distilled.cloud/core/protocol-rest";
 import type { API_ERRORS, ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownIntercomError } from "./errors.ts";
+import { UnknownIntercomError, IntercomParseError } from "./errors.ts";
 
 /**
  * Error channel shared by every generated Intercom operation. Generated
@@ -97,4 +97,5 @@ export const IntercomProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new IntercomParseError({ body, cause }),
   });

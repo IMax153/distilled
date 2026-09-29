@@ -29,7 +29,11 @@ import {
 } from "@distilled.cloud/core/protocol-rest";
 import type { ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, type Config } from "./credentials.ts";
-import { type DefaultErrors, UnknownPrismaError } from "./errors.ts";
+import {
+  type DefaultErrors,
+  UnknownPrismaError,
+  PrismaParseError,
+} from "./errors.ts";
 
 /**
  * Error channel shared by every generated Prisma operation.
@@ -89,4 +93,5 @@ export const PrismaProtocol: Layer.Layer<API.Protocol> =
         body: info.body,
       });
     },
+    parseError: ({ body, cause }) => new PrismaParseError({ body, cause }),
   });

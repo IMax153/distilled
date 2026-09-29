@@ -31,6 +31,7 @@ import {
   RequestTimeout,
   UnknownS2Error,
   type DefaultErrors,
+  S2ParseError,
 } from "./errors.ts";
 
 /**
@@ -99,4 +100,5 @@ export const S2Protocol: Layer.Layer<API.Protocol> = makeRestProtocol<Config>({
       message,
       body,
     }),
+  parseError: ({ body, cause }) => new S2ParseError({ body, cause }),
 });

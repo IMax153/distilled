@@ -24,7 +24,12 @@ import {
   type RestErrorEnvelope,
 } from "@distilled.cloud/core/protocol-rest";
 import { Credentials, type Config } from "./credentials.ts";
-import { Gone, UnknownGithubError, type DefaultErrors } from "./errors.ts";
+import {
+  Gone,
+  UnknownGithubError,
+  type DefaultErrors,
+  GithubParseError,
+} from "./errors.ts";
 
 /**
  * The REST API version the generated services were built from — sent on
@@ -98,4 +103,5 @@ export const GithubProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new GithubParseError({ body, cause }),
   });

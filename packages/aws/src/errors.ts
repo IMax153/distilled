@@ -240,6 +240,7 @@ export type CommonAwsError =
  */
 export type CommonErrors =
   | UnknownAwsError
+  | ParseError
   | CommonAwsError
   | EndpointError
   | NoMatchingRuleError

@@ -54,6 +54,7 @@ import {
   TooManyRequests,
   Unauthorized,
 } from "@distilled.cloud/core/errors";
+import { validateResponse } from "@distilled.cloud/core/response-validation";
 import {
   parseRetryAfterForStatus,
   parseServerRetryHint,
@@ -67,6 +68,7 @@ import {
 import {
   type CloudflareError,
   CloudflareHttpError,
+  CloudflareParseError,
   type CloudflareRateLimited,
   type DefaultErrors,
   InvalidRoute,
@@ -445,6 +447,16 @@ const makeDecode =
         );
       }
 
+      // Strict mode (core/response-validation) checks the TS-shaped output
+      // against the schema; lenient mode returns it as built.
+      const body: unknown = nonJson ? text : json;
+      const validate = (value: unknown) =>
+        validateResponse(
+          outputAst,
+          value,
+          (cause) => new CloudflareParseError({ body, cause }),
+        ).pipe(Effect.catch(fail));
+
       if (nonJson) json = {};
 
       // Unwrap the envelope: the payload is `result` (fall back to the whole
@@ -462,7 +474,7 @@ const makeDecode =
       // Bare-payload response: the whole value IS the envelope's `result`
       // (array/scalar), returned directly rather than wrapped in a struct.
       if (getAnn(outputAst, envelopePayloadRootSymbol) !== undefined) {
-        return mapKeys(outputAst, payload, "decode", rootDict);
+        return yield* validate(mapKeys(outputAst, payload, "decode", rootDict));
       }
 
       const result: Record<string, unknown> = {};
@@ -506,7 +518,7 @@ const makeDecode =
           }
         }
       }
-      return result;
+      return yield* validate(result);
     });
 
 export const CloudflareProtocol: Layer.Layer<API.Protocol> = Layer.succeed(

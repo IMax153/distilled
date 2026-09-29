@@ -106,12 +106,10 @@ const prepare = (config: API.ProtocolOperationConfig): Prepared => {
     parseResponse: makeResponseParser(op, {
       service: serviceSdkId,
       operation: operationName,
-      // Responses are not schema-validated by default (matching every other
-      // distilled SDK): decode still runs for its transformations
-      // (timestamps -> Date, sensitive -> Redacted) but a shape mismatch
-      // falls back to the raw response instead of failing the call.
-      // DISTILLED_AWS_VALIDATE=1 restores hard-failing validation (the seed
-      // of a future strict mode).
+      // Validation follows the caller's ResponseValidation mode
+      // (@distilled.cloud/core/response-validation, lenient by default).
+      // DISTILLED_AWS_VALIDATE=1 forces strict for AWS alone; the
+      // cross-SDK switch is DISTILLED_STRICT_RESPONSES=1.
       validate:
         typeof process !== "undefined" && !!process.env?.DISTILLED_AWS_VALIDATE,
     }),

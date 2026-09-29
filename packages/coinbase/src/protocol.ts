@@ -56,11 +56,13 @@ import {
   type ConfigError,
   HTTP_STATUS_MAP,
 } from "@distilled.cloud/core/errors";
+import { validateResponse } from "@distilled.cloud/core/response-validation";
 import { parseRetryAfterForStatus } from "@distilled.cloud/core/retry-after";
 import type { Config } from "./credentials.ts";
 import { Credentials } from "./credentials.ts";
 import {
   COINBASE_HTTP_STATUS_MAP,
+  CoinbaseParseError,
   type DefaultErrors,
   ERROR_TYPE_MAP,
   STANDARD_ERROR_TYPE_MAP,
@@ -413,9 +415,15 @@ const decode = ({
 
     // No envelope: the response body IS the payload, mapped onto the output
     // schema (wire names → TS names), with members marked T.SensitiveValue
-    // delivered as Redacted.
+    // delivered as Redacted. Strict mode (core/response-validation) checks
+    // the mapped body against the output schema first.
     const body = json === undefined ? {} : json;
-    return wrapSensitive(outputAst, mapKeys(outputAst, body, "decode"));
+    const mapped = yield* validateResponse(
+      outputAst,
+      mapKeys(outputAst, body, "decode"),
+      (cause) => new CoinbaseParseError({ body: json ?? text, cause }),
+    ).pipe(Effect.catch(fail));
+    return wrapSensitive(outputAst, mapped);
   });
 
 /**

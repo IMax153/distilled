@@ -25,7 +25,7 @@ import {
 } from "@distilled.cloud/core/protocol-rest";
 import type { API_ERRORS, ConfigError } from "@distilled.cloud/core/errors";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownOvhError } from "./errors.ts";
+import { UnknownOvhError, OvhParseError } from "./errors.ts";
 
 /**
  * Error channel shared by every generated OVH operation. Generated service
@@ -83,4 +83,5 @@ export const OvhProtocol: Layer.Layer<API.Protocol> = makeRestProtocol<Config>({
       message,
       body,
     }),
+  parseError: ({ body, cause }) => new OvhParseError({ body, cause }),
 });

@@ -21,7 +21,11 @@ import {
   type RestErrorEnvelope,
 } from "@distilled.cloud/core/protocol-rest";
 import { Credentials, type Config } from "./credentials.ts";
-import { UnknownWorkosError, type DefaultErrors } from "./errors.ts";
+import {
+  UnknownWorkosError,
+  type DefaultErrors,
+  WorkosParseError,
+} from "./errors.ts";
 
 /**
  * Error channel shared by every generated WorkOS operation. Generated service
@@ -85,4 +89,5 @@ export const WorkosProtocol: Layer.Layer<API.Protocol> =
         message,
         body,
       }),
+    parseError: ({ body, cause }) => new WorkosParseError({ body, cause }),
   });
