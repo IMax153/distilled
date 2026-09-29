@@ -188,23 +188,19 @@ program.«f:pipe»(
           title="Response validation"
           code={`«k:import» { ResponseValidation } «k:from» «s:"@distilled.cloud/core"»
 
-«m:// check responses against the schema; extra fields pass»
-program.«f:pipe»(
-  Effect.«f:provide»(ResponseValidation.additionalProperties),
-)
+«m:// every SDK checks each response against its schema»
+program.«f:pipe»(Effect.«f:provide»(ResponseValidation.strict))
 
-«m:// strict: a field the spec doesn't list fails too»
+«m:// a response that drifted from the spec is a typed error»
 Neon.«f:getProject»({ project_id }).«f:pipe»(
-  Effect.«f:provide»(ResponseValidation.strict),
   Effect.«f:catchTag»(«s:"NeonParseError"», (e) => ...),
 )`}
         >
-          Responses are lenient by default and come back as the API sent them.
-          Provide a layer and every SDK in your program checks each response
-          against its schema: <code>additionalProperties</code> allows fields
-          the spec doesn't list, <code>strict</code> rejects them. When an API
-          changes shape, the call fails with a typed <code>ParseError</code>{" "}
-          instead of handing you the wrong type.
+          Since most APIs are assumed to be stable Distilled SDKs do not verify
+          response structure to keep performance fast. For more critical needs{" "}
+          <code>ResponseValidation</code> can be provided to ensure responses
+          are verified against the spec at runtime and a <code>ParseError</code>{" "}
+          being thrown if they don't match.
         </Cap>
 
         <article
