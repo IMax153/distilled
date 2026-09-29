@@ -10,7 +10,7 @@
  * This is independently testable without making HTTP requests.
  */
 
-import { isStrict } from "@distilled.cloud/core/response-validation";
+import { parseOptions } from "@distilled.cloud/core/response-validation";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import * as SchemaIssue from "effect/SchemaIssue";
@@ -194,16 +194,16 @@ export const makeResponseParser = <A>(
 
       // Decode applies the schema's transformations (timestamp -> Date,
       // sensitive -> Redacted). In lenient mode (the default) a shape
-      // mismatch falls back to the raw deserialized response; in strict mode
-      // (the core ResponseValidation.strict layer) it fails with
-      // ParseError.
-      const strict = yield* isStrict;
-      if (!strict) {
+      // mismatch falls back to the raw deserialized response; the validating
+      // modes (core ResponseValidation) fail it with ParseError, `strict`
+      // also rejecting members the schema does not model.
+      const validation = yield* parseOptions;
+      if (validation === undefined) {
         return yield* decode(deserialized).pipe(
           Effect.catch(() => Effect.succeed(deserialized as A)),
         );
       }
-      return yield* decode(deserialized).pipe(
+      return yield* decode(deserialized, validation).pipe(
         Effect.mapError(
           (error) =>
             new ParseError({

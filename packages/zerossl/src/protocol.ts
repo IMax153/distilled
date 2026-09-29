@@ -8,7 +8,8 @@
  * against the operation's typed error classes before trusting the status.
  */
 import {
-  isStrict,
+  failUnlessLenient,
+  isValidating,
   validateResponse,
 } from "@distilled.cloud/core/response-validation";
 import * as Effect from "effect/Effect";
@@ -104,13 +105,11 @@ const decode = ({
       try: () => (text.trim().length > 0 ? JSON.parse(text) : {}),
       catch: () => parseError("Invalid JSON response"),
     }).pipe(
-      // A non-JSON 2xx fails only in strict mode; lenient returns the text.
+      // A non-JSON 2xx fails unless lenient; lenient returns the text.
       Effect.catchTag("ZeroSslParseError", (error) =>
         status >= 400
           ? Effect.succeed(undefined)
-          : Effect.flatMap(isStrict, (strict) =>
-              strict ? Effect.fail(error) : Effect.succeed<unknown>(text),
-            ),
+          : failUnlessLenient<unknown, typeof error>(error, text),
       ),
     );
     const envelope = (isObject(json) ? json : {}) as ErrorEnvelope;
@@ -171,7 +170,7 @@ const decode = ({
     }
     if (!isObject(json)) {
       // Lenient mode returns a non-object body as read.
-      if (!(yield* isStrict)) return json;
+      if (!(yield* isValidating)) return json;
       return yield* fail(parseError("Expected a JSON object"));
     }
     // The EAB documentation uses 1/0; the live API also returns true/false.
@@ -179,7 +178,7 @@ const decode = ({
       json.success === 1 || json.success === 0
         ? { ...json, success: json.success === 1 }
         : json;
-    // Strict mode (core/response-validation) checks the output schema.
+    // Validating modes (core/response-validation) check the output schema.
     const output = yield* validateResponse(
       outputAst,
       mapKeys(outputAst, body, "decode"),

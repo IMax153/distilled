@@ -49,7 +49,7 @@ import {
   type ConfigError,
 } from "@distilled.cloud/core/errors";
 import {
-  failIfStrict,
+  failUnlessLenient,
   validateResponse,
 } from "@distilled.cloud/core/response-validation";
 import { parseRetryAfterForStatus } from "@distilled.cloud/core/retry-after";
@@ -588,7 +588,7 @@ const decodeSpritesResponse = ({
       );
     }
 
-    // Strict mode checks the mapped body (or parsed exec frames) against the
+    // Validating modes check the mapped body (or parsed exec frames) against the
     // output schema.
     const body: unknown =
       execFrames ?? parseMaybeNdjson(nonJson ? text : (json ?? {}));
@@ -762,7 +762,7 @@ const graphqlDecode = ({
         return yield* matchGraphqlError(status, text, headers, errors);
       }
       // Lenient mode returns the body as read.
-      return yield* failIfStrict(
+      return yield* failUnlessLenient(
         new FlyIoParseError({
           body: text,
           cause: "response body is not valid JSON",
@@ -794,7 +794,7 @@ const graphqlDecode = ({
             : undefined;
       }
     }
-    // Strict mode checks the payload at the response path against the
+    // Validating modes check the payload at the response path against the
     // output schema.
     return yield* validateResponse(
       outputAst,

@@ -149,36 +149,78 @@ describe("Lambda synthetic error parsing", () => {
 });
 
 describe("2xx response validation", () => {
-  const mismatched = {
+  const response = (body: unknown) => ({
     status: 200,
     statusText: "OK",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ FunctionName: 123 }),
-  };
+    body: JSON.stringify(body),
+  });
+  const mismatched = response({ FunctionName: 123 });
+  const unmodeled = response({ FunctionName: "fn", Unmodeled: 1 });
+  const nestedUnmodeled = response({
+    FunctionName: "fn",
+    VpcConfig: { VpcId: "vpc-1", Unmodeled: 1 },
+  });
 
   test("lenient (default) falls back to the raw response on a mismatch", async () => {
     const output = await Effect.runPromise(parseCreateFunction(mismatched));
     expect(output).toMatchObject({ FunctionName: 123 });
   });
 
-  test("strict fails a mismatch with ParseError", async () => {
-    const error = await Effect.runPromise(
-      parseCreateFunction(mismatched).pipe(
-        Effect.provide(ResponseValidation.strict),
-        Effect.flip,
-      ),
-    );
-    expect(error).toBeInstanceOf(ParseError);
-    expect(isTransientError(error)).toBe(false);
-  });
+  for (const mode of ["additionalProperties", "strict"] as const) {
+    test(`${mode} fails a mismatch with ParseError`, async () => {
+      const error = await Effect.runPromise(
+        parseCreateFunction(mismatched).pipe(
+          Effect.provide(ResponseValidation[mode]),
+          Effect.flip,
+        ),
+      );
+      expect(error).toBeInstanceOf(ParseError);
+      expect(isTransientError(error)).toBe(false);
+    });
 
-  test("strict decodes a matching response", async () => {
-    const output = await Effect.runPromise(
-      parseCreateFunction({
-        ...mismatched,
-        body: JSON.stringify({ FunctionName: "fn" }),
-      }).pipe(Effect.provide(ResponseValidation.strict)),
-    );
-    expect(output).toMatchObject({ FunctionName: "fn" });
+    test(`${mode} decodes a matching response`, async () => {
+      const output = await Effect.runPromise(
+        parseCreateFunction(response({ FunctionName: "fn" })).pipe(
+          Effect.provide(ResponseValidation[mode]),
+        ),
+      );
+      expect(output).toMatchObject({ FunctionName: "fn" });
+    });
+  }
+
+  // The decoded output carries only modeled members, in every mode.
+  for (const mode of ["lenient", "additionalProperties"] as const) {
+    test(`${mode} accepts unmodeled members`, async () => {
+      for (const [input, expected] of [
+        [unmodeled, { FunctionName: "fn" }],
+        [
+          nestedUnmodeled,
+          { FunctionName: "fn", VpcConfig: { VpcId: "vpc-1" } },
+        ],
+      ] as const) {
+        const output = await Effect.runPromise(
+          parseCreateFunction(input).pipe(
+            Effect.provide(ResponseValidation[mode]),
+          ),
+        );
+        expect(output).toEqual(expected);
+      }
+    });
+  }
+
+  test("strict fails an unmodeled member at any depth with ParseError", async () => {
+    for (const input of [unmodeled, nestedUnmodeled]) {
+      const error = await Effect.runPromise(
+        parseCreateFunction(input).pipe(
+          Effect.provide(ResponseValidation.strict),
+          Effect.flip,
+        ),
+      );
+      expect(error).toBeInstanceOf(ParseError);
+      expect(error).toMatchObject({
+        message: expect.stringContaining("Unmodeled"),
+      });
+    }
   });
 });

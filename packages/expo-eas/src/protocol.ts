@@ -37,7 +37,7 @@ import * as API from "@distilled.cloud/core/api";
 import { getAnn } from "@distilled.cloud/core/protocol-http";
 import { HTTP_STATUS_MAP } from "@distilled.cloud/core/errors";
 import {
-  failIfStrict,
+  failUnlessLenient,
   validateResponse,
 } from "@distilled.cloud/core/response-validation";
 import { parseRetryAfterForStatus } from "@distilled.cloud/core/retry-after";
@@ -282,7 +282,7 @@ const decode = ({
         return yield* matchError(status, text, headers);
       }
       // Lenient mode returns the body as read.
-      return yield* failIfStrict(
+      return yield* failUnlessLenient(
         new EasParseError({
           body: text,
           cause: "response body is not valid JSON",
@@ -304,8 +304,8 @@ const decode = ({
     }
 
     // Success: unwrap `data.<responsePath>` and return it verbatim (member
-    // names are GraphQL field names — no wire renames). Strict mode
-    // (core/response-validation) checks it against the output schema.
+    // names are GraphQL field names — no wire renames). Validating modes
+    // (core/response-validation) check it against the output schema.
     const path = getAnn(outputAst, responsePathSymbol) as string | undefined;
     let payload: unknown =
       envelope !== null && typeof envelope === "object"

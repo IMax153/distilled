@@ -32,23 +32,38 @@ const envelope = (payload: unknown) =>
   JSON.stringify({ data: { accessToken: { deleteAccessToken: payload } } });
 
 describe("EAS response validation", () => {
-  test("a matching body succeeds unchanged in both modes", async () => {
+  test("a matching body succeeds unchanged in every mode", async () => {
     const payload = { id: "tok_1" };
-    const { lenient, strict } = await run(envelope(payload));
-    expect(lenient).toMatchObject({ _tag: "Success", success: payload });
-    expect(strict).toMatchObject({ _tag: "Success", success: payload });
+    const modes = await run(envelope(payload));
+    for (const result of Object.values(modes)) {
+      expect(result).toMatchObject({ _tag: "Success", success: payload });
+    }
   });
 
-  test("a body missing required members: lenient returns it, strict fails", async () => {
-    const { lenient, strict } = await run(envelope({}));
+  test("a body missing required members: lenient returns it, validating modes fail", async () => {
+    const { lenient, additionalProperties, strict } = await run(envelope({}));
     expect(lenient).toMatchObject({ _tag: "Success", success: {} });
-    expect(strict._tag).toBe("Failure");
+    expect((additionalProperties as any).failure).toBeInstanceOf(EasParseError);
     expect((strict as any).failure).toBeInstanceOf(EasParseError);
   });
 
-  test("a non-JSON body: lenient returns the text, strict fails", async () => {
-    const { lenient, strict } = await run("not json");
+  test("an unmodeled member: lenient and additionalProperties return it, strict fails", async () => {
+    const payload = { id: "tok_1", unmodeled: 1 };
+    const { lenient, additionalProperties, strict } = await run(
+      envelope(payload),
+    );
+    expect(lenient).toMatchObject({ _tag: "Success", success: payload });
+    expect(additionalProperties).toMatchObject({
+      _tag: "Success",
+      success: payload,
+    });
+    expect((strict as any).failure).toBeInstanceOf(EasParseError);
+  });
+
+  test("a non-JSON body: lenient returns the text, validating modes fail", async () => {
+    const { lenient, additionalProperties, strict } = await run("not json");
     expect(lenient).toMatchObject({ _tag: "Success", success: "not json" });
+    expect((additionalProperties as any).failure).toBeInstanceOf(EasParseError);
     expect((strict as any).failure).toBeInstanceOf(EasParseError);
   });
 });

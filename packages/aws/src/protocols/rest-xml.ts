@@ -4,7 +4,7 @@
  * https://smithy.io/2.0/aws/protocols/aws-restxml-protocol.html
  */
 
-import { failIfStrict } from "@distilled.cloud/core/response-validation";
+import { failUnlessLenient } from "@distilled.cloud/core/response-validation";
 import * as Effect from "effect/Effect";
 import * as Result from "effect/Result";
 import * as S from "effect/Schema";
@@ -293,7 +293,7 @@ export const restXmlProtocol: Protocol = (
           const read = yield* Effect.result(parseXml(bodyText));
           // Lenient mode returns the body as read.
           if (Result.isFailure(read)) {
-            return yield* failIfStrict(read.failure, bodyText);
+            return yield* failUnlessLenient(read.failure, bodyText);
           }
           const parsed = read.success;
           result[outputPayloadProp.name] = deserializeValue(
@@ -310,7 +310,7 @@ export const restXmlProtocol: Protocol = (
         const read = yield* Effect.result(parseXml(bodyText));
         // Lenient mode returns the body as read.
         if (Result.isFailure(read)) {
-          return yield* failIfStrict(read.failure, bodyText);
+          return yield* failUnlessLenient(read.failure, bodyText);
         }
         const parsed = read.success;
         const rawContent = outputXmlName ? parsed[outputXmlName] : parsed;

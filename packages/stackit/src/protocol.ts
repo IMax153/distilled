@@ -229,7 +229,7 @@ export const StackitProtocol: Layer.Layer<API.Protocol> = Layer.succeed(
           );
         }
 
-        // Strict mode checks the mapped body against the output schema.
+        // Validating modes check the mapped body against the output schema.
         const body: unknown = nonJson ? text : (json ?? {});
         const mapped = yield* validateResponse(
           outputAst,

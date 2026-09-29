@@ -216,7 +216,7 @@ const decode = ({
     // `?envelope=true` wrapper is never requested by the SDK — v0 parity).
     // Wire→TS key mapping is schema-driven; `RawResponseRoot` responses are
     // the body verbatim (mapKeys handles arrays/scalars structurally).
-    // Strict mode (core/response-validation) checks the mapped body against
+    // Validating modes (core/response-validation) check the mapped body against
     // the output schema.
     const body: unknown = nonJson ? text : (json ?? {});
     const mapped = yield* validateResponse(

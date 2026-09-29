@@ -12,7 +12,7 @@
  *             values first)
  *
  *   response: 2xx JSON → optional `transformResponse` → recursive wire→TS
- *             key mapping (`mapKeys`) → in strict mode, a schema check
+ *             key mapping (`mapKeys`) → when validating, a schema check
  *             failing with the provider's `parseError` (see
  *             `core/response-validation`) → `Redacted` wrapping of members
  *             marked with {@link SensitiveValue}; non-2xx → typed error:
@@ -240,7 +240,7 @@ export interface RestProtocolOptions<C> {
   readonly unknownError: (info: RestErrorInfo) => unknown;
   /**
    * The SDK's `<Sdk>ParseError`, raised when a 2xx body does not match the
-   * operation's output schema in strict mode (see
+   * operation's output schema when validating (see
    * `core/response-validation`). `body` is the parsed JSON, or the raw text
    * when the body wasn't JSON; `cause` is the schema error.
    */
@@ -414,7 +414,7 @@ export const makeRestProtocol = <C>(
       // 2xx: the response body IS the payload (no envelope). Wire→TS key
       // mapping is schema-driven; `RawResponseRoot` responses are the body
       // verbatim (mapKeys handles arrays/scalars structurally either way).
-      // Strict mode (core/response-validation) checks the mapped body against
+      // Validating modes (core/response-validation) check the mapped body against
       // the output schema — a non-JSON body reaches it as a string and fails
       // there unless the operation's output is itself a string.
       let body: unknown = nonJson ? text : (json ?? {});

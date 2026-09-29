@@ -202,6 +202,38 @@ describe("GraphQL response validation", () => {
     expect(error).toBeInstanceOf(FlyIoParseError);
   });
 
+  test("additionalProperties mode fails a mismatched payload with FlyIoParseError", async () => {
+    const error = await Effect.runPromise(
+      agreedToProviderTos(tos).pipe(
+        Retry.none,
+        Effect.provide(respondWith(200, mismatched)),
+        Effect.provide(ResponseValidation.additionalProperties),
+        Effect.flip,
+      ),
+    );
+    expect(error).toBeInstanceOf(FlyIoParseError);
+  });
+
+  // The output is a scalar (`boolean | null`), so there is no member to leave
+  // unmodeled; additionalProperties only differs from strict on objects.
+  test("additionalProperties mode passes a matching payload", async () => {
+    const result = await Effect.runPromise(
+      agreedToProviderTos(tos).pipe(
+        Retry.none,
+        Effect.provide(
+          respondWith(
+            200,
+            JSON.stringify({
+              data: { organization: { agreedToProviderTos: true } },
+            }),
+          ),
+        ),
+        Effect.provide(ResponseValidation.additionalProperties),
+      ),
+    );
+    expect(result).toBe(true);
+  });
+
   test("strict mode passes a matching payload", async () => {
     const result = await Effect.runPromise(
       agreedToProviderTos(tos).pipe(
@@ -220,15 +252,20 @@ describe("GraphQL response validation", () => {
     expect(result).toBe(true);
   });
 
-  test("a non-JSON body: lenient returns the text, strict fails", async () => {
+  test("a non-JSON body: lenient returns the text, validating modes fail", async () => {
     const call = agreedToProviderTos(tos).pipe(
       Retry.none,
       Effect.provide(respondWith(200, "not json")),
     );
     expect((await Effect.runPromise(call)) as unknown).toBe("not json");
-    const error = await Effect.runPromise(
-      call.pipe(Effect.provide(ResponseValidation.strict), Effect.flip),
-    );
-    expect(error).toBeInstanceOf(FlyIoParseError);
+    for (const mode of [
+      ResponseValidation.additionalProperties,
+      ResponseValidation.strict,
+    ]) {
+      const error = await Effect.runPromise(
+        call.pipe(Effect.provide(mode), Effect.flip),
+      );
+      expect(error).toBeInstanceOf(FlyIoParseError);
+    }
   });
 });

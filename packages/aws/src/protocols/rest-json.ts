@@ -9,7 +9,7 @@
  * - Default timestamp format is epoch-seconds
  */
 
-import { failIfStrict } from "@distilled.cloud/core/response-validation";
+import { failUnlessLenient } from "@distilled.cloud/core/response-validation";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import * as AST from "effect/SchemaAST";
@@ -377,7 +377,7 @@ export const restJson1Protocol: Protocol = (
           }
         } catch {
           // Lenient mode returns the body as read.
-          return yield* failIfStrict(
+          return yield* failUnlessLenient(
             new ParseError({
               message: `Failed to parse JSON body: ${bodyText}`,
             }),

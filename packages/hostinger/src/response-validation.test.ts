@@ -19,24 +19,47 @@ const run = (body: string) =>
   );
 
 describe("Hostinger response validation", () => {
-  test("a matching body succeeds unchanged in both modes", async () => {
+  test("a matching body succeeds unchanged in every mode", async () => {
     const body = { data: [{ id: 1, name: "laptop", key: "ssh-ed25519 AAAA" }] };
-    const { lenient, strict } = await run(JSON.stringify(body));
-    expect(lenient).toMatchObject({ _tag: "Success", success: body });
-    expect(strict).toMatchObject({ _tag: "Success", success: body });
+    const modes = await run(JSON.stringify(body));
+    for (const result of Object.values(modes)) {
+      expect(result).toMatchObject({ _tag: "Success", success: body });
+    }
   });
 
-  test("a member with the wrong primitive type: lenient returns it, strict fails", async () => {
+  test("a member with the wrong primitive type: lenient returns it, validating modes fail", async () => {
     const body = { data: [{ id: "one", name: "laptop" }] };
-    const { lenient, strict } = await run(JSON.stringify(body));
+    const { lenient, additionalProperties, strict } = await run(
+      JSON.stringify(body),
+    );
     expect(lenient).toMatchObject({ _tag: "Success", success: body });
-    expect(strict._tag).toBe("Failure");
+    expect((additionalProperties as any).failure).toBeInstanceOf(
+      HostingerParseError,
+    );
     expect((strict as any).failure).toBeInstanceOf(HostingerParseError);
   });
 
-  test("a non-JSON body: lenient returns the text, strict fails", async () => {
-    const { lenient, strict } = await run("not json");
+  test("an unmodeled member: lenient and additionalProperties return it, strict fails", async () => {
+    const body = {
+      data: [{ id: 1, name: "laptop", key: "ssh-ed25519 AAAA", unmodeled: 1 }],
+    };
+    const { lenient, additionalProperties, strict } = await run(
+      JSON.stringify(body),
+    );
+    expect(lenient).toMatchObject({ _tag: "Success", success: body });
+    expect(additionalProperties).toMatchObject({
+      _tag: "Success",
+      success: body,
+    });
+    expect((strict as any).failure).toBeInstanceOf(HostingerParseError);
+  });
+
+  test("a non-JSON body: lenient returns the text, validating modes fail", async () => {
+    const { lenient, additionalProperties, strict } = await run("not json");
     expect(lenient).toMatchObject({ _tag: "Success", success: "not json" });
+    expect((additionalProperties as any).failure).toBeInstanceOf(
+      HostingerParseError,
+    );
     expect((strict as any).failure).toBeInstanceOf(HostingerParseError);
   });
 });

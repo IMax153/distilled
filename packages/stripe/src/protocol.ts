@@ -587,7 +587,7 @@ const decode = ({
 
     // 2xx: the response body IS the payload (no envelope). Wire→TS key
     // mapping is schema-driven; sensitive members come back Redacted.
-    // Strict mode checks the mapped body against the output schema first.
+    // Validating modes check the mapped body against the output schema first.
     const body: unknown = nonJson ? text : (json ?? {});
     const mapped = yield* validateResponse(
       outputAst,

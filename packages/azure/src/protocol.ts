@@ -252,7 +252,7 @@ const decode = ({
     // 2xx: the response body IS the payload (ARM has no success envelope).
     // Wire→TS key mapping is schema-driven; `RawResponseRoot` responses are
     // the body verbatim (mapKeys handles arrays/scalars structurally either
-    // way). Strict mode (core/response-validation) checks the mapped body
+    // way). Validating modes (core/response-validation) check the mapped body
     // against the output schema. Sensitive members are delivered as
     // `Redacted`.
     const body: unknown = nonJson ? text : (json ?? {});

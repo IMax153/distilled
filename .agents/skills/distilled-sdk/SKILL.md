@@ -161,28 +161,35 @@ The protocol wires every one of them:
   the operation output — after wire→TS key mapping, before `wrapSensitive`.
   `packages/core/src/protocol-rest.ts` is the reference.
 
-2xx responses are validated only in strict mode. `ResponseValidation`
-(`import { ResponseValidation } from "@distilled.cloud/core"`) is one context
-reference shared by every SDK: lenient by default, switched with
-`Effect.provide(ResponseValidation.strict)` — only ever by layer. A new
-protocol reads the mode through `validateResponse`; it never adds its own
-flag or environment variable.
+`ResponseValidation` (`import { ResponseValidation } from
+"@distilled.cloud/core"`) is one context reference shared by every SDK, set
+only by layer (`Effect.provide(ResponseValidation.<mode>)`) and never by a
+flag or environment variable:
 
-Lenient mode checks only what the protocol needs in order to transform the
-body (unwrap an envelope, map keys, wrap sensitive members) and nothing
-more: a non-JSON body comes back as text, a body missing members comes back
-as read. Never decode against the output schema outside `validateResponse`.
-Strict mode surfaces every spec inaccuracy (an undocumented `null`, a new
-enum member) as a `<Pkg>ParseError`; that is the cost of opting in, and why
-strict is never the default.
+| Mode | 2xx body |
+| --- | --- |
+| `lenient` (default) | Returned as read. The protocol checks only what it needs to transform the body (unwrap an envelope, map keys, wrap sensitive members): a non-JSON body comes back as text, a body missing members comes back as read. |
+| `additionalProperties` | Decoded against the output schema; a mismatch fails with `<Pkg>ParseError`. Members the schema does not model are allowed and returned. |
+| `strict` | As `additionalProperties`, and an unmodeled member at any depth also fails. |
+
+A protocol reads the mode only through core: `validateResponse` for the
+output value, `failUnlessLenient` for a body it cannot read at all. Never
+decode against the output schema outside them. A protocol that builds its
+output from modeled members only (dropping unknown keys) must still let
+`strict` see those keys — `packages/cloudflare/src/protocol.ts` shows how.
+The validating modes surface every spec inaccuracy (an undocumented `null`,
+a new enum member) as a `<Pkg>ParseError`; that is the cost of opting in,
+and why lenient is the default.
 
 Every SDK ships `src/response-validation.test.ts` (copy
 `packages/s2/src/response-validation.test.ts`). It uses
 `runValidationModes` from `@distilled.cloud/core/testing` to run one real
-operation against a canned response in both modes and asserts: a matching
-body succeeds in both; a mismatched body succeeds in lenient and fails with
-`<Pkg>ParseError` in strict; and what a non-JSON body does in each. CI runs
-every `packages/*/src/response-validation.test.ts`.
+operation against canned responses in all three modes and asserts: a
+matching body succeeds in every mode; a mismatched body succeeds only in
+lenient; an unmodeled member succeeds in lenient and additionalProperties
+and fails in strict; what a non-JSON body does in each; and, at the type
+level, that `<Pkg>ParseError` is in the operation error union. CI runs every
+`packages/*/src/response-validation.test.ts`.
 
 Before opening the PR, confirm the parse error and the unknown-error
 fallback are both constructed outside the generated code — this must print

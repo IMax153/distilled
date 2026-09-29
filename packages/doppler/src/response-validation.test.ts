@@ -19,18 +19,19 @@ const run = (body: string) =>
     { body },
   );
 
+const matching = {
+  code: "abc",
+  polling_code: "secret",
+  auth_url: "https://dashboard.doppler.com/workplace/auth/cli",
+};
+
 describe("Doppler response validation", () => {
-  test("a matching body succeeds unchanged in both modes", async () => {
-    const body = {
-      code: "abc",
-      polling_code: "secret",
-      auth_url: "https://dashboard.doppler.com/workplace/auth/cli",
-    };
-    const { lenient, strict } = await run(JSON.stringify(body));
-    for (const result of [lenient, strict]) {
+  test("a matching body succeeds unchanged in every mode", async () => {
+    const modes = await run(JSON.stringify(matching));
+    for (const result of Object.values(modes)) {
       expect(result).toMatchObject({
         _tag: "Success",
-        success: { code: body.code, auth_url: body.auth_url },
+        success: { code: matching.code, auth_url: matching.auth_url },
       });
       const pollingCode: Redacted.Redacted<string> = (result as any).success
         .polling_code;
@@ -38,17 +39,41 @@ describe("Doppler response validation", () => {
     }
   });
 
-  test("a body missing required members: lenient returns it, strict fails", async () => {
+  test("a body missing required members: lenient returns it, validating modes fail", async () => {
     const body = { code: "abc" };
-    const { lenient, strict } = await run(JSON.stringify(body));
+    const { lenient, additionalProperties, strict } = await run(
+      JSON.stringify(body),
+    );
     expect(lenient).toMatchObject({ _tag: "Success", success: body });
-    expect(strict._tag).toBe("Failure");
+    expect((additionalProperties as any).failure).toBeInstanceOf(
+      DopplerParseError,
+    );
     expect((strict as any).failure).toBeInstanceOf(DopplerParseError);
   });
 
-  test("a non-JSON body: lenient returns the text, strict fails", async () => {
-    const { lenient, strict } = await run("not json");
+  test("an unmodeled member: lenient and additionalProperties return it, strict fails", async () => {
+    const body = { ...matching, unmodeled: 1 };
+    const { lenient, additionalProperties, strict } = await run(
+      JSON.stringify(body),
+    );
+    for (const result of [lenient, additionalProperties]) {
+      expect(result).toMatchObject({
+        _tag: "Success",
+        success: { code: body.code, auth_url: body.auth_url, unmodeled: 1 },
+      });
+      const pollingCode: Redacted.Redacted<string> = (result as any).success
+        .polling_code;
+      expect(Redacted.value(pollingCode)).toBe("secret");
+    }
+    expect((strict as any).failure).toBeInstanceOf(DopplerParseError);
+  });
+
+  test("a non-JSON body: lenient returns the text, validating modes fail", async () => {
+    const { lenient, additionalProperties, strict } = await run("not json");
     expect(lenient).toMatchObject({ _tag: "Success", success: "not json" });
+    expect((additionalProperties as any).failure).toBeInstanceOf(
+      DopplerParseError,
+    );
     expect((strict as any).failure).toBeInstanceOf(DopplerParseError);
   });
 });

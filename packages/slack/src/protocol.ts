@@ -310,7 +310,7 @@ const decode = ({
 
     // Successful non-JSON body: raw bytes (the analytics file download —
     // modeled as a Document output, so the bytes pass through verbatim).
-    // Strict mode fails them for every other (struct) output.
+    // Validating modes fail them for every other (struct) output.
     if (json === undefined) {
       return yield* validateResponse(
         outputAst,
@@ -321,7 +321,7 @@ const decode = ({
 
     // 2xx envelope: the body IS the payload (`ok` rides along as a modeled
     // member). Wire→TS key mapping is schema-driven; sensitive members
-    // (OAuth access/refresh tokens) wrap in Redacted. Strict mode checks the
+    // (OAuth access/refresh tokens) wrap in Redacted. Validating modes check the
     // mapped payload against the output schema first.
     const mapped = yield* validateResponse(
       outputAst,

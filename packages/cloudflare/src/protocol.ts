@@ -54,7 +54,10 @@ import {
   TooManyRequests,
   Unauthorized,
 } from "@distilled.cloud/core/errors";
-import { validateResponse } from "@distilled.cloud/core/response-validation";
+import {
+  ResponseValidation,
+  validateResponse,
+} from "@distilled.cloud/core/response-validation";
 import {
   parseRetryAfterForStatus,
   parseServerRetryHint,
@@ -447,7 +450,7 @@ const makeDecode =
         );
       }
 
-      // Strict mode (core/response-validation) checks the TS-shaped output
+      // Validating modes (core/response-validation) check the TS-shaped output
       // against the schema; lenient mode returns it as built.
       const body: unknown = nonJson ? text : json;
       const validate = (value: unknown) =>
@@ -482,6 +485,9 @@ const makeDecode =
       if (nonJson) return yield* validate(text);
 
       const result: Record<string, unknown> = {};
+      // Payload keys a member read; strict mode rejects the rest.
+      const consumed = new Set<string>();
+      let wholePayload = false;
 
       for (const prop of getProps(outputAst)) {
         const key = String(prop.name);
@@ -490,6 +496,7 @@ const makeDecode =
             result[key] = camelizeKeys(json.result_info);
           }
         } else if (hasPropAnn(prop, envelopePayloadSymbol)) {
+          wholePayload = true;
           result[key] = mapKeys(prop.type, payload, "decode", rootDict);
         } else if (hasPropAnn(prop, headerSymbol)) {
           const v = response.headers[nameOf(prop, headerSymbol).toLowerCase()];
@@ -513,6 +520,7 @@ const makeDecode =
                   : undefined
               : undefined;
           if (src !== undefined) {
+            consumed.add(src);
             result[key] = mapKeys(
               prop.type,
               (payload as Record<string, unknown>)[src],
@@ -520,6 +528,25 @@ const makeDecode =
               rootDict,
             );
           }
+        }
+      }
+      // The struct above keeps only modeled members, so strict mode checks
+      // the unread payload keys alongside it.
+      if (
+        !wholePayload &&
+        payload !== null &&
+        typeof payload === "object" &&
+        !Array.isArray(payload) &&
+        (yield* ResponseValidation) === "strict"
+      ) {
+        const unread = Object.keys(payload).filter((k) => !consumed.has(k));
+        if (unread.length > 0) {
+          yield* validate({
+            ...Object.fromEntries(
+              unread.map((k) => [k, (payload as Record<string, unknown>)[k]]),
+            ),
+            ...result,
+          });
         }
       }
       return yield* validate(result);

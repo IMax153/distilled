@@ -415,7 +415,7 @@ const decode = ({
 
     // No envelope: the response body IS the payload, mapped onto the output
     // schema (wire names → TS names), with members marked T.SensitiveValue
-    // delivered as Redacted. Strict mode (core/response-validation) checks
+    // delivered as Redacted. Validating modes (core/response-validation) check
     // the mapped body against the output schema first.
     const body = json === undefined ? {} : json;
     const mapped = yield* validateResponse(

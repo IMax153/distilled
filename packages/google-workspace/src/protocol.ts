@@ -303,7 +303,7 @@ const decode = ({
     // Success: the JSON body is the payload verbatim (Google wire names are
     // already the TS-facing names). Empty bodies (204 / empty 200) decode
     // to an empty object so `<Op>Response {}` outputs stay well-typed.
-    // Strict mode (core/response-validation) checks it against the output
+    // Validating modes (core/response-validation) check it against the output
     // schema.
     return yield* validateResponse(
       outputAst,

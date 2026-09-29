@@ -8,9 +8,10 @@ import type { MetabaseParseError } from "./errors.ts";
 import type { MetabaseOpError } from "./protocol.ts";
 
 // Metabase's OpenAPI declares no response bodies, so every generated output
-// schema is `S.Struct({})`. That schema accepts any non-nullish value (a JSON
-// `null` body is read as `{}`), so strict mode has nothing to reject: these
-// tests pin that both modes return every 2xx body unchanged.
+// schema is `S.Struct({})`. Effect reads that as the `{}` type, which accepts
+// any non-nullish value (a JSON `null` body is read as `{}`) and has no
+// members to call excess, so no mode has anything to reject: these tests pin
+// that every mode returns every 2xx body unchanged.
 const run = (body: string) =>
   runValidationModes(
     getAction({}).pipe(
@@ -21,24 +22,36 @@ const run = (body: string) =>
   );
 
 describe("Metabase response validation", () => {
-  test("a matching body succeeds unchanged in both modes", async () => {
-    const body = { id: 1, name: "action" };
-    const { lenient, strict } = await run(JSON.stringify(body));
-    expect(lenient).toMatchObject({ _tag: "Success", success: body });
-    expect(strict).toMatchObject({ _tag: "Success", success: body });
+  test("an empty object body succeeds unchanged in every mode", async () => {
+    const modes = await run("{}");
+    for (const result of Object.values(modes)) {
+      expect(result).toMatchObject({ _tag: "Success", success: {} });
+    }
   });
 
-  test("a non-object JSON body passes the empty output schema in both modes", async () => {
+  test("a non-object JSON body passes the empty output schema in every mode", async () => {
     const body = [{ id: 1, name: "action" }];
-    const { lenient, strict } = await run(JSON.stringify(body));
-    expect(lenient).toMatchObject({ _tag: "Success", success: body });
-    expect(strict).toMatchObject({ _tag: "Success", success: body });
+    const modes = await run(JSON.stringify(body));
+    for (const result of Object.values(modes)) {
+      expect(result).toMatchObject({ _tag: "Success", success: body });
+    }
   });
 
-  test("a non-JSON body: both modes return the text", async () => {
-    const { lenient, strict } = await run("not json");
-    expect(lenient).toMatchObject({ _tag: "Success", success: "not json" });
-    expect(strict).toMatchObject({ _tag: "Success", success: "not json" });
+  // `S.Struct({})` is `{}`, not a closed struct: strict has no modeled
+  // members to compare against, so unmodeled members pass in every mode.
+  test("unmodeled members pass the empty output schema in every mode", async () => {
+    const body = { id: 1, name: "action", unmodeled: 1 };
+    const modes = await run(JSON.stringify(body));
+    for (const result of Object.values(modes)) {
+      expect(result).toMatchObject({ _tag: "Success", success: body });
+    }
+  });
+
+  test("a non-JSON body: every mode returns the text", async () => {
+    const modes = await run("not json");
+    for (const result of Object.values(modes)) {
+      expect(result).toMatchObject({ _tag: "Success", success: "not json" });
+    }
   });
 });
 

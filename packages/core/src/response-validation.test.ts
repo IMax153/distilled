@@ -74,15 +74,39 @@ describe("makeRestProtocol response validation", () => {
     expect((result as any).failure.body).toEqual({});
   });
 
-  test("strict passes a matching body through unchanged, extra members included", async () => {
+  test("additionalProperties fails a body missing a required member", async () => {
+    const result = await run(
+      decode("{}"),
+      ResponseValidation.additionalProperties,
+    );
+    expect((result as any).failure).toBeInstanceOf(TestParseError);
+  });
+
+  test("additionalProperties passes extra members and returns them", async () => {
     const result = await run(
       decode(JSON.stringify({ id: "a", extra: 1 })),
-      ResponseValidation.strict,
+      ResponseValidation.additionalProperties,
     );
     expect(result).toMatchObject({
       _tag: "Success",
       success: { id: "a", extra: 1 },
     });
+  });
+
+  test("strict fails a body with a member the schema does not model", async () => {
+    const result = await run(
+      decode(JSON.stringify({ id: "a", extra: 1 })),
+      ResponseValidation.strict,
+    );
+    expect((result as any).failure).toBeInstanceOf(TestParseError);
+  });
+
+  test("strict passes an exactly matching body unchanged", async () => {
+    const result = await run(
+      decode(JSON.stringify({ id: "a" })),
+      ResponseValidation.strict,
+    );
+    expect(result).toMatchObject({ _tag: "Success", success: { id: "a" } });
   });
 
   test("an inner lenient layer overrides an outer strict one", async () => {

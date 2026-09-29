@@ -27,25 +27,47 @@ const run = (body: string) =>
     { body },
   );
 
+const matching = { value: [{ location: "westus", name: "svc" }] };
+
 describe("Azure response validation", () => {
-  test("a matching body succeeds unchanged in both modes", async () => {
-    const body = { value: [{ location: "westus", name: "svc" }] };
-    const { lenient, strict } = await run(JSON.stringify(body));
-    expect(lenient).toMatchObject({ _tag: "Success", success: body });
-    expect(strict).toMatchObject({ _tag: "Success", success: body });
+  test("a matching body succeeds unchanged in every mode", async () => {
+    const modes = await run(JSON.stringify(matching));
+    for (const result of Object.values(modes)) {
+      expect(result).toMatchObject({ _tag: "Success", success: matching });
+    }
   });
 
-  test("a body missing required members: lenient returns it, strict fails", async () => {
+  test("a body missing required members: lenient returns it, validating modes fail", async () => {
     const body = { nextLink: "https://management.azure.com/next" };
-    const { lenient, strict } = await run(JSON.stringify(body));
+    const { lenient, additionalProperties, strict } = await run(
+      JSON.stringify(body),
+    );
     expect(lenient).toMatchObject({ _tag: "Success", success: body });
-    expect(strict._tag).toBe("Failure");
+    expect((additionalProperties as any).failure).toBeInstanceOf(
+      AzureParseError,
+    );
     expect((strict as any).failure).toBeInstanceOf(AzureParseError);
   });
 
-  test("a non-JSON body: lenient returns the text, strict fails", async () => {
-    const { lenient, strict } = await run("not json");
+  test("an unmodeled member: lenient and additionalProperties return it, strict fails", async () => {
+    const body = { ...matching, unmodeled: 1 };
+    const { lenient, additionalProperties, strict } = await run(
+      JSON.stringify(body),
+    );
+    expect(lenient).toMatchObject({ _tag: "Success", success: body });
+    expect(additionalProperties).toMatchObject({
+      _tag: "Success",
+      success: body,
+    });
+    expect((strict as any).failure).toBeInstanceOf(AzureParseError);
+  });
+
+  test("a non-JSON body: lenient returns the text, validating modes fail", async () => {
+    const { lenient, additionalProperties, strict } = await run("not json");
     expect(lenient).toMatchObject({ _tag: "Success", success: "not json" });
+    expect((additionalProperties as any).failure).toBeInstanceOf(
+      AzureParseError,
+    );
     expect((strict as any).failure).toBeInstanceOf(AzureParseError);
   });
 });
