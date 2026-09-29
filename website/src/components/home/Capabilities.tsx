@@ -183,9 +183,29 @@ program.«f:pipe»(
           OpenTelemetry support.
         </Cap>
 
+        <Cap
+          index={6}
+          title="Strict responses"
+          code={`«k:import» { ResponseValidation } «k:from» «s:"@distilled.cloud/core"»
+
+«m:// every SDK checks each response against its schema»
+program.«f:pipe»(Effect.«f:provide»(ResponseValidation.strict))
+
+«m:// a response that drifted from the spec is a typed error»
+Neon.«f:getProject»({ project_id }).«f:pipe»(
+  Effect.«f:catchTag»(«s:"NeonParseError"», (e) => ...),
+)`}
+        >
+          Responses are lenient by default and come back as the API sent them.
+          Provide one layer, or set <code>DISTILLED_STRICT_RESPONSES=1</code>,
+          and every SDK in your program checks each response against its schema.
+          When an API changes shape, the call fails with a typed{" "}
+          <code>ParseError</code> instead of handing you the wrong type.
+        </Cap>
+
         <article
           class="reveal-item panel flex min-w-0 flex-col gap-3 px-[1.6rem] pt-6 pb-[1.6rem] hover:border-line-2"
-          style={{ "--i": 6 }}
+          style={{ "--i": 7 }}
         >
           <h3 class="display-48 text-[1.45rem] leading-[1.15] text-fg">
             Per-operation imports
