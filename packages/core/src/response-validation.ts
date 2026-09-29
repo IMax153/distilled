@@ -17,7 +17,7 @@
  * Cloudflare, Neon, … — at once, and nests like any other Effect service:
  *
  * ```ts
- * import * as ResponseValidation from "@distilled.cloud/core/response-validation";
+ * import { ResponseValidation } from "@distilled.cloud/core";
  *
  * // whole program
  * program.pipe(Effect.provide(ResponseValidation.strict));

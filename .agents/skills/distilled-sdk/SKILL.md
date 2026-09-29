@@ -162,8 +162,8 @@ The protocol wires every one of them:
   `packages/core/src/protocol-rest.ts` is the reference.
 
 2xx responses are validated only in strict mode. `ResponseValidation`
-(`@distilled.cloud/core/response-validation`) is one context reference shared
-by every SDK: lenient by default, switched with
+(`import { ResponseValidation } from "@distilled.cloud/core"`) is one context
+reference shared by every SDK: lenient by default, switched with
 `Effect.provide(ResponseValidation.strict)` or
 `DISTILLED_STRICT_RESPONSES=1`. A new protocol reads the mode through
 `validateResponse`; it never adds its own flag or environment variable.
