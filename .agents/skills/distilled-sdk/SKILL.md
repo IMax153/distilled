@@ -164,9 +164,9 @@ The protocol wires every one of them:
 2xx responses are validated only in strict mode. `ResponseValidation`
 (`import { ResponseValidation } from "@distilled.cloud/core"`) is one context
 reference shared by every SDK: lenient by default, switched with
-`Effect.provide(ResponseValidation.strict)` or
-`DISTILLED_STRICT_RESPONSES=1`. A new protocol reads the mode through
-`validateResponse`; it never adds its own flag or environment variable.
+`Effect.provide(ResponseValidation.strict)` — only ever by layer. A new
+protocol reads the mode through `validateResponse`; it never adds its own
+flag or environment variable.
 
 Lenient mode checks only what the protocol needs in order to transform the
 body (unwrap an envelope, map keys, wrap sensitive members) and nothing

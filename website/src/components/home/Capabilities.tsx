@@ -197,10 +197,9 @@ Neon.«f:getProject»({ project_id }).«f:pipe»(
 )`}
         >
           Responses are lenient by default and come back as the API sent them.
-          Provide one layer, or set <code>DISTILLED_STRICT_RESPONSES=1</code>,
-          and every SDK in your program checks each response against its schema.
-          When an API changes shape, the call fails with a typed{" "}
-          <code>ParseError</code> instead of handing you the wrong type.
+          Provide one layer and every SDK in your program checks each response
+          against its schema. When an API changes shape, the call fails with a
+          typed <code>ParseError</code> instead of handing you the wrong type.
         </Cap>
 
         <article

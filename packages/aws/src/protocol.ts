@@ -106,12 +106,8 @@ const prepare = (config: API.ProtocolOperationConfig): Prepared => {
     parseResponse: makeResponseParser(op, {
       service: serviceSdkId,
       operation: operationName,
-      // Validation follows the caller's ResponseValidation mode
-      // (@distilled.cloud/core/response-validation, lenient by default).
-      // DISTILLED_AWS_VALIDATE=1 forces strict for AWS alone; the
-      // cross-SDK switch is DISTILLED_STRICT_RESPONSES=1.
-      validate:
-        typeof process !== "undefined" && !!process.env?.DISTILLED_AWS_VALIDATE,
+      // Validation follows the caller's ResponseValidation layer
+      // (@distilled.cloud/core, lenient by default).
     }),
     sigv4: getAwsAuthSigv4(inputAst),
     sigv2: getAwsAuthSigv2(inputAst),

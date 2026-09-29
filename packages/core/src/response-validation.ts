@@ -26,9 +26,7 @@
  * Neon.getProject({ projectId }).pipe(Effect.provide(ResponseValidation.lenient));
  * ```
  *
- * `DISTILLED_STRICT_RESPONSES=1` in the environment makes strict the
- * default for the process (read once, on first use). A provided layer wins
- * over the environment.
+ * The mode is set only by these layers; without one, every call is lenient.
  */
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
@@ -38,26 +36,13 @@ import type * as AST from "effect/SchemaAST";
 
 export type Mode = "lenient" | "strict";
 
-/** Environment variable that makes `strict` the process-wide default. */
-export const ENV_STRICT_RESPONSES = "DISTILLED_STRICT_RESPONSES";
-
-const envFlag = (name: string): boolean => {
-  if (typeof process === "undefined") return false;
-  const value = process.env?.[name];
-  return (
-    value !== undefined && value !== "" && value !== "0" && value !== "false"
-  );
-};
-
 /**
  * The active validation mode. Read by protocols at call time on the calling
- * fiber; defaults to `lenient` unless {@link ENV_STRICT_RESPONSES} is set.
+ * fiber; `lenient` unless a {@link strict} layer is provided.
  */
 export const ResponseValidation = Context.Reference<Mode>(
   "@distilled.cloud/core/ResponseValidation",
-  {
-    defaultValue: () => (envFlag(ENV_STRICT_RESPONSES) ? "strict" : "lenient"),
-  },
+  { defaultValue: () => "lenient" },
 );
 
 /** Decode every 2xx response against its output schema; fail on mismatch. */

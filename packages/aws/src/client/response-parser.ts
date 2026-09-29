@@ -45,14 +45,6 @@ export interface ResponseParserOptions {
   protocol?: Protocol;
   /** Skip schema validation - returns raw deserialized response */
   skipValidation?: boolean;
-  /**
-   * Always hard-fail on output shape mismatches, whatever the
-   * `ResponseValidation` mode (`@distilled.cloud/core/response-validation`)
-   * of the calling fiber. Without it the mode decides: lenient (the default)
-   * runs decode for its transformations but falls back to the raw response
-   * on a mismatch; strict fails with ParseError.
-   */
-  validate?: boolean;
   /** AWS service SDK ID for error context (e.g., "S3", "DynamoDB") */
   service?: string;
   /** Operation name for error context (e.g., "createBucket", "putObject") */
@@ -125,7 +117,6 @@ export const makeResponseParser = <A>(
   const decode = options?.skipValidation
     ? undefined
     : Schema.decodeUnknownEffect(outputSchema);
-  const forceStrict = options?.validate === true;
 
   // Create stream parser if output has event stream member (done once)
   const streamParser = makeStreamParser(outputAst);
@@ -204,9 +195,9 @@ export const makeResponseParser = <A>(
       // Decode applies the schema's transformations (timestamp -> Date,
       // sensitive -> Redacted). In lenient mode (the default) a shape
       // mismatch falls back to the raw deserialized response; in strict mode
-      // (core/response-validation, or the `validate` option) it fails with
+      // (the core ResponseValidation.strict layer) it fails with
       // ParseError.
-      const strict = forceStrict || (yield* isStrict);
+      const strict = yield* isStrict;
       if (!strict) {
         return yield* decode(deserialized).pipe(
           Effect.catch(() => Effect.succeed(deserialized as A)),
