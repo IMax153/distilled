@@ -169,22 +169,6 @@ Effect.«f:all»([head, eu]).«f:pipe»(Effect.«f:provide»(AwsLive))`}
 
         <Cap
           index={5}
-          title="OpenTelemetry spans"
-          code={`«m:// Effect's HttpClient opens a span per request with the»
-«m:// standard http.* and server.* attributes.»
-program.«f:pipe»(
-  Effect.«f:withSpan»(«s:"provision-bucket"»),
-  Effect.«f:provide»(OtlpTracer.«f:layer»({
-    url: «s:"http://collector:4318/v1/traces"»,
-  })),
-)`}
-        >
-          Operations are ordinary Effects, so they get Effect's built-in
-          OpenTelemetry support.
-        </Cap>
-
-        <Cap
-          index={6}
           title="Response validation"
           code={`«k:import» { ResponseValidation } «k:from» «s:"@distilled.cloud/core"»
 
@@ -203,6 +187,22 @@ Neon.«f:getProject»({ project_id }).«f:pipe»(
           <code>ResponseValidation</code> can be provided to ensure responses
           are verified against the spec at runtime and a <code>ParseError</code>{" "}
           being thrown if they don't match.
+        </Cap>
+
+        <Cap
+          index={6}
+          title="OpenTelemetry spans"
+          code={`«m:// Effect's HttpClient opens a span per request with the»
+«m:// standard http.* and server.* attributes.»
+program.«f:pipe»(
+  Effect.«f:withSpan»(«s:"provision-bucket"»),
+  Effect.«f:provide»(OtlpTracer.«f:layer»({
+    url: «s:"http://collector:4318/v1/traces"»,
+  })),
+)`}
+        >
+          Operations are ordinary Effects, so they get Effect's built-in
+          OpenTelemetry support.
         </Cap>
 
         <article
