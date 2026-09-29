@@ -36,7 +36,8 @@ export type BoatOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownBoatError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | BoatParseError;
 
 /** Context (requirements) shared by every generated Boat operation. */
 export type BoatOpContext = Credentials | HttpClient.HttpClient;

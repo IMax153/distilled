@@ -37,7 +37,8 @@ export type OvhOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownOvhError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | OvhParseError;
 
 /** Context (requirements) shared by every generated OVH operation. */
 export type OvhOpContext = Credentials | HttpClient.HttpClient;

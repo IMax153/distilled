@@ -39,7 +39,8 @@ export type IntercomOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownIntercomError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | IntercomParseError;
 
 /** Context (requirements) shared by every generated Intercom operation. */
 export type IntercomOpContext = Credentials | HttpClient.HttpClient;

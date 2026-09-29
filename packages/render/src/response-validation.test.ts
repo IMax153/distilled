@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { RenderParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getUser } from "./services/render.ts";
+import type { RenderOpError } from "./protocol.ts";
 
 // getUser declares `{ email: string; name: string }`.
 const run = (body: string) =>
@@ -39,3 +40,8 @@ describe("Render response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(RenderParseError);
   });
 });
+
+// RenderParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [RenderParseError] extends [RenderOpError]
+  ? true
+  : false = true;

@@ -35,7 +35,8 @@ export type ResendOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownResendError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | ResendParseError;
 
 /** Context (requirements) shared by every generated Resend operation. */
 export type ResendOpContext = Credentials | HttpClient.HttpClient;

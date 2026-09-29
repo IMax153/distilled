@@ -38,7 +38,8 @@ export type ClerkOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownClerkError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | ClerkParseError;
 
 /** Context (requirements) shared by every generated Clerk operation. */
 export type ClerkOpContext = Credentials | HttpClient.HttpClient;

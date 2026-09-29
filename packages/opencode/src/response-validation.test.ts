@@ -5,6 +5,7 @@ import { fromPassword } from "./credentials.ts";
 import { OpencodeParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { globalHealth } from "./services/opencode.ts";
+import type { OpencodeOpError } from "./protocol.ts";
 
 // globalHealth declares `{ healthy: boolean; version: string }`.
 const run = (body: string) =>
@@ -38,3 +39,10 @@ describe("Opencode response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(OpencodeParseError);
   });
 });
+
+// OpencodeParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [OpencodeParseError] extends [
+  OpencodeOpError,
+]
+  ? true
+  : false = true;

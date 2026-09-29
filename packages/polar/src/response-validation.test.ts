@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { PolarParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { eventsListNames } from "./services/polar.ts";
+import type { PolarOpError } from "./protocol.ts";
 
 // eventsListNames declares `{ items: EventName[]; pagination: { total_count: number; max_page: number } }`.
 const run = (body: string) =>
@@ -50,3 +51,8 @@ describe("Polar response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(PolarParseError);
   });
 });
+
+// PolarParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [PolarParseError] extends [PolarOpError]
+  ? true
+  : false = true;

@@ -36,7 +36,8 @@ export type GrafanaOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownGrafanaError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | GrafanaParseError;
 
 /** Context (requirements) shared by every generated Grafana operation. */
 export type GrafanaOpContext = Credentials | HttpClient.HttpClient;

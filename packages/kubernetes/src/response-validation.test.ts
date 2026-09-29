@@ -5,6 +5,7 @@ import { fromToken } from "./credentials.ts";
 import { KubernetesParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getAppsAPIGroup } from "./services/apps.ts";
+import type { KubernetesOpError } from "./protocol.ts";
 
 // getAppsAPIGroup declares an APIGroup: `{ name: string; versions: [...] }`.
 const run = (body: string) =>
@@ -44,3 +45,10 @@ describe("Kubernetes response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(KubernetesParseError);
   });
 });
+
+// KubernetesParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [KubernetesParseError] extends [
+  KubernetesOpError,
+]
+  ? true
+  : false = true;

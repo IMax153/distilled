@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { PorkbunParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getPing } from "./services/porkbun.ts";
+import type { PorkbunOpError } from "./protocol.ts";
 
 // getPing declares `{ status: string; yourIp: string; xForwardedFor?: string; credentialsValid?: boolean }`.
 const run = (body: string) =>
@@ -38,3 +39,8 @@ describe("Porkbun response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(PorkbunParseError);
   });
 });
+
+// PorkbunParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [PorkbunParseError] extends [PorkbunOpError]
+  ? true
+  : false = true;

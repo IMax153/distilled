@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { MercuryParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getOrganization } from "./services/mercury.ts";
+import type { MercuryOpError } from "./protocol.ts";
 
 // getOrganization declares `{ organization: { dbas: OrganizationDBA[]; legalBusinessName: string; … } }`.
 const run = (body: string) =>
@@ -47,3 +48,8 @@ describe("Mercury response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(MercuryParseError);
   });
 });
+
+// MercuryParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [MercuryParseError] extends [MercuryOpError]
+  ? true
+  : false = true;

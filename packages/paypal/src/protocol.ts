@@ -37,7 +37,8 @@ export type PaypalOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownPaypalError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | PaypalParseError;
 
 /** Context (requirements) shared by every generated PayPal operation. */
 export type PaypalOpContext = Credentials | HttpClient.HttpClient;

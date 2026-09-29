@@ -4,6 +4,7 @@ import * as Effect from "effect/Effect";
 import * as Endpoint from "./endpoint.ts";
 import { CelldParseError } from "./errors.ts";
 import { evictCell } from "./services/node.ts";
+import type { CelldOpError } from "./protocol.ts";
 
 // evictCell declares `{ ok: boolean }`.
 const run = (body: string) =>
@@ -35,3 +36,8 @@ describe("Celld response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(CelldParseError);
   });
 });
+
+// CelldParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [CelldParseError] extends [CelldOpError]
+  ? true
+  : false = true;

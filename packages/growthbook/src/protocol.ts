@@ -35,7 +35,8 @@ export type GrowthBookOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownGrowthBookError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | GrowthBookParseError;
 
 /** Context (requirements) shared by every generated GrowthBook operation. */
 export type GrowthBookOpContext = Credentials | HttpClient.HttpClient;

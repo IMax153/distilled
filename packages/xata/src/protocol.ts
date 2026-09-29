@@ -35,7 +35,8 @@ export type XataOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownXataError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | XataParseError;
 
 /** Context (requirements) shared by every generated Xata operation. */
 export type XataOpContext = Credentials | HttpClient.HttpClient;

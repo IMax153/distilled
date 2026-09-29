@@ -34,7 +34,8 @@ export type OpencodeOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownOpencodeError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | OpencodeParseError;
 
 /** Context (requirements) shared by every generated OpenCode operation. */
 export type OpencodeOpContext = Credentials | HttpClient.HttpClient;

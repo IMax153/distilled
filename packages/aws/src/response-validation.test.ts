@@ -2,7 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { runValidationModes } from "@distilled.cloud/core/testing";
 import * as Effect from "effect/Effect";
 import { fromCredentials } from "./credentials.ts";
-import { ParseError } from "./errors.ts";
+import { type CommonErrors, ParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { describeEndpoints } from "./services/dynamodb.ts";
 
@@ -53,3 +53,8 @@ describe("AWS response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(ParseError);
   });
 });
+
+// ParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [ParseError] extends [CommonErrors]
+  ? true
+  : false = true;

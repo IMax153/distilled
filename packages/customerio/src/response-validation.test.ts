@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { CustomerioParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getWebhook } from "./services/customerio.ts";
+import type { CustomerioOpError } from "./protocol.ts";
 
 // getWebhook declares `{ name: string; endpoint: string; events: [...]; … }`.
 const run = (body: string) =>
@@ -44,3 +45,10 @@ describe("Customer.io response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(CustomerioParseError);
   });
 });
+
+// CustomerioParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [CustomerioParseError] extends [
+  CustomerioOpError,
+]
+  ? true
+  : false = true;

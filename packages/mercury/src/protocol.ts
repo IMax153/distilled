@@ -35,7 +35,8 @@ export type MercuryOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownMercuryError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | MercuryParseError;
 
 /** Context (requirements) shared by every generated Mercury operation. */
 export type MercuryOpContext = Credentials | HttpClient.HttpClient;

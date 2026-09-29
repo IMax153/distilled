@@ -5,6 +5,7 @@ import { credentials } from "./credentials.ts";
 import { ModalParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { listEnvironment } from "./services/environment.ts";
+import type { ModalOpError } from "./protocol.ts";
 
 // listEnvironment declares `{ items?: EnvironmentListItem[] }`; every member is
 // optional, so the mismatch is a wrong primitive (`items` must be an array).
@@ -42,3 +43,8 @@ describe("Modal response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(ModalParseError);
   });
 });
+
+// ModalParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [ModalParseError] extends [ModalOpError]
+  ? true
+  : false = true;

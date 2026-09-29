@@ -40,7 +40,8 @@ export type DigitalOceanOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownDigitalOceanError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | DigitalOceanParseError;
 
 /** Context (requirements) shared by every generated DigitalOcean operation. */
 export type DigitalOceanOpContext = Credentials | HttpClient.HttpClient;

@@ -41,7 +41,8 @@ export type KubernetesOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownKubernetesError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | KubernetesParseError;
 
 /** Context (requirements) shared by every generated Kubernetes operation. */
 export type KubernetesOpContext = Credentials | HttpClient.HttpClient;

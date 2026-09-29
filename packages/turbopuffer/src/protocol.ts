@@ -35,7 +35,8 @@ export type TurbopufferOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownTurbopufferError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | TurbopufferParseError;
 
 /** Context (requirements) shared by every generated turbopuffer operation. */
 export type TurbopufferOpContext = Credentials | HttpClient.HttpClient;

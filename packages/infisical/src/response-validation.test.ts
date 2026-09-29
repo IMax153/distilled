@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { InfisicalParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getPkiDiscoveryConfig } from "./services/infisical.ts";
+import type { InfisicalOpError } from "./protocol.ts";
 
 // getPkiDiscoveryConfig declares required `defaultPorts`, `maxPorts`,
 // `maxIps`, `maxDomains`, and `minCidrPrefix`.
@@ -45,3 +46,10 @@ describe("Infisical response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(InfisicalParseError);
   });
 });
+
+// InfisicalParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [InfisicalParseError] extends [
+  InfisicalOpError,
+]
+  ? true
+  : false = true;

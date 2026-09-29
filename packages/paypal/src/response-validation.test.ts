@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { PaypalParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getWebProfile } from "./services/payment_experience_web_experience_profiles_v1.ts";
+import type { PaypalOpError } from "./protocol.ts";
 
 // getWebProfile declares `WebProfile`, whose `name: string` is required.
 const run = (body: string) =>
@@ -38,3 +39,8 @@ describe("PayPal response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(PaypalParseError);
   });
 });
+
+// PaypalParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [PaypalParseError] extends [PaypalOpError]
+  ? true
+  : false = true;

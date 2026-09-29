@@ -35,7 +35,8 @@ export type OnepasswordOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownOnepasswordError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | OnepasswordParseError;
 
 /** Context (requirements) shared by every generated 1Password operation. */
 export type OnepasswordOpContext = Credentials | HttpClient.HttpClient;

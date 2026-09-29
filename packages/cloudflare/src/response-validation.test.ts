@@ -5,6 +5,7 @@ import { credentials } from "./credentials.ts";
 import { CloudflareParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { verifyToken } from "./services/user.ts";
+import type { CloudflareOpError } from "./protocol.ts";
 
 // verifyToken declares `{ id: string; status: string; expiresOn?: string | null; notBefore?: string | null }`,
 // unwrapped from the `{ success, errors, messages, result }` envelope.
@@ -57,3 +58,10 @@ describe("Cloudflare response validation", () => {
     expect((strict as any).failure.body).toBe("not json");
   });
 });
+
+// CloudflareParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [CloudflareParseError] extends [
+  CloudflareOpError,
+]
+  ? true
+  : false = true;

@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { HostingerParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getVPSPublicKeysV1 } from "./services/hostinger.ts";
+import type { HostingerOpError } from "./protocol.ts";
 
 // getVPSPublicKeysV1 declares `{ data?: { id?: number; name?: string; key?: string }[]; meta?: ... }`.
 // Every Hostinger output member is optional, so the mismatch is a wrong primitive.
@@ -39,3 +40,10 @@ describe("Hostinger response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(HostingerParseError);
   });
 });
+
+// HostingerParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [HostingerParseError] extends [
+  HostingerOpError,
+]
+  ? true
+  : false = true;

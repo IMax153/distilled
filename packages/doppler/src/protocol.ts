@@ -36,7 +36,8 @@ export type DopplerOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownDopplerError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | DopplerParseError;
 
 /** Context (requirements) shared by every generated Doppler operation. */
 export type DopplerOpContext = Credentials | HttpClient.HttpClient;

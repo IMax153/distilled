@@ -36,7 +36,8 @@ export type MetabaseOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownMetabaseError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | MetabaseParseError;
 
 /** Context (requirements) shared by every generated Metabase operation. */
 export type MetabaseOpContext = Credentials | HttpClient.HttpClient;

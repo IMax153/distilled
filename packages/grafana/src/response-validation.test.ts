@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { GrafanaParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getTeam } from "./services/grafana.ts";
+import type { GrafanaOpError } from "./protocol.ts";
 
 // getTeam declares TeamDTO: `{ id, isProvisioned, memberCount, name, orgId, uid, … }`.
 const run = (body: string) =>
@@ -46,3 +47,8 @@ describe("Grafana response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(GrafanaParseError);
   });
 });
+
+// GrafanaParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [GrafanaParseError] extends [GrafanaOpError]
+  ? true
+  : false = true;

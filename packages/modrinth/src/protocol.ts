@@ -37,7 +37,8 @@ export type ModrinthOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownModrinthError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | ModrinthParseError;
 
 /** Context (requirements) shared by every generated Modrinth operation. */
 export type ModrinthOpContext = Credentials | HttpClient.HttpClient;

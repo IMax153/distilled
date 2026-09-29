@@ -5,6 +5,7 @@ import { credentials } from "./credentials.ts";
 import { SlackParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { billingInfo } from "./services/team.ts";
+import type { SlackOpError } from "./protocol.ts";
 
 // team.billing.info declares `{ ok: boolean; plan: string }`; the payload
 // shares the level of Slack's `{ ok: true, ... }` envelope.
@@ -46,3 +47,8 @@ describe("Slack response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(SlackParseError);
   });
 });
+
+// SlackParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [SlackParseError] extends [SlackOpError]
+  ? true
+  : false = true;

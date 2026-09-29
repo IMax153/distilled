@@ -5,6 +5,7 @@ import { credentials } from "./credentials.ts";
 import { PosthogParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getAccountRelationshipDefinition } from "./services/account_relationship_definitions.ts";
+import type { PosthogOpError } from "./protocol.ts";
 
 // getAccountRelationshipDefinition declares required `id` and `name`.
 const run = (body: string) =>
@@ -38,3 +39,8 @@ describe("PostHog response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(PosthogParseError);
   });
 });
+
+// PosthogParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [PosthogParseError] extends [PosthogOpError]
+  ? true
+  : false = true;

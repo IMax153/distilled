@@ -37,7 +37,8 @@ export type SpacetimeDBOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownSpacetimeDBError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | SpacetimeDBParseError;
 
 /** Context (requirements) shared by every generated SpacetimeDB operation. */
 export type SpacetimeDBOpContext = Credentials | HttpClient.HttpClient;

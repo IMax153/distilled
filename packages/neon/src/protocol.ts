@@ -35,7 +35,8 @@ export type NeonOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownNeonError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | NeonParseError;
 
 /** Context (requirements) shared by every generated Neon operation. */
 export type NeonOpContext = Credentials | HttpClient.HttpClient;

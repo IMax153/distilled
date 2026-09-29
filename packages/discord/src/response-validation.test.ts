@@ -5,6 +5,7 @@ import { credentials } from "./credentials.ts";
 import { DiscordParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getGateway } from "./services/discord.ts";
+import type { DiscordOpError } from "./protocol.ts";
 
 // getGateway declares `{ url: string }`.
 const run = (body: string) =>
@@ -37,3 +38,8 @@ describe("Discord response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(DiscordParseError);
   });
 });
+
+// DiscordParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [DiscordParseError] extends [DiscordOpError]
+  ? true
+  : false = true;

@@ -44,7 +44,8 @@ export type AxiomOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownAxiomError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | AxiomParseError;
 
 /** Context (requirements) shared by every generated Axiom operation. */
 export type AxiomOpContext = Credentials | HttpClient.HttpClient;

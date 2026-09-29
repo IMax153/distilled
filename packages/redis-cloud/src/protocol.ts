@@ -34,7 +34,8 @@ export type RedisCloudOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownRedisCloudError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | RedisCloudParseError;
 
 /** Context (requirements) shared by every generated Redis Cloud operation. */
 export type RedisCloudOpContext = Credentials | HttpClient.HttpClient;

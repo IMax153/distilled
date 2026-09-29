@@ -5,6 +5,7 @@ import { credentials } from "./credentials.ts";
 import { StackitParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { listKeyPairs } from "./services/iaas.ts";
+import type { StackitOpError } from "./protocol.ts";
 
 // listKeyPairs declares `{ items: Keypair[] }`.
 const run = (body: string) =>
@@ -37,3 +38,8 @@ describe("STACKIT response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(StackitParseError);
   });
 });
+
+// StackitParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [StackitParseError] extends [StackitOpError]
+  ? true
+  : false = true;

@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { TriggerDevParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getQueueV1 } from "./services/trigger-dev.ts";
+import type { TriggerDevOpError } from "./protocol.ts";
 
 // getQueueV1 declares QueueObject: `{ id; name; type; running; queued; paused; … }`.
 const run = (body: string) =>
@@ -46,3 +47,10 @@ describe("Trigger.dev response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(TriggerDevParseError);
   });
 });
+
+// TriggerDevParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [TriggerDevParseError] extends [
+  TriggerDevOpError,
+]
+  ? true
+  : false = true;

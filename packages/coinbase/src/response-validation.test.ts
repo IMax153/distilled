@@ -7,6 +7,7 @@ import { Credentials, DEFAULT_API_BASE_URL } from "./credentials.ts";
 import { CoinbaseParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { listEvmAccounts } from "./services/cdp.ts";
+import type { CoinbaseOpError } from "./protocol.ts";
 
 // A dummy Ed25519 key (32-byte seed + 32 bytes) — only used to sign the JWT.
 const TestCredentials = Layer.succeed(
@@ -49,3 +50,10 @@ describe("Coinbase response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(CoinbaseParseError);
   });
 });
+
+// CoinbaseParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [CoinbaseParseError] extends [
+  CoinbaseOpError,
+]
+  ? true
+  : false = true;

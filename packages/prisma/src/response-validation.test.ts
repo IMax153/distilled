@@ -5,6 +5,7 @@ import { fromApiToken } from "./credentials.ts";
 import { PrismaParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getDatabaseUsage } from "./services/management.ts";
+import type { PrismaOpError } from "./protocol.ts";
 
 // getDatabaseUsage declares `{ period: { start; end }; metrics: { … }; generatedAt: string }`.
 const run = (body: string) =>
@@ -46,3 +47,8 @@ describe("Prisma response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(PrismaParseError);
   });
 });
+
+// PrismaParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [PrismaParseError] extends [PrismaOpError]
+  ? true
+  : false = true;

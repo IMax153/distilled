@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { PlaidParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getRecipients } from "./services/plaid.ts";
+import type { PlaidOpError } from "./protocol.ts";
 
 // getRecipients declares `{ recipients: Recipient[] }`.
 const run = (body: string) =>
@@ -37,3 +38,8 @@ describe("Plaid response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(PlaidParseError);
   });
 });
+
+// PlaidParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [PlaidParseError] extends [PlaidOpError]
+  ? true
+  : false = true;

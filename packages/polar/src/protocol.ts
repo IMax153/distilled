@@ -35,7 +35,8 @@ export type PolarOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownPolarError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | PolarParseError;
 
 /** Context (requirements) shared by every generated Polar operation. */
 export type PolarOpContext = Credentials | HttpClient.HttpClient;

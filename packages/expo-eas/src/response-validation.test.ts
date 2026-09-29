@@ -7,6 +7,7 @@ import { Credentials, DEFAULT_API_BASE_URL } from "./credentials.ts";
 import { EasParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { accessTokenDeleteAccessToken } from "./services/eas.ts";
+import type { ExpoEasOpError } from "./protocol.ts";
 
 const TestCredentials = Layer.succeed(
   Credentials,
@@ -51,3 +52,8 @@ describe("EAS response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(EasParseError);
   });
 });
+
+// EasParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [EasParseError] extends [ExpoEasOpError]
+  ? true
+  : false = true;

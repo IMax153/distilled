@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { RemoteParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getPayItems } from "./services/remote.ts";
+import type { RemoteOpError } from "./protocol.ts";
 
 // getPayItems declares `{ data: { current_page, data, total_count, total_pages } }`.
 const run = (body: string) =>
@@ -39,3 +40,8 @@ describe("Remote response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(RemoteParseError);
   });
 });
+
+// RemoteParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [RemoteParseError] extends [RemoteOpError]
+  ? true
+  : false = true;

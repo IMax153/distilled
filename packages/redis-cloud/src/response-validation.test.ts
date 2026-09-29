@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { RedisCloudParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getAccountPaymentMethods } from "./services/redisCloud.ts";
+import type { RedisCloudOpError } from "./protocol.ts";
 
 // getAccountPaymentMethods declares `{ accountId?: number; links?: ... }` (every member optional).
 const run = (body: string) =>
@@ -43,3 +44,10 @@ describe("Redis Cloud response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(RedisCloudParseError);
   });
 });
+
+// RedisCloudParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [RedisCloudParseError] extends [
+  RedisCloudOpError,
+]
+  ? true
+  : false = true;

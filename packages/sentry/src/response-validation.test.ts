@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { SentryParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { listSeerModels } from "./services/sentry.ts";
+import type { SentryOpError } from "./protocol.ts";
 
 // listSeerModels declares `{ models: string[] }`.
 const run = (body: string) =>
@@ -38,3 +39,8 @@ describe("Sentry response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(SentryParseError);
   });
 });
+
+// SentryParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [SentryParseError] extends [SentryOpError]
+  ? true
+  : false = true;

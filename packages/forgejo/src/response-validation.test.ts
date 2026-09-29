@@ -5,6 +5,7 @@ import { credentials } from "./credentials.ts";
 import { ForgejoParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getVersion } from "./services/miscellaneous.ts";
+import type { ForgejoOpError } from "./protocol.ts";
 
 // getVersion declares `{ version?: string }`; every member is optional, so the
 // mismatch is a wrong primitive type.
@@ -42,3 +43,8 @@ describe("Forgejo response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(ForgejoParseError);
   });
 });
+
+// ForgejoParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [ForgejoParseError] extends [ForgejoOpError]
+  ? true
+  : false = true;

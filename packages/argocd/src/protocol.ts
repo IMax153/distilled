@@ -35,7 +35,8 @@ export type ArgocdOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownArgocdError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | ArgocdParseError;
 
 /** Context (requirements) shared by every generated Argo CD operation. */
 export type ArgocdOpContext = Credentials | HttpClient.HttpClient;

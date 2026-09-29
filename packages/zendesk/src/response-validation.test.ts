@@ -5,6 +5,7 @@ import { fromApiToken } from "./credentials.ts";
 import { ZendeskParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { countTickets } from "./services/zendesk.ts";
+import type { ZendeskOpError } from "./protocol.ts";
 
 // countTickets declares `{ count?: { value?: number; refreshed_at?: string } }`;
 // every member is optional, so the mismatch is a wrong primitive type.
@@ -46,3 +47,8 @@ describe("Zendesk response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(ZendeskParseError);
   });
 });
+
+// ZendeskParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [ZendeskParseError] extends [ZendeskOpError]
+  ? true
+  : false = true;

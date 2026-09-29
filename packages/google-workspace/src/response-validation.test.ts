@@ -5,6 +5,7 @@ import { fromAccessToken } from "./credentials.ts";
 import { GoogleWorkspaceParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getStartPageTokenChanges } from "./services/drive_v3.ts";
+import type { GoogleWorkspaceOpError } from "./protocol.ts";
 
 // Discovery schemas mark every member optional; getStartPageTokenChanges
 // declares `{ startPageToken?: string; kind?: string }`, so the mismatch is a
@@ -40,3 +41,10 @@ describe("Google Workspace response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(GoogleWorkspaceParseError);
   });
 });
+
+// GoogleWorkspaceParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [GoogleWorkspaceParseError] extends [
+  GoogleWorkspaceOpError,
+]
+  ? true
+  : false = true;

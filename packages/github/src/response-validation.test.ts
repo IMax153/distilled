@@ -5,6 +5,7 @@ import { credentials } from "./credentials.ts";
 import { GithubParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getTemplate } from "./services/gitignore.ts";
+import type { GithubOpError } from "./protocol.ts";
 
 // getTemplate declares `{ name: string; source: string }`.
 const run = (body: string) =>
@@ -38,3 +39,8 @@ describe("Github response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(GithubParseError);
   });
 });
+
+// GithubParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [GithubParseError] extends [GithubOpError]
+  ? true
+  : false = true;

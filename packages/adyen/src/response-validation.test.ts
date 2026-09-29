@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { AdyenParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getPaymentLink } from "./services/adyen.ts";
+import type { AdyenOpError } from "./protocol.ts";
 
 // getPaymentLink declares required `amount`, `id`, `merchantAccount`,
 // `reference`, `status`, and `url`.
@@ -46,3 +47,8 @@ describe("Adyen response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(AdyenParseError);
   });
 });
+
+// AdyenParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [AdyenParseError] extends [AdyenOpError]
+  ? true
+  : false = true;

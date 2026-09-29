@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { ElasticsearchParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { licenseGetBasicStatus } from "./services/elasticsearch.ts";
+import type { ElasticsearchOpError } from "./protocol.ts";
 
 // licenseGetBasicStatus declares `{ eligible_to_start_basic: boolean }`.
 const run = (body: string) =>
@@ -39,3 +40,10 @@ describe("Elasticsearch response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(ElasticsearchParseError);
   });
 });
+
+// ElasticsearchParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [ElasticsearchParseError] extends [
+  ElasticsearchOpError,
+]
+  ? true
+  : false = true;

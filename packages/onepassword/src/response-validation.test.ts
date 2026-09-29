@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { OnepasswordParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getVaults } from "./services/onepassword.ts";
+import type { OnepasswordOpError } from "./protocol.ts";
 
 // getVaults declares `Vault[]` with every Vault member optional, so the mismatch is a wrong primitive.
 const run = (body: string) =>
@@ -38,3 +39,10 @@ describe("Onepassword response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(OnepasswordParseError);
   });
 });
+
+// OnepasswordParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [OnepasswordParseError] extends [
+  OnepasswordOpError,
+]
+  ? true
+  : false = true;

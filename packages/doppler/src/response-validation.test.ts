@@ -4,6 +4,7 @@ import * as Redacted from "effect/Redacted";
 import { DopplerParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { generateCliAuth } from "./services/doppler.ts";
+import type { DopplerOpError } from "./protocol.ts";
 
 // generateCliAuth declares required `code`, `polling_code` (sensitive), and
 // `auth_url`. It uses the unauthenticated protocol, so no credentials.
@@ -51,3 +52,8 @@ describe("Doppler response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(DopplerParseError);
   });
 });
+
+// DopplerParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [DopplerParseError] extends [DopplerOpError]
+  ? true
+  : false = true;

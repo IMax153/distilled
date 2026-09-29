@@ -39,7 +39,8 @@ export type UnkeyOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownUnkeyError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | UnkeyParseError;
 
 /** Context (requirements) shared by every generated Unkey operation. */
 export type UnkeyOpContext = Credentials | HttpClient.HttpClient;

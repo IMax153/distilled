@@ -40,7 +40,8 @@ export type CustomerioOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownCustomerioError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | CustomerioParseError;
 
 /** Context (requirements) shared by every generated Customer.io operation. */
 export type CustomerioOpContext = Credentials | HttpClient.HttpClient;

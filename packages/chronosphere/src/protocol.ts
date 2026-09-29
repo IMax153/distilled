@@ -36,7 +36,8 @@ export type ChronosphereOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownChronosphereError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | ChronosphereParseError;
 
 /** Context (requirements) shared by every generated Chronosphere operation. */
 export type ChronosphereOpContext = Credentials | HttpClient.HttpClient;

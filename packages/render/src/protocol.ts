@@ -35,7 +35,8 @@ export type RenderOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownRenderError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | RenderParseError;
 
 /** Context (requirements) shared by every generated Render operation. */
 export type RenderOpContext = Credentials | HttpClient.HttpClient;

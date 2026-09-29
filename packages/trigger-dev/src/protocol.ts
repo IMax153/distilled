@@ -36,7 +36,8 @@ export type TriggerDevOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownTriggerDevError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | TriggerDevParseError;
 
 /** Context (requirements) shared by every generated Trigger.dev operation. */
 export type TriggerDevOpContext = Credentials | HttpClient.HttpClient;

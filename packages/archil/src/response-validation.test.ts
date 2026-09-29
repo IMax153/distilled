@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { ArchilParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { listApiTokens } from "./services/archil.ts";
+import type { ArchilOpError } from "./protocol.ts";
 
 // listApiTokens declares `{ success: boolean; data: { tokens?: ApiTokenResponse[] } }`.
 const run = (body: string) =>
@@ -40,3 +41,8 @@ describe("Archil response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(ArchilParseError);
   });
 });
+
+// ArchilParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [ArchilParseError] extends [ArchilOpError]
+  ? true
+  : false = true;

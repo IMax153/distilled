@@ -35,7 +35,8 @@ export type RemoteOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownRemoteError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | RemoteParseError;
 
 /** Context (requirements) shared by every generated Remote operation. */
 export type RemoteOpContext = Credentials | HttpClient.HttpClient;

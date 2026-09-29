@@ -34,7 +34,8 @@ export type VantaOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownVantaError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | VantaParseError;
 
 /** Context (requirements) shared by every generated Vanta operation. */
 export type VantaOpContext = Credentials | HttpClient.HttpClient;

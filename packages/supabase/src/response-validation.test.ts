@@ -5,6 +5,7 @@ import { credentials } from "./credentials.ts";
 import { SupabaseParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { v1GetProfile } from "./services/supabase.ts";
+import type { SupabaseOpError } from "./protocol.ts";
 
 // v1GetProfile declares `{ gotrue_id: string; primary_email: string; username: string }`.
 const run = (body: string) =>
@@ -42,3 +43,10 @@ describe("Supabase response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(SupabaseParseError);
   });
 });
+
+// SupabaseParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [SupabaseParseError] extends [
+  SupabaseOpError,
+]
+  ? true
+  : false = true;

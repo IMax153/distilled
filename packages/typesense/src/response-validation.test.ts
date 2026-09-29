@@ -5,6 +5,7 @@ import { credentials } from "./credentials.ts";
 import { TypesenseParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getAliases } from "./services/typesense.ts";
+import type { TypesenseOpError } from "./protocol.ts";
 
 // getAliases declares `{ aliases: CollectionAlias[] }`.
 const run = (body: string) =>
@@ -41,3 +42,10 @@ describe("Typesense response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(TypesenseParseError);
   });
 });
+
+// TypesenseParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [TypesenseParseError] extends [
+  TypesenseOpError,
+]
+  ? true
+  : false = true;

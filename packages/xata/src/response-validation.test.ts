@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { XataParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { listRegions } from "./services/xata.ts";
+import type { XataOpError } from "./protocol.ts";
 
 // listRegions declares `{ regions: Region[] }`.
 const run = (body: string) =>
@@ -37,3 +38,8 @@ describe("Xata response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(XataParseError);
   });
 });
+
+// XataParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [XataParseError] extends [XataOpError]
+  ? true
+  : false = true;

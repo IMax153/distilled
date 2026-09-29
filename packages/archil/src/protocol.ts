@@ -34,7 +34,8 @@ export type ArchilOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownArchilError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | ArchilParseError;
 
 /** Context (requirements) shared by every generated Archil operation. */
 export type ArchilOpContext = Credentials | HttpClient.HttpClient;

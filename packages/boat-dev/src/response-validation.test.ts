@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { BoatParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getCurrentUser } from "./services/boat.ts";
+import type { BoatOpError } from "./protocol.ts";
 
 // getCurrentUser declares `{ ok: boolean; type: string; user: { … } }`.
 const run = (body: string) =>
@@ -39,3 +40,8 @@ describe("Boat response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(BoatParseError);
   });
 });
+
+// BoatParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [BoatParseError] extends [BoatOpError]
+  ? true
+  : false = true;

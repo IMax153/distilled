@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { CoolifyParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getCloudToken } from "./services/coolify.ts";
+import type { CoolifyOpError } from "./protocol.ts";
 
 // getCloudToken declares only optional members (`uuid?: string`,
 // `team_id?: number`, …), so the mismatch is a wrong primitive type.
@@ -45,3 +46,8 @@ describe("Coolify response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(CoolifyParseError);
   });
 });
+
+// CoolifyParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [CoolifyParseError] extends [CoolifyOpError]
+  ? true
+  : false = true;

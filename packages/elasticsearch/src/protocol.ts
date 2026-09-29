@@ -39,7 +39,8 @@ export type ElasticsearchOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownElasticsearchError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | ElasticsearchParseError;
 
 /** Context (requirements) shared by every generated Elasticsearch operation. */
 export type ElasticsearchOpContext = Credentials | HttpClient.HttpClient;

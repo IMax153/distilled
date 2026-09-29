@@ -35,7 +35,8 @@ export type CoolifyOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownCoolifyError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | CoolifyParseError;
 
 /** Context (requirements) shared by every generated Coolify operation. */
 export type CoolifyOpContext = Credentials | HttpClient.HttpClient;

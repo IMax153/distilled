@@ -38,7 +38,8 @@ export type AdyenOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownAdyenError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | AdyenParseError;
 
 /** Context (requirements) shared by every generated Adyen operation. */
 export type AdyenOpContext = Credentials | HttpClient.HttpClient;

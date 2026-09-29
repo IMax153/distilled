@@ -35,7 +35,8 @@ export type HostingerOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownHostingerError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | HostingerParseError;
 
 /** Context (requirements) shared by every generated Hostinger operation. */
 export type HostingerOpContext = Credentials | HttpClient.HttpClient;

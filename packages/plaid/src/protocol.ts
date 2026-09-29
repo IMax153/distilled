@@ -35,7 +35,8 @@ export type PlaidOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownPlaidError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | PlaidParseError;
 
 /** Context (requirements) shared by every generated Plaid operation. */
 export type PlaidOpContext = Credentials | HttpClient.HttpClient;

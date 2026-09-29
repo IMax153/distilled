@@ -7,6 +7,7 @@ import { Credentials, DEFAULT_API_BASE_URL } from "./credentials.ts";
 import { AzureParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { ListServiceBySubscription } from "./services/apicenter.ts";
+import type { AzureOpError } from "./protocol.ts";
 
 const TestCredentials = Layer.succeed(
   Credentials,
@@ -48,3 +49,8 @@ describe("Azure response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(AzureParseError);
   });
 });
+
+// AzureParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [AzureParseError] extends [AzureOpError]
+  ? true
+  : false = true;

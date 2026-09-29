@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { ResendParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { listApiKeys } from "./services/resend.ts";
+import type { ResendOpError } from "./protocol.ts";
 
 // listApiKeys declares `{ object?: string; has_more?: boolean; data: ApiKey[] }`.
 const run = (body: string) =>
@@ -49,3 +50,8 @@ describe("Resend response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(ResendParseError);
   });
 });
+
+// ResendParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [ResendParseError] extends [ResendOpError]
+  ? true
+  : false = true;

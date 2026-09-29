@@ -39,7 +39,8 @@ export type GustoOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownGustoError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | GustoParseError;
 
 /** Context (requirements) shared by every generated Gusto operation. */
 export type GustoOpContext = Credentials | HttpClient.HttpClient;

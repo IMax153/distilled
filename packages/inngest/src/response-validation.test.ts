@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { InngestParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { fetchV2Account } from "./services/inngest.ts";
+import type { InngestOpError } from "./protocol.ts";
 
 // fetchV2Account declares `{ data?: V2Account; metadata?: … }`; every member is
 // optional, so the mismatch is a wrong primitive (`data.email` must be a string).
@@ -40,3 +41,8 @@ describe("Inngest response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(InngestParseError);
   });
 });
+
+// InngestParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [InngestParseError] extends [InngestOpError]
+  ? true
+  : false = true;

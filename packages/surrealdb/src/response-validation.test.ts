@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { SurrealdbParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getKeyById } from "./services/surrealdb.ts";
+import type { SurrealdbOpError } from "./protocol.ts";
 
 // getKeyById declares `Array<{ result?: { id?: string; some?: boolean }[]; status?: string; time?: string }>` — every member is optional, so the mismatch is a wrong primitive.
 const run = (body: string) =>
@@ -40,3 +41,10 @@ describe("Surrealdb response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(SurrealdbParseError);
   });
 });
+
+// SurrealdbParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [SurrealdbParseError] extends [
+  SurrealdbOpError,
+]
+  ? true
+  : false = true;

@@ -36,7 +36,8 @@ export type LaunchDarklyOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownLaunchDarklyError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | LaunchDarklyParseError;
 
 /** Context (requirements) shared by every generated LaunchDarkly operation. */
 export type LaunchDarklyOpContext = Credentials | HttpClient.HttpClient;

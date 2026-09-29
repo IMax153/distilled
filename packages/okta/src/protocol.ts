@@ -37,7 +37,8 @@ export type OktaOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownOktaError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | OktaParseError;
 
 /** Context (requirements) shared by every generated Okta operation. */
 export type OktaOpContext = Credentials | HttpClient.HttpClient;

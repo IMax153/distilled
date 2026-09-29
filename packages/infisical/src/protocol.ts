@@ -35,7 +35,8 @@ export type InfisicalOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownInfisicalError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | InfisicalParseError;
 
 /** Context (requirements) shared by every generated Infisical operation. */
 export type InfisicalOpContext = Credentials | HttpClient.HttpClient;

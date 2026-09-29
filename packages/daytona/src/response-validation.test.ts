@@ -5,6 +5,7 @@ import { credentials } from "./credentials.ts";
 import { DaytonaParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getSnapshotBuildLogsUrl } from "./services/snapshots.ts";
+import type { DaytonaOpError } from "./protocol.ts";
 
 // getSnapshotBuildLogsUrl declares `{ url: string }`.
 const run = (body: string) =>
@@ -37,3 +38,8 @@ describe("Daytona response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(DaytonaParseError);
   });
 });
+
+// DaytonaParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [DaytonaParseError] extends [DaytonaOpError]
+  ? true
+  : false = true;

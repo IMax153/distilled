@@ -7,6 +7,7 @@ import { Credentials, DEFAULT_API_BASE_URL } from "./credentials.ts";
 import { TursoParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { validateAPIToken } from "./services/turso.ts";
+import type { TursoOpError } from "./protocol.ts";
 
 const TestCredentials = Layer.succeed(
   Credentials,
@@ -45,3 +46,8 @@ describe("Turso response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(TursoParseError);
   });
 });
+
+// TursoParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [TursoParseError] extends [TursoOpError]
+  ? true
+  : false = true;

@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { TurbopufferParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { listNamespaces } from "./services/turbopuffer.ts";
+import type { TurbopufferOpError } from "./protocol.ts";
 
 // listNamespaces declares `{ namespaces?: { id: string }[]; next_cursor?: string }`.
 const run = (body: string) =>
@@ -38,3 +39,10 @@ describe("Turbopuffer response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(TurbopufferParseError);
   });
 });
+
+// TurbopufferParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [TurbopufferParseError] extends [
+  TurbopufferOpError,
+]
+  ? true
+  : false = true;

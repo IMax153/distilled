@@ -5,6 +5,7 @@ import { credentials } from "./credentials.ts";
 import { StripeParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { GetBalance } from "./services/stripe.ts";
+import type { StripeOpError } from "./protocol.ts";
 
 // GetBalance declares `{ object; available; pending; livemode; … }`.
 const run = (body: string) =>
@@ -44,3 +45,8 @@ describe("Stripe response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(StripeParseError);
   });
 });
+
+// StripeParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [StripeParseError] extends [StripeOpError]
+  ? true
+  : false = true;

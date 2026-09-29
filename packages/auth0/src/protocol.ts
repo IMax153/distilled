@@ -36,7 +36,8 @@ export type Auth0OpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownAuth0Error
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | Auth0ParseError;
 
 /** Context (requirements) shared by every generated Auth0 operation. */
 export type Auth0OpContext = Credentials | HttpClient.HttpClient;

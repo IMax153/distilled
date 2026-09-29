@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { UnkeyParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { apisGetApi } from "./services/unkey.ts";
+import type { UnkeyOpError } from "./protocol.ts";
 
 // apisGetApi declares `{ meta: { requestId: string }; data: { id: string; name: string } }`;
 // Unkey success bodies keep their `{ meta, data }` envelope.
@@ -42,3 +43,8 @@ describe("Unkey response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(UnkeyParseError);
   });
 });
+
+// UnkeyParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [UnkeyParseError] extends [UnkeyOpError]
+  ? true
+  : false = true;

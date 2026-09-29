@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { LaunchDarklyParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getIps } from "./services/launchdarkly.ts";
+import type { LaunchDarklyOpError } from "./protocol.ts";
 
 // getIps declares `{ addresses: string[]; outboundAddresses: string[] }`.
 const run = (body: string) =>
@@ -36,3 +37,10 @@ describe("LaunchDarkly response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(LaunchDarklyParseError);
   });
 });
+
+// LaunchDarklyParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [LaunchDarklyParseError] extends [
+  LaunchDarklyOpError,
+]
+  ? true
+  : false = true;

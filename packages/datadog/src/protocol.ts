@@ -37,7 +37,8 @@ export type DatadogOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownDatadogError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | DatadogParseError;
 
 /** Context (requirements) shared by every generated Datadog operation. */
 export type DatadogOpContext = Credentials | HttpClient.HttpClient;

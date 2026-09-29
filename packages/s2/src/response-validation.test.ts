@@ -5,6 +5,7 @@ import { credentials } from "./credentials.ts";
 import { S2ParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { listBasins } from "./services/basins.ts";
+import type { S2OpError } from "./protocol.ts";
 
 // listBasins declares `{ basins: BasinInfo[]; has_more: boolean }`.
 const run = (body: string) =>
@@ -37,3 +38,8 @@ describe("S2 response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(S2ParseError);
   });
 });
+
+// S2ParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [S2ParseError] extends [S2OpError]
+  ? true
+  : false = true;

@@ -37,7 +37,8 @@ export type PlanetScaleOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownPlanetScaleError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | PlanetScaleParseError;
 
 /** Context (requirements) shared by every generated PlanetScale operation. */
 export type PlanetScaleOpContext = Credentials | HttpClient.HttpClient;

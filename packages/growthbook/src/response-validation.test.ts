@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { GrowthBookParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getCodeRefs } from "./services/growthbook.ts";
+import type { GrowthBookOpError } from "./protocol.ts";
 
 // getCodeRefs declares `{ codeRefs: CodeRef[] }`.
 const run = (body: string) =>
@@ -38,3 +39,10 @@ describe("GrowthBook response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(GrowthBookParseError);
   });
 });
+
+// GrowthBookParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [GrowthBookParseError] extends [
+  GrowthBookOpError,
+]
+  ? true
+  : false = true;

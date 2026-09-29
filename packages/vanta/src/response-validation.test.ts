@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { VantaParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { listConnectedIntegrations } from "./services/manage_vanta.ts";
+import type { VantaOpError } from "./protocol.ts";
 
 // listConnectedIntegrations declares `{ results: { data: Integration[]; pageInfo: PageInfo } }`.
 const run = (body: string) =>
@@ -48,3 +49,8 @@ describe("Vanta response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(VantaParseError);
   });
 });
+
+// VantaParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [VantaParseError] extends [VantaOpError]
+  ? true
+  : false = true;

@@ -39,7 +39,8 @@ export type InngestOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownInngestError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | InngestParseError;
 
 /** Context (requirements) shared by every generated Inngest operation. */
 export type InngestOpContext = Credentials | HttpClient.HttpClient;

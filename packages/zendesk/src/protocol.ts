@@ -38,7 +38,8 @@ export type ZendeskOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownZendeskError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | ZendeskParseError;
 
 /** Context (requirements) shared by every generated Zendesk operation. */
 export type ZendeskOpContext = Credentials | HttpClient.HttpClient;

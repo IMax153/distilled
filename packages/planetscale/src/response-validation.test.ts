@@ -5,6 +5,7 @@ import { fromOAuth } from "./credentials.ts";
 import { PlanetScaleParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getCurrentUser } from "./services/planetscale.ts";
+import type { PlanetScaleOpError } from "./protocol.ts";
 
 // getCurrentUser declares `User`: `{ id; display_name; email; avatar_url; … }`.
 const run = (body: string) =>
@@ -47,3 +48,10 @@ describe("PlanetScale response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(PlanetScaleParseError);
   });
 });
+
+// PlanetScaleParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [PlanetScaleParseError] extends [
+  PlanetScaleOpError,
+]
+  ? true
+  : false = true;

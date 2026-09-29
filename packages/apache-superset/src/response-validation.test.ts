@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { ApacheSupersetParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getMe } from "./services/superset.ts";
+import type { ApacheSupersetOpError } from "./protocol.ts";
 
 // getMe declares `{ result?: UserResponseSchema }`; every member is optional,
 // so the mismatch is a wrong primitive (`result.id` must be a number).
@@ -37,3 +38,10 @@ describe("Apache Superset response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(ApacheSupersetParseError);
   });
 });
+
+// ApacheSupersetParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [ApacheSupersetParseError] extends [
+  ApacheSupersetOpError,
+]
+  ? true
+  : false = true;

@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { DockerParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { systemVersion2 } from "./services/docker.ts";
+import type { DockerOpError } from "./protocol.ts";
 
 // systemVersion2 declares `{ Platform?: { Name: string }; Version?: string; … }`.
 const run = (body: string) =>
@@ -38,3 +39,8 @@ describe("Docker response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(DockerParseError);
   });
 });
+
+// DockerParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [DockerParseError] extends [DockerOpError]
+  ? true
+  : false = true;

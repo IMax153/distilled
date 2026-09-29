@@ -4,6 +4,8 @@ import * as Effect from "effect/Effect";
 import { fromApiKey } from "./credentials.ts";
 import * as Retry from "./retry.ts";
 import { getAction } from "./services/metabase.ts";
+import type { MetabaseParseError } from "./errors.ts";
+import type { MetabaseOpError } from "./protocol.ts";
 
 // Metabase's OpenAPI declares no response bodies, so every generated output
 // schema is `S.Struct({})`. That schema accepts any non-nullish value (a JSON
@@ -39,3 +41,10 @@ describe("Metabase response validation", () => {
     expect(strict).toMatchObject({ _tag: "Success", success: "not json" });
   });
 });
+
+// MetabaseParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [MetabaseParseError] extends [
+  MetabaseOpError,
+]
+  ? true
+  : false = true;

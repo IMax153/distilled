@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { DatadogParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getAllAuthMethods } from "./services/v2.ts";
+import type { DatadogOpError } from "./protocol.ts";
 
 // getAllAuthMethods declares `{ data: WebhooksAuthMethodResponseData[]; included?: ... }`.
 const run = (body: string) =>
@@ -37,3 +38,8 @@ describe("Datadog response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(DatadogParseError);
   });
 });
+
+// DatadogParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [DatadogParseError] extends [DatadogOpError]
+  ? true
+  : false = true;

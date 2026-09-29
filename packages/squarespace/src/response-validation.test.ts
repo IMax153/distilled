@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { SquarespaceParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { listDiscounts } from "./services/squarespace.ts";
+import type { SquarespaceOpError } from "./protocol.ts";
 
 // listDiscounts declares `{ discounts: Discount[]; hasNextPage?; hasPreviousPage? }`.
 const run = (body: string) =>
@@ -38,3 +39,10 @@ describe("Squarespace response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(SquarespaceParseError);
   });
 });
+
+// SquarespaceParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [SquarespaceParseError] extends [
+  SquarespaceOpError,
+]
+  ? true
+  : false = true;

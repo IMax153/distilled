@@ -35,7 +35,8 @@ export type SentryOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownSentryError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | SentryParseError;
 
 /** Context (requirements) shared by every generated Sentry operation. */
 export type SentryOpContext = Credentials | HttpClient.HttpClient;

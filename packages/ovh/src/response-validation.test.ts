@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { OvhParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getIamPermissionsGroup } from "./services/iam.ts";
+import type { OvhOpError } from "./protocol.ts";
 
 // getIamPermissionsGroup declares `{ description: string; name: string; permissions: { … }; … }`.
 const run = (body: string) =>
@@ -42,3 +43,8 @@ describe("OVH response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(OvhParseError);
   });
 });
+
+// OvhParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [OvhParseError] extends [OvhOpError]
+  ? true
+  : false = true;

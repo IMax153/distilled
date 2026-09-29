@@ -35,7 +35,8 @@ export type MeilisearchOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownMeilisearchError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | MeilisearchParseError;
 
 /** Context (requirements) shared by every generated Meilisearch operation. */
 export type MeilisearchOpContext = Credentials | HttpClient.HttpClient;

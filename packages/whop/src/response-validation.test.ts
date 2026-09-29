@@ -5,6 +5,7 @@ import { credentials } from "./credentials.ts";
 import { WhopParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getDisputeSummary } from "./services/disputes.ts";
+import type { WhopOpError } from "./protocol.ts";
 
 // getDisputeSummary declares `{ groups: { … }; total: number }`.
 const run = (body: string) =>
@@ -39,3 +40,8 @@ describe("Whop response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(WhopParseError);
   });
 });
+
+// WhopParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [WhopParseError] extends [WhopOpError]
+  ? true
+  : false = true;

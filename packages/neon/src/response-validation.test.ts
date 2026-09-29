@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { NeonParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getActiveRegions } from "./services/neon.ts";
+import type { NeonOpError } from "./protocol.ts";
 
 // getActiveRegions declares `{ regions: RegionResponse[] }`.
 const run = (body: string) =>
@@ -39,3 +40,8 @@ describe("Neon response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(NeonParseError);
   });
 });
+
+// NeonParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [NeonParseError] extends [NeonOpError]
+  ? true
+  : false = true;

@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { MeilisearchParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getVersion } from "./services/meilisearch.ts";
+import type { MeilisearchOpError } from "./protocol.ts";
 
 // getVersion declares `{ commitSha: string; commitDate: string; pkgVersion: string }`.
 const run = (body: string) =>
@@ -42,3 +43,10 @@ describe("Meilisearch response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(MeilisearchParseError);
   });
 });
+
+// MeilisearchParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [MeilisearchParseError] extends [
+  MeilisearchOpError,
+]
+  ? true
+  : false = true;

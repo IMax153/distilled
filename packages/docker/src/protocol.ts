@@ -34,7 +34,8 @@ export type DockerOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownDockerError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | DockerParseError;
 
 /** Context (requirements) shared by every generated Docker operation. */
 export type DockerOpContext = Credentials | HttpClient.HttpClient;

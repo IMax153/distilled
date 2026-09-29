@@ -37,7 +37,8 @@ export type SurrealdbOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownSurrealdbError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | SurrealdbParseError;
 
 /** Context (requirements) shared by every generated SurrealDB operation. */
 export type SurrealdbOpContext = Credentials | HttpClient.HttpClient;

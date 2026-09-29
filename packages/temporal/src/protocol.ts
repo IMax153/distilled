@@ -36,7 +36,8 @@ export type TemporalOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownTemporalError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | TemporalParseError;
 
 /** Context (requirements) shared by every generated Temporal operation. */
 export type TemporalOpContext = Credentials | HttpClient.HttpClient;

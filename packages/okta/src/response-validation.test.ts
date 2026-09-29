@@ -5,6 +5,7 @@ import { fromApiToken } from "./credentials.ts";
 import { OktaParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getDRStatus } from "./services/okta.ts";
+import type { OktaOpError } from "./protocol.ts";
 
 // getDRStatus declares `{ status?: { domain?: string; isFailedOver?: boolean }[] }`.
 // Its members are all optional, so the mismatch is a wrong primitive.
@@ -48,3 +49,8 @@ describe("Okta response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(OktaParseError);
   });
 });
+
+// OktaParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [OktaParseError] extends [OktaOpError]
+  ? true
+  : false = true;

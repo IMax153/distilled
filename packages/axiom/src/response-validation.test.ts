@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { AxiomParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getCurrentUser } from "./services/v2.ts";
+import type { AxiomOpError } from "./protocol.ts";
 
 // getCurrentUser declares `{ email: string; id: string; name: string; role?: … }`.
 const run = (body: string) =>
@@ -38,3 +39,8 @@ describe("Axiom response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(AxiomParseError);
   });
 });
+
+// AxiomParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [AxiomParseError] extends [AxiomOpError]
+  ? true
+  : false = true;

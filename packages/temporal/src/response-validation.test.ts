@@ -5,6 +5,7 @@ import { fromApiKey } from "./credentials.ts";
 import { TemporalParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { getSystemInfo } from "./services/temporal.ts";
+import type { TemporalOpError } from "./protocol.ts";
 
 // getSystemInfo declares only optional members (`serverVersion?: string`,
 // `capabilities?: {...}`), so the mismatch is a wrong primitive type.
@@ -39,3 +40,10 @@ describe("Temporal response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(TemporalParseError);
   });
 });
+
+// TemporalParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [TemporalParseError] extends [
+  TemporalOpError,
+]
+  ? true
+  : false = true;

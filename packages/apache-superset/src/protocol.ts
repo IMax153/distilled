@@ -40,7 +40,8 @@ export type ApacheSupersetOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownApacheSupersetError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | ApacheSupersetParseError;
 
 /** Context (requirements) shared by every generated Apache Superset operation. */
 export type ApacheSupersetOpContext = Credentials | HttpClient.HttpClient;

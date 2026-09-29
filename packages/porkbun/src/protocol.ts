@@ -38,7 +38,8 @@ export type PorkbunOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownPorkbunError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | PorkbunParseError;
 
 /** Context (requirements) shared by every generated Porkbun operation. */
 export type PorkbunOpContext = Credentials | HttpClient.HttpClient;

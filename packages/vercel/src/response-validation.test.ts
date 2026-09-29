@@ -5,6 +5,7 @@ import { credentials } from "./credentials.ts";
 import { VercelParseError } from "./errors.ts";
 import * as Retry from "./retry.ts";
 import { listAiGatewayRules } from "./services/ai_gateway.ts";
+import type { VercelOpError } from "./protocol.ts";
 
 // listAiGatewayRules declares `{ rules: AiGatewayRule[] }`.
 const run = (body: string) =>
@@ -37,3 +38,8 @@ describe("Vercel response validation", () => {
     expect((strict as any).failure).toBeInstanceOf(VercelParseError);
   });
 });
+
+// VercelParseError is part of every operation's declared error type.
+export const parseErrorIsDeclared: [VercelParseError] extends [VercelOpError]
+  ? true
+  : false = true;

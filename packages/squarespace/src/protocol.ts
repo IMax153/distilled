@@ -38,7 +38,8 @@ export type SquarespaceOpError =
   | InstanceType<(typeof API_ERRORS)[number]>
   | UnknownSquarespaceError
   | ConfigError
-  | HttpClientError.HttpClientError;
+  | HttpClientError.HttpClientError
+  | SquarespaceParseError;
 
 /** Context (requirements) shared by every generated Squarespace operation. */
 export type SquarespaceOpContext = Credentials | HttpClient.HttpClient;
