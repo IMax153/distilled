@@ -189,7 +189,9 @@ program.«f:pipe»(
           code={`«k:import» { ResponseValidation } «k:from» «s:"@distilled.cloud/core"»
 
 «m:// every SDK checks each response against its schema»
-program.«f:pipe»(Effect.«f:provide»(ResponseValidation.strict))
+program.«f:pipe»(
+  Effect.«f:provide»(ResponseValidation.strict),
+)
 
 «m:// a response that drifted from the spec is a typed error»
 Neon.«f:getProject»({ project_id }).«f:pipe»(
