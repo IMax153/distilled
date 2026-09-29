@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import * as ResponseValidation from "@distilled.cloud/core/response-validation";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Redacted from "effect/Redacted";
@@ -102,11 +103,22 @@ for (const [name, protocol] of Object.entries({
                 method === "deserializeError" ? 400 : 200,
               ),
             ),
-          ),
+          ).pipe(Effect.provide(ResponseValidation.strict)),
         );
         assert.ok(result instanceof ParseError);
       });
     }
+
+    it("deserializeResponse returns malformed XML as read in lenient mode", () => {
+      assert.equal(
+        Effect.runSync(
+          handler.deserializeResponse(
+            response("<ListResponse><bad></ListResponse>"),
+          ),
+        ),
+        "<ListResponse><bad></ListResponse>",
+      );
+    });
 
     it("decodes the protocol's error envelope", () => {
       const error =

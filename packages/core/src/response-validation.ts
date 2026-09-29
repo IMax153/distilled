@@ -78,6 +78,16 @@ export const isStrict: Effect.Effect<boolean> = Effect.map(
   (mode) => mode === "strict",
 );
 
+/**
+ * For a 2xx body the protocol could not read into the shape it transforms
+ * (e.g. invalid JSON): fail with `error` in strict mode, succeed with
+ * `asRead` (usually the body text) in lenient mode.
+ */
+export const failIfStrict = <A, E>(error: E, asRead: A): Effect.Effect<A, E> =>
+  Effect.flatMap(ResponseValidation, (mode) =>
+    mode === "strict" ? Effect.fail(error) : Effect.succeed(asRead),
+  );
+
 const decoders = new WeakMap<
   AST.AST,
   (input: unknown) => Effect.Effect<unknown, Schema.SchemaError>

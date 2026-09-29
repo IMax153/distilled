@@ -48,7 +48,10 @@ import {
   InternalServerError,
   type ConfigError,
 } from "@distilled.cloud/core/errors";
-import { validateResponse } from "@distilled.cloud/core/response-validation";
+import {
+  failIfStrict,
+  validateResponse,
+} from "@distilled.cloud/core/response-validation";
 import { parseRetryAfterForStatus } from "@distilled.cloud/core/retry-after";
 import {
   Credentials,
@@ -758,12 +761,14 @@ const graphqlDecode = ({
       if (status >= 400) {
         return yield* matchGraphqlError(status, text, headers, errors);
       }
-      return yield* fail(
+      // Lenient mode returns the body as read.
+      return yield* failIfStrict(
         new FlyIoParseError({
           body: text,
           cause: "response body is not valid JSON",
         }),
-      );
+        text,
+      ).pipe(Effect.catch(fail));
     }
 
     const envelope = json as { data?: unknown; errors?: unknown[] } | null;

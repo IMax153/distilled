@@ -4,7 +4,9 @@
  * https://smithy.io/2.0/aws/protocols/aws-restxml-protocol.html
  */
 
+import { failIfStrict } from "@distilled.cloud/core/response-validation";
 import * as Effect from "effect/Effect";
+import * as Result from "effect/Result";
 import * as S from "effect/Schema";
 import type * as AST from "effect/SchemaAST";
 import type { Operation } from "../client/operation.ts";
@@ -288,7 +290,12 @@ export const restXmlProtocol: Protocol = (
         if (outputPayloadProp.isRawString) {
           result[outputPayloadProp.name] = bodyText;
         } else {
-          const parsed = yield* parseXml(bodyText);
+          const read = yield* Effect.result(parseXml(bodyText));
+          // Lenient mode returns the body as read.
+          if (Result.isFailure(read)) {
+            return yield* failIfStrict(read.failure, bodyText);
+          }
+          const parsed = read.success;
           result[outputPayloadProp.name] = deserializeValue(
             outputPayloadProp.type,
             outputPayloadProp.xmlName
@@ -300,7 +307,12 @@ export const restXmlProtocol: Protocol = (
 
       // Parse body XML for non-payload properties
       if (bodyText && !outputPayloadProp) {
-        const parsed = yield* parseXml(bodyText);
+        const read = yield* Effect.result(parseXml(bodyText));
+        // Lenient mode returns the body as read.
+        if (Result.isFailure(read)) {
+          return yield* failIfStrict(read.failure, bodyText);
+        }
+        const parsed = read.success;
         const rawContent = outputXmlName ? parsed[outputXmlName] : parsed;
 
         if (isUnwrappedOutput && unwrappedPropName) {

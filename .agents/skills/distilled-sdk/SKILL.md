@@ -168,6 +168,22 @@ by every SDK: lenient by default, switched with
 `DISTILLED_STRICT_RESPONSES=1`. A new protocol reads the mode through
 `validateResponse`; it never adds its own flag or environment variable.
 
+Lenient mode checks only what the protocol needs in order to transform the
+body (unwrap an envelope, map keys, wrap sensitive members) and nothing
+more: a non-JSON body comes back as text, a body missing members comes back
+as read. Never decode against the output schema outside `validateResponse`.
+Strict mode surfaces every spec inaccuracy (an undocumented `null`, a new
+enum member) as a `<Pkg>ParseError`; that is the cost of opting in, and why
+strict is never the default.
+
+Every SDK ships `src/response-validation.test.ts` (copy
+`packages/s2/src/response-validation.test.ts`). It uses
+`runValidationModes` from `@distilled.cloud/core/testing` to run one real
+operation against a canned response in both modes and asserts: a matching
+body succeeds in both; a mismatched body succeeds in lenient and fails with
+`<Pkg>ParseError` in strict; and what a non-JSON body does in each. CI runs
+every `packages/*/src/response-validation.test.ts`.
+
 Before opening the PR, confirm the parse error and the unknown-error
 fallback are both constructed outside the generated code — this must print
 two or more lines:
@@ -389,7 +405,8 @@ Body, in order:
    quick start.
 4. `Checks: pnpm specs:check` green, `tsc -b packages/<pkg> --noCheck false`
    green, `DISTILLED_SPECS_LOCAL=1 pnpm generate <pkg>` reproduces output,
-   and the error-construction check from step 4 finds both classes.
+   the error-construction check from step 4 finds both classes, and
+   `bun test src/response-validation.test.ts` passes.
 
 ```sh
 git push -u origin HEAD

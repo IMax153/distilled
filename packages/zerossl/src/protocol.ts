@@ -7,10 +7,13 @@
  * HTTP 200, so the decoder inspects the envelope and matches `error.type`
  * against the operation's typed error classes before trusting the status.
  */
+import {
+  isStrict,
+  validateResponse,
+} from "@distilled.cloud/core/response-validation";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Redacted from "effect/Redacted";
-import * as Schema from "effect/Schema";
 import * as Category from "@distilled.cloud/core/category";
 import type * as AST from "effect/SchemaAST";
 import type * as HttpClient from "effect/unstable/http/HttpClient";
@@ -101,8 +104,13 @@ const decode = ({
       try: () => (text.trim().length > 0 ? JSON.parse(text) : {}),
       catch: () => parseError("Invalid JSON response"),
     }).pipe(
+      // A non-JSON 2xx fails only in strict mode; lenient returns the text.
       Effect.catchTag("ZeroSslParseError", (error) =>
-        status >= 400 ? Effect.succeed(undefined) : Effect.fail(error),
+        status >= 400
+          ? Effect.succeed(undefined)
+          : Effect.flatMap(isStrict, (strict) =>
+              strict ? Effect.fail(error) : Effect.succeed<unknown>(text),
+            ),
       ),
     );
     const envelope = (isObject(json) ? json : {}) as ErrorEnvelope;
@@ -161,19 +169,21 @@ const decode = ({
         }),
       );
     }
-    if (!isObject(json))
+    if (!isObject(json)) {
+      // Lenient mode returns a non-object body as read.
+      if (!(yield* isStrict)) return json;
       return yield* fail(parseError("Expected a JSON object"));
+    }
     // The EAB documentation uses 1/0; the live API also returns true/false.
     const body =
       json.success === 1 || json.success === 0
         ? { ...json, success: json.success === 1 }
         : json;
-    const output = yield* Schema.decodeUnknownEffect(
-      Schema.make<Schema.Schema<unknown>>(outputAst),
-    )(mapKeys(outputAst, body, "decode")).pipe(
-      Effect.mapError(() =>
-        parseError("Response does not match the output schema"),
-      ),
+    // Strict mode (core/response-validation) checks the output schema.
+    const output = yield* validateResponse(
+      outputAst,
+      mapKeys(outputAst, body, "decode"),
+      () => parseError("Response does not match the output schema"),
     );
     return wrapSensitive(outputAst, output);
   });

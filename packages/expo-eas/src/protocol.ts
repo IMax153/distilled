@@ -36,7 +36,10 @@ import type * as HttpClientResponse from "effect/unstable/http/HttpClientRespons
 import * as API from "@distilled.cloud/core/api";
 import { getAnn } from "@distilled.cloud/core/protocol-http";
 import { HTTP_STATUS_MAP } from "@distilled.cloud/core/errors";
-import { validateResponse } from "@distilled.cloud/core/response-validation";
+import {
+  failIfStrict,
+  validateResponse,
+} from "@distilled.cloud/core/response-validation";
 import { parseRetryAfterForStatus } from "@distilled.cloud/core/retry-after";
 import { type Config, Credentials } from "./credentials.ts";
 import {
@@ -278,12 +281,14 @@ const decode = ({
       if (status >= 400) {
         return yield* matchError(status, text, headers);
       }
-      return yield* fail(
+      // Lenient mode returns the body as read.
+      return yield* failIfStrict(
         new EasParseError({
           body: text,
           cause: "response body is not valid JSON",
         }),
-      );
+        text,
+      ).pipe(Effect.catch(fail));
     }
 
     // GraphQL errors[] (even on HTTP 200) or HTTP-level failure → typed

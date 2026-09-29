@@ -24,6 +24,10 @@
  * RFC 7807 problem documents matched on their `type` URN against the
  * operation's typed error classes; an unmatched URN is `UnknownAcmeError`.
  */
+import {
+  isStrict,
+  validateResponse,
+} from "@distilled.cloud/core/response-validation";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Redacted from "effect/Redacted";
@@ -439,8 +443,16 @@ const decode = ({
         isNewNonce || (isCertificate && status < 400)
           ? undefined
           : yield* parseJson(text).pipe(
+              // A non-JSON 2xx fails only in strict mode; lenient returns
+              // the text as read.
               Effect.catchTag("AcmeParseError", (error) =>
-                status >= 400 ? Effect.succeed(undefined) : Effect.fail(error),
+                status >= 400
+                  ? Effect.succeed(undefined)
+                  : Effect.flatMap(isStrict, (strict) =>
+                      strict
+                        ? Effect.fail(error)
+                        : Effect.succeed<unknown>(text),
+                    ),
               ),
             );
       const problem = status >= 400 && isProblem(json) ? json : undefined;
@@ -516,19 +528,20 @@ const decode = ({
           chain: text,
           alternates: parseLinkAlternates(headers["link"]),
         };
-      } else {
-        if (!isObject(json))
-          return yield* fail(parseError("Expected a JSON object"));
+      } else if (isObject(json)) {
         body = json;
         const location = headers["location"];
         if (location) body = { ...body, location };
+      } else {
+        // Lenient mode returns a non-object body as read.
+        if (!(yield* isStrict)) return json;
+        return yield* fail(parseError("Expected a JSON object"));
       }
-      return yield* Schema.decodeUnknownEffect(
-        Schema.make<Schema.Schema<unknown>>(outputAst),
-      )(mapKeys(outputAst, body, "decode")).pipe(
-        Effect.mapError(() =>
-          parseError("Response does not match the output schema"),
-        ),
+      // Strict mode (core/response-validation) checks the output schema.
+      return yield* validateResponse(
+        outputAst,
+        mapKeys(outputAst, body, "decode"),
+        () => parseError("Response does not match the output schema"),
       );
     }
   });

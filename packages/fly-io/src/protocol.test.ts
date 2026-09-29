@@ -219,4 +219,16 @@ describe("GraphQL response validation", () => {
     );
     expect(result).toBe(true);
   });
+
+  test("a non-JSON body: lenient returns the text, strict fails", async () => {
+    const call = agreedToProviderTos(tos).pipe(
+      Retry.none,
+      Effect.provide(respondWith(200, "not json")),
+    );
+    expect((await Effect.runPromise(call)) as unknown).toBe("not json");
+    const error = await Effect.runPromise(
+      call.pipe(Effect.provide(ResponseValidation.strict), Effect.flip),
+    );
+    expect(error).toBeInstanceOf(FlyIoParseError);
+  });
 });

@@ -477,6 +477,10 @@ const makeDecode =
         return yield* validate(mapKeys(outputAst, payload, "decode", rootDict));
       }
 
+      // A non-JSON body for a struct output: lenient returns the text as
+      // read; strict fails it against the struct schema.
+      if (nonJson) return yield* validate(text);
+
       const result: Record<string, unknown> = {};
 
       for (const prop of getProps(outputAst)) {

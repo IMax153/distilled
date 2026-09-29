@@ -17,6 +17,7 @@
  *   (clients must accept either format for both protocols)
  */
 
+import { failIfStrict } from "@distilled.cloud/core/response-validation";
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import * as AST from "effect/SchemaAST";
@@ -149,9 +150,13 @@ function createAwsJsonProtocol(version: "1.0" | "1.1"): Protocol {
               return parsed as Record<string, unknown>;
             }
           } catch {
-            return yield* new ParseError({
-              message: `Failed to parse JSON body: ${bodyText}`,
-            });
+            // Lenient mode returns the body as read.
+            return yield* failIfStrict(
+              new ParseError({
+                message: `Failed to parse JSON body: ${bodyText}`,
+              }),
+              bodyText,
+            );
           }
         }
 

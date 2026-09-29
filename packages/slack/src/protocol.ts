@@ -310,8 +310,13 @@ const decode = ({
 
     // Successful non-JSON body: raw bytes (the analytics file download —
     // modeled as a Document output, so the bytes pass through verbatim).
+    // Strict mode fails them for every other (struct) output.
     if (json === undefined) {
-      return bytes;
+      return yield* validateResponse(
+        outputAst,
+        bytes,
+        (cause) => new SlackParseError({ body: text, cause }),
+      ).pipe(Effect.catch(fail));
     }
 
     // 2xx envelope: the body IS the payload (`ok` rides along as a modeled
