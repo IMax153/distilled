@@ -1,8 +1,8 @@
-import { describe, expect, test } from "bun:test";
 import { mockHttpClient } from "@distilled.cloud/core/testing";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Redacted from "effect/Redacted";
+import { describe, expect, test } from "vitest";
 import { Credentials, DEFAULT_API_BASE_URL } from "./credentials.ts";
 import { InvalidParameter, LocationNotAvailable } from "./errors.ts";
 import * as Retry from "./retry.ts";
@@ -29,9 +29,7 @@ const fail = <A, E>(
     effect.pipe(
       Retry.none,
       Effect.provide(TestCredentials),
-      Effect.provide(
-        mockHttpClient({ status, body: JSON.stringify({ error }) }),
-      ),
+      Effect.provide(mockHttpClient({ status, body: JSON.stringify({ error }) })),
       Effect.flip,
     ) as Effect.Effect<E>,
   );
